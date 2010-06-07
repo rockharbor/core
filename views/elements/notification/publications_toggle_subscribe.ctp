@@ -1,0 +1,1 @@
+You have been <?php echo $subscribe ? 'subscribed' : 'unsubscribed'; ?> from <?php echo $publication['Publication']['name']; ?>.

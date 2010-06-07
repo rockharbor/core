@@ -1,0 +1,1 @@
+You have joined <?php echo $contact['User']['Profile']['name']; ?>'s household.

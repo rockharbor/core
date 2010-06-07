@@ -1,0 +1,973 @@
+2010-06-02 08:40:27 Auth: User  of group 9 allowed to go to controllers/Users/edit_profile? [no]
+2010-06-02 08:40:48 Auth: User 1 of group 9 allowed to go to controllers/Users/edit_profile? [no]
+2010-06-02 08:44:38 Auth: conditional groups
+2010-06-02 08:44:38 Auth: edit self
+2010-06-02 08:44:38 Auth: User 1 of group 9 allowed to go to controllers/Users/edit_profile? [no]
+2010-06-02 08:44:39 Auth: conditional groups
+2010-06-02 08:45:23 Auth: edit self
+2010-06-02 08:45:23 Auth: conditional groups
+2010-06-02 08:45:23 Auth: User 1 of group 29 allowed to go to controllers/Users/edit_profile? [yes]
+2010-06-02 08:45:25 Auth: conditional groups
+2010-06-02 08:45:25 Auth: User 1 of group 29 allowed to go to controllers/UserImages/index? [yes]
+2010-06-02 08:45:26 Auth: conditional groups
+2010-06-02 08:45:26 Auth: User 1 of group 29 allowed to go to controllers/Publications/subscriptions? [yes]
+2010-06-02 08:45:26 Auth: conditional groups
+2010-06-02 08:45:27 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 08:45:49 Auth: edit self
+2010-06-02 08:45:49 Auth: conditional groups
+2010-06-02 08:45:49 Auth: User 1 of group 29 allowed to go to controllers/Users/edit_profile? [yes]
+2010-06-02 08:45:51 Auth: conditional groups
+2010-06-02 08:45:51 Auth: User 1 of group 29 allowed to go to controllers/UserImages/index? [yes]
+2010-06-02 08:45:52 Auth: conditional groups
+2010-06-02 08:45:52 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 08:45:52 Auth: conditional groups
+2010-06-02 08:45:53 Auth: User 1 of group 29 allowed to go to controllers/UserImages/index? [yes]
+2010-06-02 08:45:53 Auth: conditional groups
+2010-06-02 08:45:53 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 08:56:56 Auth: User 1 of group 29 allowed to go to controllers/Users/edit_profile? [yes]
+2010-06-02 08:56:58 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 08:56:58 Auth: User 1 of group 29 allowed to go to controllers/UserImages/index? [yes]
+2010-06-02 08:57:07 Auth: User 1 of group 29 allowed to go to controllers/Users/edit_profile? [yes]
+2010-06-02 08:57:09 Auth: User 1 of group 29 allowed to go to controllers/UserImages/index? [yes]
+2010-06-02 08:57:10 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 08:57:47 Auth: User 1 of group 29 allowed to go to controllers/Users/edit? [yes]
+2010-06-02 08:57:57 Auth: User 1 of group 29 allowed to go to controllers/Users/edit? [yes]
+2010-06-02 08:58:07 Auth: User 1 of group 29 allowed to go to controllers/Users/edit? [yes]
+2010-06-02 10:27:26 Auth: User 1 of group 29 allowed to go to controllers/Users/edit_profile? [yes]
+2010-06-02 10:27:28 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 10:27:28 Auth: User 1 of group 29 allowed to go to controllers/UserImages/index? [yes]
+2010-06-02 10:27:29 Auth: User 1 of group 29 allowed to go to controllers/Users/edit? [yes]
+2010-06-02 10:27:37 Auth: User 1 of group 29 allowed to go to controllers/Users/edit? [yes]
+2010-06-02 10:29:43 Auth: User 1 of group 1 allowed to go to controllers/AppSettings/index? [yes]
+2010-06-02 10:43:22 Auth: User 1 of group 1 allowed to go to controllers/Searches/index? [yes]
+2010-06-02 10:44:09 Auth: User 1 of group 1 allowed to go to controllers/Searches/index? [yes]
+2010-06-02 10:44:14 Auth: User 1 of group 1 allowed to go to controllers/Ministries/view? [yes]
+2010-06-02 10:44:21 Auth: User 1 of group 1 allowed to go to controllers/Ministries/edit? [yes]
+2010-06-02 10:44:50 Auth: User 1 of group 1 allowed to go to controllers/Ministries/view? [yes]
+2010-06-02 10:44:51 Auth: User 1 of group 1 allowed to go to controllers/Ministries/edit? [yes]
+2010-06-02 10:44:52 Auth: User 1 of group 1 allowed to go to controllers/Leaders/index? [yes]
+2010-06-02 10:44:53 Auth: User 1 of group 1 allowed to go to controllers/MinistryImages/index? [yes]
+2010-06-02 10:44:53 Auth: User 1 of group 1 allowed to go to controllers/MinistryImages/view? [yes]
+2010-06-02 10:44:57 Auth: User 1 of group 1 allowed to go to controllers/Ministries/view? [yes]
+2010-06-02 10:45:01 Auth: User 1 of group 1 allowed to go to controllers/Involvements/view? [yes]
+2010-06-02 10:45:04 Auth: User 1 of group 1 allowed to go to controllers/Involvements/edit? [yes]
+2010-06-02 10:46:29 Auth: User 1 of group 1 allowed to go to controllers/Involvements/edit? [yes]
+2010-06-02 10:46:57 Auth: User 1 of group 1 allowed to go to controllers/Involvements/edit? [yes]
+2010-06-02 10:47:38 Auth: User 1 of group 1 allowed to go to controllers/Involvements/edit? [yes]
+2010-06-02 10:47:41 Auth: User 1 of group 1 allowed to go to controllers/InvolvementAddresses/index? [yes]
+2010-06-02 10:47:42 Auth: User 1 of group 1 allowed to go to controllers/InvolvementImages/view? [yes]
+2010-06-02 10:47:42 Auth: User 1 of group 1 allowed to go to controllers/InvolvementDocuments/index? [yes]
+2010-06-02 10:47:43 Auth: User 1 of group 1 allowed to go to controllers/InvolvementImages/index? [yes]
+2010-06-02 10:47:59 Auth: User 1 of group 1 allowed to go to controllers/Involvements/edit? [yes]
+2010-06-02 10:48:02 Auth: User 1 of group 1 allowed to go to controllers/InvolvementAddresses/index? [yes]
+2010-06-02 10:48:02 Auth: User 1 of group 1 allowed to go to controllers/InvolvementImages/view? [yes]
+2010-06-02 10:48:03 Auth: User 1 of group 1 allowed to go to controllers/InvolvementImages/index? [yes]
+2010-06-02 10:48:03 Auth: User 1 of group 1 allowed to go to controllers/InvolvementDocuments/index? [yes]
+2010-06-02 10:48:08 Auth: User 1 of group 1 allowed to go to controllers/Dates/index? [yes]
+2010-06-02 10:48:11 Auth: User 1 of group 1 allowed to go to controllers/Questions/index? [yes]
+2010-06-02 10:48:13 Auth: User 1 of group 1 allowed to go to controllers/Leaders/index? [yes]
+2010-06-02 10:48:15 Auth: User 1 of group 1 allowed to go to controllers/Rosters/index? [yes]
+2010-06-02 10:54:15 Auth: User 1 of group 1 allowed to go to controllers/Involvements/edit? [yes]
+2010-06-02 10:54:17 Auth: User 1 of group 1 allowed to go to controllers/InvolvementAddresses/index? [yes]
+2010-06-02 10:54:18 Auth: User 1 of group 1 allowed to go to controllers/InvolvementImages/index? [yes]
+2010-06-02 10:54:19 Auth: User 1 of group 1 allowed to go to controllers/InvolvementDocuments/index? [yes]
+2010-06-02 10:54:19 Auth: User 1 of group 1 allowed to go to controllers/InvolvementImages/view? [yes]
+2010-06-02 10:54:20 Auth: User 1 of group 1 allowed to go to controllers/Rosters/index? [yes]
+2010-06-02 10:54:55 Auth: User 1 of group 1 allowed to go to controllers/Logs/index? [yes]
+2010-06-02 10:55:36 Auth: User 1 of group 29 allowed to go to controllers/Users/edit_profile? [yes]
+2010-06-02 10:55:38 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 10:55:38 Auth: User 1 of group 29 allowed to go to controllers/UserImages/index? [yes]
+2010-06-02 10:55:44 Auth: User 1 of group 29 allowed to go to controllers/Users/edit_profile? [yes]
+2010-06-02 10:55:46 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 10:55:46 Auth: User 1 of group 29 allowed to go to controllers/UserImages/index? [yes]
+2010-06-02 10:55:53 Auth: User 1 of group 29 allowed to go to controllers/Households/index? [yes]
+2010-06-02 10:55:59 Auth: User 1 of group 1 allowed to go to controllers/Users/simple_search? [yes]
+2010-06-02 10:56:04 Auth: User 1 of group 29 allowed to go to controllers/Households/index? [yes]
+2010-06-02 10:56:37 Auth: User 1 of group 29 allowed to go to controllers/Users/edit_profile? [yes]
+2010-06-02 10:56:39 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 10:56:39 Auth: User 1 of group 29 allowed to go to controllers/UserImages/index? [yes]
+2010-06-02 10:56:44 Auth: User 1 of group 29 allowed to go to controllers/Users/edit_profile? [yes]
+2010-06-02 10:56:46 Auth: User 1 of group 29 allowed to go to controllers/UserImages/index? [yes]
+2010-06-02 10:56:47 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 10:58:21 Auth: User 1 of group 1 allowed to go to controllers/Searches/index? [yes]
+2010-06-02 10:58:23 Auth: User 1 of group 29 allowed to go to controllers/Users/edit_profile? [yes]
+2010-06-02 10:58:25 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 10:58:26 Auth: User 1 of group 29 allowed to go to controllers/UserImages/index? [yes]
+2010-06-02 10:58:27 Auth: User 1 of group 29 allowed to go to controllers/Users/edit_profile? [yes]
+2010-06-02 10:58:28 Auth: User 1 of group 29 allowed to go to controllers/UserImages/index? [yes]
+2010-06-02 10:58:29 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 10:58:43 Auth: User 1 of group 29 allowed to go to controllers/Users/edit_profile? [yes]
+2010-06-02 11:04:12 Auth: User 1 of group 1 allowed to go to controllers/AppSettings/index? [yes]
+2010-06-02 11:09:21 Auth: User 1 of group 1 allowed to go to controllers/AppSettings/edit? [yes]
+2010-06-02 11:09:22 Auth: User 1 of group 1 allowed to go to controllers/AppSettings/edit? [yes]
+2010-06-02 11:09:25 Auth: User 1 of group 1 allowed to go to controllers/AppSettings/index? [yes]
+2010-06-02 11:12:19 Auth: User 1 of group 1 allowed to go to controllers/AppSettings/edit? [yes]
+2010-06-02 11:12:20 Auth: User 1 of group 1 allowed to go to controllers/AppSettings/edit? [yes]
+2010-06-02 11:12:26 Auth: User 1 of group 1 allowed to go to controllers/AppSettings/index? [yes]
+2010-06-02 11:13:34 Auth: User 1 of group 1 allowed to go to controllers/AppSettings/index? [yes]
+2010-06-02 11:13:54 Auth: User 1 of group 1 allowed to go to controllers/AppSettings/edit? [yes]
+2010-06-02 11:13:55 Auth: User 1 of group 1 allowed to go to controllers/AppSettings/edit? [yes]
+2010-06-02 11:14:06 Auth: User 1 of group 1 allowed to go to controllers/AppSettings/index? [yes]
+2010-06-02 11:14:43 Auth: User 1 of group 1 allowed to go to controllers/AppSettings/edit? [yes]
+2010-06-02 11:14:44 Auth: User 1 of group 1 allowed to go to controllers/AppSettings/edit? [yes]
+2010-06-02 11:14:58 Auth: User 1 of group 1 allowed to go to controllers/AppSettings/index? [yes]
+2010-06-02 11:15:46 Auth: User 1 of group 1 allowed to go to controllers/AppSettings/index? [yes]
+2010-06-02 11:16:07 Auth: User 1 of group 1 allowed to go to controllers/AppSettings/index? [yes]
+2010-06-02 11:16:39 Auth: User 1 of group 1 allowed to go to controllers/DebugKit/ToolbarAccess/sql_explain? [yes]
+2010-06-02 11:17:15 Auth: User 1 of group 1 allowed to go to controllers/ApiGenerator/ApiClasses/index? [yes]
+2010-06-02 11:17:27 Auth: User 1 of group 1 allowed to go to controllers/ApiGenerator/ApiClasses/view_class? [yes]
+2010-06-02 11:17:29 Auth: User 1 of group 1 allowed to go to controllers/ApiGenerator/ApiClasses/view_class? [yes]
+2010-06-02 11:17:49 Auth: User 1 of group 1 allowed to go to controllers/ApiGenerator/ApiClasses/view_class? [yes]
+2010-06-02 11:17:50 Auth: User 1 of group 1 allowed to go to controllers/ApiGenerator/ApiClasses/view_class? [yes]
+2010-06-02 11:27:29 Auth: User 1 of group 1 allowed to go to controllers/AppSettings/setPermissions? [no]
+2010-06-02 11:28:09 Auth: User 1 of group 1 allowed to go to controllers/Users/setPermissions? [no]
+2010-06-02 11:28:34 Auth: User 1 of group 1 allowed to go to controllers/Users/setPermissions? [no]
+2010-06-02 11:30:14 Auth: User 1 of group 1 allowed to go to controllers/Users/index? [no]
+2010-06-02 11:43:32 Auth: User 1 of group 1 allowed to go to controllers/ApiGenerator/ApiClasses/index? [yes]
+2010-06-02 11:43:36 Auth: User 1 of group 1 allowed to go to controllers/ApiGenerator/ApiClasses/view_class? [yes]
+2010-06-02 11:44:23 Auth: User 1 of group 1 allowed to go to controllers/ApiGenerator/ApiClasses/view_class? [yes]
+2010-06-02 11:45:19 Auth: User 1 of group 1 allowed to go to controllers/ApiGenerator/ApiClasses/view_class? [yes]
+2010-06-02 11:45:43 Auth: User 1 of group 1 allowed to go to controllers/ApiGenerator/ApiClasses/view_source? [yes]
+2010-06-02 11:46:51 Auth: User 1 of group 1 allowed to go to controllers/ApiGenerator/ApiClasses/view_class? [yes]
+2010-06-02 11:47:12 Auth: User 1 of group 1 allowed to go to controllers/ApiGenerator/ApiClasses/view_class? [yes]
+2010-06-02 11:48:00 Auth: User 1 of group 1 allowed to go to controllers/ApiGenerator/ApiClasses/view_class? [yes]
+2010-06-02 11:49:00 Auth: User 1 of group 1 allowed to go to controllers/ApiGenerator/ApiClasses/index? [yes]
+2010-06-02 11:49:52 Auth: User 1 of group 1 allowed to go to controllers/AppSettings/index? [yes]
+2010-06-02 11:50:12 Auth: User 1 of group 1 allowed to go to controllers/DebugKit/ToolbarAccess/sql_explain? [yes]
+2010-06-02 11:55:56 Auth: User 1 of group 1 allowed to go to controllers/AppSettings/index? [yes]
+2010-06-02 12:25:19 Auth: User 1 of group 1 allowed to go to controllers/AppSettings/edit? [yes]
+2010-06-02 12:25:20 Auth: User 1 of group 1 allowed to go to controllers/AppSettings/edit? [yes]
+2010-06-02 12:25:22 Auth: User 1 of group 1 allowed to go to controllers/AppSettings/edit? [yes]
+2010-06-02 12:25:24 Auth: User 1 of group 1 allowed to go to controllers/AppSettings/index? [yes]
+2010-06-02 12:26:33 Auth: User 1 of group 1 allowed to go to controllers/Searches/user? [yes]
+2010-06-02 12:26:38 Auth: User 1 of group 1 allowed to go to controllers/Searches/user? [yes]
+2010-06-02 12:26:48 Auth: User 1 of group 1 allowed to go to controllers/Searches/multi_select_session? [yes]
+2010-06-02 12:26:49 Auth: User 1 of group 1 allowed to go to controllers/Reports/export? [yes]
+2010-06-02 12:26:53 Auth: User 1 of group 1 allowed to go to controllers/Reports/export? [yes]
+2010-06-02 12:27:19 Auth: User 1 of group 1 allowed to go to controllers/Alerts/index? [yes]
+2010-06-02 12:27:25 Auth: User 1 of group 1 allowed to go to controllers/Alerts/delete? [yes]
+2010-06-02 12:27:25 Auth: User 1 of group 1 allowed to go to controllers/Alerts/index? [yes]
+2010-06-02 12:27:26 Auth: User 1 of group 1 allowed to go to controllers/Alerts/index? [yes]
+2010-06-02 12:27:28 Auth: User 1 of group 1 allowed to go to controllers/Alerts/delete? [yes]
+2010-06-02 12:27:28 Auth: User 1 of group 1 allowed to go to controllers/Alerts/index? [yes]
+2010-06-02 12:27:29 Auth: User 1 of group 1 allowed to go to controllers/Alerts/index? [yes]
+2010-06-02 12:27:32 Auth: User 1 of group 1 allowed to go to controllers/Alerts/edit? [yes]
+2010-06-02 12:27:38 Auth: User 1 of group 1 allowed to go to controllers/Alerts/edit? [yes]
+2010-06-02 12:27:43 Auth: User 1 of group 1 allowed to go to controllers/Alerts/index? [yes]
+2010-06-02 12:27:47 Auth: User 1 of group 1 allowed to go to controllers/Ministries/index? [yes]
+2010-06-02 12:28:08 Auth: User 1 of group 1 allowed to go to controllers/Dates/calendar? [yes]
+2010-06-02 12:28:10 Auth: User 1 of group 1 allowed to go to controllers/Dates/calendar? [yes]
+2010-06-02 12:28:14 Auth: User 1 of group 1 allowed to go to controllers/Dates/calendar? [yes]
+2010-06-02 12:28:17 Auth: User 1 of group 1 allowed to go to controllers/Dates/calendar? [yes]
+2010-06-02 12:28:19 Auth: User 1 of group 1 allowed to go to controllers/Dates/calendar? [yes]
+2010-06-02 12:28:21 Auth: User 1 of group 1 allowed to go to controllers/Dates/calendar? [yes]
+2010-06-02 12:28:31 Auth: User 1 of group 1 allowed to go to controllers/Dates/calendar? [yes]
+2010-06-02 12:28:32 Auth: User 1 of group 1 allowed to go to controllers/Dates/calendar? [yes]
+2010-06-02 12:28:53 Auth: User 1 of group 1 allowed to go to controllers/Dates/calendar? [yes]
+2010-06-02 12:28:55 Auth: User 1 of group 1 allowed to go to controllers/Dates/calendar? [yes]
+2010-06-02 12:28:59 Auth: User 1 of group 1 allowed to go to controllers/Dates/calendar? [yes]
+2010-06-02 12:29:00 Auth: User 1 of group 1 allowed to go to controllers/Dates/calendar? [yes]
+2010-06-02 12:29:02 Auth: User 1 of group 1 allowed to go to controllers/Dates/calendar? [yes]
+2010-06-02 12:29:02 Auth: User 1 of group 1 allowed to go to controllers/Dates/calendar? [yes]
+2010-06-02 12:29:05 Auth: User 1 of group 1 allowed to go to controllers/Involvements/view? [yes]
+2010-06-02 12:29:25 Auth: User 1 of group 29 allowed to go to controllers/Rosters/add? [yes]
+2010-06-02 12:29:26 Auth: User 1 of group 29 allowed to go to controllers/Rosters/add? [yes]
+2010-06-02 12:32:15 Auth: User 1 of group 29 allowed to go to controllers/Rosters/add? [yes]
+2010-06-02 13:09:22 Auth: User 1 of group 29 allowed to go to controllers/Users/edit_profile? [yes]
+2010-06-02 13:09:24 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 13:09:25 Auth: User 1 of group 29 allowed to go to controllers/UserImages/index? [yes]
+2010-06-02 13:15:57 Auth: User 1 of group 29 allowed to go to controllers/Users/edit_profile? [yes]
+2010-06-02 13:16:00 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 13:16:00 Auth: User 1 of group 29 allowed to go to controllers/UserImages/index? [yes]
+2010-06-02 13:17:19 Auth: User 1 of group 29 allowed to go to controllers/Users/edit_profile? [yes]
+2010-06-02 13:17:22 Auth: User 1 of group 29 allowed to go to controllers/UserImages/index? [yes]
+2010-06-02 13:17:22 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 13:17:31 Auth: User 1 of group 29 allowed to go to controllers/Users/edit_profile? [yes]
+2010-06-02 13:17:33 Auth: User 1 of group 29 allowed to go to controllers/UserImages/index? [yes]
+2010-06-02 13:17:33 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 13:19:46 Auth: User 1 of group 29 allowed to go to controllers/Users/edit_profile? [yes]
+2010-06-02 13:19:48 Auth: User 1 of group 29 allowed to go to controllers/UserImages/index? [yes]
+2010-06-02 13:19:49 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 13:21:51 Auth: User 1 of group 29 allowed to go to controllers/Users/edit_profile? [yes]
+2010-06-02 13:21:53 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 13:21:54 Auth: User 1 of group 29 allowed to go to controllers/UserImages/index? [yes]
+2010-06-02 13:22:00 Auth: User 1 of group 29 allowed to go to controllers/Users/edit_profile? [yes]
+2010-06-02 13:22:03 Auth: User 1 of group 29 allowed to go to controllers/UserImages/index? [yes]
+2010-06-02 13:22:45 Auth: User 1 of group 29 allowed to go to controllers/Users/edit_profile? [yes]
+2010-06-02 13:22:47 Auth: User 1 of group 29 allowed to go to controllers/UserImages/index? [yes]
+2010-06-02 13:22:48 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 13:24:00 Auth: User 1 of group 29 allowed to go to controllers/Users/edit_profile? [yes]
+2010-06-02 13:24:02 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 13:24:03 Auth: User 1 of group 29 allowed to go to controllers/UserImages/index? [yes]
+2010-06-02 13:24:17 Auth: User 1 of group 29 allowed to go to controllers/Users/edit_profile? [yes]
+2010-06-02 13:24:20 Auth: User 1 of group 29 allowed to go to controllers/UserImages/index? [yes]
+2010-06-02 13:24:20 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 13:24:40 Auth: User 1 of group 29 allowed to go to controllers/Users/edit_profile? [yes]
+2010-06-02 13:24:42 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 13:24:42 Auth: User 1 of group 29 allowed to go to controllers/UserImages/index? [yes]
+2010-06-02 13:25:20 Auth: User 1 of group 29 allowed to go to controllers/Users/edit_profile? [yes]
+2010-06-02 13:25:22 Auth: User 1 of group 29 allowed to go to controllers/UserImages/index? [yes]
+2010-06-02 13:25:22 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 13:25:38 Auth: User 1 of group 29 allowed to go to controllers/Users/edit_profile? [yes]
+2010-06-02 13:25:40 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 13:25:40 Auth: User 1 of group 29 allowed to go to controllers/UserImages/index? [yes]
+2010-06-02 13:25:58 Auth: User 1 of group 29 allowed to go to controllers/Users/edit_profile? [yes]
+2010-06-02 13:26:00 Auth: User 1 of group 29 allowed to go to controllers/UserImages/index? [yes]
+2010-06-02 13:26:00 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 13:27:16 Auth: User 1 of group 29 allowed to go to controllers/Users/edit_profile? [yes]
+2010-06-02 13:27:18 Auth: User 1 of group 29 allowed to go to controllers/UserImages/index? [yes]
+2010-06-02 13:27:19 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 13:30:18 Auth: User 1 of group 1 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 13:31:09 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 13:31:17 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 13:32:02 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 13:33:03 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 13:49:54 Auth: User 1 of group 29 allowed to go to controllers/UserImages/view? [yes]
+2010-06-02 14:43:59 Auth: User 1 of group 1 allowed to go to controllers/Notifications/index? [yes]
+2010-06-02 14:44:25 Auth: User 1 of group 1 allowed to go to controllers/Alerts/history? [yes]
+2010-06-02 14:45:39 Auth: User 1 of group 1 allowed to go to controllers/Alerts/history? [yes]
+2010-06-03 10:35:03 Auth: User 1 of group 1 allowed to go to controllers/Searches/index? [yes]
+2010-06-03 10:35:05 Auth: User 1 of group 1 allowed to go to controllers/Searches/user? [yes]
+2010-06-03 10:35:08 Auth: User 1 of group 1 allowed to go to controllers/Searches/user? [yes]
+2010-06-03 10:35:11 Auth: User 1 of group 1 allowed to go to controllers/Searches/multi_select_session? [yes]
+2010-06-03 10:35:11 Auth: User 1 of group 1 allowed to go to controllers/SysEmails/compose? [yes]
+2010-06-03 10:35:12 Auth: User 1 of group 1 allowed to go to controllers/SysEmailDocuments/index? [yes]
+2010-06-03 10:35:34 Auth: User 1 of group 1 allowed to go to controllers/SysEmailDocuments/upload? [yes]
+2010-06-03 10:35:46 Auth: User 1 of group 1 allowed to go to controllers/SysEmailDocuments/upload? [yes]
+2010-06-03 10:36:06 Auth: User 1 of group 1 allowed to go to controllers/SysEmails/compose? [yes]
+2010-06-03 10:36:07 Auth: User 1 of group 1 allowed to go to controllers/SysEmailDocuments/index? [yes]
+2010-06-03 10:36:08 Auth: User 1 of group 1 allowed to go to controllers/SysEmailDocuments/index? [yes]
+2010-06-03 10:40:43 Auth: User 1 of group 1 allowed to go to controllers/SysEmailDocuments/upload? [yes]
+2010-06-03 10:41:14 Auth: User 1 of group 1 allowed to go to controllers/SysEmailDocuments/upload? [yes]
+2010-06-03 10:42:18 Auth: User 1 of group 1 allowed to go to controllers/Searches/index? [yes]
+2010-06-03 10:42:21 Auth: User 1 of group 1 allowed to go to controllers/Searches/user? [yes]
+2010-06-03 10:42:26 Auth: User 1 of group 1 allowed to go to controllers/Searches/user? [yes]
+2010-06-03 10:42:29 Auth: User 1 of group 1 allowed to go to controllers/Searches/multi_select_session? [yes]
+2010-06-03 10:42:30 Auth: User 1 of group 1 allowed to go to controllers/SysEmails/compose? [yes]
+2010-06-03 10:42:31 Auth: User 1 of group 1 allowed to go to controllers/SysEmailDocuments/index? [yes]
+2010-06-03 10:42:40 Auth: User 1 of group 1 allowed to go to controllers/SysEmailDocuments/upload? [yes]
+2010-06-03 10:50:59 Auth: User 1 of group 1 allowed to go to controllers/SysEmails/compose? [yes]
+2010-06-03 10:51:00 Auth: User 1 of group 1 allowed to go to controllers/SysEmailDocuments/index? [yes]
+2010-06-03 10:51:04 Auth: User 1 of group 1 allowed to go to controllers/SysEmailDocuments/upload? [yes]
+2010-06-03 10:51:05 Auth: User 1 of group 1 allowed to go to controllers/SysEmailDocuments/index? [yes]
+2010-06-03 10:51:35 Auth: User 1 of group 1 allowed to go to controllers/SysEmails/compose? [yes]
+2010-06-03 10:51:36 Auth: User 1 of group 1 allowed to go to controllers/SysEmailDocuments/index? [yes]
+2010-06-03 10:51:37 Auth: User 1 of group 1 allowed to go to controllers/SysEmailDocuments/index? [yes]
+2010-06-03 10:52:42 Auth: User 1 of group 1 allowed to go to controllers/SysEmailDocuments/upload? [yes]
+2010-06-03 10:52:43 Auth: User 1 of group 1 allowed to go to controllers/SysEmailDocuments/index? [yes]
+2010-06-03 10:52:46 Auth: User 1 of group 1 allowed to go to controllers/SysEmails/compose? [yes]
+2010-06-03 10:52:47 Auth: User 1 of group 1 allowed to go to controllers/SysEmailDocuments/index? [yes]
+2010-06-03 10:52:47 Auth: User 1 of group 1 allowed to go to controllers/SysEmailDocuments/index? [yes]
+2010-06-03 11:01:45 Auth: User 1 of group 1 allowed to go to controllers/SysEmails/compose? [yes]
+2010-06-03 11:01:46 Auth: User 1 of group 1 allowed to go to controllers/SysEmailDocuments/index? [yes]
+2010-06-03 11:01:49 Auth: User 1 of group 1 allowed to go to controllers/SysEmails/compose? [yes]
+2010-06-03 11:01:50 Auth: User 1 of group 1 allowed to go to controllers/SysEmailDocuments/index? [yes]
+2010-06-03 11:01:51 Auth: User 1 of group 1 allowed to go to controllers/SysEmailDocuments/index? [yes]
+2010-06-03 11:03:43 Auth: User 1 of group 1 allowed to go to controllers/SysEmails/compose? [yes]
+2010-06-03 11:03:44 Auth: User 1 of group 1 allowed to go to controllers/SysEmailDocuments/index? [yes]
+2010-06-03 11:03:51 Auth: User 1 of group 1 allowed to go to controllers/SysEmails/compose? [yes]
+2010-06-03 11:03:52 Auth: User 1 of group 1 allowed to go to controllers/SysEmailDocuments/index? [yes]
+2010-06-03 11:04:46 Auth: User 1 of group 1 allowed to go to controllers/SysEmails/compose? [yes]
+2010-06-03 11:04:47 Auth: User 1 of group 1 allowed to go to controllers/SysEmailDocuments/index? [yes]
+2010-06-03 11:23:34 Auth: User 1 of group 1 allowed to go to controllers/AppSettings/index? [yes]
+2010-06-03 11:54:26 Auth: User 1 of group 1 allowed to go to controllers/Campuses/index? [yes]
+2010-06-03 11:54:27 Auth: User 1 of group 1 allowed to go to controllers/Campuses/index? [yes]
+2010-06-03 11:54:53 Auth: User 1 of group 1 allowed to go to controllers/Campuses/index? [yes]
+2010-06-03 11:54:57 Auth: User 1 of group 1 allowed to go to controllers/Campuses/edit? [yes]
+2010-06-03 11:54:59 Auth: User 1 of group 1 allowed to go to controllers/Campuses/index? [yes]
+2010-06-03 11:55:08 Auth: User 1 of group 1 allowed to go to controllers/Campuses/view? [yes]
+2010-06-03 11:55:11 Auth: User 1 of group 1 allowed to go to controllers/Campuses/index? [yes]
+2010-06-03 12:05:08 Auth: User 1 of group 1 allowed to go to controllers/Campuses/edit? [yes]
+2010-06-03 12:05:22 Auth: User 1 of group 1 allowed to go to controllers/Campuses/index? [yes]
+2010-06-03 12:05:33 Auth: User 1 of group 1 allowed to go to controllers/Campuses/edit? [yes]
+2010-06-03 12:05:47 Auth: User 1 of group 1 allowed to go to controllers/Campuses/index? [yes]
+2010-06-03 12:09:06 Auth: User 1 of group 1 allowed to go to controllers/Campuses/index? [yes]
+2010-06-03 12:09:19 Auth: User 1 of group 1 allowed to go to controllers/Campuses/index? [yes]
+2010-06-03 12:10:05 Auth: User 1 of group 1 allowed to go to controllers/Campuses/index? [yes]
+2010-06-03 12:10:09 Auth: User 1 of group 1 allowed to go to controllers/Campuses/view? [yes]
+2010-06-03 12:10:54 Auth: User 1 of group 1 allowed to go to controllers/Campuses/index? [yes]
+2010-06-03 12:10:56 Auth: User 1 of group 1 allowed to go to controllers/Campuses/view? [yes]
+2010-06-03 12:10:58 Auth: User 1 of group 1 allowed to go to controllers/Campuses/index? [yes]
+2010-06-03 12:11:15 Auth: User 1 of group 1 allowed to go to controllers/Campuses/view? [yes]
+2010-06-03 12:11:17 Auth: User 1 of group 1 allowed to go to controllers/Campuses/index? [yes]
+2010-06-03 12:11:29 Auth: User 1 of group 1 allowed to go to controllers/Campuses/edit? [yes]
+2010-06-03 12:11:30 Auth: User 1 of group 1 allowed to go to controllers/Leaders/index? [yes]
+2010-06-03 12:11:45 Auth: User 1 of group 1 allowed to go to controllers/Campuses/index? [yes]
+2010-06-03 12:11:45 Auth: User 1 of group 1 allowed to go to controllers/Campuses/index? [yes]
+2010-06-03 12:11:48 Auth: User 1 of group 1 allowed to go to controllers/Campuses/edit? [yes]
+2010-06-03 12:11:49 Auth: User 1 of group 1 allowed to go to controllers/Leaders/index? [yes]
+2010-06-03 12:11:50 Auth: User 1 of group 1 allowed to go to controllers/Users/simple_search? [yes]
+2010-06-03 12:11:56 Auth: User 1 of group 1 allowed to go to controllers/Users/simple_search? [yes]
+2010-06-03 12:11:59 Auth: User 1 of group 1 allowed to go to controllers/Leaders/add? [yes]
+2010-06-03 12:11:59 Auth: User 1 of group 1 allowed to go to controllers/Leaders/index? [yes]
+2010-06-03 12:13:16 Auth: User 1 of group 10 allowed to go to controllers/Campuses/edit? [yes]
+2010-06-03 12:13:18 Auth: User 1 of group 10 allowed to go to controllers/Leaders/index? [no]
+2010-06-03 12:13:18 Auth: User 1 of group 10 allowed to go to controllers/Campuses/edit? [yes]
+2010-06-03 12:13:22 Auth: User 1 of group 10 allowed to go to controllers/Campuses/edit? [yes]
+2010-06-03 12:13:23 Auth: User 1 of group 10 allowed to go to controllers/Leaders/index? [no]
+2010-06-03 12:13:23 Auth: User 1 of group 10 allowed to go to controllers/Campuses/edit? [yes]
+2010-06-03 12:14:21 Auth: User 1 of group 1 allowed to go to controllers/Campuses/index? [yes]
+2010-06-03 12:14:25 Auth: User 1 of group 1 allowed to go to controllers/Campuses/view? [yes]
+2010-06-03 12:14:27 Auth: User 1 of group 1 allowed to go to controllers/Campuses/index? [yes]
+2010-06-03 12:14:29 Auth: User 1 of group 1 allowed to go to controllers/Campuses/edit? [yes]
+2010-06-03 12:14:30 Auth: User 1 of group 1 allowed to go to controllers/Leaders/index? [yes]
+2010-06-03 12:14:55 Auth: User 1 of group 1 allowed to go to controllers/Campuses/index? [yes]
+2010-06-03 12:15:00 Auth: User 1 of group 10 allowed to go to controllers/Campuses/edit? [yes]
+2010-06-03 12:15:01 Auth: User 1 of group 10 allowed to go to controllers/Leaders/index? [no]
+2010-06-03 12:15:01 Auth: User 1 of group 10 allowed to go to controllers/Campuses/edit? [yes]
+2010-06-03 12:30:33 Auth: User 1 of group 10 allowed to go to controllers/Campuses/edit? [yes]
+2010-06-03 12:30:35 Auth: User 1 of group 10 allowed to go to controllers/Leaders/index? [no]
+2010-06-03 12:30:35 Auth: User 1 of group 10 allowed to go to controllers/Campuses/edit? [yes]
+2010-06-03 12:31:12 Auth: User 1 of group 10 allowed to go to controllers/Campuses/edit? [yes]
+2010-06-03 12:31:14 Auth: User 1 of group 10 allowed to go to controllers/CampusLeaders/index? [no]
+2010-06-03 12:31:14 Auth: User 1 of group 10 allowed to go to controllers/Campuses/edit? [yes]
+2010-06-03 12:33:50 Auth: User 1 of group 1 allowed to go to controllers/Campuses/edit? [yes]
+2010-06-03 12:33:51 Auth: User 1 of group 1 allowed to go to controllers/CampusLeaders/index? [yes]
+2010-06-03 12:35:42 Auth: yes
+2010-06-03 12:35:43 Auth: yes
+2010-06-03 12:35:44 Auth: yes
+2010-06-03 12:35:46 Auth: yes
+2010-06-03 12:35:46 Auth: yes
+2010-06-03 12:35:47 Auth: yes
+2010-06-03 12:35:47 Auth: yes
+2010-06-03 12:35:47 Auth: yes
+2010-06-03 12:35:48 Auth: yes
+2010-06-03 14:27:44 Auth: yes
+2010-06-03 14:27:44 Auth: yes
+2010-06-03 14:27:46 Auth: yes
+2010-06-03 14:27:48 Auth: yes
+2010-06-03 14:27:50 Auth: yes
+2010-06-03 14:27:50 Auth: yes
+2010-06-03 14:28:00 Auth: yes
+2010-06-03 14:28:00 Auth: yes
+2010-06-03 14:29:37 Auth: yes
+2010-06-03 14:29:37 Auth: yes
+2010-06-03 14:29:37 Auth: yes
+2010-06-03 14:29:37 Auth: yes
+2010-06-03 14:29:37 Auth: yes
+2010-06-03 14:29:38 Auth: yes
+2010-06-03 14:35:58 Auth: yes
+2010-06-03 14:35:58 Auth: yes
+2010-06-03 14:35:59 Auth: yes
+2010-06-03 14:36:03 Auth: yes
+2010-06-03 14:36:03 Auth: yes
+2010-06-03 14:36:03 Auth: yes
+2010-06-03 14:36:03 Auth: yes
+2010-06-03 14:36:03 Auth: yes
+2010-06-03 14:36:04 Auth: yes
+2010-06-03 14:36:10 Auth: yes
+2010-06-03 14:36:10 Auth: yes
+2010-06-03 14:36:11 Auth: yes
+2010-06-03 14:36:21 Auth: yes
+2010-06-03 14:36:33 Auth: yes
+2010-06-03 14:38:14 Auth: yes
+2010-06-03 14:38:22 Auth: yes
+2010-06-03 14:38:22 Auth: yes
+2010-06-03 14:38:28 Auth: yes
+2010-06-03 14:38:37 Auth: yes
+2010-06-03 14:38:38 Auth: yes
+2010-06-03 14:38:39 Auth: yes
+2010-06-03 14:38:39 Auth: yes
+2010-06-03 14:38:52 Auth: yes
+2010-06-03 14:38:54 Auth: yes
+2010-06-03 14:38:55 Auth: yes
+2010-06-03 14:38:58 Auth: yes
+2010-06-03 14:38:59 Auth: yes
+2010-06-03 14:38:59 Auth: yes
+2010-06-03 14:38:59 Auth: yes
+2010-06-03 14:38:59 Auth: yes
+2010-06-03 14:38:59 Auth: yes
+2010-06-03 14:40:29 Auth: yes
+2010-06-03 14:40:31 Auth: yes
+2010-06-03 14:40:31 Auth: yes
+2010-06-03 14:40:32 Auth: yes
+2010-06-03 14:40:32 Auth: yes
+2010-06-03 14:41:24 Auth: yes
+2010-06-03 14:41:24 Auth: yes
+2010-06-03 14:42:07 Auth: yes
+2010-06-03 14:42:09 Auth: yes
+2010-06-03 14:42:14 Auth: yes
+2010-06-03 14:42:16 Auth: yes
+2010-06-03 14:42:19 Auth: yes
+2010-06-03 14:42:21 Auth: yes
+2010-06-03 14:42:41 Auth: yes
+2010-06-03 14:43:37 Auth: yes
+2010-06-03 14:43:41 Auth: yes
+2010-06-03 14:43:58 Auth: yes
+2010-06-03 14:44:06 Auth: yes
+2010-06-03 14:44:53 Auth: yes
+2010-06-03 14:44:59 Auth: yes
+2010-06-03 14:45:03 Auth: yes
+2010-06-03 14:45:25 Auth: yes
+2010-06-03 14:45:25 Auth: yes
+2010-06-03 14:45:25 Auth: yes
+2010-06-03 14:45:31 Auth: yes
+2010-06-03 14:45:33 Auth: yes
+2010-06-03 14:45:34 Auth: yes
+2010-06-03 14:45:40 Auth: yes
+2010-06-03 14:47:12 Auth: yes
+2010-06-03 14:47:12 Auth: yes
+2010-06-03 14:50:05 Auth: yes
+2010-06-03 14:50:10 Auth: yes
+2010-06-03 14:50:11 Auth: yes
+2010-06-03 14:50:18 Auth: yes
+2010-06-03 14:50:18 Auth: yes
+2010-06-03 14:50:21 Auth: yes
+2010-06-03 14:50:23 Auth: yes
+2010-06-03 14:50:23 Auth: yes
+2010-06-03 14:50:24 Auth: yes
+2010-06-03 15:08:16 Auth: yes
+2010-06-03 15:08:20 Auth: yes
+2010-06-03 15:08:25 Auth: yes
+2010-06-03 15:12:37 Auth: yes
+2010-06-03 15:13:01 Auth: yes
+2010-06-03 15:13:40 Auth: yes
+2010-06-03 15:13:45 Auth: yes
+2010-06-03 15:13:46 Auth: yes
+2010-06-03 15:13:47 Auth: yes
+2010-06-03 15:13:57 Auth: yes
+2010-06-03 15:13:58 Auth: yes
+2010-06-04 07:47:29 Auth: yes
+2010-06-04 07:47:34 Auth: yes
+2010-06-04 07:47:36 Auth: yes
+2010-06-04 07:47:37 Auth: yes
+2010-06-04 07:47:38 Auth: yes
+2010-06-04 07:47:38 Auth: yes
+2010-06-04 07:47:39 Auth: yes
+2010-06-04 07:47:44 Auth: yes
+2010-06-04 07:47:51 Auth: yes
+2010-06-04 07:47:56 Auth: yes
+2010-06-04 07:47:58 Auth: yes
+2010-06-04 07:47:59 Auth: yes
+2010-06-04 07:47:59 Auth: yes
+2010-06-04 07:56:44 Auth: yes
+2010-06-04 07:58:16 Auth: yes
+2010-06-04 08:07:46 Auth: yes
+2010-06-04 08:07:49 Auth: yes
+2010-06-04 08:07:51 Auth: yes
+2010-06-04 08:07:57 Auth: yes
+2010-06-04 08:07:58 Auth: yes
+2010-06-04 08:08:01 Auth: yes
+2010-06-04 08:08:05 Auth: yes
+2010-06-04 08:08:05 Auth: yes
+2010-06-04 08:08:06 Auth: yes
+2010-06-04 08:08:10 Auth: yes
+2010-06-04 08:08:10 Auth: yes
+2010-06-04 08:08:10 Auth: yes
+2010-06-04 08:08:10 Auth: yes
+2010-06-04 08:08:10 Auth: yes
+2010-06-04 08:08:11 Auth: yes
+2010-06-04 08:10:40 Auth: yes
+2010-06-04 08:10:48 Auth: yes
+2010-06-04 08:10:54 Auth: yes
+2010-06-04 08:11:01 Auth: yes
+2010-06-04 08:11:40 Auth: yes
+2010-06-04 09:27:03 Auth: yes
+2010-06-04 09:27:03 Auth: yes
+2010-06-04 09:27:04 Auth: yes
+2010-06-04 09:27:08 Auth: yes
+2010-06-04 09:27:08 Auth: yes
+2010-06-04 09:27:08 Auth: yes
+2010-06-04 09:27:09 Auth: yes
+2010-06-04 09:27:09 Auth: yes
+2010-06-04 09:27:09 Auth: yes
+2010-06-04 09:27:35 Auth: yes
+2010-06-04 09:27:35 Auth: yes
+2010-06-04 09:27:36 Auth: yes
+2010-06-04 09:27:39 Auth: yes
+2010-06-04 09:27:39 Auth: yes
+2010-06-04 09:27:39 Auth: yes
+2010-06-04 09:27:40 Auth: yes
+2010-06-04 09:27:40 Auth: yes
+2010-06-04 09:27:41 Auth: yes
+2010-06-04 09:28:24 Auth: yes
+2010-06-04 09:28:24 Auth: yes
+2010-06-04 09:28:24 Auth: yes
+2010-06-04 09:28:24 Auth: yes
+2010-06-04 09:28:25 Auth: yes
+2010-06-04 09:47:10 Auth: yes
+2010-06-04 10:02:36 Auth: yes
+2010-06-04 10:02:39 Auth: yes
+2010-06-04 10:02:41 Auth: yes
+2010-06-04 10:02:44 Auth: yes
+2010-06-04 10:02:49 Auth: yes
+2010-06-04 10:02:49 Auth: yes
+2010-06-04 10:02:50 Auth: yes
+2010-06-04 10:02:54 Auth: yes
+2010-06-04 10:03:09 Auth: yes
+2010-06-04 10:03:09 Auth: yes
+2010-06-04 10:03:09 Auth: yes
+2010-06-04 10:03:09 Auth: yes
+2010-06-04 10:03:10 Auth: yes
+2010-06-04 10:03:10 Auth: yes
+2010-06-04 10:03:54 Auth: yes
+2010-06-04 10:03:54 Auth: yes
+2010-06-04 10:03:55 Auth: yes
+2010-06-04 10:03:55 Auth: yes
+2010-06-04 10:05:42 Auth: yes
+2010-06-04 10:06:43 Auth: yes
+2010-06-04 10:06:45 Auth: yes
+2010-06-04 10:06:47 Auth: yes
+2010-06-04 10:06:50 Auth: yes
+2010-06-04 10:06:51 Auth: yes
+2010-06-04 10:06:54 Auth: yes
+2010-06-04 10:06:58 Auth: yes
+2010-06-04 10:08:59 Auth: yes
+2010-06-04 10:08:59 Auth: yes
+2010-06-04 10:09:00 Auth: yes
+2010-06-04 10:09:03 Auth: yes
+2010-06-04 10:09:04 Auth: yes
+2010-06-04 10:09:04 Auth: yes
+2010-06-04 10:09:05 Auth: yes
+2010-06-04 10:09:09 Auth: yes
+2010-06-04 10:10:07 Auth: yes
+2010-06-04 10:10:09 Auth: yes
+2010-06-04 10:10:12 Auth: yes
+2010-06-04 10:10:15 Auth: yes
+2010-06-04 10:10:19 Auth: yes
+2010-06-04 10:10:26 Auth: yes
+2010-06-04 10:10:26 Auth: yes
+2010-06-04 10:10:26 Auth: yes
+2010-06-04 10:10:27 Auth: yes
+2010-06-04 10:10:27 Auth: yes
+2010-06-04 10:10:27 Auth: yes
+2010-06-04 10:10:40 Auth: yes
+2010-06-04 10:10:40 Auth: yes
+2010-06-04 10:10:40 Auth: yes
+2010-06-04 10:10:41 Auth: yes
+2010-06-04 10:10:41 Auth: yes
+2010-06-04 10:10:43 Auth: yes
+2010-06-04 10:10:44 Auth: yes
+2010-06-04 10:10:53 Auth: yes
+2010-06-04 10:10:54 Auth: yes
+2010-06-04 10:10:55 Auth: yes
+2010-06-04 10:11:06 Auth: yes
+2010-06-04 10:11:06 Auth: yes
+2010-06-04 10:11:07 Auth: yes
+2010-06-04 10:11:08 Auth: yes
+2010-06-04 10:11:30 Auth: yes
+2010-06-04 10:11:32 Auth: yes
+2010-06-04 10:11:34 Auth: yes
+2010-06-04 10:11:35 Auth: yes
+2010-06-04 10:11:38 Auth: yes
+2010-06-04 10:13:00 Auth: yes
+2010-06-04 10:13:01 Auth: yes
+2010-06-04 10:13:06 Auth: yes
+2010-06-04 10:13:07 Auth: yes
+2010-06-04 10:13:10 Auth: yes
+2010-06-04 10:13:35 Auth: yes
+2010-06-04 10:13:37 Auth: yes
+2010-06-04 10:13:39 Auth: yes
+2010-06-04 10:13:41 Auth: yes
+2010-06-04 10:13:47 Auth: yes
+2010-06-04 10:13:54 Auth: yes
+2010-06-04 10:13:56 Auth: yes
+2010-06-04 10:14:00 Auth: yes
+2010-06-04 10:14:00 Auth: yes
+2010-06-04 10:14:02 Auth: yes
+2010-06-04 10:14:08 Auth: yes
+2010-06-04 10:14:32 Auth: yes
+2010-06-04 10:14:35 Auth: yes
+2010-06-04 10:14:40 Auth: yes
+2010-06-04 10:14:41 Auth: yes
+2010-06-04 10:14:49 Auth: yes
+2010-06-04 10:14:49 Auth: yes
+2010-06-04 10:14:51 Auth: yes
+2010-06-04 10:14:51 Auth: yes
+2010-06-04 10:14:51 Auth: yes
+2010-06-04 10:14:52 Auth: yes
+2010-06-04 10:14:56 Auth: yes
+2010-06-04 10:16:15 Auth: yes
+2010-06-04 10:16:15 Auth: yes
+2010-06-04 10:16:17 Auth: yes
+2010-06-04 10:16:17 Auth: yes
+2010-06-04 10:16:17 Auth: yes
+2010-06-04 10:16:17 Auth: yes
+2010-06-04 10:16:46 Auth: yes
+2010-06-04 10:16:46 Auth: yes
+2010-06-04 10:16:48 Auth: yes
+2010-06-04 10:16:48 Auth: yes
+2010-06-04 10:16:48 Auth: yes
+2010-06-04 10:16:49 Auth: yes
+2010-06-04 10:16:51 Auth: yes
+2010-06-04 10:16:53 Auth: yes
+2010-06-04 10:16:56 Auth: yes
+2010-06-04 10:16:56 Auth: yes
+2010-06-04 10:17:00 Auth: yes
+2010-06-04 10:17:03 Auth: yes
+2010-06-04 10:18:55 Auth: yes
+2010-06-04 10:18:55 Auth: yes
+2010-06-04 10:18:57 Auth: yes
+2010-06-04 10:18:57 Auth: yes
+2010-06-04 10:18:57 Auth: yes
+2010-06-04 10:18:57 Auth: yes
+2010-06-04 10:19:00 Auth: yes
+2010-06-04 10:19:00 Auth: yes
+2010-06-04 10:19:00 Auth: yes
+2010-06-04 10:19:01 Auth: yes
+2010-06-04 10:19:01 Auth: yes
+2010-06-04 10:19:02 Auth: yes
+2010-06-04 10:19:02 Auth: yes
+2010-06-04 10:19:02 Auth: yes
+2010-06-04 10:19:02 Auth: yes
+2010-06-04 10:19:05 Auth: yes
+2010-06-04 10:19:26 Auth: yes
+2010-06-04 10:19:26 Auth: yes
+2010-06-04 10:19:27 Auth: yes
+2010-06-04 10:19:27 Auth: yes
+2010-06-04 10:19:27 Auth: yes
+2010-06-04 10:19:27 Auth: yes
+2010-06-04 10:19:28 Auth: yes
+2010-06-04 10:19:37 Auth: yes
+2010-06-04 10:19:41 Auth: yes
+2010-06-04 10:19:41 Auth: yes
+2010-06-04 10:20:02 Auth: yes
+2010-06-04 10:20:05 Auth: yes
+2010-06-04 10:20:06 Auth: yes
+2010-06-04 10:20:06 Auth: yes
+2010-06-04 10:20:09 Auth: yes
+2010-06-04 10:20:20 Auth: yes
+2010-06-04 10:20:22 Auth: yes
+2010-06-04 10:20:25 Auth: yes
+2010-06-04 10:20:25 Auth: yes
+2010-06-04 10:20:25 Auth: yes
+2010-06-04 10:20:34 Auth: yes
+2010-06-04 10:20:38 Auth: yes
+2010-06-04 10:21:32 Auth: yes
+2010-06-04 10:21:33 Auth: yes
+2010-06-04 10:21:33 Auth: yes
+2010-06-04 10:21:33 Auth: yes
+2010-06-04 10:21:33 Auth: yes
+2010-06-04 10:21:35 Auth: yes
+2010-06-04 10:21:35 Auth: yes
+2010-06-04 10:21:36 Auth: yes
+2010-06-04 10:21:36 Auth: yes
+2010-06-04 10:21:38 Auth: yes
+2010-06-04 10:21:39 Auth: yes
+2010-06-04 10:21:42 Auth: yes
+2010-06-04 10:21:42 Auth: yes
+2010-06-04 10:21:42 Auth: yes
+2010-06-04 10:21:45 Auth: yes
+2010-06-04 10:22:19 Auth: yes
+2010-06-04 10:22:19 Auth: yes
+2010-06-04 10:22:21 Auth: yes
+2010-06-04 10:22:21 Auth: yes
+2010-06-04 10:22:21 Auth: yes
+2010-06-04 10:22:22 Auth: yes
+2010-06-04 10:22:25 Auth: yes
+2010-06-04 10:22:25 Auth: yes
+2010-06-04 10:22:25 Auth: yes
+2010-06-04 10:22:26 Auth: yes
+2010-06-04 10:22:26 Auth: yes
+2010-06-04 10:22:27 Auth: yes
+2010-06-04 10:22:27 Auth: yes
+2010-06-04 10:22:27 Auth: yes
+2010-06-04 10:22:27 Auth: yes
+2010-06-04 10:23:47 Auth: yes
+2010-06-04 10:23:48 Auth: yes
+2010-06-04 10:23:48 Auth: yes
+2010-06-04 10:23:50 Auth: yes
+2010-06-04 10:23:50 Auth: yes
+2010-06-04 10:23:50 Auth: yes
+2010-06-04 10:23:50 Auth: yes
+2010-06-04 10:23:52 Auth: yes
+2010-06-04 10:23:53 Auth: yes
+2010-06-04 10:23:56 Auth: yes
+2010-06-04 10:23:56 Auth: yes
+2010-06-04 10:23:56 Auth: yes
+2010-06-04 10:23:58 Auth: yes
+2010-06-04 10:24:32 Auth: yes
+2010-06-04 10:24:36 Auth: yes
+2010-06-04 10:24:40 Auth: yes
+2010-06-04 10:24:41 Auth: yes
+2010-06-04 10:24:44 Auth: yes
+2010-06-04 10:24:46 Auth: yes
+2010-06-04 10:24:49 Auth: yes
+2010-06-04 10:24:49 Auth: yes
+2010-06-04 10:24:51 Auth: yes
+2010-06-04 10:24:55 Auth: yes
+2010-06-04 10:25:02 Auth: yes
+2010-06-04 10:25:06 Auth: yes
+2010-06-04 10:25:07 Auth: yes
+2010-06-04 10:25:08 Auth: yes
+2010-06-04 10:25:08 Auth: yes
+2010-06-04 10:25:08 Auth: yes
+2010-06-04 10:25:09 Auth: yes
+2010-06-04 10:25:12 Auth: yes
+2010-06-04 10:25:12 Auth: yes
+2010-06-04 10:25:12 Auth: yes
+2010-06-04 10:25:13 Auth: yes
+2010-06-04 10:25:13 Auth: yes
+2010-06-04 10:25:14 Auth: yes
+2010-06-04 10:25:14 Auth: yes
+2010-06-04 10:25:14 Auth: yes
+2010-06-04 10:25:14 Auth: yes
+2010-06-04 10:25:15 Auth: yes
+2010-06-04 10:25:23 Auth: yes
+2010-06-04 10:25:25 Auth: yes
+2010-06-04 10:25:28 Auth: yes
+2010-06-04 10:25:28 Auth: yes
+2010-06-04 10:25:28 Auth: yes
+2010-06-04 10:25:30 Auth: yes
+2010-06-04 10:25:32 Auth: yes
+2010-06-04 10:29:55 Auth: yes
+2010-06-04 10:29:57 Auth: yes
+2010-06-04 10:29:59 Auth: yes
+2010-06-04 10:31:10 Auth: yes
+2010-06-04 10:31:13 Auth: yes
+2010-06-04 10:32:04 Auth: yes
+2010-06-04 10:32:04 Auth: yes
+2010-06-04 10:32:05 Auth: yes
+2010-06-04 10:32:05 Auth: yes
+2010-06-04 10:32:05 Auth: yes
+2010-06-04 10:32:06 Auth: yes
+2010-06-04 10:32:30 Auth: yes
+2010-06-04 10:32:39 Auth: yes
+2010-06-04 10:32:39 Auth: yes
+2010-06-04 10:32:41 Auth: yes
+2010-06-04 10:32:44 Auth: yes
+2010-06-04 10:32:44 Auth: yes
+2010-06-04 10:32:44 Auth: yes
+2010-06-04 10:32:45 Auth: yes
+2010-06-04 10:32:45 Auth: yes
+2010-06-04 10:32:46 Auth: yes
+2010-06-04 10:32:46 Auth: yes
+2010-06-04 10:33:02 Auth: yes
+2010-06-04 10:34:46 Auth: yes
+2010-06-04 10:34:47 Auth: yes
+2010-06-04 10:34:51 Auth: yes
+2010-06-04 10:34:52 Auth: yes
+2010-06-04 10:34:57 Auth: yes
+2010-06-04 10:34:59 Auth: yes
+2010-06-04 10:35:01 Auth: yes
+2010-06-04 10:35:02 Auth: yes
+2010-06-04 10:35:34 Auth: yes
+2010-06-04 10:35:35 Auth: yes
+2010-06-04 10:38:18 Auth: yes
+2010-06-04 10:38:50 Auth: yes
+2010-06-04 10:38:53 Auth: yes
+2010-06-04 10:38:56 Auth: yes
+2010-06-04 10:44:24 Auth: yes
+2010-06-04 10:48:01 Auth: yes
+2010-06-04 10:48:18 Auth: yes
+2010-06-04 10:48:45 Auth: yes
+2010-06-04 10:49:28 Auth: yes
+2010-06-04 14:22:28 Auth: yes
+2010-06-04 14:22:32 Auth: yes
+2010-06-04 14:22:36 Auth: yes
+2010-06-04 14:22:48 Auth: yes
+2010-06-04 14:22:51 Auth: yes
+2010-06-04 14:22:51 Auth: yes
+2010-06-04 14:32:00 Auth: yes
+2010-06-04 14:32:23 Auth: yes
+2010-06-04 14:32:35 Auth: yes
+2010-06-04 14:33:23 Auth: yes
+2010-06-04 14:33:24 Auth: yes
+2010-06-04 14:34:06 Auth: yes
+2010-06-04 14:34:13 Auth: yes
+2010-06-04 14:34:15 Auth: yes
+2010-06-04 14:34:36 Auth: yes
+2010-06-04 14:34:38 Auth: yes
+2010-06-04 14:35:32 Auth: yes
+2010-06-04 14:35:34 Auth: yes
+2010-06-04 14:36:27 Auth: yes
+2010-06-04 14:36:28 Auth: yes
+2010-06-04 14:36:49 Auth: yes
+2010-06-04 14:36:51 Auth: yes
+2010-06-04 14:37:25 Auth: yes
+2010-06-04 14:37:26 Auth: yes
+2010-06-04 14:37:42 Auth: yes
+2010-06-04 14:37:43 Auth: yes
+2010-06-04 14:39:56 Auth: yes
+2010-06-04 14:46:26 Auth: yes
+2010-06-04 14:46:34 Auth: yes
+2010-06-04 14:46:47 Auth: yes
+2010-06-04 14:46:52 Auth: yes
+2010-06-04 14:47:27 Auth: yes
+2010-06-04 14:48:06 Auth: yes
+2010-06-04 14:49:27 Auth: yes
+2010-06-04 14:50:24 Auth: yes
+2010-06-04 14:52:10 Auth: yes
+2010-06-04 14:52:18 Auth: yes
+2010-06-04 14:52:58 Auth: yes
+2010-06-04 14:53:57 Auth: yes
+2010-06-04 14:54:06 Auth: yes
+2010-06-04 14:55:06 Auth: yes
+2010-06-04 14:55:45 Auth: yes
+2010-06-04 14:56:04 Auth: yes
+2010-06-04 14:57:23 Auth: yes
+2010-06-04 14:57:43 Auth: yes
+2010-06-04 14:57:49 Auth: yes
+2010-06-04 14:58:59 Auth: yes
+2010-06-04 14:59:05 Auth: yes
+2010-06-04 14:59:24 Auth: yes
+2010-06-04 15:00:06 Auth: yes
+2010-06-04 15:00:13 Auth: yes
+2010-06-04 15:00:45 Auth: yes
+2010-06-04 15:01:06 Auth: yes
+2010-06-04 15:01:08 Auth: yes
+2010-06-04 15:01:35 Auth: yes
+2010-06-04 15:02:13 Auth: yes
+2010-06-07 07:15:01 Auth: yes
+2010-06-07 07:15:08 Auth: yes
+2010-06-07 07:15:10 Auth: yes
+2010-06-07 07:15:16 Auth: yes
+2010-06-07 07:15:57 Auth: yes
+2010-06-07 07:20:39 Auth: yes
+2010-06-07 07:20:56 Auth: yes
+2010-06-07 07:21:10 Auth: yes
+2010-06-07 07:21:42 Auth: yes
+2010-06-07 07:21:55 Auth: yes
+2010-06-07 07:22:14 Auth: yes
+2010-06-07 07:22:36 Auth: yes
+2010-06-07 07:23:31 Auth: yes
+2010-06-07 07:24:46 Auth: yes
+2010-06-07 07:32:13 Auth: yes
+2010-06-07 07:43:16 Auth: yes
+2010-06-07 07:46:40 Auth: yes
+2010-06-07 07:46:59 Auth: yes
+2010-06-07 07:47:42 Auth: yes
+2010-06-07 07:48:17 Auth: yes
+2010-06-07 07:48:57 Auth: yes
+2010-06-07 07:49:21 Auth: yes
+2010-06-07 07:50:03 Auth: yes
+2010-06-07 07:51:26 Auth: yes
+2010-06-07 07:52:43 Auth: yes
+2010-06-07 07:52:51 Auth: yes
+2010-06-07 07:55:18 Auth: yes
+2010-06-07 07:56:01 Auth: yes
+2010-06-07 07:56:10 Auth: yes
+2010-06-07 07:56:28 Auth: yes
+2010-06-07 07:57:28 Auth: yes
+2010-06-07 07:57:44 Auth: yes
+2010-06-07 07:58:27 Auth: yes
+2010-06-07 07:58:33 Auth: yes
+2010-06-07 07:58:42 Auth: yes
+2010-06-07 07:59:22 Auth: yes
+2010-06-07 07:59:56 Auth: yes
+2010-06-07 08:01:10 Auth: yes
+2010-06-07 08:01:33 Auth: yes
+2010-06-07 08:01:42 Auth: yes
+2010-06-07 08:07:43 Auth: yes
+2010-06-07 08:08:14 Auth: yes
+2010-06-07 08:11:28 Auth: yes
+2010-06-07 08:11:52 Auth: yes
+2010-06-07 08:11:58 Auth: yes
+2010-06-07 08:12:13 Auth: yes
+2010-06-07 08:16:25 Auth: yes
+2010-06-07 08:16:44 Auth: yes
+2010-06-07 08:17:03 Auth: yes
+2010-06-07 08:20:13 Auth: yes
+2010-06-07 08:20:34 Auth: yes
+2010-06-07 08:20:42 Auth: yes
+2010-06-07 08:21:21 Auth: yes
+2010-06-07 08:21:26 Auth: yes
+2010-06-07 08:21:52 Auth: yes
+2010-06-07 08:22:01 Auth: yes
+2010-06-07 08:22:11 Auth: yes
+2010-06-07 08:22:55 Auth: yes
+2010-06-07 08:23:00 Auth: yes
+2010-06-07 08:23:11 Auth: yes
+2010-06-07 08:25:16 Auth: yes
+2010-06-07 08:25:38 Auth: yes
+2010-06-07 08:25:50 Auth: yes
+2010-06-07 08:27:52 Auth: yes
+2010-06-07 08:28:17 Auth: yes
+2010-06-07 08:29:12 Auth: yes
+2010-06-07 08:30:13 Auth: yes
+2010-06-07 08:32:50 Auth: yes
+2010-06-07 08:33:19 Auth: yes
+2010-06-07 08:33:38 Auth: yes
+2010-06-07 08:33:41 Auth: yes
+2010-06-07 08:34:34 Auth: yes
+2010-06-07 08:34:36 Auth: yes
+2010-06-07 08:34:37 Auth: yes
+2010-06-07 08:34:38 Auth: yes
+2010-06-07 08:34:38 Auth: yes
+2010-06-07 08:34:38 Auth: yes
+2010-06-07 08:34:43 Auth: yes
+2010-06-07 08:34:44 Auth: yes
+2010-06-07 08:34:48 Auth: yes
+2010-06-07 08:34:48 Auth: yes
+2010-06-07 08:35:29 Auth: yes
+2010-06-07 08:35:29 Auth: yes
+2010-06-07 08:35:32 Auth: yes
+2010-06-07 08:37:12 Auth: yes
+2010-06-07 08:38:45 Auth: yes
+2010-06-07 08:38:53 Auth: yes
+2010-06-07 08:39:02 Auth: yes
+2010-06-07 08:40:09 Auth: yes
+2010-06-07 08:40:18 Auth: yes
+2010-06-07 08:40:31 Auth: yes
+2010-06-07 08:40:55 Auth: yes
+2010-06-07 08:41:10 Auth: yes
+2010-06-07 08:41:16 Auth: yes
+2010-06-07 08:44:23 Auth: yes
+2010-06-07 09:04:22 Auth: yes
+2010-06-07 09:04:30 Auth: yes
+2010-06-07 09:04:34 Auth: yes
+2010-06-07 09:04:37 Auth: yes
+2010-06-07 09:08:13 Auth: yes
+2010-06-07 09:08:41 Auth: yes
+2010-06-07 09:08:44 Auth: yes
+2010-06-07 09:09:09 Auth: yes
+2010-06-07 09:10:02 Auth: yes
+2010-06-07 09:11:10 Auth: yes
+2010-06-07 09:11:45 Auth: yes
+2010-06-07 09:12:23 Auth: yes
+2010-06-07 09:13:15 Auth: yes
+2010-06-07 09:13:54 Auth: yes
+2010-06-07 09:13:56 Auth: yes
+2010-06-07 09:14:02 Auth: yes
+2010-06-07 09:14:05 Auth: yes
+2010-06-07 09:14:09 Auth: yes
+2010-06-07 09:14:12 Auth: yes
+2010-06-07 09:14:14 Auth: yes
+2010-06-07 09:14:28 Auth: yes
+2010-06-07 09:14:30 Auth: yes
+2010-06-07 09:14:33 Auth: yes
+2010-06-07 09:14:43 Auth: yes
+2010-06-07 09:14:46 Auth: yes
+2010-06-07 09:15:15 Auth: yes
+2010-06-07 09:20:53 Auth: yes
+2010-06-07 09:20:55 Auth: yes
+2010-06-07 09:21:09 Auth: yes
+2010-06-07 09:44:15 Auth: yes
+2010-06-07 09:44:19 Auth: yes
+2010-06-07 09:44:22 Auth: yes
+2010-06-07 09:56:11 Auth: yes
+2010-06-07 09:56:14 Auth: yes
+2010-06-07 09:56:22 Auth: yes
+2010-06-07 10:10:20 Auth: yes
+2010-06-07 10:10:51 Auth: yes
+2010-06-07 10:26:15 Auth: yes
+2010-06-07 10:28:59 Auth: yes
+2010-06-07 10:29:01 Auth: yes
+2010-06-07 10:33:58 Auth: yes
+2010-06-07 10:34:04 Auth: yes
+2010-06-07 10:34:07 Auth: yes
+2010-06-07 10:34:25 Auth: yes
+2010-06-07 10:34:27 Auth: yes
+2010-06-07 10:38:28 Auth: yes
+2010-06-07 10:38:31 Auth: yes
+2010-06-07 10:38:34 Auth: yes
+2010-06-07 10:38:49 Auth: yes
+2010-06-07 10:39:10 Auth: yes
+2010-06-07 10:39:24 Auth: yes
+2010-06-07 10:40:04 Auth: yes
+2010-06-07 10:52:04 Auth: yes
+2010-06-07 10:52:39 Auth: yes
+2010-06-07 10:53:01 Auth: yes
+2010-06-07 10:53:34 Auth: yes
+2010-06-07 10:55:20 Auth: yes
+2010-06-07 10:55:55 Auth: yes
+2010-06-07 10:57:19 Auth: yes
+2010-06-07 11:04:23 Auth: yes
+2010-06-07 11:05:17 Auth: yes
+2010-06-07 11:06:17 Auth: yes
+2010-06-07 11:08:32 Auth: yes
+2010-06-07 11:08:57 Auth: yes
+2010-06-07 11:14:59 Auth: yes
+2010-06-07 11:15:15 Auth: yes
+2010-06-07 11:15:18 Auth: yes
+2010-06-07 11:15:20 Auth: yes

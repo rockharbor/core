@@ -1,0 +1,1 @@
+<?php echo $name; ?> is now <?php echo $type; ?> the <?php echo strtolower($itemType); ?> <?php echo $itemName; ?>.

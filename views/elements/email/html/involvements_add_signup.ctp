@@ -1,0 +1,2 @@
+<h1><?php echo $involvement['Involvement']['name']; ?> Sign Up</h1>
+<p>You have signed up for the <?php echo $involvement['InvolvementType']['name']; ?> <?php echo $involvement['Involvement']['name']; ?>.</p>
