@@ -336,9 +336,9 @@ class UsersController extends AppController {
 					'merge_id' => $this->User->id,
 					'requester_id' => $this->User->id
 				));
-				$this->Notifier->notify(Configure::read('CORE.settings.activation_requests_user'), 'users_request_activation');
+				$this->Notifier->notify($this->CORE['settings']['activation_requests_user'], 'users_request_activation');
 				$this->_sendEmail(array(
-					'to' => Configure::read('CORE.settings.activation_requests_user'),
+					'to' => $this->CORE['settings']['activation_requests_user'],
 					'subject' => 'Account activation request',
 					'template' => 'users_request_activation'
 				));

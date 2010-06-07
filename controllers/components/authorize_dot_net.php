@@ -68,10 +68,10 @@ class AuthorizeDotNetComponent extends Object {
 		
 		// check debug
 		if (Configure::read('debug') > 0) {
-			$email = Configure::read('CORE.settings.debug_email');
+			$email = $this->controller->CORE['settings']['debug_email'];
 			$this->_data['x_Test_Request'] = 'TRUE';
 		} else {
-			$email = Configure::read('CORE.settings.credit_card_email');
+			$email = $this->controller->CORE['settings']['credit_card_email'];
 			$this->_data['x_Test_Request'] = 'FALSE';
 		}
 		
