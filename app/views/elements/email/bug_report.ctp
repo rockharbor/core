@@ -44,14 +44,15 @@
 	</tr>
 </table>
 </p>
-<p>Last 10 visits (newest first):<br />
+<p>Request history:<br />
 <ol>
 <?php 
-$i = 0;
-while ($visitHistory[count($visitHistory)-(2+$i)] && $i < 10) {
+foreach ($visitHistory as $history) {
 ?>
-	<li><?php echo $visitHistory[count($visitHistory)-(2+$i)]; ?></li>
-<?php $i++; } ?>
+	<li><?php echo $history; ?></li>
+<?php
+}
+?>
 </ol>
 </p>
 </p>

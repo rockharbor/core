@@ -113,8 +113,6 @@
 			echo $this->Html->image('icons/bug.png').$this->Html->link(' Report a bug on this page', array('controller' => 'sys_emails', 'action' => 'bug_compose'), array('rel' => 'modal-none'));
 			echo '&nbsp;&nbsp;';
 			echo $this->Html->image('icons/report.png').$this->Html->link(' View activity logs', array('controller' => 'logs', 'action' => 'index'), array('rel' => 'modal-none'));
-			echo '&nbsp;&nbsp;';
-			echo $this->Html->image('icons/database.png').$this->Html->link(' View error logs', array('controller' => 'errors', 'action' => 'index'), array('rel' => 'modal-none'));
 			?>
 		</div>
 		<div id="search">

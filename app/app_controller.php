@@ -31,6 +31,7 @@ class AppController extends Controller {
  * @access public
  */		
 	var $_version = '2.0.0-alpha';
+
 	
 /**
  * Stored global CORE settings
@@ -39,19 +40,19 @@ class AppController extends Controller {
  * @access public
  */		
 	var $CORE = null;
-
-/**
- * Stored visit history
- *
- * @var array
- * @access public
- */		
-	var $_visitHistory = array();
 	
 	var $components = array(
 		'Session',
 		'Email',
-		'DebugKit.Toolbar',
+		'DebugKit.Toolbar' => array(
+			'panels' => array(
+				'CoreDebugPanels.errors',
+				'CoreDebugPanels.visitHistory',
+				'CoreDebugPanels.auth',
+				'log' => false,
+				'history' => false
+			)
+		),
 		'RequestHandler',
 		'Acl',
 		'Auth' => array(
@@ -148,10 +149,6 @@ class AppController extends Controller {
  * @see Cake docs
  */
 	function beforeFilter() {
-		$this->_visitHistory = $this->Session->read('CORE.visitHistory');
-		$this->_visitHistory[] = $this->here;
-		$this->Session->write('CORE.visitHistory', $this->_visitHistory);
-	
 		// pull app settings
 		$appSettings = Cache::read('core_app_settings');
 		if (empty($appSettings)) {
@@ -251,18 +248,15 @@ class AppController extends Controller {
 		$model = 'Group';
 		$foreign_key = $this->activeUser['Group']['id'];
 		$userId = $this->activeUser['User']['id'];
-		
+
+		// main group
 		$mainAccess = $this->Acl->check(compact('model', 'foreign_key'), $this->Auth->action());
-		CakeLog::write('auth', "User $userId of group $foreign_key allowed to go to ".$this->Auth->action().'? ['.($mainAccess) ? 'yes' : 'no'.']');
 		
 		$condAccess = false;
-		// check for conditional group, which takes priority
+		// check for conditional group
 		if (isset($this->activeUser['ConditionalGroup'])) {
 			$foreign_key = $this->activeUser['ConditionalGroup']['id'];
 			$condAccess = $this->Acl->check(compact('model', 'foreign_key'), $this->Auth->action());
-			if ($condAccess) {
-				CakeLog::write('auth', "User $userId of conditional group $foreign_key allowed to go to ".$this->Auth->action().'? ['.($condAccess) ? 'yes' : 'no'.']');
-			}
 		}
 		
 		return $mainAccess || $condAccess;
@@ -508,6 +502,7 @@ class AppController extends Controller {
  */ 
 	function _setConditionalGroups() {
 		$Group = ClassRegistry::init('Group');
+		$Group->recursive = -1;
 	
 		if (isset($this->passedArgs['User'])) {
 			$User = ClassRegistry::init('User');

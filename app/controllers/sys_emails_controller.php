@@ -63,7 +63,7 @@ class SysEmailsController extends AppController {
 		));
 		
 		$this->set('errors', $errors);
-		$this->set('visitHistory', $this->_visitHistory);
+		$this->set('visitHistory', array_reverse($this->Session->read('CoreDebugPanels.visitHistory')));
 		$this->set('toUsers', array(ClassRegistry::init('User')->read(null, $toUsers)));
 		$this->set('fromUser', ClassRegistry::init('User')->read(null, $fromUser));
 		$this->set('cacheuid', false);
