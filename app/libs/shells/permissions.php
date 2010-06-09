@@ -89,7 +89,10 @@ class PermissionsShell extends Shell {
  *
  * @return void
  */ 
-	function update() {		
+	function update() {
+		$this->Group->query('DELETE FROM `aros_acos`;');
+		$this->Group->query('ALTER TABLE `aros_acos` AUTO_INCREMENT = 1');
+
 		foreach ($this->_allowPermissions as $id => $perms) {
 			$this->Group->id = $id;
 			if (array_key_exists($id, $this->_denyPermissions)) {
@@ -271,7 +274,7 @@ class PermissionsShell extends Shell {
  * @access private
  */ 
 	var $_denyPermissions = array(
-		2 => array('controllers'),
+		/*2 => array('controllers'),
 		3 => array('controllers'),
 		4 => array('controllers'),
 		5 => array('controllers'),
@@ -283,7 +286,7 @@ class PermissionsShell extends Shell {
 		11 => array('controllers'),
 		12 => array('controllers'),
 		13 => array('controllers'),
-		14 => array('controllers')
+		14 => array('controllers')*/
 	);
 	
 /**
@@ -303,7 +306,6 @@ class PermissionsShell extends Shell {
 			'controllers/Campuses/delete',
 			'controllers/Comments',
 			'controllers/CommentTypes',
-			'controllers/Errors',
 			'controllers/Involvements/delete',
 			'controllers/InvolvementTypes',
 			'controllers/Logs',
@@ -423,6 +425,7 @@ class PermissionsShell extends Shell {
 			'controllers/Ministries/index',
 			'controllers/Ministries/view',
 			'controllers/MinistryImages/view',
+			'controllers/Notifications/multi_select_session',
 			'controllers/Notifications/delete',
 			'controllers/Notifications/index',
 			'controllers/Notifications/read',
@@ -431,7 +434,9 @@ class PermissionsShell extends Shell {
 			'controllers/Searches/ministry',
 			'controllers/CampusLeaders/index',
 			'controllers/MinistryLeaders/index',
-			'controllers/InvolvementLeaders/index'
+			'controllers/InvolvementLeaders/index',
+			'controllers/DebugKit',
+			'controllers/CoreDebugPanels'
 		),		
 		// campus manager
 		10 => array(
