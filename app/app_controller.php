@@ -65,7 +65,8 @@ class AppController extends Controller {
 			'autoRedirect' => false,
 			'loginAction' => array(
 				'controller' => 'users', 
-				'action' => 'login'
+				'action' => 'login',
+				'plugin' => null
 			),
 			'logoutRedirect' => array(
 				'controller' => 'users', 
