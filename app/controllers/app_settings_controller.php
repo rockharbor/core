@@ -1,20 +1,42 @@
 <?php
+/**
+ * AppSetting controller class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 
+/**
+ * AppSettings Controller
+ *
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 class AppSettingsController extends AppController {
 
+/**
+ * The name of the controller
+ *
+ * @var string
+ */
 	var $name = 'AppSettings';
 
 /**
  * Model::beforeFilter() callback
  *
- * Sets permissions for this controller.
+ * Used to override Acl permissions for this controller.
  *
  * @access private
  */ 
 	function beforeFilter() {
 		parent::beforeFilter();
 	}
-	
+
+/**
+ * Shows a list of AppSettings
+ */
 	function index() {	
 		$this->AppSetting->recursive = 0;
 		
@@ -33,6 +55,11 @@ class AppSettingsController extends AppController {
 		$this->set(compact('appSettings'));
 	}
 
+/**
+ * Edits an AppSetting and clears the existing cache
+ *
+ * @param integer $id The id of the AppSetting
+ */
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash('Invalid setting', 'flash_failure');

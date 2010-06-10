@@ -1,19 +1,49 @@
 <?php
+/**
+ * Involvement controller class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
+
+/**
+ * Involvements Controller
+ *
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 class InvolvementsController extends AppController {
 
+/**
+ * The name of the controller
+ *
+ * @var string
+ */
 	var $name = 'Involvements';
-	
+
+/**
+ * Extra helpers for this controller
+ *
+ * @var array
+ */
 	var $helpers = array('Formatting');
-	
+
+/**
+ * Extra components for this controller
+ *
+ * @var array
+ */
 	var $components = array('FilterPagination');
 	
 /**
  * Model::beforeFilter() callback
  *
- * Sets permissions for this controller.
+ * Used to override Acl permissions for this controller.
  *
  * @access private
- */ 
+ */
 	function beforeFilter() {
 		parent::beforeFilter();
 	}
@@ -190,7 +220,6 @@ class InvolvementsController extends AppController {
 /**
  * Toggles the `active` field for an involvement
  *
- * @param integer $id The involvment id
  * @param boolean $active Whether to make the model inactive or active
  * @param boolean $recursive Whether to iterate through the model's relationships and mark them as $active
  */
@@ -282,6 +311,8 @@ class InvolvementsController extends AppController {
 	
 /**
  * Deletes an involvement opportunity
+ *
+ * @param integer $id The id of the involvement to delete
  */
 	function delete($id = null) {
 		if (!$id) {
@@ -295,17 +326,16 @@ class InvolvementsController extends AppController {
 		$this->Session->setFlash(__('Involvement was not deleted', true));
 		$this->redirect(array('action' => 'index'));
 	}
-	
 		
 /**
  * Runs a search on simple fields (name)
  *
- * #### Params:
+ * ### Params:
  * - Every named parameter is treated as an "action". Each action should have a key 
  * value pair. The key is the name to display, value is the js function to run (no parens).
  * The selected user id is always passed as the first param to the js function
  *
- * #### Filters: Everything passed as an argument are considered filters.
+ * ### Filters: Everything passed as an argument are considered filters.
  * Filters are used to help pre-filter the results (i.e., don't show people 
  * who are in a specific household). Passed like filter:[filter] [Model].[field] [value]
  * Example: not HouseholdMember.household_id 12

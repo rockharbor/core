@@ -1,24 +1,56 @@
 <?php
+/**
+ * Payment controller class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
+
+/**
+ * Payments Controller
+ *
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 class PaymentsController extends AppController {
 
+/**
+ * The name of the controller
+ *
+ * @var string
+ */
 	var $name = 'Payments';
 	
-	// use MultiSelectComponent to get a saved search
+/**
+ * Extra components for this controller
+ *
+ * @var array
+ */
 	var $components = array('MultiSelect', 'AuthorizeDotNet');
-	
+
+/**
+ * Extra helpers for this controller
+ *
+ * @var array
+ */
 	var $helpers = array('Text', 'Formatting');
 
 /**
  * Model::beforeFilter() callback
  *
- * Sets permissions for this controller.
+ * Used to override Acl permissions for this controller.
  *
  * @access private
  */ 
 	function beforeFilter() {
 		parent::beforeFilter();
 	}
-	
+
+/**
+ * Shows a list of payments made by a User
+ */
 	function index() {
 		if (!isset($this->passedArgs['User'])) {
 			$this->Session->setFlash(__('Invalid user', true));
@@ -52,6 +84,11 @@ class PaymentsController extends AppController {
 		$this->set('payments', $this->paginate());
 	}
 
+/**
+ * Adds a payment to a search from a MultiSelect key
+ *
+ * @param string $mskey The MultiSelect cache key to pull a list from
+ */
 	function add($mskey) {
 		// get selected
 		$search = $this->MultiSelect->getSearch($mskey);
@@ -199,6 +236,11 @@ class PaymentsController extends AppController {
 		
 	}
 
+/**
+ * Deletes a payment
+ *
+ * @param integer $id The id of the payment to delete
+ */
 	function delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for payment', true));

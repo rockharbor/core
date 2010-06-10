@@ -1,16 +1,46 @@
 <?php
+/**
+ * Roster controller class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
+
+/**
+ * Rosters Controller
+ *
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 class RostersController extends AppController {
 
+/**
+ * The name of the controller
+ *
+ * @var string
+ */
 	var $name = 'Rosters';
-	
+
+/**
+ * Extra components for this controller
+ *
+ * @var array
+ */
 	var $components = array('FilterPagination', 'AuthorizeDotNet', 'MultiSelect');
-	
+
+/**
+ * Extra helpers for this controller
+ *
+ * @var array
+ */
 	var $helpers = array('Formatting', 'MultiSelect');
 	
 /**
  * Model::beforeFilter() callback
  *
- * Sets permissions for this controller.
+ * Used to override Acl permissions for this controller.
  *
  * @access private
  */ 
@@ -18,9 +48,9 @@ class RostersController extends AppController {
 		parent::beforeFilter();
 	}
 	
-/*** Displays a roster list
+/** Displays a roster list
  *
- * #### Passed args:
+ * ### Passed args:
  * - integer $Involvement The id of the involvement to filter for
  * - integer $User The id of the user to filter for
  */ 
@@ -111,10 +141,10 @@ class RostersController extends AppController {
 /**
  * Shows involvement history
  *
- * #### Passed args:
+ * ### Passed args:
  * - integer $User The id of the user
  *
- * @param string $passed `passed` to show opportunities that have passed
+ * @param string $passed 'passed' to show opportunities that have passed
  */ 	
 	function involvement($passed = '') {
 		if (isset($this->passedArgs['User'])) {
@@ -148,21 +178,13 @@ class RostersController extends AppController {
 		$this->set('rosters', $this->paginate());
 	}
 
-	function view($id = null) {
-		if (!$id) {
-			$this->Session->setFlash(__('Invalid roster', true));
-			$this->redirect(array('action' => 'index'));
-		}
-		$this->set('roster', $this->Roster->read(null, $id));
-	}
-
 /**
  * Signs a user up for an involvement opportunity
  *
  * Checks payment information, if needed. Creates childcare records, Roster records,
  * Payment records and runs credit cards.
  *
- * #### Passed args:
+ * ### Passed args:
  * - integer `User` The (main) user id to sign up
  * - integer `Involvement` The involvement opportunity
  */
@@ -494,6 +516,12 @@ class RostersController extends AppController {
 		$this->set('roster', $involvementRoster);
 	}
 
+/**
+ * Edits a roster
+ *
+ * @param integer $id The id of the roster to edit
+ * @todo Restrict to proper permissions
+ */
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid roster', true));
@@ -603,6 +631,12 @@ class RostersController extends AppController {
 		$this->set(compact('involvement', 'user', 'roster', 'paymentOptions'));
 	}
 
+/**
+ * Deletes a roster
+ *
+ * @param integer $id The id of the roster to delete
+ * @todo Restrict to proper permissions
+ */
 	function delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for roster', true));

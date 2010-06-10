@@ -1,18 +1,43 @@
 <?php
+/**
+ * Comment controller class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
+
+/**
+ * Comments Controller
+ *
+ * @package       core
+ * @subpackage    core.app.controllers
+ * @todo Restrict access by group
+ */
 class CommentsController extends AppController {
 
+/**
+ * The name of the controller
+ *
+ * @var string
+ */
 	var $name = 'Comments';
-	
-	var $helpers = array('Formatting');
 
+/**
+ * Extra helpers for this controller
+ *
+ * @var array
+ */
+	var $helpers = array('Formatting');
 	
 /**
  * Model::beforeFilter() callback
  *
- * Sets permissions for this controller.
+ * Used to override Acl permissions for this controller.
  *
  * @access private
- */ 
+ */
 	function beforeFilter() {
 		parent::beforeFilter();
 	}
@@ -34,9 +59,7 @@ class CommentsController extends AppController {
 /**
  * Adds a comment
  */ 
-	function add() {
-		/** Add created_by using Auth id **/
-		
+	function add() {		
 		$viewUser = $this->passedArgs['User'];
 	
 		if (!empty($this->data)) {
@@ -56,6 +79,8 @@ class CommentsController extends AppController {
 
 /**
  * Edits a comment
+ *
+ * @param integer $id The id of the comment to edit
  */ 
 	function edit($id = null) {
 		$viewUser = $this->passedArgs['User'];

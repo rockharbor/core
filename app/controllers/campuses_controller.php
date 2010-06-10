@@ -1,16 +1,35 @@
 <?php
+/**
+ * Campus controller class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 
+/**
+ * Campuses Controller
+ *
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 class CampusesController extends AppController {
 
+/**
+ * The name of the controller
+ *
+ * @var string
+ */
 	var $name = 'Campuses';
 	
 /**
  * Model::beforeFilter() callback
  *
- * Sets permissions for this controller.
+ * Used to override Acl permissions for this controller.
  *
  * @access private
- */ 
+ */
 	function beforeFilter() {
 		parent::beforeFilter();
 	}
@@ -81,6 +100,8 @@ class CampusesController extends AppController {
 	
 /**
  * Deletes a campus
+ *
+ * @param integer $id The id of the campus to delete
  */ 
 	function delete($id = null) {
 		if (!$id) {

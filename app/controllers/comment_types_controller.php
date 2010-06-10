@@ -1,15 +1,38 @@
 <?php
+/**
+ * CommentType controller class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 
+/**
+ * Includes
+ */
 App::import('Controller', 'SimpleCruds');
+
+/**
+ * CommentTypes Controller
+ *
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 
 class CommentTypesController extends SimpleCrudsController {
 
+/**
+ * The name of the controller
+ *
+ * @var string
+ */
 	var $name = 'CommentTypes';
 	
 /**
  * Model::beforeFilter() callback
  *
- * Sets permissions for this controller.
+ * Used to override Acl permissions for this controller.
  *
  * @access private
  */ 

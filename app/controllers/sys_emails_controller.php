@@ -1,17 +1,46 @@
 <?php
+/**
+ * Sys Email controller class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 
+/**
+ * SysEmails Controller
+ *
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 class SysEmailsController extends AppController {
 
+/**
+ * The name of the controller
+ *
+ * @var string
+ */
 	var $name = 'SysEmails';
-	
+
+/**
+ * Extra helpers for this controller
+ *
+ * @var array
+ */
 	var $helpers = array('Formatting');
-	
+
+/**
+ * Extra components for this controller
+ *
+ * @var array
+ */
 	var $components = array('MultiSelect');
 
 /**
  * Model::beforeFilter() callback
  *
- * Sets permissions for this controller.
+ * Used to override Acl permissions for this controller.
  *
  * @access private
  */ 
@@ -23,8 +52,6 @@ class SysEmailsController extends AppController {
 
 /**
  * Creates a new bug report email
- *
- * @param string $uid The unique cache id of the list to pull
  */ 
 	function bug_compose() {
 		// hardcoded Jeremy Harris
@@ -79,7 +106,7 @@ class SysEmailsController extends AppController {
  * Allows for an attachment. If the passed args are sent, the user email(s)
  * for that model and id will be used instead.
  *
- * #### Passed args:
+ * ### Passed args:
  * - string $model A model to look up
  * - integer [$model] The id of the model
  *

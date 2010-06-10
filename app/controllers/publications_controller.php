@@ -1,22 +1,47 @@
 <?php
+/**
+ * Publication controller class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 
+/**
+ * Includes
+ */
 App::import('Controller', 'SimpleCruds');
 
+/**
+ * Publications Controller
+ *
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 class PublicationsController extends SimpleCrudsController {
 
+/**
+ * The name of the controller
+ *
+ * @var string
+ */
 	var $name = 'Publications';
 	
 /**
  * Model::beforeFilter() callback
  *
- * Sets permissions for this controller.
+ * Used to override Acl permissions for this controller.
  *
  * @access private
  */ 
 	function beforeFilter() {
 		parent::beforeFilter();
 	}
-	
+
+/**
+ * Shows a list of subscriptions available to a User and what they have subscribed to
+ */
 	function subscriptions() {
 		$this->viewPath = 'publications';
 		
@@ -42,7 +67,13 @@ class PublicationsController extends SimpleCrudsController {
 		
 		$this->set(compact('publications', 'subscriptions', 'userId'));
 	}
-	
+
+/**
+ * Subscribes or unsubscribes a user from a Publication
+ *
+ * @param integer $publicationId The id of the publication
+ * @param boolean $subscribe Whether to subscribe or unsubscribe the User
+ */
 	function toggle_subscribe($publicationId = null, $subscribe = false) {
 		$this->viewPath = 'publications';
 		

@@ -1,14 +1,39 @@
 <?php
+/**
+ * Payment Option controller class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
+
+/**
+ * PaymentOptions Controller
+ *
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 class PaymentOptionsController extends AppController {
 
+/**
+ * The name of the controller
+ *
+ * @var string
+ */
 	var $name = 'PaymentOptions';
-	
+
+/**
+ * Extra helpers for this controller
+ *
+ * @var array
+ */
 	var $helpers = array('SelectOptions', 'Formatting');
 	
 /**
  * Model::beforeFilter() callback
  *
- * Sets permissions for this controller.
+ * Used to override Acl permissions for this controller.
  *
  * @access private
  */ 
@@ -47,6 +72,8 @@ class PaymentOptionsController extends AppController {
 
 /**
  * Edits a payment option
+ *
+ * @param integer $id The id of the payment option to edit
  */ 
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
@@ -68,6 +95,8 @@ class PaymentOptionsController extends AppController {
 
 /**
  * Deletes a payment option
+ *
+ * @param integer $id The id of the payment option to delete
  */ 
 	function delete($id = null) {
 		if (!$id) {

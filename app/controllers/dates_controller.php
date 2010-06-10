@@ -1,14 +1,39 @@
 <?php
+/**
+ * Date controller class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
+
+/**
+ * Dates Controller
+ *
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 class DatesController extends AppController {
 
+/**
+ * The name of the controller
+ *
+ * @var string
+ */
 	var $name = 'Dates';
-	
+
+/**
+ * Extra helpers for this controller
+ *
+ * @var array
+ */
 	var $helpers = array('SelectOptions');
 
 /**
  * Model::beforeFilter() callback
  *
- * Sets permissions for this controller.
+ * Used to override Acl permissions for this controller.
  *
  * @access private
  */ 
@@ -28,11 +53,13 @@ class DatesController extends AppController {
 /**
  * Displays the calendar
  *
- * #### Params:
- * - `start` The start timestamp
- * - `end` The end timestamp
+ * ### Params:
  *
- * #### Passed Args:
+ *	- `start` The start timestamp
+ *	- `end` The end timestamp
+ *
+ * ### Passed Args:
+ *
  * - `model` A model to filter by
  * - `model.id` The model's id to filter by
  *
@@ -137,6 +164,8 @@ class DatesController extends AppController {
 
 /**
  * Date details
+ *
+ * @param integer $id The id of the date to view
  */ 
 	function view($id = null) {
 		if (!$id) {
@@ -164,6 +193,8 @@ class DatesController extends AppController {
 
 /**
  * Edits a date
+ *
+ * @param integer $id The id of the date to edit
  */ 
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
@@ -183,6 +214,8 @@ class DatesController extends AppController {
 
 /**
  * Deletes a date
+ *
+ * @param integer $id The id of the date to delete
  */ 
 	function delete($id = null) {
 		if (!$id) {

@@ -1,14 +1,39 @@
 <?php
+/**
+ * Ministry controller class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
+
+/**
+ * Ministries Controller
+ *
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 class MinistriesController extends AppController {
 
+/**
+ * The name of the controller
+ *
+ * @var string
+ */
 	var $name = 'Ministries';
-	
+
+/**
+ * Extra helpers for this controller
+ *
+ * @var array
+ */
 	var $helpers = array('Formatting', 'Tree');
 
 /**
  * Model::beforeFilter() callback
  *
- * Sets permissions for this controller.
+ * Used to override Acl permissions for this controller.
  *
  * @access private
  */ 
@@ -134,6 +159,8 @@ class MinistriesController extends AppController {
 	
 /**
  * Displays ministry revision history (up to 1 change)
+ *
+ * @param integer $id The id of the ministry
  */ 	
 	function history($id = null) {
 		if (!$id) {
@@ -152,6 +179,9 @@ class MinistriesController extends AppController {
 
 /**
  * Revises a ministry (confirm or deny revision)
+ *
+ * @param integer $id The id of the ministry
+ * @param boolean $confirm Whether or not to approve the revision
  */ 	
 	function revise($id, $confirm = false) {
 		if ($confirm) {
@@ -171,6 +201,8 @@ class MinistriesController extends AppController {
 
 /**
  * Deletes a ministry
+ *
+ * @param integer $id The id of the ministry to delete
  */ 
 	function delete($id = null) {
 		if (!$id) {

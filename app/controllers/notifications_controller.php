@@ -1,16 +1,46 @@
 <?php
+/**
+ * Notification controller class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
+
+/**
+ * Notifications Controller
+ *
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 class NotificationsController extends AppController {
 
+/**
+ * The name of the controller
+ *
+ * @var string
+ */
 	var $name = 'Notifications';
-	
+
+/**
+ * Extra components for this controller
+ *
+ * @var array
+ */
 	var $components = array('MultiSelect');
-	
+
+/**
+ * Extra helpers for this controller
+ *
+ * @var array
+ */
 	var $helpers = array('Template', 'MultiSelect');
 	
 /**
  * Model::beforeFilter() callback
  *
- * Sets permissions for this controller.
+ * Used to override Acl permissions for this controller.
  *
  * @access private
  */ 
@@ -20,6 +50,8 @@ class NotificationsController extends AppController {
 
 /**
  * Views a list of notifications
+ *
+ * @param string $typeFilter A quick filter for the NotificationType
  */
 	function index($typeFilter = '') {
 		if (isset($this->passedArgs['User'])) {

@@ -1,28 +1,64 @@
 <?php
+/**
+ * Report controller class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 
+/**
+ * Reports Controller
+ *
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 class ReportsController extends AppController {
-	
+
+/**
+ * The name of the controller
+ *
+ * @var string
+ */
 	var $name = 'Reports';
-	
+
+/**
+ * List of models this controller uses
+ *
+ * @var string
+ */
 	var $uses = array('User', 'Roster', 'Ministry', 'Involvement', 'Campus');
-	
+
+/**
+ * Extra helpers for this controller
+ *
+ * @var array
+ */
 	var $helpers = array('GoogleMap', 'Media.Media');
-	
+
+/**
+ * Extra components for this controller
+ *
+ * @var array
+ */
 	var $components = array('MultiSelect');
 	
 /**
  * Model::beforeFilter() callback
  *
- * Sets permissions for this controller.
+ * Used to override Acl permissions for this controller.
  *
  * @access private
  */ 
 	function beforeFilter() {
 		parent::beforeFilter();
 	}
-	
-	function index() {
-	
+
+/**
+ * Reports home page
+ */
+	function index() {	
 	}
 
 /**
@@ -62,7 +98,7 @@ class ReportsController extends AppController {
 /**
  * Exports a saved search (from MultiSelectComponent) as a report
  *
- * If $type is `csv, set Controller::title_for_layout to set the name of the csv. Data should
+ * If $type is `csv`, set Controller::title_for_layout to set the name of the csv. Data should
  * be sent in an `Export` array formatted based on the current model's contain format.
  *
  * @param string $uid The saved search id
@@ -102,7 +138,12 @@ class ReportsController extends AppController {
 		
 		$this->set(compact('uid', 'model'));
 	}
-	
+
+/**
+ * Shows a map from a list of results
+ *
+ * @param string $uid The MultiSelect cache key to get results from
+ */
 	function map($uid) {
 		$search = $this->MultiSelect->getSearch($uid);
 		$selected = $this->MultiSelect->getSelected($uid);
@@ -127,5 +168,4 @@ class ReportsController extends AppController {
 		$this->set('results', $results);
 	}
 }
-
 ?>

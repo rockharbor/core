@@ -1,13 +1,22 @@
 <?php
+/**
+ * Simple Crud controller class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 
 /**
- * Controller for simple CRUD models. 
+ * Controller for simple CRUD models.
  *
  * This simplifies adding models that use basic CRUD actions
  * without any special logic (such as categories). No need
  * to rewrite/design the same things 18 times!
  *
- * @author Jeremy Harris <jharris@rockharbor.org>
+ * @package       core
+ * @subpackage    core.app.controllers
  */
 class SimpleCrudsController extends AppController {
 
@@ -21,7 +30,7 @@ class SimpleCrudsController extends AppController {
 /**
  * Model::beforeFilter() callback
  *
- * Sets permissions for this controller.
+ * Used to override Acl permissions for this controller.
  *
  * @access private
  */ 
@@ -52,12 +61,20 @@ class SimpleCrudsController extends AppController {
 
 		$this->set('title_for_layout', Inflector::pluralize(Inflector::humanize($this->modelKey)));		
 	}
-	
+
+/**
+ * Shows a list of records for this model
+ */
 	function index() {	
 		$this->{$this->modelClass}->recursive = 0;
 		$this->set('results', $this->paginate());
 	}
 
+/**
+ * Shows a record for this model
+ *
+ * @param integer $id The id of the model
+ */
 	function view($id = null) {
 		if (!$id) {
 			$this->Session->setFlash('Invalid '.Inflector::humanize($this->modelKey), 'flash_failure');
@@ -65,6 +82,9 @@ class SimpleCrudsController extends AppController {
 		$this->set('result', $this->{$this->modelClass}->read(null, $id));
 	}
 
+/**
+ * Adds a record for this model
+ */
 	function add() {
 		if (!empty($this->data)) {
 			$this->{$this->modelClass}->create();
@@ -77,6 +97,11 @@ class SimpleCrudsController extends AppController {
 		}
 	}
 
+/**
+ * Edits a record for this model
+ *
+ * @param integer $id The id of the model
+ */
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash('Invalid '.Inflector::humanize($this->modelKey), 'flash_failure');
@@ -93,6 +118,11 @@ class SimpleCrudsController extends AppController {
 		}
 	}
 
+/**
+ * Deletes a record for this model
+ *
+ * @param integer $id The id of the model
+ */
 	function delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash('Invalid id for '.Inflector::humanize($this->modelKey), 'flash_failure');
@@ -108,6 +138,4 @@ class SimpleCrudsController extends AppController {
 
 
 }
-
-
 ?>

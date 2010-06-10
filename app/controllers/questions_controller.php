@@ -1,12 +1,32 @@
 <?php
+/**
+ * Question controller class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
+
+/**
+ * Questions Controller
+ *
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 class QuestionsController extends AppController {
 
+/**
+ * The name of the controller
+ *
+ * @var string
+ */
 	var $name = 'Questions';
 
 /**
  * Model::beforeFilter() callback
  *
- * Sets permissions for this controller.
+ * Used to override Acl permissions for this controller.
  *
  * @access private
  */ 
@@ -47,6 +67,9 @@ class QuestionsController extends AppController {
 
 /**
  * Edits a question
+ *
+ * @param integer $id The id of the question to edit
+ * @todo Add involvement named arg to restrict to leaders, etc.
  */ 
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
@@ -68,12 +91,13 @@ class QuestionsController extends AppController {
 /**
  * Moves a question order
  *
- * #### Directions:
+ * ### Directions:
  * - `up` Moves question up one
  * - `down` Moves question down  one
  *
  * @param integer $id Question id
  * @param string $direction The direction to move the question
+ * @todo Add involvement named arg to restrict to leaders, etc.
  */
 	function move($id = null, $direction = null) {
 		if (!$id || !$direction) {
@@ -88,6 +112,9 @@ class QuestionsController extends AppController {
 	
 /**
  * Deletes a question
+ *
+ * @param integer $id The id of the question to delete
+ * @todo Add involvement named arg to restrict to leaders, etc.
  */ 
 	function delete($id = null) {
 		if (!$id) {

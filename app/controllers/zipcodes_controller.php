@@ -1,21 +1,42 @@
 <?php
+/**
+ * Zipcode controller class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 
-
+/**
+ * Zipcodes Controller
+ *
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 class ZipcodesController extends AppController {
 
+/**
+ * The name of the controller
+ *
+ * @var string
+ */
 	var $name = 'Zipcodes';
 	
 /**
  * Model::beforeFilter() callback
  *
- * Sets permissions for this controller.
+ * Used to override Acl permissions for this controller.
  *
  * @access private
  */ 
 	function beforeFilter() {
 		parent::beforeFilter();
 	}
-	
+
+/**
+ * Adds a Zipcode to a Region
+ */
 	function add() {
 		if (!isset($this->passedArgs['Region'])) {
 			$this->setFlash('Invalid id');
@@ -34,7 +55,11 @@ class ZipcodesController extends AppController {
 		$this->data['Zipcode']['region_id'] = $this->passedArgs['Region'];
 	}
 	
-	
+/**
+ * Deletes a Zipcode
+ *
+ * @param integer $id The id of the Zipcode to delete
+ */
 	function delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash('Invalid id', 'flash_failure');

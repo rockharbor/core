@@ -1,15 +1,39 @@
 <?php
+/**
+ * Leader controller class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
+
+/**
+ * Leaders Controller
+ *
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 class LeadersController extends AppController {
 
+/**
+ * The name of the controller
+ *
+ * @var string
+ */
 	var $name = 'Leaders';
-	
-	var $helpers = array('Formatting');
 
+/**
+ * Extra helpers for this controller
+ *
+ * @var array
+ */
+	var $helpers = array('Formatting');
 	
 /**
  * Model::beforeFilter() callback
  *
- * Sets permissions for this controller.
+ * Used to override Acl permissions for this controller.
  *
  * @access private
  */ 

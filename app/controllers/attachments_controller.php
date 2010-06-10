@@ -1,11 +1,20 @@
 <?php
+/**
+ * Attachment controller class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 
 /**
- * Controller for attachments.
+ * Attachments Controller
  *
- * Extended by Documents and Images controllers.
+ * This controller is not accessed directly, but rather extended by different controllers
  *
- * @author Jeremy Harris <jharris@rockharbor.org>
+ * @package       core
+ * @subpackage    core.app.controllers
  */
 class AttachmentsController extends AppController {
 
@@ -15,19 +24,35 @@ class AttachmentsController extends AppController {
  * @var string viewPath
  */
 	var $viewPath = 'attachments';
-	
+
+/**
+ * Extra helpers for this controller
+ *
+ * @var array
+ */
 	var $helpers = array(
 		'Media.Media',
 		'Number'
 	);
 	
+/**
+ * The name of the model this Attachment belongs to. Used for Acl
+ *
+ * @var string
+ */
 	var $model = null;
+
+/**
+ * The id of the model this Attachment belongs to. Used for Acl
+ *
+ * @var integer
+ */
 	var $modelId = null;
 	
 /**
  * Model::beforeFilter() callback
  *
- * Sets permissions for this controller.
+ * Used to override Acl permissions for this controller.
  *
  * @access private
  */ 
@@ -35,35 +60,19 @@ class AttachmentsController extends AppController {
 		parent::beforeFilter();
 		$this->modelClass = Inflector::singularize($this->name);
 	}
-	
+
+/**
+ * Model::beforeRender() callback.
+ *
+ * @access private
+ */
 	function beforeRender() {
 		parent::beforeRender();
 
 		$this->set('attachmentModel', $this->modelClass);
 		$this->set('model', $this->model);
 		$this->set('modelId', $this->modelId);
-	}
- 
-	/*function beforeFilter() {
-		parent::beforeFilter();
-		
-		// for accessing the model
-		$this->set('model', $this->modelClass);
-		// for printing it out all friendly-like
-		$this->set('modelKey', $this->modelKey);
-		
-		// give the views the schema, too, so they can
-		// create forms with slight differences
-		$schema = $this->{$this->modelClass}->schema();
-		$this->set('schema', $schema);
-
-		$this->set('title_for_layout', Inflector::pluralize(Inflector::humanize($this->modelKey)));
-		
-		if ($this->Auth->user()) {
-			$this->Auth->allow('index','download','upload','delete');
-		}
-	}	*/
-	
+	}	
 
 /**
  * Shows a list of attachments, along with an upload form.
@@ -156,6 +165,5 @@ class AttachmentsController extends AppController {
 		));	
 	}
 }
-
 
 ?>

@@ -1,8 +1,33 @@
 <?php
+/**
+ * Household controller class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
+
+/**
+ * Households Controller
+ *
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 class HouseholdsController extends AppController {
 
+/**
+ * The name of the controller
+ *
+ * @var string
+ */
 	var $name = 'Households';
-	
+
+/**
+ * Extra helpers for this controller
+ *
+ * @var array
+ */
 	var $helpers = array(
 		'SelectOptions',
 		'Formatting'
@@ -11,10 +36,10 @@ class HouseholdsController extends AppController {
 /**
  * Model::beforeFilter() callback
  *
- * Sets permissions for this controller.
+ * Used to override Acl permissions for this controller.
  *
  * @access private
- */ 
+ */
 	function beforeFilter() {
 		parent::beforeFilter();
 	}
@@ -114,6 +139,7 @@ class HouseholdsController extends AppController {
 			'User' => $viewUser
 		));
 	}
+
 /**
  * Shows a list of households for a user
  */ 

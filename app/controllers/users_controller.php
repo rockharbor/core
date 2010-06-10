@@ -1,16 +1,47 @@
 <?php
+/**
+ * User controller class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
+
+/**
+ * Users Controller
+ *
+ * @package       core
+ * @subpackage    core.app.controllers
+ * @todo Split add into add and register, move simple search to searches
+ */
 class UsersController extends AppController {
 
+/**
+ * The name of the controller
+ *
+ * @var string
+ */
 	var $name = 'Users';
-	
+
+/**
+ * Extra helpers for this controller
+ *
+ * @var array
+ */
 	var $helpers = array('Formatting', 'SelectOptions', 'MultiSelect');
-	
+
+/**
+ * Extra components for this controller
+ *
+ * @var array
+ */
 	var $components = array('FilterPagination', 'MultiSelect');
 
 /**
  * Model::beforeFilter() callback
  *
- * Sets permissions for this controller.
+ * Used to override Acl permissions for this controller.
  *
  * @access private
  */ 
@@ -26,12 +57,12 @@ class UsersController extends AppController {
 /**
  * Runs a search on simple fields (username, first_name, etc.)
  *
- * #### Params:
+ * ### Params:
  * - Every named parameter is treated as an "action". Each action should have a key 
  * value pair. The key is the name to display, value is the js function to run (no parens).
  * The selected user id is always passed as the first param to the js function
  *
- * #### Filters: Everything passed as an argument are considered filters.
+ * ### Filters: Everything passed as an argument are considered filters.
  * Filters are used to help pre-filter the results (i.e., don't show people 
  * who are in a specific household). Passed like filter:[filter] [Model].[field] [value]
  * Example: not HouseholdMember.household_id 12
@@ -179,12 +210,20 @@ class UsersController extends AppController {
 		$this->Session->destroy();
 		$this->redirect($redirect);
 	}
-	
+
+/**
+ * Lists users
+ *
+ * @todo Remove this altogether?
+ */
 	function index() {
 		$this->User->recursive = 0;
 		$this->set('users', $this->paginate());
 	}
 
+/**
+ * Shows user information
+ */
 	function view() {
 		// get user id
 		$id = $this->passedArgs['User'];
@@ -200,8 +239,6 @@ class UsersController extends AppController {
 
 /**
  * Creates a new password and sends it to the user, or offers them to reset
- *
- * @param boolean $reset Whether the password was forgotten (send to email) or they are resetting
  */
 	function edit() {
 		$needCurrentPassword = $this->activeUser['User']['id'] == $this->passedArgs['User'];
@@ -269,7 +306,10 @@ class UsersController extends AppController {
 		
 		$this->set('needCurrentPassword', $needCurrentPassword);
 	}
-	
+
+/**
+ * Sends a user a new password
+ */
 	function forgot_password() {		
 		if (!empty($this->data)) {
 			if (!empty($this->data['User']['forgotten'])) {			
@@ -607,6 +647,11 @@ class UsersController extends AppController {
 		$this->set('classifications', $this->User->Profile->Classification->find('list'));
 	}
 
+/**
+ * Deletes a user
+ *
+ * @param integer $id The id of the User to delete
+ */
 	function delete($id = null) {		
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for user', true));

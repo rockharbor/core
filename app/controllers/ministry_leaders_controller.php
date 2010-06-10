@@ -1,15 +1,37 @@
 <?php
+/**
+ * Ministry Leader controller class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 
+/**
+ * Includes
+ */
 App::import('Controller', 'Leaders');
 
+/**
+ * MinistryLeaders Controller
+ *
+ * @package       core
+ * @subpackage    core.app.controllers
+ */
 class MinistryLeadersController extends LeadersController {
 
+/**
+ * The name of the model to associate the Leader with
+ *
+ * @var string
+ */
 	var $model = 'Ministry';
 
 /**
  * Model::beforeFilter() callback
  *
- * Sets permissions for this controller.
+ * Used to override Acl permissions for this controller.
  *
  * @access private
  */ 
@@ -19,5 +41,4 @@ class MinistryLeadersController extends LeadersController {
 	}
 	
 }
-
 ?>
