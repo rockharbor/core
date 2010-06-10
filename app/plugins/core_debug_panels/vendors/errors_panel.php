@@ -23,6 +23,18 @@ class ErrorsPanel extends DebugPanel {
  */
 	var $title = 'Errors';
 
+	function beforeRender($controller) {
+		App::import('Model', 'CoreDebugPanels.Error');
+		$Error = new Error();
+
+		$Error->recursive = 0;
+		$Error->order = 'Error.created DESC';
+
+		return $Error->find('all', array(
+			'limit' => 10
+		));
+	}
+
 }
 
 ?>
