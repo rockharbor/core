@@ -45,6 +45,13 @@ class ToolbarAccessController extends DebugKitAppController {
 	var $components = array('RequestHandler', 'DebugKit.Toolbar');
 
 /**
+ * Uses
+ *
+ * @var array
+ **/
+	var $uses = array('DebugKit.ToolbarAccess');
+
+/**
  * beforeFilter callback
  *
  * @return void
@@ -81,9 +88,10 @@ class ToolbarAccessController extends DebugKitAppController {
  */
 	function sql_explain() {
 		if (
-			empty($this->params['named']['sql']) || 
-			empty($this->params['named']['ds']) ||
-			empty($this->params['named']['hash']) ||
+			!$this->RequestHandler->isPost() ||
+			empty($this->data['log']['sql']) || 
+			empty($this->data['log']['ds']) ||
+			empty($this->data['log']['hash']) ||
 			Configure::read('debug') == 0
 		) {
 			$this->cakeError('error404', array(array(
@@ -91,13 +99,13 @@ class ToolbarAccessController extends DebugKitAppController {
 			)));
 		}
 		App::import('Core', 'Security');
-		$hash = Security::hash($this->params['named']['sql'] . $this->params['named']['ds'], null, true);
-		if ($hash !== $this->params['named']['hash']) {
+		$hash = Security::hash($this->data['log']['sql'] . $this->data['log']['ds'], null, true);
+		if ($hash !== $this->data['log']['hash']) {
 			$this->cakeError('error404', array(array(
 				'message' => 'Invalid parameters'
 			)));
 		}
-		$result = $this->ToolbarAccess->explainQuery($this->params['named']['ds'], $this->params['named']['sql']);
+		$result = $this->ToolbarAccess->explainQuery($this->data['log']['ds'], $this->data['log']['sql']);
 		$this->set(compact('result'));
 	}
 }

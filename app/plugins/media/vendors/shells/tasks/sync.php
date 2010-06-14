@@ -16,7 +16,6 @@
  * @license    http://www.opensource.org/licenses/mit-license.php The MIT License
  * @link       http://github.com/davidpersson/media
  */
-
 /**
  * Sync Task Class
  *
@@ -24,7 +23,6 @@
  * @subpackage media.shells.tasks
  */
 class SyncTask extends MediaShell {
-
 /**
  * model
  *
@@ -32,7 +30,6 @@ class SyncTask extends MediaShell {
  * @access public
  */
 	var $model;
-
 /**
  * Directory
  *
@@ -40,7 +37,6 @@ class SyncTask extends MediaShell {
  * @access public
  */
 	var $directory;
-
 /**
  * Default answer to use if prompted for input
  *
@@ -48,7 +44,6 @@ class SyncTask extends MediaShell {
  * @access protected
  */
 	var $_answer = 'n';
-
 /**
  * Model
  *
@@ -56,7 +51,6 @@ class SyncTask extends MediaShell {
  * @access protected
  */
 	var $_Model;
-
 /**
  * baseDirectory from the model's media behavior settings
  *
@@ -64,7 +58,6 @@ class SyncTask extends MediaShell {
  * @access protected
  */
 	var $_baseDirectory;
-
 /**
  * Folder to search
  *
@@ -72,7 +65,6 @@ class SyncTask extends MediaShell {
  * @access protected
  */
 	var $_Folder;
-
 /**
  * Current item retrieved from the model
  *
@@ -80,7 +72,6 @@ class SyncTask extends MediaShell {
  * @access private
  */
 	var $__dbItem;
-
 /**
  * Current item retrieved from the filesystem
  *
@@ -88,7 +79,6 @@ class SyncTask extends MediaShell {
  * @access private
  */
 	var $__fsItem;
-
 /**
  * Current set of items retrieved from the model
  *
@@ -96,7 +86,6 @@ class SyncTask extends MediaShell {
  * @access private
  */
 	var $__dbMap;
-
 /**
  * Current set of items retrieved from the filesystem
  *
@@ -104,7 +93,6 @@ class SyncTask extends MediaShell {
  * @access private
  */
 	var $__fsMap;
-
 /**
  * Current file object
  *
@@ -112,7 +100,6 @@ class SyncTask extends MediaShell {
  * @access private
  */
 	var $__File;
-
 /**
  * An alternative for the current file
  *
@@ -120,7 +107,6 @@ class SyncTask extends MediaShell {
  * @access private
  */
 	var $__alternativeFile;
-
 /**
  * Main execution method
  *
@@ -172,7 +158,6 @@ class SyncTask extends MediaShell {
 		$this->out();
 		return true;
 	}
-
 /**
  * Checks if files are in sync with records
  *
@@ -180,7 +165,7 @@ class SyncTask extends MediaShell {
  * @return void
  */
 	function _checkFilesWithRecords() {
-		$this->out('');
+		$this->out();
 		$this->out('Checking if files are in sync with records');
 		$this->hr();
 
@@ -192,7 +177,7 @@ class SyncTask extends MediaShell {
 				$this->shortPath($dbItem['file']),
 				$this->_Model->name, $dbItem['id']
 			);
-			$this->out('');
+			$this->out();
 			$this->out($message);
 
 			$this->__dbItem = $dbItem;
@@ -214,7 +199,6 @@ class SyncTask extends MediaShell {
 			}
 		}
 	}
-
 /**
  * Checks if records are in sync with files
  *
@@ -222,7 +206,7 @@ class SyncTask extends MediaShell {
  * @return void
  */
 	function _checkRecordsWithFiles() {
-		$this->out('');
+		$this->out();
 		$this->out('Checking if records are in sync with files');
 		$this->hr();
 
@@ -261,7 +245,6 @@ class SyncTask extends MediaShell {
 			return true;
 		}
 	}
-
 /**
  * Handles orphaned records
  *
@@ -282,7 +265,6 @@ class SyncTask extends MediaShell {
 		}
 		return false;
 	}
-
 /**
  * Handles mismatching checksums
  *
@@ -314,7 +296,6 @@ class SyncTask extends MediaShell {
 			return true;
 		}
 	}
-
 /**
  * Handles orphaned files
  *
@@ -368,7 +349,6 @@ class SyncTask extends MediaShell {
 		$this->out('Corrected dirname and basename');
 		return true;
 	}
-
 /**
  * Deletes current record
  *
@@ -387,7 +367,6 @@ class SyncTask extends MediaShell {
 	}
 
 	/* map related methods */
-
 
 /**
  * Generates filesystem and model maps
@@ -419,7 +398,6 @@ class SyncTask extends MediaShell {
 		}
 		return array($fsMap, $dbMap);
 	}
-
 /**
  * Finds an item's file by it's checksum
  *
@@ -436,7 +414,6 @@ class SyncTask extends MediaShell {
 		}
 		return false;
 	}
-
 /**
  * Finds an item's file by it's name
  *

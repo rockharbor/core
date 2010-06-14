@@ -18,7 +18,6 @@
  */
 App::import('Vendor', 'Media.MimeMagic');
 require_once dirname(dirname(dirname(__FILE__))) . DS . 'fixtures' . DS . 'test_data.php';
-
 /**
  * Mime Magic Test Case Class
  *
@@ -55,20 +54,20 @@ class MimeMagicTest extends CakeTestCase {
 		$fileA = $this->TestData->getFile('magic.apache.snippet.db');
 		$fileB = $this->TestData->getFile('magic.freedesktop.snippet.db');
 
-		$Mime = new MimeMagic($fileA);
+		$Mime =& new MimeMagic($fileA);
 
-		$Mime = new MimeMagic($fileB);
+		$Mime =& new MimeMagic($fileB);
 
 		$this->expectError();
-		$Mime = new MimeMagic(5);
+		$Mime =& new MimeMagic(5);
 	}
 
 	function testToArrayAndRead() {
 		$file = $this->TestData->getFile('magic.apache.snippet.db');
 
-		$Mime = new MimeMagic($file);
+		$Mime =& new MimeMagic($file);
 		$expected = $Mime->toArray();
-		$Mime = new MimeMagic($expected);
+		$Mime =& new MimeMagic($expected);
 		$result = $Mime->toArray();
 
 		$this->assertEqual($result, $expected);
@@ -76,12 +75,12 @@ class MimeMagicTest extends CakeTestCase {
 
 	function testAnalyzeFail() {
 		$file = $this->TestData->getFile('magic.apache.snippet.db');
-		$Mime = new MimeMagic($file);
+		$Mime =& new MimeMagic($file);
 
 		$this->assertEqual($Mime->analyze('i-dont-exist.sla'), array());
 
 		$file = $this->TestData->getFile('magic.freedesktop.snippet.db');
-		$Mime = new MimeMagic($file);
+		$Mime =& new MimeMagic($file);
 
 		$this->assertEqual($Mime->analyze('i-dont-exist.sla'), array());
 	}
@@ -93,7 +92,7 @@ class MimeMagicTest extends CakeTestCase {
 		if ($skip) { /* Skipping does not silence the error */
 			$this->expectError();
 		}
-		$Mime = new MimeMagic($file);
+		$Mime =& new MimeMagic($file);
 
 		$this->assertEqual($Mime->analyze($this->TestData->getFile('ms.snippet.avi')), 'video/x-msvideo');
 		$this->assertEqual($Mime->analyze($this->TestData->getFile('image-gif.gif')), 'image/gif');

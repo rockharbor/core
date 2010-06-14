@@ -20,7 +20,6 @@ App::import('Model', 'Media.Attachment');
 require_once 'models.php';
 require_once dirname(dirname(dirname(__FILE__))) . DS . 'fixtures' . DS . 'test_data.php';
 require_once dirname(dirname(dirname(dirname(__FILE__)))) . DS . 'config' . DS . 'core.php';
-
 /**
  * Attachment Test Case Class
  *
@@ -34,23 +33,43 @@ class AttachmentTestCase extends CakeTestCase {
 	);
 
 	function setUp() {
-		$this->Data = new TestData();
-		$this->Folder = new Folder(TMP . 'tests' . DS, true);
-		new Folder($this->Folder->pwd() . 'transfer' . DS, true);
-		new Folder($this->Folder->pwd() . 'static' . DS, true);
-		new Folder($this->Folder->pwd() . 'filter' . DS, true);
+		$this->TestData = new TestData();
+		$this->TestFolder = new Folder(TMP . 'test_suite' . DS, true);
+		new Folder($this->TestFolder->pwd() . 'transfer' . DS, true);
+		new Folder($this->TestFolder->pwd() . 'static' . DS, true);
+		new Folder($this->TestFolder->pwd() . 'filter' . DS, true);
 	}
 
 	function tearDown() {
-		$this->Data->flushFiles();
-		$this->Folder->delete();
+		$this->TestData->flushFiles();
+		$this->TestFolder->delete();
 		ClassRegistry::flush();
 	}
 
 	function testHasOne() {
-		$Model = $this->_model('hasOne');
+		$Model = ClassRegistry::init('Movie');
+		$assoc = array(
+			'Attachment' => array(
+				'className' => 'Media.Attachment',
+				'foreignKey' => 'foreign_key',
+				'conditions' => array('Attachment.model' => 'Movie'),
+				'dependent' => true,
+		));
+		$Model->bindModel(array('hasOne' => $assoc), false);
 
-		$file = $this->Data->getFile(array('image-jpg.jpg' => 'ta.jpg'));
+		$Model->Attachment->Behaviors->attach('Media.Polymorphic', array(
+			'classField' => 'model',
+			'foreignKey' => 'foreign_key'
+		));
+		$Model->Attachment->Behaviors->attach('Media.Transfer', array(
+			'baseDirectory' => TMP,
+			'destinationFile' => 'test_suite:DS:transfer:DS::Source.basename:'
+		));
+		$Model->Attachment->Behaviors->attach('Media.Media', array(
+			'filterDirectory' => $this->TestFolder->pwd() . 'filter' . DS
+		));
+
+		$file = $this->TestData->getFile(array('image-jpg.jpg' => 'ta.jpg'));
 		$data = array(
 			'Movie' => array('title' => 'Weekend', 'director' => 'Jean-Luc Godard'),
 			'Attachment' => array('file' => $file, 'model' => 'Movie')
@@ -58,7 +77,7 @@ class AttachmentTestCase extends CakeTestCase {
 
 		$Model->create();
 		$this->assertTrue($Model->saveAll($data, array('validate' => 'first')));
-		$file = $Model->Attachment->transferred();
+		$file = $Model->Attachment->getLastTransferredFile();
 		$this->assertTrue(file_exists($file));
 
 		$result = $Model->find('first', array('conditions' => array('title' => 'Weekend')));
@@ -66,7 +85,7 @@ class AttachmentTestCase extends CakeTestCase {
 			'id' => 1,
 			'model' => 'Movie',
 			'foreign_key' => 4,
-			'dirname' => 'transfer/img',
+			'dirname' => 'tmp/test_suite/transfer',
 			'basename' => 'ta.jpg',
 			'checksum' => '1920c29e7fbe4d1ad2f9173ef4591133',
 			'group' => null,
@@ -76,14 +95,34 @@ class AttachmentTestCase extends CakeTestCase {
 
 		$result = $Model->delete($Model->getLastInsertID());
 		$this->assertTrue($result);
-		$this->assertFalse(file_exists($this->Folder->pwd() . 'transfer' .  DS . 'ta.jpg'));
+		$this->assertFalse(file_exists($this->TestFolder->pwd() . 'transfer' .  DS . 'ta.jpg'));
 	}
 
 	function testHasMany() {
-		$Model = $this->_model('hasMany');
+		$Model = ClassRegistry::init('Movie');
+		$assoc = array(
+			'Attachment' => array(
+				'className' => 'Media.Attachment',
+				'foreignKey' => 'foreign_key',
+				'conditions' => array('Attachment.model' => 'Movie'),
+				'dependent' => true,
+		));
+		$Model->bindModel(array('hasMany' => $assoc), false);
 
-		$fileA = $this->Data->getFile(array('image-jpg.jpg' => 'ta.jpg'));
-		$fileB = $this->Data->getFile(array('image-png.png' => 'tb.png'));
+		$Model->Attachment->Behaviors->attach('Media.Polymorphic', array(
+			'classField' => 'model',
+			'foreignKey' => 'foreign_key'
+		));
+		$Model->Attachment->Behaviors->attach('Media.Transfer', array(
+			'baseDirectory' => TMP,
+			'destinationFile' => 'test_suite:DS:transfer:DS::Source.basename:'
+		));
+		$Model->Attachment->Behaviors->attach('Media.Media', array(
+			'filterDirectory' => $this->TestFolder->pwd() . 'filter' . DS
+		));
+
+		$fileA = $this->TestData->getFile(array('image-jpg.jpg' => 'ta.jpg'));
+		$fileB = $this->TestData->getFile(array('image-png.png' => 'tb.png'));
 		$data = array(
 			'Movie' => array('title' => 'Weekend', 'director' => 'Jean-Luc Godard'),
 			'Attachment' => array(
@@ -94,8 +133,8 @@ class AttachmentTestCase extends CakeTestCase {
 		$Model->create();
 		$result = $Model->saveAll($data, array('validate' => 'first'));
 		$this->assertTrue($result);
-		$this->assertTrue(file_exists($this->Folder->pwd() . 'transfer' . DS . 'img' . DS . 'ta.jpg'));
-		$this->assertTrue(file_exists($this->Folder->pwd() . 'transfer' . DS . 'img' . DS . 'tb.png'));
+		$this->assertTrue(file_exists($this->TestFolder->pwd() . 'ta.jpg'));
+		$this->assertTrue(file_exists($this->TestFolder->pwd() . 'tb.png'));
 
 		$result = $Model->find('first', array('conditions' => array('title' => 'Weekend')));
 		$expected = array(
@@ -103,7 +142,7 @@ class AttachmentTestCase extends CakeTestCase {
 				'id' => 1,
 				'model' => 'Movie',
 				'foreign_key' => 4,
-				'dirname' => 'transfer/img',
+				'dirname' => 'tmp/test_suite/transfer',
 				'basename' => 'ta.jpg',
 				'checksum' => '1920c29e7fbe4d1ad2f9173ef4591133',
 				'group' => null,
@@ -113,7 +152,7 @@ class AttachmentTestCase extends CakeTestCase {
 				'id' => 2,
 				'model' => 'Movie',
 				'foreign_key' => 4,
-				'dirname' => 'transfer/img',
+				'dirname' => 'tmp/test_suite/transfer',
 				'basename' => 'tb.png',
 				'checksum' => '7f9af648b511f2c83b1744f42254983f',
 				'group' => null,
@@ -123,11 +162,12 @@ class AttachmentTestCase extends CakeTestCase {
 
 		$result = $Model->delete($Model->getLastInsertID());
 		$this->assertTrue($result);
-		$this->assertFalse(file_exists($this->Folder->pwd() . 'transfer' .  DS . 'ta.jpg'));
-		$this->assertFalse(file_exists($this->Folder->pwd() . 'transfer' .  DS . 'tb.jpg'));
+		$this->assertFalse(file_exists($this->TestFolder->pwd() . 'transfer' .  DS . 'ta.jpg'));
+		$this->assertFalse(file_exists($this->TestFolder->pwd() . 'transfer' .  DS . 'tb.jpg'));
 	}
 
 	function testGroupedHasMany() {
+		$Model = ClassRegistry::init('Movie');
 		$assoc = array(
 			'Photo' => array(
 				'className' => 'Media.Attachment',
@@ -135,10 +175,22 @@ class AttachmentTestCase extends CakeTestCase {
 				'conditions' => array('Photo.model' => 'Movie', 'Photo.group' => 'photo'),
 				'dependent' => true
 		));
-		$Model = $this->_model('hasMany', $assoc);
+		$Model->bindModel(array('hasMany' => $assoc), false);
 
-		$fileA = $this->Data->getFile(array('image-png.png' => 'ta.png'));
-		$fileB = $this->Data->getFile(array('image-png.png' => 'tb.png'));
+		$Model->Photo->Behaviors->attach('Media.Polymorphic', array(
+			'classField' => 'model',
+			'foreignKey' => 'foreign_key'
+		));
+		$Model->Photo->Behaviors->attach('Media.Transfer', array(
+			'baseDirectory' => TMP,
+			'destinationFile' => 'test_suite:DS:transfer:DS:photo:DS::Source.basename:'
+		));
+		$Model->Photo->Behaviors->attach('Media.Media', array(
+			'filterDirectory' => $this->TestFolder->pwd() . 'filter' . DS
+		));
+
+		$fileA = $this->TestData->getFile(array('image-png.png' => 'ta.png'));
+		$fileB = $this->TestData->getFile(array('image-png.png' => 'tb.png'));
 		$data = array(
 			'Movie' => array('title' => 'Weekend', 'director' => 'Jean-Luc Godard'),
 			'Photo' => array(
@@ -149,8 +201,8 @@ class AttachmentTestCase extends CakeTestCase {
 		$Model->create();
 		$result = $Model->saveAll($data, array('validate' => 'first'));
 		$this->assertTrue($result);
-		$this->assertTrue(file_exists($this->Folder->pwd() . 'transfer' . DS . 'img' . DS . 'ta.png'));
-		$this->assertTrue(file_exists($this->Folder->pwd() . 'transfer' . DS . 'img' . DS . 'tb.png'));
+		$this->assertTrue(file_exists($this->TestFolder->pwd() . 'transfer' . DS . 'photo' . DS . 'ta.png'));
+		$this->assertTrue(file_exists($this->TestFolder->pwd() . 'transfer' . DS . 'photo' . DS . 'tb.png'));
 
 		$result = $Model->find('first', array('conditions' => array('title' => 'Weekend')));
 		$expected = array(
@@ -165,7 +217,7 @@ class AttachmentTestCase extends CakeTestCase {
 					'id' => 1,
 					'model' => 'Movie',
 					'foreign_key' => 4,
-					'dirname' => 'transfer/img',
+					'dirname' => 'tmp/test_suite/transfer/photo',
 					'basename' => 'ta.png',
 					'checksum' => '7f9af648b511f2c83b1744f42254983f',
 					'group' => 'photo',
@@ -175,7 +227,7 @@ class AttachmentTestCase extends CakeTestCase {
 					'id' => 2,
 					'model' => 'Movie',
 					'foreign_key' => 4,
-					'dirname' => 'transfer/img',
+					'dirname' => 'tmp/test_suite/transfer/photo',
 					'basename' => 'tb.png',
 					'checksum' => '7f9af648b511f2c83b1744f42254983f',
 					'group' => 'photo',
@@ -185,38 +237,8 @@ class AttachmentTestCase extends CakeTestCase {
 
 		$result = $Model->delete($Model->getLastInsertID());
 		$this->assertTrue($result);
-		$this->assertFalse(file_exists($this->Folder->pwd() . 'transfer' . DS . 'photo' . DS . 'ta.png'));
-		$this->assertFalse(file_exists($this->Folder->pwd() . 'transfer' . DS . 'photo' . DS . 'tb.png'));
-	}
-
-	function _model($assocType, $assoc = null) {
-		$Model = ClassRegistry::init('Movie');
-
-		if ($assoc === null) {
-			$assoc = array(
-				'Attachment' => array(
-					'className' => 'Media.Attachment',
-					'foreignKey' => 'foreign_key',
-					'conditions' => array('Attachment.model' => 'Movie'),
-					'dependent' => true,
-			));
-		}
-		$Model->bindModel(array($assocType => $assoc), false);
-		$assocModelName = key($assoc);
-
-		$Model->{$assocModelName}->Behaviors->attach('Media.Transfer', array(
-			'baseDirectory' => $this->Folder->pwd() . 'transfer' . DS
-		));
-		$Model->{$assocModelName}->Behaviors->attach('Media.Generator', array(
-			'baseDirectory' => $this->Folder->pwd(),
-			'filterDirectory' => $this->Folder->pwd() . 'filter' . DS
-		));
-		$Model->{$assocModelName}->Behaviors->attach('Media.Coupler');
-		$Model->{$assocModelName}->Behaviors->attach('Media.Polymorphic');
-		$Model->{$assocModelName}->Behaviors->attach('Media.Meta', array(
-			'level' => 2
-		));
-		return $Model;
+		$this->assertFalse(file_exists($this->TestFolder->pwd() . 'transfer' . DS . 'photo' . DS . 'ta.png'));
+		$this->assertFalse(file_exists($this->TestFolder->pwd() . 'transfer' . DS . 'photo' . DS . 'tb.png'));
 	}
 }
 ?>

@@ -17,7 +17,6 @@
  * @link       http://github.com/davidpersson/media
  */
 uses('file');
-
 /**
  * Mime Magic Class
  *
@@ -29,7 +28,6 @@ uses('file');
  * @subpackage media.libs
  */
 class MimeMagic extends Object {
-
 /**
  * Items indexed by priority
  *
@@ -37,7 +35,6 @@ class MimeMagic extends Object {
  * @access protected
  */
 	var $_items = array();
-
 /**
  * Constructor
  *
@@ -47,7 +44,6 @@ class MimeMagic extends Object {
 	function __construct($db) {
 		$this->__read($db);
 	}
-
 /**
  * Analyzes a files contents and determines the file's MIME type
  *
@@ -72,7 +68,6 @@ class MimeMagic extends Object {
 		}
 		return $this->__test($file, $filtered);
 	}
-
 /**
  * Determine the format of given database
  *
@@ -107,7 +102,6 @@ class MimeMagic extends Object {
 		}
 		return null;
 	}
-
 /**
  * Register a magic item
  *
@@ -156,7 +150,6 @@ class MimeMagic extends Object {
 				return false;
 		}
 	}
-
 /**
  * Exports current items as an array
  *
@@ -174,7 +167,6 @@ class MimeMagic extends Object {
 		}
 		return $results;
 	}
-
 /**
  * Will load a file from various sources
  *
@@ -206,7 +198,7 @@ class MimeMagic extends Object {
 			$sectionRegex = '^\[(\d{1,3}):([-\w.\+]+\/[-\w.\+]+)\]$';
 			$itemRegex = '^(\d*)\>+(\d+)=+([^&~\+]{2})([^&~\+]+)&?([^~\+]*)~?(\d*)\+?(\d*).*$';
 
-			$File = new File($db);
+			$File =& new File($db);
 			$File->open('rb');
 			$File->offset(12);
 
@@ -248,7 +240,7 @@ class MimeMagic extends Object {
 		} elseif ($format === 'Apache Module mod_mime_magic') {
 			$itemRegex = '^(\>*)(\d+)\t+(\S+)\t+([\S^\040]+)\t*([-\w.\+]+\/[-\w.\+]+)*\t*(\S*)$';
 
-			$File = new File($db);
+			$File =& new File($db);
 			$File->open('rb');
 
 			while (!feof($File->handle)) {
@@ -279,7 +271,6 @@ class MimeMagic extends Object {
 			trigger_error('MimeGlob::read - Unknown db format', E_USER_WARNING);
 		}
 	}
-
 /**
  * Tests a file's contents against magic items
  *
@@ -289,7 +280,7 @@ class MimeMagic extends Object {
  * @access private
  */
 	function __test($file, $items) {
-		$File = new File($file);
+		$File =& new File($file);
 
 		if (!$File->readable()) {
 			return false;
@@ -304,7 +295,6 @@ class MimeMagic extends Object {
 		}
 		return false;
 	}
-
 /**
  * Recursively tests a file's contents against a magic item
  *
@@ -333,7 +323,6 @@ class MimeMagic extends Object {
 		}
 		return false;
 	}
-
 /**
  * Format a value for testing
  *

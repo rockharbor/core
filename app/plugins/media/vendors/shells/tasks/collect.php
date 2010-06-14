@@ -17,7 +17,6 @@
  * @link       http://github.com/davidpersson/media
  */
 class CollectTask extends MediaShell {
-
 /**
  * Holds mapped files
  *
@@ -25,7 +24,6 @@ class CollectTask extends MediaShell {
  * @access protected
  */
 	var $_map;
-
 /**
  * Holds search paths
  *
@@ -33,7 +31,6 @@ class CollectTask extends MediaShell {
  * @access protected
  */
 	var $_paths;
-
 /**
  * Indicates if copy or link method should be used
  *
@@ -41,7 +38,6 @@ class CollectTask extends MediaShell {
  * @access protected
  */
 	var $_link;
-
 /**
  * Patterns to use for exlcuding files
  *
@@ -49,7 +45,6 @@ class CollectTask extends MediaShell {
  * @access protected
  */
 	var $_exclude;
-
 /**
  * Main task method
  *
@@ -85,7 +80,7 @@ class CollectTask extends MediaShell {
 			$answer = $this->in('Would you like to link (instead of copy) the files?', 'y,n', 'n');
 			$this->_link = $answer == 'y';
 		}
-		$this->out('');
+		$this->out();
 		$this->out('Mapping');
 		$this->hr();
 
@@ -99,19 +94,18 @@ class CollectTask extends MediaShell {
 			$this->out($message);
 		}
 
-		$this->out('');
+		$this->out();
 
 		if ($this->in('Looks OK?', 'y,n', 'y') == 'n') {
 			return false;
 		}
 
-		$this->out('');
+		$this->out();
 		$this->out('Collecting');
 		$this->hr();
 
 		return $this->_perform();
 	}
-
 /**
  * Returns all common paths where media files are stored
  *
@@ -119,9 +113,10 @@ class CollectTask extends MediaShell {
  * @return array
  */
 	function _paths() {
-		$plugins = array_map('Inflector::underscore', Configure::listObjects('plugin'));
+		$plugins = array_map('strtolower', Configure::listObjects('plugin'));
+
 		foreach ($plugins as $plugin) {
-			foreach (App::path('plugins') as $pluginPath) {
+			foreach (Configure::read('pluginPaths') as $pluginPath) {
 				if (is_dir($pluginPath . $plugin)) {
 					$pluginVendorPaths[] = $pluginPath . $plugin .  DS . 'vendors' . DS;
 				}
@@ -129,7 +124,7 @@ class CollectTask extends MediaShell {
 		}
 
 		$paths = array_merge(
-			App::path('vendors'),
+			Configure::read('vendorPaths'),
 			array(WWW_ROOT),
 			$pluginVendorPaths
 		);
@@ -157,7 +152,6 @@ class CollectTask extends MediaShell {
 		}
 		return $paths;
 	}
-
 /**
  * (Interactively) maps source files to destinations
  *
@@ -186,11 +180,11 @@ class CollectTask extends MediaShell {
 				continue;
 			}
 			$search[] = '/' . preg_quote($Folder->pwd(), '/') . '/';
-			$search[] = '/(' . implode('|', Media::short()) . ')' . preg_quote(DS, '/') . '/';
+			$search[] = '/(' . implode('|', Medium::short()) . ')' . preg_quote(DS, '/') . '/';
 			$fragment = preg_replace($search, null, $file);
 
 			$mapped = array(
-				$file => MEDIA_STATIC . Media::short($file) . DS . $fragment
+				$file => MEDIA_STATIC . Medium::short($file) . DS . $fragment
 			);
 
 			while (in_array(current($mapped), $this->_map) && $mapped) {
@@ -211,7 +205,6 @@ class CollectTask extends MediaShell {
 			}
 		}
 	}
-
 /**
  * Deals with collisions of destination files
  *
@@ -224,13 +217,13 @@ class CollectTask extends MediaShell {
 		$Right = new File(key($mapped));
 
 		$this->out('Collision:');
-		$this->out('');
+		$this->out();
 		$this->out(sprintf('%s', $this->shortPath($Left->pwd())));
 		$this->out(sprintf('|  %s', $this->shortPath($Right->pwd())));
 		$this->out(sprintf('|  | '));
 		$this->out(sprintf('V  V '));
 		$this->out(sprintf('%s', $this->shortPath(current($mapped))));
-		$this->out('');
+		$this->out();
 
 		if ($Left->md5() == $Right->md5()) {
 			$this->out('Both files have the same checksum.');
@@ -243,7 +236,6 @@ class CollectTask extends MediaShell {
 		}
 		return array($Right->pwd() => $this->_rename($Right->pwd()));
 	}
-
 /**
  * Prompts for renaming a file's basename
  *
@@ -256,7 +248,6 @@ class CollectTask extends MediaShell {
 		$basename = $this->in($message, null, basename($file));
 		return dirname($file) . DS . $basename;
 	}
-
 /**
  * Performs the copying/linking of mapped files
  *
@@ -279,7 +270,7 @@ class CollectTask extends MediaShell {
 			$message = sprintf('[%-6s] %s', 	$result ? 'OK' : 'FAILED', 	$this->shortPath($old));
 			$this->progress(++$i, $message);
 		}
-		$this->out('');
+		$this->out();
 		return true;
 	}
 }

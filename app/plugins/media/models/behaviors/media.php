@@ -248,7 +248,7 @@ class MediaBehavior extends ModelBehavior {
  */
 	function beforeDelete(&$Model, $cascade = true) {
 		extract($this->settings[$Model->alias]);
-		echo '<br><br>HI<br><br>';
+
 		$query = array(
 			'conditions' => array('id' => $Model->id),
 			'fields'     => array('dirname', 'basename'),
@@ -263,9 +263,8 @@ class MediaBehavior extends ModelBehavior {
 		$file  = $baseDirectory;
 		$file .= $result[$Model->alias]['dirname'];
 		$file .= DS . $result[$Model->alias]['basename'];
-		debug($file);
+
 		$File = new File($file);
-		debug($filterDirectory);
 		$Folder = new Folder($filterDirectory);
 
 		list($versions, ) = $Folder->ls();

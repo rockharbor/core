@@ -2,15 +2,8 @@
 /**
  * Attachments Element File
  *
- * Element listing associated attachments of the view's model.
- * Add, delete (detach) an Attachment.  This element requires
- * the media helper to be loaded and `$this->data` to be populated.
- *
- * Possible options:
- *  - `'previewVersion'` Defaults to `'xxs'`.
- *  - `'assocAlias'` Defaults to `'Attachment'`.
- *  - `'model'` Defaults to the model of the current form.
- *  - `'title'` Defaults to the plural form of `'assocAlias'`.
+ * Element listing associated attachments of the view's model
+ * Add, delete (detach) an Attachment
  *
  * Copyright (c) 2007-2010 David Persson
  *
@@ -27,12 +20,6 @@
  * @link       http://github.com/davidpersson/media
  */
 
-if (!isset($this->Media) || !is_a($this->Media, 'MediaHelper')) {
-	$message = 'Attachments Element - The media helper is not loaded but required.';
-	trigger_error($message, E_USER_NOTICE);
-	return;
-}
-
 if (!isset($previewVersion)) {
 	$previewVersion = 'xxs';
 }
@@ -46,27 +33,23 @@ if (!isset($assocAlias)) {
 }
 
 if (!isset($model)) {
-	$model = $this->Form->model();
+	$model = $form->model();
 }
 
-$modelId = $this->Form->value($this->Form->model().'.id');
+$modelId = $form->value($form->model().'.id');
 
 if (isset($this->data[$assocAlias][0]['basename'])) {
 	array_unshift($this->data[$assocAlias],array());
 }
-
-if (!isset($title)) {
-	$title = sprintf(__('%s', true), Inflector::pluralize($assocAlias));
-}
 ?>
 <div class="attachments element">
-	<?php echo $title ?>
+	<?php printf(__('%s', true), Inflector::pluralize($assocAlias)) ?>
 	<!-- New Attachment -->
 	<div class="new">
 	<?php
-		echo $this->Form->hidden($assocAlias . '.0.model', array('value' => $model));
-		echo $this->Form->hidden($assocAlias . '.0.group', array('value' => strtolower($assocAlias)));
-		echo $this->Form->input($assocAlias . '.0.file', array(
+		echo $form->hidden($assocAlias . '.0.model', array('value' => $model));
+		echo $form->hidden($assocAlias . '.0.group', array('value' => strtolower($assocAlias)));
+		echo $form->input($assocAlias . '.0.file', array(
 			'label' => __('File', true),
 			'type'  => 'file',
 			'error' => array(
@@ -80,7 +63,7 @@ if (!isset($title)) {
 				'extension'  => __('The file has the wrong extension.', true),
 				'mimeType'   => __('The file has the wrong MIME type.', true),
 		)));
-		echo $this->Form->input($assocAlias . '.0.alternative', array(
+		echo $form->input($assocAlias . '.0.alternative', array(
 			'label' => __('Textual replacement', true),
 			'value' => '',
 			'error' => __('A textual replacement must be provided.', true)
@@ -95,34 +78,35 @@ if (!isset($title)) {
 		<?php
 			$item = $this->data[$assocAlias][$i];
 
-			echo $this->Form->hidden($assocAlias . '.' . $i . '.id', array('value' => $item['id']));
-			echo $this->Form->hidden($assocAlias . '.' . $i . '.model', array('value' => $model));
-			echo $this->Form->hidden($assocAlias . '.' . $i . '.group', array('value' => $item['group']));
-			echo $this->Form->hidden($assocAlias . '.' . $i . '.dirname', array('value' => $item['dirname']));
-			echo $this->Form->hidden($assocAlias . '.' . $i . '.basename', array('value' => $item['basename']));
-			echo $this->Form->hidden($assocAlias . '.' . $i . '.alternative', array('value' => $item['alternative']));
+			echo $form->hidden($assocAlias . '.' . $i . '.id', array('value' => $item['id']));
+			echo $form->hidden($assocAlias . '.' . $i . '.model', array('value' => $model));
+			echo $form->hidden($assocAlias . '.' . $i . '.group', array('value' => $item['group']));
+			echo $form->hidden($assocAlias . '.' . $i . '.dirname', array('value' => $item['dirname']));
+			echo $form->hidden($assocAlias . '.' . $i . '.basename', array('value' => $item['basename']));
+			echo $form->hidden($assocAlias . '.' . $i . '.alternative', array('value' => $item['alternative']));
 
-			if ($file = $this->Media->file($item)) {
-				$url = $this->Media->url($file);
+			if ($file = $medium->file($item)) {
+				$url = $medium->url($file);
 
-				echo $this->Media->embed($this->Media->file($previewVersion . '/', $item), array(
+				echo $medium->embed($medium->file($previewVersion . '/', $item), array(
 					'restrict' => array('image')
 				));
 
-		 		$Media = Media::factory($file);
-				$size = $this->Media->size($file);
+		 		$Medium = Medium::factory($file);
+				$size = $medium->size($file);
 
-				if (isset($this->Number)) {
-					$size = $this->Number->toReadableSize($size);
+				if (isset($number)) {
+					$size = $number->toReadableSize($size);
 				} else {
 					$size .= ' Bytes';
 				}
 
-				printf('<span class="description">%s&nbsp;(%s/%s) <em>%s</em></span>',
-					$url ? $this->Html->link($item['basename'], $url) : $item['basename'],
-					strtolower($Media->name), $size, $item['alternative']);
+				printf('<span>%s&nbsp;(%s/%s) <em>%s</em></span>',
+						$url ? $html->link($item['basename'], $url) : $item['basename'],
+						strtolower($Medium->name), $size, $item['alternative']);
 			}
-			echo $this->Form->input($assocAlias . '.' . $i . '.delete', array(
+
+			echo $form->input($assocAlias . '.' . $i . '.delete', array(
 				'label' => __('Release', true),
 				'type' => 'checkbox',
 				'value' => 0

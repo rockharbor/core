@@ -16,7 +16,6 @@
  * @license    http://www.opensource.org/licenses/mit-license.php The MIT License
  * @link       http://github.com/davidpersson/media
  */
-
 /**
  * Attachment Model Class
  *
@@ -26,7 +25,6 @@
  * @subpackage media.models
  */
 class Attachment extends MediaAppModel {
-
 /**
  * Name of model
  *
@@ -34,7 +32,6 @@ class Attachment extends MediaAppModel {
  * @access public
  */
 	var $name = 'Attachment';
-
 /**
  * Name of table to use
  *
@@ -42,7 +39,6 @@ class Attachment extends MediaAppModel {
  * @access public
  */
 	var $useTable = 'attachments';
-
 /**
  * actsAs property
  *
@@ -50,23 +46,22 @@ class Attachment extends MediaAppModel {
  * @access public
  */
 	var $actsAs = array(
+		'Media.Polymorphic' => array(
+			'classField' => 'model',
+			'foreignKey' => 'foreign_key',
+		),
 		'Media.Transfer' => array(
-			'trustClient' => false,
-			'baseDirectory' => MEDIA_TRANSFER,
+			'trustClient'     => false,
+			'destinationFile' => ':Medium.short::DS::Source.basename:',
+			'baseDirectory'   => MEDIA_TRANSFER,
 			'createDirectory' => true,
 			'alternativeFile' => 100
 		),
-		'Media.Generator' => array(
-			'baseDirectory' => MEDIA,
+		'Media.Media' => array(
+			'metadataLevel'   => 2,
+			'makeVersions'    => true,
 			'filterDirectory' => MEDIA_FILTER,
-			'createDirectory' => true,
-		),
-		'Media.Polymorphic',
-		'Media.Coupler',
-		'Media.Meta' => array(
-			'level'	 => 2
 	));
-
 /**
  * Validation rules for file and alternative fields
  *
@@ -107,7 +102,6 @@ class Attachment extends MediaAppModel {
 			'required'   => false,
 			'allowEmpty' => true,
 		));
-
 /**
  * beforeMake Callback
  *
@@ -116,7 +110,7 @@ class Attachment extends MediaAppModel {
  * $process an array with the following contents:
  *	overwrite - If the destination file should be overwritten if it exists
  *	directory - The destination directory (guranteed to exist)
- *  name - Media name of $file (e.g. `'Image'`)
+ *  name - Medium name of $file (e.g. `'Image'`)
  *	version - The version requested to be processed (e.g. `'xl'`)
  *	instructions - An array containing which names of methods to be called
  *
@@ -126,17 +120,7 @@ class Attachment extends MediaAppModel {
  * @return boolean True signals that the file has been processed,
  * 	false or null signals that the behavior should process the file
  */
-	// function beforeMake($file, $process) {
-	// }
-
-/**
- * Returns the relative path to the destination file
- *
- * @param array $via Information about the temporary file
- * @param array $from Information about the source file
- * @return string The path to the destination file or false
- */
-	// function transferTo($via, $from) {
-	// }
+	function beforeMake($file, $process) {
+	}
 }
 ?>

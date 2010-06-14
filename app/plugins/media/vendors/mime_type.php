@@ -17,7 +17,6 @@
  * @link       http://github.com/davidpersson/media
  */
 uses('file');
-
 /**
  * Mime Type Class
  *
@@ -29,7 +28,6 @@ uses('file');
  * @subpackage media.libs
  */
 class MimeType extends Object {
-
 /**
  * Magic
  *
@@ -37,7 +35,6 @@ class MimeType extends Object {
  * @access private
  */
 	var $__magic;
-
 /**
  * Glob
  *
@@ -45,7 +42,6 @@ class MimeType extends Object {
  * @access private
  */
 	var $__glob;
-
 /**
  * Return a singleton instance of MimeType.
  *
@@ -56,13 +52,12 @@ class MimeType extends Object {
 		static $instance = array();
 
 		if (!$instance) {
-			$instance[0] = new MimeType();
+			$instance[0] =& new MimeType();
 			$instance[0]->__loadMagic(Configure::read('Mime.magic'));
 			$instance[0]->__loadGlob(Configure::read('Mime.glob'));
 		}
 		return $instance[0];
 	}
-
 /**
  * Change configuration during runtime
  *
@@ -79,7 +74,6 @@ class MimeType extends Object {
 			$_this->__loadGlob($config);
 		}
 	}
-
 /**
  * Guesses the extension (suffix) for an existing file or a MIME type
  *
@@ -120,7 +114,6 @@ class MimeType extends Object {
 		}
 		return null;
 	}
-
 /**
  * Guesses the MIME type of the file
  *
@@ -171,7 +164,7 @@ class MimeType extends Object {
 		$magicMatch = empty($magicMatch) ? array() : array($magicMatch);
 
 		if (empty($magicMatch)) {
-			$File = new File($file);
+			$File =& new File($file);
 
 			if (preg_match('/[\t\n\r]+/', $File->read(32))) {
 				return 'text/plain';
@@ -192,7 +185,6 @@ class MimeType extends Object {
 		}
 		return null;
 	}
-
 /**
  * Simplifies a MIME type string
  *
@@ -215,7 +207,6 @@ class MimeType extends Object {
 		}
 		return $mimeType;
 	}
-
 /**
  * Sets magic property
  *
@@ -231,9 +222,9 @@ class MimeType extends Object {
 
 		if (($engine === 'fileinfo' || $engine === null) && extension_loaded('fileinfo')) {
 			if (isset($db)) {
-				$this->__magic = new finfo(FILEINFO_MIME, $db);
+				$this->__magic =& new finfo(FILEINFO_MIME, $db);
 			} else {
-				$this->__magic = new finfo(FILEINFO_MIME);
+				$this->__magic =& new finfo(FILEINFO_MIME);
 			}
 		} elseif (($engine === 'mime_magic' || $engine === null) && extension_loaded('mime_magic')) {
 			$this->__magic = 'mime_magic';
@@ -248,7 +239,7 @@ class MimeType extends Object {
 				$db = $this->__db('magic');
 			}
 			if (isset($db)) {
-				$this->__magic = new MimeMagic($db);
+				$this->__magic =& new MimeMagic($db);
 
 				if (!$cached) {
 					Cache::write('mime_magic_db', $this->__magic->toArray(), '_cake_core_');
@@ -258,7 +249,6 @@ class MimeType extends Object {
 			$this->__magic = null;
 		}
 	}
-
 /**
  * Sets glob property
  *
@@ -283,7 +273,7 @@ class MimeType extends Object {
 				$db = $this->__db('glob');
 			}
 			if (isset($db)) {
-				$this->__glob = new MimeGlob($db);
+				$this->__glob =& new MimeGlob($db);
 
 				if (!$cached) {
 					Cache::write('mime_glob_db', $this->__glob->toArray(), '_cake_core_');
@@ -293,7 +283,6 @@ class MimeType extends Object {
 			$this->__glob = null;
 		}
 	}
-
 /**
  * Finds the db file for given type
  *
@@ -305,7 +294,7 @@ class MimeType extends Object {
 		$searchPaths = array(
 			'mime_' . $type . '.php' => array(CONFIGS),
 			'mime_' . $type . '.db' => array_merge(
-				App::path('vendors'),
+				Configure::read('vendorPaths'),
 				array(dirname(__FILE__) . DS)
 			));
 

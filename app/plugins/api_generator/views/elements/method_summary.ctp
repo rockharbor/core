@@ -16,19 +16,16 @@ $title = (empty($isSearch)) ? __d('api_generator', 'Method Summary:', true) : __
 			<a href="#" id="hide-parent-methods"><?php __d('api_generator', 'Show/Hide parent methods'); ?></a>
 		</span>
 <?php endif; ?>
-		<table class="summary">
-			<tbody>
-			<?php $i = 0; ?>
+		<ul class="method-summary">
 			<?php foreach ($doc->methods as $method): ?>
-				<?php
+				<?php 
 				if ($apiDoc->excluded($method['access'], 'method')) :
 					continue;
 				endif;
-				$definedInThis = ($method['declaredInClass'] == $doc->classInfo['name']);
+				$parent = ($method['declaredInClass'] == $doc->classInfo['name']) ? '' : 'parent-method'; 
 				?>
-				<tr class="<?php echo ($i % 2) ? 'even' : 'odd'; ?> <?php echo $definedInThis ? '' : 'parent-method'; ?>">
-					<td class="access <?php echo $method['access']; ?>"><span><?php echo $method['access']; ?></span></td>
-					<td>
+				<li class="<?php echo $parent; ?>">
+					<span class="access <?php echo $method['access'] ?>">
 					<?php
 						if (empty($isSearch)):
 							echo $this->Html->link($method['signature'],
@@ -43,12 +40,10 @@ $title = (empty($isSearch)) ? __d('api_generator', 'Method Summary:', true) : __
 							);
 						endif;
 					?>
-					</td>
-				</tr>
-				<?php $i++;?>
+					</span>
+				</li>
 			<?php endforeach; ?>
-			</tbody>
-		</table>
+		</ul>
 	</div>
 </div>
 <?php echo $apiUtils->element('after_method_summary'); ?>

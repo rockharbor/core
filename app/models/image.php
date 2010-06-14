@@ -33,16 +33,7 @@ class Image extends MediaAppModel {
 			'createDirectory' => true,
 			'alternativeFile' => 100
 		),
-		'Media.Generator' => array(
-			'baseDirectory' => MEDIA,
-			'filterDirectory' => MEDIA_FILTER,
-			'createDirectory' => true,
-		),
 		'Media.Polymorphic',
-		'Media.Coupler',
-		'Media.Meta' => array(
-			'level'	 => 2
-		),
 		'Logable'
 	);
 

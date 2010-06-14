@@ -1,17 +1,11 @@
 <?php
-class AllMimeGroupTest extends TestSuite {
+class AllMimeGroupTest extends GroupTest {
 	var $label = 'All MIME related test cases';
 
 	function AllMimeGroupTest() {
-		TestManager::addTestFile(
-			$this, dirname(dirname(__FILE__)) . DS . 'cases' . DS . 'vendors' . DS . 'mime_glob'
-		);
-		TestManager::addTestFile(
-			$this, dirname(dirname(__FILE__)) . DS . 'cases' . DS . 'vendors' . DS . 'mime_magic'
-		);
-		TestManager::addTestFile(
-			$this, dirname(dirname(__FILE__)) . DS . 'cases' . DS . 'vendors' . DS . 'mime_type'
-		);
+		TestManager::addTestFile($this, dirname(__FILE__) . DS . '..' . DS . 'cases' . DS . 'vendors' . DS . 'mime_glob');
+		TestManager::addTestFile($this, dirname(__FILE__) . DS . '..' . DS . 'cases' . DS . 'vendors' . DS . 'mime_magic');
+		TestManager::addTestFile($this, dirname(__FILE__) . DS . '..' . DS . 'cases' . DS . 'vendors' . DS . 'mime_type');
 	}
 }
 ?>

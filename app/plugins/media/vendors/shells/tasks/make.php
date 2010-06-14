@@ -16,8 +16,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php The MIT License
  * @link       http://github.com/davidpersson/media
  */
-App::import('Vendor', 'Media.Media');
-
+App::import('Vendor', 'Media.Medium');
 /**
  * Make Task Class
  *
@@ -25,7 +24,6 @@ App::import('Vendor', 'Media.Media');
  * @subpackage media.shells.tasks
  */
 class MakeTask extends MediaShell {
-
 /**
  * An absolute path to a file or directory
  *
@@ -33,7 +31,6 @@ class MakeTask extends MediaShell {
  * @access public
  */
 	var $source;
-
 /**
  * An absolute path to a directory
  *
@@ -41,7 +38,6 @@ class MakeTask extends MediaShell {
  * @access public
  */
 	var $destination;
-
 /**
  * Optionally holds the version string
  *
@@ -49,7 +45,6 @@ class MakeTask extends MediaShell {
  * @access public
  */
 	var $version;
-
 /**
  * Force switch
  *
@@ -57,7 +52,6 @@ class MakeTask extends MediaShell {
  * @access public
  */
 	var $force;
-
 /**
  * Overwrite existing files
  *
@@ -65,7 +59,6 @@ class MakeTask extends MediaShell {
  * @access protected
  */
 	var $_overwrite = false;
-
 /**
  * Enable/disable creation of misssing directories
  *
@@ -73,7 +66,6 @@ class MakeTask extends MediaShell {
  * @access protected
  */
 	var $_createDirectories = false;
-
 /**
  * Main execution methpd
  *
@@ -87,13 +79,13 @@ class MakeTask extends MediaShell {
 		$this->destination = array_shift($this->args);
 
 		if (!isset($this->source)) {
-			$this->source = $this->in('Source File/Directory', null, MEDIA_STATIC);
+			$this->source = $this->in('Source File/Directory', null, MEDIA . 'static' . DS);
 		}
 		if (is_dir($this->source)) {
 			$this->source = Folder::slashTerm($this->source);
 		}
 		if (!isset($this->destination)) {
-			$this->destination = $this->in('Destination Directory', null, MEDIA_FILTER);
+			$this->destination = $this->in('Destination Directory', null, MEDIA . 'filter' . DS);
 		}
 		$this->destination = Folder::slashTerm($this->destination);
 
@@ -104,7 +96,7 @@ class MakeTask extends MediaShell {
 			$this->version = $this->params['version'];
 		}
 
-		$this->out('');
+		$this->out();
 		$this->out(sprintf('%-25s: %s', 'Source', $this->shortPath($this->source)));
 		$this->out(sprintf('%-25s: %s', 'Destination', $this->shortPath($this->destination)));
 		$this->out(sprintf('%-25s: %s', 'Overwrite existing', $this->_overwrite ? 'yes' : 'no'));
@@ -113,7 +105,7 @@ class MakeTask extends MediaShell {
 		if ($this->in('Looks OK?', 'y,n', 'y') == 'n') {
 			return false;
 		}
-		$this->out('');
+		$this->out();
 		$this->out('Making');
 		$this->hr();
 
@@ -130,9 +122,8 @@ class MakeTask extends MediaShell {
 			$this->progress($key, $this->shortPath($file));
 			$this->_make($file);
 		}
-		$this->out('');
+		$this->out();
 	}
-
 /**
  * "makes" a file
  *
@@ -142,13 +133,10 @@ class MakeTask extends MediaShell {
  */
 	function _make($file) {
 		$File = new File($file);
-		$name = Media::name($file);
+		$name = Medium::name($file);
 		$subdir = array_pop(explode(DS, dirname($this->source)));
 
 		if ($name === 'Icon' || strpos($file, 'ico' . DS) !== false) {
-			$message  = "MakeTask::_make - ";
-			$message .= "All functionality related to assets has been deprecated.";
-			trigger_error($message, E_USER_NOTICE);
 			return true;
 		}
 
@@ -170,13 +158,13 @@ class MakeTask extends MediaShell {
 				return false;
 			}
 
-			$Media = Media::make($File->pwd(), $instructions);
+			$Medium = Medium::make($File->pwd(), $instructions);
 
-			if (!$Media) {
-				$this->err('Failed to make version ' . $version . ' of media.');
+			if (!$Medium) {
+				$this->err('Failed to make version ' . $version . ' of medium.');
 				return false;
 			}
-			$Media->store($Folder->pwd() . $File->name, $this->_overwrite);
+			$Medium->store($Folder->pwd() . $File->name, $this->overwrite);
 		}
 		return true;
 	}
