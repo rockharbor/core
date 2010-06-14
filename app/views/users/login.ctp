@@ -7,6 +7,9 @@ echo $this->Form->create('User');
 <?php	
 	echo $this->Form->input('username');
 	echo $this->Form->input('password');	
+	echo $this->Form->input('remember_me', array(
+		'type' => 'checkbox'
+	));
 ?>
 </fieldset>
 <?php

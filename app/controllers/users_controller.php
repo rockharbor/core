@@ -36,7 +36,7 @@ class UsersController extends AppController {
  *
  * @var array
  */
-	var $components = array('FilterPagination', 'MultiSelect');
+	var $components = array('FilterPagination', 'MultiSelect', 'Cookie');
 
 /**
  * Model::beforeFilter() callback
@@ -179,8 +179,20 @@ class UsersController extends AppController {
 		if (isset($this->passedArgs['message'])) {
 			$this->Session->setFlash($this->passedArgs['message']);
 		}
+			
+		// check for remember me checkbox
+		if (!empty($this->data) && $this->data['User']['remember_me']) {
+			unset($this->data['User']['remember_me']);
+			$this->Session->del('Message.auth');
+			$this->Cookie->write('Auth.User', $this->data['User'], false, '+2 weeks');
+		}
+
+		// check for remember me cookie and use that data
+		if (empty($this->data) && !is_null($this->Cookie->read('Auth.User'))) {
+			$this->data['User'] = $this->Cookie->read('Auth.User');
+		}
 		
-		if (!empty($this->data)) {		
+		if (!empty($this->data)) {
 			if ($this->Auth->login($this->data)) {
 				$this->User->contain(array('Profile', 'Group'));
 				$this->Session->write('User', $this->User->read(null, $this->Auth->user('id')));
@@ -207,6 +219,7 @@ class UsersController extends AppController {
  */	
 	function logout() {
 		$redirect = $this->Auth->logout();
+		$this->Cookie->delete('Auth.User');
 		$this->Session->destroy();
 		$this->redirect($redirect);
 	}
