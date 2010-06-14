@@ -47,7 +47,7 @@ class SysEmailsController extends AppController {
 	function beforeFilter() {
 		parent::beforeFilter();
 		
-		$this->Auth->allow('bug_compose', '_sendEmail');
+		$this->Auth->allow('bug_compose');
 	}
 
 /**
@@ -66,7 +66,7 @@ class SysEmailsController extends AppController {
 			$this->SysEmail->set($this->data);
 			
 			// send it!
-			if ($this->SysEmail->validates() && $this->_sendEmail(array(
+			if ($this->SysEmail->validates() && $this->QueueEmail->send(array(
 				'from' => $fromUser, 
 				'to' => $toUsers, 
 				'subject' => $this->data['SysEmail']['subject']
@@ -188,7 +188,7 @@ class SysEmailsController extends AppController {
 			$this->SysEmail->set($this->data);
 			
 			// send it!
-			if ($this->SysEmail->validates() && $this->_sendEmail(array(
+			if ($this->SysEmail->validates() && $this->QueueEmail->send(array(
 				'from' => $fromUser, 
 				'to' => $toUsers, 
 				'subject' => $this->data['SysEmail']['subject']

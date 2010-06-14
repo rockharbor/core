@@ -414,7 +414,7 @@ class RostersController extends AppController {
 							
 							$this->set('involvement', $involvement);
 							$this->Notifier->notify($signuproster['Roster']['user_id'], 'involvement_signup');
-							$this->_sendEmail(array(
+							$this->QueueEmail->send(array(
 								'to' => $signuproster['Roster']['user_id'],
 								'subject' => 'Signed up for '.$involvement['InvolvementType']['name'],
 								'template' => 'involvements_add_signup'
@@ -435,7 +435,7 @@ class RostersController extends AppController {
 						
 						$this->set('involvement', $involvement);
 						$this->Notifier->notify($this->activeUser['User']['id'], 'payments_payment_made');
-						$this->_sendEmail(array(
+						$this->QueueEmail->send(array(
 							'to' => $this->activeUser['User']['id'],
 							'subject' => 'Payment made for '.$involvement['InvolvementType']['name'],
 							'template' => 'payments_payment_made'
@@ -455,7 +455,7 @@ class RostersController extends AppController {
 						$this->Roster->saveAll($signuproster, array('validate' => false));
 						$this->set('involvement', $involvement);
 						$this->Notifier->notify($signuproster['Roster']['user_id'], 'involvement_signup');
-						$this->_sendEmail(array(
+						$this->QueueEmail->send(array(
 							'to' => $signuproster['Roster']['user_id'],
 							'subject' => 'Signed up for '.$involvement['InvolvementType']['name'],
 							'template' => 'involvements_add_signup'
@@ -656,7 +656,7 @@ class RostersController extends AppController {
 			$this->set('user', $this->Roster->Leader->User->read(null, $roster['Roster']['user_id']));
 			// notify the user that they left
 			$this->Notifier->notify($roster['Roster']['user_id'], 'rosters_delete');
-			$this->_sendEmail(array(
+			$this->QueueEmail->send(array(
 				'to' => $roster['Roster']['user_id'],
 				'subject' => 'Password reset',
 				'template' => 'rosters_delete'
@@ -670,7 +670,7 @@ class RostersController extends AppController {
 			foreach ($leaders as $leader) {
 				$this->set('user', $this->Roster->Leader->User->read(null, $leader['User']['id']));
 				$this->Notifier->notify($leader['User']['id'], 'rosters_delete');
-				$this->_sendEmail(array(
+				$this->QueueEmail->send(array(
 					'to' => $leader['User']['id'],
 					'subject' => 'Password reset',
 					'template' => 'rosters_delete'

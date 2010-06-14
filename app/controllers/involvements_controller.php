@@ -104,7 +104,7 @@ class InvolvementsController extends AppController {
 			$this->set('involvement', $this->Involvement->read(null, $toInvolvementId));
 			
 			$this->Notifier->notify($userId, 'involvements_invite');
-			$this->_sendEmail(array(
+			$this->QueueEmail->send(array(
 				'to' => $userId,
 				'subject' => 'Invitation',
 				'template' => 'involvements_invite'
@@ -131,7 +131,7 @@ class InvolvementsController extends AppController {
 		$this->set('involvement', $this->Involvement->read(null, $involvementId));
 		
 		$this->Notifier->notify($userId, 'involvements_invite');
-		$this->_sendEmail(array(
+		$this->QueueEmail->send(array(
 			'to' => $userId,
 			'subject' => 'Invitation',
 			'template' => 'involvements_invite'

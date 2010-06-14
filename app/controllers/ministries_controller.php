@@ -125,7 +125,7 @@ class MinistriesController extends AppController {
 					$this->Session->setFlash('The changes to this ministry are pending.', 'flash_success');
 					
 					$this->Notifier->notify($this->CORE['settings']['ministry_content_edit_user'], 'ministries_edit');
-					$this->_sendEmail(array(
+					$this->QueueEmail->send(array(
 						'to' => $this->CORE['settings']['ministry_content_edit_user'],
 						'subject' => 'Ministry content change',
 						'template' => 'ministries_edit'

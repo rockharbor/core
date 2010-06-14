@@ -84,7 +84,8 @@ class AppController extends Controller {
 			'saveData' => array(
 				'type' => 'default'
 			)
-		)
+		),
+		'QueueEmail'
 	);
 	
 	var $helpers = array(
@@ -382,112 +383,6 @@ class AppController extends Controller {
 		}
 		
 		return $cond;
-	}	
-			
-/**
- * Sends an email
- *
- * If $from is not defined, it sends the email from the site instead, using
- * configured options (see AppSettings)
- *
- * #### Options:
- * 		integer $from The User id of the sender
- * 		mixed $to List of User ids to send to (can be one)
- * 		string $subject The subject line
- * 		string $template The template to load (view element)
- * 		string $layout The layout to load
- * @return boolean Success
- * @access protected
- */
-	function _sendEmail($options = array()) {
-		$this->Email->reset();
-		$User =& ClassRegistry::init('User');
-		$User->contain(array('Profile'));
-		
-		$default = array(
-			'from' => null, 
-			'to' => array(), 
-			'subject' => '',
-			'template' => 'default', 
-			'layout' => 'default',
-			'body' => null
-		);
-		
-		$options = array_merge($default, $options);
-		extract($options);
-		
-		$smtp = array(
-			'port'=>'25',
-			'timeout'=>'30',
-			'host' => 'mail.rockharbor.org'/*,
-			'username' => 'rh\core',
-			'password' => 'c0R3!@R0cK5'*/
-		);		
-		
-		$systemEmail = array(
-			'Profile' => array(
-				'name' => $this->CORE['settings']['site_name_tagless'],
-				'primary_email' => $this->CORE['settings']['site_email']
-			)
-		);
-		
-		// set system defaults if no 'from' user
-		if (!$from) {
-			$from = $systemEmail;
-		} else {
-			$from = $User->read(null, $from);
-		}
-		
-		$this->beforeRender();
-		
-		$this->Email->smtpOptions = $smtp;
-		$this->Email->delivery = 'smtp';
-		$this->Email->sendAs = 'html';
-		$this->Email->layout = $layout;
-		$this->Email->template = $template;
-		
-		// check if they just sent one user
-		if (!is_array($to)) {
-			$to = array($to);
-		}
-		
-		$to = $User->find('all', array(
-			'conditions' => array(
-				'User.id' => $to,
-				'User.active' => true
-			),
-			'contain' => array(
-				'Profile'
-			)
-		));
-		
-		/*** need to add emails to queue ***/
-		$bcc = array();
-		foreach ($to as $toUser) {
-			if (!empty($toUser['Profile']['primary_email']) && !empty($toUser['Profile']['name'])) {
-				$bcc[] = $toUser['Profile']['name'].' <'.$toUser['Profile']['primary_email'].'>';
-			}
-		}
-		$this->Email->from = $from['Profile']['name'].' <'.$from['Profile']['primary_email'].'>';
-		
-		if (Configure::read() > 0) {
-			$this->Email->bcc = array('CORE DEBUG <'.$this->CORE['settings']['debug_email'].'>');
-			$this->Email->to = $this->activeUser['Profile']['name'].' <'.$this->activeUser['Profile']['primary_email'].'>';
-		} else {
-			$this->Email->bcc = $bcc;
-			$this->Email->to = $systemEmail['Profile']['name'].' <'.$systemEmail['Profile']['primary_email'].'>';
-		}
-		
-		$this->Email->subject = $this->CORE['settings']['email_subject_prefix'].' '.$subject;
-		
-		$this->Email->_debug();
-		
-		if (!$this->Email->send($body)) {
-			CakeLog::write('smtp', $this->Email->smtpError);
-			return false;
-		} else {
-			return true;
-		}
 	}
 
 /**

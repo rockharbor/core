@@ -297,7 +297,7 @@ class UsersController extends AppController {
 			if ($success) {
 				$this->Session->setFlash('Please log in with your new credentials.', 'flash_success');
 				$this->set('reset', $this->data['User']['reset']);
-				$this->_sendEmail(array(
+				$this->QueueEmail->send(array(
 					'to' => $this->data['User']['id'],
 					'subject' => $subject,
 					'template' => 'users_edit'
@@ -346,7 +346,7 @@ class UsersController extends AppController {
 				if ($this->User->saveField('password', $newPassword)) {
 					$this->Session->setFlash('Your new password has been sent via email.', 'flash_success');
 					$this->set('password', $newPassword);
-					$this->_sendEmail(array(
+					$this->QueueEmail->send(array(
 						'to' => $user['User']['id'],
 						'subject' => 'Password reset',
 						'template' => 'users_forgot_password'
@@ -390,7 +390,7 @@ class UsersController extends AppController {
 					'requester_id' => $this->User->id
 				));
 				$this->Notifier->notify($this->CORE['settings']['activation_requests_user'], 'users_request_activation');
-				$this->_sendEmail(array(
+				$this->QueueEmail->send(array(
 					'to' => $this->CORE['settings']['activation_requests_user'],
 					'subject' => 'Account activation request',
 					'template' => 'users_request_activation'
@@ -545,7 +545,7 @@ class UsersController extends AppController {
 					$this->Session->setFlash('User added!', 'flash_success');
 					$this->set('username', $this->data['User']['username']);
 					$this->set('password', $this->data['User']['password']);
-					$this->_sendEmail(array(
+					$this->QueueEmail->send(array(
 						'to' => $newUserId,
 						'subject' => 'User registration',
 						'template' => 'users_register'
@@ -559,7 +559,7 @@ class UsersController extends AppController {
 					$this->Session->setFlash('Your account has been created!', 'flash_success');
 					$this->set('username', $this->data['User']['username']);
 					$this->set('password', $this->data['User']['password']);
-					$this->_sendEmail(array(
+					$this->QueueEmail->send(array(
 						'to' => $newUserId,
 						'subject' => 'User registration',
 						'template' => 'users_register'
