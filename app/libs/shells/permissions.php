@@ -397,8 +397,7 @@ class PermissionsShell extends Shell {
 		),
 		// intern
 		6 => array(
-			'controllers/Rosters/index',
-			'controllers/Rosters/view'
+			'controllers/Rosters/index'
 		),	
 		// developer
 		8 => array(
@@ -493,7 +492,6 @@ class PermissionsShell extends Shell {
 			'controllers/Rosters/delete',
 			'controllers/Rosters/edit',
 			'controllers/Rosters/index',
-			'controllers/Rosters/view',
 			'controllers/InvolvementLeaders/add',
 			'controllers/InvolvementLeaders/delete'
 		),			
@@ -524,7 +522,6 @@ class PermissionsShell extends Shell {
 			'controllers/Rosters/delete',
 			'controllers/Rosters/edit',
 			'controllers/Rosters/involvement',
-			'controllers/Rosters/view',
 			'controllers/Users/edit_profile'
 		)
 	);
