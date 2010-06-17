@@ -1,11 +1,44 @@
 <?php
+/**
+ * Leader model class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.models
+ */
+
+/**
+ * Leader model
+ *
+ * Polymorphic model
+ *
+ * @package       core
+ * @subpackage    core.app.models
+ */
 class Leader extends AppModel {
+
+/**
+ * The name of the model
+ *
+ * @var string
+ */
 	var $name = 'Leader';
-	
+
+/**
+ * Extra behaviors for this model
+ *
+ * @var array
+ */
 	var $actsAs = array(
 		'Containable'
 	);
-	
+
+/**
+ * BelongsTo association link
+ *
+ * @var array
+ */
 	var $belongsTo = array(
 		'User'
 	);
@@ -19,52 +52,48 @@ class Leader extends AppModel {
  * @access public
  */ 
 	function getManagers($model = null, $modelId = null) {
-		if (!$model || !$modelId) {
+		if (!$model || !$modelId || $model == 'Campus') {
 			return array();
 		}
 		
 		// get managers based on type
-		if ($model != 'Campus') {
-			$this->bindModel(array(
-				'belongsTo' => array(
-					$model => array(
-						'foreignKey' => 'model_id'
-					)
+		$this->bindModel(array(
+			'belongsTo' => array(
+				$model => array(
+					'foreignKey' => 'model_id'
 				)
-			));
+			)
+		));
+
+		$parentModel = $model == 'Involvement' ? 'Ministry' : 'Campus';
 		
-			$parentModel = $model == 'Involvement' ? 'Ministry' : 'Campus';
-			
-			$item = $this->find('first', array(
-				'conditions' => array(
-					'model' => $model,
-					'model_id' => $modelId
-				),
-				'contain' => array(
-					$model => array(
-						$parentModel
-					)
+		$item = $this->find('first', array(
+			'conditions' => array(
+				'model' => $model,
+				'model_id' => $modelId
+			),
+			'contain' => array(
+				$model => array(
+					$parentModel
 				)
-			));			
+			)
+		));			
 			
-			$parentModelId = $item[$model][$parentModel]['id'];
-			
-			$managers = $this->find('all', array(
-				'conditions' => array(
-					'model' => $parentModel,
-					'model_id' => $parentModelId
-				),
-				'contain' => array(
-					'User' => array(
-						'Profile'
-					)
+		$parentModelId = $item[$model][$parentModel]['id'];
+		
+		$managers = $this->find('all', array(
+			'conditions' => array(
+				'model' => $parentModel,
+				'model_id' => $parentModelId
+			),
+			'contain' => array(
+				'User' => array(
+					'Profile'
 				)
-			));
+			)
+		));
 			
-			return $managers;
-		} else {
-			return array();
-		}
+		return $managers;
 	}
 }
 ?>

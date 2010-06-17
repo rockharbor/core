@@ -1,8 +1,21 @@
 <?php
+/**
+ * Confirm behavior class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.models.behaviors
+ */
 
+/**
+ * Includes
+ */
 App::import('Core', 'HttpSocket');
 
 /**
+ * Confirm Behavior
+ *
  * Automatically geocodes address data and saves data when an
  * address is created/updated
  *
@@ -16,11 +29,13 @@ App::import('Core', 'HttpSocket');
  *	)
  * );
  * OR array('Model' => '123 Main St., Anytown, CA, 12345');
- * 
+ *
  * Model needs `lat` and `lng` fields.
- * 
+ *
+ * @package       core
+ * @subpackage    core.app.models.behaviors
+ * @todo Allow different fields, don't be so strict when saving
  */
-
 class GeoCoordinateBehavior extends ModelBehavior {
 
 /**
@@ -145,8 +160,5 @@ class GeoCoordinateBehavior extends ModelBehavior {
 
 		return $data;
 	}
-
-
 }
-
 ?>

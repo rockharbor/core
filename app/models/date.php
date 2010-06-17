@@ -1,8 +1,33 @@
 <?php
+/**
+ * Date model class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.models
+ */
+
+/**
+ * Date model
+ *
+ * @package       core
+ * @subpackage    core.app.models
+ */
 class Date extends AppModel {
+
+/**
+ * The name of the model
+ *
+ * @var string
+ */
 	var $name = 'Date';
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
-	
+
+/**
+ * Types of recurrance
+ *
+ * @var array
+ */
 	var $recurranceTypes = array(
 		'h' => 'Hourly',
 		'd' => 'Daily',
@@ -11,11 +36,21 @@ class Date extends AppModel {
 		'mw' => 'Monthly on weekday',
 		'y' => 'Yearly'
 	);
-	
+
+/**
+ * Virtual field definitions
+ *
+ * @var array
+ */
 	var $virtualFields = array(
 		'passed' => 'IF (Date.permanent, 0, CAST(CONCAT(Date.end_date, " ", Date.end_time) AS DATETIME) < NOW())'
 	);
-	
+
+/**
+ * BelongsTo association link
+ *
+ * @var array
+ */
 	var $belongsTo = array(
 		'Involvement' => array(
 			'className' => 'Involvement',
@@ -53,11 +88,10 @@ class Date extends AppModel {
 /*
  * Generates a list of dates from an involvement record within a range.
  *
- * ####Range:
+ * ### Range:
  * - date $start Start date
  * - date $end End date
  *
- * @author Jeremy Harris <jharris@rockharbor.org>
  * @param integer $involvement_id Involvement id to pull dates for
  * @param array $range 
  * @return array Array of dates falling into that range
@@ -115,11 +149,10 @@ class Date extends AppModel {
 /**
  * Generates recurring date from a recurring date record
  *
- * ####Range:
+ * ### Range:
  * - date $start Start date
  * - date $end End date
  *
- * @author Jeremy Harris <jharris@rockharbor.org>
  * @param integer $date The date to recur
  * @param array $range The range of recurrance
  * @return array Array of dates falling into that range

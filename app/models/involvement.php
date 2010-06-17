@@ -1,7 +1,33 @@
 <?php
+/**
+ * Involvement model class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.models
+ */
+
+/**
+ * Involvement model
+ *
+ * @package       core
+ * @subpackage    core.app.models
+ */
 class Involvement extends AppModel {
+
+/**
+ * The name of the model
+ *
+ * @var string
+ */
 	var $name = 'Involvement';
-	
+
+/**
+ * Virtual field definitions
+ *
+ * @var array
+ */
 	var $virtualFields = array(
 		'passed' => 'EXISTS(
 			SELECT 1 FROM dates AS Passed 
@@ -10,7 +36,12 @@ class Involvement extends AppModel {
 				AND Passed.exemption = 0
 		)'
 	);
-	
+
+/**
+ * Validation rules
+ *
+ * @var array
+ */
 	var $validate = array(
 		'name' => array(
 			'rule' => 'notEmpty',
@@ -21,13 +52,23 @@ class Involvement extends AppModel {
 			'required' => true
 		)
 	);	
-	
+
+/**
+ * Extra behaviors for this model
+ *
+ * @var array
+ */
 	var $actsAs = array(
 		'Containable',
 		'Confirm',
 		'Logable'
 	);
-	
+
+/**
+ * HasOne association link
+ *
+ * @var array
+ */
 	var $hasOne = array(
 		'Address' => array(
 			'className' => 'Address',
@@ -42,7 +83,12 @@ class Involvement extends AppModel {
 			'conditions' => array('Image.model' => 'Involvement')
 		)
 	);
-	
+
+/**
+ * BelongsTo association link
+ *
+ * @var array
+ */
 	var $belongsTo = array(
 		'Ministry' => array(
 			'className' => 'Ministry',
@@ -55,6 +101,11 @@ class Involvement extends AppModel {
 		'Group'
 	);
 
+/**
+ * HasMany association link
+ *
+ * @var array
+ */
 	var $hasMany = array(
 		'Date' => array(
 			'className' => 'Date',
@@ -108,8 +159,6 @@ class Involvement extends AppModel {
 			'model_id' => $involvementId,
 			'user_id' => $userId
 		));
-	}
-
-	
+	}	
 }
 ?>

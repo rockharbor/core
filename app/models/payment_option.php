@@ -1,8 +1,33 @@
 <?php
-class PaymentOption extends AppModel {
-	var $name = 'PaymentOption';
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
+/**
+ * Payment option model class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.models
+ */
 
+/**
+ * PaymentOption model
+ *
+ * @package       core
+ * @subpackage    core.app.models
+ */
+class PaymentOption extends AppModel {
+
+/**
+ * The name of the model
+ *
+ * @var string
+ */
+	var $name = 'PaymentOption';
+
+/**
+ * BelongsTo association link
+ *
+ * @var array
+ */
 	var $belongsTo = array(
 		'Involvement' => array(
 			'className' => 'Involvement',
@@ -12,7 +37,12 @@ class PaymentOption extends AppModel {
 			'order' => ''
 		)
 	);
-	
+
+/**
+ * Validation rules
+ *
+ * @var array
+ */
 	var $validate = array(
 		'total' => array(
 			'money' => array(	

@@ -1,21 +1,39 @@
 <?php
-class InvolvementType extends AppModel {
-	var $name = 'InvolvementType';
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
+/**
+ * Involvement type class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.models
+ */
 
+/**
+ * InvolvementType model
+ *
+ * @package       core
+ * @subpackage    core.app.models
+ * @todo Move into Involvement model as a variable instead
+ */
+class InvolvementType extends AppModel {
+
+/**
+ * The name of the model
+ *
+ * @var string
+ */
+	var $name = 'InvolvementType';
+
+/**
+ * HasMany association link
+ *
+ * @var array
+ */
 	var $hasMany = array(
 		'Involvement' => array(
 			'className' => 'Involvement',
 			'foreignKey' => 'involvement_type_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
+			'dependent' => false
 		)
 	);
 

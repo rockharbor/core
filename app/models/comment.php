@@ -1,6 +1,33 @@
 <?php
+/**
+ * Comment model class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.models
+ */
+
+/**
+ * Comment model
+ *
+ * @package       core
+ * @subpackage    core.app.models
+ */
 class Comment extends AppModel {
+
+/**
+ * The name of the model
+ *
+ * @var string
+ */
 	var $name = 'Comment';
+
+/**
+ * Validation rules
+ *
+ * @var array
+ */
 	var $validate = array(
 		'comment' => array(
 			'notempty' => array(
@@ -13,8 +40,12 @@ class Comment extends AppModel {
 			),
 		),
 	);
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
-
+	
+/**
+ * BelongsTo association link
+ *
+ * @var array
+ */
 	var $belongsTo = array(
 		'User' => array(
 			'className' => 'User',

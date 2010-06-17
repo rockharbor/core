@@ -1,55 +1,85 @@
 <?php
+/**
+ * Roster model class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.models
+ */
+
+/**
+ * Roster model
+ *
+ * @package       core
+ * @subpackage    core.app.models
+ */
 class Roster extends AppModel {
+
+/**
+ * The name of the model
+ *
+ * @var string
+ */
 	var $name = 'Roster';
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
 	
-	// this is mainly here to fail empty roster saves
+
+/**
+ * Validation rules
+ *
+ * This validation rule is here to prevent empty roster saves
+ *
+ * @var array
+ */
 	var $validate = array(
 		'roster_status_id' => array(
 			'rule' => 'notEmpty',
 			'required' => true
 		)
 	);
-	
+
+/**
+ * Extra behaviors for this model
+ *
+ * @var array
+ */
 	var $actsAs = array(
 		'Logable',
 		'Containable'
 	);
-	
+
+/**
+ * Virtual field definitions
+ *
+ * @var array
+ */
 	var $virtualFields = array(
 		'amount_due' => '@vad:=(SELECT (IF (Roster.parent_id IS NOT NULL, ad.childcare, ad.total)) FROM payment_options as ad WHERE ad.id = Roster.payment_option_id)',
 		'amount_paid' => '@vap:=(COALESCE((SELECT SUM(ap.amount) FROM payments as ap WHERE ap.roster_id = Roster.id), 0))',
 		'balance' => '@vad-@vap'
 	);
-	
+
+/**
+ * BelongsTo association link
+ *
+ * @var array
+ */
 	var $belongsTo = array(
 		'User' => array(
 			'className' => 'User',
-			'foreignKey' => 'user_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
+			'foreignKey' => 'user_id'
 		),
 		'Involvement' => array(
 			'className' => 'Involvement',
-			'foreignKey' => 'involvement_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
+			'foreignKey' => 'involvement_id'
 		),
 		'Role' => array(
 			'className' => 'Role',
-			'foreignKey' => 'role_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
+			'foreignKey' => 'role_id'
 		),
 		'PaymentOption' => array(
 			'className' => 'PaymentOption',
-			'foreignKey' => 'payment_option_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
+			'foreignKey' => 'payment_option_id'
 		),
 		'Parent' => array(
 			'className' => 'User',
@@ -58,6 +88,11 @@ class Roster extends AppModel {
 		'RosterStatus'
 	);
 
+/**
+ * HasMany association link
+ *
+ * @var array
+ */
 	var $hasMany = array(
 		'Answer' => array(
 			'className' => 'Answer',
@@ -70,7 +105,5 @@ class Roster extends AppModel {
 			'dependent' => false
 		)
 	);
-
-
 }
 ?>

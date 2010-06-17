@@ -1,20 +1,30 @@
 <?php
 /**
- * Permissions shell.
+ * Permissions shell class.
  *
- * Allows creation of groups for CORE, as well as setting permissions. Use this shell
- * if permissions change. Use acl_extras to sync ACOs first.
- *
- * @author Jeremy Harris <jharris@rockharbor.org>
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.libs.shells
  */
- 
+
+/**
+ * Includes
+ */
 App::import('Core', 'Controller');
 App::import('Component', 'Acl');
 App::import('Model', array('DbAcl', 'Group'));
 
-
 /**
+ * Permissions shell.
+ *
  * Shell to create/update permissions
+ *
+ * Allows creation of groups for CORE, as well as setting permissions. Use this shell
+ * if permissions change. Use acl_extras to sync ACOs first.
+ *
+ * @package       core
+ * @subpackage    core.app.libs.shells
  */
 class PermissionsShell extends Shell {
 	

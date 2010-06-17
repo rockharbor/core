@@ -1,11 +1,28 @@
 <?php
+/**
+ * Username route class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.libs.routes
+ */
 
+/**
+ * Username Route
+ *
+ * Basically rewrites url's to use the username in place of the user's id. A url
+ * like /users/edit/User:1 becomes /users/edit/jharris
+ *
+ * @package       core
+ * @subpackage    core.app.libs.routes
+ * @todo Activate and benchmark with ALL records
+ */
 class UsernameRoute extends CakeRoute {
- 
+
 /*
  * Override the parsing function to convert a username to an id
- * for the controller
- * (thanks to mark story's blog about custom routing)
+ * for the controller (thanks to mark story's blog about custom routing)
  *
  * @param string $url See CakeRoute
  * @return boolean

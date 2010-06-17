@@ -1,18 +1,56 @@
 <?php
+/**
+ * Address model class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.models
+ */
+
+/**
+ * Address model
+ *
+ * Polymorphic model
+ *
+ * @package       core
+ * @subpackage    core.app.models
+ */
 class Address extends AppModel {
+
+/**
+ * The name of the model
+ *
+ * @var string
+ */
 	var $name = 'Address';
-	
+
+/**
+ * Extra behaviors for this model
+ *
+ * @var array
+ */
 	var $actsAs = array(
 		'GeoCoordinate'
 	);
-	
+
+/**
+ * BelongsTo association link
+ *
+ * @var array
+ */
 	var $belongsTo = array(
 		'Zipcode' => array(
 			'foreignKey' => false,
 			'conditions' => array('Zipcode.zip = Address.zip')
 		)
 	);
-	
+
+/**
+ * Validation rules
+ *
+ * @var array
+ */
 	var $validate = array(
 		'name' => array(
 			'rule' => array('custom', '/^[a-z0-9 ]*$/i'),

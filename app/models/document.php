@@ -1,30 +1,44 @@
 <?php
+/**
+ * Document model class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.models
+ */
 
+/**
+ * Includes
+ */
 App::import('Model', 'Media.MediaApp');
 
+/**
+ * Document model
+ *
+ * @package       core
+ * @subpackage    core.app.models
+ */
 class Document extends MediaAppModel {
 
 /**
- * Name of model
+ * The name of the model
  *
  * @var string
- * @access public
  */
 	var $name = 'Document';
 
 /**
- * Name of table to use
+ * The table to use, or false for none
  *
- * @var mixed
- * @access public
+ * @var boolean
  */
 	var $useTable = 'attachments';
 
 /**
- * actsAs property
+ * Extra behaviors for this model
  *
  * @var array
- * @access public
  */
 	var $actsAs = array(
 		'Media.Transfer' => array(
@@ -40,20 +54,17 @@ class Document extends MediaAppModel {
 /**
  * Validation rules for file and alternative fields
  *
- * For more information on the rules used here
- * see the source of TransferBehavior and MediaBehavior or
- * the test case for MediaValidation.
+ * For more information on the rules used here see the source of
+ * TransferBehavior and MediaBehavior or the test case for MediaValidation.
  *
- * If you experience problems with your model not validating,
- * try commenting the mimeType rule or providing less strict
- * settings for single rules.
+ * If you experience problems with your model not validating, try commenting
+ * the mimeType rule or providing less strict settings for single rules.
  *
- * `checkExtension()` and `checkMimeType()` take both a blacklist and
- * a whitelist. If you are on windows make sure that you addtionally
- * specify the `'tmp'` extension in case you are using a whitelist.
+ * `checkExtension()` and `checkMimeType()` take both a blacklist and a
+ * whitelist. If you are on windows make sure that you addtionally specify the
+ * `'tmp'` extension in case you are using a whitelist.
  *
  * @var array
- * @access public
  */
 	var $validate = array(
 		'file' => array(
@@ -92,13 +103,16 @@ class Document extends MediaAppModel {
 		)
 	);
 
+/**
+ * BelongsTo association link
+ *
+ * @var array
+ */
 	var $belongsTo = array(
 		'User' => array(
 			'foreignKey' => 'foreign_key'	
 		)
 	);
-		
-	
 		
 /**
  * beforeMake Callback

@@ -1,16 +1,52 @@
 <?php
+/**
+ * User model class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.models
+ */
+
+/**
+ * User model
+ *
+ * @package       core
+ * @subpackage    core.app.models
+ */
 class User extends AppModel {
+
+/**
+ * The name of the model
+ *
+ * @var string
+ */
 	var $name = 'User';
-	
+
+/**
+ * The field to use when generating lists
+ *
+ * @var string
+ */
 	var $displayField = 'username';
-	
+
+/**
+ * Extra behaviors for this model
+ *
+ * @var array
+ */
 	var $actsAs = array(
 		'Logable',	
 		'Containable',
 		'Merge',
 		'Linkable.AdvancedLinkable'
 	);
-	
+
+/**
+ * Validation rules
+ *
+ * @var array
+ */
 	var $validate = array(
 		'username' => array(
 			'isUnique' => array(
@@ -44,6 +80,11 @@ class User extends AppModel {
 		)
 	);
 
+/**
+ * HasMany association link
+ *
+ * @var array
+ */
 	var $hasMany = array(
 		'Comment' => array(
 			'className' => 'Comment',
@@ -89,7 +130,12 @@ class User extends AppModel {
 			'dependent' => true
 		)
 	);
-	
+
+/**
+ * HasOne association link
+ *
+ * @var array
+ */
 	var $hasOne = array(
 		'Profile' => array(
 			'className' => 'Profile',
@@ -97,11 +143,21 @@ class User extends AppModel {
 			'dependent' => true
 		)
 	);
-	
+
+/**
+ * BelongsTo association link
+ *
+ * @var array
+ */
 	var $belongsTo = array(
 		'Group'
 	);
 
+/**
+ * HasAndBelongsToMany association link
+ *
+ * @var array
+ */
 	var $hasAndBelongsToMany = array(
 		'Publication' => array(
 			'className' => 'Publication',
@@ -224,12 +280,12 @@ class User extends AppModel {
 /*
  * Generates a username from a name
  *
- * By default, it's firstname.lastname (without numbers). If that's taken, it 
+ * By default, it's $first_name.$last_name (without numbers). If that's taken, it
  * will continue appending numbers until it finds a unique username
  *
  * @param string $first_name User's first name
  * @param string $last_name User's last name
- * @return string Generated password
+ * @return string Generated username
  */
 	function generateUsername($first_name, $last_name) {
 		for ($x=1; $x <= 8; $x++) {
@@ -254,6 +310,7 @@ class User extends AppModel {
  * characters are also replaced at random (like 4 for an 'a').
  *
  * @return string Generated password
+ * @todo Add more nouns and verbs
  */
 	function generatePassword() {
 		$nouns = array('jesus', 'core', 'rockharbor', 'php', 'cake', 'pie');

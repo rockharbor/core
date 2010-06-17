@@ -1,8 +1,33 @@
 <?php
-class Question extends AppModel {
-	var $name = 'Question';
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
+/**
+ * Question model class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.models
+ */
 
+/**
+ * Question model
+ *
+ * @package       core
+ * @subpackage    core.app.models
+ */
+class Question extends AppModel {
+
+/**
+ * The name of the model
+ *
+ * @var string
+ */
+	var $name = 'Question';
+
+/**
+ * BelongsTo association link
+ *
+ * @var array
+ */
 	var $belongsTo = array(
 		'Involvement' => array(
 			'className' => 'Involvement',
@@ -12,14 +37,24 @@ class Question extends AppModel {
 			'order' => ''
 		)
 	);
-	
+
+/**
+ * Validation rules
+ *
+ * @var array
+ */
 	var $validate = array(
 		'description' => array(	
 			'rule' => 'notEmpty',
 			'required' => true
 		)
 	);
-	
+
+/**
+ * Extra behaviors for this model
+ *
+ * @var array
+ */
 	var $actsAs = array(
 		'Ordered' => array(	
 			'field' => 'order',

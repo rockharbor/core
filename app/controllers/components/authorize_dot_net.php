@@ -1,17 +1,29 @@
 <?php
 /**
- * Authorize.net Component
+ * Authorize.net component class.
  *
  * This was taken from CORE 1.0 and has been since cleaned up, documented and modified.
  *
- * #### Test card numbers (use any expiry date):
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.controllers.components
+ */
+
+/**
+ * AuthorizeDotNet Component
+ *
+ * ### Test card numbers (use any expiry date):
  * - 370000000000002 - American Express Test Card
  * - 6011000000000012 - Discover Test Card
  * - 5424000000000015 - MasterCard Test Card
  * - 4007000000027 - Visa Test Card
  * - 4012888818888 - Visa Test Card II
  *
+ * @package       core
+ * @subpackage    core.app.controllers.components
  * @link http://www.authorize.net/support/AIM_guide.pdf
+ * @todo Move into a behavior? Or a vendor?
  */
 class AuthorizeDotNetComponent extends Object {
 
@@ -19,7 +31,7 @@ class AuthorizeDotNetComponent extends Object {
  * Authorize.net login credentials
  *
  * @var array
- * @access private
+ * @access protected
  */
 	var $_credentials = array(
 		'username' 	=> '7u9e6TuTw',        // authorize.net username
@@ -32,7 +44,7 @@ class AuthorizeDotNetComponent extends Object {
  * Data to send to authorize.net
  *
  * @var array
- * @access private
+ * @access protected
  */
 	var $_data = array();
 
@@ -102,11 +114,21 @@ class AuthorizeDotNetComponent extends Object {
 		/* API version we're using */
 		$this->_data['x_Version'] = '3.1';
 	}
-	
+
+/**
+ * Sets the invoice title
+ *
+ * @param string $str
+ */
 	function setInvoice($str) { 
 		$this->_data['x_Invoice'] = $str; 
 	}
-	
+
+/**
+ * Sets the amount to charge
+ *
+ * @param float $amount
+ */
 	function setAmount($amount) {
 		$amount = number_format($amount,2,".","");
 		$this->_data['x_Amount'] = $amount;
@@ -117,8 +139,7 @@ class AuthorizeDotNetComponent extends Object {
  *
  * @param array $customer
  * @access public
- */
- 
+ */ 
 	function setCustomer($customer = array()) {		
 		// customer's info
 		$this->_data['x_First_Name'] = $customer['first_name'];
@@ -133,12 +154,22 @@ class AuthorizeDotNetComponent extends Object {
 		$this->_data['x_Zip'] = $customer['zip'];
 		$this->_data['x_Email'] = $customer['email'];
 	}
-			
+
+/**
+ * Sets the invoice number
+ *
+ * @param integer $invoiceNumber
+ */
 	function setInvoiceNumber($invoiceNumber) {
 		// according to the documentation, invoice number can only be 20 characters, no symbols
 		$this->_data['x_invoice_num'] = substr(preg_replace("/[^-a-zA-Z0-9]/", '', $invoiceNumber), 0, 20); 
 	}
-			
+
+/**
+ * Sets the description
+ *
+ * @param string $desc
+ */
 	function setDescription($desc) {
 		// according to the documentation, invoice number can only be
 		// 255 characters, no symbols. helpfully, they don't tell us what
@@ -148,7 +179,12 @@ class AuthorizeDotNetComponent extends Object {
 		$this->_data['x_description'] = substr($desc, 0, 255);
 	}
 			
-	/* Returns a true on success, false otherwise */
+/**
+ * Sends the request to authorize.net
+ *
+ * @todo Update to use HTTPSocket class instead of manual curl
+ * @return boolean Success
+ */
 	function request() {	
 		$fields = array();
 		

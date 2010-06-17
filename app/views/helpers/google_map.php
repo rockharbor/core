@@ -1,11 +1,21 @@
 <?php
+/**
+ * Google map helper class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.views.helpers
+ */
 
 /**
+ * GoogleMap Helper
+ *
  * Allows easy creation of Google Maps
  *
- * @author 		Jeremy Harris <jharris@rockharbor.org>
- * @package		app
- * @subpackage	app.views.helpers
+ * @package       core
+ * @subpackage    core.app.views.helpers
+ * @todo Support static maps
  */
 class GoogleMapHelper extends AppHelper {
 
@@ -38,6 +48,7 @@ class GoogleMapHelper extends AppHelper {
  *
  * @var array
  * @access protected
+ * @todo Add the rest of the map types
  */
 	var $_mapTypesMap = array(
 		'road' => 'google.maps.MapTypeId.ROADMAP'
@@ -106,7 +117,7 @@ class GoogleMapHelper extends AppHelper {
  * a div tag for the map. If it's not null, you'll need to add a div tag with that name so the
  * map can be created within it.
  *
- * #### Options:
+ * ### Options:
  *	- boolean `inline` Whether the scripts should be created inline or buffered
  *	- boolean `sensor` The Google Map option "sensor" 
  *

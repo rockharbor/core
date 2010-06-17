@@ -1,18 +1,54 @@
 <?php
+/**
+ * Profile model class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.models
+ */
+
+/**
+ * Profile model
+ *
+ * @package       core
+ * @subpackage    core.app.models
+ */
 class Profile extends AppModel {
+
+/**
+ * The name of the model
+ *
+ * @var string
+ */
 	var $name = 'Profile';
-	
+
+/**
+ * Extra behaviors for this model
+ *
+ * @var array
+ */
 	var $actsAs = array(
 		'Logable',
 		'Containable'
 	);
-	
+
+/**
+ * Virtual field definitions
+ *
+ * @var array
+ */
 	var $virtualFields = array(
 		'name' => 'CONCAT(Profile.first_name, " ", Profile.last_name)',
 		'age' => 'DATEDIFF(CURDATE(), `Profile`.`birth_date`)/365.25',
 		'child' => 'IF (Profile.adult = 1, 0, IF (Profile.birth_date IS NULL, 1, ((DATE_FORMAT(NOW(),"%Y") - DATE_FORMAT(Profile.birth_date,"%Y")) < 18)))'
 	);
-	
+
+/**
+ * Validation rules
+ *
+ * @var array
+ */
 	var $validate = array(
 		'first_name' => array('rule' => 'notempty'),
 		'last_name' => array('rule' => 'notempty'),
@@ -92,6 +128,11 @@ class Profile extends AppModel {
 		)
 	);
 
+/**
+ * BelongsTo association link
+ *
+ * @var array
+ */
 	var $belongsTo = array(
 		'User' => array(
 			'className' => 'User',
@@ -139,7 +180,12 @@ class Profile extends AppModel {
 			'foreignKey' => 'college_id'
 		)
 	);
-	
+
+/**
+ * Model::beforeValidate callback
+ *
+ * @return true Continue with save
+ */
 	function beforeValidate() {
 		// clear out extra characters in phone numbers
 		if (isset($this->data['Profile']['cell_phone'])) {

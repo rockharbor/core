@@ -1,14 +1,28 @@
 <?php
+/**
+ * Formatting helper class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.views.helpers
+ */
 
 /**
+ * Formatting Helper
+ *
  * Aids in keeping formatting standardized and consistent
  *
- * @author 		Jeremy Harris <jharris@rockharbor.org>
- * @package		app
- * @subpackage	app.views.helpers
+ * @package       core
+ * @subpackage    core.app.views.helpers
  */
 class FormattingHelper extends AppHelper {
-	
+
+/**
+ * Additional helpers used
+ *
+ * @var array
+ */
 	var $helpers = array(
 		'Html',
 		'Text',
@@ -23,7 +37,6 @@ class FormattingHelper extends AppHelper {
  * @param boolean $extended Include months in ages greater than 1
  * @return string
  */
-
 	function age($age = 0, $extended = false) {
 		$out = '';	
 		$years = $months = 0;
@@ -57,12 +70,12 @@ class FormattingHelper extends AppHelper {
  * Creates flags for a specific model (i.e., inactive, private, etc.)
  *
  * Data is assumed to be sent as:
- * array(
+ * {{{array(
  *	model.key => value
  *	model.association => array(
  *		association.key => value
  *		)
- *	) 
+ *	)}}}
  *
  * @param string $model The model to create flags for
  * @param array $data The data to use to create them.

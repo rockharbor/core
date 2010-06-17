@@ -1,13 +1,43 @@
 <?php
+/**
+ * Campus model class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.models
+ */
+
+/**
+ * Campus model
+ *
+ * @package       core
+ * @subpackage    core.app.models
+ */
 class Campus extends AppModel {
+
+/**
+ * The name of the model
+ *
+ * @var string
+ */
 	var $name = 'Campus';
-	
+
+/**
+ * Extra behaviors for this model
+ *
+ * @var array
+ */
 	var $actsAs = array(
 		'Logable',
-		'Revision',
 		'Containable'
 	);
 
+/**
+ * HasMany association link
+ *
+ * @var array
+ */
 	var $hasMany = array(
 		'Ministry' => array(
 			'className' => 'Ministry',
@@ -21,7 +51,12 @@ class Campus extends AppModel {
 			'conditions' => array('Leader.model' => 'Campus')
 		)
 	);
-	
+
+/**
+ * HasOne association link
+ *
+ * @var array
+ */
 	var $hasOne = array(
 		'Image' => array(
 			'className' => 'Attachment',

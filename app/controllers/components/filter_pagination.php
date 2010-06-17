@@ -1,5 +1,27 @@
 <?php
+/**
+ * Filter pagination component class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.controllers.components
+ */
 
+/**
+ * FilterPagination Component
+ *
+ * Use Controller::FilterPagination::paginate() instead of Controller::paginate in order to save the pagination
+ * data to be used later. For example, if you search and wish to paginate the results, use FilterPagination's paginate
+ * instead of the built in paginate function. Everything else (helper, etc.) remains the same and it should be
+ * fairly transparent.
+ *
+ * *NOTE:* By default, if there is no data and this is not a pagination request, FilterPagination::paginate() returns an
+ * empty array instead of Controller::paginate()'s default resultset.
+ * 
+ * @package       core
+ * @subpackage    core.app.controllers.components
+ */
 class FilterPaginationComponent extends Object {
 
 /**

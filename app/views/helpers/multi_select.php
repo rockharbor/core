@@ -1,15 +1,24 @@
 <?php
+/**
+ * Multi select helper class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.views.helpers
+ */
 
 /**
+ * MultiSelect Helper
+ *
  * Allows creation of multi select lists and actions
  *
  * Creates checkboxes and works with MultiSelectComponent and the PaginatorHelper to allow for
  * persisted selections across Ajax paginated pages. Pass MultiSelectComponent::cache to controllers
  * and read with MultiSelectComponent.
  *
- * @author 		Jeremy Harris <jharris@rockharbor.org>
- * @package		app
- * @subpackage	app.views.helpers
+ * @package       core
+ * @subpackage    core.app.views.helpers
  */
 class MultiSelectHelper extends AppHelper {
 

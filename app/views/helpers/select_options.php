@@ -1,12 +1,22 @@
 <?php
 /**
+ * Select options helper class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.views.helpers
+ */
+
+/**
+ * SelectOptions Helper
+ *
  * Central place for common lists to be stored, as well
- * as common mappings. Also includes functions aiding 
+ * as common mappings. Also includes functions aiding
  * in creating lists, or list logic.
  *
- * @author 		Jeremy Harris <jharris@rockharbor.org>
- * @package		app
- * @subpackage	app.views.helpers
+ * @package       core
+ * @subpackage    core.app.views.helpers
  */
 class SelectOptionsHelper extends AppHelper {
 

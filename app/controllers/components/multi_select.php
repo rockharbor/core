@@ -1,6 +1,16 @@
 <?php
+/**
+ * Multi select component class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.controllers.components
+ */
 
 /**
+ * MultiSelect Component
+ *
  * Allows for storing multiple ids of a search to return later.
  *
  * In your controller, use MultiSelectComponent::saveSearch() to save your search. Pass the conditions,
@@ -9,12 +19,11 @@
  * and authorized by the current controller.
  *
  * When an action passes the key to your new controller action, use MultiSelectComponent::getSearch() to get
- * your saved search data, then use MultiSelectComponent::getSelected() and modify the search parameters 
+ * your saved search data, then use MultiSelectComponent::getSelected() and modify the search parameters
  * appropriately. MultiSelectComponent::getSelected() returns `all` if the check all checkbox was selected.
  *
- * @author 		Jeremy Harris <jharris@rockharbor.org>
- * @package		app
- * @subpackage	app.controllers.components
+ * @package       core
+ * @subpackage    core.app.controllers.components
  */
 class MultiSelectComponent extends Object {
 
@@ -207,8 +216,6 @@ class MultiSelectComponent extends Object {
 		}
 		
 		return $this->Session->read('MultiSelect.'.$key.'.selected');
-	}
-	
-	
+	}	
 }
 ?>

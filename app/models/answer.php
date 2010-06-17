@@ -1,15 +1,45 @@
 <?php
+/**
+ * Answer model class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.models
+ */
+
+/**
+ * Answer model
+ *
+ * @package       core
+ * @subpackage    core.app.models
+ */
 class Answer extends AppModel {
+
+/**
+ * The name of the model
+ *
+ * @var string
+ */
 	var $name = 'Answer';
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
-	
+
+/**
+ * Validation rules
+ *
+ * @var array
+ */
 	var $validate = array(
 		'description' => array(
 			'rule' => 'notEmpty',
 			'required' => true
 		)
 	);
-	
+
+/**
+ * BelongsTo association link
+ *
+ * @var array
+ */
 	var $belongsTo = array(
 		'Roster' => array(
 			'className' => 'Roster',

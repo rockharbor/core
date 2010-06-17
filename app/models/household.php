@@ -1,11 +1,42 @@
 <?php
+/**
+ * Household model class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.models
+ */
+
+/**
+ * Household model
+ *
+ * @package       core
+ * @subpackage    core.app.models
+ */
 class Household extends AppModel {
+
+/**
+ * The name of the model
+ *
+ * @var string
+ */
 	var $name = 'Household';
-	
+
+/**
+ * Extra behaviors for this model
+ *
+ * @var array
+ */
 	var $actsAs = array(
 		'Containable'
 	);
 
+/**
+ * BelongsTo association link
+ *
+ * @var array
+ */
 	var $belongsTo = array(
 		'HouseholdContact' => array(
 			'className' => 'User',
@@ -40,7 +71,7 @@ class Household extends AppModel {
  *
  * @param integer $userId The user id
  * @param integer $memberId The user to check $userId's association with
- * @param mixed $household The household id(s) to restrict. Can be an array
+ * @param mixed $household The household id(s) to restrict the search to. Can be an array
  * @return boolean
  * @access public
  */ 	

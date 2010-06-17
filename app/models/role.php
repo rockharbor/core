@@ -1,18 +1,38 @@
 <?php
-class Role extends AppModel {
-	var $name = 'Role';
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
+/**
+ * Role model class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.models
+ */
 
+/**
+ * Role model
+ *
+ * @package       core
+ * @subpackage    core.app.models
+ */
+class Role extends AppModel {
+
+/**
+ * The name of the model
+ *
+ * @var string
+ */
+	var $name = 'Role';
+
+/**
+ * BelongsTo association link
+ *
+ * @var array
+ */
 	var $belongsTo = array(
 		'Ministry' => array(
 			'className' => 'Ministry',
-			'foreignKey' => 'ministry_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
+			'foreignKey' => 'ministry_id'
 		)
 	);
-
-
 }
 ?>

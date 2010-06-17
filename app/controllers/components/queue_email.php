@@ -18,6 +18,9 @@ App::import('Component', 'Email');
  *
  * This component is used for sending notifications via email and saving them
  * to the database using a model.
+ *
+ * @package       core
+ * @subpackage    core.app.controllers.components
  */
 class QueueEmailComponent extends EmailComponent {
 
@@ -27,13 +30,14 @@ class QueueEmailComponent extends EmailComponent {
  * If $from is not defined, it sends the email from the site instead, using
  * configured options (see AppSettings)
  *
- * #### Options:
- * 		integer $from The User id of the sender
- * 		mixed $to List of User ids to send to (can be one)
- * 		string $subject The subject line
- * 		string $template The template to load (view element)
- * 		string $layout The layout to load
- * 		string $body The body of the message. Usually the template takes care of this.
+ * ### Options:
+ * - integer $from The User id of the sender
+ * - mixed $to List of User ids to send to (can be one)
+ * - string $subject The subject line
+ * - string $template The template to load (view element)
+ * - string $layout The layout to load
+ * - string $body The body of the message. Usually the template takes care of this.
+ *
  * @return boolean Success
  * @access protected
  * @todo Make it queue in database

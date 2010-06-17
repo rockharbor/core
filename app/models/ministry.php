@@ -1,14 +1,45 @@
 <?php
+/**
+ * Ministry model class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.models
+ */
+
+/**
+ * Ministry model
+ *
+ * @package       core
+ * @subpackage    core.app.models
+ */
 class Ministry extends AppModel {
+
+/**
+ * The name of the model
+ *
+ * @var string
+ */
 	var $name = 'Ministry';
-		
+
+/**
+ * Extra behaviors for this model
+ *
+ * @var array
+ */
 	var $actsAs = array(
 		'Logable',
 		'Containable',
 		'Tree',
 		'Confirm'
 	);
-	
+
+/**
+ * Validation rules
+ *
+ * @var array
+ */
 	var $validate = array(
 		'name' => array(	
 			'rule' => 'notempty'
@@ -18,6 +49,11 @@ class Ministry extends AppModel {
 		)
 	);
 
+/**
+ * BelongsTo association link
+ *
+ * @var array
+ */
 	var $belongsTo = array(
 		'ParentMinistry' => array(
 			'className' => 'Ministry',
@@ -35,7 +71,13 @@ class Ministry extends AppModel {
 		),
 		'Group'
 	);
-	
+
+
+/**
+ * HasOne association link
+ *
+ * @var array
+ */
 	var $hasOne = array(
 		'Image' => array(
 			'className' => 'Attachment',
@@ -45,6 +87,12 @@ class Ministry extends AppModel {
 		)
 	);
 
+
+/**
+ * HasMany association link
+ *
+ * @var array
+ */
 	var $hasMany = array(
 		'Involvement' => array(
 			'className' => 'Involvement',
@@ -69,8 +117,6 @@ class Ministry extends AppModel {
 		)
 	);
 	
-	
-
 /**
  * Checks if a user is a manager for a ministry
  *

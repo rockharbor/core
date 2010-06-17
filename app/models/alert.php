@@ -1,9 +1,33 @@
 <?php
+/**
+ * Alert model class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.models
+ */
+
+/**
+ * Alert model
+ *
+ * @package       core
+ * @subpackage    core.app.models
+ */
 class Alert extends AppModel {
+
+/**
+ * The name of the model
+ *
+ * @var string
+ */
 	var $name = 'Alert';
-	
-	var $displayField = 'name';
-	
+
+/**
+ * Validation rules
+ *
+ * @var array
+ */
 	var $validate = array(
 		'name' => array(
 			'notempty' => array(
@@ -34,11 +58,21 @@ class Alert extends AppModel {
 			)			
 		)
 	);
-	
+
+/**
+ * BelongsTo association link
+ *
+ * @var array
+ */
 	var $belongsTo = array(
 		'Group'
 	);
-	
+
+/**
+ * HasAndBelongsToMany association link
+ *
+ * @var array
+ */
 	var $hasAndBelongsToMany = array(
 		'User' => array(
 			'className' => 'User',
@@ -75,6 +109,7 @@ class Alert extends AppModel {
  *
  * @param integer $userId The user
  * @param array $groupIds Array of Alert group ids to check for
+ * @param boolean $getExpired Whether or not to get expired alerts as well
  * @return array List of ids
  */ 	
 	function getUnreadAlerts($userId = null, $groupIds = array(), $getExpired = true) {

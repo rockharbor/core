@@ -1,10 +1,44 @@
 <?php
+/**
+ * Credit card model class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.models
+ */
+
+/**
+ * CreditCard model
+ *
+ * When data is saved, it is validated and processed by Authorize.net instead of
+ * being stored in the database.
+ *
+ * @package       core
+ * @subpackage    core.app.models
+ * @todo Save should record a payment as well
+ */
 class CreditCard extends AppModel {
-	
+
+/**
+ * The name of the model
+ *
+ * @var string
+ */
 	var $name = 'CreditCard';
-	
+
+/**
+ * The table to use, or false for none
+ *
+ * @var boolean
+ */
 	var $useTable = false;
-	
+
+/**
+ * Manually defined schema for validation
+ *
+ * @var array
+ */
 	var $_schema = array(
 		'credit_card_number' => array(
 			'type' => 'integer',
@@ -26,7 +60,12 @@ class CreditCard extends AppModel {
 			'length' => 45
 		)
 	);
-	
+
+/**
+ * Validation rules
+ *
+ * @var array
+ */
 	var $validate = array(
 		'first_name' => array(
 			'notEmpty' => array(
@@ -98,6 +137,7 @@ class CreditCard extends AppModel {
  * The returned transaction id. Set after a saveAll call
  *
  * @var string
+ * @todo Use id instead to maintain conventions
  */ 
 	var $transactionId = null;
 

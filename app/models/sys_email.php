@@ -1,10 +1,40 @@
 <?php
+/**
+ * Sys email model class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.models
+ */
+
+/**
+ * SysEmail model
+ *
+ * @package       core
+ * @subpackage    core.app.models
+ */
 class SysEmail extends AppModel {
-	
+
+/**
+ * The name of the model
+ *
+ * @var string
+ */
 	var $name = 'SysEmail';
-	
+
+/**
+ * The table to use, or false for none
+ *
+ * @var boolean
+ */
 	var $useTable = false;
-	
+
+/**
+ * Manually defined schema for validation
+ *
+ * @var array
+ */
 	var $_schema = array(
 		'subject' => array(
 			'type' => 'string',
@@ -14,7 +44,12 @@ class SysEmail extends AppModel {
 			'type' => 'text'
 		)
 	);
-	
+
+/**
+ * Validation rules
+ *
+ * @var array
+ */
 	var $validate = array(
 		'subject' => array(
 			'rule' => 'notempty',
@@ -27,8 +62,9 @@ class SysEmail extends AppModel {
 	);	
 	
 /**
- * Overwrite Model::exists() due to Cake looking for a table
- * when validating.
+ * Overwrite Model::exists() due to Cake looking for a table when validating.
+ *
+ * @return boolean True
  */
 	function exists() {
 		return true;

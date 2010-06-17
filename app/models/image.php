@@ -1,30 +1,44 @@
 <?php
+/**
+ * Image model class.
+ *
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.models
+ */
 
+/**
+ * Includes
+ */
 App::import('Model', 'Media.MediaApp');
 
+/**
+ * Image model
+ *
+ * @package       core
+ * @subpackage    core.app.models
+ */
 class Image extends MediaAppModel {
 
 /**
- * Name of model
+ * The name of the model
  *
  * @var string
- * @access public
  */
 	var $name = 'Image';
 
 /**
- * Name of table to use
+ * The table to use, or false for none
  *
- * @var mixed
- * @access public
+ * @var boolean
  */
 	var $useTable = 'attachments';
 
 /**
- * actsAs property
+ * Extra behaviors for this model
  *
  * @var array
- * @access public
  */
 	var $actsAs = array(
 		'Media.Transfer' => array(
@@ -89,22 +103,16 @@ class Image extends MediaAppModel {
 		)
 	);
 
+/**
+ * BelongsTo association link
+ *
+ * @var array
+ */
 	var $belongsTo = array(
 		'User' => array(
 			'foreignKey' => 'foreign_key'	
 		)
 	);
-		
-		
-		
-	function beforeSave() {		
-		// has many
-		if (!empty($this->data)) {
-			$document['Document']['group'] = 'Image';
-		}
-		
-		return true;
-	}
 		
 /**
  * beforeMake Callback
