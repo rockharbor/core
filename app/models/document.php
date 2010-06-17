@@ -88,27 +88,9 @@ class Document extends MediaAppModel {
 					)
 				),
 				'message' => 'Invalid file type.'
-			)/*,			
-			// should we make a list of a valid mime types?
-			
-			'mimeType'   => array(
-				'rule' => array(
-					'checkMimeType', 
-					false, 
-					array(
-						'image/jpeg', 'image/png', 'image/tiff', 'image/gif', 'application/pdf'
-					)
-				),
-				'message' => 'Invalid mime type.'
-			)*/			
-		),
-		'alternative' => array(
-			'rule'       => 'checkRepresent',
-			'on'         => 'create',
-			'required'   => false,
-			'allowEmpty' => true,
-			'message' => 'Please specify an alternative.'
-		));
+			)
+		)
+	);
 
 	var $belongsTo = array(
 		'User' => array(

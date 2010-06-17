@@ -57,13 +57,19 @@ class Image extends MediaAppModel {
  */
 	var $validate = array(
 		'file' => array(
-			'resource'   => array('rule' => 'checkResource'),
-			'access'     => array('rule' => 'checkAccess'),
-			'location'   => array(
+			'resource' => array(
+				'rule' => 'checkResource',
+				'message' => 'Invalid resource.'
+			),
+			'access' => array(
+				'rule' => 'checkAccess',
+				'message' => 'Cannot access.'
+			),
+			'location' => array(
 				'rule' => array('checkLocation', array(
 					MEDIA_TRANSFER, '/tmp/', 'http://', 'C:\\'
 				)),
-				'message' => 'Invalid location'
+				'message' => 'Invalid upload location.'
 			),
 			'permission' => array('rule' => array('checkPermission', '*')),
 			'size'       => array(
@@ -79,25 +85,7 @@ class Image extends MediaAppModel {
 					)
 				),
 				'message' => 'Invalid file type.'
-			)/*,			
-			// should we make a list of a valid mime types?
-			
-			'mimeType'   => array(
-				'rule' => array(
-					'checkMimeType', 
-					false, 
-					array(
-						'image/jpeg', 'image/png', 'image/tiff', 'image/gif', 'application/pdf'
-					)
-				),
-				'message' => 'Invalid mime type.'
-			)*/			
-		),
-		'alternative' => array(
-			'rule'       => 'checkRepresent',
-			'on'         => 'create',
-			'required'   => false,
-			'allowEmpty' => true,
+			)
 		)
 	);
 
