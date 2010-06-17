@@ -9,11 +9,11 @@ foreach ($attachments as $attachment) {
 	$item = $attachment[$attachmentModel];
 	$previewVersion = 'xss';
 
-	if ($file = $this->Media->file($item)) {
-		$url = $this->Media->url($file);
+	if ($file = $this->Medium->file($item)) {
+		$url = $this->Medium->url($file);
 		
- 		$Media = Media::factory($file);
-		$size = $this->Media->size($file);
+ 		$Media = Medium::factory($file);
+		$size = $this->Medium->size($file);
 		if (isset($this->Number)) {
 			$size = $this->Number->toReadableSize($size);
 		} else {
@@ -99,5 +99,3 @@ if (count($attachments) < (isset($CORE['settings'][strtolower($model).'_'.strtol
 }
 ?>
 	</fieldset>
-
-

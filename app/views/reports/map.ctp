@@ -5,7 +5,7 @@
 $addresses = array();
 foreach ($results as $result) {
 	if (!empty($result['Image'])) {
-		$imageUrl = $this->Media->url($this->Media->file('s/', $result['Image'][0]));
+		$imageUrl = $this->Medium->url($this->Medium->file('s/', $result['Image'][0]));
 	} else {
 		$imageUrl = null;
 	}
