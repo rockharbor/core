@@ -327,20 +327,15 @@ class UsersController extends AppController {
 	function forgot_password() {		
 		if (!empty($this->data)) {
 			if (!empty($this->data['User']['forgotten'])) {			
-				$user = $this->User->find('first', array(
-					'or' => array(
-						'User.username' => $this->data['User']['forgotten'],
-						'Profile.primary_email' => $this->data['User']['forgotten'],
-						'Profile.alternate_email_1' => $this->data['User']['forgotten'],
-						'Profile.alternate_email_2' => $this->data['User']['forgotten']
-					)
+				$user = $this->User->findUser(array(
+					$this->data['User']['forgotten']
 				));
 			} else {
-				$user = array();
+				$user = false;
 			}
 			
-			if (!empty($user)) {
-				$this->User->id = $user['User']['id'];
+			if ($user !== false) {
+				$this->User->id = $user;
 		
 				$newPassword = $this->User->generatePassword();
 		
@@ -348,7 +343,7 @@ class UsersController extends AppController {
 					$this->Session->setFlash('Your new password has been sent via email.', 'flash_success');
 					$this->set('password', $newPassword);
 					$this->QueueEmail->send(array(
-						'to' => $user['User']['id'],
+						'to' => $user,
 						'subject' => 'Password reset',
 						'template' => 'users_forgot_password'
 					));
