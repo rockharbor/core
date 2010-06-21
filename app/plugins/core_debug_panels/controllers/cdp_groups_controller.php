@@ -1,6 +1,6 @@
 <?php
 
-class GroupsController extends CoreDebugPanelsAppController {
+class CdpGroupsController extends CoreDebugPanelsAppController {
 
 	var $uses = array('Group');
 

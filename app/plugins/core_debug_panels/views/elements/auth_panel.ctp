@@ -27,7 +27,7 @@ endforeach;
 $("#group_id").bind("change", function() {
 	$.ajax({
 		url: "<?php echo Router::url(array(
-			'controller' => 'groups',
+			'controller' => 'cdp_groups',
 			'action' => 'swap',
 			'plugin' => 'core_debug_panels'			
 		)); ?>/"+$("#group_id").val(),

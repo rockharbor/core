@@ -60,7 +60,7 @@
 $("#filter, #display").bind("change", function() {
 	$.ajax({
 		url: "<?php echo Router::url(array(
-			'controller' => 'errors',
+			'controller' => 'cdp_errors',
 			'action' => 'filter',
 			'plugin' => 'core_debug_panels'
 		)); ?>/"+$("#filter").val()+"/"+$("#display").val(),

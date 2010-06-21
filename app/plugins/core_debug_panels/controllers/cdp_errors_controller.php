@@ -1,10 +1,12 @@
 <?php
 
-class ErrorsController extends CoreDebugPanelsAppController {
+class CdpErrorsController extends CoreDebugPanelsAppController {
 	
-	var $name = 'Errors';
+	var $name = 'CdpErrors';
 	
 	var $helpers = array('Formatting');
+
+	var $uses = array('Error');
 
 /*
  * Shows a filtered list of errors
