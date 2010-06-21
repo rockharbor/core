@@ -217,5 +217,80 @@ class Household extends AppModel {
 
 		return $success;
 	}
+
+/**
+ * Adds members to a household on behalf of a user. If the user doesn't exist
+ * they will be created
+ *
+ * @param array $members The members to add including Profile data
+ * @param integer $householdId The id of the Household to add them to
+ * @param array $creator The user data for the creator
+ * @return boolean Success
+ */
+	function addMembers($members = array(), $householdId = null, $creator = array()) {
+		if (empty($members) || !$householdId || empty($creator)) {
+			return false;
+		}
+
+		foreach ($members as &$member) {
+			// check to see if the new household members exists and use that data instead
+			$foundUser = $this->HouseholdMember->User->findUser(array(
+				$member['primary_email'],
+				$member['first_name'],
+				$member['last_name']
+			));
+
+			if ($foundUser !== false) {
+				$this->HouseholdMember->User->contain(array('Profile'));
+				$hm = $this->HouseholdMember->User->read(null, $foundUser);
+				$this->join(
+					$householdId,
+					$hm['User']['id'],
+					$creator['User']['id'],
+					$hm['Profile']['child']
+				);
+
+				if ($hm['Profile']['child']) {
+					if (!isset($this->tmpInvites) || !is_array($this->tmpInvites)) {
+						$this->tmpInvites = array();
+					}
+
+					// temporarily store userdata for the controller to access and notify them
+					$this->tmpInvites[] = array(
+						'user' => $hm['User']['id'],
+						'household' => $householdId
+					);
+				}
+			} elseif (!empty($member['first_name']) && !empty($member['last_name']) && !empty($member['primary_email'])) {
+				// get creators address to use
+				$address = $this->HouseholdMember->User->Address->find('first', array(
+					'Address.foreign_key' => $creator['User']['id'],
+					'Address.model' => 'User'
+				));
+
+				// remove unnecessary fields
+				unset($address['Address']['id']);
+				unset($address['Address']['foreign_key']);
+				unset($address['Address']['primary']);
+				unset($address['Address']['active']);
+
+				// we need to create a new user
+				$newHouseholdMember = array(
+					'Profile' => array(
+						'first_name' => $member['first_name'],
+						'last_name' => $member['last_name'],
+						'primary_email' => $member['primary_email']
+					),
+					'Address' => array(
+							0 => $address['Address']
+					)
+				);
+
+				$this->HouseholdMember->User->createUser($newHouseholdMember, $householdId, $creator);
+			}
+		}
+		
+		return true;
+	}
 }
 ?>

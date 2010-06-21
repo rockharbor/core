@@ -49,7 +49,7 @@ class UsersController extends AppController {
 		parent::beforeFilter();
 		
 		// public actions
-		$this->Auth->allow('login', 'logout', 'forgot_password', 'add', 'request_activation');
+		$this->Auth->allow('login', 'logout', 'forgot_password', 'register', 'request_activation');
 		
 		$this->_editSelf('edit', 'edit_profile');
 	}
@@ -174,6 +174,7 @@ class UsersController extends AppController {
  * Logs a user into CORE, saves their profile data in session
  *
  * @param string $username Used to auto-fill the username field
+ * @todo Restrict login to users older than 12 (use Auth.userScope?)
  */
 	function login($username = null) {		
 		if (isset($this->passedArgs['message'])) {
@@ -219,7 +220,7 @@ class UsersController extends AppController {
  */	
 	function logout() {
 		$redirect = $this->Auth->logout();
-		$this->Cookie->delete('Auth.User');
+		$this->Cookie->delete('Auth');
 		$this->Session->destroy();
 		$this->redirect($redirect);
 	}
@@ -407,176 +408,57 @@ class UsersController extends AppController {
 	}
 	
 /**
- * Registers a user
+ * Adds a user
  */
-	function add() {	
-		if (!empty($this->data)) {			
-			// if staff is adding this user, auto-generate their username/password
-			if ($this->Auth->user()) {
-				$this->data['User']['username'] = $this->User->generateUsername($this->data['Profile']['first_name'], $this->data['Profile']['last_name']);
-				$this->data['User']['password'] = $this->User->generatePassword();
-			}
-			
+	function add() {
+		if (!empty($this->data)) {
 			// check if user exists
-			$foundUser = $this->User->find('first', array(
-				'fields' => 'User.id',
-				'conditions' => array(
-					'or' => array(
-						'and' => array(
-							'Profile.first_name' => $this->data['Profile']['first_name'],
-							'Profile.last_name' => $this->data['Profile']['last_name']
-						),
-					'Profile.primary_email' => $this->data['Profile']['primary_email']
-					)
-				),
-				'contain' => array(
-					'Profile'
-				)
+			$foundUser = $this->User->findUser(array(
+				$this->data['Profile']['primary_email'],
+				$this->data['Profile']['first_name'],
+				$this->data['Profile']['last_name']
 			));
-			
-			if (!empty($foundUser)) {				
-				// take to activation request (preserve data)
-				return $this->setAction('request_activation', $foundUser['User']['id'], true);
-			}
-			
-			// add group
-			$this->data['User']['group_id'] = 9;
-			
-			// check to see if this user exists
-			foreach ($this->data['HouseholdMember'] as &$householdMember) {				
-				// check if user exists
-				if ($this->User->Profile->hasAny(array(
-					'Profile.primary_email' => $householdMember['primary_email']
-				)) ||
-				$this->User->Profile->hasAny(array(
-					'Profile.first_name' => $householdMember['first_name'],
-					'Profile.last_name' => $householdMember['last_name']
-				))) {
-					// user exists already
-					$hm = $this->User->Profile->find('first', array(
-						'conditions' => array(
-							'or' => array(
-								'and' => array(
-									'Profile.first_name' => $householdMember['first_name'],
-									'Profile.last_name' => $householdMember['last_name']
-								),
-								'Profile.primary_email' => $householdMember['primary_email']
-							)
-						),
-						'contain' => 'User'
-					));
-					
-					$householdMember = array_merge($householdMember, $hm);
-				}
-			}
-			
-			// temporarily remove household member info - we have to do that separately
-			$householdMembers = $this->data['HouseholdMember'];
-			unset($this->data['HouseholdMember']);
-			
-			// first, check validation
-			if ($this->User->saveAll($this->data, array('validate' => 'only'))) {
-				$creatorGroupId = $this->activeUser ? $this->activeUser['User']['group_id'] : 9;
-				
-				// extra data
-				$this->data['Profile']['created_by_type'] = $creatorGroupId;
-				$this->data['Address'][0]['primary'] = true;
-				$this->data['Address'][0]['active'] = true;
-				$this->data['Address'][0]['model'] = 'User';				
-				
-				// save user and related info
-				$this->User->create();
-				$this->User->saveAll($this->data, array('validate' => false));
 
-				$newUserId = $this->User->id;
-				
-				if ($this->Auth->user()) {
-					$this->User->Profile->saveField('created_by', $this->activeUser['User']['id']);
-				} else {
-					// save that they created themselves
-					$this->User->Profile->saveField('created_by', $newUserId);
-				}
-				
-				// create household (new user is automatically added to the new household)
-				$this->User->HouseholdMember->Household->createHousehold($newUserId);
-				
-				foreach ($householdMembers as &$householdMember) {
-					if (isset($householdMember['User'])) {						
-						// join household
-						$this->User->HouseholdMember->Household->join(
-							$this->User->HouseholdMember->Household->id,
-							$householdMember['User']['id'],
-							$newUserId,
-							$householdMember['Profile']['child']
-						);
-					} elseif (!empty($householdMember['first_name']) && !empty($householdMember['last_name']) && !empty($householdMember['primary_email'])) {
-						// we need to create a new user
-						$this->User->create();
-						$this->User->saveAll(array(
-							'User' => array(
-								'username' => $this->User->generateUsername($householdMember['first_name'], $householdMember['last_name']),
-								'password' => $this->User->generatePassword(),
-								'active' => true
-							),
-							'Group' => array($publicId)
-						));
-						
-						// .. and a profile to go with
-						$this->User->Profile->create();
-						$this->User->Profile->save(array(
-							'user_id' => $this->User->id,
-							'first_name' => $householdMember['first_name'],
-							'last_name' => $householdMember['last_name'],
-							'created_by' => $newUserId,
-							'created_by_type' => $publicId
-						));
-						
-						// join new user's household
-						$this->User->HouseholdMember->Household->join(
-							$this->User->HouseholdMember->Household->id,
-							$this->User->id,
-							$newUserId,
-							true
-						);
-					}
-				}
-				
-				if ($this->Auth->user()) {
-					$this->Session->setFlash('User added!', 'flash_success');
-					$this->set('username', $this->data['User']['username']);
-					$this->set('password', $this->data['User']['password']);
+			if ($foundUser !== false) {
+				// take to activation request (preserve data)
+				$this->Session->setFlash('User already exists!', 'flash_failure');
+				return;
+			}
+
+			if ($this->User->createUser($this->data, null, $this->activeUser)) {
+				foreach ($this->User->tmpAdded as $notifyUser) {
+					$this->set('username', $notifyUser['username']);
+					$this->set('password', $notifyUser['password']);
 					$this->QueueEmail->send(array(
-						'to' => $newUserId,
-						'subject' => 'User registration',
-						'template' => 'users_register'
+						'to' => $notifyUser['id'],
+						'template' => 'users_register',
+						'subject' => 'Account registration'
 					));
-					
-					$this->redirect(array(
-						'controller' => 'users',
-						'action' => 'index'
+					$this->Notifier->notify($notifyUser['id'], 'users_register');
+				}
+
+				foreach ($this->User->HouseholdMember->Household->tmpInvites as $notifyUser) {
+					$this->User->HouseholdMember->Household->contain(array(
+						'User' => array(
+							'Profile'
+						)
 					));
-				} else {
-					$this->Session->setFlash('Your account has been created!', 'flash_success');
-					$this->set('username', $this->data['User']['username']);
-					$this->set('password', $this->data['User']['password']);
-					$this->QueueEmail->send(array(
-						'to' => $newUserId,
-						'subject' => 'User registration',
-						'template' => 'users_register'
-					));
-								
-					$this->redirect(array(
-						'controller' => 'users',
-						'action' => 'login',
-						$this->data['User']['username']
-					));
-				}					
+					$this->User->contain(array('Profile'));
+					$this->set('notifier', $this->User->read(null, $notifyUser['user']));
+					$this->set('contact', $this->User->HouseholdMember->Household->read(null, $notifyUser['household']));
+					$this->Notifier->saveData = array('type' => 'invitation');
+					$this->Notifier->notify($notifyUser['user'], 'households_invite');
+				}
+
+				$this->Session->setFlash('User(s) added and notified!', 'flash_success');
+
+				$this->redirect(array(
+					'controller' => 'users',
+					'action' => 'index'
+				));
 			} else {		
 				$this->Session->setFlash('Oops, validation errors...', 'flash_failure');
 			}
-			
-			// add household member info back in
-			$this->data['HouseholdMember'] = $householdMembers;
 		}
 		
 		$this->set('elementarySchools', $this->User->Profile->ElementarySchool->find('list', array(
@@ -594,8 +476,76 @@ class UsersController extends AppController {
 		$this->set('publications', $this->User->Publication->find('list')); 
 		$this->set('jobCategories', $this->User->Profile->JobCategory->find('list')); 
 		$this->set('classifications', $this->User->Profile->Classification->find('list'));
+		$this->set('campuses', $this->User->Profile->Campus->find('list'));
 	}
 
+/**
+ * Registers a user
+ */
+	function register() {
+		if (!empty($this->data)) {
+			// check if user exists
+			$foundUser = $this->User->findUser(array(
+				$this->data['Profile']['primary_email'],
+				$this->data['Profile']['first_name'],
+				$this->data['Profile']['last_name']
+			));
+
+			if ($foundUser !== false) {
+				// take to activation request (preserve data)
+				return $this->setAction('request_activation', $foundUser, true);
+			}
+			
+			if ($this->User->createUser($this->data)) {
+				$this->Session->setFlash('Your account has been created!', 'flash_success');
+
+				foreach ($this->User->tmpAdded as $notifyUser) {
+					$this->set('username', $notifyUser['username']);
+					$this->set('password', $notifyUser['password']);
+					$sent = $this->QueueEmail->send(array(
+						'to' => $notifyUser['id'],
+						'template' => 'users_register',
+						'subject' => 'Account registration'
+					));
+					$this->Notifier->notify($notifyUser['id'], 'users_register');
+				}
+
+				foreach ($this->User->HouseholdMember->Household->tmpInvites as $notifyUser) {
+					$this->User->HouseholdMember->Household->recursive = 1;
+					$this->User->contain(array('Profile'));
+					$this->set('notifier', $this->User->read(null, $notifyUser['user']));
+					$this->set('contact', $this->User->HouseholdMember->Household->read(null, $notifyUser['household']));
+					$this->Notifier->saveData = array('type' => 'invitation');
+					$this->Notifier->notify($notifyUser['user'], 'households_invite');
+				}
+
+				/*$this->redirect(array(
+					'controller' => 'users',
+					'action' => 'login',
+					$this->data['User']['username']
+				));*/
+			} else {
+				$this->Session->setFlash('Oops, validation errors...', 'flash_failure');
+			}
+		}
+
+		$this->set('elementarySchools', $this->User->Profile->ElementarySchool->find('list', array(
+			'conditions' => array('type' => 'e')
+		)));
+		$this->set('middleSchools', $this->User->Profile->MiddleSchool->find('list', array(
+			'conditions' => array('type' => 'm')
+		)));
+		$this->set('highSchools', $this->User->Profile->HighSchool->find('list', array(
+			'conditions' => array('type' => 'h')
+		)));
+		$this->set('colleges', $this->User->Profile->College->find('list', array(
+			'conditions' => array('type' => 'c')
+		)));
+		$this->set('publications', $this->User->Publication->find('list'));
+		$this->set('jobCategories', $this->User->Profile->JobCategory->find('list'));
+		$this->set('classifications', $this->User->Profile->Classification->find('list'));
+		$this->set('campuses', $this->User->Profile->Campus->find('list'));
+	}
 
 /**
  * Edits a user. Includes their group and profile information

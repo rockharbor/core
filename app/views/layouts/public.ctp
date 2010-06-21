@@ -62,7 +62,7 @@
 			echo ' | ';			
 			echo $this->Html->link('Login', array('controller' => 'users', 'action' => 'login'));
 			echo ' | ';
-			echo $this->Html->link('Register', array('controller' => 'users', 'action' => 'add'));
+			echo $this->Html->link('Register', array('controller' => 'users', 'action' => 'register'));
 			
 			
 			?></h1>

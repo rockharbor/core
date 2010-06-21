@@ -1,4 +1,4 @@
-<h2>Add a User</h2>
+<h2>Register</h2>
 
 <div id="profile_tabs" class="profiles" class="ui-tabs">
 

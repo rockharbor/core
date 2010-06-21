@@ -1,0 +1,1 @@
+Welcome to <?php echo $CORE['site_name']; ?>!

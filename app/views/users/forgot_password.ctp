@@ -7,7 +7,7 @@ echo $this->Form->create('User', array(
 ));
 ?>
 <fieldset>
-	<legend>
+	<legend>Search</legend>
 	<?php
 	echo $this->Form->input('forgotten', array(
 		'label' => 'Lookup'

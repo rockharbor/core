@@ -116,7 +116,7 @@ class QueueEmailComponent extends EmailComponent {
 		$this->subject = $this->Controller->CORE['settings']['email_subject_prefix'].' '.$subject;
 
 		if (!parent::send($body)) {
-			CakeLog::write('smtp', $this->Email->smtpError);
+			CakeLog::write('smtp', $this->smtpError);
 			return false;
 		} else {
 			return true;
