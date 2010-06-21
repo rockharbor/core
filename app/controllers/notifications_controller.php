@@ -35,7 +35,7 @@ class NotificationsController extends AppController {
  *
  * @var array
  */
-	var $helpers = array('Template', 'MultiSelect');
+	var $helpers = array('MultiSelect');
 	
 /**
  * Model::beforeFilter() callback
