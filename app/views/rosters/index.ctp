@@ -136,6 +136,4 @@ $this->Js->buffer('function addToRoster(userid) {
 	)).'/User:"+userid);
 }');
 
-echo $this->Js->writeBuffer();
-
 ?>

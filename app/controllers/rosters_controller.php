@@ -377,11 +377,27 @@ class RostersController extends AppController {
 			} else {
 				$cValidates = true;
 			}
+
+			// check to make sure this doesn't exceed the roster limit
+			$lValidates = true;
+			$currentCount = $this->Roster->find('count', array(
+				'conditions' => array(
+						'Roster.involvement_id' => $involvement['Involvement']['id']
+				),
+				'contain' => false
+			));
+			$rosterCount = count($this->data['Roster']);
+			$childCount = isset($this->data['Child']) ? count($this->data['Child']) : 0;
+			if (!empty($involvement['Involvement']['roster_limit'])) {
+				$lValidates = $rosterCount + $childCount + $currentCount <= $involvement['Involvement']['roster_limit'];
+			} else {
+				$lValidates = true;
+			}
 			
 			// combine roster validation errors
 			$this->Roster->validationErrors = $this->Roster->_validationErrors;
 			// check all validation before continuing with save
-			if ($rValidates && $cValidates && $pValidates) {				
+			if ($lValidates && $rValidates && $cValidates && $pValidates) {
 				// Now that we know that the data will save, let's run the credit card
 				// get all signed up users (for their name)
 				if ($involvement['Involvement']['take_payment'] && $this->data['Default']['payment_option_id'] > 0 && isset($this->data['CreditCard'])) {
@@ -476,13 +492,17 @@ class RostersController extends AppController {
 					$this->redirect(array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvementId));
 				}		
 			} else {
+				// set validation error so modal doesn't close
+				if (empty($this->Roster->validationErrors)) {
+					$this->Roster->validationErrors = array('validation' => 'failed');
+				}
+
 				if (!$pValidates && isset($this->data['Child'])) {
 					$this->Session->setFlash('Please select a parent to bring the children.', 'flash_failure');
+				} elseif (!$lValidates) {
+					$this->Session->setFlash('The roster limit has been reached. Please sign up less people or wait for room to become available.', 'flash_failure');
+					debug($this->data);
 				} else {
-					// set validation error so modal doesn't close
-					if (empty($this->Roster->validationErrors)) {
-						$this->Roster->validationErrors = array('validation' => 'failed');
-					}
 					$this->Session->setFlash('You couldn\'t be signed up. Please, try again.', 'flash_failure');
 				}
 			}

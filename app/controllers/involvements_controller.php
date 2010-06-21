@@ -153,7 +153,7 @@ class InvolvementsController extends AppController {
 			$this->Involvement->create();
 			if ($this->Involvement->save($this->data)) {
 				$this->Session->setFlash('Involvement opportunity saved!', 'flash_success');
-				$this->redirect(array('action' => 'edit', $this->Involvement->id));
+				$this->redirect(array('action' => 'edit', 'Involvement' => $this->Involvement->id));
 			} else {
 				$this->Session->setFlash('The involvement could not be saved. Please, try again.', 'flash_failure');
 			}
@@ -181,7 +181,7 @@ class InvolvementsController extends AppController {
 			if (!$revision) {
 				if ($this->Involvement->save($this->data)) {
 					$this->Session->setFlash('The changes to this involvement opportunity are pending.', 'flash_success');
-					$this->redirect(array('action' => 'view', $id));
+					$this->redirect(array('action' => 'view', 'Involvement' => $id));
 				} else {
 					$this->Session->setFlash('There were problems saving the changes.', 'flash_failure');
 				}
