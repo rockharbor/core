@@ -1,5 +1,5 @@
-[submodule "app/plugins/acl_extras/acl_extras"]
-	path = app/plugins/acl_extras/acl_extras
+[submodule "app/plugins/acl_extras"]
+	path = app/plugins/acl_extras
 	url = http://github.com/markstory/acl_extras.git
 [submodule "app/plugins/referee"]
 	path = app/plugins/referee
