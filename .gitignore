@@ -1,3 +1,4 @@
 /app/config/database.php
 /app/webroot/media
 /app/tmp
+/app/plugins/*/.git/*
