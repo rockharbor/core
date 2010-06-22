@@ -294,7 +294,7 @@ class RostersController extends AppController {
 					unset($this->data['Roster'][$roster]);
 				} else {
 					// only add a payment if we're taking one
-					if ($involvement['Involvement']['take_payment'] && $this->data['Default']['payment_option_id'] > 0 && isset($this->data['CreditCard'])) {
+					if ($involvement['Involvement']['take_payment'] && $this->data['Default']['payment_option_id'] > 0 && !$this->data['Default']['pay_later']) {
 						$amount = $this->data['PaymentOption']['pay_deposit_amount'] ? $paymentOption['PaymentOption']['deposit'] : $paymentOption['PaymentOption']['total'];
 						
 						// add payment record to be saved (transaction id to be added later)
@@ -349,7 +349,7 @@ class RostersController extends AppController {
 					$child['Roster']['involvement_id'] = $this->data['Default']['involvement_id'];
 										
 					// only add a payment if we're taking one
-					if ($involvement['Involvement']['take_payment'] && $this->data['Default']['payment_option_id'] > 0 && isset($this->data['CreditCard'])) {
+					if ($involvement['Involvement']['take_payment'] && $this->data['Default']['payment_option_id'] > 0 && !$this->data['Default']['pay_later']) {
 						$amount = $paymentOption['PaymentOption']['childcare'];
 						
 						// add payment record to be saved (transaction id to be added later)
@@ -400,7 +400,7 @@ class RostersController extends AppController {
 			if ($lValidates && $rValidates && $cValidates && $pValidates) {
 				// Now that we know that the data will save, let's run the credit card
 				// get all signed up users (for their name)
-				if ($involvement['Involvement']['take_payment'] && $this->data['Default']['payment_option_id'] > 0 && isset($this->data['CreditCard'])) {
+				if ($involvement['Involvement']['take_payment'] && $this->data['Default']['payment_option_id'] > 0 && !$this->data['Default']['pay_later']) {
 					$signedupUsers = $this->Roster->User->Profile->find('all', array(
 						'conditions' => array(
 							'user_id' => array_merge(Set::extract('/Roster/Roster/user_id', $this->data), Set::extract('/Child/Roster/user_id', $this->data))
