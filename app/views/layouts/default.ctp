@@ -40,7 +40,6 @@
 		echo $this->Html->script('http://maps.google.com/maps/api/js?sensor=false');
 		
 		// vendor scripts
-		echo $this->Html->script('jquery.plugins/jquery.scrollTo');
 		echo $this->Html->script('jquery.plugins/jquery.cookie');
 		echo $this->Html->script('jquery.plugins/jquery.wysiwyg');
 		

@@ -210,7 +210,7 @@ CORE.tabs = function(id, taboptions, options) {
 					}
 				}
 				
-				$.scrollTo('#container', 500);
+				$('html, body').animate({scrollTop:0}, 'slow');
 			});
 		}
 	}

@@ -35,7 +35,6 @@
 		echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.js');
 		
 		// vendor scripts
-		echo $this->Html->script('jquery.plugins/jquery.scrollTo');
 		echo $this->Html->script('jquery.plugins/jquery.cookie');
 		
 		// CORE scripts
