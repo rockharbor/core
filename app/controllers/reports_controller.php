@@ -35,7 +35,7 @@ class ReportsController extends AppController {
  *
  * @var array
  */
-	var $helpers = array('GoogleMap', 'Media.Medium');
+	var $helpers = array('GoogleMap', 'Media.Media');
 
 /**
  * Extra components for this controller

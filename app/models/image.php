@@ -9,17 +9,12 @@
  */
 
 /**
- * Includes
- */
-App::import('Model', 'Media.MediaApp');
-
-/**
  * Image model
  *
  * @package       core
  * @subpackage    core.app.models
  */
-class Image extends MediaAppModel {
+class Image extends AppModel {
 
 /**
  * The name of the model
@@ -43,11 +38,19 @@ class Image extends MediaAppModel {
 	var $actsAs = array(
 		'Media.Transfer' => array(
 			'trustClient' => false,
-			'baseDirectory' => MEDIA_TRANSFER,
+			'transferDirectory' => MEDIA_TRANSFER,
 			'createDirectory' => true,
 			'alternativeFile' => 100
 		),
+		'Media.Generator' => array(
+			'baseDirectory' => MEDIA_TRANSFER,
+			'filterDirectory' => MEDIA_FILTER,
+			'createDirectory' => true,
+		),
 		'Media.Polymorphic',
+		'Media.Coupler' => array(
+			'baseDirectory' => MEDIA_TRANSFER
+		),
 		'Logable'
 	);
 
@@ -115,28 +118,32 @@ class Image extends MediaAppModel {
 	);
 		
 /**
- * beforeMake Callback
+ * Generate a version of a file
  *
- * Called from within `MediaBehavior::make()`
+ * Uncomment to force Generator Behavior to use this method when
+ * generating versions of files.
+ *
+ * If you want to fall back from your code back to the default method use:
+ * `return $this->Behaviors->Generator->makeVersion($this, $file, $process);`
  *
  * $process an array with the following contents:
- *	overwrite - If the destination file should be overwritten if it exists
- *	directory - The destination directory (guranteed to exist)
- *  name - Media name of $file (e.g. `'Image'`)
- *	version - The version requested to be processed (e.g. `'xl'`)
- *	instructions - An array containing which names of methods to be called
+ *  directory - The destination directory (If this method was called
+ *              by `make()` the directory is already created)
+ *  version - The version requested to be processed (e.g. `l`)
+ *  instructions - An array containing which names of methods to be called
  *
- * @param string $file Absolute path to the source file
- * @param array $process directory, version, name, instructions, overwrite
- * @access public
- * @return boolean True signals that the file has been processed,
- * 	false or null signals that the behavior should process the file
+ * @param file $file Absolute path to source file
+ * @param array $process version, directory, instructions
+ * @return boolean `true` if version for the file was successfully stored
  */
-	// function beforeMake($file, $process) {
+	// function makeVersion($file, $process) {
 	// }
 
 /**
  * Returns the relative path to the destination file
+ *
+ * Uncomment to force Transfer Behavior to use this method when
+ * determining the destination path instead of the builtin one.
  *
  * @param array $via Information about the temporary file
  * @param array $from Information about the source file

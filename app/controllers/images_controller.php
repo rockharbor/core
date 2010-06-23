@@ -66,7 +66,6 @@ class ImagesController extends AttachmentsController {
 		$this->viewPath = 'images';
 		
 		// get image
-		$image = array();
 		$this->Image->recursive = -1;
 		if ($id == 0) {
 			$image = $this->Image->find('first', array(
@@ -80,8 +79,7 @@ class ImagesController extends AttachmentsController {
 			$image = $this->Image->read(null, $id);
 		}
 		
-		$this->set('image', $image);
-		$this->set('size', $size);
+		$this->set(compact('image', 'size'));
 	}
 
 }

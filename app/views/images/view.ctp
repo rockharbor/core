@@ -1,13 +1,8 @@
 <?php
 
 if (!empty($image)) {
-	$file = $image['Image']['dirname'].DS.$image['Image']['basename'];
-
-	$url = $this->Medium->url($file);
-	 
-	echo $this->Medium->embed($this->Medium->file($size . '/', $image['Image']), array(
-		'restrict' => array('image')
-	));
+	$path = $size.DS.$image['Image']['dirname'].DS.$image['Image']['basename'];
+	echo $this->Media->embed($path, array('restrict' => 'image'));
 }
 
 ?>

@@ -31,7 +31,7 @@ class AttachmentsController extends AppController {
  * @var array
  */
 	var $helpers = array(
-		'Media.Medium',
+		'Media.Media',
 		'Number'
 	);
 	
@@ -123,7 +123,7 @@ class AttachmentsController extends AppController {
 	function upload() {
 		if (!empty($this->data)) {
 			Configure::write('debug', 0);
-
+			
 			$this->data[$this->model]['id'] = $this->modelId;
 			$this->data[$this->modelClass][0]['model'] = $this->model;
 			$this->data[$this->modelClass][0]['foreign_key'] = $this->modelId;

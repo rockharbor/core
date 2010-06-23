@@ -17,11 +17,11 @@
 		'User' => $this->data['User']['id']
 		)); ?>" title="addresses">Address</a></li> 
 	<li class="tab"><a href="#admin">Administration</a></li> 
-	<li class="tab"><a href="<?php 
+	<li class="tab"><a href="<?php
 	echo Router::url(array(
 		'controller' => 'user_documents',
 		'User' => $this->data['User']['id']
-	)); 
+	));
 	?>" title="docs">Documents</a></li>
 </ul>
 
@@ -178,13 +178,13 @@ echo $this->Form->create('User', array(
 	?>
 	</fieldset>
 	<fieldset id="docs">
-	<?php
+		<?php
 		// register this fieldset as 'updateable'
 		$this->Js->buffer('CORE.register(\'DocumentAttachments\', \'docs\', \''.Router::url(array(
-		'controller' => 'user_documents',
-		'User' => $this->data['User']['id']
-	)).'\')');		
-	?>
+			'controller' => 'user_documents',
+			'User' => $this->data['User']['id']
+	)).'\')');
+		?>
 	</fieldset>
 <?php 
 echo $this->Js->submit('Save', $defaultSubmitOptions);
