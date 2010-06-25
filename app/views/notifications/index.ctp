@@ -14,14 +14,14 @@
 			echo $this->Js->link('Mark as read', array(
 				'controller' => 'notifications',
 				'action' => 'read',
-				$this->MultiSelect->cache
+				$this->MultiSelect->token
 			), array(
 				'update' => '#content'
 			));
 			echo $this->Js->link('Delete', array(
 				'controller' => 'notifications',
 				'action' => 'delete',
-				$this->MultiSelect->cache
+				$this->MultiSelect->token
 			), array(
 				'update' => '#content'
 			));
@@ -30,7 +30,7 @@
 	</tr>
 	<tr>
 		<th><?php echo !empty($notifications) ? $this->MultiSelect->checkbox('all'): ''; ?></th>
-		<th>Notification</th>
+		<th><?php echo $this->Paginator->sort('Notification', 'id'); ?></th>
 		<th>Actions</th>
 	</tr>
 	<?php

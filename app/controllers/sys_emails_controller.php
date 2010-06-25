@@ -35,7 +35,7 @@ class SysEmailsController extends AppController {
  *
  * @var array
  */
-	var $components = array('MultiSelect');
+	var $components = array('MultiSelect.MultiSelect');
 
 /**
  * Model::beforeFilter() callback
@@ -146,15 +146,11 @@ class SysEmailsController extends AppController {
 			
 			// no uid will be set, so set one and save this search
 			$this->MultiSelect->saveSearch($search);
-			// and select all since we know we want these
-			$this->MultiSelect->selectAll();
-			// finally, use this as the new multi select key
-			$uid = $this->MultiSelect->cacheKey;
 		} else {
 			$search = $this->MultiSelect->getSearch($uid);
 			$userIds = $this->MultiSelect->getSelected($uid);
 			// assume they want all if they didn't select any
-			if ($userIds != 'all' && !empty($userIds)) {
+			if (!empty($userIds)) {
 				$search['conditions']['User.id'] = $userIds;
 			}
 			

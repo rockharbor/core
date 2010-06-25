@@ -28,7 +28,7 @@ class PaymentsController extends AppController {
  *
  * @var array
  */
-	var $components = array('MultiSelect', 'AuthorizeDotNet');
+	var $components = array('MultiSelect.MultiSelect', 'AuthorizeDotNet');
 
 /**
  * Extra helpers for this controller
@@ -95,7 +95,7 @@ class PaymentsController extends AppController {
 		$search['contain']['User'] = array('Profile');		
 		$selected = $this->MultiSelect->getSelected($mskey);
 		// assume they want all if they didn't select any
-		if ($selected != 'all' && !empty($selected)) {
+		if (!empty($selected)) {
 			$search['conditions']['Roster.id'] = $selected;
 		} 
 		$users = $this->Payment->Roster->find('all', $search);

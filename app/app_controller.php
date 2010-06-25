@@ -278,28 +278,6 @@ class AppController extends Controller {
 	}
 	
 /**
- * Allows simple session storage and manipulation for MultiSelectHelper and MultiSelectComponent
- *
- * @param string $action Action to take
- * @param string $data Comma delimited list of data
- * @access public
- */
-	function multi_select_session($action = 'deselectAll', $data = '') {		
-		// no access from anything other than the helper's functions
-		if (!$this->RequestHandler->isAjax() || $this->RequestHandler->ext != 'json') {
-			$this->cakeError('error404');
-		}
-		
-		$this->autoRender = false;
-		
-		// call MultiSelect::$action
-		$cache = $this->MultiSelect->{$action}(explode(',', $data));
-			
-		echo json_encode($cache);
-		$this->_stop();
-	}
-	
-/**
  * Converts POST'ed form data to a model conditions array, suitable for use in a Model::find() call.
  *
  * @param array $data POST'ed data organized by model and field

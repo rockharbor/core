@@ -25,7 +25,7 @@ echo $this->MultiSelect->create();
 			echo $this->Js->link('Mark as read', array(
 				'controller' => 'alerts',
 				'action' => 'read',
-				$this->MultiSelect->cache
+				$this->MultiSelect->token
 			), array(
 				'update' => '#content'
 			));

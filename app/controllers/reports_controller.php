@@ -42,7 +42,7 @@ class ReportsController extends AppController {
  *
  * @var array
  */
-	var $components = array('MultiSelect');
+	var $components = array('MultiSelect.MultiSelect');
 	
 /**
  * Model::beforeFilter() callback
@@ -122,7 +122,7 @@ class ReportsController extends AppController {
 			$search = $this->MultiSelect->getSearch($uid);
 			$selected = $this->MultiSelect->getSelected($uid);
 			// assume they want all if they didn't select any
-			if ($selected != 'all' && !empty($selected)) {
+			if (!empty($selected)) {
 				$search['conditions'][$model.'.id'] = $selected;
 			}
 			
@@ -148,7 +148,7 @@ class ReportsController extends AppController {
 		$search = $this->MultiSelect->getSearch($uid);
 		$selected = $this->MultiSelect->getSelected($uid);
 		// assume they want all if they didn't select any
-		if ($selected != 'all' && !empty($selected)) {
+		if (!empty($selected)) {
 			$search['conditions'][$model.'.id'] = $selected;
 		}
 		

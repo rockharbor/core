@@ -28,14 +28,14 @@ class NotificationsController extends AppController {
  *
  * @var array
  */
-	var $components = array('MultiSelect');
+	var $components = array('MultiSelect.MultiSelect');
 
 /**
  * Extra helpers for this controller
  *
  * @var array
  */
-	var $helpers = array('MultiSelect');
+	var $helpers = array('MultiSelect.MultiSelect');
 	
 /**
  * Model::beforeFilter() callback
@@ -92,15 +92,9 @@ class NotificationsController extends AppController {
 			$search = $this->MultiSelect->getSearch($id);
 			$selected = $this->MultiSelect->getSelected($id);
 			
-			if ($selected == 'all' || !empty($selected)) {
-				if ($selected != 'all') {
-					$search['conditions']['Notification.id'] = $selected;
-				} 
-				$results = $this->Notification->find('all', $search);
-				$ids = Set::extract('/Notification/id', $results);
-			} else {
-				$ids = array();
-			}
+			$search['conditions']['Notification.id'] = $selected;
+			$results = $this->Notification->find('all', $search);
+			$ids = $selected; //Set::extract('/Notification/id', $results);
 		} else {
 			$ids = array($id);
 		}
@@ -136,20 +130,14 @@ class NotificationsController extends AppController {
 		if ($this->MultiSelect->check($id)) {
 			$search = $this->MultiSelect->getSearch($id);
 			$selected = $this->MultiSelect->getSelected($id);
-			
-			if ($selected == 'all' || !empty($selected)) {
-				if ($selected != 'all') {
-					$search['conditions']['Notification.id'] = $selected;
-				} 
-				$results = $this->Notification->find('all', $search);
-				$ids = Set::extract('/Notification/id', $results);
-			} else {
-				$ids = array();
-			}
+						
+			$search['conditions']['Notification.id'] = $selected;			
+			$results = $this->Notification->find('all', $search);
+			$ids = $selected; // Set::extract('/Notification/id', $results);
 		} else {
 			$ids = array($id);
 		}
-		
+
 		foreach ($ids as $id) {
 			$this->Notification->id = $id;
 			if ($this->Notification->ownedBy($this->activeUser['User']['id'])) {

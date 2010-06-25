@@ -4,8 +4,8 @@
  *
  * @copyright     Copyright 2010, *ROCK*HARBOR
  * @link          http://rockharbor.org *ROCK*HARBOR
- * @package       core
- * @subpackage    core.app.controllers.components
+ * @package       multi_select
+ * @subpackage    multi_select.controllers.components
  */
 
 /**
@@ -22,18 +22,11 @@
  * your saved search data, then use MultiSelectComponent::getSelected() and modify the search parameters
  * appropriately. MultiSelectComponent::getSelected() returns `all` if the check all checkbox was selected.
  *
- * @package       core
- * @subpackage    core.app.controllers.components
+ * @package       multi_select
+ * @subpackage    multi_select.controllers.components
  */
 class MultiSelectComponent extends Object {
 
-/**
- * The current/active cache key
- *
- * @var string
- * @access public
- */ 
-	var $cacheKey = null;
 /**
  * A stored reference to the calling controller
  *
@@ -51,6 +44,14 @@ class MultiSelectComponent extends Object {
 	var $components = array('Session');
 
 /**
+ * Current token
+ *
+ * @var string
+ * @access protected
+ */
+	var $_token = null;
+
+/**
  * Start MultiSelectComponent for use in the controller
  *
  * @param object $controller A reference to the controller
@@ -61,22 +62,36 @@ class MultiSelectComponent extends Object {
 	}
 
 /**
- * Creates session keys
+ * Creates session keys and removes expired ones
  *
  * @access public
+ * @todo check for pagination in url instead of layout
  */	
 	function startup() {
-		// Creates MultiSelectHelper keys only if it's a new 'page'
-		if (!$this->controller->RequestHandler->isAjax() && $this->controller->layout == 'default') {
-			$cacheKey = uniqid();
-			$this->Session->write('MultiSelect.cacheKey', $cacheKey);
-			$this->Session->write('MultiSelect.'.$cacheKey.'.selected', array());
-			$this->Session->write('MultiSelect.'.$cacheKey.'.search', array());
-			$this->Session->write('MultiSelect.'.$cacheKey.'.all', false);
-			
-			$this->cacheKey = $cacheKey;
+		if (!isset($this->controller->params['named'])) {
+			$this->controller->params['named'] = array();
+		}
+		
+		if ($this->check()) {
+			$currentTokens = $this->Session->read('MultiSelect');
+			foreach ($currentTokens as $token => $values) {
+				if (isset($values['created']) && $values['created'] > strtotime('+10 minutes')) {
+					$this->Session->delete('MultiSelect.'.$token);
+				}
+			}
+		}
+
+		if (!isset($this->controller->params['named']['mstoken'])) {
+			$this->_token = String::uuid();
+			$this->controller->params['named']['mstoken'] = $this->_token;
+			$success = $this->Session->write('MultiSelect.'.$this->_token, array(
+				'selected' => array(),
+				'search' => array(),
+				'page' => array(),
+				'created' => time()
+			));
 		} else {
-			$this->cacheKey = $this->Session->read('MultiSelect.cacheKey');
+			$this->_token = $this->controller->params['named']['mstoken'];
 		}
 	}
 
@@ -88,47 +103,55 @@ class MultiSelectComponent extends Object {
  * @access public
  */	
 	function saveSearch($search = array()) {
+		if (!is_array($search)) {
+			return false;
+		}
+
 		unset($search['limit']);
-		return $this->Session->write('MultiSelect.'.$this->cacheKey.'.search', $search);
+		return $this->Session->write('MultiSelect.'.$this->_token.'.search', $search);
 	}
 
 /**
  * Retrieves search data
  *
- * @param array $key The MultiSelect key to get from. By default, it uses the current key
+ * @param string $uid The token to get, or null for current
  * @return array Search data that was previously saved
  * @access public
  */	
-	function getSearch($key = null) {
-		if (!$key) {
-			$key = $this->cacheKey;
+	function getSearch($uid = null) {
+		if (!$uid) {
+			$uid = $this->_token;
 		}
-		
-		return $this->Session->read('MultiSelect.'.$key.'.search');
+		return $this->Session->read('MultiSelect.'.$uid.'.search');
 	}
 
 /**
  * Retrieves selected ids
  *
- * Returns `all` if the check all box was selected. Modify your search appropriately.
- *
- * @param array $key The MultiSelect key to get from.
+ * @param string $uid The token to get, or null for current
  * @return mixed Array of ids, or `all`
  * @access public
  */		
-	function getSelected($key = null) {
-		return ($this->Session->read('MultiSelect.'.$this->cacheKey.'.all')) ? 'all' : $this->_get($key);
+	function getSelected($uid = null) {
+		if (!$uid) {
+			$uid = $this->_token;
+		}
+		return $this->Session->read('MultiSelect.'.$uid.'.selected');
 	}
 
 /**
- * Checks to see if an id is a MultiSelect id (for controller functions that use $id as a single or multiple)
+ * Checks to see if MultiSelect session is set, or if an id is a MultiSelect id
  *
- * @param array $id The id
+ * @param $uid The id to check, if any
  * @return boolean Exists?
  * @access public
  */		
-	function check($id = null) {
-		return $this->Session->check('MultiSelect.'.$id);
+	function check($uid = null) {
+		if (!$uid) {
+			return $this->Session->check('MultiSelect');
+		} else {
+			return $this->Session->check('MultiSelect.'.$uid);
+		}
 	}
 
 /**
@@ -139,20 +162,7 @@ class MultiSelectComponent extends Object {
  * @access public
  */		
 	function merge($data = array()) {
-		$cache = array_unique(array_merge($this->_get(), $data));
-		$this->_save($cache);
-		return $cache;
-	}
-
-/**
- * Appends ids to current selected ids
- *
- * @param array $data Array of ids
- * @return array New data
- * @access public
- */			
-	function append($data = array()) {
-		$cache = array_merge($this->_get(), $data);
+		$cache = array_values(array_unique(array_merge($this->_get(), $data)));
 		$this->_save($cache);
 		return $cache;
 	}
@@ -171,25 +181,23 @@ class MultiSelectComponent extends Object {
 	}
 
 /**
- * Sets `all` key and removes previous selections
+ * Saves current page into selected
  *
  * @return boolean Set success
  * @access public
  */			
 	function selectAll() {
-		// clear existing
-		$this->Session->write('MultiSelect.'.$this->cacheKey.'.selected', array());
-		return $this->Session->write('MultiSelect.'.$this->cacheKey.'.all', true);
+		return $this->merge($this->Session->read('MultiSelect.'.$this->_token.'.page'));
 	}
 
 /**
- * Resets `all` key
+ * Removes current page from selected
  *
  * @return boolean Reset success
  * @access public
  */		
 	function deselectAll() {
-		return $this->Session->write('MultiSelect.'.$this->cacheKey.'.all', false);
+		return $this->delete($this->Session->read('MultiSelect.'.$this->_token.'.page'));
 	}
 
 /**
@@ -200,22 +208,20 @@ class MultiSelectComponent extends Object {
  * @access private
  */	
 	function _save($data = array()) {
-		return $this->Session->write('MultiSelect.'.$this->cacheKey.'.selected', $data);
+		return $this->Session->write('MultiSelect.'.$this->_token.'.selected', $data);
 	}
 
 /**
  * Gets ids from the session key
  *
- * @param string $key The key to read. By default it uses the current one
  * @return array Array of ids
  * @access private
  */		
-	function _get($key = null) {
-		if (!$key) {
-			$key = $this->cacheKey;
+	function _get($uid = null) {
+		if (!$uid) {
+			$uid = $this->_token;
 		}
-		
-		return $this->Session->read('MultiSelect.'.$key.'.selected');
+		return $this->Session->read('MultiSelect.'.$this->_token.'.selected');
 	}	
 }
 ?>

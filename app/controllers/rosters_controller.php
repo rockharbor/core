@@ -28,14 +28,14 @@ class RostersController extends AppController {
  *
  * @var array
  */
-	var $components = array('FilterPagination', 'AuthorizeDotNet', 'MultiSelect');
+	var $components = array('FilterPagination', 'AuthorizeDotNet', 'MultiSelect.MultiSelect');
 
 /**
  * Extra helpers for this controller
  *
  * @var array
  */
-	var $helpers = array('Formatting', 'MultiSelect');
+	var $helpers = array('Formatting', 'MultiSelect.MultiSelect');
 	
 /**
  * Model::beforeFilter() callback
@@ -429,7 +429,7 @@ class RostersController extends AppController {
 							$this->Roster->saveAll($signuproster, array('validate' => false));
 							
 							$this->set('involvement', $involvement);
-							$this->Notifier->notify($signuproster['Roster']['user_id'], 'involvement_signup');
+							$this->Notifier->notify($signuproster['Roster']['user_id'], 'involvements_signup');
 							$this->QueueEmail->send(array(
 								'to' => $signuproster['Roster']['user_id'],
 								'subject' => 'Signed up for '.$involvement['InvolvementType']['name'],
@@ -445,7 +445,7 @@ class RostersController extends AppController {
 								$signupchild['Payment'][0]['transaction_id'] = $this->Roster->CreditCard->transactionId;
 								$this->Roster->saveAll($signupchild, array('validate' => false));
 								$this->set('involvement', $involvement);
-								$this->Notifier->notify($signupchild['Roster']['user_id'], 'involvement_signup');
+								$this->Notifier->notify($signupchild['Roster']['user_id'], 'involvements_signup');
 							}
 						}
 						
@@ -470,7 +470,7 @@ class RostersController extends AppController {
 						$this->Roster->create();
 						$this->Roster->saveAll($signuproster, array('validate' => false));
 						$this->set('involvement', $involvement);
-						$this->Notifier->notify($signuproster['Roster']['user_id'], 'involvement_signup');
+						$this->Notifier->notify($signuproster['Roster']['user_id'], 'involvements_signup');
 						$this->QueueEmail->send(array(
 							'to' => $signuproster['Roster']['user_id'],
 							'subject' => 'Signed up for '.$involvement['InvolvementType']['name'],
@@ -484,7 +484,7 @@ class RostersController extends AppController {
 							$this->Roster->create();
 							$this->Roster->saveAll($signupchild, array('validate' => false));
 							$this->set('involvement', $involvement);
-							$this->Notifier->notify($signupchild['Roster']['user_id'], 'involvement_signup');
+							$this->Notifier->notify($signupchild['Roster']['user_id'], 'involvements_signup');
 						}
 					}
 					

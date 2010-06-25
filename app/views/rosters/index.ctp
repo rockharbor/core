@@ -19,7 +19,7 @@ $this->Paginator->options(array(
 				'controller' => 'payments',
 				'action' => 'add',
 				'Involvement' => $involvementId,
-				$this->MultiSelect->cache
+				$this->MultiSelect->token
 			), array(
 				'rel' => 'modal-involvement'
 			));
@@ -29,7 +29,7 @@ $this->Paginator->options(array(
 					'controller' => 'reports',
 					'action' => 'export',
 					'Roster',
-					$this->MultiSelect->cache
+					$this->MultiSelect->token
 				), array(
 					'rel' => 'modal-involvement'
 				));

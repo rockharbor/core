@@ -28,14 +28,14 @@ class AlertsController extends AppController {
  *
  * @var array
  */
-	var $components = array('MultiSelect');
+	var $components = array('MultiSelect.MultiSelect');
 
 /**
  * Extra helpers for this controller
  *
  * @var array
  */
-	var $helpers = array('MultiSelect', 'Formatting');
+	var $helpers = array('MultiSelect.MultiSelect', 'Formatting');
 
 /**
  * Model::beforeFilter() callback
@@ -138,17 +138,7 @@ class AlertsController extends AppController {
 		// check to see if this is a MultiSelect
 		if ($this->MultiSelect->check($id)) {
 			$search = $this->MultiSelect->getSearch($id);
-			$selected = $this->MultiSelect->getSelected($id);
-			
-			if ($selected == 'all' || !empty($selected)) {
-				if ($selected != 'all') {
-					$search['conditions']['Alert.id'] = $selected;
-				} 
-				$results = $this->Alert->find('all', $search);
-				$ids = Set::extract('/Alert/id', $results);
-			} else {
-				$ids = array();
-			}
+			$ids = $this->MultiSelect->getSelected($id);
 		} else {
 			$ids = array($id);
 		}

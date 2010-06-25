@@ -29,14 +29,14 @@ class UsersController extends AppController {
  *
  * @var array
  */
-	var $helpers = array('Formatting', 'SelectOptions', 'MultiSelect');
+	var $helpers = array('Formatting', 'SelectOptions', 'MultiSelect.MultiSelect');
 
 /**
  * Extra components for this controller
  *
  * @var array
  */
-	var $components = array('FilterPagination', 'MultiSelect', 'Cookie');
+	var $components = array('FilterPagination', 'MultiSelect.MultiSelect', 'Cookie');
 
 /**
  * Model::beforeFilter() callback
