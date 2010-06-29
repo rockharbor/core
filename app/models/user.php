@@ -170,19 +170,24 @@ class User extends AppModel {
 
 /**
  * Gets a user id using an arbitrary amount of data by searching a set of
- * distinguishable fields (username, email fields, name, etc.)
+ * distinguishable fields (username, email fields, name, etc.). If more than
+ * one match is found it fails.
  * 
  * @param array $data An array of search possibilities. Can be emails, username, names
  * @return mixed False on no matches, the id on a match
  */
 	function findUser($data = array()) {
+		if (!is_array($data)) {
+			$data = array($data);
+		}
+
 		$data = Set::filter($data);
 
 		if (empty($data)) {
 			return false;
-		}
+		}		
 		
-		$foundUser = $this->find('first', array(
+		$foundUser = $this->find('all', array(
 			'fields' => 'User.id',
 			'conditions' => array(
 				'or' => array(
@@ -200,8 +205,12 @@ class User extends AppModel {
 				'Profile'
 			)
 		));
+
+		if (count($foundUser) > 1 || empty($foundUser)) {
+			return false;
+		}
 		
-		return !empty($foundUser) ? $foundUser['User']['id'] : false;
+		return $foundUser[0]['User']['id'];
 	}
 
 /**
@@ -212,10 +221,113 @@ class User extends AppModel {
  * @param array $creator The person creating the user. Empty for self.
  * @return boolean Success
  */
-	function createUser(&$data = array(), $householdId = null, $creator = array()) {
-		// was it an auto-generated password?
-		$autoPassword = true;
+	function createUser($data = array(), $householdId = null, $creator = array()) {
+		$this->tmpAdded = array();
+		$this->tmpInvited = array();
 
+		// add missing data for the main user
+		$data = $this->_createUserData($data);
+		
+		// validate new household members first
+		foreach ($data['HouseholdMember'] as $number => &$member) {
+			$findConditions = Set::filter($member['Profile']);
+			$foundUser = $this->HouseholdMember->User->findUser($findConditions);
+
+			if ($foundUser === false) {				
+				$member = $this->_createUserData($member);
+			} else {
+				$this->HouseholdMember->User->contain(array('Profile'));
+				$found = $this->HouseholdMember->User->read(null, $foundUser);
+				$member = Set::merge($found, $member);
+			}
+
+			// validate
+			if ($foundUser === false && empty($member['Profile']['primary_email']) || empty($member['Profile']['first_name']) || empty($member['Profile']['last_name'])) {
+				$this->HouseholdMember->invalidate($number.'.Profile.first_name', 'Please fill in all of the information for this user.');
+				return false;
+			}
+		}
+
+		// temporarily remove household member info - we have to do that separately
+		$householdMembers = $data['HouseholdMember'];
+		unset($data['HouseholdMember']);
+		
+		// save user and related info
+		$this->create();
+		if ($this->saveAll($data)) {
+			// needed for creating household members
+			$data['User']['id'] = $this->id;
+
+			if (empty($creator)) {
+				$this->Profile->saveField('created_by', $this->id);
+				$this->Profile->saveField('created_by_type', 9);
+			}
+
+			// temporarily store userdata for the controller to access and notify them
+			$this->tmpAdded[] = array(
+				'id' => $data['User']['id'],
+				'username' => $data['User']['username'],
+				'password' => $data['User']['password']
+			);
+
+			if (!$householdId) {
+				// create a household for this user and add any members they wanted to add
+				$this->HouseholdMember->Household->createHousehold($this->id);
+				$householdId = $this->HouseholdMember->Household->id;
+				$creator = $data;
+			}
+
+			foreach ($householdMembers as $householdMember) {
+				if (!isset($householdMember['User']['id'])) {
+					$householdMember['Profile']['created_by'] = $creator['User']['id'];
+					$householdMember['Profile']['created_by_type'] = $creator['User']['group_id'];
+
+					$this->create();
+					if ($this->saveAll($householdMember)) {
+						$this->HouseholdMember->Household->join($householdId, $this->id, $creator);
+						$this->tmpAdded[] = array(
+							'id' => $this->id,
+							'username' => $householdMember['User']['username'],
+							'password' => $householdMember['User']['password']
+						);
+					}
+				} else {
+					$this->HouseholdMember->Household->join($householdId, $householdMember['User']['id'], $creator);
+					$this->contain(array('Profile'));
+					$oldUser = $this->read(null, $householdMember['User']['id']);
+					if ($oldUser['Profile']['child']) {
+						$this->tmpAdded[] = array(
+							'id' => $oldUser['User']['id'],
+							'username' => $oldUser['User']['username'],
+							'password' => $oldUser['User']['password']
+						);
+					} else {
+						$this->tmpInvited[] = array(
+							'id' => $oldUser['User']['id'],
+							'username' => $oldUser['User']['username'],
+							'password' => $oldUser['User']['password']
+						);
+					}
+				}
+			}
+
+			return true;
+		} else {
+			// add household member info back in to fill in fields if it failed
+			$data['HouseholdMember'] = $householdMembers;
+
+			return false;
+		}
+	}
+
+/**
+ * Merges current user data with basic needed data. Generates usernames and
+ * passwords if empty.
+ *
+ * @param array $data The partial user data
+ * @return array
+ */
+	function _createUserData($data = array()) {
 		$default = array(
 			'User' => array(
 				'username' => null,
@@ -236,68 +348,18 @@ class User extends AppModel {
 			),
 			'HouseholdMember' => array()
 		);
-		
+
 		$data = Set::merge($default, $data);
-		
+
 		if (!$data['User']['username']) {
 			$data['User']['username'] = $this->generateUsername($data['Profile']['first_name'], $data['Profile']['last_name']);
 		}
 		if (!$data['User']['password']) {
 			$data['User']['password'] = $this->generatePassword();
 			$data['User']['confirm_password'] = $data['User']['password'];
-			$autoPassword = true;
-		}
-		if (!empty($creator)) {
-			$data['Profile']['created_by'] = $creator['User']['id'];
-			$data['Profile']['created_by_type'] = $creator['User']['group_id'];
 		}
 
-		// temporarily remove household member info - we have to do that separately
-		$householdMembers = $data['HouseholdMember'];
-		unset($data['HouseholdMember']);
-
-		// save user and related info
-		$this->create();
-		if ($this->saveAll($data)) {
-			// needed for creating household members
-			$data['User']['id'] = $this->id;
-
-			if (empty($creator)) {
-				$this->Profile->saveField('created_by', $this->id);
-				$this->Profile->saveField('created_by_type', 9);
-			}
-
-			if (!isset($this->tmpAdded) || !is_array($this->tmpAdded)) {
-				$this->tmpAdded = array();
-			}
-
-			// temporarily store userdata for the controller to access and notify them
-			$this->tmpAdded[] = array(
-				'id' => $data['User']['id'],
-				'username' => $data['User']['username'],
-				'password' => $data['User']['password']
-			);
-
-			if (!$householdId) {
-				// create a household for this user and add any members they wanted to add
-				$this->HouseholdMember->Household->createHousehold($this->id);
-				$this->HouseholdMember->Household->addMembers($householdMembers, $this->HouseholdMember->Household->id, $data);
-			} else {
-				// add new user to an existing household on behalf of the creator
-				$this->HouseholdMember->Household->addMembers(array($data['Profile']), $householdId, $creator);
-			}
-
-			return true;
-		} else {
-			// add household member info back in to fill in fields if it failed
-			$data['HouseholdMember'] = $householdMembers;
-
-			if ($autoPassword) {				
-				$this->invalidate('password', 'I picked a password for you. It\'ll be sent in an email, don\'t worry.');
-			}
-
-			return false;
-		}
+		return $data;
 	}
 
 /**
@@ -324,7 +386,15 @@ class User extends AppModel {
 		unset($data['Profile']['email']);
 		
 		// remove blank
-		$data = array_map('Set::filter', $data);		
+		$callback = function($item) use (&$callback) {
+			 if (is_array($item)) {
+				  return array_filter($item, $callback);
+			 }
+			 if (!empty($item)) {
+				  return $item;
+			 }
+		};
+		$data = array_filter($data, $callback);
 		$link = $this->postContains($data);
 		
 		$conditions = $Controller->postConditions($data, 'LIKE', $operator);
@@ -409,35 +479,42 @@ class User extends AppModel {
 	}
 
 	
-/*
+/**
  * Generates a username from a name
  *
  * By default, it's $first_name.$last_name (without numbers). If that's taken, it
- * will continue appending numbers until it finds a unique username
+ * will continue appending numbers until it finds a unique username (up to 8 times).
  *
  * @param string $first_name User's first name
  * @param string $last_name User's last name
  * @return string Generated username
+ * @todo Use a while loop instead so it works more than 8 digits
  */
 	function generateUsername($first_name = '', $last_name = '') {
+		$this->recursive = -1;
+
 		if (empty($first_name) || empty($last_name)) {
 			return '';
 		}
 
-		for ($x=1; $x <= 8; $x++) {
-			$username = strtolower($first_name.$last_name);
-			$username = preg_replace('/[^a-z]/', '', $username);
-			$username = str_pad($username, $x, strrev((string) time()), STR_PAD_RIGHT);
-			$user = $this->findByUsername($username);
-			if (!isset($user['User'])) {
-				break;
+		$username = strtolower($first_name.$last_name);
+		$username = preg_replace('/[^a-z]/', '', $username);
+
+		$user = $this->findByUsername($username);
+		if (!empty($user)) {
+			for ($x=1; $x <= 8; $x++) {
+				$username .= rand(0,9);
+				$user = $this->findByUsername($username);
+				if (empty($user)) {
+					break;
+				}
 			}
 		}
 		
 		return $username;
 	}
 	
-/*
+/**
  * Generates a random password
  *
  * Passwords are generated from a selection of random nouns and verbs,
@@ -499,7 +576,7 @@ class User extends AppModel {
 		return $rand_word.$num;
 	}
 	
-/*
+/**
  * Model::beforeSave() callback
  *
  * Used to hash the password field

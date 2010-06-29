@@ -432,7 +432,7 @@ class UsersController extends AppController {
 					$this->Notifier->notify($notifyUser['id'], 'users_register');
 				}
 
-				foreach ($this->User->HouseholdMember->Household->tmpInvites as $notifyUser) {
+				foreach ($this->User->tmpInvited as $notifyUser) {
 					$this->User->HouseholdMember->Household->contain(array(
 						'User' => array(
 							'Profile'
@@ -497,7 +497,7 @@ class UsersController extends AppController {
 					$this->Notifier->notify($notifyUser['id'], 'users_register');
 				}
 
-				foreach ($this->User->HouseholdMember->Household->tmpInvites as $notifyUser) {
+				foreach ($this->User->tmpInvited as $notifyUser) {
 					$this->User->HouseholdMember->Household->recursive = 1;
 					$this->User->contain(array('Profile'));
 					$this->set('notifier', $this->User->read(null, $notifyUser['user']));

@@ -133,7 +133,7 @@ echo $this->Form->create('User', array(
 	
 		<fieldset id="member<?php echo $hmcount; ?>" >
 	<?php
-		if (isset($householdMember['Profile'])) {
+		if (isset($householdMember['Profile']['id'])) {
 			echo $householdMember['Profile']['first_name'].' already exists in '.$CORE['settings']['site_name'].'. ';
 			echo $householdMember['Profile']['gender'] == 'm' ? 'He\'ll' : 'She\'ll';
 			if ($householdMember['Profile']['child']) {
@@ -141,13 +141,13 @@ echo $this->Form->create('User', array(
 			} else {
 				echo ' be invited to your household.';
 			}
-			echo $this->Form->hidden('HouseholdMember.'.$hmcount.'.first_name');
-			echo $this->Form->hidden('HouseholdMember.'.$hmcount.'.last_name');
-			echo $this->Form->hidden('HouseholdMember.'.$hmcount.'.primary_email');
+			echo $this->Form->hidden('HouseholdMember.'.$hmcount.'.Profile.first_name');
+			echo $this->Form->hidden('HouseholdMember.'.$hmcount.'.Profile.last_name');
+			echo $this->Form->hidden('HouseholdMember.'.$hmcount.'.Profile.primary_email');
 		} else {
-			echo $this->Form->input('HouseholdMember.'.$hmcount.'.first_name');
-			echo $this->Form->input('HouseholdMember.'.$hmcount.'.last_name');
-			echo $this->Form->input('HouseholdMember.'.$hmcount.'.primary_email');
+			echo $this->Form->input('HouseholdMember.'.$hmcount.'.Profile.first_name');
+			echo $this->Form->input('HouseholdMember.'.$hmcount.'.Profile.last_name');
+			echo $this->Form->input('HouseholdMember.'.$hmcount.'.Profile.primary_email');
 		}
 	?>
 		</fieldset>
@@ -199,7 +199,7 @@ $this->Js->buffer('CORE.tabs(\'profile_tabs\', {cookie: {expires:0}});');
 $this->Html->scriptStart();
 echo 'var member = '.$hmcount.';';
 echo 'function addAdditionalMember() {
-	$("#members").append(\'<fieldset id="member\'+member+\'"><div class="input text"><label for="HouseholdMember\'+member+\'FirstName">First Name</label>	<input type="text" id="HouseholdMember\'+member+\'FirstName" name="data[HouseholdMember][\'+member+\'][first_name]">	</div>	<div class="input text">	<label for="HouseholdMember\'+member+\'LastName">Last Name</label>	<input type="text" id="HouseholdMember\'+member+\'LastName" name="data[HouseholdMember][\'+member+\'][last_name]">	</div><div class="input text">	<label for="HouseholdMember\'+member+\'PrimaryEmail">Primary Email</label>	<input type="text" id="HouseholdMember\'+member+\'PrimaryEmail" name="data[HouseholdMember][\'+member+\'][primary_email]">	</div>	</fieldset>\');
+	$("#members").append(\'<fieldset id="member\'+member+\'"><div class="input text"><label for="HouseholdMember\'+member+\'ProfileFirstName">First Name</label>	<input type="text" id="HouseholdMember\'+member+\'ProfileFirstName" name="data[HouseholdMember][\'+member+\'][Profile][first_name]">	</div>	<div class="input text">	<label for="HouseholdMember\'+member+\'ProfileLastName">Last Name</label>	<input type="text" id="HouseholdMember\'+member+\'ProfileLastName" name="data[HouseholdMember][\'+member+\'][Profile][last_name]">	</div><div class="input text">	<label for="HouseholdMember\'+member+\'ProfilePrimaryEmail">Primary Email</label>	<input type="text" id="HouseholdMember\'+member+\'ProfilePrimaryEmail" name="data[HouseholdMember][\'+member+\'][Profile][primary_email]">	</div>	</fieldset>\');
 	member++;
 	
 }';
