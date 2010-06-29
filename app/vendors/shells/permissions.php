@@ -227,51 +227,45 @@ class PermissionsShell extends Shell {
 			'aro_parent' => 7
 		),
 		7 => array(
-			'name' => 'Volunteer',
+			'name' => 'Developer',
 			'conditional' => false,
 			'parent_id' => 6,
 			'aro_parent' => 8
 		),
 		8 => array(
-			'name' => 'Developer',
-			'conditional' => false,
-			'parent_id' => 7,
-			'aro_parent' => 9
-		),
-		9 => array(
 			'name' => 'User',
 			'conditional' => false,
-			'parent_id' => 8,
+			'parent_id' => 7,
 			'aro_parent' => null
 		),
-		10 => array(
+		9 => array(
 			'name' => 'Campus Manager',
+			'conditional' => true,
+			'parent_id' => 8,
+			'aro_parent' => 10
+		),
+		10 => array(
+			'name' => 'Ministry Manager',
 			'conditional' => true,
 			'parent_id' => 9,
 			'aro_parent' => 11
 		),
 		11 => array(
-			'name' => 'Ministry Manager',
-			'conditional' => true,
-			'parent_id' => 10,
-			'aro_parent' => 12
-		),
-		12 => array(
 			'name' => 'Involvement Leader',
 			'conditional' => true,
-			'parent_id' => 11,
+			'parent_id' => 10,
 			'aro_parent' => null
 		),
-		13 => array(
+		12 => array(
 			'name' => 'Owner',
 			'conditional' => true,
-			'parent_id' => 9,
-			'aro_parent' => 14
+			'parent_id' => 8,
+			'aro_parent' => 13
 		),
-		14 => array(
+		13 => array(
 			'name' => 'Household Contact',
 			'conditional' => true,
-			'parent_id' => 13,
+			'parent_id' => 12,
 			'aro_parent' => null
 		)
 	);		
@@ -377,7 +371,11 @@ class PermissionsShell extends Shell {
 			'controllers/Zipcodes'
 		),		
 		// staff
-		5 => array(
+		5 => array(			
+		),
+		// intern
+		6 => array(
+			'controllers/Rosters/index',
 			'controllers/Households/index',
 			'controllers/Households/make_household_contact',
 			'controllers/Households/shift_households',
@@ -389,7 +387,7 @@ class PermissionsShell extends Shell {
 			'controllers/Reports/map',
 			'controllers/Rosters/add',
 			'controllers/Rosters/involvement',
-			'controllers/Searches/user',			
+			'controllers/Searches/user',
 			'controllers/SysEmails/compose',
 			'controllers/SysEmailDocuments',
 			'controllers/Users/add',
@@ -405,12 +403,8 @@ class PermissionsShell extends Shell {
 			'controllers/UserDocuments/upload',
 			'controllers/UserImages/view'
 		),
-		// intern
-		6 => array(
-			'controllers/Rosters/index'
-		),	
 		// developer
-		8 => array(
+		7 => array(
 			'controllers/ApiGenerator/ApiClasses/index',
 			'controllers/ApiGenerator/ApiClasses/classes',
 			'controllers/ApiGenerator/ApiClasses/view_class',
@@ -418,7 +412,7 @@ class PermissionsShell extends Shell {
 			'controllers/SysEmails/bug_compose'
 		),		
 		// user
-		9 => array(
+		8 => array(
 			'controllers/Alerts/history',
 			'controllers/Alerts/read',
 			'controllers/Alerts/view',
@@ -434,7 +428,6 @@ class PermissionsShell extends Shell {
 			'controllers/Ministries/index',
 			'controllers/Ministries/view',
 			'controllers/MinistryImages/view',
-			'controllers/Notifications/multi_select_session',
 			'controllers/Notifications/delete',
 			'controllers/Notifications/index',
 			'controllers/Notifications/read',
@@ -445,17 +438,18 @@ class PermissionsShell extends Shell {
 			'controllers/MinistryLeaders/index',
 			'controllers/InvolvementLeaders/index',
 			'controllers/DebugKit',
-			'controllers/CoreDebugPanels'
+			'controllers/CoreDebugPanels',
+			'controllers/MultiSelect'
 		),		
 		// campus manager
-		10 => array(
+		9 => array(
 			'controllers/Ministries/add',
 			'controllers/Campuses/edit',
 			'controllers/CampusLeaders/add',
 			'controllers/CampusLeaders/delete'
 		),
 		// ministry manager
-		11 => array(
+		10 => array(
 			'controllers/InvolvementAddresses/add',
 			'controllers/InvolvementAddresses/delete',
 			'controllers/InvolvementAddresses/edit',
@@ -496,7 +490,7 @@ class PermissionsShell extends Shell {
 			'controllers/MinistryLeaders/delete'
 		),
 		// involvement leader
-		12 => array(
+		11 => array(
 			'controllers/Involvements/invite',
 			'controllers/Involvements/invite_roster',
 			'controllers/Rosters/delete',
@@ -506,7 +500,7 @@ class PermissionsShell extends Shell {
 			'controllers/InvolvementLeaders/delete'
 		),			
 		// owner
-		13 => array(
+		12 => array(
 			'controllers/UserAddresses/add',
 			'controllers/UserAddresses/delete',
 			'controllers/UserAddresses/edit',
@@ -521,7 +515,7 @@ class PermissionsShell extends Shell {
 			'controllers/InvolvementLeaders/delete'
 		),		
 		// household contact
-		14 => array(
+		13 => array(
 			'controllers/UserImages/index',
 			'controllers/UserImages/upload',
 			'controllers/UserImages/view',
