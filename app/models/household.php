@@ -79,7 +79,8 @@ class Household extends AppModel {
 		$households = $this->HouseholdMember->find('all', array(
 			'conditions' => array(
 				'HouseholdMember.user_id' => $userId
-			)
+			),
+			'contain' => false
 		));
 		
 		if (!$household) {
@@ -87,14 +88,19 @@ class Household extends AppModel {
 		} elseif (!is_array($household)) {
 			$household = array($household);
 		}
-		
-		$household = array_intersect(Set::extract('/HouseholdMember/household_id', $households), $household);	
+
+		if (!empty($household)) {
+			$household = array_intersect(Set::extract('/HouseholdMember/household_id', $households), $household);
+		} else {
+			$household = Set::extract('/HouseholdMember/household_id', $households);
+		}
 		
 		$members = $this->HouseholdMember->find('all', array(
 			'conditions' => array(
-				'HouseholdMember.user_id' => $userId,
+				'HouseholdMember.user_id' => $memberId,
 				'HouseholdMember.household_id' => $household
-			)
+			),
+			'contain' => false
 		));
 		
 		return !empty($members);
@@ -177,10 +183,15 @@ class Household extends AppModel {
  * @param integer $household Household id
  * @return boolean True on success, false on failure
  * @access public
+ * @todo Should check and fail if they're a child, inactive, exist, confirmed etc.
  */ 	
 	function makeHouseholdContact($user, $household) {
 		$this->id = $household;
-		return $this->saveField('contact_id', $user);		
+		if ($this->isMember($user, $household)) {
+			return $this->saveField('contact_id', $user);
+		} else {
+			return false;
+		}
 	}
 	
 /**
@@ -192,8 +203,16 @@ class Household extends AppModel {
  * @param boolean $confirm True to add, false to invite
  * @return boolean True on success, false on failure
  * @access public
+ * @todo remove notifier as it's unneeded
  */ 
-	function join($household, $user, $notifier, $confirm = false) {		
+	function join($household, $user, $notifier = null, $confirm = false) {
+		$this->HouseholdMember->User->id = $user;
+		$this->id = $household;
+		// find the user
+		if (!$this->HouseholdMember->User->exists($user) || !$this->exists($household)) {
+			return false;
+		}
+
 		$member = $this->HouseholdMember->find('first', array(
 			'conditions' => array(
 				'household_id' => $household,
@@ -214,83 +233,8 @@ class Household extends AppModel {
 				'confirmed' => $confirm
 			));
 		}
-
-		return $success;
-	}
-
-/**
- * Adds members to a household on behalf of a user. If the user doesn't exist
- * they will be created
- *
- * @param array $members The members to add including Profile data
- * @param integer $householdId The id of the Household to add them to
- * @param array $creator The user data for the creator
- * @return boolean Success
- */
-	function addMembers($members = array(), $householdId = null, $creator = array()) {
-		if (empty($members) || !$householdId || empty($creator)) {
-			return false;
-		}
-
-		foreach ($members as &$member) {
-			// check to see if the new household members exists and use that data instead
-			$foundUser = $this->HouseholdMember->User->findUser(array(
-				$member['primary_email'],
-				$member['first_name'],
-				$member['last_name']
-			));
-
-			if ($foundUser !== false) {
-				$this->HouseholdMember->User->contain(array('Profile'));
-				$hm = $this->HouseholdMember->User->read(null, $foundUser);
-				$this->join(
-					$householdId,
-					$hm['User']['id'],
-					$creator['User']['id'],
-					$hm['Profile']['child']
-				);
-
-				if ($hm['Profile']['child']) {
-					if (!isset($this->tmpInvites) || !is_array($this->tmpInvites)) {
-						$this->tmpInvites = array();
-					}
-
-					// temporarily store userdata for the controller to access and notify them
-					$this->tmpInvites[] = array(
-						'user' => $hm['User']['id'],
-						'household' => $householdId
-					);
-				}
-			} elseif (!empty($member['first_name']) && !empty($member['last_name']) && !empty($member['primary_email'])) {
-				// get creators address to use
-				$address = $this->HouseholdMember->User->Address->find('first', array(
-					'Address.foreign_key' => $creator['User']['id'],
-					'Address.model' => 'User'
-				));
-
-				// remove unnecessary fields
-				unset($address['Address']['id']);
-				unset($address['Address']['foreign_key']);
-				unset($address['Address']['primary']);
-				unset($address['Address']['active']);
-
-				// we need to create a new user
-				$newHouseholdMember = array(
-					'Profile' => array(
-						'first_name' => $member['first_name'],
-						'last_name' => $member['last_name'],
-						'primary_email' => $member['primary_email']
-					),
-					'Address' => array(
-							0 => $address['Address']
-					)
-				);
-
-				$this->HouseholdMember->User->createUser($newHouseholdMember, $householdId, $creator);
-			}
-		}
 		
-		return true;
+		return $success;
 	}
 }
 ?>

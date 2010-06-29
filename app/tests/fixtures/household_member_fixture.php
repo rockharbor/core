@@ -16,85 +16,29 @@ class HouseholdMemberFixture extends CakeTestFixture {
 
 	var $records = array(
 		array(
-			'id' => 72,
-			'household_id' => 9,
-			'user_id' => 52,
+			'id' => 1,
+			'household_id' => 1,
+			'user_id' => 1,
 			'confirmed' => 1,
 			'created' => '2010-04-12 10:27:47',
 			'modified' => '2010-04-12 10:27:47'
 		),
 		array(
-			'id' => 69,
-			'household_id' => 20,
-			'user_id' => 52,
+			'id' => 2,
+			'household_id' => 2,
+			'user_id' => 2,
 			'confirmed' => 1,
 			'created' => '2010-04-08 07:35:48',
 			'modified' => '2010-04-08 07:35:48'
 		),
 		array(
-			'id' => 67,
-			'household_id' => 19,
-			'user_id' => 45,
+			'id' => 3,
+			'household_id' => 2,
+			'user_id' => 3,
 			'confirmed' => 1,
 			'created' => '2010-04-07 13:55:09',
 			'modified' => '2010-04-07 13:55:09'
-		),
-		array(
-			'id' => 66,
-			'household_id' => 19,
-			'user_id' => 44,
-			'confirmed' => 1,
-			'created' => '2010-04-07 13:55:09',
-			'modified' => '2010-04-07 13:55:09'
-		),
-		array(
-			'id' => 80,
-			'household_id' => 9,
-			'user_id' => 1,
-			'confirmed' => 1,
-			'created' => '2010-05-27 09:15:26',
-			'modified' => '2010-05-27 09:15:26'
-		),
-		array(
-			'id' => 74,
-			'household_id' => 22,
-			'user_id' => 54,
-			'confirmed' => 1,
-			'created' => '2010-05-06 08:56:36',
-			'modified' => '2010-05-06 08:56:36'
-		),
-		array(
-			'id' => 79,
-			'household_id' => 21,
-			'user_id' => 53,
-			'confirmed' => 1,
-			'created' => '2010-05-24 10:46:25',
-			'modified' => '2010-05-24 10:46:25'
-		),
-		array(
-			'id' => 75,
-			'household_id' => 9,
-			'user_id' => 54,
-			'confirmed' => 1,
-			'created' => '2010-05-06 09:06:45',
-			'modified' => '2010-05-06 09:06:45'
-		),
-		array(
-			'id' => 81,
-			'household_id' => 23,
-			'user_id' => 64,
-			'confirmed' => 1,
-			'created' => '2010-06-02 08:59:40',
-			'modified' => '2010-06-02 08:59:40'
-		),
-		array(
-			'id' => 82,
-			'household_id' => 24,
-			'user_id' => 65,
-			'confirmed' => 1,
-			'created' => '2010-06-02 10:22:36',
-			'modified' => '2010-06-02 10:22:36'
-		),
+		)
 	);
 }
 ?>

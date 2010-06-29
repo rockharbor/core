@@ -14,65 +14,17 @@ class HouseholdFixture extends CakeTestFixture {
 
 	var $records = array(
 		array(
-			'id' => 22,
-			'contact_id' => 54,
+			'id' => 1,
+			'contact_id' => 1,
 			'created' => '2010-05-06 08:56:36',
 			'modified' => '2010-05-06 08:56:36'
 		),
 		array(
-			'id' => 21,
-			'contact_id' => 53,
-			'created' => '2010-04-22 13:06:53',
-			'modified' => '2010-04-22 13:06:53'
-		),
-		array(
-			'id' => 20,
-			'contact_id' => 46,
+			'id' => 2,
+			'contact_id' => 2,
 			'created' => '2010-04-08 07:35:48',
 			'modified' => '2010-04-08 07:35:48'
-		),
-		array(
-			'id' => 9,
-			'contact_id' => 1,
-			'created' => '2010-04-06 10:49:59',
-			'modified' => '2010-04-06 10:49:59'
-		),
-		array(
-			'id' => 19,
-			'contact_id' => 44,
-			'created' => '2010-04-07 13:55:09',
-			'modified' => '2010-04-07 13:55:09'
-		),
-		array(
-			'id' => 18,
-			'contact_id' => 42,
-			'created' => '2010-04-07 13:48:49',
-			'modified' => '2010-04-07 13:48:49'
-		),
-		array(
-			'id' => 23,
-			'contact_id' => 64,
-			'created' => '2010-06-02 08:59:40',
-			'modified' => '2010-06-02 08:59:40'
-		),
-		array(
-			'id' => 24,
-			'contact_id' => 65,
-			'created' => '2010-06-02 10:22:36',
-			'modified' => '2010-06-02 10:22:36'
-		),
-		array(
-			'id' => 25,
-			'contact_id' => 66,
-			'created' => '2010-06-02 10:24:21',
-			'modified' => '2010-06-02 10:24:21'
-		),
-		array(
-			'id' => 26,
-			'contact_id' => 67,
-			'created' => '2010-06-02 10:26:24',
-			'modified' => '2010-06-02 10:26:24'
-		),
+		)
 	);
 }
 ?>
