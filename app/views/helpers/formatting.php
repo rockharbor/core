@@ -47,7 +47,7 @@ class FormattingHelper extends AppHelper {
 			$years = (int)$age;
 			$months = round(($age-$years)*12);
 			$out = $years.' yrs.';
-			if ($extended) {
+			if ($extended && $months > 0) {
 				$out .= ', '.$months.' mos.';
 			}
 		}
@@ -70,12 +70,16 @@ class FormattingHelper extends AppHelper {
  * Creates flags for a specific model (i.e., inactive, private, etc.)
  *
  * Data is assumed to be sent as:
- * {{{array(
- *	model.key => value
- *	model.association => array(
- *		association.key => value
+ * {{{
+ * array(
+ *		model => array(
+ *			model.key => value
+ *		),
+ *		association => array(
+ *			association.key => value
  *		)
- *	)}}}
+ *	)
+ * }}}
  *
  * @param string $model The model to create flags for
  * @param array $data The data to use to create them.
@@ -84,7 +88,7 @@ class FormattingHelper extends AppHelper {
  */
 	function flags($model = null, $data = array()) {
 		if (!$model || empty($data)) {
-			return;
+			return null;
 		}
 		
 		if (method_exists('FormattingHelper',"_flag$model")) {
@@ -93,7 +97,7 @@ class FormattingHelper extends AppHelper {
 			$message  = "FormattingHelper::flags - ";
 			$message .= "Missing flagging function FormattingHelper::_flag$model.";
 			trigger_error($message, E_USER_NOTICE);
-			return '';
+			return null;
 		}
 	}
 
@@ -105,8 +109,15 @@ class FormattingHelper extends AppHelper {
  * @access public
  */
 	function phone($var = '') {
-		// assumes $var is 10-digits because of model validation
-		return preg_replace('/(\d{3})(\d{3})(\d{4})/', '($1) $2-$3', $var);
+		$var = preg_replace('/[^\d]/', '', $var);
+		if (strlen($var) == 10) {
+			return preg_replace('/(\d{3})(\d{3})(\d{4})/', '($1) $2-$3', $var);
+		} else if (strlen($var) == 7) {
+			return preg_replace('/(\d{3})(\d{4})/', '$1-$2', $var);
+		} else {
+			return null;
+		}
+		
 	}
 	
 /**
@@ -121,7 +132,7 @@ class FormattingHelper extends AppHelper {
 	function date($datetime = '') {
 		// we don't want 12/31/1969
 		if ($datetime == '') {
-			return '';
+			return null;
 		}
 		
 		$out = array();
