@@ -71,7 +71,7 @@ class NotificationsController extends AppController {
 				'Notification.created DESC'
 			)
 		);
-		
+		$this->Notification->recursive = -1;
 		$this->MultiSelect->saveSearch($this->paginate);
 		$this->set('notifications', $this->paginate());
 	}
