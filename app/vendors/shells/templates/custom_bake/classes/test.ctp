@@ -42,10 +42,14 @@ class Test<?php echo $fullClassName; ?> extends <?php echo $fullClassName; ?> {
 
 <?php endif; ?>
 class <?php echo $fullClassName; ?>TestCase extends CakeTestCase {
-<?php if (!empty($fixtures)): ?>
+<?php 
+$fixtures[] = 'app.log';
+if (!empty($fixtures)):
+?>
 	var $fixtures = array('<?php echo join("', '", $fixtures); ?>');
 
 <?php endif; ?>
+<?php if ($mock and strtolower($type) == 'controller'): ?>
 	function _prepareAction($action = '') {
 		$this-><?php echo $className; ?>->params = Router::parse($action);
 		$this-><?php echo $className; ?>->passedArgs = array_merge($this-><?php echo $className; ?>->params['named'], $this-><?php echo $className; ?>->params['pass']);
@@ -53,6 +57,7 @@ class <?php echo $fullClassName; ?>TestCase extends CakeTestCase {
 		$this-><?php echo $className; ?>->beforeFilter();
 	}
 
+<?php endif; ?>
 	function startTest() {
 		$this-><?php echo $className . ' =& ' . $construction; ?>
 	}
