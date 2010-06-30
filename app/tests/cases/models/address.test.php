@@ -3,7 +3,7 @@
 App::import('Model', 'Address');
 
 class AddressTestCase extends CakeTestCase {
-	var $fixtures = array('app.address', 'app.zipcode', 'app.region');
+	var $fixtures = array('app.log', 'app.address', 'app.zipcode', 'app.region');
 
 	function startTest() {
 		$this->Address =& ClassRegistry::init('Address');

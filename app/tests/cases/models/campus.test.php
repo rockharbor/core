@@ -3,7 +3,7 @@
 App::import('Model', 'Campus');
 
 class CampusTestCase extends CakeTestCase {
-	var $fixtures = array('app.campus', 'plugin.media.attachment', 'app.ministry', 
+	var $fixtures = array('app.log', 'app.campus', 'plugin.media.attachment', 'app.ministry',
 		'app.group', 'app.user', 'app.profile', 'app.classification',
 		'app.job_category', 'app.school', 'app.comment', 'app.comment_type',
 		'app.comments', 'app.notification', 'plugin.media.document', 'app.roster',
