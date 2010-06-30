@@ -108,26 +108,28 @@ class Alert extends AppModel {
  * Gets ids of alerts that have not been read by a user
  *
  * @param integer $userId The user
- * @param array $groupIds Array of Alert group ids to check for
+ * @param array $groupId The user's group id
  * @param boolean $getExpired Whether or not to get expired alerts as well
  * @return array List of ids
  */ 	
-	function getUnreadAlerts($userId = null, $groupIds = array(), $getExpired = true) {
-		if (!$userId || empty($groupIds)) {
+	function getUnreadAlerts($userId = null, $groupId = 8, $getExpired = true) {
+		if (!$userId || !$groupId) {
 			return false;
 		}
-		
+
+		// get group's lft value
+		$this->Group->id = $groupId;
+		$lft = $this->Group->field('lft');
+
 		// get ids of alerts this user has read
 		$readAlerts = $this->getReadAlerts($userId);
-		
-		$this->recursive = -1;
 		
 		$search = array(
 			'conditions' => array(
 				'not' => array(
 					'Alert.id' => $readAlerts
 				),
-				'Alert.group_id' => $groupIds
+				'Group.lft >=' => $lft
 			),
 			'order' => 'Alert.created DESC'
 		);
@@ -155,7 +157,14 @@ class Alert extends AppModel {
 		if (!$userId || !$alertId) {
 			return false;
 		}
-		
+
+		// make sure alert exists
+		$this->id = $alertId;
+		$this->Group->User->id = $userId;
+		if (!$this->exists() || !$this->Group->User->exists()) {
+			return false;
+		}
+
 		// get read alerts
 		$readAlerts = $this->getReadAlerts($userId);
 		

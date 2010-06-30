@@ -19,11 +19,41 @@ class AlertFixture extends CakeTestFixture {
 	var $records = array(
 		array(
 			'id' => 1,
-			'name' => 'CORE 2.0-alpha in the works',
-			'description' => 'We\'ve been working hard to bring you the alpha version of CORE 2.0-alpha. A fairly good portion of the behind the scenes programming has been completed. The next stage involves mostly design.',
+			'name' => 'A User-level alert',
+			'description' => 'Alert description 1',
 			'created' => '2010-04-27 14:04:02',
 			'modified' => '2010-06-02 12:27:38',
 			'group_id' => 9,
+			'importance' => 'medium',
+			'expires' => NULL
+		),
+		array(
+			'id' => 2,
+			'name' => 'Another User-level alert',
+			'description' => 'Alert description 2',
+			'created' => '2010-04-27 14:04:02',
+			'modified' => '2010-06-02 12:27:38',
+			'group_id' => 9,
+			'importance' => 'medium',
+			'expires' => NULL
+		),
+		array(
+			'id' => 3,
+			'name' => 'Yet Another User-level alert',
+			'description' => 'Alert description 3',
+			'created' => '2010-04-27 14:04:02',
+			'modified' => '2010-06-02 12:27:38',
+			'group_id' => 9,
+			'importance' => 'medium',
+			'expires' => NULL
+		),
+		array(
+			'id' => 4,
+			'name' => 'A Staff-level alert',
+			'description' => 'Alert description 4',
+			'created' => '2010-04-27 14:04:02',
+			'modified' => '2010-06-02 12:27:38',
+			'group_id' => 5,
 			'importance' => 'medium',
 			'expires' => NULL
 		)
