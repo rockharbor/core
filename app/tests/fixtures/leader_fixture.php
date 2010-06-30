@@ -16,23 +16,15 @@ class LeaderFixture extends CakeTestFixture {
 
 	var $records = array(
 		array(
-			'id' => 8,
+			'id' => 1,
 			'user_id' => 1,
 			'model' => 'Ministry',
-			'model_id' => 1,
+			'model_id' => 4,
 			'created' => '2010-03-30 14:09:19',
 			'modified' => '2010-03-30 14:09:19'
 		),
 		array(
-			'id' => 7,
-			'user_id' => 15,
-			'model' => 'Ministry',
-			'model_id' => 2,
-			'created' => NULL,
-			'modified' => NULL
-		),
-		array(
-			'id' => 14,
+			'id' => 2,
 			'user_id' => 1,
 			'model' => 'Involvement',
 			'model_id' => 1,
@@ -40,37 +32,13 @@ class LeaderFixture extends CakeTestFixture {
 			'modified' => '2010-04-09 07:28:57'
 		),
 		array(
-			'id' => 20,
+			'id' => 3,
 			'user_id' => 1,
 			'model' => 'Campus',
-			'model_id' => 2,
-			'created' => '2010-06-04 10:13:39',
-			'modified' => '2010-06-04 10:13:39'
-		),
-		array(
-			'id' => 21,
-			'user_id' => 45,
-			'model' => 'Campus',
-			'model_id' => 2,
+			'model_id' => 1,
 			'created' => '2010-06-04 10:14:00',
 			'modified' => '2010-06-04 10:14:00'
-		),
-		array(
-			'id' => 27,
-			'user_id' => 45,
-			'model' => 'Ministry',
-			'model_id' => 1,
-			'created' => '2010-06-04 10:25:28',
-			'modified' => '2010-06-04 10:25:28'
-		),
-		array(
-			'id' => 26,
-			'user_id' => 1,
-			'model' => 'Campus',
-			'model_id' => 1,
-			'created' => '2010-06-04 10:24:49',
-			'modified' => '2010-06-04 10:24:49'
-		),
+		)
 	);
 }
 ?>
