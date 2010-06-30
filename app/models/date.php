@@ -129,21 +129,10 @@ class Date extends AppModel {
 		}
 		
 		// remove exemptions
-		return array_udiff($recurringDates, $exemptions, array('self', '_compareDates'));
-	}
-
-/**
- * Compares two Date models to check excemptions
- *
- * @param date $date1 The recurring date
- * @param date $date2 The exemption
- * @return integer Returns 0 to exclude, 1 to keep
- * @access private
- */ 
-	function _compareDates($date1, $date2) {	
-		$datestamp1 = $date1['Date']['start_date'];
-		$datestamp2 = $date2['Date']['start_date'];
-		return $datestamp1 == $datestamp2 ? 0 : 1;
+		$compareDates = function($d1, $d2) {
+			return $d1['Date']['start_date'] == $d2['Date']['start_date'] ? 0 : 1;
+		};
+		return array_udiff($recurringDates, $exemptions, $compareDates);
 	}
 
 /**
