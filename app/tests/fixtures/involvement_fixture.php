@@ -26,7 +26,7 @@ class InvolvementFixture extends CakeTestFixture {
 	var $records = array(
 		array(
 			'id' => 1,
-			'ministry_id' => 2,
+			'ministry_id' => 4,
 			'involvement_type_id' => 1,
 			'name' => 'CORE 2.0 testing',
 			'description' => 'this is a <b>description</b>',
@@ -43,7 +43,7 @@ class InvolvementFixture extends CakeTestFixture {
 		),
 		array(
 			'id' => 2,
-			'ministry_id' => 5,
+			'ministry_id' => 3,
 			'involvement_type_id' => 1,
 			'name' => 'Third Wednesday',
 			'description' => 'It\'s Third Wednesday, man.',
@@ -60,7 +60,7 @@ class InvolvementFixture extends CakeTestFixture {
 		),
 		array(
 			'id' => 3,
-			'ministry_id' => 1,
+			'ministry_id' => 4,
 			'involvement_type_id' => 3,
 			'name' => 'Team CORE',
 			'description' => '<i>gooooo </i><b>CORE</b>!',
@@ -76,7 +76,7 @@ class InvolvementFixture extends CakeTestFixture {
 			'force_payment' => 0
 		),
 		array(
-			'id' => 6,
+			'id' => 4,
 			'ministry_id' => 1,
 			'involvement_type_id' => 5,
 			'name' => 'Rock Climbing',
