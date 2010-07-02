@@ -93,13 +93,13 @@ class Date extends AppModel {
  * - date $end End date
  *
  * @param integer $involvement_id Involvement id to pull dates for
- * @param array $range 
+ * @param array $range Range options
  * @return array Array of dates falling into that range
  * @access public
  */
 	function generateDates($involvement_id = null, $range = array()) {
 		if (!$involvement_id) {
-			return;
+			return false;
 		}
 		
 		// default is this month
@@ -113,21 +113,21 @@ class Date extends AppModel {
 		$this->recursive = -1;
 		$dates = $this->find('all', array(
 			'conditions' => array(
-				'involvement_id' => $involvement_id
+				'Date.involvement_id' => $involvement_id
 			)
 		));
-		
+	
 		$recurringDates = array();
 		$exemptions = array();
-		
+				
 		foreach($dates as $date) {
 			if ($date['Date']['exemption']) {
 				$exemptions = array_merge($exemptions, $this->_generateRecurringDates($date, $range));
 			} else {
 				$recurringDates = array_merge($recurringDates, $this->_generateRecurringDates($date, $range));
-			}			
+			}
 		}
-		
+
 		// remove exemptions
 		$compareDates = function($d1, $d2) {
 			return $d1['Date']['start_date'] == $d2['Date']['start_date'] ? 0 : 1;
@@ -142,18 +142,20 @@ class Date extends AppModel {
  * - date $start Start date
  * - date $end End date
  *
- * @param integer $date The date to recur
+ * ### Limitations:
+ * - Does not account for dates that start on the range start date but not
+ * within the range hours
+ *
+ * @param integer $masterDate The date to recur
  * @param array $range The range of recurrance
  * @return array Array of dates falling into that range
- * @access private
+ * @access protected
  */ 
-	function _generateRecurringDates($date, $range) {
-		$masterDate = $date;
-		
+	function _generateRecurringDates($masterDate, $range) {
 		$dates = array();
 		
 		// for progressing date via strtotime
-		$types = array(
+		$frequency = array(
 			'h' => 'hour',
 			'd' => 'day',
 			'w' => 'week',
@@ -161,14 +163,29 @@ class Date extends AppModel {
 			'mw' => 'month',
 			'y' => 'year'		
 		);
+
+		if (!is_int($range['start'])) {
+			$range['start'] = strtotime($range['start']);
+			$range['end'] = strtotime($range['end']);
+		}
 		
 		// weekdays
 		$weekdays = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+
+		$masterDate['Date']['start'] = strtotime($masterDate['Date']['start_date'].' '.$masterDate['Date']['start_time']);
+		$masterDate['Date']['end'] = strtotime($masterDate['Date']['end_date'].' '.$masterDate['Date']['end_time']);
 		
 		// if it's not recurring, check to see if it falls in range
-		if (!$masterDate['Date']['recurring'] && $masterDate['Date']['start_date'] <= $range['start'] && $masterDate['Date']['start_date'] >= $range['end'] && !$masterDate['Date']['permanent']) {
+		$recurring = $masterDate['Date']['recurring'];
+		$permanent = $masterDate['Date']['permanent'];
+		$startsAfter = $masterDate['Date']['start'] >= $range['end'];
+		$endsBefore = ($masterDate['Date']['start'] <= $range['start'] && $masterDate['Date']['end'] <= $range['start']);
+
+		if (!$recurring && !$permanent && ($startsAfter || $endsBefore)) {
 			return array();
-		} elseif (!$masterDate['Date']['recurring']) {
+		} elseif (!$recurring) {
+			unset($masterDate['Date']['start']);
+			unset($masterDate['Date']['end']);
 			return array($masterDate);
 		}
 		
@@ -181,56 +198,63 @@ class Date extends AppModel {
 			$masterDate['Date']['end_time'] = '23:59:00';
 		}
 		
-		$endDate = $masterDate['Date']['end_date'].' '.$masterDate['Date']['end_time'];
-		$onDate = $masterDate['Date']['start_date'].' '.$masterDate['Date']['start_time'];;
-			
-		while (strtotime($onDate) < strtotime($range['end']) && (strtotime($onDate) < strtotime($endDate) || $masterDate['Date']['permanent']))
-		{
-			// start on the next date
-			$curdate = $masterDate;
-	
+		$onDate = $masterDate['Date']['start'];
+
+		while ($onDate < $range['end'] && ($onDate < $masterDate['Date']['end'] || $masterDate['Date']['permanent'])) {
+			$date = $masterDate;
+
 			switch ($masterDate['Date']['recurrance_type']) {
 				case 'h':					
-					$curdate['Date']['start_date'] = date('Y-m-d', strtotime($onDate));
-					$curdate['Date']['end_date'] = $masterDate['Date']['start_date'];
-					$curdate['Date']['start_time'] = date('H:i', strtotime($onDate));
-					$curdate['Date']['end_time'] = $curdate['Date']['start_time'];
+					$date['Date']['start_date'] = date('Y-m-d', $onDate);
+					$date['Date']['end_date'] = $masterDate['Date']['start_date'];
+					$date['Date']['start_time'] = date('H:i:s', $onDate);
+					$date['Date']['end_time'] = $date['Date']['start_time'];
 				break;
 				case 'y':
 					list($year, $month, $day) = explode('-', $masterDate['Date']['start_date']);
-					$curdate['Date']['start_date'] = date('Y-'.$month.'-'.$day, strtotime($onDate));
-					$curdate['Date']['end_date'] = date('Y-'.$month.'-'.$day, strtotime($onDate));
+					$date['Date']['start_date'] = date('Y-'.$month.'-'.$day, $onDate);
+					$date['Date']['end_date'] = $date['Date']['start_date'];
+					// first day of the month and set the frequency to start there so we don't miss anything
+					$onDate = strtotime(date('Y-1-1', $onDate));
 				break;
 				case 'd':
-					$curdate['Date']['start_date'] = date('Y-m-d', strtotime($onDate));
-					$curdate['Date']['end_date'] = $masterDate['Date']['start_date'];
+					$date['Date']['start_date'] = date('Y-m-d', $onDate);
+					$date['Date']['end_date'] = $date['Date']['start_date'];
 				break;
 				case 'md':
 					// always on this date
-					$curdate['Date']['start_date'] = date('Y-m-'.$masterDate['Date']['day'], strtotime($onDate));
-					$curdate['Date']['end_date'] = $curdate['Date']['start_date'];
+					$date['Date']['start_date'] = date('Y-m-'.$masterDate['Date']['day'], $onDate);
+					$date['Date']['end_date'] = $date['Date']['start_date'];
 				break;
 				case 'mw':
-					// first day of the month
-					$firstDay = date('Y-m-1', strtotime($onDate));
+					// first day of the month and set the frequency to start there so we don't miss anything
+					$onDate = strtotime('first day', $onDate);
 					// get week offset 
-					$week = strtotime('+'.($masterDate['Date']['offset']-1).' week', strtotime($firstDay));
+					$week = strtotime('+'.($masterDate['Date']['offset']-1).' week', $onDate);
 					// always on this weekday
-					$curdate['Date']['start_date'] = date('Y-m-d', strtotime($weekdays[$curdate['Date']['weekday']], $week));
-					$curdate['Date']['end_date'] = $curdate['Date']['start_date'];
+					$date['Date']['start_date'] = date('Y-m-d', strtotime($weekdays[$date['Date']['weekday']], $week));
+					$date['Date']['end_date'] = $date['Date']['start_date'];
 				break;
 				case 'w':
-					$curdate['Date']['start_date'] = date('Y-m-d', strtotime($weekdays[$curdate['Date']['weekday']], strtotime($onDate)));
-					$curdate['Date']['end_date'] = $curdate['Date']['start_date'];
+					$date['Date']['start_date'] = date('Y-m-d', strtotime($weekdays[$date['Date']['weekday']], $onDate));
+					$date['Date']['end_date'] = $date['Date']['start_date'];
 				break;
 			}
+
+			$date['Date']['start'] = strtotime($date['Date']['start_date'].' '.$date['Date']['start_time']);
+			$date['Date']['end'] = strtotime($date['Date']['end_date'].' '.$date['Date']['end_time']);
 			
-			$dates[] = $curdate;	
+			// add if it's not past the end range
+			if ($date['Date']['start'] <= $range['end'] && $date['Date']['start'] >= $range['start']) {
+				unset($date['Date']['start']);
+				unset($date['Date']['end']);
+				$dates[] = $date;
+			}
 			
 			// progress forward by frequency amount
-			$onDate = date('Y-m-d H:i', strtotime('+'.$masterDate['Date']['frequency'].' '.$types[$masterDate['Date']['recurrance_type']], strtotime($onDate)));
+			$onDate = strtotime('+'.$masterDate['Date']['frequency'].' '.$frequency[$masterDate['Date']['recurrance_type']], $onDate);
 		}
-		
+
 		return $dates;	
 	}
 }

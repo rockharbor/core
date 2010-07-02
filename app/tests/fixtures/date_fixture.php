@@ -47,25 +47,6 @@ class DateFixture extends CakeTestFixture {
 		),
 		array(
 			'id' => 2,
-			'start_date' => '2010-03-08',
-			'end_date' => '2010-03-19',
-			'start_time' => '00:00:00',
-			'end_time' => '23:59:00',
-			'all_day' => 1,
-			'permanent' => 1,
-			'recurring' => 1,
-			'recurrance_type' => 'mw',
-			'frequency' => 2,
-			'weekday' => 3,
-			'day' => 31,
-			'involvement_id' => 2,
-			'created' => '2010-03-16 13:35:38',
-			'modified' => '2010-03-17 08:11:23',
-			'exemption' => 1,
-			'offset' => 3
-		),
-		array(
-			'id' => 3,
 			'start_date' => '2010-04-09',
 			'end_date' => '2010-08-09',
 			'start_time' => '08:00:00',
@@ -84,7 +65,7 @@ class DateFixture extends CakeTestFixture {
 			'offset' => 2
 		),
 		array(
-			'id' => 4,
+			'id' => 3,
 			'start_date' => '2010-04-14',
 			'end_date' => '2010-04-14',
 			'start_time' => '06:00:00',
@@ -103,7 +84,7 @@ class DateFixture extends CakeTestFixture {
 			'offset' => 1
 		),
 		array(
-			'id' => 5,
+			'id' => 4,
 			'start_date' => '2010-04-18',
 			'end_date' => '2010-04-18',
 			'start_time' => '00:00:00',
@@ -122,7 +103,7 @@ class DateFixture extends CakeTestFixture {
 			'offset' => 1
 		),
 		array(
-			'id' => 6,
+			'id' => 5,
 			'start_date' => '2010-04-07',
 			'end_date' => '2010-04-10',
 			'start_time' => '11:15:00',
@@ -134,14 +115,14 @@ class DateFixture extends CakeTestFixture {
 			'frequency' => 1,
 			'weekday' => 0,
 			'day' => 1,
-			'involvement_id' => 5,
+			'involvement_id' => 3,
 			'created' => '2010-04-23 11:15:27',
 			'modified' => '2010-04-23 11:15:27',
 			'exemption' => 0,
 			'offset' => 1
 		),
 		array(
-			'id' => 7,
+			'id' => 6,
 			'start_date' => '2010-06-24',
 			'end_date' => '2010-06-30',
 			'start_time' => '19:30:00',
@@ -158,7 +139,7 @@ class DateFixture extends CakeTestFixture {
 			'modified' => '2010-06-24 19:30:02',
 			'exemption' => 0,
 			'offset' => 1
-		),
+		)
 	);
 }
 ?>
