@@ -48,6 +48,13 @@ if (!empty($fixtures)):
 ?>
 	var $fixtures = array('<?php echo join("', '", $fixtures); ?>');
 
+/**
+ * Disable inserting all records by default. Use CakeTestCase::loadFixtures
+ * to load the data needed for the test (or case).
+ */
+
+	var $autoFixtures = false;
+
 <?php endif; ?>
 <?php if ($mock and strtolower($type) == 'controller'): ?>
 	function _prepareAction($action = '') {
