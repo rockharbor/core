@@ -13,8 +13,11 @@ class CampusTestCase extends CakeTestCase {
 		'app.payment_type', 'app.household_member', 'app.household',
 		'app.publication', 'app.publications_user');
 
+	var $autoFixtures = false;
+
 	function startTest() {
 		$this->Campus =& ClassRegistry::init('Campus');
+		$this->loadFixtures('Campus', 'Leader');
 	}
 
 	function endTest() {

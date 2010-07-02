@@ -3,7 +3,18 @@
 App::import('Model', 'Alert');
 
 class AlertTestCase extends CakeTestCase {
-	var $fixtures = array('app.log', 'app.alert', 'app.group', 'app.user', 'app.profile', 'app.classification', 'app.job_category', 'app.school', 'app.campus', 'plugin.media.attachment', 'app.ministry', 'app.involvement', 'app.involvement_type', 'app.address', 'app.zipcode', 'app.region', 'app.date', 'app.payment_option', 'app.question', 'app.roster', 'app.role', 'app.roster_status', 'app.answer', 'app.payment', 'app.payment_type', 'app.leader', 'app.comment', 'app.comment_type', 'app.comments', 'app.notification', 'app.image', 'plugin.media.document', 'app.household_member', 'app.household', 'app.publication', 'app.publications_user', 'app.alerts_user');
+	var $fixtures = array('app.log', 'app.alert', 'app.group', 'app.user', 
+		'app.profile', 'app.classification', 'app.job_category', 'app.school',
+		'app.campus', 'plugin.media.attachment', 'app.ministry', 'app.involvement',
+		'app.involvement_type', 'app.address', 'app.zipcode', 'app.region',
+		'app.date', 'app.payment_option', 'app.question', 'app.roster', 'app.role',
+		'app.roster_status', 'app.answer', 'app.payment', 'app.payment_type',
+		'app.leader', 'app.comment', 'app.comment_type', 'app.comments',
+		'app.notification', 'app.image', 'plugin.media.document',
+		'app.household_member', 'app.household', 'app.publication',
+		'app.publications_user', 'app.alerts_user');
+
+	var $autoFixtures = false;
 
 	function _prepareAction($action = '') {
 		$this->Alert->params = Router::parse($action);
@@ -13,6 +24,7 @@ class AlertTestCase extends CakeTestCase {
 	}
 
 	function startTest() {
+		$this->loadFixtures('Alert', 'Group', 'User', 'AlertsUser');
 		$this->Alert =& ClassRegistry::init('Alert');
 	}
 

@@ -16,6 +16,8 @@ class HouseholdTestCase extends CakeTestCase {
 		'app.log'
 	);
 
+	var $autoFixtures = false;
+
 	function _prepareAction($action = '') {
 		$this->Household->params = Router::parse($action);
 		$this->Household->passedArgs = array_merge($this->Household->params['named'], $this->Household->params['pass']);
@@ -24,6 +26,7 @@ class HouseholdTestCase extends CakeTestCase {
 	}
 
 	function startTest() {
+		$this->loadFixtures('Household', 'HouseholdMember', 'User');
 		$this->Household =& ClassRegistry::init('Household');
 	}
 

@@ -19,6 +19,7 @@ class UserTestCase extends CakeTestCase {
 	);
 
 	function startTest() {
+		$this->loadFixtures('User');
 		$this->User =& ClassRegistry::init('User');
 	}
 
