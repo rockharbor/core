@@ -38,6 +38,14 @@ class LeaderFixture extends CakeTestFixture {
 			'model_id' => 1,
 			'created' => '2010-06-04 10:14:00',
 			'modified' => '2010-06-04 10:14:00'
+		),
+		array(
+			'id' => 4,
+			'user_id' => 2,
+			'model' => 'Ministry',
+			'model_id' => 4,
+			'created' => '2010-03-30 14:09:19',
+			'modified' => '2010-03-30 14:09:19'
 		)
 	);
 }
