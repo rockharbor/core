@@ -516,18 +516,10 @@ class UsersController extends AppController {
 			}
 		}
 
-		$this->set('elementarySchools', $this->User->Profile->ElementarySchool->find('list', array(
-			'conditions' => array('type' => 'e')
-		)));
-		$this->set('middleSchools', $this->User->Profile->MiddleSchool->find('list', array(
-			'conditions' => array('type' => 'm')
-		)));
-		$this->set('highSchools', $this->User->Profile->HighSchool->find('list', array(
-			'conditions' => array('type' => 'h')
-		)));
-		$this->set('colleges', $this->User->Profile->College->find('list', array(
-			'conditions' => array('type' => 'c')
-		)));
+		$this->set('elementarySchools', $this->User->Profile->ElementarySchool->find('list'));
+		$this->set('middleSchools', $this->User->Profile->MiddleSchool->find('list'));
+		$this->set('highSchools', $this->User->Profile->HighSchool->find('list'));
+		$this->set('colleges', $this->User->Profile->College->find('list'));
 		$this->set('publications', $this->User->Publication->find('list'));
 		$this->set('jobCategories', $this->User->Profile->JobCategory->find('list'));
 		$this->set('classifications', $this->User->Profile->Classification->find('list'));
