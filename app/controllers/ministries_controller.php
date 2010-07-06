@@ -82,7 +82,7 @@ class MinistriesController extends AppController {
  * Adds a ministry
  */ 
 	function add() {
-		$this->Ministry->Behaviors->detach('Confirm');
+		$this->Involvement->Behaviors->disable('Confirm');
 		
 		if (!empty($this->data)) {
 			$this->Ministry->create();
@@ -109,7 +109,7 @@ class MinistriesController extends AppController {
 	function edit() {
 		$id = $this->passedArgs['Ministry'];
 	
-		$this->Ministry->Behaviors->attach('Confirm');
+		$this->Involvement->Behaviors->enable('Confirm');
 	
 		if (!$id) {
 			$this->Session->setFlash('Invalid ministry');
@@ -151,8 +151,7 @@ class MinistriesController extends AppController {
 					'Ministry.id' => $id
 				)
 			)
-		)));
-		
+		)));		
 		
 		$this->set('revision', $revision);
 	}

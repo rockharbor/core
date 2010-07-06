@@ -143,11 +143,11 @@ class InvolvementsController extends AppController {
 /**
  * Adds an involvement opportunity
  *
- * By default, Involvement is inactive until Involvement::toggle_activity() is called. Additional
+ * By default, Involvement is inactive until Involvement::toggleActivity() is called. Additional
  * validation is performed then.
  */
 	function add() {
-		$this->Involvement->Behaviors->detach('Confirm');
+		$this->Involvement->Behaviors->disable('Confirm');
 		
 		if (!empty($this->data)) {
 			$this->Involvement->create();
@@ -241,7 +241,7 @@ class InvolvementsController extends AppController {
 		}
 		
 		$this->Involvement->Behaviors->disable('Confirm');
-		$success = $this->Involvement->toggle_activity($id, $active, $recursive);
+		$success = $this->Involvement->toggleActivity($id, $active, $recursive);
 		$this->Involvement->Behaviors->enable('Confirm');
 		
 		if ($success) {

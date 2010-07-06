@@ -47,13 +47,13 @@ class AppModel extends Model {
  * @access public
  */
 	function postContains($data) {
-		// get registered classes (models, etc.)
-		$registered = ClassRegistry::keys();
-		
+		// get assoociated models
+		$associated = $this->getAssociated();
+
 		// clear out all post conditions
 		foreach ($data as $model => $field) {
-			if (!in_array(Inflector::underscore($model), $registered)) {
-				// remove if it's not a model
+			if (!array_key_exists($model, $associated)) {
+				// remove if it's not directly associated
 				unset($data[$model]);
 			} else {
 				// check for habtm [Publication][Publication][0] = 1
@@ -61,7 +61,7 @@ class AppModel extends Model {
 					$field = array();
 				}
 				// recusively check for more models to contain
-				$data[$model] = self::postContains($field);
+				$data[$model] = $this->postContains($field);
 			}
 		}
 		
@@ -81,25 +81,39 @@ class AppModel extends Model {
  * @access public
  */
 	function ownedBy($userId = null, $modelId = null) {		
-		if ($this->id) {
-			$modelId = $this->id;
-		}
+		if (!$this->id || $modelId) {
+			$this->id = $modelId;
+		}		
 		
-		if (!$userId || !$modelId) {
+		if (!$userId || !$this->id) {
 			return false;
 		}
+
+		$class = $field = null;
+
+		// get the field the user id might be in
+		$fields = array('user_id', 'model_id', 'foreign_key', 'id');
+		$field = 'user_id';
+		$f = 0;
+		while (!$this->hasField($field) && $f < count($fields)) {
+			$field = $fields[$f];
+			$f++;
+		}
 		
-		switch ($this->name) {
-			case 'User':
-			$field = 'id';
-			break;
-			case 'Attachment':
-			case 'Address':
-			$field = 'foreign_key';
-			break;
-			default: 
-			$field = 'user_id';
-			break;
+		// check for class/model field if it's a polymorphic model
+		if (!in_array($field, array('id', 'user_id'))) {
+			$fields = array('model', 'class');
+			foreach ($fields as $classField) {
+				if ($this->hasField($classField)) {
+					$class = $classField;
+					break;
+				}
+			}
+
+			return $this->hasAny(array(
+				$field => $userId,
+				$class => 'User'
+			));
 		}
 		
 		return $this->field($field) == $userId;
@@ -142,32 +156,36 @@ class AppModel extends Model {
  * @param boolean $recursive Whether to iterate through the model's relationships and mark them as $active
  * @return boolean Success
  */
-	function toggle_activity($id = null, $active = false, $recursive = false) {
+	function toggleActivity($id = null, $active = false, $recursive = false) {
+		if (!$id) {
+			return false;
+		}
+
 		$this->id = $id;
+		$this->recursive = 1;
 		$data = $this->read(null, $id);
 				
 		if ($recursive) {
 			foreach ($this->hasOne as $hasOne => $config) {
 				// get id
 				$hasOneId = $data[$hasOne][$this->{$hasOne}->primaryKey];
-				// only go one level deep
+				// only go one level deep because most everything leads back to user
 				if ($id) {
-					$this->{$hasOne}->toggle_activity($hasOneId, $active, false);
+					$this->{$hasOne}->toggleActivity($hasOneId, $active, false);
 				}
 			}
 			
 			foreach ($this->hasMany as $hasMany => $config) {
 				// get ids
-				$hasManyIds = Set::extract('/'.$hasMany.'/'.$this->{$hasMany}->primaryKey);
-				// only go one level deep
+				$hasManyIds = Set::extract('/'.$hasMany.'/'.$this->{$hasMany}->primaryKey, $data);
+				// only go one level deep because most everything leads back to user
 				foreach ($hasManyIds as $disableId) {
-					$this->{$hasMany}->toggle_activity($disableId, $active, false);
+					$this->{$hasMany}->toggleActivity($disableId, $active, false);
 				}
 			}
 		}
 			
 		if ($this->hasField('active')) {
-			//debug('setting active: '.$active.' on '.$this->alias.'::'.$id);
 			return $this->saveField('active', $active);
 		} else {
 			return true;

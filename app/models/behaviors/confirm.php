@@ -18,7 +18,7 @@
  * @todo Refactor and wrap in a plugin, generally clean it up
  */
 class ConfirmBehavior extends ModelBehavior {
-
+	
 /**
  * Setup function
  *
@@ -42,12 +42,12 @@ class ConfirmBehavior extends ModelBehavior {
  *
  * @param object $Model The calling model
  */
-	function beforeSave(&$Model) {	
+	function beforeSave(&$Model) {
 		$data = $Model->data[$Model->alias];
-		
+
 		// empty the data so it doesn't save the change
 		$Model->data[$Model->alias] = array();
-		
+
 		// save to revision table
 		$data['version_created'] = date('Y-m-d H:i');
 		$Model->RevisionModel->save($data);
@@ -90,8 +90,8 @@ class ConfirmBehavior extends ModelBehavior {
 		unset($rev['Revision']['version_id']);
 		unset($rev['Revision']['version_created']);
 		
-		// detach model
-		$Model->Behaviors->detach('Confirm');
+		// disable model
+		$Model->Behaviors->disable('Confirm');
 		// save revision
 		$data = array(
 			$Model->alias => $rev['Revision']
@@ -103,8 +103,8 @@ class ConfirmBehavior extends ModelBehavior {
 			'id' => $id
 		));
 		
-		// reattach model
-		$Model->Behaviors->attach('Confirm');
+		// re-enable model
+		$Model->Behaviors->enable('Confirm');
 		
 		return $mSave && $rDelete;
 	}
