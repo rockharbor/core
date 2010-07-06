@@ -6,7 +6,7 @@ class InvolvementsRevFixture extends CakeTestFixture {
 	var $fields = array(
 		'version_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
 		'version_created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
+		'id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
 		'ministry_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
 		'involvement_type_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
 		'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 64),

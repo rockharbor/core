@@ -15,18 +15,23 @@
  *
  * @package       core
  * @subpackage    core.app.models.behaviors
- * @todo Refactor and wrap in a plugin, generally clean it up
+ * @todo Refactor and wrap in a plugin, generally clean it up, use an actual model
  */
 class ConfirmBehavior extends ModelBehavior {
 	
+/**
+ * Auto-confirm records that don't exist yet
+ * 
+ * @var boolean 
+ */
+	var $confirmNewRecords = false;
+
 /**
  * Setup function
  *
  * @param object $Model The calling model
  */
-	function setup(&$Model) {
-		$dbConfig = $Model->useDbConfig;
-		
+	function setup(&$Model) {		
 		$Model->RevisionModel = new Model(array(
 			'table' => Inflector::tableize($Model->name).'_revs',
 			'name' => 'Revision'
@@ -41,18 +46,36 @@ class ConfirmBehavior extends ModelBehavior {
  * and awaits confirmation
  *
  * @param object $Model The calling model
+ * @return boolean Success
  */
 	function beforeSave(&$Model) {
-		$data = $Model->data[$Model->alias];
+		if (isset($Model->data[$Model->alias])) {
+			$data = $Model->data[$Model->alias];
+		} else {
+			$data = $Model->data;
+		}
+		
+		if (!$Model->id && isset($data['id'])) {
+			$Model->id = $data['id'];
+		}
 
-		// empty the data so it doesn't save the change
-		$Model->data[$Model->alias] = array();
+		if (!$Model->exists() && $this->confirmNewRecords) {
+			// this is a new record, continue without revision
+			return true;
+		}
 
 		// save to revision table
-		$data['version_created'] = date('Y-m-d H:i');
-		$Model->RevisionModel->save($data);
-		
-		return true;
+		$data['id'] = $Model->id;
+		$data['version_created'] = date('Y-m-d H:i:s');
+
+		// remove data so it doesn't save to the original model
+		if (isset($Model->data[$Model->alias])) {
+			$Model->data[$Model->alias] = array();
+		} else {
+			$Model->data = array();
+		}
+
+		return $Model->RevisionModel->save($data);
 	}
 
 /**
@@ -66,10 +89,10 @@ class ConfirmBehavior extends ModelBehavior {
 		if (!$id) {
 			return false;
 		}
-		
+
 		return $Model->RevisionModel->find('first', array(
 			'conditions' => array(
-				'id' => $id
+				'Revision.id' => $id
 			)
 		));	
 	}
@@ -84,28 +107,31 @@ class ConfirmBehavior extends ModelBehavior {
 	function confirmRevision(&$Model, $id = null) {
 		// get revision changes
 		$rev = $Model->RevisionModel->find('first', array(
-			'id' => $id
-		));	
+			'conditions' => array(
+				'Revision.id' => $id
+			)
+		));
 		$rev_id = $rev['Revision']['version_id'];
 		unset($rev['Revision']['version_id']);
 		unset($rev['Revision']['version_created']);
-		
+		$rev = Set::filter($rev['Revision']);
+
 		// disable model
 		$Model->Behaviors->disable('Confirm');
 		// save revision
 		$data = array(
-			$Model->alias => $rev['Revision']
-		);		
+			$Model->alias => $rev
+		);
 		$mSave = $Model->save($data);
 		
 		// remove revision
 		$rDelete = $Model->RevisionModel->deleteAll(array(
-			'id' => $id
+			'Revision.id' => $id
 		));
 		
 		// re-enable model
 		$Model->Behaviors->enable('Confirm');
-		
+
 		return $mSave && $rDelete;
 	}
 
@@ -119,7 +145,7 @@ class ConfirmBehavior extends ModelBehavior {
 	function denyRevision(&$Model, $id = null) {	
 		// remove revision
 		return $Model->RevisionModel->deleteAll(array(
-			'id' => $id
+			'Revision.id' => $id
 		));
 	}
 
