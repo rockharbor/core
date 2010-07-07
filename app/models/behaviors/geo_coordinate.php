@@ -34,7 +34,8 @@ App::import('Core', 'HttpSocket');
  *
  * @package       core
  * @subpackage    core.app.models.behaviors
- * @todo Allow different fields, don't be so strict when saving
+ * @todo Allow more flexibility in fields, don't be so strict when saving,
+ *		wrap into plugin and include the helper
  */
 class GeoCoordinateBehavior extends ModelBehavior {
 
