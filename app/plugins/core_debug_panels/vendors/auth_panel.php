@@ -24,11 +24,18 @@ class AuthPanel extends DebugPanel {
 	var $title = 'Auth';
 
 /*
- * Should we log all the requests in addition to keeping them in the session?
+ * Should we log accepted requests in addition to keeping them in the session?
  *
  * @var boolean
  */
-	var $log = true;
+	var $logAllow = true;
+
+/*
+ * Should we log denied requests in addition to keeping them in the session?
+ *
+ * @var boolean
+ */
+	var $logDeny = true;
 
 /**
  * Number of auth history elements to keep. 0 for unlimited
@@ -98,7 +105,7 @@ class AuthPanel extends DebugPanel {
 				$perm = $condAccess ? 'yes' : 'no';
 				$message = "User $userId of conditional group $foreign_key allowed to access $action? [$perm]";
 				$authHistory[] = $message;
-				if ($this->log) {
+				if (($this->logAllow && $condAccess) || ($this->logDeny && !$condAccess)) {
 					CakeLog::write('auth', $message);
 				}
 			}
@@ -110,7 +117,7 @@ class AuthPanel extends DebugPanel {
 		$perm = $mainAccess ? 'yes' : 'no';
 		$message = "User $userId of group $foreign_key allowed to access $action? [$perm]";
 		$authHistory[] = $message;
-		if ($this->log) {
+		if (($this->logAllow && $mainAccess) || ($this->logDeny && !$mainAccess)) {
 			CakeLog::write('auth', $message);
 		}
 
