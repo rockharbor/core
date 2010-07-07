@@ -29,7 +29,8 @@ class Household extends AppModel {
  * @var array
  */
 	var $actsAs = array(
-		'Containable'
+		'Containable',
+		'Linkable.AdvancedLinkable'
 	);
 
 /**
@@ -135,9 +136,7 @@ class Household extends AppModel {
 				'Household.contact_id' => $contactId
 			),
 			'link' => array(
-				'Household' => array(
-					'HouseholdContact'
-				)
+				'Household'
 			)
 		));
 		
