@@ -1,5 +1,5 @@
 <?php
-/* Group Fixture generated on: 2010-06-28 08:06:59 : 1277737859 */
+/* Group Fixture generated on: 2010-07-07 11:07:47 : 1278526667 */
 class GroupFixture extends CakeTestFixture {
 	var $name = 'Group';
 
@@ -21,102 +21,132 @@ class GroupFixture extends CakeTestFixture {
 			'id' => 1,
 			'name' => 'Super Administrator',
 			'conditional' => 0,
-			'created' => '2010-06-03 09:37:08',
-			'modified' => '2010-06-03 09:37:08',
+			'created' => '2010-07-07 11:15:21',
+			'modified' => '2010-07-07 11:15:21',
 			'parent_id' => NULL,
 			'lft' => 1,
-			'rght' => 28
+			'rght' => 26
 		),
 		array(
 			'id' => 2,
 			'name' => 'Administrator',
 			'conditional' => 0,
-			'created' => '2010-06-03 09:37:09',
-			'modified' => '2010-06-03 09:37:09',
+			'created' => '2010-07-07 11:15:21',
+			'modified' => '2010-07-07 11:15:21',
 			'parent_id' => 1,
 			'lft' => 2,
-			'rght' => 27
+			'rght' => 25
 		),
 		array(
 			'id' => 3,
 			'name' => 'Pastor',
 			'conditional' => 0,
-			'created' => '2010-06-03 09:37:09',
-			'modified' => '2010-06-03 09:37:09',
+			'created' => '2010-07-07 11:15:21',
+			'modified' => '2010-07-07 11:15:21',
 			'parent_id' => 2,
 			'lft' => 3,
-			'rght' => 26
+			'rght' => 24
 		),
 		array(
 			'id' => 4,
 			'name' => 'Communications Admin',
 			'conditional' => 0,
-			'created' => '2010-06-03 09:37:09',
-			'modified' => '2010-06-03 09:37:09',
+			'created' => '2010-07-07 11:15:21',
+			'modified' => '2010-07-07 11:15:21',
 			'parent_id' => 3,
 			'lft' => 4,
-			'rght' => 25
+			'rght' => 23
 		),
 		array(
 			'id' => 5,
 			'name' => 'Staff',
 			'conditional' => 0,
-			'created' => '2010-06-03 09:37:09',
-			'modified' => '2010-06-03 09:37:09',
+			'created' => '2010-07-07 11:15:21',
+			'modified' => '2010-07-07 11:15:21',
 			'parent_id' => 4,
 			'lft' => 5,
-			'rght' => 24
+			'rght' => 22
 		),
 		array(
 			'id' => 6,
 			'name' => 'Intern',
 			'conditional' => 0,
-			'created' => '2010-06-03 09:37:09',
-			'modified' => '2010-06-03 09:37:09',
+			'created' => '2010-07-07 11:15:21',
+			'modified' => '2010-07-07 11:15:21',
 			'parent_id' => 5,
 			'lft' => 6,
-			'rght' => 23
-		),
-		array(
-			'id' => 7,
-			'name' => 'Volunteer',
-			'conditional' => 0,
-			'created' => '2010-06-03 09:37:09',
-			'modified' => '2010-06-03 09:37:09',
-			'parent_id' => 6,
-			'lft' => 7,
-			'rght' => 22
-		),
-		array(
-			'id' => 8,
-			'name' => 'Developer',
-			'conditional' => 0,
-			'created' => '2010-06-03 09:37:09',
-			'modified' => '2010-06-03 09:37:09',
-			'parent_id' => 7,
-			'lft' => 8,
 			'rght' => 21
 		),
 		array(
-			'id' => 9,
-			'name' => 'User',
+			'id' => 7,
+			'name' => 'Developer',
 			'conditional' => 0,
-			'created' => '2010-06-03 09:37:09',
-			'modified' => '2010-06-03 09:37:09',
-			'parent_id' => 8,
-			'lft' => 9,
+			'created' => '2010-07-07 11:15:22',
+			'modified' => '2010-07-07 11:15:22',
+			'parent_id' => 6,
+			'lft' => 7,
 			'rght' => 20
 		),
 		array(
-			'id' => 10,
+			'id' => 8,
+			'name' => 'User',
+			'conditional' => 0,
+			'created' => '2010-07-07 11:15:22',
+			'modified' => '2010-07-07 11:15:22',
+			'parent_id' => 7,
+			'lft' => 8,
+			'rght' => 19
+		),
+		array(
+			'id' => 9,
 			'name' => 'Campus Manager',
 			'conditional' => 1,
-			'created' => '2010-06-03 09:37:09',
-			'modified' => '2010-06-03 09:37:09',
+			'created' => '2010-07-07 11:15:22',
+			'modified' => '2010-07-07 11:15:22',
+			'parent_id' => 8,
+			'lft' => 9,
+			'rght' => 14
+		),
+		array(
+			'id' => 10,
+			'name' => 'Ministry Manager',
+			'conditional' => 1,
+			'created' => '2010-07-07 11:15:22',
+			'modified' => '2010-07-07 11:15:22',
 			'parent_id' => 9,
 			'lft' => 10,
-			'rght' => 15
+			'rght' => 13
 		),
+		array(
+			'id' => 11,
+			'name' => 'Involvement Leader',
+			'conditional' => 1,
+			'created' => '2010-07-07 11:15:22',
+			'modified' => '2010-07-07 11:15:22',
+			'parent_id' => 10,
+			'lft' => 11,
+			'rght' => 12
+		),
+		array(
+			'id' => 12,
+			'name' => 'Owner',
+			'conditional' => 1,
+			'created' => '2010-07-07 11:15:22',
+			'modified' => '2010-07-07 11:15:22',
+			'parent_id' => 8,
+			'lft' => 15,
+			'rght' => 18
+		),
+		array(
+			'id' => 13,
+			'name' => 'Household Contact',
+			'conditional' => 1,
+			'created' => '2010-07-07 11:15:22',
+			'modified' => '2010-07-07 11:15:22',
+			'parent_id' => 12,
+			'lft' => 16,
+			'rght' => 17
+		)
 	);
 }
 ?>
