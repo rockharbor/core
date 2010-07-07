@@ -140,7 +140,7 @@ class Alert extends AppModel {
 				'Alert.expires' => null
 			);
 		}
-		
+		$this->recursive = 0;
 		$alert = $this->find('all', $search);
 		
 		return Set::extract('/Alert/id', $alert);

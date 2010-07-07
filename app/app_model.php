@@ -37,6 +37,8 @@
  */
 class AppModel extends Model {
 
+	var $recursive = -1;
+
 /**
  * Creates a simplistic `contain` array from post data
  *
