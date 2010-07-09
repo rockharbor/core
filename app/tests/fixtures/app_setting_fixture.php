@@ -28,37 +28,7 @@ class AppSettingFixture extends CakeTestFixture {
 			'html' => 1
 		),
 		array(
-			'id' => 3,
-			'name' => 'church_site_url',
-			'description' => 'The church website url.',
-			'created' => '2010-03-11 10:57:11',
-			'modified' => '2010-03-11 10:57:11',
-			'value' => 'http://www.rockharbor.org',
-			'model' => '',
-			'html' => 0
-		),
-		array(
-			'id' => 4,
-			'name' => 'user_document_limit',
-			'description' => 'The maximum number of documents that can be uploaded to a user profile.',
-			'created' => '2010-03-11 11:01:02',
-			'modified' => '2010-03-11 11:01:02',
-			'value' => '3',
-			'model' => '',
-			'html' => 0
-		),
-		array(
-			'id' => 8,
-			'name' => 'site_name',
-			'description' => 'The application display name.',
-			'created' => '2010-03-11 13:04:01',
-			'modified' => '2010-03-18 13:13:11',
-			'value' => 'CORE',
-			'model' => '',
-			'html' => 1
-		),
-		array(
-			'id' => 9,
+			'id' => 2,
 			'name' => 'ebulletin',
 			'description' => 'The publication that is the main church ebulletin.',
 			'created' => '2010-03-18 00:00:00',
@@ -66,57 +36,7 @@ class AppSettingFixture extends CakeTestFixture {
 			'value' => '1',
 			'model' => 'Publication',
 			'html' => 0
-		),
-		array(
-			'id' => 10,
-			'name' => 'core_developer',
-			'description' => 'The main CORE developer. (App Setting test.)',
-			'created' => '2010-03-18 00:00:00',
-			'modified' => '2010-03-18 13:12:24',
-			'value' => '1',
-			'model' => 'User',
-			'html' => 0
-		),
-		array(
-			'id' => 11,
-			'name' => 'site_email',
-			'description' => 'The system email address. Used as a fallback for any non-customized email addresses.',
-			'created' => '2010-03-18 00:00:00',
-			'modified' => '2010-03-25 12:30:41',
-			'value' => 'core@rockharbor.org',
-			'model' => '',
-			'html' => 0
-		),
-		array(
-			'id' => 12,
-			'name' => 'user_image_limit',
-			'description' => 'The maximum number of images that can be uploaded to a user profile.',
-			'created' => '2010-03-18 00:00:00',
-			'modified' => '0000-00-00 00:00:00',
-			'value' => '1',
-			'model' => '',
-			'html' => 0
-		),
-		array(
-			'id' => 13,
-			'name' => 'debug_email',
-			'description' => 'The email to send debug info, including test emails.',
-			'created' => '2010-03-25 00:00:00',
-			'modified' => '2010-03-25 12:30:27',
-			'value' => 'jharris@rockharbor.org',
-			'model' => '',
-			'html' => 0
-		),
-		array(
-			'id' => 14,
-			'name' => 'involvement_question_limit',
-			'description' => 'The maximum number of questions an involvement can have.',
-			'created' => '2010-04-09 00:00:00',
-			'modified' => '2010-04-09 12:24:21',
-			'value' => '5',
-			'model' => '',
-			'html' => 0
-		),
+		)
 	);
 }
 ?>
