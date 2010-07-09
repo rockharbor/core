@@ -1,14 +1,8 @@
 <?php
-/* Notifications Test cases generated on: 2010-06-28 09:06:37 : 1277744317*/
+/* Notifications Test cases generated on: 2010-07-09 10:07:32 : 1278696092 */
 App::import('Controller', 'Notifications');
 
 class TestNotificationsController extends NotificationsController {
-	var $autoRender = false;
-
-	function render($action = null, $layout = null, $file = null) {
-		$this->renderedAction = $action;
-	}
-
 	function redirect($url, $status = null, $exit = true) {
 		$this->redirectUrl = $url;
 	}
@@ -30,27 +24,24 @@ class NotificationsControllerTestCase extends CakeTestCase {
 		'app.household', 'app.publication', 'app.publications_user', 'app.log', 'app.app_setting'
 	);
 
-	function _prepareAction($action = '') {
-		$this->Notifications->params = Router::parse($action);
-		$this->Notifications->passedArgs = array_merge($this->Notifications->params['named'], $this->Notifications->params['pass']);
-		$this->Notifications->params['url'] = $this->Notifications->params;
-		$this->Notifications->beforeFilter();
-	}
-
 	function startTest() {
 		$this->Notifications =& new TestNotificationsController();
 		$this->Notifications->constructClasses();
 		$this->Notifications->Component->initialize($this->Notifications);
+		$this->Notifications->Session->write('Auth.User', array('id' => 1));
+		$this->Notifications->Session->write('User', array('Group' => array('id' => 1)));
 	}
 
 	function endTest() {
-		unset($this->Notifications);
+		$this->Notifications->Session->destroy();
+		unset($this->Notifications);		
 		ClassRegistry::flush();
 	}
 
 	function testIndex() {
-		$this->_prepareAction('/notifications/index/User:1');
-		$this->Notifications->index();
+		$vars = $this->testAction('/test_notifications/index/User:1', array(
+			'return' => 'vars'
+		));
 		$expected = array(
 			array(
 				'Notification' => array(
@@ -58,7 +49,7 @@ class NotificationsControllerTestCase extends CakeTestCase {
 					'user_id' => 1,
 					'created' => '2010-06-24 14:37:38',
 					'modified' => '2010-06-24 14:37:38',
-					'read' => 1,
+					'read' => 0,
 					'type' => 'invitation',
 					'body' => 'You have been invited somewhere.'
 				)
@@ -69,18 +60,19 @@ class NotificationsControllerTestCase extends CakeTestCase {
 					'user_id' => 1,
 					'created' => '2010-06-04 10:24:49',
 					'modified' => '2010-06-24 10:21:54',
-					'read' => 1,
+					'read' => 0,
 					'type' => 'default',
 					'body' => 'Jeremy Harris is now managing the campus Fischer.'
 				)
 			)
 		);
-		$this->assertEqual($this->Notifications->viewVars['notifications'], $expected);
+		$this->assertEqual($vars['notifications'], $expected);
 	}
 
 	function testIndexFiltered() {
-		$this->_prepareAction('/notifications/index/invitation/User:1');
-		$this->Notifications->index('invitation');
+		$vars = $this->testAction('/test_notifications/index/invitation/User:1', array(
+			'return' => 'vars'
+		));
 		$expected = array(
 			array(
 				'Notification' => array(
@@ -88,21 +80,58 @@ class NotificationsControllerTestCase extends CakeTestCase {
 					'user_id' => 1,
 					'created' => '2010-06-24 14:37:38',
 					'modified' => '2010-06-24 14:37:38',
-					'read' => 1,
+					'read' => 0,
 					'type' => 'invitation',
 					'body' => 'You have been invited somewhere.'
 				)
 			)
 		);
-		$this->assertEqual($this->Notifications->viewVars['notifications'], $expected);
+		$this->assertEqual($vars['notifications'], $expected);
 	}
 
 	function testRead() {
+		$vars = $this->testAction('/test_notifications/read/3');
+		$this->Notifications->Notification->id = 3;
+		$this->assertFalse($this->Notifications->Notification->field('read'));
 
+		$this->Notifications->Session->write('Auth.User', array('id' => 2));
+		$vars = $this->testAction('/test_notifications/read/3');
+		$this->Notifications->Notification->id = 3;
+		$this->assertTrue($this->Notifications->Notification->field('read'));
+	}
+
+	function testMultiSelectRead() {
+		$this->Notifications->Session->write('MultiSelect.test', array(
+			'selected' => array(1,2)
+		));
+		$vars = $this->testAction('/test_notifications/read/test');
+		$results = $this->Notifications->Notification->find('all', array(
+			'conditions' => array(
+				'user_id' => 1
+			)
+		));
+		$results = Set::extract('/Notification/read', $results);
+		$expected = array(1, 1);
+		$this->assertEqual($results, $expected);
 	}
 
 	function testDelete() {
+		$vars = $this->testAction('/test_notifications/delete/3');
+		$this->assertNotNull($this->Notifications->Notification->read(null, 3));
 
+		$this->Notifications->Session->write('Auth.User', array('id' => 2));
+		$vars = $this->testAction('/test_notifications/delete/3');
+		$this->Notifications->Notification->id = 3;
+		$this->assertFalse($this->Notifications->Notification->read(null, 3));
+	}
+
+	function testMultiSelectDelete() {
+		$this->Notifications->Session->write('MultiSelect.test', array(
+			'selected' => array(1,2,3)
+		));
+		$vars = $this->testAction('/test_notifications/delete/test');
+		$results = $this->Notifications->Notification->find('count');
+		$this->assertEqual($results, 2);
 	}
 
 }

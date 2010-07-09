@@ -21,7 +21,7 @@ class NotificationFixture extends CakeTestFixture {
 			'user_id' => 1,
 			'created' => '2010-06-24 14:37:38',
 			'modified' => '2010-06-24 14:37:38',
-			'read' => 1,
+			'read' => 0,
 			'type' => 'invitation',
 			'body' => 'You have been invited somewhere.'
 		),
@@ -30,7 +30,7 @@ class NotificationFixture extends CakeTestFixture {
 			'user_id' => 1,
 			'created' => '2010-06-04 10:24:49',
 			'modified' => '2010-06-24 10:21:54',
-			'read' => 1,
+			'read' => 0,
 			'type' => 'default',
 			'body' => 'Jeremy Harris is now managing the campus Fischer.'
 		),

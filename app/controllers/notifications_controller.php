@@ -89,6 +89,7 @@ class NotificationsController extends AppController {
 		
 		// check to see if this is a MultiSelect
 		if ($this->MultiSelect->check($id)) {
+			
 			$search = $this->MultiSelect->getSearch($id);
 			$selected = $this->MultiSelect->getSelected($id);
 			
