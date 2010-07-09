@@ -146,7 +146,6 @@ class AddressesController extends AppController {
  * be primary
  *
  * @param integer $id The address id
- * @todo Only reset primary field if this addresses is set to primary
  */
 	function edit($id = null) {		
 		if (!$id && empty($this->data)) {
@@ -156,17 +155,19 @@ class AddressesController extends AppController {
 		
 		if (!empty($this->data)) {
 			if ($this->Address->save($this->data)) {
-				// mark all others as not primary		
-				$modelAddresses = $this->Address->find('all', array(
-					'conditions' => array(
-						'foreign_key' => $this->data['Address']['foreign_key'],
-						'model' => $this->data['Address']['model'],
-						'id <>' => $id
-					)
-				));
-				foreach ($modelAddresses as $modelAddress) {
-					$this->Address->id = $modelAddress['Address']['id'];
-					$this->Address->saveField('primary', 0);
+				if ($this->data['Address']['primary']) {
+					// mark all others as not primary
+					$modelAddresses = $this->Address->find('all', array(
+						'conditions' => array(
+							'foreign_key' => $this->data['Address']['foreign_key'],
+							'model' => $this->data['Address']['model'],
+							'id <>' => $id
+						)
+					));
+					foreach ($modelAddresses as $modelAddress) {
+						$this->Address->id = $modelAddress['Address']['id'];
+						$this->Address->saveField('primary', 0);
+					}
 				}
 				
 				$this->Session->setFlash('The address was saved!', 'flash_success');

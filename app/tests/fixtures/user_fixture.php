@@ -27,7 +27,7 @@ class UserFixture extends CakeTestFixture {
 			'modified' => '2010-06-25 13:05:34',
 			'last_logged_in' => '2010-06-25 13:05:34',
 			'flagged' => 1,
-			'group_id' => 3
+			'group_id' => 1
 		),
 		array(
 			'id' => 2,
