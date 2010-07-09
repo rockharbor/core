@@ -67,12 +67,13 @@ class AlertsController extends AppController {
 			$this->redirect(array('action'=>'history'));
 		}
 		
-		$this->Alert->recursive = -1;
-		$alert = $this->Alert->read(null, $id);
-		
+		$alert = array();
+
 		if (!in_array($alert['Alert']['group_id'], Set::extract('/Group/id', $this->activeUser))) {
 			$this->Session->setFlash('You cannot view that alert', 'flash_failure');
 			$this->redirect(array('action'=>'history'));
+		} else {
+			$alert = $this->Alert->read(null, $id);
 		}
 		
 		$referer = $this->referer();
@@ -89,7 +90,6 @@ class AlertsController extends AppController {
 		$userId = $this->activeUser['User']['id'];
 		$userGroups = Set::extract('/Group/id', $this->activeUser);
 		
-		$this->Alert->recursive = 0;
 		switch ($unread) {			
 			case 'unread':
 			$this->paginate = array(

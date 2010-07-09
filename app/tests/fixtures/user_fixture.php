@@ -38,7 +38,7 @@ class UserFixture extends CakeTestFixture {
 			'modified' => '2010-04-07 13:55:09',
 			'last_logged_in' => NULL,
 			'flagged' => 0,
-			'group_id' => 9
+			'group_id' => 8
 		),
 		array(
 			'id' => 3,
@@ -49,7 +49,7 @@ class UserFixture extends CakeTestFixture {
 			'modified' => '2010-04-07 13:55:09',
 			'last_logged_in' => NULL,
 			'flagged' => 0,
-			'group_id' => 9
+			'group_id' => 8
 		)
 	);
 }

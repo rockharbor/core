@@ -23,7 +23,7 @@ class AlertFixture extends CakeTestFixture {
 			'description' => 'Alert description 1',
 			'created' => '2010-04-27 14:04:02',
 			'modified' => '2010-06-02 12:27:38',
-			'group_id' => 9,
+			'group_id' => 8,
 			'importance' => 'medium',
 			'expires' => NULL
 		),
@@ -33,7 +33,7 @@ class AlertFixture extends CakeTestFixture {
 			'description' => 'Alert description 2',
 			'created' => '2010-04-27 14:04:02',
 			'modified' => '2010-06-02 12:27:38',
-			'group_id' => 9,
+			'group_id' => 8,
 			'importance' => 'medium',
 			'expires' => NULL
 		),
@@ -43,7 +43,7 @@ class AlertFixture extends CakeTestFixture {
 			'description' => 'Alert description 3',
 			'created' => '2010-04-27 14:04:02',
 			'modified' => '2010-06-02 12:27:38',
-			'group_id' => 9,
+			'group_id' => 8,
 			'importance' => 'medium',
 			'expires' => NULL
 		),

@@ -34,22 +34,22 @@ class AlertTestCase extends CakeTestCase {
 	}
 
 	function testGetReadAlerts() {
-		$this->assertEqual($this->Alert->getReadAlerts(1), array(1, 3));
+		$this->assertEqual($this->Alert->getReadAlerts(1), array(1));
 		$this->assertEqual($this->Alert->getReadAlerts(2), array());
 	}
 
 	function testGetUnreadAlerts() {
 		$this->assertFalse($this->Alert->getUnreadAlerts());
 		$this->assertFalse($this->Alert->getUnreadAlerts(1, null));
-		$this->assertEqual($this->Alert->getUnreadAlerts(1), array(2));
-		$this->assertEqual($this->Alert->getUnreadAlerts(1, 1), array(2, 4));
-		$this->assertEqual($this->Alert->getUnreadAlerts(1, 1, false), array(2, 4));
-		$this->assertEqual($this->Alert->getUnreadAlerts(1, 6), array(2));
+		$this->assertEqual($this->Alert->getUnreadAlerts(1), array(2,3));
+		$this->assertEqual($this->Alert->getUnreadAlerts(1, 1), array(2, 3, 4));
+		$this->assertEqual($this->Alert->getUnreadAlerts(1, 1, false), array(2, 3, 4));
+		$this->assertEqual($this->Alert->getUnreadAlerts(1, 6), array(2, 3));
 		$this->Alert->id = 2;
 		$this->Alert->saveField('expires', date('Y-m-d'));
-		$this->assertEqual($this->Alert->getUnreadAlerts(1, 1, false), array(2, 4));
+		$this->assertEqual($this->Alert->getUnreadAlerts(1, 1, false), array(2, 3, 4));
 		$this->Alert->saveField('expires', date('Y-m-d', strtotime('-1 day')));
-		$this->assertEqual($this->Alert->getUnreadAlerts(1, 1, false), array(4));
+		$this->assertEqual($this->Alert->getUnreadAlerts(1, 1, false), array(3, 4));
 	}
 
 	function testMarkAsRead() {
