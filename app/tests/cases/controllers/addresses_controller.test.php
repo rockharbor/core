@@ -14,9 +14,12 @@ class TestAddressesController extends UserAddressesController {
 
 class AddressesControllerTestCase extends CakeTestCase {
 
-	var $fixtures = array('app.address');
+	var $fixtures = array('app.alert', 'app.group', 'app.user', 'app.profile', 'app.classification', 'app.job_category', 'app.school', 'app.campus', 'plugin.media.attachment', 'app.ministry', 'app.involvement', 'app.involvement_type', 'app.address', 'app.zipcode', 'app.region', 'app.date', 'app.payment_option', 'app.question', 'app.roster', 'app.role', 'app.roster_status', 'app.answer', 'app.payment', 'app.payment_type', 'app.leader', 'app.comment', 'app.comment_type', 'app.comments', 'app.notification', 'app.image', 'plugin.media.document', 'app.household_member', 'app.household', 'app.publication', 'app.publications_user', 'app.alerts_user', 'app.log', 'app.app_setting');
 
+	var $autoFixtures = false;
+	
 	function startTest() {
+		$this->loadFixtures('Address');
 		$this->Addresses = new TestAddressesController();
 		$this->Addresses->constructClasses();		
 		$this->Addresses->Component->initialize($this->Addresses);

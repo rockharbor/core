@@ -21,7 +21,8 @@ class NotificationsControllerTestCase extends CakeTestCase {
 		'app.payment_option', 'app.question', 'app.roster', 'app.role', 'app.roster_status',
 		'app.answer', 'app.payment', 'app.payment_type', 'app.leader', 'app.comment', 'app.comment_type',
 		'app.comments', 'app.notification', 'app.image', 'plugin.media.document', 'app.household_member',
-		'app.household', 'app.publication', 'app.publications_user', 'app.log', 'app.app_setting'
+		'app.household', 'app.publication', 'app.publications_user', 'app.log', 'app.app_setting',
+		'app.alert', 'app.alerts_user'
 	);
 
 	function startTest() {
