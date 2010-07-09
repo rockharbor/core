@@ -42,12 +42,12 @@ class Campus extends AppModel {
 		'Ministry' => array(
 			'className' => 'Ministry',
 			'foreignKey' => 'campus_id',
-			'dependent' => false
+			'dependent' => true
 		),
 		'Leader' => array(
 			'className' => 'Leader',
 			'foreignKey' => 'model_id',
-			'dependent' => false,
+			'dependent' => true,
 			'conditions' => array('Leader.model' => 'Campus')
 		)
 	);
@@ -61,7 +61,7 @@ class Campus extends AppModel {
 		'Image' => array(
 			'className' => 'Attachment',
 			'foreignKey' => 'foreign_key',
-			'dependent' => false,
+			'dependent' => true,
 			'conditions' => array('Image.model' => 'Campus')
 		)
 	);
