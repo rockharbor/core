@@ -308,7 +308,6 @@ class PermissionsShell extends Shell {
 		2 => array(
 			'controllers/ApiGenerator/ApiClasses/view_source',
 			'controllers/Campuses/delete',
-			'controllers/Comments',
 			'controllers/CommentTypes',
 			'controllers/Involvements/delete',
 			'controllers/InvolvementTypes',
@@ -375,6 +374,7 @@ class PermissionsShell extends Shell {
 		),
 		// intern
 		6 => array(
+			'controllers/Comments',
 			'controllers/Rosters/index',
 			'controllers/Households/index',
 			'controllers/Households/make_household_contact',

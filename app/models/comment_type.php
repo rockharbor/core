@@ -24,6 +24,15 @@ class CommentType extends AppModel {
 	var $name = 'CommentType';
 
 /**
+ * Behaviors for this model
+ *
+ * @var array
+ */
+	var $actsAs = array(
+		'Linkable.AdvancedLinkable'
+	);
+
+/**
  * Validation rules
  *
  * @var array

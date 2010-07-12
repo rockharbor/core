@@ -47,10 +47,19 @@ class CommentsController extends AppController {
  */ 
 	function index() {
 		$viewUser = $this->passedArgs['User'];
-		
-		$this->set('comments', $this->paginate(array(
-			'Comment.user_id' => $viewUser
-		)));
+
+		$this->paginate = array(
+			'conditions' => array(
+				'Comment.user_id' => $viewUser,
+				'Group.lft >=' => $this->activeUser['Group']['lft']
+			),
+			'link' => array(
+				'CommentType' => array(
+					'Group'
+				)
+			)
+		);
+		$this->set('comments', $this->paginate('Comment'));
 		
 		$this->set('userId', $viewUser);
 		$this->set('commentTypes', $this->Comment->CommentType->find('list'));
@@ -73,7 +82,15 @@ class CommentsController extends AppController {
 			}
 		}
 		$this->set('users', $this->Comment->User->find('list'));
-		$this->set('commentTypes', $this->Comment->CommentType->find('list'));
+		$this->set('commentTypes', $this->Comment->CommentType->find('list', array(
+			'conditions' => array(
+				'Group.lft >=' => $this->activeUser['Group']['lft'],
+				'Group.conditional' => false
+			),
+			'link' => array(
+				'Group'
+			)
+		)));
 		$this->set('userId', $viewUser);
 	}
 
@@ -101,7 +118,15 @@ class CommentsController extends AppController {
 			$this->data = $this->Comment->read(null, $id);
 		}
 		
-		$this->set('commentTypes', $this->Comment->CommentType->find('list'));
+		$this->set('commentTypes', $this->Comment->CommentType->find('list', array(
+			'conditions' => array(
+				'Group.lft >=' => $this->activeUser['Group']['lft'],
+				'Group.conditional' => false
+			),
+			'link' => array(
+				'Group'
+			)
+		)));
 	}
 	
 /**
