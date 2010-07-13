@@ -59,7 +59,37 @@ class Group extends AppModel {
  * @access public
  */
 	function parentNode() {
-		
+
+	}
+
+/**
+ * Convenience function for getting a list of non-conditional groups
+ *
+ * @param integer $groupId The group get groups above/below from
+ * @param string $operation The find operation (see Model::find())
+ * @param string $operator Find groups that are less than, greater than, less
+ *		than equal, etc. Where '>' means 'of higher permission'
+ * @return array Results
+ */
+	function findGroups($groupId = null, $operation = 'list', $operator = '<=') {
+		if (!$groupId || !is_numeric($groupId)) {
+			return false;
+		}
+
+		$operatorMap = array(
+			'<' => '>',
+			'>' => '<',
+			'<=' => '>=',
+			'>=' => '<=',
+			'=' => '='
+		);
+
+		return $this->find($operation, array(
+			'conditions' => array(
+				'Group.conditional' => false,
+				'Group.lft '.$operatorMap[$operator] => $groupId
+			)
+		));
 	}
 }
 ?>
