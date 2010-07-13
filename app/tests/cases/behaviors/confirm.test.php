@@ -67,41 +67,6 @@ class ConfirmBehaviorTestCase extends CakeTestCase {
 		$this->assertFalse($rev);
 	}
 
-	function testConfirmNewRecord() {
-		$this->Ministry->Behaviors->Confirm->confirmNewRecords = true;
-		$save = $this->Ministry->save(array(
-			'name' => 'New Ministry',
-			'description' => 'Description',
-			'parent_id' => null,
-			'campus_id' => 1,
-			'group_id' => 9
-		));
-		$this->assertTrue($save);
-		$this->assertTrue($this->Ministry->exists());
-
-		$save = $this->Ministry->save(array(
-			'id' => 90,
-			'name' => 'New Ministry',
-			'description' => 'Description',
-			'parent_id' => null,
-			'campus_id' => 1,
-			'group_id' => 9
-		));
-		$this->assertTrue($save);
-		$this->assertTrue($this->Ministry->exists());
-
-		$this->Ministry->id = 100;
-		$save = $this->Ministry->save(array(
-			'name' => 'New Ministry',
-			'description' => 'Description',
-			'parent_id' => null,
-			'campus_id' => 1,
-			'group_id' => 9
-		));
-		$this->assertTrue($save);
-		$this->assertTrue($this->Ministry->exists());
-	}
-
 	function testRevision() {
 		$this->Ministry->id = 1;
 		$success = $this->Ministry->save(array(

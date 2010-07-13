@@ -18,13 +18,6 @@
  * @todo Refactor and wrap in a plugin, generally clean it up, use an actual model
  */
 class ConfirmBehavior extends ModelBehavior {
-	
-/**
- * Auto-confirm records that don't exist yet
- * 
- * @var boolean 
- */
-	var $confirmNewRecords = false;
 
 /**
  * Setup function
@@ -57,11 +50,6 @@ class ConfirmBehavior extends ModelBehavior {
 		
 		if (!$Model->id && isset($data['id'])) {
 			$Model->id = $data['id'];
-		}
-
-		if (!$Model->exists() && $this->confirmNewRecords) {
-			// this is a new record, continue without revision
-			return true;
 		}
 
 		// save to revision table
@@ -114,6 +102,9 @@ class ConfirmBehavior extends ModelBehavior {
 		$rev_id = $rev['Revision']['version_id'];
 		unset($rev['Revision']['version_id']);
 		unset($rev['Revision']['version_created']);
+		if (isset($rev['Revision']['id']) && (!$rev['Revision']['id'] || empty($rev['Revision']['id']))) {
+			unset($rev['Revision']['id']);
+		}
 		$rev = Set::filter($rev['Revision']);
 
 		// disable model
