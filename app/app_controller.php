@@ -1,27 +1,21 @@
 <?php
 /**
- * Short description for file.
+ * App controller class.
  *
- * This file is application-wide controller file. You can put all
- * application-wide controller-related methods here.
- *
- * PHP versions 4 and 5
- *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
- *
- * Licensed under The MIT License
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
- * @package       cake
- * @subpackage    cake.cake.libs.controller
- * @since         CakePHP(tm) v 0.2.9
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app
  */
 
-
+/**
+ * App Controller
+ *
+ * All controllers within the CORE app should extend this class.
+ *
+ * @package       core
+ * @subpackage    core.app
+ */
 class AppController extends Controller {
 
 /**
@@ -32,7 +26,6 @@ class AppController extends Controller {
  */		
 	var $_version = '2.0.0-alpha';
 
-	
 /**
  * Stored global CORE settings
  *
@@ -87,13 +80,17 @@ class AppController extends Controller {
 		),
 		'QueueEmail'
 	);
-	
+
+/**
+ * Application-wide helpers
+ *
+ * @var array
+ */
 	var $helpers = array(
 		'Js' => array('Jquery'),
 		'Session',
 		'Text'
 	);
-
 
 /**
  * Default callbacks for ajax submit buttons
@@ -140,7 +137,6 @@ class AppController extends Controller {
  * @access public
  */		
 	var $activeUser = null;
-
 	
 /**
  * Controller::beforeFilter() callback
@@ -151,6 +147,13 @@ class AppController extends Controller {
  * @see Cake docs
  */
 	function beforeFilter() {
+		// check for testing environment
+		if (defined('CORE_TEST_CASES')) {
+			$this->Component->Toolbar->enabled = false;
+			$this->Component->Whistle->enabled = false;
+			$this->Component->QueueEmail->enabled = false;
+		}
+
 		// pull app settings
 		$appSettings = Cache::read('core_app_settings');
 		if (empty($appSettings)) {
@@ -242,25 +245,28 @@ class AppController extends Controller {
  *
  * @return boolean True if user can continue.
  */ 
-	function isAuthorized() {
+	function isAuthorized($action = '') {
 		if (!$this->activeUser) {
 			return false;
+		}
+
+		if (empty($action)) {
+			$action = $this->Auth->action();
 		}
 		
 		$this->_setConditionalGroups();
 		
 		$model = 'Group';
 		$foreign_key = $this->activeUser['Group']['id'];
-		$userId = $this->activeUser['User']['id'];
 
 		// main group
-		$mainAccess = $this->Acl->check(compact('model', 'foreign_key'), $this->Auth->action());
+		$mainAccess = $this->Acl->check(compact('model', 'foreign_key'), $action);
 		
 		$condAccess = false;
 		// check for conditional group
 		if (isset($this->activeUser['ConditionalGroup'])) {
 			$foreign_key = $this->activeUser['ConditionalGroup']['id'];
-			$condAccess = $this->Acl->check(compact('model', 'foreign_key'), $this->Auth->action());
+			$condAccess = $this->Acl->check(compact('model', 'foreign_key'), $action);
 		}
 		
 		return $mainAccess || $condAccess;
@@ -377,9 +383,11 @@ class AppController extends Controller {
  * @access protected
  */ 
 	function _setConditionalGroups() {
+		unset($this->activeUser['ConditionalGroup']);
+
 		$Group = ClassRegistry::init('Group');
 		$Group->recursive = -1;
-	
+
 		if (isset($this->passedArgs['User'])) {
 			$User = ClassRegistry::init('User');
 			
