@@ -12,7 +12,7 @@ class AlertTestCase extends CakeTestCase {
 		'app.leader', 'app.comment', 'app.comment_type', 'app.comments',
 		'app.notification', 'app.image', 'plugin.media.document',
 		'app.household_member', 'app.household', 'app.publication',
-		'app.publications_user', 'app.alerts_user');
+		'app.publications_user', 'app.alerts_user', 'app.ministries_rev', 'app.involvements_rev');
 
 	var $autoFixtures = false;
 

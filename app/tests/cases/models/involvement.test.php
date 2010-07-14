@@ -12,7 +12,7 @@ class InvolvementTestCase extends CakeTestCase {
 		'app.payment_type', 'app.address', 'app.zipcode', 'app.region',
 		'app.household_member', 'app.household', 'app.publication',
 		'app.publications_user', 'app.involvement_type', 'app.date',
-		'app.log');
+		'app.log', 'app.ministries_rev', 'app.involvements_rev');
 
 /**
  * Disable inserting all records by default. Use CakeTestCase::loadFixtures

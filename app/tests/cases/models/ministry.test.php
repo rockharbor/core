@@ -3,7 +3,7 @@
 App::import('Model', 'Ministry');
 
 class MinistryTestCase extends CakeTestCase {
-	var $fixtures = array('app.ministry', 'app.campus', 'plugin.media.attachment', 'app.leader', 'app.user', 'app.group', 'app.profile', 'app.classification', 'app.job_category', 'app.school', 'app.comment', 'app.comment_type', 'app.comments', 'app.notification', 'plugin.media.document', 'app.roster', 'app.involvement', 'app.involvement_type', 'app.address', 'app.zipcode', 'app.region', 'app.date', 'app.payment_option', 'app.question', 'app.role', 'app.roster_status', 'app.answer', 'app.payment', 'app.payment_type', 'app.household_member', 'app.household', 'app.publication', 'app.publications_user', 'app.log');
+	var $fixtures = array('app.ministries_rev', 'app.involvements_rev', 'app.ministry', 'app.campus', 'plugin.media.attachment', 'app.leader', 'app.user', 'app.group', 'app.profile', 'app.classification', 'app.job_category', 'app.school', 'app.comment', 'app.comment_type', 'app.comments', 'app.notification', 'plugin.media.document', 'app.roster', 'app.involvement', 'app.involvement_type', 'app.address', 'app.zipcode', 'app.region', 'app.date', 'app.payment_option', 'app.question', 'app.role', 'app.roster_status', 'app.answer', 'app.payment', 'app.payment_type', 'app.household_member', 'app.household', 'app.publication', 'app.publications_user', 'app.log');
 
 /**
  * Disable inserting all records by default. Use CakeTestCase::loadFixtures

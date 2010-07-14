@@ -11,7 +11,7 @@ class CampusTestCase extends CakeTestCase {
 		'app.region', 'app.date', 'app.payment_option', 'app.question',
 		'app.leader', 'app.role', 'app.roster_status', 'app.answer', 'app.payment',
 		'app.payment_type', 'app.household_member', 'app.household',
-		'app.publication', 'app.publications_user');
+		'app.publication', 'app.publications_user', 'app.ministries_rev', 'app.involvements_rev');
 
 	var $autoFixtures = false;
 

@@ -8,7 +8,7 @@ class TestNotifierController extends Controller {}
 class NotifierTestCase extends CakeTestCase {
 
 	var $fixtures = array(
-		'app.notification',
+		'app.notification','app.ministries_rev', 'app.involvements_rev',
 		'app.user', 'app.group', 'app.profile', 'app.classification', 'app.job_category',
 		'app.school', 'app.campus', 'plugin.media.attachment', 'app.ministry', 'app.involvement',
 		'app.involvement_type', 'app.address', 'app.zipcode', 'app.region', 'app.date',

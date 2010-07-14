@@ -13,7 +13,7 @@ class HouseholdTestCase extends CakeTestCase {
 		'app.payment_type', 'app.leader', 'app.comment', 'app.comment_type',
 		'app.comments', 'app.notification', 'app.image', 'plugin.media.document',
 		'app.household_member', 'app.publication', 'app.publications_user',
-		'app.log'
+		'app.log', 'app.ministries_rev', 'app.involvements_rev'
 	);
 
 	var $autoFixtures = false;

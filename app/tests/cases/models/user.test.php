@@ -15,7 +15,7 @@ class UserTestCase extends CakeTestCase {
 		'app.payment_option', 'app.question', 'app.roster', 'app.role', 'app.roster_status',
 		'app.answer', 'app.payment', 'app.payment_type', 'app.leader', 'app.comment', 'app.comment_type',
 		'app.comments', 'app.notification', 'app.image', 'plugin.media.document', 'app.household_member',
-		'app.household', 'app.publication', 'app.publications_user', 'app.log'
+		'app.household', 'app.publication', 'app.publications_user', 'app.log', 'app.ministries_rev', 'app.involvements_rev'
 	);
 
 	function startTest() {

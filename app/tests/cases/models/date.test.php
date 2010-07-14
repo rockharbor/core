@@ -11,7 +11,7 @@ class DateTestCase extends CakeTestCase {
 		'app.payment_option', 'app.roster_status', 'app.answer', 'app.question',
 		'app.payment', 'app.payment_type', 'app.address', 'app.zipcode',
 		'app.region', 'app.household_member', 'app.household', 'app.publication',
-		'app.publications_user', 'app.involvement_type', 'app.log');
+		'app.publications_user', 'app.involvement_type', 'app.log', 'app.ministries_rev', 'app.involvements_rev');
 
 	var $autoFixtures = false;
 
