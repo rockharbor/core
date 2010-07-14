@@ -25,6 +25,13 @@ App::import('Component', 'Email');
 class QueueEmailComponent extends EmailComponent {
 
 /**
+ * Whether or not the component should send mail
+ * 
+ * @var boolean 
+ */
+	var $enabled = true;
+
+/**
  * Sends an email
  *
  * If $from is not defined, it sends the email from the site instead, using
@@ -43,6 +50,10 @@ class QueueEmailComponent extends EmailComponent {
  * @todo Make it queue in database
  */
 	function send($options = array()) {
+		if (!$this->enabled) {
+			return true;
+		}
+
 		$this->reset();
 		$User =& ClassRegistry::init('User');
 		$User->contain(array('Profile'));
