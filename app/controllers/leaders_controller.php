@@ -58,51 +58,23 @@ class LeadersController extends AppController {
 	
 /**
  * Adds a leader
+ *
+ * @todo check if they already exists and if they're allowed to lead
  */
 	function add() {
 		if (!empty($this->data)) {
 			$this->Leader->create();
-			if ($this->Leader->save($this->data)) {
-				$this->Leader->bindModel(array(
-					'belongsTo' => array(
-						$this->data['Leader']['model'] => array(
-							'foreignKey' => 'model_id'
-						)
-					)
-				));
-				
-				$parentModel = $this->data['Leader']['model'] == 'Involvement' ? 'Ministry' : 'Campus';
-				
-				if ($this->data['Leader']['model'] == 'Campus') {
-					$this->Leader->contain(array(
-						'User' => array(
-							'Profile'
-						),
-						$this->data['Leader']['model']
-					));
-				} else {
-					$this->Leader->contain(array(
-						'User' => array(
-							'Profile'
-						),
-						$this->data['Leader']['model'] => array(
-							$parentModel
-						)
-					));
-				}
-				
-				$leader = $this->Leader->find('first', array(
-					'conditions' => array(
-						'model' => $this->data['Leader']['model'],
-						'model_id' => $this->data['Leader']['model_id'],
-						'user_id' => $this->data['Leader']['user_id']
-					)
-				));
-				
+			if ($this->Leader->save($this->data)) {				
+				$model = $this->data['Leader']['model'];
+
+				$this->Leader->User->contain(array('Profile'));
+				$leader = $this->Leader->User->read(null, $this->data['Leader']['user_id']);
+				$item = $this->Leader->{$model}->read(array('name'), $this->data['Leader']['model_id']);
+
 				$itemType = $this->data['Leader']['model'];
-				$itemName = $leader[$this->data['Leader']['model']]['name'];
-				$name = $leader['User']['Profile']['name'];
-				$type = $this->data['Leader']['model'] == 'Involvement' ? 'leading' : 'managing';
+				$itemName = $item[$model]['name'];
+				$name = $leader['Profile']['name'];
+				$type = $model == 'Involvement' ? 'leading' : 'managing';
 				
 				$this->set(compact('itemType','itemName','name','type'));
 				
@@ -130,53 +102,37 @@ class LeadersController extends AppController {
 	
 /**
  * Deletes a leader
+ *
+ * ### Passed args:
+ * - The model id where the key is the name of the model, i.e., Involvement:1
+ * - `User` The user to remove
+ *
+ * @todo check if leader exists
  */
 	function delete() {
 		if (!$this->model || !$this->modelId || !isset($this->passedArgs['User'])) {
 			$this->Session->setFlash('Invalid id for leader', 'flash_failure');
 			$this->redirect(array('action'=>'index'));
 		}
-		
-		$this->Leader->bindModel(array(
-			'belongsTo' => array(
-				$this->model => array(
-					'foreignKey' => 'model_id'
-				)
-			)
-		));
-		
-		$parentModel = $this->model == 'Involvement' ? 'Ministry' : 'Campus';
-		
-		if ($this->model == 'Campus') {
-			$this->Leader->contain(array(
-				'User' => array(
-					'Profile'
-				),
-				$this->model
-			));
-		} else {
-			$this->Leader->contain(array(
-				'User' => array(
-					'Profile'
-				),
-				$this->model => array(
-					$parentModel
-				)
-			));
-		}
-		
-		$leader = $this->Leader->find('first', array(
+
+		$leaderId = $this->Leader->find('first', array(
+			'fields' => array(
+				'id'
+			),
 			'conditions' => array(
 				'model' => $this->model,
 				'model_id' => $this->modelId,
 				'user_id' => $this->passedArgs['User']
 			)
 		));
+		$this->Leader->User->contain(array('Profile'));
+		$leader = $this->Leader->User->read(null, $this->passedArgs['User']);
+		$item = $this->Leader->{$this->model}->read(array('name'), $this->modelId);
 		
-		if ($this->Leader->delete($leader['Leader']['id'])) {			
+		if ($this->Leader->delete($leaderId['Leader']['id'])) {
 			$itemType = $this->model;
-			$itemName = $leader[$this->model]['name'];
-			$name = $leader['User']['Profile']['name'];
+			$itemName = $item[$this->model]['name'];
+			$name = $leader['Profile']['name'];
 			$type = $this->model == 'Involvement' ? 'leading' : 'managing';
 			
 			$this->set(compact('itemType','itemName','name','type'));
