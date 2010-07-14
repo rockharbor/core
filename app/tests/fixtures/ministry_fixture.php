@@ -28,7 +28,7 @@ class MinistryFixture extends CakeTestFixture {
 			'lft' => 5,
 			'rght' => 8,
 			'campus_id' => 1,
-			'group_id' => 9,
+			'group_id' => 8,
 			'created' => '2010-03-29 10:25:30',
 			'modified' => '2010-04-06 12:52:40',
 			'active' => 1
@@ -41,7 +41,7 @@ class MinistryFixture extends CakeTestFixture {
 			'lft' => 1,
 			'rght' => 2,
 			'campus_id' => 1,
-			'group_id' => 9,
+			'group_id' => 8,
 			'created' => '2010-02-09 09:44:49',
 			'modified' => '2010-02-09 09:44:49',
 			'active' => 1
@@ -54,7 +54,7 @@ class MinistryFixture extends CakeTestFixture {
 			'lft' => 3,
 			'rght' => 4,
 			'campus_id' => 1,
-			'group_id' => 9,
+			'group_id' => 8,
 			'created' => '2010-03-08 13:26:45',
 			'modified' => '2010-03-08 13:26:45',
 			'active' => 1
@@ -67,7 +67,7 @@ class MinistryFixture extends CakeTestFixture {
 			'lft' => 6,
 			'rght' => 7,
 			'campus_id' => 1,
-			'group_id' => 9,
+			'group_id' => 8,
 			'created' => '2010-03-31 08:46:15',
 			'modified' => '2010-03-31 08:46:15',
 			'active' => 0

@@ -27,7 +27,8 @@ class ConfirmBehavior extends ModelBehavior {
 	function setup(&$Model) {		
 		$Model->RevisionModel = new Model(array(
 			'table' => Inflector::tableize($Model->name).'_revs',
-			'name' => 'Revision'
+			'name' => 'Revision',
+			'ds' => $Model->useDbConfig
 		));
 		$Model->RevisionModel->primaryKey = 'version_id';
 	}

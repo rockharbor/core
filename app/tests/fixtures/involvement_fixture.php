@@ -53,7 +53,7 @@ class InvolvementFixture extends CakeTestFixture {
 			'signup' => 1,
 			'take_payment' => 0,
 			'offer_childcare' => 1,
-			'active' => 1,
+			'active' => 0,
 			'created' => '2010-03-08 13:27:43',
 			'modified' => '2010-04-13 11:27:14',
 			'force_payment' => 0
@@ -70,7 +70,7 @@ class InvolvementFixture extends CakeTestFixture {
 			'signup' => 1,
 			'take_payment' => 1,
 			'offer_childcare' => 1,
-			'active' => 1,
+			'active' => 0,
 			'created' => '2010-04-09 14:35:17',
 			'modified' => '2010-06-24 19:02:50',
 			'force_payment' => 0

@@ -88,21 +88,28 @@ class InvolvementsController extends AppController {
 /**
  * Invites a roster to an involvement opportunity
  *
- * @param integer $fromInvolvementId The involvement id to get the roster from
- * @param integer $toInvolvementId The involvement to invite them to
- */ 
-	function invite_roster($fromInvolvementId = null, $toInvolvementId = null) {
+ * ### Passed args:
+ * - integer `Involvement` The involvement id to get the roster from
+ * 
+ * @param integer $to The involvement to invite them to
+ * @todo Don't invite users who are already on the roster! (move to model?)
+ */
+	function invite_roster($to = null) {
+		$from = $this->passedArgs['Involvement'];
+
 		// get from roster
 		$this->Involvement->contain(array('Roster'));
-		$roster = $this->Involvement->read(null, $fromInvolvementId);
+		$roster = $this->Involvement->read(null, $from);
 		$userIds = Set::extract('/Roster/user_id', $roster);
 		
 		$this->Involvement->Roster->User->contain(array('Profile'));
 		$this->set('notifier', $this->Involvement->Roster->User->read(null, $this->activeUser['User']['id']));
-		
+
+		$this->Notifier->saveData = array('type' => 'invitation');
 		foreach ($userIds as $userId) {
-			$this->set('involvement', $this->Involvement->read(null, $toInvolvementId));
-			
+			$this->Involvement->contain(array('InvolvementType'));
+			$this->set('involvement', $this->Involvement->read(null, $to));
+
 			$this->Notifier->notify($userId, 'involvements_invite');
 			$this->QueueEmail->send(array(
 				'to' => $userId,
@@ -110,26 +117,31 @@ class InvolvementsController extends AppController {
 				'template' => 'involvements_invite'
 			));
 			
-			$this->Session->setFlash('The user was invited.', 'flash_success');
-			
+			$this->Session->setFlash('The user was invited.', 'flash_success');			
 		}
 		
-		$this->redirect(array('action' => 'view', $toInvolvementId));
+		$this->redirect(array('action' => 'view', $to));
 	}
 	
 /**
  * Invites a user to an involvement opportunity
  *
+ * ### Passed args:
+ * - `Involvement` The involvement id to invite the user to
+ *
  * @param integer $userId The user to invite
- * @param integer $involvementId The involvement to invite them to
+ * @todo Don't invite users who are already on the roster! (move to model?)
  */ 
-	function invite($userId = null, $involvementId = null) {
+	function invite($userId = null) {
+		$involvementId = $this->passedArgs['Involvement'];
+
 		// create notification from template
 		$this->Involvement->Roster->User->contain(array('Profile'));
 		$this->Involvement->contain(array('InvolvementType'));
 		$this->set('notifier', $this->Involvement->Roster->User->read(null, $this->activeUser['User']['id']));
 		$this->set('involvement', $this->Involvement->read(null, $involvementId));
-		
+
+		$this->Notifier->saveData = array('type' => 'invitation');
 		$this->Notifier->notify($userId, 'involvements_invite');
 		$this->QueueEmail->send(array(
 			'to' => $userId,
@@ -173,6 +185,12 @@ class InvolvementsController extends AppController {
 			$this->Session->setFlash('Invalid involvement');
 			$this->redirect(array('action' => 'index'));
 		}
+
+		// if they can confirm a revision, there's no need to go through the confirmation process
+		if ($this->isAuthorized('involvements/revise')) {
+			$this->set('here', 'here');
+			$this->Involvement->Behaviors->disable('Confirm');
+		}
 		
 		$this->Involvement->id = $id;
 		$revision = $this->Involvement->revision($id);
@@ -192,25 +210,13 @@ class InvolvementsController extends AppController {
 			}		
 		}
 		if (empty($this->data)) {
-			$this->Involvement->recursive = 2;
-			$this->data = $this->Involvement->read(null, $id);
+			$this->data = $this->Involvement->read(null, $id);			
 		}
-		
-		$involvement = $this->Involvement->find('first', array(
-			'conditions' => array(
-				'Involvement.id' => $id
-			),
-			'contain' => array(
-				'Ministry'
-			)
-		));
 		
 		$this->set('groups', $this->Involvement->Group->find('list', array(
 			'conditions' => array(
-				'Group.lft <=' => $involvement['Ministry']['group_id'],
 				'Group.conditional' => false
-			),
-			'order' => 'lft ASC'
+			)
 		)));
 		$this->set('ministries', $this->Involvement->Ministry->find('list'));
 		$this->set('involvementTypes', $this->Involvement->InvolvementType->find('list'));
@@ -228,10 +234,11 @@ class InvolvementsController extends AppController {
 		
 		if (!$id) {
 			$this->Session->setFlash('Invalid id', 'flash_failure');
-			$this->redirect(array('action' => 'edit', $id), null, null, true);
+			$this->redirect(array('action' => 'edit', $id));
 		}
 		
 		// get involvement
+		$this->Involvement->contain(array('PaymentOption'));
 		$involvement = $this->Involvement->read(null, $id);
 		if ($involvement['Involvement']['take_payment'] && $active) {
 			if (empty($involvement['PaymentOption'])) {
@@ -260,7 +267,7 @@ class InvolvementsController extends AppController {
 			);
 		}
 		$this->data = array();
-		$this->redirect($this->emptyPage, null, null, true);
+		$this->redirect($this->emptyPage);
 	}
 	
 		
