@@ -147,13 +147,6 @@ class AppController extends Controller {
  * @see Cake docs
  */
 	function beforeFilter() {
-		// check for testing environment
-		if (defined('CORE_TEST_CASES')) {
-			$this->Component->Toolbar->enabled = false;
-			$this->Component->Whistle->enabled = false;
-			$this->Component->QueueEmail->enabled = false;
-		}
-
 		// pull app settings
 		$appSettings = Cache::read('core_app_settings');
 		if (empty($appSettings)) {
