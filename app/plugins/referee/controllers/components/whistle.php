@@ -19,7 +19,9 @@
 	 * @author Joe Beeson <joe@joebeeson.com>
 	 */
 	class WhistleComponent extends Observable {
-		
+
+		var $enabled = true;
+
 		/**
 		 * Helps us translate error integers back into their respective
 		 * human readable labels. We use the constant because their values
@@ -66,6 +68,9 @@
 		 * @access public
 		 */
 		public function initialize() {
+			if (!$this->enabled) {
+				return;
+			}
 			// Tell ClassRegistry about ourself
 			ClassRegistry::addObject('Referee.Whistle', $this);
 			
