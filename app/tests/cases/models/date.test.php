@@ -33,29 +33,10 @@ class DateTestCase extends CakeTestCase {
 			'start' => mktime(0, 0, 0, 6, 1, 2010),
 			'end' => mktime(0, 0, 0, 6, 31, 2010)
 		));
+		$results = Set::extract('/Date/start_date', $results);
 		$expected = array(
-			0 => array(
-				'Date' => array(
-					'id' => 1,
-					'start_date' => '2010-06-16',
-					'end_date' => '2010-06-16',
-					'start_time' => '00:01:00',
-					'end_time' => '23:59:00',
-					'all_day' => 1,
-					'permanent' => 1,
-					'recurring' => 1,
-					'recurrance_type' => 'mw',
-					'frequency' => 1,
-					'weekday' => 3,
-					'day' => 1,
-					'involvement_id' => 2,
-					'created' => '2010-03-16 13:32:33',
-					'modified' => '2010-03-16 13:32:48',
-					'exemption' => 0,
-					'offset' => 3,
-					'passed' => 0
-				)
-			)
+			'2010-06-08',
+			'2010-06-16'
 		);
 		$this->assertEqual($results, $expected);
 	}

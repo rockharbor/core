@@ -132,7 +132,15 @@ class Date extends AppModel {
 		$compareDates = function($d1, $d2) {
 			return $d1['Date']['start_date'] == $d2['Date']['start_date'] ? 0 : 1;
 		};
-		return array_udiff($recurringDates, $exemptions, $compareDates);
+		$recurringDates = array_udiff($recurringDates, $exemptions, $compareDates);
+		// order by start date
+		$orderDates = function($d1, $d2) {
+			$d1 = strtotime($d1['Date']['start_date'].' '.$d1['Date']['start_time']);
+			$d2 = strtotime($d2['Date']['start_date'].' '.$d2['Date']['start_time']);
+			return $d1 < $d2 ? -1 : 1;
+		};
+		usort($recurringDates, $orderDates);
+		return $recurringDates;
 	}
 
 /**

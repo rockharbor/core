@@ -58,7 +58,7 @@ class DateFixture extends CakeTestFixture {
 			'frequency' => 2,
 			'weekday' => 2,
 			'day' => 1,
-			'involvement_id' => 1,
+			'involvement_id' => 2,
 			'created' => '2010-04-09 08:57:07',
 			'modified' => '2010-04-09 09:16:47',
 			'exemption' => 0,
