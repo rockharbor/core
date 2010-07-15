@@ -16,6 +16,15 @@ class MergeRequestFixture extends CakeTestFixture {
 	);
 
 	var $records = array(
+		array(
+			'id' => 1,
+			'model' => 'User',
+			'model_id' => 3,
+			'merge_id' => 2,
+			'requester_id' => 2,
+			'created' => '2010-07-15 00:00:00',
+			'modified' => '2010-07-15 00:00:00',
+		)
 	);
 }
 ?>

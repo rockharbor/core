@@ -64,7 +64,7 @@ class MergeBehavior extends ModelBehavior  {
 	 * @return boolean success
 	 */
 	function merge(&$Model, $target_id, $source_id, $field_options = array(), $assoc_options = array(), $data = array() ) {
-		$fields = am($this->settings[$Model->alias], $field_options);
+		$fields = array_merge($this->settings[$Model->alias], $field_options);
 		
 		$target = $Model->find('first', array('conditions'=>array($Model->primaryKey => $target_id),'recursive' => -1));
 		$source = $Model->find('first', array('conditions'=>array($Model->primaryKey => $source_id),'recursive' => -1));

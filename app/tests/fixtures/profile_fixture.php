@@ -150,7 +150,7 @@ class ProfileFixture extends CakeTestFixture {
 			'user_id' => 3,
 			'first_name' => 'ricky jr.',
 			'last_name' => 'rockharbor',
-			'gender' => '',
+			'gender' => 'm',
 			'birth_date' => NULL,
 			'adult' => NULL,
 			'classification_id' => NULL,
