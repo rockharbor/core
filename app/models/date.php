@@ -62,6 +62,21 @@ class Date extends AppModel {
 	);
 
 /**
+ * The array map for converting a recurranceType to a comparable strtotime()
+ * string
+ *
+ * @var array
+ */
+	var $_frequency = array(
+		'h' => 'hour',
+		'd' => 'day',
+		'w' => 'week',
+		'md' => 'month',
+		'mw' => 'month',
+		'y' => 'year'
+	);
+
+/**
  * Model::beforeSave() callback
  *
  * Here we're just cleaning up some of the Date data so everything
@@ -88,26 +103,44 @@ class Date extends AppModel {
 /*
  * Generates a list of dates from an involvement record within a range.
  *
- * ### Range:
+ * If limit is defined, it will return a maximum of that many dates. If a limit
+ * is defined without a range end, it will return the next number of dates
+ * as defined by the limit.
+ *
+ * ### Options:
  * - date $start Start date
  * - date $end End date
+ * - integer $limit The number of dates to pull
  *
  * @param integer $involvement_id Involvement id to pull dates for
- * @param array $range Range options
+ * @param array $options Options
  * @return array Array of dates falling into that range
  * @access public
  */
-	function generateDates($involvement_id = null, $range = array()) {
+	function generateDates($involvement_id = null, $options = array()) {
 		if (!$involvement_id) {
 			return false;
 		}
-		
+
 		// default is this month
-		if (empty($range)) {
-			$range = array(
-				'start' => date('Y-m-d H:i', strtotime('first day')),
-				'end' => date('Y-m-d H:i', strtotime('last day'))
-			);
+		$default = array(
+			'start' => strtotime('now'),
+			'end' => strtotime('last day')
+		);
+		$range = array();
+		$limit = null;
+		if (isset($options['limit'])) {
+			$limit = $options['limit'];
+		}
+		if (isset($options['end'])) {
+			$range['end'] = $options['end'];
+		} elseif (!$limit) {
+			$range['end'] = $default['end'];
+		}
+		if (isset($options['start'])) {
+			$range['start'] = $options['start'];
+		} else {
+			$range['start'] = $default['start'];
 		}
 		
 		$this->recursive = -1;
@@ -116,23 +149,22 @@ class Date extends AppModel {
 				'Date.involvement_id' => $involvement_id
 			)
 		));
-	
+
 		$recurringDates = array();
 		$exemptions = array();
-				
+
+		// get exemptions first
 		foreach($dates as $date) {
 			if ($date['Date']['exemption']) {
 				$exemptions = array_merge($exemptions, $this->_generateRecurringDates($date, $range));
-			} else {
-				$recurringDates = array_merge($recurringDates, $this->_generateRecurringDates($date, $range));
+			}
+		}
+		foreach($dates as $date) {
+			if (!$date['Date']['exemption']) {
+				$recurringDates = array_merge($recurringDates, $this->_generateRecurringDates($date, $range, $limit, $exemptions));
 			}
 		}
 
-		// remove exemptions
-		$compareDates = function($d1, $d2) {
-			return $d1['Date']['start_date'] == $d2['Date']['start_date'] ? 0 : 1;
-		};
-		$recurringDates = array_udiff($recurringDates, $exemptions, $compareDates);
 		// order by start date
 		$orderDates = function($d1, $d2) {
 			$d1 = strtotime($d1['Date']['start_date'].' '.$d1['Date']['start_time']);
@@ -156,38 +188,39 @@ class Date extends AppModel {
  *
  * @param integer $masterDate The date to recur
  * @param array $range The range of recurrance
+ * @param integer $limit The number of dates to pull. Maximum if a range end is defined
+ * @param array $exemptions Array of Date exemptions
  * @return array Array of dates falling into that range
  * @access protected
- */ 
-	function _generateRecurringDates($masterDate, $range) {
+ */
+	function _generateRecurringDates($masterDate, $range, $limit = null, $exemptions = array()) {
 		$dates = array();
 		
-		// for progressing date via strtotime
-		$frequency = array(
-			'h' => 'hour',
-			'd' => 'day',
-			'w' => 'week',
-			'md' => 'month',
-			'mw' => 'month',
-			'y' => 'year'		
-		);
-
-		if (!is_int($range['start'])) {
+		if (isset($range['start']) && !is_int($range['start'])) {
 			$range['start'] = strtotime($range['start']);
+		}
+		if (isset($range['end']) && !is_int($range['end'])) {
 			$range['end'] = strtotime($range['end']);
 		}
-		
+
+		$exemptions = Set::extract('/Date/start_date', $exemptions);
+
 		// weekdays
 		$weekdays = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
 
 		$masterDate['Date']['start'] = strtotime($masterDate['Date']['start_date'].' '.$masterDate['Date']['start_time']);
 		$masterDate['Date']['end'] = strtotime($masterDate['Date']['end_date'].' '.$masterDate['Date']['end_time']);
-		
+
 		// if it's not recurring, check to see if it falls in range
+		$neverEnding = !isset($range['end']);
 		$recurring = $masterDate['Date']['recurring'];
 		$permanent = $masterDate['Date']['permanent'];
-		$startsAfter = $masterDate['Date']['start'] >= $range['end'];
-		$endsBefore = ($masterDate['Date']['start'] <= $range['start'] && $masterDate['Date']['end'] <= $range['start']);
+		if (isset($range['end'])) {
+			$startsAfter = $masterDate['Date']['start'] >= $range['end'];
+		} else {
+			$startsAfter = false;
+		}
+		$endsBefore = $masterDate['Date']['start'] <= $range['start'] && $masterDate['Date']['end'] <= $range['start'];
 
 		if (!$recurring && !$permanent && ($startsAfter || $endsBefore)) {
 			return array();
@@ -196,23 +229,29 @@ class Date extends AppModel {
 			unset($masterDate['Date']['end']);
 			return array($masterDate);
 		}
-		
+
 		if ($masterDate['Date']['frequency'] == 0) {
 			$masterDate['Date']['frequency'] = 1;
 		}
-		
+
 		if ($masterDate['Date']['all_day']) {
 			$masterDate['Date']['start_time'] = '00:01:00';
 			$masterDate['Date']['end_time'] = '23:59:00';
 		}
-		
-		$onDate = $masterDate['Date']['start'];
 
-		while ($onDate < $range['end'] && ($onDate < $masterDate['Date']['end'] || $masterDate['Date']['permanent'])) {
+		if ($range['start'] > $masterDate['Date']['start']) {
+			$onDate = $this->_getStartOffset($masterDate, $range['start']);
+		} else {
+			$onDate = $masterDate['Date']['start'];
+		}
+		$onLimit = 0;
+
+		$limitEnd = false;
+		while (!$limitEnd && ($onDate < $masterDate['Date']['end'] || $permanent)) {
 			$date = $masterDate;
 
 			switch ($masterDate['Date']['recurrance_type']) {
-				case 'h':					
+				case 'h':
 					$date['Date']['start_date'] = date('Y-m-d', $onDate);
 					$date['Date']['end_date'] = $masterDate['Date']['start_date'];
 					$date['Date']['start_time'] = date('H:i:s', $onDate);
@@ -237,7 +276,7 @@ class Date extends AppModel {
 				case 'mw':
 					// first day of the month and set the frequency to start there so we don't miss anything
 					$onDate = strtotime('first day', $onDate);
-					// get week offset 
+					// get week offset
 					$week = strtotime('+'.($masterDate['Date']['offset']-1).' week', $onDate);
 					// always on this weekday
 					$date['Date']['start_date'] = date('Y-m-d', strtotime($weekdays[$date['Date']['weekday']], $week));
@@ -251,19 +290,50 @@ class Date extends AppModel {
 
 			$date['Date']['start'] = strtotime($date['Date']['start_date'].' '.$date['Date']['start_time']);
 			$date['Date']['end'] = strtotime($date['Date']['end_date'].' '.$date['Date']['end_time']);
-			
+
 			// add if it's not past the end range
-			if ($date['Date']['start'] <= $range['end'] && $date['Date']['start'] >= $range['start']) {
+			if ($neverEnding) {
+				$withinRange = true;
+			} else {
+				$withinRange = $date['Date']['start'] <= $range['end'] && $date['Date']['start'] >= $range['start'];
+			}
+			if ($withinRange && !in_array($date['Date']['start_date'], $exemptions)) {
 				unset($date['Date']['start']);
 				unset($date['Date']['end']);
 				$dates[] = $date;
+				$onLimit++;
 			}
-			
-			// progress forward by frequency amount
-			$onDate = strtotime('+'.$masterDate['Date']['frequency'].' '.$frequency[$masterDate['Date']['recurrance_type']], $onDate);
+
+			// progress forward by frequency amount			
+			$onDate = strtotime('+'.$masterDate['Date']['frequency'].' '.$this->_frequency[$masterDate['Date']['recurrance_type']], $onDate);
+
+			// should we keep looping based on the limit and end range?
+			if ($limit > 0 && !$neverEnding) {
+				$limitEnd = !($onDate < $range['end']) || $onLimit == $limit;
+			} else if (isset($range['end'])) {
+				$limitEnd = !($onDate < $range['end']);
+			} else {
+				$limitEnd = $onLimit == $limit;
+			}
 		}
 
-		return $dates;	
+		return $dates;
+	}
+
+/**
+ *	Gets a start time from a Date based on its recurrance offset
+ *
+ * @param array $date The date array
+ * @param integer $start The time we want to start on
+ * @return integer
+ */
+	function _getStartOffset($date, $start) {
+		$onDate = $date['Date']['start'];
+		while ($onDate < $start) {
+			$onDate = strtotime('+'.$date['Date']['frequency'].' '.$this->_frequency[$date['Date']['recurrance_type']], $onDate);
+		}
+
+		return $onDate;
 	}
 }
 ?>

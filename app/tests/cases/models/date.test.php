@@ -24,6 +24,80 @@ class DateTestCase extends CakeTestCase {
 		ClassRegistry::flush();
 	}
 
+	function testStartFromOffset() {
+		$date = array(
+			'Date' => array(
+				'frequency' => 1,
+				'recurrance_type' => 'd',
+				'start' => mktime(0, 0, 0, 4, 1, 2010)
+			)
+		);
+		$start = mktime(0, 0, 0, 4, 5, 2010);
+		$result = $this->Date->_getStartOffset($date, $start);
+		$expected = mktime(0, 0, 0, 4, 5, 2010);
+		$this->assertEqual($result, $expected);
+
+		$date = array(
+			'Date' => array(
+				'frequency' => 2,
+				'recurrance_type' => 'd',
+				'start' => mktime(0, 0, 0, 4, 1, 2010)
+			)
+		);
+		$start = mktime(0, 0, 0, 4, 5, 2010);
+		$result = $this->Date->_getStartOffset($date, $start);
+		$expected = mktime(0, 0, 0, 4, 5, 2010);
+		$this->assertEqual($result, $expected);
+
+		$date = array(
+			'Date' => array(
+				'frequency' => 3,
+				'recurrance_type' => 'd',
+				'start' => mktime(0, 0, 0, 4, 1, 2010)
+			)
+		);
+		$start = mktime(0, 0, 0, 4, 5, 2010);
+		$result = $this->Date->_getStartOffset($date, $start);
+		$expected = mktime(0, 0, 0, 4, 7, 2010);
+		$this->assertEqual($result, $expected);
+
+		$date = array(
+			'Date' => array(
+				'frequency' => 2,
+				'recurrance_type' => 'w',
+				'start' => mktime(0, 0, 0, 4, 1, 2010)
+			)
+		);
+		$start = mktime(0, 0, 0, 5, 5, 2010);
+		$result = $this->Date->_getStartOffset($date, $start);
+		$expected = mktime(0, 0, 0, 5, 13, 2010);
+		$this->assertEqual($result, $expected);
+
+		$date = array(
+			'Date' => array(
+				'frequency' => 3,
+				'recurrance_type' => 'w',
+				'start' => mktime(0, 0, 0, 6, 1, 2010)
+			)
+		);
+		$start = mktime(0, 0, 0, 7, 1, 2010);
+		$result = $this->Date->_getStartOffset($date, $start);
+		$expected = mktime(0, 0, 0, 7, 13, 2010);
+		$this->assertEqual($result, $expected);
+
+		$date = array(
+			'Date' => array(
+				'frequency' => 1,
+				'recurrance_type' => 'd',
+				'start' => mktime(0, 0, 0, 6, 1, 2000)
+			)
+		);
+		$start = mktime(0, 0, 0, 7, 1, 2010);
+		$result = $this->Date->_getStartOffset($date, $start);
+		$expected = mktime(0, 0, 0, 7, 1, 2010);
+		$this->assertEqual($result, $expected);
+	}
+
 	function testGenerateDates() {
 		$this->loadFixtures('Date');
 
@@ -37,6 +111,109 @@ class DateTestCase extends CakeTestCase {
 		$expected = array(
 			'2010-06-08',
 			'2010-06-16'
+		);
+		$this->assertEqual($results, $expected);
+
+		$results = $this->Date->generateDates(2, array(
+			'start' => '6/1/2010',
+			'end' => '6/31/2010'
+		));
+		$results = Set::extract('/Date/start_date', $results);
+		$expected = array(
+			'2010-06-08',
+			'2010-06-16'
+		);
+		$this->assertEqual($results, $expected);
+	}
+
+	function testLimit() {
+		$this->loadFixtures('Date');
+
+		$results = $this->Date->generateDates(5, array(
+			'start' => mktime(0, 0, 0, 7, 1, 2010),
+			'end' => mktime(0, 0, 0, 7, 31, 2010),
+			'limit' => 5
+		));
+		$results = Set::extract('/Date/start_date', $results);
+		$expected = array(
+			'2010-07-01',
+			'2010-07-02',
+			'2010-07-03',
+			'2010-07-04',
+			'2010-07-05'
+		);
+		$this->assertEqual($results, $expected);
+
+		$results = $this->Date->generateDates(5, array(
+			'start' => mktime(0, 0, 0, 7, 5, 2010),
+			'limit' => 5
+		));
+		$results = Set::extract('/Date/start_date', $results);
+		$expected = array(
+			'2010-07-05',
+			'2010-07-06',
+			'2010-07-07',
+			'2010-07-08',
+			'2010-07-09'
+		);
+		$this->assertEqual($results, $expected);
+
+		$results = $this->Date->generateDates(5, array(
+			'start' => mktime(0, 0, 0, 7, 15, 2010),
+			'limit' => 5
+		));
+		$results = Set::extract('/Date/start_date', $results);
+		$expected = array(
+			'2010-07-15',
+			'2010-07-16',
+			'2010-07-17',
+			'2010-07-19',
+			'2010-07-31'
+		);
+		$this->assertEqual($results, $expected);
+	}
+
+	function testLimitWithRecurringExemption() {
+		$this->loadFixtures('Date');
+
+		$results = $this->Date->generateDates(5, array(
+			'start' => mktime(0, 0, 0, 7, 5, 2010),
+			'limit' => 5
+		));
+		$results = Set::extract('/Date/start_date', $results);
+		$expected = array(
+			'2010-07-05',
+			'2010-07-06',
+			'2010-07-07',
+			'2010-07-08',
+			'2010-07-09'
+		);
+		$this->assertEqual($results, $expected);
+
+		$results = $this->Date->generateDates(5, array(
+			'start' => mktime(0, 0, 0, 7, 18, 2010),
+			'limit' => 5
+		));
+		$results = Set::extract('/Date/start_date', $results);
+		$expected = array(
+			'2010-07-19',
+			'2010-07-31'
+		);
+		$this->assertEqual($results, $expected);
+	}
+
+	function testMonthlyWithExemption() {
+		$this->loadFixtures('Date');
+		
+		$range = array(
+			'start' => date('Y-m-d H:i', mktime(0, 0, 0, 4, 1, 2010)),
+			'end' => date('Y-m-d H:i', mktime(0, 0, 0, 6, 2, 2010))
+		);
+		$results = $this->Date->generateDates(4, $range);
+		$results = Set::extract('/Date/start_date', $results);
+		$expected = array(
+			'2010-04-06',
+			'2010-06-01'
 		);
 		$this->assertEqual($results, $expected);
 	}
