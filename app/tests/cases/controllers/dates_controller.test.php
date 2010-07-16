@@ -83,7 +83,13 @@ class DatesControllerTestCase extends CakeTestCase {
 					'id' => 3,
 					'name' => 'Team CORE'
 				)
-			)			
+			),
+			array(
+				'Involvement' => array(
+					'id' => 4,
+					'name' => 'Rock Climbing'
+				)
+			)
 		);
 		$this->assertEqual($results, $expected);
 	}
@@ -92,31 +98,8 @@ class DatesControllerTestCase extends CakeTestCase {
 		$vars = $this->testAction('/test_dates/index/Involvement:2', array(
 			'return' => 'vars'
 		));
-		$results = Set::extract('/Date', $vars['dates']);
-		$expected = array(
-			array(
-				'Date' => array(
-					'id' => 1,
-					'start_date' => '2010-03-16',
-					'end_date' => '2010-03-16',
-					'start_time' => '00:00:00',
-					'end_time' => '11:59:00',
-					'all_day' => 1,
-					'permanent' => 1,
-					'recurring' => 1,
-					'recurrance_type' => 'mw',
-					'frequency' => 1,
-					'weekday' => 3,
-					'day' => 1,
-					'involvement_id' => 2,
-					'created' => '2010-03-16 13:32:33',
-					'modified' => '2010-03-16 13:32:48',
-					'exemption' => 0,
-					'offset' => 3,
-					'passed' => 0
-				)
-			)
-		);
+		$results = Set::extract('/Date/id', $vars['dates']);
+		$expected = array(1, 2);
 		$this->assertEqual($results, $expected);
 	}
 
@@ -142,7 +125,7 @@ class DatesControllerTestCase extends CakeTestCase {
 		$this->testAction('/test_dates/add', array(
 			'data' => $data
 		));
-		$this->Dates->Date->id = 7;
+		$this->Dates->Date->id = 12;
 		$date = $this->Dates->Date->read();
 		$this->assertEqual($date['Date']['start_time'], '00:00:00');
 		$this->assertEqual($date['Date']['end_time'], '23:59:00');

@@ -79,7 +79,7 @@ class InvolvementsControllerTestCase extends CakeTestCase {
 				'Notification.type' => 'invitation'
 			)
 		));
-		$this->assertEqual(count($invites), 2);
+		$this->assertEqual(count($invites), 1);
 	}
 
 	function testInvite() {
