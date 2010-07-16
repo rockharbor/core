@@ -82,7 +82,7 @@ class MinistriesController extends AppController {
  * Adds a ministry
  */ 
 	function add() {
-		$this->Involvement->Behaviors->disable('Confirm');
+		$this->Ministry->Behaviors->disable('Confirm');
 		
 		if (!empty($this->data)) {
 			$this->Ministry->create();
@@ -109,12 +109,15 @@ class MinistriesController extends AppController {
 	function edit() {
 		$id = $this->passedArgs['Ministry'];
 	
-		$this->Involvement->Behaviors->enable('Confirm');
-	
 		if (!$id) {
 			$this->Session->setFlash('Invalid ministry');
 			$this->redirect(array('action' => 'index'));
-		}		
+		}
+
+		// if they can confirm a revision, there's no need to go through the confirmation process
+		if ($this->isAuthorized('ministries/revise')) {
+			$this->Ministry->Behaviors->disable('Confirm');
+		}
 		
 		$this->Ministry->id = $id;
 		$revision = $this->Ministry->revision($id);
@@ -161,7 +164,9 @@ class MinistriesController extends AppController {
  *
  * @param integer $id The id of the ministry
  */ 	
-	function history($id = null) {
+	function history() {
+		$id = $this->passedArgs['Ministry'];
+
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid ministry', true));
 			$this->redirect(array('action' => 'index'));
@@ -182,7 +187,9 @@ class MinistriesController extends AppController {
  * @param integer $id The id of the ministry
  * @param boolean $confirm Whether or not to approve the revision
  */ 	
-	function revise($id, $confirm = false) {
+	function revise($confirm = false) {
+		$id = $this->passedArgs['Ministry'];
+
 		if ($confirm) {
 			$success = $this->Ministry->confirmRevision($id);
 		} else {
