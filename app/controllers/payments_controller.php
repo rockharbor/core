@@ -90,15 +90,25 @@ class PaymentsController extends AppController {
  * @param string $mskey The MultiSelect cache key to pull a list from
  */
 	function add($mskey) {
+		// check to see if this is a MultiSelect
+		if ($this->MultiSelect->check($mskey)) {
+			$ids = $this->MultiSelect->getSelected($mskey);
+		} else {
+			$ids = array($mskey);
+		}
 		// get selected
-		$search = $this->MultiSelect->getSearch($mskey);
-		$search['contain']['User'] = array('Profile');		
-		$selected = $this->MultiSelect->getSelected($mskey);
-		// assume they want all if they didn't select any
-		if (!empty($selected)) {
-			$search['conditions']['Roster.id'] = $selected;
-		} 
-		$users = $this->Payment->Roster->find('all', $search);
+		$users = $this->Payment->Roster->find('all', array(
+			'conditions' => array(
+				'Roster.user_id' => $ids,
+				'Roster.involvement_id' => $this->passedArgs['Involvement']
+			),
+			'contain' => array(
+				'User' => array(
+					'Profile'
+				)
+			)
+		));
+		
 		$involvement = $this->Payment->Roster->Involvement->find('first', array(
 			'conditions' => array(
 				'Involvement.id' => $this->passedArgs['Involvement']
