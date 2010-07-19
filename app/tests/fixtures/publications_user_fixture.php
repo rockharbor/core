@@ -13,10 +13,20 @@ class PublicationsUserFixture extends CakeTestFixture {
 
 	var $records = array(
 		array(
-			'id' => 35,
+			'id' => 1,
 			'publication_id' => 1,
 			'user_id' => 1
 		),
+		array(
+			'id' => 2,
+			'publication_id' => 2,
+			'user_id' => 1
+		),
+		array(
+			'id' => 3,
+			'publication_id' => 2,
+			'user_id' => 2
+		)
 	);
 }
 ?>

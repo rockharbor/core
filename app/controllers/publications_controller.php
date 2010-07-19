@@ -101,7 +101,9 @@ class PublicationsController extends SimpleCrudsController {
 		$current = Set::extract('/Publication/id', $current);
 		
 		if ($subscribe) {
-			$current[] = $publicationId;
+			if (!in_array($publicationId, $current)) {
+				$current[] = $publicationId;
+			}
 		} else {
 			$current = array_diff($current, array($publicationId));
 		}
