@@ -639,6 +639,31 @@ class HttpSocketTest extends CakeTestCase {
 	}
 
 /**
+ * test that two consecutive get() calls reset the authentication credentials.
+ *
+ * @return void
+ */
+	function testConsecutiveGetResetsAuthCredentials() {
+		$socket = new MockHttpSocket();
+		$socket->config['request']['auth'] = array(
+			'method' => 'Basic',
+			'user' => 'mark',
+			'pass' => 'secret'
+		);
+		$socket->get('http://mark:secret@example.com/test');
+		$this->assertEqual($socket->request['uri']['user'], 'mark');
+		$this->assertEqual($socket->request['uri']['pass'], 'secret');
+
+		$socket->get('/test2');
+		$this->assertEqual($socket->request['auth']['user'], 'mark');
+		$this->assertEqual($socket->request['auth']['pass'], 'secret');
+
+		$socket->get('/test3');
+		$this->assertEqual($socket->request['auth']['user'], 'mark');
+		$this->assertEqual($socket->request['auth']['pass'], 'secret');
+	}
+
+/**
  * testPostPutDelete method
  *
  * @access public
@@ -1375,7 +1400,7 @@ class HttpSocketTest extends CakeTestCase {
 				'path' => '/accounts'
 			)
 		);
-		$expect = "Cookie: foo=bar\r\nCookie: people=jim,jack,johnny\";\"\r\n";
+		$expect = "Cookie: foo=bar; people=jim,jack,johnny\";\"\r\n";
 		$result = $this->Socket->buildCookies($cookies);
 		$this->assertEqual($result, $expect);
 	}
