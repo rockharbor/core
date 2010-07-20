@@ -98,25 +98,27 @@ class ReportsController extends AppController {
 /**
  * Exports a saved search (from MultiSelectComponent) as a report
  *
- * If $type is `csv`, set Controller::title_for_layout to set the name of the csv. Data should
- * be sent in an `Export` array formatted based on the current model's contain format.
+ * If `$this->data['Export']['type']` is 'csv', set Controller::title_for_layout
+ * to set the name of the csv. Data should be sent in an `Export` array
+ * formatted based on the current model's contain format.
  *
- * @param string $uid The saved search id
- * @param string $type Type of export (csv, print)
- * @see MultiSelectComponent
+ * @param string $model The model we're searching / exporting data from
+ * @param string $uid The MultiSelect cache key to get results from
+ * @see MultiSelectComponent::getSearch();
  */ 
 	function export($model, $uid) {
 		if (!empty($this->data)) {			
-			$type = $this->data['Export']['type'];
 			unset($this->data['Export']['type']);
-			switch ($type) {
-				case 'csv':
-				$this->RequestHandler->renderAs($this, 'csv');
-				break;
-				case 'print':
-				default:
-				$this->RequestHandler->renderAs($this, 'print');
-				break;
+
+			// add extra mappings
+			$this->RequestHandler->setContent('print', 'text/html');
+			// set response
+			$this->RequestHandler->renderAs($this, $this->RequestHandler->ext);
+			if (in_array($this->RequestHandler->ext, array('csv'))) {				
+				$this->set('title_for_layout', strtolower($model).'-search-export');
+				$attachment = $this->viewVars['title_for_layout'];
+				// for attachment for csv
+				$this->RequestHandler->respondAs($this->RequestHandler->ext, compact('attachment'));
 			}
 			
 			$search = $this->MultiSelect->getSearch($uid);
@@ -149,7 +151,7 @@ class ReportsController extends AppController {
 		$selected = $this->MultiSelect->getSelected($uid);
 		// assume they want all if they didn't select any
 		if (!empty($selected)) {
-			$search['conditions'][$model.'.id'] = $selected;
+			$search['conditions']['User.id'] = $selected;
 		}
 		
 		// only need name, picture and address

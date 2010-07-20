@@ -7,11 +7,12 @@ echo $this->Form->create('Report', array(
 	),
 	'inputDefaults' => array(
 		'hiddenField' => false
-	)
+	),
+	'onsubmit' => "this.action += '.'+$('#ExportType').val()"
 ));
 
 echo $this->Form->input('Export.type', array(
-	'type' => 'radio',
+	'type' => 'select',
 	'options' => array(
 		'csv' => 'CSV',
 		'print' => 'Print'

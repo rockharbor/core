@@ -141,10 +141,9 @@ class AppController extends Controller {
 /**
  * Controller::beforeFilter() callback
  *
- * Handles global configuration, such as app and auth settings. Also
- * does some RequestHandler magic.
+ * Handles global configuration, such as app and auth settings.
  *
- * @see Cake docs
+ * @see Controller::beforeFilter()
  */
 	function beforeFilter() {
 		// pull app settings
@@ -217,15 +216,6 @@ class AppController extends Controller {
 		
 		// use custom authentication (password encrypt/decrypt)
 		$this->Auth->authenticate = $User;
-		
-		/* 
-		json breaks if there's the time comment that debug adds (<!-- 0.0325 sec -->),
-		not to mention the debugging info. you can still see debug info by going to it 
-		directly (that is, not using ajax and using the default layout instead)
-		*/
-		if (($this->RequestHandler->isAjax() && $this->RequestHandler->ext == 'json') || $this->RequestHandler->ext == 'csv') {				
-			Configure::write('debug', 0);
-		}
 		
 		// set to log using this user (see LogBehavior)
 		if (!$this->params['plugin'] && sizeof($this->uses) && $this->{$this->modelClass}->Behaviors->attached('Logable')) { 

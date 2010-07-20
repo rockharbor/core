@@ -25,7 +25,7 @@
  /**
   * Extensions to redirect views/layouts
   */
-	Router::parseExtensions('json', 'csv');
+	Router::parseExtensions('json', 'csv', 'print');
  
 /**
  * Bring in custom routing libraries
