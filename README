@@ -1,8 +1,13 @@
-CORE is in-depth church member management software.
+CORE
+====
 
-CORE uses the rapid development framework for PHP called CakePHP and is currently maintained by ROCKHARBOR church in Costa Mesa, CA.
+CORE is in-depth church member and event management software.
+
+CORE uses the rapid development framework for PHP called CakePHP and is
+currently maintained by ROCKHARBOR church in Costa Mesa, CA.
 
 ROCKHARBOR - the church maintaining CORE
 http://www.rockharbor.org
 
-CORE is currently in a major refactoring process after being developed originally in CakePHP 1.1 and not maintained.
+CORE is currently in a major refactoring process after being developed
+originally in CakePHP 1.1 and not maintained.
