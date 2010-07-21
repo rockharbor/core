@@ -333,7 +333,7 @@ class RequestHandlerComponentTest extends CakeTestCase {
 	function testRespondAsWithAttachment() {
 		$RequestHandler = new NoStopRequestHandler();
 		$RequestHandler->expectAt(0, '_header', array('Content-Disposition: attachment; filename="myfile.xml"'));
-		$RequestHandler->expectAt(1, '_header', array('Content-Type: text/xml'));
+		$RequestHandler->expectAt(1, '_header', array('Content-Type: application/xml'));
 
 		$result = $RequestHandler->respondAs('xml', array('attachment' => 'myfile.xml'));
 		$this->assertTrue($result);
