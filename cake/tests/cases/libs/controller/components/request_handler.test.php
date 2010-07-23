@@ -309,6 +309,22 @@ class RequestHandlerComponentTest extends CakeTestCase {
 	}
 
 /**
+ * test that attachment headers work with renderAs
+ *
+ * @return void
+ */
+	function testRenderAsWithAttachment() {
+		$RequestHandler = new NoStopRequestHandler();
+		$RequestHandler->expectAt(0, '_header', array('Content-Disposition: attachment; filename="myfile.xml"'));
+		$RequestHandler->expectAt(1, '_header', array('Content-Type: application/xml; charset=UTF-8'));
+
+		$RequestHandler->renderAs($this->Controller, 'xml', array('attachment' => 'myfile.xml'));
+		$result = $this->Controller->viewPath;
+		$expected = 'request_handler_test\\xml';
+		$this->assertTrue($result, $expected);
+	}
+
+/**
  * test that respondAs works as expected.
  *
  * @return void
