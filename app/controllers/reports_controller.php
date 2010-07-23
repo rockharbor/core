@@ -98,9 +98,9 @@ class ReportsController extends AppController {
 /**
  * Exports a saved search (from MultiSelectComponent) as a report
  *
- * If `$this->data['Export']['type']` is 'csv', set Controller::title_for_layout
- * to set the name of the csv. Data should be sent in an `Export` array
- * formatted based on the current model's contain format.
+ * If the extension is 'csv', set View::title_for_layout to set the name of the
+ * csv. Data should be sent in an `Export` array formatted based on the
+ * current model's contain format.
  *
  * @param string $model The model we're searching / exporting data from
  * @param string $uid The MultiSelect cache key to get results from
@@ -111,15 +111,14 @@ class ReportsController extends AppController {
 			unset($this->data['Export']['type']);
 
 			// add extra mappings
-			$this->RequestHandler->setContent('print', 'text/html');
-			// set response
-			$this->RequestHandler->renderAs($this, $this->RequestHandler->ext);
+			$this->RequestHandler->setContent('print', 'text/html');			
+			$options = array();
 			if (in_array($this->RequestHandler->ext, array('csv'))) {				
 				$this->set('title_for_layout', strtolower($model).'-search-export');
-				$attachment = $this->viewVars['title_for_layout'];
-				// for attachment for csv
-				$this->RequestHandler->respondAs($this->RequestHandler->ext, compact('attachment'));
+				$options['attachment'] = $this->viewVars['title_for_layout'].'.csv';
 			}
+			// set render path (which sets response type)
+			$this->RequestHandler->renderAs($this, $this->RequestHandler->ext, $options);
 			
 			$search = $this->MultiSelect->getSearch($uid);
 			$selected = $this->MultiSelect->getSelected($uid);
