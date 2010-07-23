@@ -72,6 +72,17 @@ class RosterFixture extends CakeTestFixture {
 			'modified' => '2010-04-19 12:30:21',
 			'parent_id' => NULL,
 			'roster_status_id' => 1
+		),
+		array(
+			'id' => 6,
+			'user_id' => 5,
+			'involvement_id' => 5,
+			'role_id' => NULL,
+			'payment_option_id' => 4,
+			'created' => '2010-04-19 09:32:49',
+			'modified' => '2010-04-19 12:30:21',
+			'parent_id' => NULL,
+			'roster_status_id' => 1
 		)
 	);
 }

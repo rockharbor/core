@@ -54,6 +54,18 @@ class PaymentOptionFixture extends CakeTestFixture {
 			'tax_deductible' => 1,
 			'created' => '2010-04-08 13:41:16',
 			'modified' => '2010-04-09 10:20:25'
+		),
+		array(
+			'id' => 4,
+			'involvement_id' => 5,
+			'name' => 'Test option',
+			'total' => 100,
+			'deposit' => 25,
+			'childcare' => NULL,
+			'account_code' => '456',
+			'tax_deductible' => 1,
+			'created' => '2010-04-08 13:41:16',
+			'modified' => '2010-04-09 10:20:25'
 		)
 	);
 }

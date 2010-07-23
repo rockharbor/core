@@ -67,6 +67,21 @@ class PaymentFixture extends CakeTestFixture {
 			'modified' => '2010-05-04 07:33:03',
 			'comment' => 'Ricky made a cash payment to pay his balance.'
 		),
+		array(
+			'id' => 6,
+			'user_id' => 5,
+			'roster_id' => 6,
+			'amount' => 20,
+			'payment_type_id' => 2,
+			'number' => NULL,
+			'transaction_id' => NULL,
+			'payment_placed_by' => 5,
+			'refunded' => 0,
+			'payment_option_id' => 4,
+			'created' => '2010-05-04 07:33:03',
+			'modified' => '2010-05-04 07:33:03',
+			'comment' => 'Invisible user made a payment'
+		),
 	);
 }
 ?>
