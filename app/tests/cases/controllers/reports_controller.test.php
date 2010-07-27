@@ -8,7 +8,6 @@ Mock::generate('QueueEmailComponent');
 Mock::generatePartial('RequestHandlerComponent', 'MockRequestHandlerComponent', array('_header'));
 Mock::generatePartial('ReportsController', 'TestReportsController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
 
-
 class ReportsControllerTestCase extends CoreTestCase {
 	var $fixtures = array('app.notification', 'app.user', 'app.group', 'app.profile', 'app.classification', 'app.job_category', 'app.school', 'app.campus', 'plugin.media.attachment', 'app.ministry', 'app.involvement', 'app.involvement_type', 'app.address', 'app.zipcode', 'app.region', 'app.date', 'app.payment_option', 'app.question', 'app.roster', 'app.role', 'app.roster_status', 'app.answer', 'app.payment', 'app.payment_type', 'app.leader', 'app.comment', 'app.comment_type', 'app.comments', 'app.notification', 'app.image', 'plugin.media.document', 'app.household_member', 'app.household', 'app.publication', 'app.publications_user', 'app.log', 'app.app_setting', 'app.alert', 'app.alerts_user', 'app.aro', 'app.aco', 'app.aros_aco', 'app.ministries_rev', 'app.involvements_rev', 'app.error', 'app.log');
 
@@ -27,21 +26,23 @@ class ReportsControllerTestCase extends CoreTestCase {
 		$this->Reports->Component->initialize($this->Reports);
 		$this->Reports->RequestHandler = new MockRequestHandlerComponent();
 		$this->Reports->QueueEmail = new MockQueueEmailComponent();
-
 		$this->Reports->setReturnValue('isAuthorized', true);
 		$this->Reports->QueueEmail->setReturnValue('send', true);
+
+		$this->testController = $this->Reports;
 	}
 
-	function endTest() {	
+	function endTest() {
+		unset($this->Reports);
 		ClassRegistry::flush();
 	}
 
 	function testMinistry() {
-		$vars = $this->testAction($this->Reports, '/reports/ministry');
+		$vars = $this->testAction('/reports/ministry');
 		$results = count($vars['ministries']);
 		$this->assertEqual($results, 4);
 
-		$vars = $this->testAction($this->Reports, '/reports/ministry', array(
+		$vars = $this->testAction('/reports/ministry', array(
 			'data' => array(
 				'Ministry' => array(
 					'id' => 2
@@ -67,7 +68,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 			)
 		));
 
-		$vars = $this->testAction($this->Reports, '/reports/map/testMap');
+		$vars = $this->testAction('/reports/map/testMap');
 		$results = Set::extract('/Profile/name', $vars['results']);
 		$expected = array('Jeremy Harris');
 		$this->assertEqual($results, $expected);
@@ -92,7 +93,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 		
 		$this->Reports->RequestHandler->expectAt(0, '_header', array('Content-Type: application/vnd.ms-excel; charset=UTF-8'));
 		$this->Reports->RequestHandler->expectAt(1, '_header', array('Content-Disposition: attachment; filename="ministry-search-export.csv"'));
-		$vars = $this->testAction($this->Reports, '/reports/export/Ministry/testExportCsvWithSearch.csv', array(
+		$vars = $this->testAction('/reports/export/Ministry/testExportCsvWithSearch.csv', array(
 			'data' => $data
 		));
 		
@@ -116,7 +117,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 			)
 		);
 		$this->Reports->RequestHandler->expectAt(0, '_header', array('Content-Type: text/html; charset=UTF-8'));
-		$vars = $this->testAction($this->Reports, '/reports/export/Ministry/testExportPrint.print', array(
+		$vars = $this->testAction('/reports/export/Ministry/testExportPrint.print', array(
 			'data' => $data
 		));
 		$results = $vars['models'];
