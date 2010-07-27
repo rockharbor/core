@@ -24,6 +24,14 @@ require_once APP.'config'.DS.'routes.php';
 class CoreTestCase extends CakeTestCase {
 
 /**
+ * The controller we're testing. Set to null to use the original
+ * `CakeTestCase::testAction` function.
+ * 
+ * @var object
+ */
+	var $testController = null;
+
+/**
  * Tests an action using the controller itself and skipping the dispatcher, and
  * returning the view vars.
  *
@@ -32,16 +40,32 @@ class CoreTestCase extends CakeTestCase {
  * Import `CoreTestCase` from 'Lib' and extend test cases using `CoreTestCase`
  * instead to gain this functionality.
  *
+ * For backwards compatibility with the original `CakeTestCase::testAction`, set
+ * `testController` to `null`.
+ *
  * ### Options:
  * - `data` Data to pass to the controller
  *
- * @param object $controller The controller we're testing
+ * ### Limitations:
+ * - does not test get parameters
+ *
  * @param string $url The url to test
  * @param array $options A list of options
  * @return array The view vars
  * @link http://mark-story.com/posts/view/testing-cakephp-controllers-the-hard-way
  */
-	function testAction(&$controller, $url = '', $options = array()) {		
+	function testAction($url = '', $options = array()) {		
+		if (is_null($this->testController)) {
+			return parent::testAction($url, $options);
+		}
+
+		// reset parameters
+		$this->testController->passedArgs = array();
+		$this->testController->params = array();
+		$this->testController->url = null;
+		$this->testController->action = null;
+		$this->testController->viewVars = array();
+
 		$default = array(
 			'data' => array()
 		);
@@ -49,21 +73,23 @@ class CoreTestCase extends CakeTestCase {
 
 		// set up the controller from the url
 		$urlParams = Router::parse($url);
-		$controller->passedArgs = $urlParams['named'];
-		$controller->params = $urlParams;
-		$controller->url = $urlParams;
-		$controller->data = $options['data'];
-		$controller->action = $urlParams['plugin'].'/'.$urlParams['controller'].'/'.$urlParams['action'];
+		$this->testController->passedArgs = $urlParams['named'];
+		$this->testController->params = $urlParams;
+		$this->testController->url = $urlParams;
+		$this->testController->data = $options['data'];
+		$this->testController->action = $urlParams['plugin'].'/'.$urlParams['controller'].'/'.$urlParams['action'];
 
-		// go action!
-		$controller->Component->initialize($controller);
-		$controller->beforeFilter();
-		$controller->Component->startup($controller);
+		// go action!		
+		$this->testController->beforeFilter();
+		$this->testController->Component->startup($this->testController);
 		$pass = '"'.implode('", "', $urlParams['pass']).'"';
-		eval('$controller->'.$urlParams['action'].'('.$pass.');');
-		$controller->afterFilter();		
-
-		return $controller->viewVars;
+		$funcArgs = '('.$pass.')';
+		if ($pass == '""') {
+			$funcArgs = '()';
+		}
+		eval('$this->testController->'.$urlParams['action'].$funcArgs.';');
+		$this->testController->afterFilter();
+		return $this->testController->viewVars;
 	}
 
 }
