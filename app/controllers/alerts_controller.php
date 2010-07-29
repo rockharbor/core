@@ -67,15 +67,13 @@ class AlertsController extends AppController {
 			$this->redirect(array('action'=>'history'));
 		}
 		
-		$alert = array();
+		$alert = $this->Alert->find('first', array(
+			'conditions' => array(
+				'Alert.id' => $id,
+				'Alert.group_id' => $this->activeUser['Group']['id']
+			)
+		));
 
-		if (!in_array($alert['Alert']['group_id'], Set::extract('/Group/id', $this->activeUser))) {
-			$this->Session->setFlash('You cannot view that alert', 'flash_failure');
-			$this->redirect(array('action'=>'history'));
-		} else {
-			$alert = $this->Alert->read(null, $id);
-		}
-		
 		$referer = $this->referer();
 		
 		$this->set(compact('alert', 'referer')); 
