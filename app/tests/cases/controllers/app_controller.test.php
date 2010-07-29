@@ -1,7 +1,8 @@
 <?php
+App::import('Lib', 'CoreTestCase');
 App::import('Controller', 'App');
 
-class AppControllerTestCase extends CakeTestCase {
+class AppControllerTestCase extends CoreTestCase {
 	var $fixtures = array('app.notification', 'app.user', 'app.group',
 		'app.profile', 'app.classification', 'app.job_category', 'app.school',
 		'app.campus', 'plugin.media.attachment', 'app.ministry',
