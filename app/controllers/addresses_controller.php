@@ -121,7 +121,7 @@ class AddressesController extends AppController {
 					$this->Address->id = $modelAddress['Address']['id'];
 					$this->Address->saveField('primary', 0);
 				}
-				
+				$this->Address->id = $lastId;
 				$this->Session->setFlash('The address was saved!', 'flash_success');
 			} else {
 				$this->Session->setFlash('Boo! The address could not be saved.', 'flash_failure');
@@ -129,7 +129,7 @@ class AddressesController extends AppController {
 		}
 		
 		$addresses = array();
-		if ($model != 'User') {
+		if ($this->model != 'User') {
 			$addresses = $this->Address->find('list', array(
 				'conditions' => array(
 					'model' => $this->model
@@ -147,8 +147,8 @@ class AddressesController extends AppController {
  *
  * @param integer $id The address id
  */
-	function edit($id = null) {		
-		if (!$id && empty($this->data)) {
+	function edit($id = null) {
+		if (!$id && empty($this->data)) {			
 			$this->Session->setFlash('Invalid address.', 'flash_failure');
 			$this->redirect(array('action' => 'index'));
 		}

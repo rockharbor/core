@@ -1,18 +1,13 @@
 <?php
 /* Addresses Test cases generated on: 2010-07-02 11:07:49 : 1278096229 */
+App::import('Lib', 'CoreTestCase');
+App::import('Component', array('QueueEmail'));
 App::import('Controller', 'UserAddresses');
 
-class TestAddressesController extends UserAddressesController {
-	function redirect($url, $status = null, $exit = true) {
-		$this->redirectUrl = $url;
-	}
-	
-	function _stop($status = 0) {
-		$this->stopped = $status;
-	}
-}
+Mock::generate('QueueEmailComponent');
+Mock::generatePartial('UserAddressesController', 'TestUserAddressesController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
 
-class AddressesControllerTestCase extends CakeTestCase {
+class AddressesControllerTestCase extends CoreTestCase {
 
 	var $fixtures = array('app.ministries_rev', 'app.involvements_rev', 'app.alert', 'app.group', 'app.user', 'app.profile', 'app.classification', 'app.job_category', 'app.school', 'app.campus', 'plugin.media.attachment', 'app.ministry', 'app.involvement', 'app.involvement_type', 'app.address', 'app.zipcode', 'app.region', 'app.date', 'app.payment_option', 'app.question', 'app.roster', 'app.role', 'app.roster_status', 'app.answer', 'app.payment', 'app.payment_type', 'app.leader', 'app.comment', 'app.comment_type', 'app.comments', 'app.notification', 'app.image', 'plugin.media.document', 'app.household_member', 'app.household', 'app.publication', 'app.publications_user', 'app.alerts_user', 'app.log', 'app.app_setting');
 
@@ -20,11 +15,13 @@ class AddressesControllerTestCase extends CakeTestCase {
 	
 	function startTest() {
 		$this->loadFixtures('Address');
-		$this->Addresses = new TestAddressesController();
-		$this->Addresses->constructClasses();		
+		$this->Addresses =& new TestUserAddressesController();
+		$this->Addresses->constructClasses();
 		$this->Addresses->Component->initialize($this->Addresses);
-		$this->Addresses->Session->write('Auth.User', array('id' => 1));
-		$this->Addresses->Session->write('User', array('Group' => array('id' => 1)));
+		$this->Addresses->QueueEmail = new MockQueueEmailComponent();
+		$this->Addresses->setReturnValue('isAuthorized', true);
+		$this->Addresses->QueueEmail->setReturnValue('send', true);
+		$this->testController = $this->Addresses;
 	}
 
 	function endTest() {
@@ -34,9 +31,7 @@ class AddressesControllerTestCase extends CakeTestCase {
 	}
 
 	function testIndex() {
-		$vars = $this->testAction('/test_addresses/index/User:1', array(
-			'return' => 'vars'
-		));
+		$vars = $this->testAction('/user_addresses/index/User:1');
 		$results = $vars['data'];
 		$expected = array(
 			array(
@@ -80,9 +75,7 @@ class AddressesControllerTestCase extends CakeTestCase {
 		);
 		$this->assertEqual($results, $expected);
 
-		$vars = $this->testAction('/test_addresses/index/User:2', array(
-			'return' => 'vars'
-		));
+		$vars = $this->testAction('/user_addresses/index/User:2');
 		$result = $vars['data'];
 		$this->assertEqual($result, array());
 	}
@@ -100,11 +93,9 @@ class AddressesControllerTestCase extends CakeTestCase {
 				'foreign_key' => 1
 			)
 		);
-		$vars = $this->testAction('/test_addresses/add', array(
-			'return' => 'vars',
+		$vars = $this->testAction('/user_addresses/add', array(
 			'data' => $data
 		));
-		$this->Addresses->Address->id = 3;
 		$this->assertEqual($this->Addresses->Address->field('name'), 'Work 2');
 		$this->assertEqual($this->Addresses->Address->field('primary'), 1);
 		$this->Addresses->Address->id = 1;
@@ -116,18 +107,16 @@ class AddressesControllerTestCase extends CakeTestCase {
 	function testEdit() {
 		$data = $this->Addresses->Address->read(null, 1);
 		$data['Address']['primary'] = 0;
-		$vars = $this->testAction('/test_addresses/edit/1', array(
-			'return' => 'vars',
+		$vars = $this->testAction('/user_addresses/edit/1', array(
 			'data' => $data
-		));
+		));		
 		$this->Addresses->Address->id = 1;
 		$this->assertEqual($this->Addresses->Address->field('primary'), 0);
 		$this->Addresses->Address->id = 2;
 		$this->assertEqual($this->Addresses->Address->field('primary'), 1);
 
 		$data['Address']['primary'] = 1;
-		$vars = $this->testAction('/test_addresses/edit/1', array(
-			'return' => 'vars',
+		$vars = $this->testAction('/user_addresses/edit/1', array(
 			'data' => $data
 		));
 		$this->Addresses->Address->id = 1;
@@ -137,7 +126,7 @@ class AddressesControllerTestCase extends CakeTestCase {
 	}
 
 	function testDelete() {
-		$vars = $this->testAction('/test_addresses/delete/1');
+		$vars = $this->testAction('/user_addresses/delete/1');
 		$this->assertFalse($this->Addresses->Address->read(null, 1));
 	}
 
