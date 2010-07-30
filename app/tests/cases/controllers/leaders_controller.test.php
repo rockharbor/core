@@ -1,40 +1,13 @@
 <?php
 /* Leaders Test cases generated on: 2010-07-14 12:07:47 : 1279136267 */
+App::import('Lib', 'CoreTestCase');
+App::import('Component', 'QueueEmail');
 App::import('Controller', 'InvolvementLeaders');
 
-class TestLeadersController extends InvolvementLeadersController {
-	var $components = array(
-		'DebugKit.Toolbar' => array(
-			'autoRun' => false
-		),
-		'Referee.Whistle' => array(
-			'enabled' => false
-		),
-		'QueueEmail' => array(
-			'enabled' => false
-		)
-	);
+Mock::generate('QueueEmailComponent');
+Mock::generatePartial('InvolvementLeadersController', 'TestLeadersController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
 
-	function redirect($url, $status = null, $exit = true) {
-		if (!$this->Session->check('TestCase.redirectUrl')) {
-			$this->Session->write('TestCase.flash', $this->Session->read('Message.flash'));
-			$this->Session->write('TestCase.redirectUrl', $url);
-		}
-	}
-
-	function _stop($status = 0) {
-		$this->Session->write('TestCase.stopped', $status);
-	}
-
-	function isAuthorized() {
-		$action = str_replace('controllers/Test', '', $this->Auth->action());
-		$auth = parent::isAuthorized($action);
-		$this->Session->write('TestCase.authorized', $auth);
-		return $auth;
-	}
-}
-
-class LeadersControllerTestCase extends CakeTestCase {
+class LeadersControllerTestCase extends CoreTestCase {
 	var $fixtures = array('app.notification', 'app.user', 'app.group', 'app.profile', 'app.classification', 'app.job_category', 'app.school', 'app.campus', 'plugin.media.attachment', 'app.ministry', 'app.involvement', 'app.involvement_type', 'app.address', 'app.zipcode', 'app.region', 'app.date', 'app.payment_option', 'app.question', 'app.roster', 'app.role', 'app.roster_status', 'app.answer', 'app.payment', 'app.payment_type', 'app.leader', 'app.comment', 'app.comment_type', 'app.comments', 'app.notification', 'app.image', 'plugin.media.document', 'app.household_member', 'app.household', 'app.publication', 'app.publications_user', 'app.log', 'app.app_setting', 'app.alert', 'app.alerts_user', 'app.aro', 'app.aco', 'app.aros_aco', 'app.ministries_rev', 'app.involvements_rev', 'app.error', 'app.log');
 
 /**
@@ -47,21 +20,21 @@ class LeadersControllerTestCase extends CakeTestCase {
 		$this->Leaders =& new TestLeadersController();
 		$this->Leaders->constructClasses();
 		// necessary fixtures
-		$this->loadFixtures('Aco', 'Aro', 'ArosAco', 'Group', 'Error');
 		$this->loadFixtures('Leader', 'User', 'Profile', 'Involvement', 'Notification');
 		$this->Leaders->Component->initialize($this->Leaders);
-		$this->Leaders->Session->write('Auth.User', array('id' => 1));
-		$this->Leaders->Session->write('User', array('Group' => array('id' => 1)));
+		$this->Leaders->QueueEmail = new MockQueueEmailComponent();
+		$this->Leaders->setReturnValue('isAuthorized', true);
+		$this->Leaders->QueueEmail->setReturnValue('send', true);
+		$this->testController = $this->Leaders;
 	}
 
 	function endTest() {
-		$this->Leaders->Session->destroy();
 		unset($this->Leaders);		
 		ClassRegistry::flush();
 	}
 
 	function testIndex() {
-		$vars = $this->testAction('/test_leaders/index/Involvement:1', array(
+		$vars = $this->testAction('involvement_leaders/index/Involvement:1', array(
 			'return' => 'vars'
 		));
 		$results = Set::extract('/Leader', $vars['leaders']);
@@ -88,7 +61,7 @@ class LeadersControllerTestCase extends CakeTestCase {
 				'model_id' => 1
 			)
 		);
-		$vars = $this->testAction('/test_leaders/add/Involvement:1', array(
+		$vars = $this->testAction('/involvement_leaders/add/Involvement:1', array(
 			'return' => 'vars',
 			'data' => $data
 		));
@@ -102,7 +75,7 @@ class LeadersControllerTestCase extends CakeTestCase {
 	}
 
 	function testDelete() {
-		$vars = $this->testAction('/test_leaders/delete/Involvement:1/User:1');
+		$vars = $this->testAction('/involvement_leaders/delete/Involvement:1/User:1');
 		$results = $this->Leaders->Leader->User->Notification->find('count');
 		$this->assertEqual($results, 6);
 	}
