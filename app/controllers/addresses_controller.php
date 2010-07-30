@@ -68,7 +68,7 @@ class AddressesController extends AppController {
 /**
  * Shows a list of addresses
  */
-	function index() {	
+	function index() {
 		$this->set('data', $this->paginate('Address', array(
 			'foreign_key' => $this->modelId,
 			'model' => $this->model
