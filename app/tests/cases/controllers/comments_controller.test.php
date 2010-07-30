@@ -1,19 +1,14 @@
 <?php
 /* Comments Test cases generated on: 2010-07-12 08:07:14 : 1278946994 */
+App::import('Lib', 'CoreTestCase');
+App::import('Component', 'QueueEmail');
 App::import('Controller', 'Comments');
 
-class TestCommentsController extends CommentsController {
-	function redirect($url, $status = null, $exit = true) {
-		$this->redirectUrl = $url;
-	}
+Mock::generate('QueueEmailComponent');
+Mock::generatePartial('CommentsController', 'TestCommentsController', array('render', 'redirect', '_stop', 'header'));
 
-	function _stop($status = 0) {
-		$this->stopped = $status;
-	}
-}
-
-class CommentsControllerTestCase extends CakeTestCase {
-	var $fixtures = array('app.ministries_rev', 'app.involvements_rev','app.notification', 'app.user', 'app.group', 'app.profile', 'app.classification', 'app.job_category', 'app.school', 'app.campus', 'plugin.media.attachment', 'app.ministry', 'app.involvement', 'app.involvement_type', 'app.address', 'app.zipcode', 'app.region', 'app.date', 'app.payment_option', 'app.question', 'app.roster', 'app.role', 'app.roster_status', 'app.answer', 'app.payment', 'app.payment_type', 'app.leader', 'app.comment', 'app.comment_type', 'app.comments', 'app.notification', 'app.image', 'plugin.media.document', 'app.household_member', 'app.household', 'app.publication', 'app.publications_user', 'app.log', 'app.app_setting', 'app.alert', 'app.alerts_user', 'app.log');
+class CommentsControllerTestCase extends CoreTestCase {
+	var $fixtures = array('app.ministries_rev', 'app.involvements_rev','app.notification', 'app.user', 'app.group', 'app.profile', 'app.classification', 'app.job_category', 'app.school', 'app.campus', 'plugin.media.attachment', 'app.ministry', 'app.involvement', 'app.involvement_type', 'app.address', 'app.zipcode', 'app.region', 'app.date', 'app.payment_option', 'app.question', 'app.roster', 'app.role', 'app.roster_status', 'app.answer', 'app.payment', 'app.payment_type', 'app.leader', 'app.comment', 'app.comment_type', 'app.comments', 'app.notification', 'app.image', 'plugin.media.document', 'app.household_member', 'app.household', 'app.publication', 'app.publications_user', 'app.log', 'app.app_setting', 'app.alert', 'app.alerts_user', 'app.log', 'app.aro', 'app.aco', 'app.aros_aco');
 
 /**
  * Disable inserting all records by default. Use CakeTestCase::loadFixtures
@@ -22,12 +17,16 @@ class CommentsControllerTestCase extends CakeTestCase {
 	var $autoFixtures = false;
 
 	function startTest() {
+		$this->loadFixtures('Aco', 'Aro', 'ArosAco');
 		$this->loadFixtures('Comment', 'Group', 'CommentType');
 		$this->Comments =& new TestCommentsController();
 		$this->Comments->constructClasses();
 		$this->Comments->Component->initialize($this->Comments);
+		$this->Comments->QueueEmail = new MockQueueEmailComponent();
+		$this->Comments->QueueEmail->setReturnValue('send', true);
 		$this->Comments->Session->write('Auth.User', array('id' => 1));
 		$this->Comments->Session->write('User', array('Group' => array('id' => 1, 'lft' => 1)));
+		$this->testController = $this->Comments;
 	}
 
 	function endTest() {
@@ -37,7 +36,7 @@ class CommentsControllerTestCase extends CakeTestCase {
 	}
 
 	function testIndex() {
-		$vars = $this->testAction('/test_comments/index/User:1', array(
+		$vars = $this->testAction('/comments/index/User:1', array(
 			'return' => 'vars'
 		));
 		$results = Set::extract('/Comment', $vars['comments']);
@@ -79,7 +78,7 @@ class CommentsControllerTestCase extends CakeTestCase {
 		$this->assertEqual($results, $expected);
 
 		$this->Comments->Session->write('User', array('Group' => array('id' => 5, 'lft' => 5)));
-		$vars = $this->testAction('/test_comments/index/User:1', array(
+		$vars = $this->testAction('/comments/index/User:1', array(
 			'return' => 'vars'
 		));
 		$results = Set::extract('/Comment', $vars['comments']);
@@ -109,7 +108,7 @@ class CommentsControllerTestCase extends CakeTestCase {
 		);
 		$this->assertEqual($results, $expected);
 
-		$vars = $this->testAction('/test_comments/index/User:2', array(
+		$vars = $this->testAction('/comments/index/User:2', array(
 			'return' => 'vars'
 		));
 		$results = Set::extract('/Comment', $vars['comments']);
@@ -124,7 +123,7 @@ class CommentsControllerTestCase extends CakeTestCase {
 				'comment' => 'This is a new comment'
 			)
 		);
-		$vars = $this->testAction('/test_comments/add', array(
+		$vars = $this->testAction('/comments/add', array(
 			'data' => $data,
 			'return' => 'vars'
 		));
@@ -147,7 +146,7 @@ class CommentsControllerTestCase extends CakeTestCase {
 				'comment' => 'This is an updated comment'
 			)
 		);
-		$vars = $this->testAction('/test_comments/edit/3', array(
+		$vars = $this->testAction('/comments/edit/3', array(
 			'data' => $data,
 			'return' => 'vars'
 		));
@@ -163,7 +162,7 @@ class CommentsControllerTestCase extends CakeTestCase {
 		$this->assertEqual($results, $expected);
 
 		$this->Comments->Session->write('User', array('Group' => array('id' => 5, 'lft' => 5)));
-		$vars = $this->testAction('/test_comments/edit/3', array(
+		$vars = $this->testAction('/comments/edit/3', array(
 			'data' => $data,
 			'return' => 'vars'
 		));
@@ -175,7 +174,7 @@ class CommentsControllerTestCase extends CakeTestCase {
 	}
 
 	function testDelete() {
-		$this->testAction('/test_comments/delete/1');
+		$this->testAction('/comments/delete/1');
 		$result = $this->Comments->Comment->read(null, 1);
 		$this->assertFalse($result);
 	}
