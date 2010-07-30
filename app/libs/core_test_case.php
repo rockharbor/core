@@ -48,6 +48,7 @@ class CoreTestCase extends CakeTestCase {
  *
  * ### Limitations:
  * - does not test get parameters
+ * - only reinstantiates the default model
  *
  * @param string $url The url to test
  * @param array $options A list of options
@@ -60,11 +61,13 @@ class CoreTestCase extends CakeTestCase {
 		}
 
 		// reset parameters
+		ClassRegistry::flush();		
 		$this->testController->passedArgs = array();
 		$this->testController->params = array();
 		$this->testController->url = null;
 		$this->testController->action = null;
 		$this->testController->viewVars = array();
+		$this->testController->{$this->testController->modelClass}->create();
 
 		$default = array(
 			'data' => array()
@@ -79,15 +82,19 @@ class CoreTestCase extends CakeTestCase {
 		$this->testController->data = $options['data'];
 		$this->testController->action = $urlParams['plugin'].'/'.$urlParams['controller'].'/'.$urlParams['action'];
 
-		// go action!		
-		$this->testController->beforeFilter();
+		// go action!
+		if (isset($this->testController->Auth)) {
+			$this->testController->Auth->initialize($this->testController);
+		}
 		$this->testController->Component->startup($this->testController);
+		$this->testController->beforeFilter();
 		$pass = '"'.implode('", "', $urlParams['pass']).'"';
 		$funcArgs = '('.$pass.')';
 		if ($pass == '""') {
 			$funcArgs = '()';
 		}
 		eval('$this->testController->'.$urlParams['action'].$funcArgs.';');
+		$this->testController->Component->shutdown($this->testController);
 		$this->testController->afterFilter();
 		return $this->testController->viewVars;
 	}
