@@ -73,8 +73,10 @@ class AppSettingsController extends AppController {
 				$this->Session->setFlash('The setting could not be saved. Please, try again.', 'flash_failure');
 			}
 		}
-		
-		$this->data = $this->AppSetting->read(null, $id);		
+
+		if (empty($this->data)) {
+			$this->data = $this->AppSetting->read(null, $id);
+		}
 		
 		if (!empty($this->data['AppSetting']['model'])) {
 			$models = ClassRegistry::init($this->data['AppSetting']['model'])->find('list');
