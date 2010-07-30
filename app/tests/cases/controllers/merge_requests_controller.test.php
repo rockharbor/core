@@ -2,40 +2,13 @@
 /* MergeRequests Test cases generated on: 2010-07-14 13:07:43 : 1279138963 */
 App::import('Controller', 'MergeRequests');
 App::import('Model', array('User', 'Profile'));
+App::import('Lib', 'CoreTestCase');
+App::import('Component', 'QueueEmail');
 
-class TestMergeRequestsController extends MergeRequestsController {
-	var $components = array(
-		'DebugKit.Toolbar' => array(
-			'autoRun' => false
-		),
-		'Referee.Whistle' => array(
-			'enabled' => false
-		),
-		'QueueEmail' => array(
-			'enabled' => false
-		)
-	);
+Mock::generate('QueueEmailComponent');
+Mock::generatePartial('MergeRequestsController', 'TestMergeRequestsController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
 
-	function redirect($url, $status = null, $exit = true) {
-		if (!$this->Session->check('TestCase.redirectUrl')) {
-			$this->Session->write('TestCase.flash', $this->Session->read('Message.flash'));
-			$this->Session->write('TestCase.redirectUrl', $url);
-		}
-	}
-
-	function _stop($status = 0) {
-		$this->Session->write('TestCase.stopped', $status);
-	}
-
-	function isAuthorized() {
-		$action = str_replace('controllers/Test', '', $this->Auth->action());
-		$auth = parent::isAuthorized($action);
-		$this->Session->write('TestCase.authorized', $auth);
-		return $auth;
-	}
-}
-
-class MergeRequestsControllerTestCase extends CakeTestCase {
+class MergeRequestsControllerTestCase extends CoreTestCase {
 	var $fixtures = array('app.notification', 'app.user', 'app.group',
 		'app.profile', 'app.classification', 'app.job_category', 'app.school',
 		'app.campus', 'plugin.media.attachment', 'app.ministry',
@@ -61,21 +34,21 @@ class MergeRequestsControllerTestCase extends CakeTestCase {
 		$this->MergeRequests =& new TestMergeRequestsController();
 		$this->MergeRequests->constructClasses();
 		// necessary fixtures
-		$this->loadFixtures('Aco', 'Aro', 'ArosAco', 'Group', 'Error');
 		$this->loadFixtures('User', 'Profile', 'MergeRequest');
 		$this->MergeRequests->Component->initialize($this->MergeRequests);
-		$this->MergeRequests->Session->write('Auth.User', array('id' => 1));
-		$this->MergeRequests->Session->write('User', array('Group' => array('id' => 1)));
+		$this->MergeRequests->QueueEmail = new MockQueueEmailComponent();
+		$this->MergeRequests->setReturnValue('isAuthorized', true);
+		$this->MergeRequests->QueueEmail->setReturnValue('send', true);
+		$this->testController = $this->MergeRequests;;
 	}
 
 	function endTest() {
-		$this->MergeRequests->Session->destroy();
 		unset($this->MergeRequests);		
 		ClassRegistry::flush();
 	}
 
 	function testIndex() {
-		$vars = $this->testAction('/test_merge_requests/index/model:User', array(
+		$vars = $this->testAction('/merge_requests/index/model:User', array(
 			'return' => 'vars'
 		));
 		$results = Set::extract('/MergeRequest', $vars['requests']);
@@ -98,7 +71,7 @@ class MergeRequestsControllerTestCase extends CakeTestCase {
 	}
 
 	function testView() {
-		$vars = $this->testAction('/test_merge_requests/view/1', array(
+		$vars = $this->testAction('/merge_requests/view/1', array(
 			'return' => 'vars'
 		));
 		$this->assertTrue(isset($vars['result']['Source']['Profile']));
@@ -107,7 +80,7 @@ class MergeRequestsControllerTestCase extends CakeTestCase {
 	function testMerge() {
 		$this->Profile =& ClassRegistry::init('Profile');
 		$this->User =& ClassRegistry::init('User');
-		$this->testAction('/test_merge_requests/merge/1');
+		$this->testAction('/merge_requests/merge/1');
 
 		$results = $this->MergeRequests->MergeRequest->find('all');
 		$this->assertEqual($results, array());
@@ -131,7 +104,7 @@ class MergeRequestsControllerTestCase extends CakeTestCase {
 	function testDelete() {
 		$this->Profile =& ClassRegistry::init('Profile');
 		$this->User =& ClassRegistry::init('User');
-		$this->testAction('/test_merge_requests/delete/1');
+		$this->testAction('/merge_requests/delete/1');
 
 		$this->assertFalse($this->MergeRequests->MergeRequest->read(null, 1));
 
