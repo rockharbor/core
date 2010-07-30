@@ -47,7 +47,6 @@ class CoreTestCase extends CakeTestCase {
  * - `data` Data to pass to the controller
  *
  * ### Limitations:
- * - does not test get parameters
  * - only reinstantiates the default model
  *
  * @param string $url The url to test
@@ -70,16 +69,21 @@ class CoreTestCase extends CakeTestCase {
 		$this->testController->{$this->testController->modelClass}->create();
 
 		$default = array(
-			'data' => array()
+			'data' => array(),
+			'method' => 'post'
 		);
 		$options = array_merge($default, $options);
 
 		// set up the controller from the url
 		$urlParams = Router::parse($url);
+		if (strtolower($options['method']) == 'get') {
+			$urlParams['url'] = array_merge($options['data'], $urlParams['url']);
+		} else {
+			$this->testController->data = $options['data'];
+		}
 		$this->testController->passedArgs = $urlParams['named'];
 		$this->testController->params = $urlParams;
-		$this->testController->url = $urlParams;
-		$this->testController->data = $options['data'];
+		$this->testController->url = $urlParams;		
 		$this->testController->action = $urlParams['plugin'].'/'.$urlParams['controller'].'/'.$urlParams['action'];
 
 		// go action!
