@@ -1,18 +1,13 @@
 <?php
 /* Campuses Test cases generated on: 2010-07-09 14:07:25 : 1278710485 */
+App::import('Lib', 'CoreTestCase');
+App::import('Component', 'QueueEmail');
 App::import('Controller', 'Campuses');
 
-class TestCampusesController extends CampusesController {
-	function redirect($url, $status = null, $exit = true) {
-		$this->redirectUrl = $url;
-	}
+Mock::generate('QueueEmailComponent');
+Mock::generatePartial('CampusesController', 'TestCampusesController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
 
-	function _stop($status = 0) {
-		$this->stopped = $status;
-	}
-}
-
-class CampusesControllerTestCase extends CakeTestCase {
+class CampusesControllerTestCase extends CoreTestCase {
 	var $fixtures = array('app.ministries_rev', 'app.involvements_rev','app.campus', 'plugin.media.attachment', 'app.ministry', 'app.group', 'app.user', 'app.profile', 'app.classification', 'app.job_category', 'app.school', 'app.comment', 'app.comment_type', 'app.comments', 'app.notification', 'plugin.media.document', 'app.roster', 'app.involvement', 'app.involvement_type', 'app.address', 'app.zipcode', 'app.region', 'app.date', 'app.payment_option', 'app.question', 'app.leader', 'app.role', 'app.roster_status', 'app.answer', 'app.payment', 'app.payment_type', 'app.household_member', 'app.household', 'app.publication', 'app.publications_user', 'app.log', 'app.notification', 'app.user', 'app.group', 'app.profile', 'app.classification', 'app.job_category', 'app.school', 'app.campus', 'plugin.media.attachment', 'app.ministry', 'app.involvement', 'app.involvement_type', 'app.address', 'app.zipcode', 'app.region', 'app.date', 'app.payment_option', 'app.question', 'app.roster', 'app.role', 'app.roster_status', 'app.answer', 'app.payment', 'app.payment_type', 'app.leader', 'app.comment', 'app.comment_type', 'app.comments', 'app.notification', 'app.image', 'plugin.media.document', 'app.household_member', 'app.household', 'app.publication', 'app.publications_user', 'app.log', 'app.app_setting', 'app.alert', 'app.alerts_user');
 
 /**
@@ -26,18 +21,19 @@ class CampusesControllerTestCase extends CakeTestCase {
 		$this->Campuses =& new TestCampusesController();
 		$this->Campuses->constructClasses();
 		$this->Campuses->Component->initialize($this->Campuses);
-		$this->Campuses->Session->write('Auth.User', array('id' => 1));
-		$this->Campuses->Session->write('User', array('Group' => array('id' => 1)));
+		$this->Campuses->QueueEmail = new MockQueueEmailComponent();
+		$this->Campuses->setReturnValue('isAuthorized', true);
+		$this->Campuses->QueueEmail->setReturnValue('send', true);
+		$this->testController = $this->Campuses;
 	}
 
 	function endTest() {
-		$this->Campuses->Session->destroy();
 		unset($this->Campuses);		
 		ClassRegistry::flush();
 	}
 
 	function testView() {
-		$vars = $this->testAction('/test_campuses/view/Campus:1', array(
+		$vars = $this->testAction('/campuses/view/Campus:1', array(
 			'return' => 'vars'
 		));
 		$results = Set::extract('/Campus', $vars['campus']);
@@ -62,7 +58,7 @@ class CampusesControllerTestCase extends CakeTestCase {
 			'description' => 'A slightly newer campus',
 			'active' => 1
 		);
-		$this->testAction('/test_campuses/add', array(
+		$this->testAction('/campuses/add', array(
 			'data' => $data
 		));
 		$count = $this->Campuses->Campus->find('count');
@@ -74,7 +70,7 @@ class CampusesControllerTestCase extends CakeTestCase {
 			'id' => 1,
 			'name' => 'New name'
 		);
-		$this->testAction('/test_campuses/edit/1', array(
+		$this->testAction('/campuses/edit/1', array(
 			'data' => $data
 		));
 		$this->Campuses->Campus->id = 1;
@@ -83,7 +79,7 @@ class CampusesControllerTestCase extends CakeTestCase {
 	}
 
 	function testDelete() {
-		$this->testAction('/test_campuses/delete/1');
+		$this->testAction('/campuses/delete/1');
 		$this->assertFalse($this->Campuses->Campus->read(null, 1));
 		$this->assertFalse($this->Campuses->Campus->Ministry->read(null, 1));
 		$this->assertFalse($this->Campuses->Campus->Ministry->Involvement->read(null, 4));
