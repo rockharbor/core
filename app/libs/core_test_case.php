@@ -11,7 +11,13 @@
 /**
  * Includes
  */
+App::import('Component', 'Acl');
 require_once APP.'config'.DS.'routes.php';
+
+/**
+ * Mocks
+ */
+Mock::generatePartial('AclComponent', 'MockAclComponent', array('check'));
 
 /**
  * CoreTestCase class
@@ -48,6 +54,8 @@ class CoreTestCase extends CakeTestCase {
  *
  * ### Limitations:
  * - only reinstantiates the default model
+ * - not 100% complete, i.e., some callbacks may not be fired like they would
+ *	  if regularly called through the dispatcher
  *
  * @param string $url The url to test
  * @param array $options A list of options
@@ -59,14 +67,18 @@ class CoreTestCase extends CakeTestCase {
 			return parent::testAction($url, $options);
 		}
 
+		$Controller = $this->testController;
+
 		// reset parameters
 		ClassRegistry::flush();		
-		$this->testController->passedArgs = array();
-		$this->testController->params = array();
-		$this->testController->url = null;
-		$this->testController->action = null;
-		$this->testController->viewVars = array();
-		$this->testController->{$this->testController->modelClass}->create();
+		$Controller->passedArgs = array();
+		$Controller->params = array();
+		$Controller->url = null;
+		$Controller->action = null;
+		$Controller->viewVars = array();
+		$Controller->{$Controller->modelClass}->create();
+		$Controller->Session->delete('Message');
+		$Controller->activeUser = null;
 
 		$default = array(
 			'data' => array(),
@@ -74,33 +86,47 @@ class CoreTestCase extends CakeTestCase {
 		);
 		$options = array_merge($default, $options);
 
-		// set up the controller from the url
+		// set up the controller based on the url
 		$urlParams = Router::parse($url);
 		if (strtolower($options['method']) == 'get') {
 			$urlParams['url'] = array_merge($options['data'], $urlParams['url']);
 		} else {
-			$this->testController->data = $options['data'];
+			$Controller->data = $options['data'];
 		}
-		$this->testController->passedArgs = $urlParams['named'];
-		$this->testController->params = $urlParams;
-		$this->testController->url = $urlParams;		
-		$this->testController->action = $urlParams['plugin'].'/'.$urlParams['controller'].'/'.$urlParams['action'];
+		$Controller->passedArgs = $urlParams['named'];
+		$Controller->params = $urlParams;
+		$Controller->url = $urlParams;
+		$Controller->action = $urlParams['plugin'].'/'.$urlParams['controller'].'/'.$urlParams['action'];
 
-		// go action!
-		if (isset($this->testController->Auth)) {
-			$this->testController->Auth->initialize($this->testController);
+		// only initialize the components once
+		if (empty($Controller->Component->_loaded)) {
+			$Controller->Component->initialize($Controller);
 		}
-		$this->testController->Component->startup($this->testController);
-		$this->testController->beforeFilter();
-		$pass = '"'.implode('", "', $urlParams['pass']).'"';
-		$funcArgs = '('.$pass.')';
-		if ($pass == '""') {
-			$funcArgs = '()';
+
+		// configure auth
+		if (isset($Controller->Auth)) {
+			$Controller->Auth->initialize($Controller);
+			if (!$Controller->Session->check('Auth.User') && !$Controller->Session->check('User')) {
+				$Controller->Session->write('Auth.User', array('id' => 1, 'username' => 'testadmin'));
+				$Controller->Session->write('User', array('Group' => array('id' => 1, 'lft' => 1)));
+			}
 		}
-		eval('$this->testController->'.$urlParams['action'].$funcArgs.';');
-		$this->testController->Component->shutdown($this->testController);
-		$this->testController->afterFilter();
-		return $this->testController->viewVars;
+		// configure acl
+		if (isset($Controller->Acl)) {
+			$Controller->Acl = new MockAclComponent();
+			$Controller->Acl->enabled = true;
+			$Controller->Acl->setReturnValue('check', true);
+		}
+		
+		$Controller->beforeFilter();
+		$Controller->Component->startup($Controller);
+
+		call_user_func_array(array(&$Controller, $urlParams['action']), $urlParams['pass']);
+
+		$Controller->beforeRender();
+		$Controller->Component->triggerCallback('beforeRender', $Controller);
+
+		return $Controller->viewVars;
 	}
 
 }
