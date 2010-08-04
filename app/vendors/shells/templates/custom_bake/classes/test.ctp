@@ -1,63 +1,36 @@
 <?php
 /**
  * Test Case bake template
- *
- *
- * PHP versions 4 and 5
- *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
- *
- * Licensed under The MIT License
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
- * @package       cake
- * @subpackage    cake.console.libs.templates.objects
- * @since         CakePHP(tm) v 1.3
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 echo "<?php\n";
 echo "/* ". $className ." Test cases generated on: " . date('Y-m-d H:m:s') . " : ". time() . " */\n";
 ?>
+<?php
+if ($mock && strtolower($type) == 'controller'):
+	$caseClass = 'CoreTestCase';
+	$construction = 'new Mock'.$plugin.$className.'Controller();
+		$this->'.$className.'->constructClasses();
+		$this->'.$className.'->QueueEmail = new MockQueueEmailComponent();
+		$this->'.$className.'->QueueEmail->setReturnValue(\'send\', true);
+		$this->testController = $this->'.$className.';
+';
+?>
+App::import('Lib', 'CoreTestCase');
+App::import('Component', array('QueueEmail'));
 App::import('<?php echo $type; ?>', '<?php echo $plugin . $className;?>');
 
-<?php if ($mock and strtolower($type) == 'controller'): ?>
-class Test<?php echo $fullClassName; ?> extends <?php echo $fullClassName; ?> {
-	var $components = array(
-		'DebugKit.Toolbar' => array(
-			'autoRun' => false
-		),
-		'Referee.Whistle' => array(
-			'enabled' => false
-		),
-		'QueueEmail' => array(
-			'enabled' => false
-		)
-	);
+Mock::generate('QueueEmailComponent');
+Mock::generatePartial('<?php echo $plugin . $className;?>Controller', 'Mock<?php echo $plugin . $className;?>Controller', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
+<?php
+else:
+	$caseClass = 'CakeTestCase';
+?>
+App::import('<?php echo $type; ?>', '<?php echo $plugin . $className;?>');
+<?php
+endif;
+?>
 
-	function redirect($url, $status = null, $exit = true) {
-		if (!$this->Session->check('TestCase.redirectUrl')) {
-			$this->Session->write('TestCase.flash', $this->Session->read('Message.flash'));
-			$this->Session->write('TestCase.redirectUrl', $url);
-		}
-	}
-
-	function _stop($status = 0) {
-		$this->Session->write('TestCase.stopped', $status);
-	}
-
-	function isAuthorized() {
-		$action = str_replace('controllers/Test', '', $this->Auth->action());
-		$auth = parent::isAuthorized($action);
-		$this->Session->write('TestCase.authorized', $auth);
-		return $auth;
-	}
-}
-
-<?php endif; ?>
-class <?php echo $fullClassName; ?>TestCase extends CakeTestCase {
+class <?php echo $fullClassName; ?>TestCase extends <?php echo $caseClass; ?> {
 <?php
 // fixtures required by CORE to run tests on controllers
 if ($mock and strtolower($type) == 'controller') {
@@ -79,22 +52,11 @@ if (!empty($fixtures)):
 ?>
 	var $fixtures = array('<?php echo join("', '", $fixtures); ?>');
 
-/**
- * Disable inserting all records by default. Use CakeTestCase::loadFixtures
- * to load the data needed for the test (or case).
- */
 	var $autoFixtures = false;
 
 <?php endif; ?>
 	function startTest() {
 		$this-><?php echo $className . ' =& ' . $construction; ?>
-<?php if ($mock and strtolower($type) == 'controller'): ?>
-		// necessary fixtures
-		$this->loadFixtures('Aco', 'Aro', 'ArosAco', 'Group', 'Error');
-		$this-><?php echo $className; ?>->Component->initialize($this-><?php echo $className; ?>);
-		$this-><?php echo $className; ?>->Session->write('Auth.User', array('id' => 1));
-		$this-><?php echo $className; ?>->Session->write('User', array('Group' => array('id' => 1)));
-<?php endif; ?>
 	}
 
 	function endTest() {
