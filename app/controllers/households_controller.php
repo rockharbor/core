@@ -76,7 +76,11 @@ class HouseholdsController extends AppController {
 				));
 				$this->Household->recursive = 1;
 				$this->Household->HouseholdContact->contain(array('Profile'));
-				$this->set('notifier', $this->Household->HouseholdContact->read(null, $notifier));
+				$this->set('notifier', $this->Household->HouseholdContact->read(null, $this->activeUser['User']['id']));
+				$this->Household->contain(array(
+						'HouseholdContact' => array(
+							'Profile'
+				)));
 				$this->set('contact', $this->Household->read(null, $household));
 				
 				$success = $this->Household->join(

@@ -17,7 +17,6 @@ class AddressesControllerTestCase extends CoreTestCase {
 		$this->loadFixtures('Address');
 		$this->Addresses =& new TestUserAddressesController();
 		$this->Addresses->constructClasses();
-		$this->Addresses->Component->initialize($this->Addresses);
 		$this->Addresses->QueueEmail = new MockQueueEmailComponent();
 		$this->Addresses->setReturnValue('isAuthorized', true);
 		$this->Addresses->QueueEmail->setReturnValue('send', true);

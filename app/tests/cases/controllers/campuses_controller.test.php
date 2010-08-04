@@ -70,7 +70,7 @@ class CampusesControllerTestCase extends CoreTestCase {
 			'id' => 1,
 			'name' => 'New name'
 		);
-		$this->testAction('/campuses/edit/1', array(
+		$this->testAction('/campuses/edit/Campus:1', array(
 			'data' => $data
 		));
 		$this->Campuses->Campus->id = 1;

@@ -17,7 +17,7 @@ class HouseholdsControllerTestCase extends CoreTestCase {
 	var $autoFixtures = false;
 
 	function startTest() {
-		$this->loadFixtures('Household', 'HouseholdMember', 'User', 'Profile');
+		$this->loadFixtures('Household', 'HouseholdMember', 'User', 'Profile', 'Group');
 		$this->Households =& new TestHouseholdsController();
 		$this->Households->constructClasses();
 		$this->Households->Component->initialize($this->Households);
@@ -34,7 +34,7 @@ class HouseholdsControllerTestCase extends CoreTestCase {
 	}
 
 	function testShiftHousehold() {
-		$this->testAction('/households/shift_households/1/1');
+		$this->testAction('/households/shift_households/1/1/User:1');
 		$householdMember = $this->Households->Household->HouseholdMember->find('all', array(
 			'conditions' => array(
 				'HouseholdMember.user_id' => 1
@@ -43,7 +43,7 @@ class HouseholdsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($householdMember[0]['HouseholdMember']['id'], 4);
 		$this->assertEqual($householdMember[0]['HouseholdMember']['household_id'], 1);
 
-		$this->testAction('/households/shift_households/1/2');
+		$this->testAction('/households/shift_households/1/2/User:1');
 		$householdMember = $this->Households->Household->HouseholdMember->find('all', array(
 			'conditions' => array(
 				'HouseholdMember.user_id' => 1
@@ -60,7 +60,7 @@ class HouseholdsControllerTestCase extends CoreTestCase {
 			'household_id' => 2,
 			'confirmed' => true
 		));
-		$this->testAction('/households/make_household_contact/1/2');
+		$this->testAction('/households/make_household_contact/1/2/User:1');
 		$results = $this->Households->Household->find('all', array(
 			'fields' => array('id', 'contact_id')
 		));

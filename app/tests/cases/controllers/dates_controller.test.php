@@ -1,14 +1,15 @@
 <?php
 /* Dates Test cases generated on: 2010-07-12 09:07:14 : 1278951854 */
 App::import('Lib', 'CoreTestCase');
-App::import('Component', 'QueueEmail');
+App::import('Component', array('QueueEmail', 'RequestHandler'));
 App::import('Controller', 'Dates');
 
 Mock::generate('QueueEmailComponent');
 Mock::generatePartial('DatesController', 'TestDatesController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
+Mock::generatePartial('RequestHandlerComponent', 'MockRequestHandlerComponent', array('_header'));
 
 class DatesControllerTestCase extends CoreTestCase {
-	var $fixtures = array('app.ministries_rev', 'app.involvements_rev','app.notification', 'app.user', 'app.group', 'app.profile', 'app.classification', 'app.job_category', 'app.school', 'app.campus', 'plugin.media.attachment', 'app.ministry', 'app.involvement', 'app.involvement_type', 'app.address', 'app.zipcode', 'app.region', 'app.date', 'app.payment_option', 'app.question', 'app.roster', 'app.role', 'app.roster_status', 'app.answer', 'app.payment', 'app.payment_type', 'app.leader', 'app.comment', 'app.comment_type', 'app.comments', 'app.notification', 'app.image', 'plugin.media.document', 'app.household_member', 'app.household', 'app.publication', 'app.publications_user', 'app.log', 'app.app_setting', 'app.alert', 'app.alerts_user', 'app.log');
+	var $fixtures = array('app.ministries_rev', 'app.involvements_rev','app.notification', 'app.user', 'app.group', 'app.profile', 'app.classification', 'app.job_category', 'app.school', 'app.campus', 'plugin.media.attachment', 'app.ministry', 'app.involvement', 'app.involvement_type', 'app.address', 'app.zipcode', 'app.region', 'app.date', 'app.payment_option', 'app.question', 'app.roster', 'app.role', 'app.roster_status', 'app.answer', 'app.payment', 'app.payment_type', 'app.leader', 'app.comment', 'app.comment_type', 'app.comments', 'app.notification', 'app.image', 'plugin.media.document', 'app.household_member', 'app.household', 'app.publication', 'app.publications_user', 'app.log', 'app.app_setting', 'app.alert', 'app.alerts_user', 'app.log', 'app.error');
 
 /**
  * Disable inserting all records by default. Use CakeTestCase::loadFixtures
@@ -22,6 +23,7 @@ class DatesControllerTestCase extends CoreTestCase {
 		$this->Dates->constructClasses();
 		$this->Dates->Component->initialize($this->Dates);
 		$this->Dates->QueueEmail = new MockQueueEmailComponent();
+		$this->Dates->RequestHandler = new MockRequestHandlerComponent();
 		$this->Dates->setReturnValue('isAuthorized', true);
 		$this->Dates->QueueEmail->setReturnValue('send', true);
 		$this->testController = $this->Dates;
@@ -118,7 +120,7 @@ class DatesControllerTestCase extends CoreTestCase {
 				'offset' => 0
 			)
 		);
-		$this->testAction('/test_dates/add', array(
+		$this->testAction('/dates/add/Involvement:2', array(
 			'data' => $data
 		));
 		$this->Dates->Date->id = 12;

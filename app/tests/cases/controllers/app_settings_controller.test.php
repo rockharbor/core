@@ -18,7 +18,6 @@ class AppSettingsControllerTestCase extends CoreTestCase {
 		$this->loadFixtures('AppSetting', 'Publication');
 		$this->AppSettings =& new TestAppSettingsController();
 		$this->AppSettings->constructClasses();
-		$this->AppSettings->Component->initialize($this->AppSettings);
 		$this->AppSettings->setReturnValue('isAuthorized', true);
 		$this->testController = $this->AppSettings;
 	}

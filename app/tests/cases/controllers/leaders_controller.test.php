@@ -20,7 +20,7 @@ class LeadersControllerTestCase extends CoreTestCase {
 		$this->Leaders =& new TestLeadersController();
 		$this->Leaders->constructClasses();
 		// necessary fixtures
-		$this->loadFixtures('Leader', 'User', 'Profile', 'Involvement', 'Notification');
+		$this->loadFixtures('Leader', 'User', 'Profile', 'Involvement', 'Notification', 'Group');
 		$this->Leaders->Component->initialize($this->Leaders);
 		$this->Leaders->QueueEmail = new MockQueueEmailComponent();
 		$this->Leaders->setReturnValue('isAuthorized', true);

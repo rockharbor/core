@@ -17,15 +17,11 @@ class CommentsControllerTestCase extends CoreTestCase {
 	var $autoFixtures = false;
 
 	function startTest() {
-		$this->loadFixtures('Aco', 'Aro', 'ArosAco');
 		$this->loadFixtures('Comment', 'Group', 'CommentType');
 		$this->Comments =& new TestCommentsController();
 		$this->Comments->constructClasses();
-		$this->Comments->Component->initialize($this->Comments);
 		$this->Comments->QueueEmail = new MockQueueEmailComponent();
 		$this->Comments->QueueEmail->setReturnValue('send', true);
-		$this->Comments->Session->write('Auth.User', array('id' => 1));
-		$this->Comments->Session->write('User', array('Group' => array('id' => 1, 'lft' => 1)));
 		$this->testController = $this->Comments;
 	}
 
@@ -123,7 +119,7 @@ class CommentsControllerTestCase extends CoreTestCase {
 				'comment' => 'This is a new comment'
 			)
 		);
-		$vars = $this->testAction('/comments/add', array(
+		$vars = $this->testAction('/comments/add/User:1', array(
 			'data' => $data,
 			'return' => 'vars'
 		));
@@ -146,7 +142,7 @@ class CommentsControllerTestCase extends CoreTestCase {
 				'comment' => 'This is an updated comment'
 			)
 		);
-		$vars = $this->testAction('/comments/edit/3', array(
+		$vars = $this->testAction('/comments/edit/3/User:3', array(
 			'data' => $data,
 			'return' => 'vars'
 		));
@@ -162,7 +158,7 @@ class CommentsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 
 		$this->Comments->Session->write('User', array('Group' => array('id' => 5, 'lft' => 5)));
-		$vars = $this->testAction('/comments/edit/3', array(
+		$vars = $this->testAction('/comments/edit/3/User:3', array(
 			'data' => $data,
 			'return' => 'vars'
 		));

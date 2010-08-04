@@ -188,9 +188,8 @@ class InvolvementsController extends AppController {
 
 		// if they can confirm a revision, there's no need to go through the confirmation process
 		if ($this->isAuthorized('involvements/revise')) {
-			$this->set('here', 'here');
 			$this->Involvement->Behaviors->disable('Confirm');
-		}
+		}		
 		
 		$this->Involvement->id = $id;
 		$revision = $this->Involvement->revision($id);
@@ -244,6 +243,7 @@ class InvolvementsController extends AppController {
 			if (empty($involvement['PaymentOption'])) {
 				$this->Session->setFlash('Cannot activate until a payment option is defined', 'flash_failure');
 				$this->redirect($this->emptyPage);
+				return;
 			}
 		}
 		

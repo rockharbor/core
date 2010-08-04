@@ -17,15 +17,13 @@ class PublicationsControllerTestCase extends CoreTestCase {
 	var $autoFixtures = false;
 
 	function startTest() {
-		$this->loadFixtures('Publication', 'PublicationsUser', 'User');
-
+		$this->loadFixtures('Publication', 'PublicationsUser', 'User', 'Group');
 		$this->Publications =& new TestPublicationsController();
 		$this->Publications->constructClasses();		
 		$this->Publications->Component->initialize($this->Publications);
 		$this->Publications->QueueEmail = new MockQueueEmailComponent();
 		$this->Publications->setReturnValue('isAuthorized', true);
 		$this->Publications->QueueEmail->setReturnValue('send', true);
-
 		$this->testController = $this->Publications;
 	}
 
@@ -34,8 +32,7 @@ class PublicationsControllerTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 
-	function testSubscription() {		
-		//debug($this->testController);
+	function testSubscription() {
 		$vars = $this->testAction('/publications/subscriptions/User:1');
 		$results = sort($vars['subscriptions']);
 		$expected = array(1,2);
