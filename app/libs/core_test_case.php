@@ -30,6 +30,14 @@ Mock::generatePartial('AclComponent', 'MockAclComponent', array('check'));
 class CoreTestCase extends CakeTestCase {
 
 /**
+ * Components are initialized once to avoid redirect loop issues
+ * 
+ * @var boolean
+ * @access protected
+ */
+	var $_componentsInitialized = false;
+
+/**
  * The controller we're testing. Set to null to use the original
  * `CakeTestCase::testAction` function.
  * 
@@ -99,7 +107,8 @@ class CoreTestCase extends CakeTestCase {
 		$Controller->action = $urlParams['plugin'].'/'.$urlParams['controller'].'/'.$urlParams['action'];
 
 		// only initialize the components once
-		if (empty($Controller->Component->_loaded)) {
+		if ($this->_componentsInitialized === false) {
+			$this->_componentsInitialized = true;
 			$Controller->Component->initialize($Controller);
 		}
 
