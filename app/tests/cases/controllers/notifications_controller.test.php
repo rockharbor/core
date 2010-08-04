@@ -1,18 +1,13 @@
 <?php
 /* Notifications Test cases generated on: 2010-07-09 10:07:32 : 1278696092 */
+App::import('Lib', 'CoreTestCase');
+App::import('Component', 'QueueEmail');
 App::import('Controller', 'Notifications');
 
-class TestNotificationsController extends NotificationsController {
-	function redirect($url, $status = null, $exit = true) {
-		$this->redirectUrl = $url;
-	}
+Mock::generate('QueueEmailComponent');
+Mock::generatePartial('NotificationsController', 'TestNotificationsController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
 
-	function _stop($status = 0) {
-		$this->stopped = $status;
-	}
-}
-
-class NotificationsControllerTestCase extends CakeTestCase {
+class NotificationsControllerTestCase extends CoreTestCase {
 	var $fixtures = array(
 		'app.notification','app.ministries_rev', 'app.involvements_rev',
 		'app.user', 'app.group', 'app.profile', 'app.classification', 'app.job_category',
@@ -25,12 +20,16 @@ class NotificationsControllerTestCase extends CakeTestCase {
 		'app.alert', 'app.alerts_user'
 	);
 
+	var $autoFixtures = false;
+
 	function startTest() {
+		$this->loadFixtures('Notification');
 		$this->Notifications =& new TestNotificationsController();
 		$this->Notifications->constructClasses();
-		$this->Notifications->Component->initialize($this->Notifications);
-		$this->Notifications->Session->write('Auth.User', array('id' => 1));
-		$this->Notifications->Session->write('User', array('Group' => array('id' => 1)));
+		$this->Notifications->QueueEmail = new MockQueueEmailComponent();
+		$this->Notifications->QueueEmail->setReturnValue('send', true);
+		$this->Notifications->setReturnValue('isAuthorized', true);		
+		$this->testController = $this->Notifications;
 	}
 
 	function endTest() {
@@ -40,7 +39,7 @@ class NotificationsControllerTestCase extends CakeTestCase {
 	}
 
 	function testIndex() {
-		$vars = $this->testAction('/test_notifications/index/User:1', array(
+		$vars = $this->testAction('/notifications/index/User:1', array(
 			'return' => 'vars'
 		));
 		$expected = array(
@@ -71,7 +70,7 @@ class NotificationsControllerTestCase extends CakeTestCase {
 	}
 
 	function testIndexFiltered() {
-		$vars = $this->testAction('/test_notifications/index/invitation/User:1', array(
+		$vars = $this->testAction('/notifications/index/invitation/User:1', array(
 			'return' => 'vars'
 		));
 		$expected = array(
@@ -91,12 +90,12 @@ class NotificationsControllerTestCase extends CakeTestCase {
 	}
 
 	function testRead() {
-		$vars = $this->testAction('/test_notifications/read/3');
+		$vars = $this->testAction('/notifications/read/3');
 		$this->Notifications->Notification->id = 3;
 		$this->assertFalse($this->Notifications->Notification->field('read'));
 
 		$this->Notifications->Session->write('Auth.User', array('id' => 2));
-		$vars = $this->testAction('/test_notifications/read/3');
+		$vars = $this->testAction('/notifications/read/3');
 		$this->Notifications->Notification->id = 3;
 		$this->assertTrue($this->Notifications->Notification->field('read'));
 	}
@@ -105,7 +104,7 @@ class NotificationsControllerTestCase extends CakeTestCase {
 		$this->Notifications->Session->write('MultiSelect.test', array(
 			'selected' => array(1,2)
 		));
-		$vars = $this->testAction('/test_notifications/read/test');
+		$vars = $this->testAction('/notifications/read/test');
 		$results = $this->Notifications->Notification->find('all', array(
 			'conditions' => array(
 				'user_id' => 1
@@ -117,11 +116,11 @@ class NotificationsControllerTestCase extends CakeTestCase {
 	}
 
 	function testDelete() {
-		$vars = $this->testAction('/test_notifications/delete/3');
+		$vars = $this->testAction('/notifications/delete/3');
 		$this->assertNotNull($this->Notifications->Notification->read(null, 3));
 
 		$this->Notifications->Session->write('Auth.User', array('id' => 2));
-		$vars = $this->testAction('/test_notifications/delete/3');
+		$vars = $this->testAction('/notifications/delete/3');
 		$this->Notifications->Notification->id = 3;
 		$this->assertFalse($this->Notifications->Notification->read(null, 3));
 	}
@@ -130,7 +129,7 @@ class NotificationsControllerTestCase extends CakeTestCase {
 		$this->Notifications->Session->write('MultiSelect.test', array(
 			'selected' => array(1,2,3)
 		));
-		$vars = $this->testAction('/test_notifications/delete/test');
+		$vars = $this->testAction('/notifications/delete/test');
 		$results = $this->Notifications->Notification->find('count');
 		$this->assertEqual($results, 2);
 	}

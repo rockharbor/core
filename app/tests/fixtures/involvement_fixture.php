@@ -85,7 +85,7 @@ class InvolvementFixture extends CakeTestFixture {
 			'roster_visible' => 1,
 			'group_id' => NULL,
 			'signup' => 1,
-			'take_payment' => 0,
+			'take_payment' => 1,
 			'offer_childcare' => 0,
 			'active' => 1,
 			'created' => '2010-04-23 13:07:08',

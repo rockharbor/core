@@ -1,40 +1,13 @@
 <?php
 /* PaymentOptions Test cases generated on: 2010-07-16 11:07:27 : 1279303767 */
+App::import('Lib', 'CoreTestCase');
+App::import('Component', 'QueueEmail');
 App::import('Controller', 'PaymentOptions');
 
-class TestPaymentOptionsController extends PaymentOptionsController {
-	var $components = array(
-		'DebugKit.Toolbar' => array(
-			'autoRun' => false
-		),
-		'Referee.Whistle' => array(
-			'enabled' => false
-		),
-		'QueueEmail' => array(
-			'enabled' => false
-		)
-	);
+Mock::generate('QueueEmailComponent');
+Mock::generatePartial('PaymentOptionsController', 'TestPaymentOptionsController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
 
-	function redirect($url, $status = null, $exit = true) {
-		if (!$this->Session->check('TestCase.redirectUrl')) {
-			$this->Session->write('TestCase.flash', $this->Session->read('Message.flash'));
-			$this->Session->write('TestCase.redirectUrl', $url);
-		}
-	}
-
-	function _stop($status = 0) {
-		$this->Session->write('TestCase.stopped', $status);
-	}
-
-	function isAuthorized() {
-		$action = str_replace('controllers/Test', '', $this->Auth->action());
-		$auth = parent::isAuthorized($action);
-		$this->Session->write('TestCase.authorized', $auth);
-		return $auth;
-	}
-}
-
-class PaymentOptionsControllerTestCase extends CakeTestCase {
+class PaymentOptionsControllerTestCase extends CoreTestCase {
 	var $fixtures = array('app.notification', 'app.user', 'app.group', 'app.profile', 'app.classification', 'app.job_category', 'app.school', 'app.campus', 'plugin.media.attachment', 'app.ministry', 'app.involvement', 'app.involvement_type', 'app.address', 'app.zipcode', 'app.region', 'app.date', 'app.payment_option', 'app.question', 'app.roster', 'app.role', 'app.roster_status', 'app.answer', 'app.payment', 'app.payment_type', 'app.leader', 'app.comment', 'app.comment_type', 'app.comments', 'app.notification', 'app.image', 'plugin.media.document', 'app.household_member', 'app.household', 'app.publication', 'app.publications_user', 'app.log', 'app.app_setting', 'app.alert', 'app.alerts_user', 'app.aro', 'app.aco', 'app.aros_aco', 'app.ministries_rev', 'app.involvements_rev', 'app.error', 'app.log');
 
 /**
@@ -46,12 +19,11 @@ class PaymentOptionsControllerTestCase extends CakeTestCase {
 	function startTest() {
 		$this->PaymentOptions =& new TestPaymentOptionsController();
 		$this->PaymentOptions->constructClasses();
+		$this->PaymentOptions->QueueEmail = new MockQueueEmailComponent();
+		$this->PaymentOptions->QueueEmail->setReturnValue('send', true);
 		// necessary fixtures
-		$this->loadFixtures('Aco', 'Aro', 'ArosAco', 'Group', 'Error');
 		$this->loadFixtures('PaymentOption');
-		$this->PaymentOptions->Component->initialize($this->PaymentOptions);
-		$this->PaymentOptions->Session->write('Auth.User', array('id' => 1));
-		$this->PaymentOptions->Session->write('User', array('Group' => array('id' => 1)));
+		$this->testController = $this->PaymentOptions;
 	}
 
 	function endTest() {
@@ -61,7 +33,7 @@ class PaymentOptionsControllerTestCase extends CakeTestCase {
 	}
 
 	function testIndex() {
-		$vars = $this->testAction('/test_payment_options/index/Involvement:1', array(
+		$vars = $this->testAction('/payment_options/index/Involvement:1', array(
 			'return' => 'vars'
 		));
 		$results = Set::extract('/PaymentOption', $vars['paymentOptions']);
@@ -111,11 +83,11 @@ class PaymentOptionsControllerTestCase extends CakeTestCase {
 			)
 		);
 
-		$this->testAction('/test_payment_options/add', array(
+		$this->testAction('/payment_options/add/Involvement:3', array(
 			'data' => $data
 		));
 
-		$paymentOption = $this->PaymentOptions->PaymentOption->read(null, 4);
+		$paymentOption = $this->PaymentOptions->PaymentOption->read();
 		$result = $paymentOption['PaymentOption']['name'];
 		$this->assertEqual($result, 'Team CORE signups that cost more');
 	}
@@ -124,7 +96,7 @@ class PaymentOptionsControllerTestCase extends CakeTestCase {
 		$data = $this->PaymentOptions->PaymentOption->read(null, 1);
 		$data['PaymentOption']['name'] = 'New name';
 
-		$this->testAction('/test_payment_options/edit/1', array(
+		$this->testAction('/payment_options/edit/1', array(
 			'data' => $data
 		));
 
@@ -134,7 +106,7 @@ class PaymentOptionsControllerTestCase extends CakeTestCase {
 	}
 
 	function testDelete() {
-		$this->testAction('/test_payment_options/delete/1');
+		$this->testAction('/payment_options/delete/1');
 		$this->assertFalse($this->PaymentOptions->PaymentOption->read(null, 1));
 	}
 

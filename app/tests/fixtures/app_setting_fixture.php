@@ -36,6 +36,16 @@ class AppSettingFixture extends CakeTestFixture {
 			'value' => '1',
 			'model' => 'Publication',
 			'html' => 0
+		),
+		array(
+			'id' => 3,
+			'name' => 'ministry_content_edit_user',
+			'description' => 'The user to alert when content needs to be updated.',
+			'created' => '2010-03-18 00:00:00',
+			'modified' => '2010-06-02 12:25:22',
+			'value' => '1',
+			'model' => 'User',
+			'html' => 0
 		)
 	);
 }
