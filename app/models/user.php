@@ -374,6 +374,18 @@ class User extends AppModel {
  * @access public
  */ 
 	function prepareSearch(&$Controller, $data) {
+		$_search = array(
+			'Search' => array(
+				'operator' => 'AND'
+			),
+			'Profile' => array(
+				'Birthday' => array(),
+				'email' => array()
+			),
+			'Distance' => array()
+		);
+		$data = Set::merge($_search, $data);
+
 		// remove and store fields that aren't actually in the db
 		$operator = $data['Search']['operator'];
 		unset($data['Search']);
@@ -384,7 +396,7 @@ class User extends AppModel {
 		unset($data['Profile']['Birthday']);
 		$email = $data['Profile']['email'];
 		unset($data['Profile']['email']);
-		
+
 		// remove blank
 		$callback = function($item) use (&$callback) {
 			 if (is_array($item)) {
@@ -458,8 +470,9 @@ class User extends AppModel {
 					'Profile.alternate_email_2 LIKE' => '%'.$email.'%'
 				)
 			);
+			$link['Profile'] = array();
 		}
-		
+
 		// check for involvement
 		if (!empty($data['Roster']['Involvement']['name'])) {
 			$conditions[$operator]['Involvement.name LIKE'] = '%'.$data['Roster']['Involvement']['name'].'%';

@@ -205,6 +205,21 @@ class UserTestCase extends CakeTestCase {
 			)
 		);
 		$this->assertEqual($results, $expected);
+
+		$search = array(
+			'User' => array(
+				'username' => 'jharris'
+			)
+		);
+		$results = $this->User->prepareSearch($this->Controller, $search);
+		$expected = array(
+			'link' => array(),
+			'group' => 'User.id',
+			'conditions' => array(
+				'User.username LIKE' => '%jharris%'
+			)
+		);
+		$this->assertEqual($results, $expected);
 	}
 
 	function testGenerateUsername() {
