@@ -78,7 +78,7 @@ class SysEmailsController extends AppController {
 		}
 		
 		if (empty($this->data)) {
-			$bodyElement = 'email/bug_report';
+			$bodyElement = 'email'.DS.'bug_report';
 			$this->data['SysEmail']['subject'] = 'Bug Report :: [enter short description here]';
 		} else {
 			$bodyElement = '';
@@ -124,7 +124,7 @@ class SysEmailsController extends AppController {
 				case 'Involvement':
 					$involvementRoster = ClassRegistry::init('Involvement')->find('all', array(
 						'conditions' => array(
-							'id' => $this->passedArgs[$this->passedArgs['model']]
+							'Involvement.id' => $this->passedArgs[$this->passedArgs['model']]
 						),
 						'contain' => array(
 							'Roster'
@@ -137,7 +137,7 @@ class SysEmailsController extends AppController {
 			
 			$search = array(
 				'conditions' => array(
-					'id' => $userIds
+					'User.id' => $toUsers
 				),
 				'contain' => array(
 					'Profile'
@@ -146,6 +146,7 @@ class SysEmailsController extends AppController {
 			
 			// no uid will be set, so set one and save this search
 			$this->MultiSelect->saveSearch($search);
+			$uid = $this->MultiSelect->_token;
 		} else {
 			$search = $this->MultiSelect->getSearch($uid);
 			$userIds = $this->MultiSelect->getSelected($uid);
