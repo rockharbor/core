@@ -18,13 +18,6 @@ class HouseholdTestCase extends CakeTestCase {
 
 	var $autoFixtures = false;
 
-	function _prepareAction($action = '') {
-		$this->Household->params = Router::parse($action);
-		$this->Household->passedArgs = array_merge($this->Household->params['named'], $this->Household->params['pass']);
-		$this->Household->params['url'] = $this->Household->params;
-		$this->Household->beforeFilter();
-	}
-
 	function startTest() {
 		$this->loadFixtures('Household', 'HouseholdMember', 'User');
 		$this->Household =& ClassRegistry::init('Household');
@@ -33,6 +26,16 @@ class HouseholdTestCase extends CakeTestCase {
 	function endTest() {
 		unset($this->Household);
 		ClassRegistry::flush();
+	}
+
+	function testGetHouseholds() {
+		$results = sort($this->Household->getHouseholds(3));
+		$expected = array(1, 2, 3);
+		$this->assertEqual($results, $expected);
+
+		$results = $this->Household->getHouseholds(3, true);
+		$expected = array(3);
+		$this->assertEqual($results, $expected);
 	}
 
 	function testIsMember() {
@@ -61,7 +64,7 @@ class HouseholdTestCase extends CakeTestCase {
 	function testIsContactFor() {
 		$this->assertTrue($this->Household->isContactFor(2,3));
 		$this->assertFalse($this->Household->isContactFor(1,2));
-		$this->assertFalse($this->Household->isContactFor(1,3));
+		$this->assertTrue($this->Household->isContactFor(1,3));
 	}
 
 	function testCreateHousehold() {

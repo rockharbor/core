@@ -24,6 +24,12 @@ class HouseholdFixture extends CakeTestFixture {
 			'contact_id' => 2,
 			'created' => '2010-04-08 07:35:48',
 			'modified' => '2010-04-08 07:35:48'
+		),
+		array(
+			'id' => 3,
+			'contact_id' => 3,
+			'created' => '2010-04-08 07:35:48',
+			'modified' => '2010-04-08 07:35:48'
 		)
 	);
 }

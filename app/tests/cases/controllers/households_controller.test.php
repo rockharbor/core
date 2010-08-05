@@ -40,8 +40,9 @@ class HouseholdsControllerTestCase extends CoreTestCase {
 				'HouseholdMember.user_id' => 1
 			)
 		));
-		$this->assertEqual($householdMember[0]['HouseholdMember']['id'], 4);
-		$this->assertEqual($householdMember[0]['HouseholdMember']['household_id'], 1);
+		$results = sort($this->Households->Household->getHouseholds(1));
+		$expected = array(1);
+		$this->assertEqual($results, $expected);
 
 		$this->testAction('/households/shift_households/1/2/User:1');
 		$householdMember = $this->Households->Household->HouseholdMember->find('all', array(
@@ -49,8 +50,9 @@ class HouseholdsControllerTestCase extends CoreTestCase {
 				'HouseholdMember.user_id' => 1
 			)
 		));
-		$this->assertEqual($householdMember[0]['HouseholdMember']['id'], 4);
-		$this->assertEqual($householdMember[1]['HouseholdMember']['id'], 5);
+		$results = sort($this->Households->Household->getHouseholds(1));
+		$expected = array(1, 2);
+		$this->assertEqual($results, $expected);
 	}
 
 	function testMakeHouseholdContact() {
@@ -75,6 +77,12 @@ class HouseholdsControllerTestCase extends CoreTestCase {
 				'Household' => array(
 					'id' => 2,
 					'contact_id' => 1
+				)
+			),
+			array(
+				'Household' => array(
+					'id' => 3,
+					'contact_id' => 3
 				)
 			)
 		);

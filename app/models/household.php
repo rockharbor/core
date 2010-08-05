@@ -49,6 +49,27 @@ class Household extends AppModel {
 		'HouseholdMember'
 	);
 
+
+	function getHouseholds($userId, $mustBeContact = false) {
+		$conditions = array(
+			'HouseholdMember.user_id' => $userId
+		);
+
+		if ($mustBeContact) {
+			$conditions['Household.contact_id'] = $userId;
+		}
+
+		$this->HouseholdMember->recursive = 0;
+		$households = $this->HouseholdMember->find('all', array(
+			'conditions' => $conditions,
+			'contain' => array(
+				'Household'
+			)
+		));
+
+		return Set::extract('/Household/id', $households);
+	}
+
 /**
  * Checks if a user is a member of a household
  *
