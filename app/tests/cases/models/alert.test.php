@@ -1,28 +1,9 @@
 <?php
 /* Alert Test cases generated on: 2010-06-30 07:06:18 : 1277908338 */
+App::import('Lib', 'CoreTestCase');
 App::import('Model', 'Alert');
 
-class AlertTestCase extends CakeTestCase {
-	var $fixtures = array('app.log', 'app.alert', 'app.group', 'app.user', 
-		'app.profile', 'app.classification', 'app.job_category', 'app.school',
-		'app.campus', 'plugin.media.attachment', 'app.ministry', 'app.involvement',
-		'app.involvement_type', 'app.address', 'app.zipcode', 'app.region',
-		'app.date', 'app.payment_option', 'app.question', 'app.roster', 'app.role',
-		'app.answer', 'app.payment', 'app.payment_type',
-		'app.leader', 'app.comment', 'app.comment_type', 'app.comments',
-		'app.notification', 'app.image', 'plugin.media.document',
-		'app.household_member', 'app.household', 'app.publication',
-		'app.publications_user', 'app.alerts_user', 'app.ministries_rev', 'app.involvements_rev');
-
-	var $autoFixtures = false;
-
-	function _prepareAction($action = '') {
-		$this->Alert->params = Router::parse($action);
-		$this->Alert->passedArgs = array_merge($this->Alert->params['named'], $this->Alert->params['pass']);
-		$this->Alert->params['url'] = $this->Alert->params;
-		$this->Alert->beforeFilter();
-	}
-
+class AlertTestCase extends CoreTestCase {
 	function startTest() {
 		$this->loadFixtures('Alert', 'Group', 'User', 'AlertsUser');
 		$this->Alert =& ClassRegistry::init('Alert');

@@ -1,18 +1,11 @@
 <?php
 /* Roster Test cases generated on: 2010-07-26 14:07:11 : 1280180951 */
+App::import('Lib', 'CoreTestCase');
 App::import('Model', array('Roster', 'CreditCard'));
 
 Mock::generatePartial('CreditCard', 'MockCreditCard', array('save'));
 
-class RosterTestCase extends CakeTestCase {
-	var $fixtures = array('app.roster', 'app.user', 'app.group', 'app.profile', 'app.classification', 'app.job_category', 'app.school', 'app.campus', 'plugin.media.attachment', 'app.ministry', 'app.involvement', 'app.involvement_type', 'app.address', 'app.zipcode', 'app.region', 'app.date', 'app.payment_option', 'app.question', 'app.leader', 'app.role', 'app.comment', 'app.comment_type', 'app.comments', 'app.notification', 'app.image', 'plugin.media.document', 'app.household_member', 'app.household', 'app.payment', 'app.payment_type', 'app.publication', 'app.publications_user', 'app.answer', 'app.log', 'app.ministries_rev', 'app.involvements_rev');
-
-/**
- * Disable inserting all records by default. Use CakeTestCase::loadFixtures
- * to load the data needed for the test (or case).
- */
-	var $autoFixtures = false;
-
+class RosterTestCase extends CoreTestCase {
 	function startTest() {
 		$this->loadFixtures('Roster', 'Payment', 'PaymentOption', 'Involvement', 'PaymentType');
 		$CreditCard = new MockCreditCard();

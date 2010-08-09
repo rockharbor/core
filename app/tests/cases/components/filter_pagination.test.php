@@ -47,6 +47,7 @@ class FilterPaginationTestCase extends CoreTestCase {
 	var $fixtures = array('app.paginate_test');
 
 	function startTest() {
+		$this->loadFixtures('PaginateTest');
 		$this->Controller = new MockPaginateTestsController();
 		$this->Controller->constructClasses();
 		$this->Controller->Component->initialize($this->Controller);

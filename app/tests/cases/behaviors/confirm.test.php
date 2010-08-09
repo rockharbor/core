@@ -1,24 +1,9 @@
 <?php
 /* Confirm Test cases generated on: 2010-07-06 11:07:24 : 1278439644 */
+App::import('Lib', 'CoreTestCase');
 App::import('Model', 'Ministry');
 
-class ConfirmBehaviorTestCase extends CakeTestCase {
-	var $fixtures = array('app.ministry', 'app.campus', 'plugin.media.attachment',
-		'app.leader', 'app.user', 'app.group', 'app.profile', 'app.classification',
-		'app.job_category', 'app.school', 'app.comment', 'app.comment_type',
-		'app.comments', 'app.notification', 'plugin.media.document', 'app.roster',
-		'app.involvement', 'app.involvement_type', 'app.address', 'app.zipcode',
-		'app.region', 'app.date', 'app.payment_option', 'app.question', 'app.role',
-		'app.answer', 'app.payment', 'app.payment_type',
-		'app.household_member', 'app.household', 'app.publication',
-		'app.publications_user', 'app.log', 'app.ministries_rev',
-		'app.involvements_rev');
-
-/**
- * Disable inserting all records by default. Use CakeTestCase::loadFixtures
- * to load the data needed for the test (or case).
- */
-	var $autoFixtures = false;
+class ConfirmBehaviorTestCase extends CoreTestCase {
 
 	function startTest() {
 		$this->loadFixtures('Ministry', 'Involvement', 'MinistriesRev', 'InvolvementsRev');

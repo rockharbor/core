@@ -1,19 +1,11 @@
 <?php
+App::import('Lib', 'CoreTestCase');
 App::import('Model', 'User');
 
-class AppModelTestCase extends CakeTestCase {
-	var $fixtures = array(
-		'app.user', 'app.group', 'app.profile', 'app.classification', 'app.job_category',
-		'app.school', 'app.campus', 'plugin.media.attachment', 'app.ministry', 'app.involvement',
-		'app.involvement_type', 'app.address', 'app.zipcode', 'app.region', 'app.date',
-		'app.payment_option', 'app.question', 'app.roster', 'app.role',
-		'app.answer', 'app.payment', 'app.payment_type', 'app.leader', 'app.comment', 'app.comment_type',
-		'app.comments', 'app.notification', 'app.image', 'plugin.media.document', 'app.household_member',
-		'app.household', 'app.publication', 'app.publications_user', 'app.log', 'app.ministries_rev', 'app.involvements_rev'
-	);
+class AppModelTestCase extends CoreTestCase {
 
 	function startTest() {
-		$this->loadFixtures('User');
+		$this->loadFixtures('User', 'Group', 'Profile');
 		$this->User =& ClassRegistry::init('User');
 	}
 
@@ -96,6 +88,7 @@ class AppModelTestCase extends CakeTestCase {
 	}
 
 	function testOwnedBy() {
+		$this->loadFixtures('Address', 'Roster');
 		$this->assertFalse($this->User->ownedBy());
 		$this->assertTrue($this->User->ownedBy(1, 1));
 		$this->assertTrue($this->User->Address->ownedBy(1, 1));

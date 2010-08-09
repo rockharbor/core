@@ -1,5 +1,6 @@
 <?php
 /* User Test cases generated on: 2010-06-28 09:06:40 : 1277741500*/
+App::import('Lib', 'CoreTestCase');
 App::import('Model', 'User');
 App::import('Controller', 'App');
 
@@ -7,19 +8,10 @@ class UsersTestController extends AppController {
 
 }
 
-class UserTestCase extends CakeTestCase {
-	var $fixtures = array(
-		'app.user', 'app.group', 'app.profile', 'app.classification', 'app.job_category',
-		'app.school', 'app.campus', 'plugin.media.attachment', 'app.ministry', 'app.involvement',
-		'app.involvement_type', 'app.address', 'app.zipcode', 'app.region', 'app.date',
-		'app.payment_option', 'app.question', 'app.roster', 'app.role',
-		'app.answer', 'app.payment', 'app.payment_type', 'app.leader', 'app.comment', 'app.comment_type',
-		'app.comments', 'app.notification', 'app.image', 'plugin.media.document', 'app.household_member',
-		'app.household', 'app.publication', 'app.publications_user', 'app.log', 'app.ministries_rev', 'app.involvements_rev'
-	);
-
+class UserTestCase extends CoreTestCase {
+	
 	function startTest() {
-		$this->loadFixtures('User');
+		$this->loadFixtures('User', 'Group');
 		$this->User =& ClassRegistry::init('User');
 	}
 
@@ -29,6 +21,8 @@ class UserTestCase extends CakeTestCase {
 	}
 
 	function testFindUser() {
+		$this->loadFixtures('Profile');
+
 		$result = $this->User->findUser('jharris');
 		$expected = 1;
 		$this->assertEqual($result, $expected);
@@ -46,6 +40,8 @@ class UserTestCase extends CakeTestCase {
 	}
 
 	function testCreateUser() {
+		$this->loadFixtures('Address', 'Profile', 'Household', 'HouseholdMember');
+
 		$creator = array(
 			'User' => array(
 				'id' => 10,
@@ -164,6 +160,8 @@ class UserTestCase extends CakeTestCase {
 	}
 
 	function testPrepareSearch() {
+		$this->loadFixtures('Address', 'Profile');
+
 		$this->Controller = new UsersTestController();
 
 		$search = array(

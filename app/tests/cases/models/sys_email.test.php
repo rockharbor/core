@@ -1,20 +1,9 @@
 <?php
 /* SysEmail Test cases generated on: 2010-08-05 09:08:32 : 1281025892 */
+App::import('Lib', 'CoreTestCase');
 App::import('Model', array('SysEmail', 'Document'));
 
-class SysEmailTestCase extends CakeTestCase {
-	var $fixtures = array(
-		'app.user', 'app.group', 'app.profile', 'app.classification', 'app.job_category',
-		'app.school', 'app.campus', 'app.attachment', 'app.ministry', 'app.involvement',
-		'app.involvement_type', 'app.address', 'app.zipcode', 'app.region', 'app.date',
-		'app.payment_option', 'app.question', 'app.roster', 'app.role',
-		'app.answer', 'app.payment', 'app.payment_type', 'app.leader', 'app.comment', 'app.comment_type',
-		'app.comments', 'app.notification', 'app.household_member',
-		'app.household', 'app.publication', 'app.publications_user', 'app.log', 'app.ministries_rev', 'app.involvements_rev'
-	);
-
-	var $autoFixtures = false;
-
+class SysEmailTestCase extends CoreTestCase {
 	function startTest() {
 		$this->loadFixtures('Attachment');
 		$this->SysEmail =& ClassRegistry::init('SysEmail');

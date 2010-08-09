@@ -9,25 +9,6 @@ Mock::generatePartial('NotifierComponent', 'MockNotifierComponent', array('_rend
 Mock::generatePartial('InvolvementsController', 'TestInvolvementsController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
 
 class InvolvementsControllerTestCase extends CoreTestCase {
-	var $fixtures = array('app.notification', 'app.user', 'app.group',
-		'app.profile', 'app.classification', 'app.job_category', 'app.school',
-		'app.campus', 'plugin.media.attachment', 'app.ministry',
-		'app.involvement', 'app.involvement_type', 'app.address',
-		'app.zipcode', 'app.region', 'app.date', 'app.payment_option',
-		'app.question', 'app.roster', 'app.role',
-		'app.answer', 'app.payment', 'app.payment_type', 'app.leader',
-		'app.comment', 'app.comment_type', 'app.comments', 'app.notification',
-		'app.image', 'plugin.media.document', 'app.household_member',
-		'app.household', 'app.publication', 'app.publications_user',
-		'app.log', 'app.app_setting', 'app.alert', 'app.alerts_user', 'app.aro',
-		'app.aco', 'app.aros_aco', 'app.ministries_rev', 'app.involvements_rev',
-		'app.error');
-
-/**
- * Disable inserting all records by default. Use CakeTestCase::loadFixtures
- * to load the data needed for the test (or case).
- */
-	var $autoFixtures = false;
 
 	function startTest() {
 		$this->loadFixtures('Involvement', 'Roster', 'User', 'InvolvementType', 'Group', 'Ministry');
@@ -88,7 +69,6 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$this->testAction('/involvements/add', array(
 			'data' => $data
 		));
-		$this->Involvements->Involvement->id = 5;
 		$this->assertEqual($this->Involvements->Involvement->field('name'), 'A test involvement');
 		$this->assertEqual($this->Involvements->Involvement->field('group_id'), 0);
 	}

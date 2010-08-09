@@ -1,11 +1,10 @@
 <?php
 /* School Test cases generated on: 2010-08-04 13:08:21 : 1280952021 */
+App::import('Lib', 'CoreTestCase');
 App::import('Model', 'School');
 
-class SchoolTestCase extends CakeTestCase {
+class SchoolTestCase extends CoreTestCase {
 	var $fixtures = array('app.school');
-
-	var $autoFixtures = false;
 
 	function startTest() {
 		$this->School =& ClassRegistry::init('School');

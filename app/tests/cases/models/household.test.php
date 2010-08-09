@@ -1,22 +1,9 @@
 <?php
 /* Household Test cases generated on: 2010-06-29 11:06:11 : 1277837891 */
+App::import('Lib', 'CoreTestCase');
 App::import('Model', 'Household');
 
-class HouseholdTestCase extends CakeTestCase {
-	var $fixtures = array(
-		'app.household', 'app.user', 'app.group', 'app.profile',
-		'app.classification', 'app.job_category', 'app.school', 'app.campus',
-		'plugin.media.attachment', 'app.ministry', 'app.involvement',
-		'app.involvement_type', 'app.address', 'app.zipcode', 'app.region',
-		'app.date', 'app.payment_option', 'app.question', 'app.roster',
-		'app.role', 'app.answer', 'app.payment',
-		'app.payment_type', 'app.leader', 'app.comment', 'app.comment_type',
-		'app.comments', 'app.notification', 'app.image', 'plugin.media.document',
-		'app.household_member', 'app.publication', 'app.publications_user',
-		'app.log', 'app.ministries_rev', 'app.involvements_rev'
-	);
-
-	var $autoFixtures = false;
+class HouseholdTestCase extends CoreTestCase {
 
 	function startTest() {
 		$this->loadFixtures('Household', 'HouseholdMember', 'User', 'Profile');

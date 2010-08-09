@@ -1,20 +1,9 @@
 <?php
 /* Date Test cases generated on: 2010-06-30 10:06:30 : 1277920170 */
+App::import('Lib', 'CoreTestCase');
 App::import('Model', 'Date');
 
-class DateTestCase extends CakeTestCase {
-	var $fixtures = array('app.date', 'app.involvement', 'app.ministry',
-		'app.campus', 'plugin.media.attachment', 'app.leader', 'app.user',
-		'app.group', 'app.profile', 'app.classification', 'app.job_category',
-		'app.school', 'app.comment', 'app.comment_type', 'app.comments',
-		'app.notification', 'plugin.media.document', 'app.roster', 'app.role',
-		'app.payment_option', 'app.answer', 'app.question',
-		'app.payment', 'app.payment_type', 'app.address', 'app.zipcode',
-		'app.region', 'app.household_member', 'app.household', 'app.publication',
-		'app.publications_user', 'app.involvement_type', 'app.log', 'app.ministries_rev', 'app.involvements_rev');
-
-	var $autoFixtures = false;
-
+class DateTestCase extends CoreTestCase {
 	function startTest() {		
 		$this->Date =& ClassRegistry::init('Date');
 	}

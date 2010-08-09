@@ -3,28 +3,9 @@ App::import('Lib', 'CoreTestCase');
 App::import('Controller', 'App');
 
 class AppControllerTestCase extends CoreTestCase {
-	var $fixtures = array('app.notification', 'app.user', 'app.group',
-		'app.profile', 'app.classification', 'app.job_category', 'app.school',
-		'app.campus', 'plugin.media.attachment', 'app.ministry',
-		'app.involvement', 'app.involvement_type', 'app.address', 'app.zipcode',
-		'app.region', 'app.date', 'app.payment_option', 'app.question',
-		'app.roster', 'app.role', 'app.answer',
-		'app.payment', 'app.payment_type', 'app.leader', 'app.comment',
-		'app.comment_type', 'app.comments', 'app.notification', 'app.image',
-		'plugin.media.document', 'app.household_member', 'app.household',
-		'app.publication', 'app.publications_user', 'app.log', 'app.app_setting',
-		'app.alert', 'app.alerts_user', 'app.aro', 'app.aco', 'app.aros_aco',
-		'app.ministries_rev', 'app.involvements_rev');
-
-/**
- * Disable inserting all records by default. Use CakeTestCase::loadFixtures
- * to load the data needed for the test (or case).
- */
-	var $autoFixtures = false;
 
 	function startTest() {
-		$this->loadFixtures('User', 'Group', 'Notification', 'Alert', 'Aco');
-		$this->loadFixtures('Aro', 'ArosAco', 'Household', 'HouseholdMember');
+		$this->loadFixtures('User', 'Group', 'Notification', 'Alert', 'Household', 'HouseholdMember');
 		$this->loadFixtures('Leader', 'Campus', 'Ministry', 'Involvement');
 		$this->App =& new AppController();
 		$this->App->constructClasses();

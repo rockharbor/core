@@ -9,13 +9,6 @@ Mock::generatePartial('RequestHandlerComponent', 'MockRequestHandlerComponent', 
 Mock::generatePartial('ReportsController', 'TestReportsController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
 
 class ReportsControllerTestCase extends CoreTestCase {
-	var $fixtures = array('app.notification', 'app.user', 'app.group', 'app.profile', 'app.classification', 'app.job_category', 'app.school', 'app.campus', 'plugin.media.attachment', 'app.ministry', 'app.involvement', 'app.involvement_type', 'app.address', 'app.zipcode', 'app.region', 'app.date', 'app.payment_option', 'app.question', 'app.roster', 'app.role', 'app.answer', 'app.payment', 'app.payment_type', 'app.leader', 'app.comment', 'app.comment_type', 'app.comments', 'app.notification', 'app.image', 'plugin.media.document', 'app.household_member', 'app.household', 'app.publication', 'app.publications_user', 'app.log', 'app.app_setting', 'app.alert', 'app.alerts_user', 'app.aro', 'app.aco', 'app.aros_aco', 'app.ministries_rev', 'app.involvements_rev', 'app.error', 'app.log');
-
-/**
- * Disable inserting all records by default. Use CakeTestCase::loadFixtures
- * to load the data needed for the test (or case).
- */
-	var $autoFixtures = false;
 
 	function startTest() {
 		// necessary fixtures
