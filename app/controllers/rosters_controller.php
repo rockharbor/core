@@ -71,40 +71,14 @@ class RostersController extends AppController {
 		
 		$involvement = $this->Roster->Involvement->read(null, $this->passedArgs['Involvement']);
 		
-		/*$profileConditions = array(
-			'or' => array(
-				'Profile.household_contact_signups' => true,
-				'Profile.child' => true
-			)
-		);*/
-		
 		// get roster ids
 		$roster = $this->Roster->find('all', compact('conditions'));
 		$rosterIds = Set::extract('/Roster/user_id', $roster);
-		
-		// get user and household ids
-		$user = $this->Roster->User->find('first', array(
-			'conditions' => $userConditions,
-			'contain' => array(
-				'Profile',
-				'HouseholdMember' => array(
-					'Household' => array(
-						'HouseholdMember' => array(
-							'User' => array(
-								'Profile' => array(
-									'conditions' => $profileConditions
-								)
-							)
-						)
-					)				
-				),
-				'Group'
-			)
-		));		
-		$userIds = Set::extract('/HouseholdMember/Household/HouseholdMember/User/id', $user);
-		
+
+		// if we're limiting this to one user, just pull their household signup data
 		if (isset($this->passedArgs['User'])) {
-			$conditions['User.id'] = array_intersect($rosterIds, $userids);
+			$householdIds = $this->Roster->User->HouseholdMember->Household->getHouseholds($this->passedArgs['User']);
+			$conditions['User.id'] = array_intersect($rosterIds, $householdIds);
 		} else {
 			$conditions['User.id'] = $rosterIds;
 		}
@@ -119,7 +93,6 @@ class RostersController extends AppController {
 			'Role',
 			'PaymentOption',
 			'Parent',
-			'RosterStatus',
 			'Payment'
 		);
 		
@@ -189,12 +162,21 @@ class RostersController extends AppController {
  * - integer `Involvement` The involvement opportunity
  */
 	function add() {
-		$userId = isset($this->passedArgs['User']) ? $this->passedArgs['User'] : null;
-		$involvementId = isset($this->passedArgs['Involvement']) ? $this->passedArgs['Involvement'] : null;
+		$userId = $this->passedArgs['User'];
+		$involvementId = $this->passedArgs['Involvement'];
 		
 		if (!$userId || !$involvementId) {
 			$this->Session->setFlash('Invalid id', 'flash_failure');
 			$this->redirect(array('action'=>'index'));
+		}
+
+		// get needed information about the user and this involvement
+		$involvement = $this->Roster->Involvement->read(null, $involvementId);
+
+		// can't sign up for inactive involvements
+		if (!$involvement['Involvement']['active']) {
+			$this->Session->setFlash('You cannot sign up for an inactive event.', 'flash_failure');
+			$this->redirect($this->emptyPage);
 		}
 		
 		// bind faux-model to make use of validation
@@ -218,56 +200,18 @@ class RostersController extends AppController {
 			),
 			'contain' => false
 		));
-		// get needed information about the user and this involvement
-		$involvement = $this->Roster->Involvement->read(null, $involvementId);	
 		
-		// can't sign up for inactive involvements
-		if (!$involvement['Involvement']['active']) {
-			$this->Session->setFlash('You cannot sign up for an inactive event.', 'flash_failure');
-			$this->redirect($this->emptyPage);
-		}
-		
-		// get user info and all household info where they are the contact
-		$user = $this->Roster->User->find('first', array(
-			'conditions' => array(
-				'User.id' => $userId
-			),
-			'contain' => array(
-				'Profile',
-				'HouseholdMember' => array(
-					'Household' => array(
-						'HouseholdMember' => array(
-							'conditions' => array(
-								'not' => array(
-									'HouseholdMember.user_id' => $involvementRoster
-								)
-							),
-							'User' => array(
-								'Profile' => array(
-									'conditions' => array(
-										'or' => array(
-											'Profile.household_contact_signups' => true,
-											'Profile.child' => true
-										)
-									)
-								)
-							)
-						)
-					)				
-				),
-				'Group'
-			)
-		));
+		$this->Roster->User->contain(array('Profile'));
+		$user = $this->Roster->User->read(null, $userId);
+
+		$members = $this->Roster->User->HouseholdMember->Household->getMemberIds($userId, true);
 				
 		// they're submitting the form
 		if (!empty($this->data)) {
-			// first things we'll do is validate all the data. if it all validates, we'll try to
+			// first thing we'll do is validate all the data. if it all validates, we'll try to
 			// process the credit card. if the credit card goes through, we'll add everyone to the 
 			// roster (including childcare) and save the payment info
-			
-			// get confirm status
-			$confirmStatus = $this->Roster->RosterStatus->findByName('Confirmed');
-			
+						
 			// get chosen payment option 
 			if ($involvement['Involvement']['take_payment']) {
 				$paymentOption = $this->Roster->PaymentOption->read(null, $this->data['Default']['payment_option_id']);
@@ -281,7 +225,7 @@ class RostersController extends AppController {
 			foreach ($this->data['Roster'] as $roster => &$values) {
 				// set defaults
 				$values['Roster']['involvement_id'] = $this->data['Default']['involvement_id'];
-				$values['Roster']['roster_status_id'] = $confirmStatus['RosterStatus']['id'];				
+				$values['Roster']['roster_status'] = 1;
 				if (isset($this->data['Default']['payment_option_id'])) {
 					$values['Roster']['payment_option_id'] = $this->data['Default']['payment_option_id'];
 				}
@@ -344,7 +288,7 @@ class RostersController extends AppController {
 			$cValidates = true;
 			if (isset($this->data['Child']) && $pValidates) {
 				foreach ($this->data['Child'] as &$child) {
-					$child['Roster']['roster_status_id'] = $confirmStatus['RosterStatus']['id'];
+					$child['Roster']['roster_status'] = 1;
 					$child['Roster']['parent_id'] = $parent;
 					$child['Roster']['involvement_id'] = $this->data['Default']['involvement_id'];
 										
@@ -566,12 +510,11 @@ class RostersController extends AppController {
 		
 		if (!empty($this->data)) {
 			// append status to defaults
-			$confirmStatus = $this->Roster->RosterStatus->findByName('Confirmed');
-			$this->data['Roster']['roster_status_id'] = $confirmStatus['RosterStatus']['id'];
+			$this->data['Roster']['roster_status'] = 1;
 			
 			if (isset($this->data['Child'])) {
 				foreach ($this->data['Child'] as &$child) {
-					$child['roster_status_id'] = $confirmStatus['RosterStatus']['id'];
+					$child['roster_status'] = 1;
 					$child['parent_id'] = $this->data['Roster']['user_id'];
 					$child['involvement_id'] = $this->data['Roster']['involvement_id'];
 					$child['payment_option_id'] = $this->data['Roster']['payment_option_id'];

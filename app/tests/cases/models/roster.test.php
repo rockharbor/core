@@ -3,7 +3,7 @@
 App::import('Model', 'Roster');
 
 class RosterTestCase extends CakeTestCase {
-	var $fixtures = array('app.roster', 'app.user', 'app.group', 'app.profile', 'app.classification', 'app.job_category', 'app.school', 'app.campus', 'plugin.media.attachment', 'app.ministry', 'app.involvement', 'app.involvement_type', 'app.address', 'app.zipcode', 'app.region', 'app.date', 'app.payment_option', 'app.question', 'app.leader', 'app.role', 'app.comment', 'app.comment_type', 'app.comments', 'app.notification', 'app.image', 'plugin.media.document', 'app.household_member', 'app.household', 'app.payment', 'app.payment_type', 'app.publication', 'app.publications_user', 'app.roster_status', 'app.answer', 'app.log', 'app.ministries_rev', 'app.involvements_rev');
+	var $fixtures = array('app.roster', 'app.user', 'app.group', 'app.profile', 'app.classification', 'app.job_category', 'app.school', 'app.campus', 'plugin.media.attachment', 'app.ministry', 'app.involvement', 'app.involvement_type', 'app.address', 'app.zipcode', 'app.region', 'app.date', 'app.payment_option', 'app.question', 'app.leader', 'app.role', 'app.comment', 'app.comment_type', 'app.comments', 'app.notification', 'app.image', 'plugin.media.document', 'app.household_member', 'app.household', 'app.payment', 'app.payment_type', 'app.publication', 'app.publications_user', 'app.answer', 'app.log', 'app.ministries_rev', 'app.involvements_rev');
 
 /**
  * Disable inserting all records by default. Use CakeTestCase::loadFixtures

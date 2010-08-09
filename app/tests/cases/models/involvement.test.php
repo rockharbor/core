@@ -8,7 +8,7 @@ class InvolvementTestCase extends CakeTestCase {
 		'app.profile', 'app.classification', 'app.job_category', 'app.school',
 		'app.comment', 'app.comment_type', 'app.comments', 'app.notification',
 		'plugin.media.document', 'app.roster', 'app.role', 'app.payment_option',
-		'app.roster_status', 'app.answer', 'app.question', 'app.payment',
+		'app.answer', 'app.question', 'app.payment',
 		'app.payment_type', 'app.address', 'app.zipcode', 'app.region',
 		'app.household_member', 'app.household', 'app.publication',
 		'app.publications_user', 'app.involvement_type', 'app.date',

@@ -9,7 +9,7 @@ class CampusTestCase extends CakeTestCase {
 		'app.comments', 'app.notification', 'plugin.media.document', 'app.roster',
 		'app.involvement', 'app.involvement_type', 'app.address', 'app.zipcode',
 		'app.region', 'app.date', 'app.payment_option', 'app.question',
-		'app.leader', 'app.role', 'app.roster_status', 'app.answer', 'app.payment',
+		'app.leader', 'app.role', 'app.answer', 'app.payment',
 		'app.payment_type', 'app.household_member', 'app.household',
 		'app.publication', 'app.publications_user', 'app.ministries_rev', 'app.involvements_rev');
 

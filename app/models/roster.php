@@ -23,6 +23,15 @@ class Roster extends AppModel {
  */
 	var $name = 'Roster';
 	
+/**
+ * Roster statuses
+ * 
+ * @var array
+ */
+	var $statuses = array(
+		0 => 'Pending',
+		1 => 'Confirmed'
+	);
 
 /**
  * Validation rules
@@ -32,7 +41,7 @@ class Roster extends AppModel {
  * @var array
  */
 	var $validate = array(
-		'roster_status_id' => array(
+		'roster_status' => array(
 			'rule' => 'notEmpty',
 			'required' => true
 		)
@@ -84,8 +93,7 @@ class Roster extends AppModel {
 		'Parent' => array(
 			'className' => 'User',
 			'foreignKey' => 'parent_id'
-		),
-		'RosterStatus'
+		)
 	);
 
 /**

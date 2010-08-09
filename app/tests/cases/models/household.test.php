@@ -9,7 +9,7 @@ class HouseholdTestCase extends CakeTestCase {
 		'plugin.media.attachment', 'app.ministry', 'app.involvement',
 		'app.involvement_type', 'app.address', 'app.zipcode', 'app.region',
 		'app.date', 'app.payment_option', 'app.question', 'app.roster',
-		'app.role', 'app.roster_status', 'app.answer', 'app.payment',
+		'app.role', 'app.answer', 'app.payment',
 		'app.payment_type', 'app.leader', 'app.comment', 'app.comment_type',
 		'app.comments', 'app.notification', 'app.image', 'plugin.media.document',
 		'app.household_member', 'app.publication', 'app.publications_user',
