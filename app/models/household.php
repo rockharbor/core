@@ -45,12 +45,23 @@ class Household extends AppModel {
 		)
 	);
 
+/**
+ * HasMany association link
+ *
+ * @var array
+ */
 	var $hasMany = array(
 		'HouseholdMember'
 	);
 
-
-	function getHouseholds($userId, $mustBeContact = false) {
+/**
+ * Gets a list of user ids that are in the same household as a user
+ *
+ * @param integer $userId The user
+ * @param boolean $mustBeContact Only get households where user is contact?
+ * @return array Array of ids
+ */
+	function getMemberIds($userId, $mustBeContact = false) {
 		$conditions = array(
 			'HouseholdMember.user_id' => $userId
 		);
@@ -59,7 +70,39 @@ class Household extends AppModel {
 			$conditions['Household.contact_id'] = $userId;
 		}
 
-		$this->HouseholdMember->recursive = 0;
+		$householdMembers = $this->HouseholdMember->find('all', array(
+			'conditions' => $conditions,
+			'contain' => array(
+				'Household' => array(
+					'HouseholdMember' => array(
+						'conditions' => array(
+							'HouseholdMember.user_id <>' => $userId
+						)
+					)
+				)
+			)
+		));
+
+		// extract member ids
+		return Set::extract('/Household/HouseholdMember/user_id', $householdMembers);
+	}
+
+/**
+ * Gets a list of household ids for a user
+ *
+ * @param integer $userId The user
+ * @param boolean $mustBeContact Only get households where user is contact?
+ * @return array List of household ids
+ */
+	function getHouseholdIds($userId, $mustBeContact = false) {
+		$conditions = array(
+			'HouseholdMember.user_id' => $userId
+		);
+
+		if ($mustBeContact) {
+			$conditions['Household.contact_id'] = $userId;
+		}
+
 		$households = $this->HouseholdMember->find('all', array(
 			'conditions' => $conditions,
 			'contain' => array(

@@ -19,7 +19,7 @@ class HouseholdTestCase extends CakeTestCase {
 	var $autoFixtures = false;
 
 	function startTest() {
-		$this->loadFixtures('Household', 'HouseholdMember', 'User');
+		$this->loadFixtures('Household', 'HouseholdMember', 'User', 'Profile');
 		$this->Household =& ClassRegistry::init('Household');
 	}
 
@@ -28,12 +28,41 @@ class HouseholdTestCase extends CakeTestCase {
 		ClassRegistry::flush();
 	}
 
-	function testGetHouseholds() {
-		$results = sort($this->Household->getHouseholds(3));
+	function testGetMemberIds() {
+		$results = $this->Household->getMemberIds(1);
+		sort($results);
+		$expected = array(3);
+		$this->assertEqual($results, $expected);
+
+		$results = $this->Household->getMemberIds(1, true);
+		sort($results);
+		$expected = array(3);
+		$this->assertEqual($results, $expected);
+
+		$results = $this->Household->getMemberIds(3);
+		sort($results);
+		$expected = array(1, 2);
+		$this->assertEqual($results, $expected);
+
+		$results = $this->Household->getMemberIds(3, true);
+		sort($results);
+		$expected = array();
+		$this->assertEqual($results, $expected);
+
+		$results = $this->Household->getMemberIds(6);
+		sort($results);
+		$expected = array();
+		$this->assertEqual($results, $expected);
+	}
+
+	function testGetHouseholdIds() {
+		$results = $this->Household->getHouseholdIds(3);
+		sort($results);
 		$expected = array(1, 2, 3);
 		$this->assertEqual($results, $expected);
 
-		$results = $this->Household->getHouseholds(3, true);
+		$results = $this->Household->getHouseholdIds(3, true);
+		sort($results);
 		$expected = array(3);
 		$this->assertEqual($results, $expected);
 	}

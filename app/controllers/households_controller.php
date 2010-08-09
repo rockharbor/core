@@ -148,20 +148,11 @@ class HouseholdsController extends AppController {
  * Shows a list of households for a user
  */ 
 	function index() {
-		$viewUser = $this->passedArgs['User'];
+		$user = $this->passedArgs['User'];
 		
-		// get households this user belongs to
-		$userHouseholds = $this->Household->HouseholdMember->find('all', array(
-			'conditions' => array(
-				'HouseholdMember.user_id' => $viewUser
-			)
-		));
-		
-		$householdIds = Set::extract('/HouseholdMember/household_id', $userHouseholds);
+		// get all households this user belongs to
+		$householdIds = $this->Household->getHouseholdIds($user, false);
 	
-		// get household information for those households
-		$this->Household->recursive = 2;
-		
 		$this->set('households', $this->Household->find('all', array(
 			'conditions' => array(
 				'Household.id' => $householdIds
@@ -172,7 +163,7 @@ class HouseholdsController extends AppController {
 						'Profile'
 					)
 				),
-				'HouseholdContact'				
+				'HouseholdContact'
 			)
 		)));
 

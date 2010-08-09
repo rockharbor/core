@@ -39,7 +39,8 @@ class HouseholdMember extends AppModel {
  * @var array
  */
 	var $actsAs = array(
-		'Linkable.AdvancedLinkable'
+		'Linkable.AdvancedLinkable',
+		'Containable'
 	);
 
 }
