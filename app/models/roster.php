@@ -113,5 +113,79 @@ class Roster extends AppModel {
 			'dependent' => false
 		)
 	);
+
+/**
+ * Adds necessary information to a new roster record.
+ *
+ * ### Options:
+ * - `roster` The Roster model data
+ * - `defaults` The default data, (see list below)
+ * - `involvement` The Involvement model data
+ * - `creditCard` The CreditCard model data (if any)
+ * - `payer` The User data for the person paying (if any)
+ * - `parent` The parent (if childcare)
+ *
+ * ### Defaults:
+ * - `payment_option_id` The PaymentOption id
+ * - `payment_type_id` The PaymentType id
+ * - `pay_later` Whether they chose to pay now or later
+ * - `pay_deposit_amount` If they chose the payment deposit amount instead of total
+ *
+ * @param array $options List of information used to change the roster record
+ * @return array New roster record
+ *
+ */
+	function setDefaultData($options) {
+		$_options = array(
+			'creditCard' => array(),
+			'defaults' => array(),
+			'parent' => null
+		);
+		$options = array_merge($_options, $options);
+		$_defaults = array(
+			'payment_option_id' => null,
+			'payment_type_id' => null,
+			'pay_later' => false,
+			'pay_deposit_amount' => false,
+			'role_id' => null
+		);
+		$options['defaults'] = array_merge($_defaults, $options['defaults']);
+		
+		extract($options);
+
+		$paymentOption = $this->PaymentOption->read(null, $defaults['payment_option_id']);
+		$paymentType = $this->Payment->PaymentType->read(null, $defaults['payment_type_id']);
+
+		// set defaults
+		$roster['Roster']['involvement_id'] = $involvement['Involvement']['id'];
+		$roster['Roster']['roster_status'] = 1;
+		$roster['Roster']['parent'] = $parent;
+		$roster['Roster']['payment_option_id'] = $defaults['payment_option_id'];
+		$roster['Roster']['role_id'] = $defaults['role_id'];
+		
+		// only add a payment if we're taking one
+		if ($involvement['Involvement']['take_payment'] && $defaults['payment_option_id'] > 0 && !$defaults['pay_later']) {
+			if (is_null($parent)) {
+				$amount = $defaults['pay_deposit_amount'] ? $paymentOption['PaymentOption']['deposit'] : $paymentOption['PaymentOption']['total'];
+			} else {
+				$amount = $paymentOption['PaymentOption']['childcare'];
+			}
+
+			// add payment record to be saved (transaction id to be added later)
+			$roster['Payment'] = array(
+				'0' => array(
+					'user_id' => $roster['Roster']['user_id'],
+					'amount' => $amount,
+					'payment_type_id' => $paymentType['PaymentType']['id'],
+					'number' => substr($creditCard['CreditCard']['credit_card_number'], -4),
+					'payment_placed_by' => $payer['User']['id'],
+					'payment_option_id' => $defaults['payment_option_id'],
+					'comment' => $creditCard['CreditCard']['first_name'].' '.$creditCard['CreditCard']['last_name'].'\'s card processed by '.$payer['Profile']['name'].'.'
+				)
+			);
+		}
+
+		return $roster;
+	}
 }
 ?>
