@@ -40,7 +40,8 @@ class HouseholdsControllerTestCase extends CoreTestCase {
 				'HouseholdMember.user_id' => 1
 			)
 		));
-		$results = sort($this->Households->Household->getHouseholds(1));
+		$results = $this->Households->Household->getHouseholdIds(1);
+		sort($results);
 		$expected = array(1);
 		$this->assertEqual($results, $expected);
 
@@ -50,7 +51,8 @@ class HouseholdsControllerTestCase extends CoreTestCase {
 				'HouseholdMember.user_id' => 1
 			)
 		));
-		$results = sort($this->Households->Household->getHouseholds(1));
+		$results = $this->Households->Household->getHouseholdIds(1);
+		sort($results);
 		$expected = array(1, 2);
 		$this->assertEqual($results, $expected);
 	}

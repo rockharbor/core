@@ -34,7 +34,8 @@ class PublicationsControllerTestCase extends CoreTestCase {
 
 	function testSubscription() {
 		$vars = $this->testAction('/publications/subscriptions/User:1');
-		$results = sort($vars['subscriptions']);
+		sort($vars['subscriptions']);
+		$results = $vars['subscriptions'];
 		$expected = array(1,2);
 		$this->assertEqual($results, $expected);
 
@@ -47,26 +48,30 @@ class PublicationsControllerTestCase extends CoreTestCase {
 	function testToggleSubscribe() {
 		$this->testAction('/publications/toggle_subscribe/1/0/User:1');
 		$vars = $this->testAction('/publications/subscriptions/User:1');
-		$results = sort($vars['subscriptions']);
+		sort($vars['subscriptions']);
+		$results = $vars['subscriptions'];
 		$expected = array(2);
 		$this->assertEqual($results, $expected);
 
 		$this->testAction('/publications/toggle_subscribe/1/1/User:1');
 		$vars = $this->testAction('/publications/subscriptions/User:1');
-		$results = sort($vars['subscriptions']);
+		sort($vars['subscriptions']);
+		$results = $vars['subscriptions'];
 		$expected = array(1, 2);
 		$this->assertEqual($results, $expected);
 
 		// try duplicating subscription
 		$this->testAction('/publications/toggle_subscribe/1/1/User:1');
 		$vars = $this->testAction('/publications/subscriptions/User:1');
-		$results = sort($vars['subscriptions']);
+		sort($vars['subscriptions']);
+		$results = $vars['subscriptions'];
 		$expected = array(1, 2);
 		$this->assertEqual($results, $expected);
 
 		$this->testAction('/publications/toggle_subscribe/1/1/User:2');
 		$vars = $this->testAction('/publications/subscriptions/User:2');
-		$results = sort($vars['subscriptions']);
+		sort($vars['subscriptions']);
+		$results = $vars['subscriptions'];
 		$expected = array(1, 2);
 		$this->assertEqual($results, $expected);
 	}
