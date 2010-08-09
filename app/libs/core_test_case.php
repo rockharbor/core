@@ -30,6 +30,60 @@ Mock::generatePartial('AclComponent', 'MockAclComponent', array('check'));
 class CoreTestCase extends CakeTestCase {
 
 /**
+ * Fixtures needed for test. Overwrite if you don't need them all.
+ * 
+ * @var array
+ */
+	var $fixtures = array(
+		'app.address',
+		'app.alert',
+		'app.alerts_user',
+		'app.answer',
+		'app.app_setting',
+		'app.attachment',
+		'app.campus',
+		'app.classification',
+		'app.comment',
+		'app.comment_type',
+		'app.comments',
+		'app.date',
+		'app.group',
+		'app.household',
+		'app.household_member',
+		'app.image',
+		'app.involvement',
+		'app.involvement_type',
+		'app.involvements_rev',
+		'app.job_category',
+		'app.leader',
+		'app.log',
+		'app.merge_request',
+		'app.ministries_rev',
+		'app.ministry',
+		'app.notification',
+		'app.payment',
+		'app.payment_option',
+		'app.payment_type',
+		'app.profile',
+		'app.publication',
+		'app.publications_user',
+		'app.question',
+		'app.region',
+		'app.role',
+		'app.roster',
+		'app.school',
+		'app.user',
+		'app.zipcode',
+	);
+
+/**
+ * Don't automatically populate database
+ *
+ * @var boolean
+ */
+	var $autoFixtures = false;
+
+/**
  * Components are initialized once to avoid redirect loop issues
  * 
  * @var boolean
