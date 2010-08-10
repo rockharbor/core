@@ -6,13 +6,24 @@ App::import('Model', 'Involvement');
 class InvolvementTestCase extends CoreTestCase {
 
 	function startTest() {
-		$this->loadFixtures('Involvement', 'Leader');
+		$this->loadFixtures('Involvement', 'Leader', 'Date');
 		$this->Involvement =& ClassRegistry::init('Involvement');
 	}
 
 	function endTest() {
 		unset($this->Involvement);
 		ClassRegistry::flush();
+	}
+
+	function testVirtualFields() {
+		$involvement = $this->Involvement->read(null, 1);
+		$this->assertTrue($involvement['Involvement']['passed']);
+
+		$involvement = $this->Involvement->read(null, 2);
+		$this->assertFalse($involvement['Involvement']['passed']);
+
+		$involvement = $this->Involvement->read(null, 3);
+		$this->assertTrue($involvement['Involvement']['passed']);
 	}
 
 	function testIsLeader() {

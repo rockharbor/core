@@ -29,11 +29,12 @@ class Involvement extends AppModel {
  * @var array
  */
 	var $virtualFields = array(
-		'passed' => 'EXISTS(
-			SELECT 1 FROM dates AS Passed 
-				WHERE CAST(CONCAT(Passed.end_date, " ", Passed.end_time) AS DATETIME) < NOW() AND Passed.involvement_id = Involvement.id
-				AND Passed.permanent = 0
-				AND Passed.exemption = 0
+		'passed' => 'NOT EXISTS(
+			SELECT 1 FROM dates AS NotPassed
+				WHERE NotPassed.involvement_id = Involvement.id
+				AND (CAST(CONCAT(NotPassed.end_date, " ", NotPassed.end_time) AS DATETIME) > NOW()
+				OR NotPassed.permanent = 1)
+				AND NotPassed.exemption = 0
 		)'
 	);
 
