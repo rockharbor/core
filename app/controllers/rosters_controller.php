@@ -48,7 +48,8 @@ class RostersController extends AppController {
 		parent::beforeFilter();
 	}
 	
-/** Displays a roster list
+/**
+ * Displays a roster list
  *
  * ### Passed args:
  * - integer $Involvement The id of the involvement to filter for
@@ -57,28 +58,23 @@ class RostersController extends AppController {
 	function index() {
 		$conditions = array();
 		$userConditions = array();
-		$profileConditions = array();
 		
 		// if involvement is defined, show just that involvement
 		if (isset($this->passedArgs['Involvement'])) {
 			$conditions['Roster.involvement_id'] = $this->passedArgs['Involvement'];
 		}	
 		
-		// if user is defined, show just from that user's list of people they can sign up
-		if (isset($this->passedArgs['User'])) {
-			$userConditions = array('User.id' => $this->passedArgs['User']);
-		}
-		
-		$involvement = $this->Roster->Involvement->read(null, $this->passedArgs['Involvement']);
-		
 		// get roster ids
 		$roster = $this->Roster->find('all', compact('conditions'));
 		$rosterIds = Set::extract('/Roster/user_id', $roster);
 
 		// if we're limiting this to one user, just pull their household signup data
+		$householdIds = array();
 		if (isset($this->passedArgs['User'])) {
-			$householdIds = $this->Roster->User->HouseholdMember->Household->getHouseholds($this->passedArgs['User']);
-			$conditions['User.id'] = array_intersect($rosterIds, $householdIds);
+			$householdIds = $this->Roster->User->HouseholdMember->Household->getMemberIds($this->passedArgs['User'], true);
+			$viewableIds = array_intersect($householdIds, $rosterIds);
+			$viewableIds[] = $this->passedArgs['User'];
+			$conditions['User.id'] = $viewableIds;
 		} else {
 			$conditions['User.id'] = $rosterIds;
 		}
@@ -105,10 +101,8 @@ class RostersController extends AppController {
 		// set based on criteria
 		$this->set('canCheckAll', !isset($this->passedArgs['User']));
 		$this->set('rosters', $this->paginate());
-		$this->set('householdIds', $userIds);
+		$this->set('householdIds', $householdIds);
 		$this->set('rosterIds', $rosterIds);
-		$this->set('involvement', $involvement);
-		$this->set('involvementId', $this->passedArgs['Involvement']);
 	}
 
 /**
@@ -133,9 +127,10 @@ class RostersController extends AppController {
 		
 		$conditions['Roster.user_id'] = $userId;
 		if ($passed != 'passed') {
-			$conditions[$this->Roster->Involvement->getVirtualField('passed')] = 0;
+			$db = $this->Roster->getDataSource();
+			$conditions[] = $db->expression('('.$this->Roster->Involvement->getVirtualField('passed').') = 0');
 		}
-		
+
 		$this->paginate = array(
 			'conditions' => $conditions,
 			'contain' => array(
@@ -171,6 +166,7 @@ class RostersController extends AppController {
 		}
 
 		// get needed information about the user and this involvement
+		$this->Roster->Involvement->contain(array('InvolvementType'));
 		$involvement = $this->Roster->Involvement->read(null, $involvementId);
 
 		// can't sign up for inactive involvements
@@ -179,15 +175,8 @@ class RostersController extends AppController {
 			$this->redirect($this->emptyPage);
 		}
 		
-		// bind faux-model to make use of validation
-		$this->Roster->bindModel(array(
-			'hasOne' => array(
-				'CreditCard' => array(	
-					'foreignKey' => false
-				)
-			)
-		));
-		
+		// create model to make use of validation
+		$CreditCard = ClassRegistry::init('CreditCard');
 		// get roster ids for comparison (to see if they're signed up)
 		$involvementRoster = $this->Roster->find('list', array(
 			'conditions' => array(
@@ -212,7 +201,9 @@ class RostersController extends AppController {
 			// process the credit card. if the credit card goes through, we'll add everyone to the 
 			// roster (including childcare) and save the payment info
 						
-			// get chosen payment option 
+			// get chosen payment option
+			$paymentOption = array();
+			$paymentType = array();
 			if ($involvement['Involvement']['take_payment']) {
 				$paymentOption = $this->Roster->PaymentOption->read(null, $this->data['Default']['payment_option_id']);
 				$paymentType = $this->Roster->Payment->PaymentType->findByName('Credit Card');
@@ -223,48 +214,27 @@ class RostersController extends AppController {
 			$this->Roster->_validationErrors = array();
 			
 			foreach ($this->data['Roster'] as $roster => &$values) {
-				// set defaults
-				$values['Roster']['involvement_id'] = $this->data['Default']['involvement_id'];
-				$values['Roster']['roster_status'] = 1;
-				if (isset($this->data['Default']['payment_option_id'])) {
-					$values['Roster']['payment_option_id'] = $this->data['Default']['payment_option_id'];
-				}
-				if (isset($this->data['Default']['role_id'])) {
-					$values['Roster']['role_id'] = $this->data['Default']['role_id'];
-				}
-			
-				// they weren't checked, remove associated data (Answers)
-				if (!isset($values['Roster']) || !isset($values['Roster']['user_id'])) {
-					unset($this->data['Roster'][$roster]);
+				$values = $this->Roster->setDefaultData(array(
+					'roster' => $values,
+					'involvement' => $involvement,
+					'defaults' => $this->data['Default'],
+					'creditCard' => $this->data,
+					'payer' => $this->activeUser,
+					'paymentOption' => $paymentOption,
+					'paymentType' => $paymentType
+				));
+
+				// save validate success only if we haven't failed yet (so not to overwrite a failure)
+				if ($rValidates) {
+					$rValidates = $this->Roster->saveAll($values, array('validate' => 'only'));
 				} else {
-					// only add a payment if we're taking one
-					if ($involvement['Involvement']['take_payment'] && $this->data['Default']['payment_option_id'] > 0 && !$this->data['Default']['pay_later']) {
-						$amount = $this->data['PaymentOption']['pay_deposit_amount'] ? $paymentOption['PaymentOption']['deposit'] : $paymentOption['PaymentOption']['total'];
-						
-						// add payment record to be saved (transaction id to be added later)
-						$values['Payment'] = array(
-							'0' => array(
-								'user_id' => $values['Roster']['user_id'],
-								'amount' => $amount,
-								'payment_type_id' => $paymentType['PaymentType']['id'],
-								'number' => substr($this->data['CreditCard']['credit_card_number'], -4),
-								'payment_placed_by' => $this->activeUser['User']['id'],
-								'payment_option_id' => $this->data['Default']['payment_option_id'],
-								'comment' => $this->data['CreditCard']['first_name'].' '.$this->data['CreditCard']['last_name'].'\'s card processed by '.$this->activeUser['Profile']['name'].'.'
-							)
-						);
-					}
-				
-					// save validate success only if we haven't failed yet (so not to overwrite a failure)
-					if ($rValidates) {
-						$rValidates = $this->Roster->saveAll($values, array('validate' => 'only'));						
-					} else {
-						// still validate this roster to generate errors
-						$this->Roster->saveAll($values, array('validate' => 'only'));
-					}
-					
-					// save validation errors
-					$this->Roster->_validationErrors[$roster] = $this->Roster->validationErrors;					
+					// still validate this roster to generate errors
+					$this->Roster->saveAll($values, array('validate' => 'only'));
+				}
+
+				// save validation errors
+				if (!empty($this->Roster->validationErrors)) {
+					$this->Roster->_validationErrors[$roster] = $this->Roster->validationErrors;
 				}
 			}
 			
@@ -287,28 +257,17 @@ class RostersController extends AppController {
 			// extract info to check/save for childcare
 			$cValidates = true;
 			if (isset($this->data['Child']) && $pValidates) {
-				foreach ($this->data['Child'] as &$child) {
-					$child['Roster']['roster_status'] = 1;
-					$child['Roster']['parent_id'] = $parent;
-					$child['Roster']['involvement_id'] = $this->data['Default']['involvement_id'];
-										
-					// only add a payment if we're taking one
-					if ($involvement['Involvement']['take_payment'] && $this->data['Default']['payment_option_id'] > 0 && !$this->data['Default']['pay_later']) {
-						$amount = $paymentOption['PaymentOption']['childcare'];
-						
-						// add payment record to be saved (transaction id to be added later)
-						$child['Payment'] = array(
-							'0' => array(
-								'user_id' => $child['Roster']['user_id'],
-								'amount' => $amount,
-								'payment_type_id' => $paymentType['PaymentType']['id'],
-								'number' => substr($this->data['CreditCard']['credit_card_number'], -4),
-								'payment_placed_by' => $this->activeUser['User']['id'],
-								'payment_option_id' => $this->data['Default']['payment_option_id'],
-								'comment' => $this->data['CreditCard']['first_name'].' '.$this->data['CreditCard']['last_name'].'\'s card processed by '.$this->activeUser['Profile']['name'].'.'
-							)
-						);
-					}
+				foreach ($this->data['Child'] as $roster => &$child) {
+					$child = $this->Roster->setDefaultData(array(
+						'roster' => $child,
+						'involvement' => $involvement,
+						'defaults' => $this->data['Default'],
+						'creditCard' => $this->data,
+						'payer' => $this->activeUser,
+						'paymentOption' => $paymentOption,
+						'paymentType' => $paymentType,
+						'parent' => $parent
+					));
 
 					// save validate success only if we haven't failed yet (so not to overwrite a failure)
 					if ($cValidates) {
@@ -317,7 +276,7 @@ class RostersController extends AppController {
 						// still validate this roster to generate errors
 						$this->Roster->saveAll($child, array('validate' => 'only'));
 					}
-				}			
+				}
 			} else {
 				$cValidates = true;
 			}
@@ -326,7 +285,7 @@ class RostersController extends AppController {
 			$lValidates = true;
 			$currentCount = $this->Roster->find('count', array(
 				'conditions' => array(
-						'Roster.involvement_id' => $involvement['Involvement']['id']
+					'Roster.involvement_id' => $involvement['Involvement']['id']
 				),
 				'contain' => false
 			));
@@ -337,7 +296,9 @@ class RostersController extends AppController {
 			} else {
 				$lValidates = true;
 			}
-			
+
+			$this->set('involvement', $involvement);
+
 			// combine roster validation errors
 			$this->Roster->validationErrors = $this->Roster->_validationErrors;
 			// check all validation before continuing with save
@@ -345,9 +306,10 @@ class RostersController extends AppController {
 				// Now that we know that the data will save, let's run the credit card
 				// get all signed up users (for their name)
 				if ($involvement['Involvement']['take_payment'] && $this->data['Default']['payment_option_id'] > 0 && !$this->data['Default']['pay_later']) {
+					$signedUpIds = array_merge(Set::extract('/Roster/Roster/user_id', $this->data), Set::extract('/Child/Roster/user_id', $this->data));
 					$signedupUsers = $this->Roster->User->Profile->find('all', array(
 						'conditions' => array(
-							'user_id' => array_merge(Set::extract('/Roster/Roster/user_id', $this->data), Set::extract('/Child/Roster/user_id', $this->data))
+							'user_id' => $signedUpIds
 						),
 						'contain' => false
 					));
@@ -358,21 +320,19 @@ class RostersController extends AppController {
 					if (isset($this->data['Child'])) {
 						$amount += Set::apply('/Payment/amount', array_values($this->data['Child']), 'array_sum');
 					}
-										
+
 					$this->data['CreditCard']['invoice_number'] = $paymentOption['PaymentOption']['account_code'];
 					$this->data['CreditCard']['description'] = $description;
 					$this->data['CreditCard']['email'] = $user['Profile']['primary_email'];			
-					$this->data['CreditCard']['amount'] = $amount;				
+					$this->data['CreditCard']['amount'] = $amount;
 					
-					if ($this->Roster->CreditCard->save($this->data['CreditCard'])) {
+					if ($CreditCard->save($this->data['CreditCard'])) {
 						// save main rosters
 						foreach ($this->data['Roster'] as $signuproster) {
 							$this->Roster->create();
-							// save transaction id
-							$signuproster['Payment'][0]['transaction_id'] = $this->Roster->CreditCard->transactionId;
-							$this->Roster->saveAll($signuproster, array('validate' => false));
-							
-							$this->set('involvement', $involvement);
+							// include transaction id
+							$signuproster['Payment'][0]['transaction_id'] = $CreditCard->transactionId;
+							$this->Roster->saveAll($signuproster, array('validate' => false));							
 							$this->Notifier->notify($signuproster['Roster']['user_id'], 'involvements_signup');
 							$this->QueueEmail->send(array(
 								'to' => $signuproster['Roster']['user_id'],
@@ -385,15 +345,13 @@ class RostersController extends AppController {
 						if (isset($this->data['Child']) && count($this->data['Child'])) {
 							foreach ($this->data['Child'] as $signupchild) {
 								$this->Roster->create();
-								// save transaction id
-								$signupchild['Payment'][0]['transaction_id'] = $this->Roster->CreditCard->transactionId;
+								// include transaction id
+								$signupchild['Payment'][0]['transaction_id'] = $CreditCard->transactionId;
 								$this->Roster->saveAll($signupchild, array('validate' => false));
-								$this->set('involvement', $involvement);
 								$this->Notifier->notify($signupchild['Roster']['user_id'], 'involvements_signup');
 							}
 						}
 						
-						$this->set('involvement', $involvement);
 						$this->Notifier->notify($this->activeUser['User']['id'], 'payments_payment_made');
 						$this->QueueEmail->send(array(
 							'to' => $this->activeUser['User']['id'],
@@ -404,7 +362,7 @@ class RostersController extends AppController {
 						$this->Session->setFlash('You\'ve been signed up!', 'flash_success');
 						$this->redirect(array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvementId));
 					} else {
-						$this->Roster->CreditCard->invalidate('credit_card_number', $this->Roster->CreditCard->creditCardError);
+						$CreditCard->invalidate('credit_card_number', $CreditCard->creditCardError);
 						$this->Session->setFlash('Error processing credit card.', 'flash_failure');
 					}
 				} else {
@@ -413,7 +371,6 @@ class RostersController extends AppController {
 					foreach ($this->data['Roster'] as $signuproster) {
 						$this->Roster->create();
 						$this->Roster->saveAll($signuproster, array('validate' => false));
-						$this->set('involvement', $involvement);
 						$this->Notifier->notify($signuproster['Roster']['user_id'], 'involvements_signup');
 						$this->QueueEmail->send(array(
 							'to' => $signuproster['Roster']['user_id'],
@@ -427,7 +384,6 @@ class RostersController extends AppController {
 						foreach ($this->data['Child'] as $signupchild) {
 							$this->Roster->create();
 							$this->Roster->saveAll($signupchild, array('validate' => false));
-							$this->set('involvement', $involvement);
 							$this->Notifier->notify($signupchild['Roster']['user_id'], 'involvements_signup');
 						}
 					}
@@ -445,7 +401,6 @@ class RostersController extends AppController {
 					$this->Session->setFlash('Please select a parent to bring the children.', 'flash_failure');
 				} elseif (!$lValidates) {
 					$this->Session->setFlash('The roster limit has been reached. Please sign up less people or wait for room to become available.', 'flash_failure');
-					debug($this->data);
 				} else {
 					$this->Session->setFlash('You couldn\'t be signed up. Please, try again.', 'flash_failure');
 				}
@@ -550,36 +505,21 @@ class RostersController extends AppController {
 		// get needed information about the user and this involvement
 		$involvement = $this->Roster->Involvement->read(null, $thisRoster['Roster']['involvement_id']);
 		// get user info and all household info where they are the contact
-		$user = $this->Roster->User->find('first', array(
+		$householdMemberIds = $this->Roster->User->HouseholdMember->Household->getMemberIds($thisRoster['Roster']['user_id'], true);
+		$householdMembers = $this->Roster->User->find('all', array(
 			'conditions' => array(
-				'User.id' => $thisRoster['Roster']['user_id']
+				'User.id' => $householdMemberIds
 			),
 			'contain' => array(
 				'Profile',
-				'HouseholdMember' => array(
-					'Household' => array(
-						'HouseholdMember' => array(
-							'conditions' => array(
-								'not' => array(
-									'HouseholdMember.user_id' => $roster
-								)
-							),
-							'User' => array(
-								'Profile' => array(
-									'conditions' => array(
-										'or' => array(
-											'Profile.household_contact_signups' => true,
-											'Profile.child' => true
-										)
-									)
-								)
-							)
-						)
-					)				
-				),
 				'Group'
 			)
 		));
+		$this->Roster->User->contain(array(
+			'Profile',
+			'Group'
+		));
+		$user = $this->Roster->User->read(null, $thisRoster['Roster']['user_id']);
 		
 		if (empty($this->data)) {
 			$this->data = $this->Roster->read(null, $id);
@@ -591,7 +531,7 @@ class RostersController extends AppController {
 			)
 		));
 		
-		$this->set(compact('involvement', 'user', 'roster', 'paymentOptions'));
+		$this->set(compact('involvement', 'user', 'roster', 'paymentOptions', 'householdMembers'));
 	}
 
 /**
@@ -616,7 +556,7 @@ class RostersController extends AppController {
 			'Roster.involvement_id' => $roster['Roster']['involvement_id']
 		))) {
 			$this->set('involvement', $this->Roster->Involvement->read(null, $roster['Roster']['involvement_id']));
-			$this->set('user', $this->Roster->Leader->User->read(null, $roster['Roster']['user_id']));
+			$this->set('user', $this->Roster->Involvement->Leader->User->read(null, $roster['Roster']['user_id']));
 			// notify the user that they left
 			$this->Notifier->notify($roster['Roster']['user_id'], 'rosters_delete');
 			$this->QueueEmail->send(array(
@@ -626,15 +566,17 @@ class RostersController extends AppController {
 			));
 			
 			// notify all the leaders
-			$leaders = $this->Roster->Leader->find('all', array(
-				'model_id' => $roster['Roster']['involvement_id'],
-				'model' => 'Involvement'
+			$leaders = $this->Roster->Involvement->Leader->find('all', array(
+				'conditions' => array(
+					'model_id' => $roster['Roster']['involvement_id'],
+					'model' => 'Involvement'
+				)
 			));
 			foreach ($leaders as $leader) {
-				$this->set('user', $this->Roster->Leader->User->read(null, $leader['User']['id']));
-				$this->Notifier->notify($leader['User']['id'], 'rosters_delete');
+				$this->set('user', $this->Roster->Involvement->Leader->User->read(null, $leader['Leader']['user_id']));
+				$this->Notifier->notify($leader['Leader']['user_id'], 'rosters_delete');
 				$this->QueueEmail->send(array(
-					'to' => $leader['User']['id'],
+					'to' => $leader['Leader']['user_id'],
 					'subject' => 'Password reset',
 					'template' => 'rosters_delete'
 				));

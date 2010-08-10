@@ -46,6 +46,14 @@ class LeaderFixture extends CakeTestFixture {
 			'model_id' => 4,
 			'created' => '2010-03-30 14:09:19',
 			'modified' => '2010-03-30 14:09:19'
+		),
+		array(
+			'id' => 5,
+			'user_id' => 1,
+			'model' => 'Involvement',
+			'model_id' => 3,
+			'created' => '2010-03-30 14:09:19',
+			'modified' => '2010-03-30 14:09:19'
 		)
 	);
 }
