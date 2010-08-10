@@ -110,17 +110,16 @@ class AddressesController extends AppController {
 			
 			// mark all others as not primary
 			if ($success) {
-				$modelAddresses = $this->Address->find('all', array(
-					'conditions' => array(
+				$this->Address->updateAll(
+					array(
+						'Address.primary' => 0
+					),
+					array(
 						'Address.foreign_key' => $this->data['Address']['foreign_key'],
 						'Address.model' => $this->data['Address']['model'],
 						'Address.id <>' => $lastId
 					)
-				));
-				foreach ($modelAddresses as $modelAddress) {
-					$this->Address->id = $modelAddress['Address']['id'];
-					$this->Address->saveField('primary', 0);
-				}
+				);
 				$this->Address->id = $lastId;
 				$this->Session->setFlash('The address was saved!', 'flash_success');
 			} else {
@@ -152,24 +151,23 @@ class AddressesController extends AppController {
 			$this->Session->setFlash('Invalid address.', 'flash_failure');
 			$this->redirect(array('action' => 'index'));
 		}
-		
+
 		if (!empty($this->data)) {
 			if ($this->Address->save($this->data)) {
 				if ($this->data['Address']['primary']) {
 					// mark all others as not primary
-					$modelAddresses = $this->Address->find('all', array(
-						'conditions' => array(
-							'foreign_key' => $this->data['Address']['foreign_key'],
-							'model' => $this->data['Address']['model'],
-							'id <>' => $id
+					$this->Address->updateAll(
+						array(
+							'Address.primary' => 0
+						),
+						array(
+							'Address.foreign_key' => $this->data['Address']['foreign_key'],
+							'Address.model' => $this->data['Address']['model'],
+							'Address.id <>' => $id
 						)
-					));
-					foreach ($modelAddresses as $modelAddress) {
-						$this->Address->id = $modelAddress['Address']['id'];
-						$this->Address->saveField('primary', 0);
-					}
+					);
 				}
-				
+				$this->Address->id = $id;
 				$this->Session->setFlash('The address was saved!', 'flash_success');
 			} else {
 				$this->Session->setFlash('Boo! The address could not be saved.', 'flash_failure');
