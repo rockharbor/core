@@ -47,6 +47,7 @@ class CoreTestCase extends CakeTestCase {
 		'app.comment_type',
 		'app.comments',
 		'app.date',
+		'app.error',
 		'app.group',
 		'app.household',
 		'app.household_member',
@@ -132,13 +133,17 @@ class CoreTestCase extends CakeTestCase {
 		$Controller = $this->testController;
 
 		// reset parameters
-		ClassRegistry::flush();		
 		$Controller->passedArgs = array();
 		$Controller->params = array();
 		$Controller->url = null;
 		$Controller->action = null;
 		$Controller->viewVars = array();
-		$Controller->{$Controller->modelClass}->create();
+		$keys = ClassRegistry::keys();
+		foreach ($keys as $key) {
+			if (is_a(ClassRegistry::getObject(Inflector::camelize($key)), 'Model')) {
+				ClassRegistry::getObject(Inflector::camelize($key))->create(false);
+			}
+		}
 		$Controller->Session->delete('Message');
 		$Controller->activeUser = null;
 
@@ -171,7 +176,10 @@ class CoreTestCase extends CakeTestCase {
 			$Controller->Auth->initialize($Controller);
 			if (!$Controller->Session->check('Auth.User') && !$Controller->Session->check('User')) {
 				$Controller->Session->write('Auth.User', array('id' => 1, 'username' => 'testadmin'));
-				$Controller->Session->write('User', array('Group' => array('id' => 1, 'lft' => 1)));
+				$Controller->Session->write('User', array(
+					'Group' => array('id' => 1, 'lft' => 1),
+					'Profile' => array('name' => 'Test Admin', 'primary_email' => 'test@test.com')
+				));
 			}
 		}
 		// configure acl
@@ -183,7 +191,7 @@ class CoreTestCase extends CakeTestCase {
 		
 		$Controller->beforeFilter();
 		$Controller->Component->startup($Controller);
-
+		
 		call_user_func_array(array(&$Controller, $urlParams['action']), $urlParams['pass']);
 
 		$Controller->beforeRender();
