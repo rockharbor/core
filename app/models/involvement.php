@@ -26,6 +26,11 @@ class Involvement extends AppModel {
 /**
  * Virtual field definitions
  *
+ * ### Fields
+ * - `passed` An involvement is passed if its dates end time has passed and it's
+ *		not a permanent recurring date. Involvements with no dates are not
+ *		considered passed.
+ *
  * @var array
  */
 	var $virtualFields = array(
@@ -35,7 +40,7 @@ class Involvement extends AppModel {
 				AND (CAST(CONCAT(NotPassed.end_date, " ", NotPassed.end_time) AS DATETIME) > NOW()
 				OR NotPassed.permanent = 1)
 				AND NotPassed.exemption = 0
-		)'
+		) AND EXISTS (SELECT 1 FROM dates as ExistingDates WHERE ExistingDates.involvement_id = Involvement.id)'
 	);
 
 /**
