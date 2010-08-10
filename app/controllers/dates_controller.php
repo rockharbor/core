@@ -109,7 +109,8 @@ class DatesController extends AppController {
 		}
 		
 		if ($passed != 'passed') {
-			$filter[$this->Date->Involvement->getVirtualField('passed')] = 0;
+			$db = $this->Date->getDataSource();
+			$filter[] = $db->expression('('.$this->Date->Involvement->getVirtualField('passed').') = 0');
 		}
 		
 		$range = array(
