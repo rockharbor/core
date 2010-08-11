@@ -327,9 +327,7 @@ class UsersController extends AppController {
 	function forgot_password() {		
 		if (!empty($this->data)) {
 			if (!empty($this->data['User']['forgotten'])) {			
-				$user = $this->User->findUser(array(
-					$this->data['User']['forgotten']
-				));
+				$user = $this->User->findUser(explode(' ', $this->data['User']['forgotten']));
 			} else {
 				$user = false;
 			}
@@ -364,19 +362,17 @@ class UsersController extends AppController {
  */ 
 	function request_activation($foundId, $initialRedirect = false) {		
 		if (!empty($this->data) && !$initialRedirect && $foundId) {		
-			$group = $this->User->Group->findByLevel(1);
-			$publicId = $group['Group']['id'];
+			$group = $this->User->Group->findByName('User');
 			
 			$this->data['User']['active'] = false;	
 			$this->data['Address'][0]['model'] = 'User';
-			$this->data['Group'] = array($publicId);
 			
 			// remove isUnique validation for email and username
 			unset($this->User->validate['username']['isUnique']);
 			unset($this->User->Profile->validate['primary_email']['isUnique']);
 			
 			// create near-empty user for now (for merging)
-			if ($this->User->saveAll($this->data, array('validate' => 'first'))) {
+			if ($this->User->createUser($this->data, null, $this->activeUser)) {
 				// save merge request
 				$MergeRequest = ClassRegistry::init('MergeRequest');
 				$MergeRequest->save(array(
@@ -409,15 +405,15 @@ class UsersController extends AppController {
 		if (!empty($this->data)) {
 			// check if user exists
 			$foundUser = $this->User->findUser(array(
+				$this->data['User']['username'],
 				$this->data['Profile']['primary_email'],
 				$this->data['Profile']['first_name'],
 				$this->data['Profile']['last_name']
 			));
 
 			if ($foundUser !== false) {
-				// take to activation request (preserve data)
 				$this->Session->setFlash('User already exists!', 'flash_failure');
-				return;
+				$this->redirect(array('action' => 'view', 'User' => 1));
 			}
 
 			if ($this->User->createUser($this->data, null, $this->activeUser)) {
@@ -433,16 +429,11 @@ class UsersController extends AppController {
 				}
 
 				foreach ($this->User->tmpInvited as $notifyUser) {
-					$this->User->HouseholdMember->Household->contain(array(
-						'User' => array(
-							'Profile'
-						)
-					));
 					$this->User->contain(array('Profile'));
-					$this->set('notifier', $this->User->read(null, $notifyUser['user']));
-					$this->set('contact', $this->User->HouseholdMember->Household->read(null, $notifyUser['household']));
+					$this->set('notifier', $this->User->read(null, $this->activeUser['User']['id']));
+					$this->set('contact', $this->User->read(null, $this->User->id));
 					$this->Notifier->saveData = array('type' => 'invitation');
-					$this->Notifier->notify($notifyUser['user'], 'households_invite');
+					$this->Notifier->notify($notifyUser['id'], 'households_invite');
 				}
 
 				$this->Session->setFlash('User(s) added and notified!', 'flash_success');
@@ -473,6 +464,7 @@ class UsersController extends AppController {
 		if (!empty($this->data)) {
 			// check if user exists
 			$foundUser = $this->User->findUser(array(
+				$this->data['User']['username'],
 				$this->data['Profile']['primary_email'],
 				$this->data['Profile']['first_name'],
 				$this->data['Profile']['last_name']
@@ -498,19 +490,18 @@ class UsersController extends AppController {
 				}
 
 				foreach ($this->User->tmpInvited as $notifyUser) {
-					$this->User->HouseholdMember->Household->recursive = 1;
 					$this->User->contain(array('Profile'));
-					$this->set('notifier', $this->User->read(null, $notifyUser['user']));
-					$this->set('contact', $this->User->HouseholdMember->Household->read(null, $notifyUser['household']));
+					$this->set('notifier', $this->User->read(null, $this->User->id));
+					$this->set('contact', $this->User->read(null, $this->User->id));
 					$this->Notifier->saveData = array('type' => 'invitation');
 					$this->Notifier->notify($notifyUser['user'], 'households_invite');
 				}
 
-				/*$this->redirect(array(
+				$this->redirect(array(
 					'controller' => 'users',
 					'action' => 'login',
 					$this->data['User']['username']
-				));*/
+				));
 			} else {
 				$this->Session->setFlash('Oops, validation errors...', 'flash_failure');
 			}

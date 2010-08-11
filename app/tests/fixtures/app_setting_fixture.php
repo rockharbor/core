@@ -46,6 +46,16 @@ class AppSettingFixture extends CakeTestFixture {
 			'value' => '1',
 			'model' => 'User',
 			'html' => 0
+		),
+		array(
+			'id' => 4,
+			'name' => 'activation_requests_user',
+			'description' => 'The user to alert when an activation request is sent.',
+			'created' => '2010-03-18 00:00:00',
+			'modified' => '2010-06-02 12:25:22',
+			'value' => '1',
+			'model' => 'User',
+			'html' => 0
 		)
 	);
 }

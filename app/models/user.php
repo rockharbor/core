@@ -56,6 +56,10 @@ class User extends AppModel {
 			'notempty' => array(
 				'rule' => 'notEmpty',
 				'message' => 'Gotta have a username.'
+			),
+			'characters' => array(
+				'rule' => '/^[a-z0-9\-_]{5,}$/i',
+				'message' => 'Username must be at least 5 characters long and can only contain letters, numbers, dashes and underscores.'
 			)
 		),
 		'password' => array(			
@@ -64,7 +68,7 @@ class User extends AppModel {
 				'message' => 'Your password must be at least 6 characters.'
 			),
 			'alphaNumeric' => array(
-				'rule' => array('alphaNumeric'),
+				'rule' => 'alphaNumeric',
 				'message' => 'Your password must contain only letters and numbers.'
 			),
 			'notempty' => array(
@@ -205,7 +209,7 @@ class User extends AppModel {
 				'Profile'
 			)
 		));
-
+		
 		if (count($foundUser) > 1 || empty($foundUser)) {
 			return false;
 		}
@@ -222,8 +226,12 @@ class User extends AppModel {
  * @return boolean Success
  */
 	function createUser($data = array(), $householdId = null, $creator = array()) {
-		$this->tmpAdded = array();
-		$this->tmpInvited = array();
+		if (!isset($this->tmpAdded)) {
+			$this->tmpAdded = array();
+		}
+		if (!isset($this->tmpInvited)) {
+			$this->tmpInvited = array();
+		}
 
 		// add missing data for the main user
 		$data = $this->_createUserData($data);
@@ -231,13 +239,13 @@ class User extends AppModel {
 		// validate new household members first
 		foreach ($data['HouseholdMember'] as $number => &$member) {
 			$findConditions = Set::filter($member['Profile']);
-			$foundUser = $this->HouseholdMember->User->findUser($findConditions);
+			$foundUser = $this->findUser($findConditions);
 
 			if ($foundUser === false) {				
 				$member = $this->_createUserData($member);
 			} else {
-				$this->HouseholdMember->User->contain(array('Profile'));
-				$found = $this->HouseholdMember->User->read(null, $foundUser);
+				$this->contain(array('Profile'));
+				$found = $this->read(null, $foundUser);
 				$member = Set::merge($found, $member);
 			}
 
@@ -251,7 +259,7 @@ class User extends AppModel {
 		// temporarily remove household member info - we have to do that separately
 		$householdMembers = $data['HouseholdMember'];
 		unset($data['HouseholdMember']);
-		
+
 		// save user and related info
 		$this->create();
 		if ($this->saveAll($data)) {
@@ -260,7 +268,7 @@ class User extends AppModel {
 
 			if (empty($creator)) {
 				$this->Profile->saveField('created_by', $this->id);
-				$this->Profile->saveField('created_by_type', 9);
+				$this->Profile->saveField('created_by_type', $data['User']['group_id']);
 			}
 
 			// temporarily store userdata for the controller to access and notify them
@@ -310,7 +318,7 @@ class User extends AppModel {
 					}
 				}
 			}
-
+			$this->id = $data['User']['id'];
 			return true;
 		} else {
 			// add household member info back in to fill in fields if it failed
@@ -328,11 +336,13 @@ class User extends AppModel {
  * @return array
  */
 	function _createUserData($data = array()) {
+		$userGroup = $this->Group->findByName('User');
+
 		$default = array(
 			'User' => array(
 				'username' => null,
 				'password' => null,
-				'group_id' => 9,
+				'group_id' => $userGroup['Group']['id'],
 				'active' => true
 			),
 			'Address' => array(

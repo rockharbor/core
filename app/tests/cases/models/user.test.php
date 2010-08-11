@@ -70,6 +70,7 @@ class UserTestCase extends CoreTestCase {
 		$this->assertTrue($this->User->createUser($user, null, $creator));
 		$this->assertEqual(count($this->User->tmpAdded), 1);
 
+		$this->User->tmpAdded = $this->User->tmpInvited = array();
 		$user = array(
 			'Address' => array(
 					0 => array(
@@ -90,6 +91,7 @@ class UserTestCase extends CoreTestCase {
 		$this->assertFalse($this->User->createUser($user, null, $creator));
 		$this->assertEqual(count($this->User->tmpAdded), 0);
 
+		$this->User->tmpAdded = $this->User->tmpInvited = array();
 		$user = array(
 			'Address' => array(
 					0 => array(
@@ -118,6 +120,7 @@ class UserTestCase extends CoreTestCase {
 		$this->assertFalse($this->User->createUser($user, null, $creator));
 		$this->assertEqual(count($this->User->tmpAdded), 0);
 
+		$this->User->tmpAdded = $this->User->tmpInvited = array();
 		$user = array(
 			'User' => array(
 				'username' => 'testme',
