@@ -13,6 +13,25 @@ class DateTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 
+	function testVirtualFields() {
+		$this->loadFixtures('Date');
+		
+		$date = $this->Date->read(null, 1);
+		$result = $date['Date']['passed'];
+		$this->assertFalse($result);
+
+		$date = $this->Date->read(null, 2);
+		$result = $date['Date']['passed'];
+		$this->assertTrue($result);
+
+		$date = $this->Date->read(null, 2);
+		$date['Date']['end_date'] = date('Y-m-d', strtotime('+1 day'));
+		$this->Date->save($date);
+		$date = $this->Date->read(null, 2);
+		$result = $date['Date']['passed'];
+		$this->assertFalse($result);
+	}
+
 	function testStartFromOffset() {
 		$date = array(
 			'Date' => array(
