@@ -617,17 +617,22 @@ class User extends AppModel {
 /**
  * Custom password hashing function for Auth component
  *
- * Prevents hashing before validation so that password and confirm_password
- * validation works. Hashes if $enforce is true
+ * Hashes if $enforce is true. Prevents hashing before validation so that
+ * password and confirm_password validation works and it doesn't require the
+ * user to re-enter their password if it doesn't validate. Before the data is
+ * saved it is automatically hashed.
  *
- * @param array $data Data passed
+ * @param array $data Data passed. Uses User::data if it exists.
  * @param boolean $enforce Force hashing. Used to prevent Auth component from auto-hashing before validation
  * @return array Data with hashed passwords
+ * @see User::beforeSave()
  */	
 	function hashPasswords($data, $enforce = false) {
+		App::import('Component', 'Auth');
+		$Auth = new AuthComponent();
+
 		if (!isset($data[$this->alias]['confirm_password'])) {
-			// being sent by auth
-			// IMPORTANT: confirm_password ALWAYS needs to be sent to save encrypted password
+			// if confirm_password isn't sent, it's probably being sent by auth
 			$enforce = true;
 		}
 		
@@ -636,13 +641,12 @@ class User extends AppModel {
 		}
 		
 		if ($enforce && isset($data[$this->alias]['password']) && !empty($data[$this->alias]['password']))  {
-			$data[$this->alias]['password'] = $this->encrypt($data[$this->alias]['password']);
+			$data[$this->alias]['password'] = $Auth->password($data[$this->alias]['password']);
 		}
 		
 		$this->data = $data;
 		return $data;
 	}
-		
 	
 /**
  * Encrypts a string (used in old CORE's password authentication)
@@ -655,7 +659,7 @@ class User extends AppModel {
 		if (empty($str)) {
 			return '';
 		}
-	    $td = mcrypt_module_open('tripledes', '', 'ecb', '');
+	   $td = mcrypt_module_open('tripledes', '', 'ecb', '');
 		$iv = mcrypt_create_iv (mcrypt_enc_get_iv_size($td), MCRYPT_RAND);	    
 		mcrypt_generic_init($td, Configure::read('Security.encryptKey'), $iv);
 		$encrypted_data = mcrypt_generic($td, $str);

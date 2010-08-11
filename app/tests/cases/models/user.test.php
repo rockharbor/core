@@ -20,6 +20,45 @@ class UserTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 
+	function testHashPasswords() {
+		// as if sent by auth (login)
+		$this->User->data = array();
+		$data = array(
+			'User' => array(
+				'password' => 'password'
+			)
+		);
+		$data = $this->User->hashPasswords($data);
+		$result = $data['User']['password'];
+		$expected = 'e8b43e0909e7adcda8d78698bf144ec517568ccc';
+		$this->assertEqual($result, $expected);
+
+		// as if sent by edit but doesn't validate
+		$this->User->data = array();
+		$data = array(
+			'User' => array(
+				'password' => 'password',
+				'confirm_password' => 'password'
+			)
+		);
+		$data = $this->User->hashPasswords($data);
+		$result = $data['User']['password'];
+		$expected = 'password';
+		$this->assertEqual($result, $expected);
+
+		// as if sent by edit and validates
+		$this->User->data = array(
+			'User' => array(
+				'password' => 'password',
+				'confirm_password' => 'password'
+			)
+		);
+		$data = $this->User->hashPasswords(null, true);
+		$result = $data['User']['password'];
+		$expected = 'e8b43e0909e7adcda8d78698bf144ec517568ccc';
+		$this->assertEqual($result, $expected);
+	}
+
 	function testFindUser() {
 		$this->loadFixtures('Profile');
 

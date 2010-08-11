@@ -195,11 +195,11 @@ class UsersController extends AppController {
 		
 		if (!empty($this->data)) {
 			if ($this->Auth->login($this->data)) {
-				$this->User->contain(array('Profile', 'Group'));
-				$this->Session->write('User', $this->User->read(null, $this->Auth->user('id')));
-				
 				$this->User->id = $this->Auth->user('id');
 				$this->User->saveField('last_logged_in', date('Y-m-d H:i:s'));
+
+				$this->User->contain(array('Profile', 'Group'));
+				$this->Session->write('User', $this->User->read());
 			
 				// go!
 				$this->redirect($this->Auth->redirect());
@@ -274,7 +274,7 @@ class UsersController extends AppController {
 				break;
 				case 'password':
 					unset($this->data['User']['username']);
-					if ($needCurrentPassword && $this->User->encrypt($this->data['User']['current_password']) != $this->User->field('password')) {
+					if ($needCurrentPassword && $this->Auth->password($this->data['User']['current_password']) != $this->User->field('password')) {
 						$invalidPassword = true;
 					}
 					// avoid needing a username to save

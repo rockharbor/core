@@ -27,6 +27,121 @@ class UsersControllerTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 
+	function testBoth() {
+		$data = array(
+			'User' => array(
+				'id' => 1,
+				'reset' => 'both',
+				'username' => 'newusername',
+				'password' => 'newpassword',
+				'current_password' => 'password',
+				'confirm_password' => 'newpassword'
+			)
+		);
+		$vars = $this->testAction('/users/edit/User:1', array(
+			'data' => $data
+		));
+		$user = $this->Users->User->read(null, 1);
+		$result = $user['User']['password'];
+		$expected = $this->Users->Auth->password('newpassword');
+		$this->assertEqual($result, $expected);
+
+		$result = $user['User']['username'];
+		$this->assertEqual($result, 'newusername');
+
+		$result = $vars['password'];
+		$this->assertEqual($result, 'newpassword');
+
+		$result = $this->Users->Session->read('Message.flash.element');
+		$this->assertEqual($result, 'flash'.DS.'success');
+	}
+
+	function testEditUsername() {
+		$data = array(
+			'User' => array(
+				'id' => 1,
+				'reset' => 'username',
+				'username' => 'newusername'
+			)
+		);
+		$vars = $this->testAction('/users/edit/User:1', array(
+			'data' => $data
+		));
+		$user = $this->Users->User->read(null, 1);
+		$result = $user['User']['username'];
+		$this->assertEqual($result, 'newusername');
+
+		$result = $this->Users->Session->read('Message.flash.element');
+		$this->assertEqual($result, 'flash'.DS.'success');
+	}
+
+	function testEditPassword() {
+		$data = array(
+			'User' => array(
+				'id' => 1,
+				'reset' => 'password',
+				'password' => 'newpassword',
+				'current_password' => 'password',
+				'confirm_password' => 'not confirmed!'
+			)
+		);
+		$vars = $this->testAction('/users/edit/User:1', array(
+			'data' => $data
+		));
+		$user = $this->Users->User->read(null, 1);
+		$result = $user['User']['password'];
+		$expected = $this->Users->Auth->password('password');
+		$this->assertEqual($result, $expected);
+
+		$result = $this->Users->Session->read('Message.flash.element');
+		$this->assertEqual($result, 'flash'.DS.'failure');
+
+		$data = array(
+			'User' => array(
+				'id' => 1,
+				'reset' => 'password',
+				'password' => 'newpassword',
+				'current_password' => 'password',
+				'confirm_password' => 'newpassword'
+			)
+		);
+		$vars = $this->testAction('/users/edit/User:1', array(
+			'data' => $data
+		));
+		$user = $this->Users->User->read(null, 1);
+		$result = $user['User']['password'];
+		$expected = $this->Users->Auth->password('newpassword');
+		$this->assertEqual($result, $expected);
+
+		$result = $vars['password'];
+		$this->assertEqual($result, 'newpassword');
+
+		$result = $this->Users->Session->read('Message.flash.element');
+		$this->assertEqual($result, 'flash'.DS.'success');
+	}
+
+	function testLogin() {
+		$lastLoggedIn = $this->Users->User->read('last_logged_in', 1);
+
+		$vars = $this->testAction('/users/login', array(
+			'data' => array(
+				'User' => array(
+					'username' => 'jharris',
+					'password' => 'password',
+					'remember_me' => false
+				)
+			)
+		));
+		$result = $this->Users->Session->read('Auth.User.id');
+		$this->assertEqual($result, 1);
+
+		$result = $this->Users->Session->read('User.Profile.name');
+		$this->assertEqual($result, 'Jeremy Harris');
+
+		$result = $this->Users->Session->read('User.User.last_logged_in');
+		$this->assertNotEqual($result, $lastLoggedIn['User']['last_logged_in']);
+	}
+
 	function testForgotPassword() {
 		$oldPassword = $this->Users->User->read('password', 1);
 		$data = array(

@@ -17,11 +17,13 @@ class UserFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
 
+	// passwords are 'password'
+
 	var $records = array(
 		array(
 			'id' => 1,
 			'username' => 'jharris',
-			'password' => 'G���Y3�',
+			'password' => 'e8b43e0909e7adcda8d78698bf144ec517568ccc',
 			'active' => 1,
 			'created' => NULL,
 			'modified' => '2010-06-25 13:05:34',
@@ -32,7 +34,7 @@ class UserFixture extends CakeTestFixture {
 		array(
 			'id' => 2,
 			'username' => 'rickyrockharbor',
-			'password' => '��%*�F�',
+			'password' => 'e8b43e0909e7adcda8d78698bf144ec517568ccc',
 			'active' => 1,
 			'created' => '2010-04-07 13:55:09',
 			'modified' => '2010-04-07 13:55:09',
@@ -43,7 +45,7 @@ class UserFixture extends CakeTestFixture {
 		array(
 			'id' => 3,
 			'username' => 'rickyrockharborjr',
-			'password' => '��%*�F�',
+			'password' => 'e8b43e0909e7adcda8d78698bf144ec517568ccc',
 			'active' => 1,
 			'created' => '2010-04-07 13:55:09',
 			'modified' => '2010-04-07 13:55:09',
