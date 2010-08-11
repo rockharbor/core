@@ -92,13 +92,13 @@ class HouseholdsController extends AppController {
 				
 				if ($addUser['Profile']['child'] && $success) {
 					$this->Notifier->notify($user, 'households_join');
-					$this->Session->setFlash('Added that dude.', 'flash_success');
+					$this->Session->setFlash('Added that dude.', 'flash'.DS.'success');
 				} elseif (!$addUser['Profile']['child'] && $success) {
 					$this->Notifier->saveData = array('type' => 'invitation');
 					$this->Notifier->notify($user, 'households_invite');
-					$this->Session->setFlash('Invited that dude.', 'flash_success');
+					$this->Session->setFlash('Invited that dude.', 'flash'.DS.'success');
 				} else {
-					$this->Session->setFlash('Error joining household!', 'flash_failure');
+					$this->Session->setFlash('Error joining household!', 'flash'.DS.'failure');
 				}
 			} else {
 				$this->Session->setFlash('Invalid Id.');
@@ -111,9 +111,9 @@ class HouseholdsController extends AppController {
 			$cSuccess = $this->Household->createHousehold($user);		
 			
 			if ($dSuccess && $cSuccess) {
-				$this->Session->setFlash('He left in a hurry.', 'flash_success');
+				$this->Session->setFlash('He left in a hurry.', 'flash'.DS.'success');
 			} else {
-				$this->Session->setFlash('Something broke. FIX IT!', 'flash_failure');				
+				$this->Session->setFlash('Something broke. FIX IT!', 'flash'.DS.'failure');				
 			}
 		}
 		
@@ -133,9 +133,9 @@ class HouseholdsController extends AppController {
 		$viewUser = $this->passedArgs['User'];
 	
 		if ($this->Household->makeHouseholdContact($user, $household)) {
-			$this->Session->setFlash('Household contact changed!', 'flash_success');
+			$this->Session->setFlash('Household contact changed!', 'flash'.DS.'success');
 		} else {
-			$this->Session->setFlash('Error\'d!', 'flash_failure');
+			$this->Session->setFlash('Error\'d!', 'flash'.DS.'failure');
 		}
 		
 		$this->redirect(array(

@@ -77,7 +77,7 @@ class SimpleCrudsController extends AppController {
  */
 	function view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash('Invalid '.Inflector::humanize($this->modelKey), 'flash_failure');
+			$this->Session->setFlash('Invalid '.Inflector::humanize($this->modelKey), 'flash'.DS.'failure');
 		}
 		$this->set('result', $this->{$this->modelClass}->read(null, $id));
 	}
@@ -89,10 +89,10 @@ class SimpleCrudsController extends AppController {
 		if (!empty($this->data)) {
 			$this->{$this->modelClass}->create();
 			if ($this->{$this->modelClass}->save($this->data)) {
-				$this->Session->setFlash('The '.Inflector::humanize($this->modelKey).' has been added', 'flash_success');
+				$this->Session->setFlash('The '.Inflector::humanize($this->modelKey).' has been added', 'flash'.DS.'success');
 				$this->redirect(array('action' => 'edit', $this->{$this->modelClass}->getInsertID()));
 			} else {
-				$this->Session->setFlash('The '.Inflector::humanize($this->modelKey).' could not be added. Please, try again.', 'flash_failure');
+				$this->Session->setFlash('The '.Inflector::humanize($this->modelKey).' could not be added. Please, try again.', 'flash'.DS.'failure');
 			}
 		}
 	}
@@ -104,13 +104,13 @@ class SimpleCrudsController extends AppController {
  */
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
-			$this->Session->setFlash('Invalid '.Inflector::humanize($this->modelKey), 'flash_failure');
+			$this->Session->setFlash('Invalid '.Inflector::humanize($this->modelKey), 'flash'.DS.'failure');
 		}
 		if (!empty($this->data)) {
 			if ($this->{$this->modelClass}->save($this->data)) {
-				$this->Session->setFlash('The '.Inflector::humanize($this->modelKey).' has been saved', 'flash_success');
+				$this->Session->setFlash('The '.Inflector::humanize($this->modelKey).' has been saved', 'flash'.DS.'success');
 			} else {
-				$this->Session->setFlash('The '.Inflector::humanize($this->modelKey).' could not be saved. Please, try again.', 'flash_failure');
+				$this->Session->setFlash('The '.Inflector::humanize($this->modelKey).' could not be saved. Please, try again.', 'flash'.DS.'failure');
 			}
 		}
 		if (empty($this->data)) {
@@ -125,14 +125,14 @@ class SimpleCrudsController extends AppController {
  */
 	function delete($id = null) {
 		if (!$id) {
-			$this->Session->setFlash('Invalid id for '.Inflector::humanize($this->modelKey), 'flash_failure');
+			$this->Session->setFlash('Invalid id for '.Inflector::humanize($this->modelKey), 'flash'.DS.'failure');
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->{$this->modelClass}->delete($id)) {
-			$this->Session->setFlash(Inflector::humanize($this->modelKey).' deleted', 'flash_success');
+			$this->Session->setFlash(Inflector::humanize($this->modelKey).' deleted', 'flash'.DS.'success');
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash(Inflector::humanize($this->modelKey).' was not deleted', 'flash_failure');
+		$this->Session->setFlash(Inflector::humanize($this->modelKey).' was not deleted', 'flash'.DS.'failure');
 		$this->redirect(array('action' => 'index'));
 	}
 

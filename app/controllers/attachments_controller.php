@@ -140,7 +140,7 @@ class AttachmentsController extends AppController {
 			$this->data[$this->modelClass] = $this->data[$this->modelClass][0];
 			
 			if ($this->{$this->modelClass}->save($this->data, array('validate' => 'first'))) {
-				$this->Session->setFlash(Inflector::humanize($this->modelKey).' added!', 'flash_success');
+				$this->Session->setFlash(Inflector::humanize($this->modelKey).' added!', 'flash'.DS.'success');
 			}
 		}
 	}
@@ -152,12 +152,12 @@ class AttachmentsController extends AppController {
  */ 
 	function delete($id = null) {		
 		if (!$id) {
-			$this->Session->setFlash('Invalid id', 'flash_failure');
+			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
 		} else {		
 			if ($this->{$this->modelClass}->delete($id)) {
-				$this->Session->setFlash(Inflector::humanize($this->modelKey).' deleted', 'flash_success');
+				$this->Session->setFlash(Inflector::humanize($this->modelKey).' deleted', 'flash'.DS.'success');
 			} else {
-				$this->Session->setFlash(Inflector::humanize($this->modelKey).' was not deleted', 'flash_failure');
+				$this->Session->setFlash(Inflector::humanize($this->modelKey).' was not deleted', 'flash'.DS.'failure');
 			}	
 		}
 		

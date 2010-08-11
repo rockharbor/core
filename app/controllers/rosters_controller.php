@@ -161,7 +161,7 @@ class RostersController extends AppController {
 		$involvementId = $this->passedArgs['Involvement'];
 		
 		if (!$userId || !$involvementId) {
-			$this->Session->setFlash('Invalid id', 'flash_failure');
+			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
 			$this->redirect(array('action'=>'index'));
 		}
 
@@ -171,7 +171,7 @@ class RostersController extends AppController {
 
 		// can't sign up for inactive involvements
 		if (!$involvement['Involvement']['active']) {
-			$this->Session->setFlash('You cannot sign up for an inactive event.', 'flash_failure');
+			$this->Session->setFlash('You cannot sign up for an inactive event.', 'flash'.DS.'failure');
 			$this->redirect($this->emptyPage);
 		}
 		
@@ -359,11 +359,11 @@ class RostersController extends AppController {
 							'template' => 'payments_payment_made'
 						));
 						
-						$this->Session->setFlash('You\'ve been signed up!', 'flash_success');
+						$this->Session->setFlash('You\'ve been signed up!', 'flash'.DS.'success');
 						$this->redirect(array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvementId));
 					} else {
 						$CreditCard->invalidate('credit_card_number', $CreditCard->creditCardError);
-						$this->Session->setFlash('Error processing credit card.', 'flash_failure');
+						$this->Session->setFlash('Error processing credit card.', 'flash'.DS.'failure');
 					}
 				} else {
 					// no credit card, just save as normal
@@ -388,7 +388,7 @@ class RostersController extends AppController {
 						}
 					}
 					
-					$this->Session->setFlash('You\'ve been signed up!', 'flash_success');
+					$this->Session->setFlash('You\'ve been signed up!', 'flash'.DS.'success');
 					$this->redirect(array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvementId));
 				}		
 			} else {
@@ -398,11 +398,11 @@ class RostersController extends AppController {
 				}
 
 				if (!$pValidates && isset($this->data['Child'])) {
-					$this->Session->setFlash('Please select a parent to bring the children.', 'flash_failure');
+					$this->Session->setFlash('Please select a parent to bring the children.', 'flash'.DS.'failure');
 				} elseif (!$lValidates) {
-					$this->Session->setFlash('The roster limit has been reached. Please sign up less people or wait for room to become available.', 'flash_failure');
+					$this->Session->setFlash('The roster limit has been reached. Please sign up less people or wait for room to become available.', 'flash'.DS.'failure');
 				} else {
-					$this->Session->setFlash('You couldn\'t be signed up. Please, try again.', 'flash_failure');
+					$this->Session->setFlash('You couldn\'t be signed up. Please, try again.', 'flash'.DS.'failure');
 				}
 			}
 		}
@@ -492,9 +492,9 @@ class RostersController extends AppController {
 					$this->Roster->saveAll($children, array('validate' => false));
 				}
 				
-				$this->Session->setFlash('Your roster has been updated!', 'flash_success');
+				$this->Session->setFlash('Your roster has been updated!', 'flash'.DS.'success');
 			} else {
-				$this->Session->setFlash('There was an error with the changes.', 'flash_failure');
+				$this->Session->setFlash('There was an error with the changes.', 'flash'.DS.'failure');
 			}
 			
 			if (isset($children)) {

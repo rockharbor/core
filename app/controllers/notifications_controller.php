@@ -83,7 +83,7 @@ class NotificationsController extends AppController {
  */
 	function read($id = null) {
 		if (!$id) {
-			//$this->Session->setFlash('Could not mark notification as read', 'flash_failure');
+			//$this->Session->setFlash('Could not mark notification as read', 'flash'.DS.'failure');
 			$this->redirect(array('action'=>'index'));
 		}
 		
@@ -104,12 +104,12 @@ class NotificationsController extends AppController {
 			$this->Notification->id = $id;
 			if ($this->Notification->ownedBy($this->activeUser['User']['id'])) {
 				if ($this->Notification->saveField('read', true)) {
-					//$this->Session->setFlash('Notification marked as read', 'flash_success');
+					//$this->Session->setFlash('Notification marked as read', 'flash'.DS.'success');
 				} else {
-					//$this->Session->setFlash('Could not mark notification as read', 'flash_failure');
+					//$this->Session->setFlash('Could not mark notification as read', 'flash'.DS.'failure');
 				}
 			} else {
-				//$this->Session->setFlash('Could not mark notification as read', 'flash_failure');
+				//$this->Session->setFlash('Could not mark notification as read', 'flash'.DS.'failure');
 			}
 		}
 	
@@ -123,7 +123,7 @@ class NotificationsController extends AppController {
  */
 	function delete($id = null) {
 		if (!$id) {
-			$this->Session->setFlash('Could not delete notification', 'flash_failure');
+			$this->Session->setFlash('Could not delete notification', 'flash'.DS.'failure');
 			$this->redirect(array('action'=>'index'));
 		}
 		
@@ -143,12 +143,12 @@ class NotificationsController extends AppController {
 			$this->Notification->id = $id;
 			if ($this->Notification->ownedBy($this->activeUser['User']['id'])) {
 				if ($this->Notification->delete($id)) {
-					$this->Session->setFlash('Notification deleted', 'flash_success');
+					$this->Session->setFlash('Notification deleted', 'flash'.DS.'success');
 				} else {
-					$this->Session->setFlash('Could not delete notification', 'flash_failure');
+					$this->Session->setFlash('Could not delete notification', 'flash'.DS.'failure');
 				}
 			} else {
-				$this->Session->setFlash('Could not delete notification', 'flash_failure');
+				$this->Session->setFlash('Could not delete notification', 'flash'.DS.'failure');
 			}
 		}
 		

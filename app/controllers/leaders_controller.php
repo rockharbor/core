@@ -88,10 +88,10 @@ class LeadersController extends AppController {
 					$this->Notifier->notify($manager['User']['id'], 'leaders_add');
 				}
 				
-				$this->Session->setFlash('The leader has been added', 'flash_success');
+				$this->Session->setFlash('The leader has been added', 'flash'.DS.'success');
 				//$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('The leader could not be added. Please, try again.', 'flash_failure');
+				$this->Session->setFlash('The leader could not be added. Please, try again.', 'flash'.DS.'failure');
 			}
 		}
 		
@@ -111,7 +111,7 @@ class LeadersController extends AppController {
  */
 	function delete() {
 		if (!$this->model || !$this->modelId || !isset($this->passedArgs['User'])) {
-			$this->Session->setFlash('Invalid id for leader', 'flash_failure');
+			$this->Session->setFlash('Invalid id for leader', 'flash'.DS.'failure');
 			$this->redirect(array('action'=>'index'));
 		}
 
@@ -149,10 +149,10 @@ class LeadersController extends AppController {
 				}
 			}
 		
-			$this->Session->setFlash('Leader removed', 'flash_success');
+			$this->Session->setFlash('Leader removed', 'flash'.DS.'success');
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash('Leader was not removed', 'flash_failure');
+		$this->Session->setFlash('Leader was not removed', 'flash'.DS.'failure');
 		$this->redirect(array('action' => 'index'));
 	}
 }

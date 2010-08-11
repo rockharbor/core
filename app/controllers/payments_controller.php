@@ -221,12 +221,12 @@ class PaymentsController extends AppController {
 					$verb = count($payments) > 1 ? 'payments' : 'a payment';
 					App::import('Helper', 'Text');
 					$Text = new TextHelper();
-					$this->Session->setFlash('You\'ve made '.$verb.' for '.$Text->toList(Set::extract('/User/Profile/name', $payForUsers)).'!', 'flash_success');
+					$this->Session->setFlash('You\'ve made '.$verb.' for '.$Text->toList(Set::extract('/User/Profile/name', $payForUsers)).'!', 'flash'.DS.'success');
 				} else {
-					$this->Session->setFlash('Error processing payment. '.$this->Payment->CreditCard->creditCardError, 'flash_failure');						
+					$this->Session->setFlash('Error processing payment. '.$this->Payment->CreditCard->creditCardError, 'flash'.DS.'failure');						
 				}					
 			} else {
-				$this->Session->setFlash('Could not process payment.', 'flash_failure');
+				$this->Session->setFlash('Could not process payment.', 'flash'.DS.'failure');
 			}			
 		}
 		

@@ -86,9 +86,9 @@ class CampusesController extends AppController {
 		
 		if (!empty($this->data)) {
 			if ($this->Campus->save($this->data)) {
-				$this->Session->setFlash('The changes to this campus have been made.', 'flash_success');
+				$this->Session->setFlash('The changes to this campus have been made.', 'flash'.DS.'success');
 			} else {
-				$this->Session->setFlash('There were problems saving the changes.', 'flash_failure');
+				$this->Session->setFlash('There were problems saving the changes.', 'flash'.DS.'failure');
 			}
 		}
 		

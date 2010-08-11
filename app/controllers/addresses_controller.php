@@ -121,9 +121,9 @@ class AddressesController extends AppController {
 					)
 				);
 				$this->Address->id = $lastId;
-				$this->Session->setFlash('The address was saved!', 'flash_success');
+				$this->Session->setFlash('The address was saved!', 'flash'.DS.'success');
 			} else {
-				$this->Session->setFlash('Boo! The address could not be saved.', 'flash_failure');
+				$this->Session->setFlash('Boo! The address could not be saved.', 'flash'.DS.'failure');
 			}
 		}
 		
@@ -148,7 +148,7 @@ class AddressesController extends AppController {
  */
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {			
-			$this->Session->setFlash('Invalid address.', 'flash_failure');
+			$this->Session->setFlash('Invalid address.', 'flash'.DS.'failure');
 			$this->redirect(array('action' => 'index'));
 		}
 
@@ -168,9 +168,9 @@ class AddressesController extends AppController {
 					);
 				}
 				$this->Address->id = $id;
-				$this->Session->setFlash('The address was saved!', 'flash_success');
+				$this->Session->setFlash('The address was saved!', 'flash'.DS.'success');
 			} else {
-				$this->Session->setFlash('Boo! The address could not be saved.', 'flash_failure');
+				$this->Session->setFlash('Boo! The address could not be saved.', 'flash'.DS.'failure');
 			}
 		}
 		
@@ -186,14 +186,14 @@ class AddressesController extends AppController {
  */
 	function delete($id = null) {
 		if (!$id) {
-			$this->Session->setFlash('Invalid id for address', 'flash_failure');
+			$this->Session->setFlash('Invalid id for address', 'flash'.DS.'failure');
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->Address->delete($id)) {
-			$this->Session->setFlash('Address deleted', 'flash_success');
+			$this->Session->setFlash('Address deleted', 'flash'.DS.'success');
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash('Address was not deleted', 'flash_failure');
+		$this->Session->setFlash('Address was not deleted', 'flash'.DS.'failure');
 		$this->redirect(array('action' => 'index'));
 	}
 }

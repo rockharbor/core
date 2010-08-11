@@ -59,7 +59,7 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/sys_emails/compose/model:User/User:1', array(
 			'data' => $data
 		));
-		$this->assertEqual($this->SysEmails->Session->read('Message.flash.element'), 'flash_success');
+		$this->assertEqual($this->SysEmails->Session->read('Message.flash.element'), 'flash'.DS.'success');
 		$this->assertEqual($vars['message'], 'Test message');
 	}
 
@@ -88,7 +88,7 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 			'rickyrockharborjr'
 		);
 		$this->assertEqual($results, $expected);
-		$this->assertEqual($this->SysEmails->Session->read('Message.flash.element'), 'flash_success');
+		$this->assertEqual($this->SysEmails->Session->read('Message.flash.element'), 'flash'.DS.'success');
 	}
 
 }

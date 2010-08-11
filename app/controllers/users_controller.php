@@ -296,7 +296,7 @@ class UsersController extends AppController {
 			}
 			
 			if ($success) {
-				$this->Session->setFlash('Please log in with your new credentials.', 'flash_success');
+				$this->Session->setFlash('Please log in with your new credentials.', 'flash'.DS.'success');
 				$this->set('reset', $this->data['User']['reset']);
 				$this->QueueEmail->send(array(
 					'to' => $this->data['User']['id'],
@@ -308,7 +308,7 @@ class UsersController extends AppController {
 				if ($invalidPassword) {
 					$this->User->invalidate('current_password', 'What exactly are you trying to pull? This isn\'t your current password.');
 				}
-				$this->Session->setFlash('D\'oh! Couldn\'t reset password. Please, try again.', 'flash_failure');
+				$this->Session->setFlash('D\'oh! Couldn\'t reset password. Please, try again.', 'flash'.DS.'failure');
 			}
 		}
 		
@@ -338,7 +338,7 @@ class UsersController extends AppController {
 				$newPassword = $this->User->generatePassword();
 		
 				if ($this->User->saveField('password', $newPassword)) {
-					$this->Session->setFlash('Your new password has been sent via email.', 'flash_success');
+					$this->Session->setFlash('Your new password has been sent via email.', 'flash'.DS.'success');
 					$this->set('password', $newPassword);
 					$this->QueueEmail->send(array(
 						'to' => $user,
@@ -346,10 +346,10 @@ class UsersController extends AppController {
 						'template' => 'users_forgot_password'
 					));
 				} else {
-					$this->Session->setFlash('D\'oh! Couldn\'t reset password. Please, try again.', 'flash_failure');
+					$this->Session->setFlash('D\'oh! Couldn\'t reset password. Please, try again.', 'flash'.DS.'failure');
 				}
 			} else {
-				$this->Session->setFlash('I couldn\'t find you. Try again.', 'flash_failure');
+				$this->Session->setFlash('I couldn\'t find you. Try again.', 'flash'.DS.'failure');
 			}
 		}
 	}
@@ -388,10 +388,10 @@ class UsersController extends AppController {
 					'template' => 'users_request_activation'
 				));
 
-				$this->Session->setFlash('Request sent!', 'flash_success');
+				$this->Session->setFlash('Request sent!', 'flash'.DS.'success');
 				$this->redirect('/');
 			} else {
-				$this->Session->setFlash('Fill out all the info por favor.', 'flash_failure');
+				$this->Session->setFlash('Fill out all the info por favor.', 'flash'.DS.'failure');
 			}			
 		}
 		
@@ -412,7 +412,7 @@ class UsersController extends AppController {
 			));
 
 			if ($foundUser !== false) {
-				$this->Session->setFlash('User already exists!', 'flash_failure');
+				$this->Session->setFlash('User already exists!', 'flash'.DS.'failure');
 				$this->redirect(array('action' => 'view', 'User' => 1));
 			}
 
@@ -436,14 +436,14 @@ class UsersController extends AppController {
 					$this->Notifier->notify($notifyUser['id'], 'households_invite');
 				}
 
-				$this->Session->setFlash('User(s) added and notified!', 'flash_success');
+				$this->Session->setFlash('User(s) added and notified!', 'flash'.DS.'success');
 
 				$this->redirect(array(
 					'controller' => 'users',
 					'action' => 'index'
 				));
 			} else {		
-				$this->Session->setFlash('Oops, validation errors...', 'flash_failure');
+				$this->Session->setFlash('Oops, validation errors...', 'flash'.DS.'failure');
 			}
 		}
 		
@@ -476,7 +476,7 @@ class UsersController extends AppController {
 			}
 			
 			if ($this->User->createUser($this->data)) {
-				$this->Session->setFlash('Your account has been created!', 'flash_success');
+				$this->Session->setFlash('Your account has been created!', 'flash'.DS.'success');
 
 				foreach ($this->User->tmpAdded as $notifyUser) {
 					$this->set('username', $notifyUser['username']);
@@ -503,7 +503,7 @@ class UsersController extends AppController {
 					$this->data['User']['username']
 				));
 			} else {
-				$this->Session->setFlash('Oops, validation errors...', 'flash_failure');
+				$this->Session->setFlash('Oops, validation errors...', 'flash'.DS.'failure');
 			}
 		}
 
@@ -534,9 +534,9 @@ class UsersController extends AppController {
 		}
 		if (!empty($this->data)) {
 			if ($this->User->saveAll($this->data)) {
-				$this->Session->setFlash('The user has been saved', 'flash_success');
+				$this->Session->setFlash('The user has been saved', 'flash'.DS.'success');
 			} else {
-				$this->Session->setFlash('The user could not be saved. Please, try again.', 'flash_failure');
+				$this->Session->setFlash('The user could not be saved. Please, try again.', 'flash'.DS.'failure');
 			}
 		}
 		if (empty($this->data)) {

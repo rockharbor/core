@@ -39,7 +39,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		));
 		$result = $vars['password'];
 		$this->assertNotEqual($oldPassword['User']['password'], $result);
-		$this->assertEqual($this->Users->Session->read('Message.flash.element'), 'flash_success');
+		$this->assertEqual($this->Users->Session->read('Message.flash.element'), 'flash'.DS.'success');
 	}
 
 	function testRequestActivation() {
@@ -65,7 +65,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/users/request_activation/1', array(
 			'data' => $data
 		));
-		$this->assertEqual($this->Users->Session->read('Message.flash.element'), 'flash_success');
+		$this->assertEqual($this->Users->Session->read('Message.flash.element'), 'flash'.DS.'success');
 		$request = $MergeRequest->find('first', array(
 			'conditions' => array(
 				'model_id' => 1
@@ -187,7 +187,7 @@ class UsersControllerTestCase extends CoreTestCase {
 			'data' => $data
 		));
 
-		$this->assertEqual($this->Users->Session->read('Message.flash.element'), 'flash_success');
+		$this->assertEqual($this->Users->Session->read('Message.flash.element'), 'flash'.DS.'success');
 
 		$this->Users->User->contain(array('Profile'));
 		$user = $this->Users->User->read(null, 1);

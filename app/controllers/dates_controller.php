@@ -203,9 +203,9 @@ class DatesController extends AppController {
 		}
 		if (!empty($this->data)) {
 			if ($this->Date->save($this->data)) {
-				$this->Session->setFlash('The date has been saved', 'flash_success');
+				$this->Session->setFlash('The date has been saved', 'flash'.DS.'success');
 			} else {
-				$this->Session->setFlash('The date could not be saved. Please, try again.', 'flash_failure');
+				$this->Session->setFlash('The date could not be saved. Please, try again.', 'flash'.DS.'failure');
 			}
 		}
 		if (empty($this->data)) {

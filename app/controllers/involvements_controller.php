@@ -117,7 +117,7 @@ class InvolvementsController extends AppController {
 				'template' => 'involvements_invite'
 			));
 			
-			$this->Session->setFlash('The user was invited.', 'flash_success');			
+			$this->Session->setFlash('The user was invited.', 'flash'.DS.'success');			
 		}
 		
 		$this->redirect(array('action' => 'view', $to));
@@ -164,10 +164,10 @@ class InvolvementsController extends AppController {
 		if (!empty($this->data)) {
 			$this->Involvement->create();
 			if ($this->Involvement->save($this->data)) {
-				$this->Session->setFlash('Involvement opportunity saved!', 'flash_success');
+				$this->Session->setFlash('Involvement opportunity saved!', 'flash'.DS.'success');
 				$this->redirect(array('action' => 'edit', 'Involvement' => $this->Involvement->id));
 			} else {
-				$this->Session->setFlash('The involvement could not be saved. Please, try again.', 'flash_failure');
+				$this->Session->setFlash('The involvement could not be saved. Please, try again.', 'flash'.DS.'failure');
 			}
 		}
 				
@@ -197,15 +197,15 @@ class InvolvementsController extends AppController {
 		if (!empty($this->data)) {
 			if (!$revision) {
 				if ($this->Involvement->save($this->data)) {
-					$this->Session->setFlash('The changes to this involvement opportunity are pending.', 'flash_success');
+					$this->Session->setFlash('The changes to this involvement opportunity are pending.', 'flash'.DS.'success');
 					$this->redirect(array('action' => 'view', 'Involvement' => $id));
 				} else {
-					$this->Session->setFlash('There were problems saving the changes.', 'flash_failure');
+					$this->Session->setFlash('There were problems saving the changes.', 'flash'.DS.'failure');
 				}
 				
 				$revision = $this->Involvement->revision($id);
 			} else {
-				$this->Session->setFlash('There\'s already a pending revision for this involvement opportunity.', 'flash_failure');
+				$this->Session->setFlash('There\'s already a pending revision for this involvement opportunity.', 'flash'.DS.'failure');
 			}		
 		}
 		if (empty($this->data)) {
@@ -232,7 +232,7 @@ class InvolvementsController extends AppController {
 		$id = $this->passedArgs['Involvement'];
 		
 		if (!$id) {
-			$this->Session->setFlash('Invalid id', 'flash_failure');
+			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
 			$this->redirect(array('action' => 'edit', $id));
 		}
 		
@@ -241,7 +241,7 @@ class InvolvementsController extends AppController {
 		$involvement = $this->Involvement->read(null, $id);
 		if ($involvement['Involvement']['take_payment'] && $active) {
 			if (empty($involvement['PaymentOption'])) {
-				$this->Session->setFlash('Cannot activate until a payment option is defined', 'flash_failure');
+				$this->Session->setFlash('Cannot activate until a payment option is defined', 'flash'.DS.'failure');
 				$this->redirect($this->emptyPage);
 				return;
 			}
@@ -256,14 +256,14 @@ class InvolvementsController extends AppController {
 				'Successfully '.($active ? 'activated' : 'deactivated')				
 				.' Involvement '.$id.' '
 				.($recursive ? ' and all related items' : ''),
-				'flash_success'
+				'flash'.DS.'success'
 			);
 		} else {
 			$this->Session->setFlash(
 				'Failed to '.($active ? 'activate' : 'deactivate')				
 				.' Involvement '.$id.' '
 				.($recursive ? ' and all related items' : ''),
-				'flash_failure'
+				'flash'.DS.'failure'
 			);
 		}
 		$this->data = array();

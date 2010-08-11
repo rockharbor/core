@@ -191,7 +191,7 @@ class RostersControllerTestCase extends CoreTestCase {
 			'data' => $data
 		));
 		$result = $this->Rosters->Session->read('Message.flash.element');
-		$this->assertEqual($result, 'flash_success');
+		$this->assertEqual($result, 'flash'.DS.'success');
 
 		$this->assertEqual($this->Rosters->Roster->field('role_id'), 1);
 		
@@ -204,7 +204,7 @@ class RostersControllerTestCase extends CoreTestCase {
 			'data' => $data
 		));
 		$result = $this->Rosters->Session->read('Message.flash.element');
-		$this->assertEqual($result, 'flash_success');
+		$this->assertEqual($result, 'flash'.DS.'success');
 
 		$this->assertEqual($this->Rosters->Roster->field('parent_id'), 1);
 	}

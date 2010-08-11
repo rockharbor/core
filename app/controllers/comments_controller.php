@@ -75,10 +75,10 @@ class CommentsController extends AppController {
 			$this->data['Comment']['created_by'] = $this->activeUser['User']['id'];
 			$this->Comment->create();
 			if ($this->Comment->save($this->data)) {
-				$this->Session->setFlash('The comment has been saved', 'flash_success');
+				$this->Session->setFlash('The comment has been saved', 'flash'.DS.'success');
 				$this->redirect(array('action' => 'edit', $this->Comment->getInsertID(), 'User' => $viewUser));
 			} else {
-				$this->Session->setFlash('The comment could not be saved. Please, try again.', 'flash_failure');
+				$this->Session->setFlash('The comment could not be saved. Please, try again.', 'flash'.DS.'failure');
 			}
 		}
 		$this->set('users', $this->Comment->User->find('list'));
@@ -108,10 +108,10 @@ class CommentsController extends AppController {
 		}
 		if (!empty($this->data)) {
 			if ($this->Comment->save($this->data)) {
-				$this->Session->setFlash('The comment has been saved', 'flash_success');
+				$this->Session->setFlash('The comment has been saved', 'flash'.DS.'success');
 
 			} else {
-				$this->Session->setFlash('The comment could not be saved. Please, try again.', 'flash_failure');
+				$this->Session->setFlash('The comment could not be saved. Please, try again.', 'flash'.DS.'failure');
 			}
 		}
 		if (empty($this->data)) {
@@ -140,10 +140,10 @@ class CommentsController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->Comment->delete($id)) {
-			$this->Session->setFlash('Comment deleted', 'flash_success');
+			$this->Session->setFlash('Comment deleted', 'flash'.DS.'success');
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash('Comment was not deleted', 'flash_failure');
+		$this->Session->setFlash('Comment was not deleted', 'flash'.DS.'failure');
 		$this->redirect(array('action' => 'index'));
 	}
 }

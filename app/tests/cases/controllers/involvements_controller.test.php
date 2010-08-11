@@ -87,7 +87,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 	function testToggleActivity() {
 		$this->testAction('/involvements/toggle_activity/1/Involvement:3');
 		$this->Involvements->Involvement->id = 3;
-		$this->assertEqual($this->Involvements->Session->read('Message.flash.element'), 'flash_failure');
+		$this->assertEqual($this->Involvements->Session->read('Message.flash.element'), 'flash'.DS.'failure');
 
 		$data = array(
 			'PaymentOption' => array(
@@ -104,7 +104,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$this->testAction('/involvements/toggle_activity/1/Involvement:3');
 		$this->Involvements->Involvement->id = 3;
 		$this->assertEqual($this->Involvements->Involvement->field('active'), 1);
-		$this->assertEqual($this->Involvements->Session->read('Message.flash.element'), 'flash_success');
+		$this->assertEqual($this->Involvements->Session->read('Message.flash.element'), 'flash'.DS.'success');
 	}
 
 	function testHistory() {

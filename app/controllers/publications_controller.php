@@ -48,7 +48,7 @@ class PublicationsController extends SimpleCrudsController {
 		if (isset($this->passedArgs['User'])) {
 			$userId = $this->passedArgs['User'];
 		} else {
-			$this->Session->setFlash('Invalid id', 'flash_failure');
+			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
 			$this->redirect(array('action' => 'index'));
 		}
 		
@@ -78,14 +78,14 @@ class PublicationsController extends SimpleCrudsController {
 		$this->viewPath = 'publications';
 		
 		if (!$publicationId) {
-			$this->Session->setFlash('Invalid id', 'flash_failure');
+			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
 			$this->redirect(array('action' => 'subscriptions'));
 		}
 		
 		if (isset($this->passedArgs['User'])) {
 			$userId = $this->passedArgs['User'];
 		} else {
-			$this->Session->setFlash('Invalid id', 'flash_failure');
+			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
 			$this->redirect(array('action' => 'subscriptions'));
 		}
 		

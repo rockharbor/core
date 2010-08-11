@@ -125,7 +125,7 @@ class MinistriesController extends AppController {
 		if (!empty($this->data)) {
 			if (!$revision) {
 				if ($this->Ministry->save($this->data)) {
-					$this->Session->setFlash('The changes to this ministry are pending.', 'flash_success');
+					$this->Session->setFlash('The changes to this ministry are pending.', 'flash'.DS.'success');
 					
 					$this->Notifier->notify($this->CORE['settings']['ministry_content_edit_user'], 'ministries_edit');
 					$this->QueueEmail->send(array(
@@ -134,12 +134,12 @@ class MinistriesController extends AppController {
 						'template' => 'ministries_edit'
 					));
 				} else {
-					$this->Session->setFlash('There were problems saving the changes.', 'flash_failure');
+					$this->Session->setFlash('There were problems saving the changes.', 'flash'.DS.'failure');
 				}
 				
 				$revision = $this->Ministry->revision($id);
 			} else {
-				$this->Session->setFlash('There\'s already a pending revision for this ministry.', 'flash_failure');
+				$this->Session->setFlash('There\'s already a pending revision for this ministry.', 'flash'.DS.'failure');
 			}
 		}
 		
