@@ -1,3 +1,15 @@
 [submodule "app/plugins/api_generator"]
 	path = app/plugins/api_generator
 	url = git@github.com:jeremyharris/api_generator.git
+[submodule "app/plugins/acl_extras"]
+	path = app/plugins/acl_extras
+	url = http://github.com/markstory/acl_extras.git
+[submodule "app/plugins/debug_kit"]
+	path = app/plugins/debug_kit
+	url = http://github.com/cakephp/debug_kit.git
+[submodule "app/plugins/media"]
+	path = app/plugins/media
+	url = http://github.com/davidpersson/media.git
+[submodule "app/plugins/referee"]
+	path = app/plugins/referee
+	url = http://github.com/joebeeson/referee.git
