@@ -78,8 +78,8 @@ class QueueEmailComponent extends EmailComponent {
 
 		$systemEmail = array(
 			'Profile' => array(
-				'name' => $this->Controller->CORE['settings']['site_name_tagless'],
-				'primary_email' => $this->Controller->CORE['settings']['site_email']
+				'name' => Core::read('site_name_tagless'),
+				'primary_email' => Core::read('site_email')
 			)
 		);
 
@@ -89,8 +89,6 @@ class QueueEmailComponent extends EmailComponent {
 		} else {
 			$from = $User->read(null, $from);
 		}
-
-		$this->Controller->beforeRender();
 
 		$this->smtpOptions = $smtp;
 		$this->delivery = 'smtp';
@@ -124,7 +122,7 @@ class QueueEmailComponent extends EmailComponent {
 		$this->bcc = $bcc;
 		$this->to = $systemEmail['Profile']['name'].' <'.$systemEmail['Profile']['primary_email'].'>';
 
-		$this->subject = $this->Controller->CORE['settings']['email_subject_prefix'].' '.$subject;
+		$this->subject = Core::read('email_subject_prefix').' '.$subject;
 
 		if (!parent::send($body)) {
 			CakeLog::write('smtp', $this->smtpError);

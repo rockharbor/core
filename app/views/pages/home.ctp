@@ -1,5 +1,5 @@
-<h2><?php echo $CORE['settings']['site_name'].' '.$CORE['version']; ?> / <?php 
-echo $this->Html->link($CORE['settings']['church_name'], $CORE['settings']['church_site_url'], array('escape' => false));
+<h2><?php echo Core::read('site_name').' '.Configure::read('CORE.version'); ?> / <?php
+echo $this->Html->link(Core::read('church_name'), Core::read('church_site_url'), array('escape' => false));
 ?></h2>
 Admin-y sort of things
 <ul>

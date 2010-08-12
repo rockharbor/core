@@ -1,7 +1,7 @@
 <h2>Found you!</h2>
 
 <p>
-I think you're already in <?php echo $CORE['settings']['site_name']; ?>! Use this form to send an activation request. When it's approved, you'll get an email with your new username and a temporary password.
+I think you're already in <?php echo Core::read('site_name'); ?>! Use this form to send an activation request. When it's approved, you'll get an email with your new username and a temporary password.
 </p>
 
 <div id="profile_tabs" class="profiles" class="ui-tabs">

@@ -48,11 +48,16 @@
  * Inflector::rules('plural', array('rules' => array(), 'irregular' => array(), 'uninflected' => array()));
  *
  */
- 
+
+/**
+ * Bring in Core configuration class
+ */
+require_once APP.'libs'.DS.'core.php';
+
 /**
  * Bring in and overwrite (specific) Media plugin settings
  */
-require_once(APP.'plugins'.DS.'media'.DS.'config'.DS.'core.php');
+require_once APP.'plugins'.DS.'media'.DS.'config'.DS.'core.php';
 
 Configure::write('Media.filter.image', array(
 	'xxs' => array('convert' => 'image/png', 'fitCrop' => array(16, 16)),
@@ -64,5 +69,14 @@ Configure::write('Media.filter.image', array(
 	)
 );
 
+/**
+ * Api Generator plugin settings
+ */
 Configure::write('ApiGenerator.config_path', APP.'config'.DS.'api_config.ini');
+
+/**
+ * Referee plugin constant to define path
+ */
+define('LISTENER_PATH', APP . 'libs' . DS . 'listeners');
+
 ?>

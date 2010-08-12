@@ -27,14 +27,14 @@ echo $this->Form->create('User', array(
 	<?php
 		if (!$activeUser) {
 			echo $this->Form->input('username', array(
-				'after' => 'Leave blank if you want '.$CORE['settings']['site_name'].' to pick one for you.'
+				'after' => 'Leave blank if you want '.Core::read('site_name').' to pick one for you.'
 			));
 			echo $this->Form->input('password', array(
-				'after' => 'Leave blank if you want '.$CORE['settings']['site_name'].' to pick one for you.'
+				'after' => 'Leave blank if you want '.Core::read('site_name').' to pick one for you.'
 			));
 			echo $this->Form->input('confirm_password', array(
 				'type' => 'password',
-				'after' => 'Leave blank if you want '.$CORE['settings']['site_name'].' to pick one for you.'
+				'after' => 'Leave blank if you want '.Core::read('site_name').' to pick one for you.'
 			));
 		}
 		echo $this->Form->input('Profile.first_name');
@@ -134,7 +134,7 @@ echo $this->Form->create('User', array(
 		<fieldset id="member<?php echo $hmcount; ?>" >
 	<?php
 		if (isset($householdMember['Profile']['id'])) {
-			echo $householdMember['Profile']['first_name'].' already exists in '.$CORE['settings']['site_name'].'. ';
+			echo $householdMember['Profile']['first_name'].' already exists in '.Core::read('site_name').'. ';
 			echo $householdMember['Profile']['gender'] == 'm' ? 'He\'ll' : 'She\'ll';
 			if ($householdMember['Profile']['child']) {
 				echo ' be added to your household.';

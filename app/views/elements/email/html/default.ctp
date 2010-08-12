@@ -1,5 +1,5 @@
 <?php
 
-echo $message;
+echo $content;
 
 ?>

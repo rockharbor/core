@@ -12,6 +12,7 @@ class UsersControllerTestCase extends CoreTestCase {
 
 	function startTest() {
 		$this->loadFixtures('AppSetting', 'User', 'Profile', 'Group');
+		Core::loadSettings(true);
 		$this->Users =& new MockUsersController();
 		$this->Users->constructClasses();
 		$this->Users->QueueEmail = new MockQueueEmailComponent();
@@ -23,7 +24,8 @@ class UsersControllerTestCase extends CoreTestCase {
 
 	function endTest() {
 		$this->Users->Session->destroy();
-		unset($this->Users);		
+		unset($this->Users);
+		Cache::delete('core_app_settings');
 		ClassRegistry::flush();
 	}
 

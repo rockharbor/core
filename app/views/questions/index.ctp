@@ -49,7 +49,7 @@
 <?php endforeach; ?>
 	</table>
 </div>
-<?php if ($CORE['settings']['involvement_question_limit'] > $i): ?>
+<?php if (Core::read('involvement_question_limit') > $i): ?>
 <p>
 <?php echo $this->Html->link('Add Question', array('action' => 'add', 'Involvement' => $involvementId), array('rel'=>'modal-questions','class'=>'button')); ?>
 </p>

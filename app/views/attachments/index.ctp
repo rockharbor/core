@@ -54,7 +54,7 @@ jup function is called.
 --OR--
 Firebug the iframe that jUp creates at the end of the DOM
 */
-if (count($attachments) < (isset($CORE['settings'][strtolower($model).'_'.strtolower($attachmentModel).'_limit']) ? $CORE['settings'][strtolower($model).'_'.strtolower($attachmentModel).'_limit'] : 1)) {
+if (count($attachments) < (empty(Core::read(''.strtolower($model).'_'.strtolower($attachmentModel).'_limit')) ? Core::read(''.strtolower($model).'_'.strtolower($attachmentModel).'_limit') : 1)) {
 	echo $this->Form->create($model, array(
 		'type' => 'file',
 		'url' => array(

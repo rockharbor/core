@@ -18,22 +18,6 @@
  */
 class AppController extends Controller {
 
-/**
- * CORE's version
- *
- * @var string
- * @access public
- */		
-	var $_version = '2.0.0-alpha';
-
-/**
- * Stored global CORE settings
- *
- * @var array
- * @access public
- */		
-	var $CORE = null;
-	
 	var $components = array(
 		'Session',
 		'Email',
@@ -72,7 +56,23 @@ class AppController extends Controller {
 			),
 			'userScope' => array('User.active' => true)
 		),
-		'Referee.Whistle',
+		'Referee.Whistle' => array(
+			'paths' => array(
+				LISTENER_PATH
+			),
+			'listeners' => array(
+				'DbLog',
+				'Screen',
+				'Email' => array(
+					array(
+						'levels' => E_ERROR
+					),
+					array(
+						'levels' => E_WARNING
+					)
+				)
+			)
+		),
 		'Notifier' => array(
 			'saveData' => array(
 				'type' => 'default'
@@ -146,33 +146,6 @@ class AppController extends Controller {
  * @see Controller::beforeFilter()
  */
 	function beforeFilter() {
-		// pull app settings
-		$appSettings = Cache::read('core_app_settings');
-		if (empty($appSettings)) {
-			$appSettings = ClassRegistry::init('AppSetting')->find('all');
-			// add tagless versions of the html tagged ones
-			$tagless = array();
-			foreach ($appSettings as $appSetting) {
-				if ($appSetting['AppSetting']['html']) {
-					$tagless[] = array(
-						'AppSetting' => array(
-							'name' => $appSetting['AppSetting']['name'].'_tagless',
-							'value' => strip_tags($appSetting['AppSetting']['value'])
-						)
-					);							
-				}
-			}
-			$appSettings = array_merge($appSettings, $tagless);
-			$appSettings = Set::combine($appSettings, '{n}.AppSetting.name', '{n}.AppSetting.value');
-			Cache::write('core_app_settings', $appSettings);
-		}
-		
-		Configure::write('CORE.settings', $appSettings);
-		$this->CORE = array(
-			'version' => $this->_version,
-			'settings' => $appSettings
-		);
-		
 		$User = ClassRegistry::init('User');
 
 		$this->Notifier->notification = $User->Notification;
@@ -263,7 +236,6 @@ class AppController extends Controller {
  * @see Controller::beforeRender()
  */	
 	function beforeRender() {
-		$this->set('CORE', $this->CORE);	
 		$this->set('activeUser', $this->activeUser);	
 		$this->set('defaultSubmitOptions', $this->defaultSubmitOptions);
 	}

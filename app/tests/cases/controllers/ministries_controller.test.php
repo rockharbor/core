@@ -12,6 +12,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 
 	function startTest() {
 		$this->Ministries =& new TestMinistriesController();
+		Core::loadSettings(true);
 		$this->Ministries->constructClasses();
 		$this->Ministries->QueueEmail = new MockQueueEmailComponent();
 		$this->Ministries->QueueEmail->setReturnValue('send', true);
@@ -25,7 +26,8 @@ class MinistriesControllerTestCase extends CoreTestCase {
 
 	function endTest() {
 		$this->Ministries->Session->destroy();
-		unset($this->Ministries);		
+		unset($this->Ministries);
+		Cache::delete('core_app_settings');
 		ClassRegistry::flush();
 	}
 

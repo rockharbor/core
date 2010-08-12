@@ -1,1 +1,1 @@
-Welcome to <?php echo $CORE['site_name']; ?>!
+Welcome to <?php echo Core::read('site_name_tagless'); ?>!

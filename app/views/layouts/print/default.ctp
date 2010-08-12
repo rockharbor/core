@@ -3,7 +3,7 @@
 <head>
 	<?php echo $this->Html->charset(); ?>
 	<title>
-		<?php echo $CORE['settings']['site_name_tagless'].' '.$CORE['version'].' :: '.$title_for_layout; ?>
+		<?php echo Core::read('site_name_tagless').' '.Configure::read('CORE.version').' :: '.$title_for_layout; ?>
 	</title>
 	<?php
 		echo $this->Html->css('print');
