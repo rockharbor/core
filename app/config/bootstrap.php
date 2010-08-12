@@ -49,10 +49,6 @@
  *
  */
  
-App::build(array(
-	'shells' => array(APP.'libs'.DS.'shells'.DS)
-));
- 
 /**
  * Bring in and overwrite (specific) Media plugin settings
  */
@@ -67,4 +63,6 @@ Configure::write('Media.filter.image', array(
 	'xl'  => array('convert' => 'image/png', 'fit' => array(680, 440)),
 	)
 );
+
+Configure::write('ApiGenerator.config_path', APP.'config'.DS.'api_config.ini');
 ?>
