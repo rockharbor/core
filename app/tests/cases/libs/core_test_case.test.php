@@ -62,10 +62,10 @@ class DumberBehavior extends ModelBehavior {
  * @package       core
  * @subpackage    core.app.tests.cases.libs
  */
-class DummiesController extends AppController {
+class DummiesController extends Controller {
 	var $name = 'Dummies';
 
-	var $components = array('Dumb');	
+	var $components = array('Session', 'Dumb');
 
 	function isAuthorized() {
 		return true;
