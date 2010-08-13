@@ -61,7 +61,7 @@ class SysEmailsController extends AppController {
 		
 		if (!empty($this->data)) {
 			// send email
-			$this->set('message', $this->data['SysEmail']['body']);
+			$this->set('content', $this->data['SysEmail']['body']);
 			
 			$this->SysEmail->set($this->data);
 			
@@ -163,7 +163,7 @@ class SysEmailsController extends AppController {
 		
 		if (!empty($this->data)) {
 			// send email
-			$this->set('message', $this->data['SysEmail']['body']);
+			$this->set('content', $this->data['SysEmail']['body']);
 			
 			// get attachments for this email
 			$Document = ClassRegistry::init('Document');
