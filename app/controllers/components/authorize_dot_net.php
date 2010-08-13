@@ -11,6 +11,11 @@
  */
 
 /**
+ * Includes
+ */
+App::import('Model', 'User');
+
+/**
  * AuthorizeDotNet Component
  *
  * ### Test card numbers (use any expiry date):
@@ -61,59 +66,6 @@ class AuthorizeDotNetComponent extends Object {
  * @var string
  */ 	
 	var $transactionId = '';
-	
-/**
- * Reference to controller
- *
- * @var object
- */
-	var $controller = null;	
-	
-/**
- * Start AuthorizeDotNetComponent for use in the controller
- *
- * @param object $controller A reference to the controller
- * @access public
- */
-	function initialize(&$controller = null) {
-		$this->controller =& $controller;
-		
-		// check debug
-		if (Configure::read('debug') > 0) {
-			$email = $this->controller->CORE['settings']['debug_email'];
-			$this->_data['x_Test_Request'] = 'TRUE';
-		} else {
-			$email = $this->controller->CORE['settings']['credit_card_email'];
-			$this->_data['x_Test_Request'] = 'FALSE';
-		}
-		
-		// referrer url to report to authorize.net
-		$this->_credentials['refer'] = $_SERVER['REQUEST_URI'];
-
-		/* Sets the Authorize.net account info */
-		$this->_data['x_Login'] = $this->_credentials['username'];
-		$this->_data['x_Password'] = $this->_credentials['password'];
-
-		/* Sets preferences - return info should be pipe (|) delimited */
-		$this->_data['x_Delim_Data'] = 'TRUE';
-		$this->_data['x_Delim_Char'] = '|';
-		$this->_data['x_Encap_Char'] = '';
-					
-		/* Confirmation Emails - should the customer get one? where should the merchant's copy be sent? */
-		$this->_data['x_Email_Customer'] = 'FALSE';
-			
-		$this->_data['x_Merchant_Email'] = $email; // optional, comment this line to suppress the merchant copy
-					
-		/* Set transaction type */
-		$this->_data['x_Type'] = 'AUTH_CAPTURE';
-		$this->_data['x_Method'] = 'CC';
-					
-		/* A required field, but the only valid value is "FALSE" */
-		$this->_data['x_ADC_Relay_Response'] = 'FALSE';
-
-		/* API version we're using */
-		$this->_data['x_Version'] = '3.1';
-	}
 
 /**
  * Sets the invoice title
@@ -185,7 +137,9 @@ class AuthorizeDotNetComponent extends Object {
  * @todo Update to use HTTPSocket class instead of manual curl
  * @return boolean Success
  */
-	function request() {	
+	function request() {
+		$this->_init();
+
 		$fields = array();
 		
 		// Build the data string that we're posting
@@ -222,7 +176,64 @@ class AuthorizeDotNetComponent extends Object {
 		$this->transactionId = $details[6];
 					
 		/* authorize.net returns a 1 on success. */
-		return ($details[0] == '1');
+		$success = $details[0] == '1';
+
+		if ($success) {
+			$this->_data = array();
+		}
+		return $success;
+	}
+
+	function _init() {
+		$this->error = '';
+		$this->transactionId = '';
+
+		// check debug
+		if (Configure::read() > 0) {
+			$this->_data['x_Test_Request'] = 'TRUE';
+			$id = Core::read('debug_email');
+		} else {
+			$this->_data['x_Test_Request'] = 'FALSE';
+			$id = Core::read('credit_card_email');
+		}
+
+		$user = ClassRegistry::init('User')->find('first', array(
+			'conditions' => array(
+				'User.id' => $id
+			),
+			'contain' => array(
+				'Profile' => array(
+					'fields' => 'Profile.primary_email'
+				)
+			)
+		));
+
+		$this->_data['x_Merchant_Email'] = $user['Profile']['primary_email'];
+
+		// referrer url to report to authorize.net
+		$this->_credentials['refer'] = $_SERVER['REQUEST_URI'];
+
+		/* Sets the Authorize.net account info */
+		$this->_data['x_Login'] = $this->_credentials['username'];
+		$this->_data['x_Password'] = $this->_credentials['password'];
+
+		/* Sets preferences - return info should be pipe (|) delimited */
+		$this->_data['x_Delim_Data'] = 'TRUE';
+		$this->_data['x_Delim_Char'] = '|';
+		$this->_data['x_Encap_Char'] = '';
+
+		/* Confirmation Emails - should the customer get one? where should the merchant's copy be sent? */
+		$this->_data['x_Email_Customer'] = 'FALSE';
+
+		/* Set transaction type */
+		$this->_data['x_Type'] = 'AUTH_CAPTURE';
+		$this->_data['x_Method'] = 'CC';
+
+		/* A required field, but the only valid value is "FALSE" */
+		$this->_data['x_ADC_Relay_Response'] = 'FALSE';
+
+		/* API version we're using */
+		$this->_data['x_Version'] = '3.1';
 	}
 }
 
