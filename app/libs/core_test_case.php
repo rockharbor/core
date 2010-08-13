@@ -162,6 +162,7 @@ class CoreTestCase extends CakeTestCase {
 		}
 		$Controller->passedArgs = $urlParams['named'];
 		$Controller->params = $urlParams;
+		$Controller->params['url']['url'] = $url;
 		$Controller->url = $urlParams;
 		$Controller->action = $urlParams['plugin'].'/'.$urlParams['controller'].'/'.$urlParams['action'];
 
