@@ -37,7 +37,39 @@
  */
 class AppModel extends Model {
 
+/**
+ * Default recursive property
+ *
+ * @var integer
+ */
 	var $recursive = -1;
+
+/**
+ * Extends model construction
+ * 
+ * ### Extended functionality:
+ * - allows use of :ALIAS: in virtual field definitions to be replaced with the
+ *		model's alias
+ *
+ * @param mixed $id Sets the model's id on startup
+ * @param string $table The name of the database table to use
+ * @param string $ds The datasource connection name
+ * @see Model::__construct()
+ */
+	function __construct($id = false, $table = null, $ds = null) {
+		parent::__construct($id, $table, $ds);
+		foreach ($this->virtualFields as &$virtualField) {
+			$virtualField = String::insert(
+				$virtualField,
+				array(
+					'ALIAS' => $this->alias,
+				),
+				array(
+					'after' => ':'
+				)
+			);
+		}
+	}
 
 /**
  * Creates a simplistic `contain` array from post data
