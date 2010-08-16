@@ -13,3 +13,6 @@
 [submodule "app/plugins/referee"]
 	path = app/plugins/referee
 	url = http://github.com/joebeeson/referee.git
+[submodule "app/plugins/migrations"]
+	path = app/plugins/migrations
+	url = http://github.com/CakeDC/Migrations.git
