@@ -201,6 +201,18 @@ class CoreTestCase extends CakeTestCase {
 		return $Controller->viewVars;
 	}
 
+	function loadSettings() {
+		$this->loadFixtures('AppSetting');
+		$this->_cacheDisable = Configure::read('Cache.disable');
+		Configure::write('Cache.disable', false);
+		Core::loadSettings(true);
+	}
+
+	function unloadSettings() {
+		Cache::delete('core_app_settings');
+		Configure::write('Cache.disable', $this->_cacheDisable);
+	}
+
 }
 
 ?>
