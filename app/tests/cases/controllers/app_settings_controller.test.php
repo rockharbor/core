@@ -8,8 +8,8 @@ Mock::generatePartial('AppSettingsController', 'TestAppSettingsController', arra
 class AppSettingsControllerTestCase extends CoreTestCase {
 
 	function startTest() {
-		$this->loadFixtures('AppSetting', 'Publication');
-		Core::loadSettings(true);
+		$this->loadFixtures('Publication');
+		$this->loadSettings();
 		$this->AppSettings =& new TestAppSettingsController();
 		$this->AppSettings->constructClasses();
 		$this->AppSettings->setReturnValue('isAuthorized', true);
@@ -18,7 +18,7 @@ class AppSettingsControllerTestCase extends CoreTestCase {
 
 	function endTest() {
 		unset($this->AppSettings);
-		Cache::delete('core_app_settings');
+		$this->unloadSettings();
 		ClassRegistry::flush();
 	}
 

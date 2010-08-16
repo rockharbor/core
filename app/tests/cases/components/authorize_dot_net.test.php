@@ -10,8 +10,8 @@ class TestAuthorizeController extends AppController {}
 class AuthorizeDotNetTestCase extends CoreTestCase {
 
 	function startTest() {
-		$this->loadFixtures('User', 'AppSetting', 'Profile');
-		Core::loadSettings(true);
+		$this->loadFixtures('User', 'Profile');
+		$this->loadSettings();
 		$this->AuthorizeDotNet = new MockAuthorizeDotNetComponent();
 		$this->Controller = new TestAuthorizeController();
 		$this->AuthorizeDotNet->setReturnValue('request', true);
@@ -20,7 +20,7 @@ class AuthorizeDotNetTestCase extends CoreTestCase {
 	function endTest() {
 		unset($this->AuthorizeDotNet);
 		unset($this->Controller);
-		Cache::delete('core_app_settings');
+		$this->unloadSettings();
 		ClassRegistry::flush();
 	}
 
