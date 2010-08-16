@@ -36,11 +36,11 @@ class Involvement extends AppModel {
 	var $virtualFields = array(
 		'passed' => 'NOT EXISTS(
 			SELECT 1 FROM dates AS NotPassed
-				WHERE NotPassed.involvement_id = Involvement.id
+				WHERE NotPassed.involvement_id = :ALIAS:.id
 				AND (CAST(CONCAT(NotPassed.end_date, " ", NotPassed.end_time) AS DATETIME) > NOW()
 				OR NotPassed.permanent = 1)
 				AND NotPassed.exemption = 0
-		) AND EXISTS (SELECT 1 FROM dates as ExistingDates WHERE ExistingDates.involvement_id = Involvement.id)'
+		) AND EXISTS (SELECT 1 FROM dates as ExistingDates WHERE ExistingDates.involvement_id = :ALIAS:.id)'
 	);
 
 /**

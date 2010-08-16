@@ -39,9 +39,9 @@ class Profile extends AppModel {
  * @var array
  */
 	var $virtualFields = array(
-		'name' => 'CONCAT(Profile.first_name, " ", Profile.last_name)',
-		'age' => 'DATEDIFF(CURDATE(), `Profile`.`birth_date`)/365.25',
-		'child' => 'IF (Profile.adult = 1, 0, IF (Profile.birth_date IS NULL, 1, ((DATE_FORMAT(NOW(),"%Y") - DATE_FORMAT(Profile.birth_date,"%Y")) < 18)))'
+		'name' => 'CONCAT(:ALIAS:.first_name, " ", :ALIAS:.last_name)',
+		'age' => 'DATEDIFF(CURDATE(), :ALIAS:.birth_date)/365.25',
+		'child' => 'IF (:ALIAS:.adult = 1, 0, IF (:ALIAS:.birth_date IS NULL, 1, ((DATE_FORMAT(NOW(),"%Y") - DATE_FORMAT(:ALIAS:.birth_date,"%Y")) < 18)))'
 	);
 
 /**
