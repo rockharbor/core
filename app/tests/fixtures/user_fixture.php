@@ -13,6 +13,7 @@ class UserFixture extends CakeTestFixture {
 		'last_logged_in' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'flagged' => array('type' => 'boolean', 'null' => false, 'default' => NULL),
 		'group_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10),
+		'reset_password' => array('type' => 'boolean', 'null' => true, 'default' => '1'),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);

@@ -367,6 +367,7 @@ class User extends AppModel {
 		if (!$data['User']['password']) {
 			$data['User']['password'] = $this->generatePassword();
 			$data['User']['confirm_password'] = $data['User']['password'];
+			$data['User']['reset_password'] = true;
 		}
 
 		return $data;

@@ -273,6 +273,7 @@ class UsersController extends AppController {
 					$subject = 'New username';
 				break;
 				case 'password':
+					$this->data['User']['reset_password'] = false;
 					unset($this->data['User']['username']);
 					if ($needCurrentPassword && $this->Auth->password($this->data['User']['current_password']) != $this->User->field('password')) {
 						$invalidPassword = true;
@@ -288,6 +289,7 @@ class UsersController extends AppController {
 					$subject = 'New password';
 				break;
 				case 'both':
+					$this->data['User']['reset_password'] = false;
 					$success = $this->User->save($this->data);
 					$this->set('username', $this->data['User']['username']);
 					$this->set('password', $this->data['User']['password']);
@@ -338,6 +340,7 @@ class UsersController extends AppController {
 				$newPassword = $this->User->generatePassword();
 		
 				if ($this->User->saveField('password', $newPassword)) {
+					$this->User->saveField('reset_password', true);
 					$this->Session->setFlash('Your new password has been sent via email.', 'flash'.DS.'success');
 					$this->set('password', $newPassword);
 					$this->QueueEmail->send(array(

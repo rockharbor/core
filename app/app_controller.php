@@ -180,6 +180,12 @@ class AppController extends Controller {
 			}
 			$this->activeUser['User']['new_notifications'] = $newNotifications;
 			$this->activeUser['User']['new_alerts'] = count($unread);
+
+			// force redirect if they need to reset their password
+			if ($this->Auth->user('reset_password')) {
+				$this->Session->setFlash('Your last password was automatically generated. Please reset it.');
+				$this->redirect(array('controller' => 'users', 'action' => 'edit', 'User' => $this->Auth->user('id')));
+			}
 			
 			// global allowed actions
 			$this->Auth->allow('display');

@@ -157,6 +157,8 @@ class UsersControllerTestCase extends CoreTestCase {
 		$result = $vars['password'];
 		$this->assertNotEqual($oldPassword['User']['password'], $result);
 		$this->assertEqual($this->Users->Session->read('Message.flash.element'), 'flash'.DS.'success');
+		$user = $this->Users->User->read('reset_password', 1);
+		$this->assertTrue($user['User']['reset_password']);
 	}
 
 	function testRequestActivation() {

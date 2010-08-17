@@ -108,6 +108,8 @@ class UserTestCase extends CoreTestCase {
 		);		
 		$this->assertTrue($this->User->createUser($user, null, $creator));
 		$this->assertEqual(count($this->User->tmpAdded), 1);
+		$user = $this->User->read('reset_password', $this->User->tmpAdded[0]['id']);
+		$this->assertTrue($user['User']['reset_password']);
 
 		$this->User->tmpAdded = $this->User->tmpInvited = array();
 		$user = array(
@@ -199,6 +201,10 @@ class UserTestCase extends CoreTestCase {
 		$this->assertTrue($this->User->createUser($user, null, $creator));
 		$this->assertEqual(count($this->User->tmpAdded), 2);
 		$this->assertEqual(count($this->User->tmpInvited), 1);
+		$user = $this->User->read('reset_password', $this->User->tmpAdded[0]['id']);
+		$this->assertTrue($user['User']['reset_password']);
+		$user = $this->User->read('reset_password', $this->User->tmpAdded[1]['id']);
+		$this->assertTrue($user['User']['reset_password']);
 	}
 
 	function testPrepareSearch() {
