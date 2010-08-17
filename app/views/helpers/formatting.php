@@ -31,6 +31,132 @@ class FormattingHelper extends AppHelper {
 	);
 
 /**
+ * Makes a recurring Date model record more readable. Supports all-day,
+ * recurring, permanent, etc.
+ *
+ * @param object $date The Date model
+ * @return string Human readable recurring date
+ */
+	function readableDate($date) {
+		$types = array('h' => 'hour', 'd' => 'day', 'w' => 'week', 'md' => 'month', 'mw' => 'month', 'y' => 'year');
+		$weekdays = array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
+
+		$readable = '';
+		$startDate = date('F j, Y', strtotime($date['Date']['start_date']));
+		$endDate = date('F j, Y', strtotime($date['Date']['end_date']));
+		$startTime = date('g:ia', strtotime($date['Date']['start_time']));
+		$endTime = date('g:ia', strtotime($date['Date']['end_time']));
+
+		// if not recurring, return simple!
+		if (!$date['Date']['recurring']) {
+			if ($startDate == $endDate && !$date['Date']['all_day']) {
+				$readable = $startDate.' from '.$startTime.' to '.$endTime;
+			} else if ($date['Date']['all_day']) {
+				$readable = $startDate.' all day';
+			} else {
+				$readable = $startDate.' @ '.$startTime.' to '.$endDate.' @ '.$endTime;
+			}
+
+			return $readable;
+		}
+
+		$type = $types[$date['Date']['recurrance_type']];
+
+		if ($date['Date']['frequency'] > 1) {
+			$type .= 's';
+		} else {
+			$date['Date']['frequency'] = '';
+		}
+
+		$sfx = array('th','st','nd','rd');
+		$on = '';
+		if ($date['Date']['recurrance_type'] == 'w') {
+			$on = $weekdays[$date['Date']['weekday']];
+		} else if ($date['Date']['recurrance_type'] == 'mw') {
+			$on = $date['Date']['offset'];
+			$val = $on%100;
+			if (($val-20)%10 > 0) {
+				$on .= $sfx[($val-20)%10];
+			} else if ($val < 4) {
+				$on .= $sfx[$val];
+			} else {
+				$on .= $sfx[0];
+			}
+			$on = 'the '.$on.' '.$weekdays[$date['Date']['weekday']];
+		} else if ($date['Date']['recurrance_type'] == 'md') {
+			$on = $date['Date']['day'];
+			$val = $on%100;
+			if (($val-20)%10 > 0) {
+				$on .= $sfx[($val-20)%10];
+			} else if ($val < 4) {
+				$on .= $sfx[$val];
+			} else {
+				$on .= $sfx[0];
+			}
+			$on = 'the '.$on;
+		}
+
+		if ($date['Date']['recurring']) {
+			$freq = $date['Date']['frequency'].' ';
+			if (empty($date['Date']['frequency'])) {
+				$freq = '';
+			}
+			$readable = 'Every '.$freq.$type.' ';
+
+			if ($on != '') {
+				$readable .= 'on '.$on.' ';
+			}
+
+			if (!$date['Date']['all_day'] && $date['Date']['recurrance_type'] != 'h') {
+				$readable .= 'from '.$startTime.' to '.$endTime.' ';
+			}
+
+			if ($date['Date']['recurrance_type'] != 'y') {
+				$readable .= 'starting ';
+			} else {
+				$readable .= 'on ';
+			}
+		}
+
+		$readable .= $startDate.' ';
+
+		$fromorat = '';
+
+		($startDate == $endDate && !$date['Date']['permanent']) ? $fromorat = 'from' : $fromorat = '@';
+
+		if (!$date['Date']['all_day'] && (!$date['Date']['recurring'] || $date['Date']['recurrance_type'] == 'h')) {
+			$readable .= $fromorat.' '.$startTime.' ';
+		} else if ($date['Date']['all_day']) {
+			//$readable .= 'all day';
+		}
+
+		$between = ($startDate == $endDate) ? '' : 'until ';
+
+		if (!$date['Date']['all_day']) {
+			if ($fromorat == 'from') {
+				$fromorat = 'to ';
+			}
+			$readable .= $between;
+
+			if ($startDate != $endDate) {
+				$readable .= $endDate;
+			}
+
+			if (!$date['Date']['all_day'] && (!$date['Date']['recurring'] || $date['Date']['recurrance_type'] == 'h')) {
+				$readable .= ' '.$fromorat.' '.$endTime;
+			}
+		} else {
+			$readable .= $between;
+			if ($startDate != $endDate) {
+				$readable .= $endDate.' ';
+			}
+			$readable .= 'all day';
+		}
+
+		return $readable;
+	}
+
+/**
  * Formats an age so it's readable
  *
  * @param float $age Age in years (can be less than one)
