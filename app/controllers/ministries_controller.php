@@ -46,6 +46,14 @@ class MinistriesController extends AppController {
  */ 
 	function index() {
 		$this->Ministry->recursive = 0;
+
+		$this->paginate = array(
+			'contain' => array(
+				'Involvement',
+				'DisplayInvolvement'
+			)
+		);
+
 		$this->set('ministries', $this->paginate());
 		
 		$this->set('ministryMenu', $this->Ministry->find('all', array('order' => 'Ministry.lft ASC')));

@@ -71,6 +71,44 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		));
 		$this->assertEqual($this->Involvements->Involvement->field('name'), 'A test involvement');
 		$this->assertEqual($this->Involvements->Involvement->field('group_id'), 0);
+
+		$data = array(
+			'Involvement' => array(
+				'ministry_id' => 4,
+				'involvement_type_id' => 1,
+				'name' => 'Another test involvement',
+				'description' => 'Test using linked ministries',
+				'roster_limit' => null,
+				'roster_visible' => 1,
+				'group_id' => NULL,
+				'signup' => 0,
+				'take_payment' => 0,
+				'offer_childcare' => 0,
+				'active' => 1,
+				'force_payment' => 0
+			),
+			'DisplayMinistry' => array(
+				'DisplayMinistry' => 1
+			)
+		);
+		$this->testAction('/involvements/add', array(
+			'data' => $data
+		));
+		$this->Involvements->Involvement->recursive = 1;
+		$involvement = $this->Involvements->Involvement->read();
+		$results = Set::extract('/DisplayMinistry/name', $involvement);
+		$expected = array(
+			'Communications'
+		);
+		$this->assertEqual($results, $expected);
+
+		$this->Involvements->Involvement->Ministry->recursive = 1;
+		$ministry = $this->Involvements->Involvement->Ministry->read(null, 1);
+		$results = Set::extract('/DisplayInvolvement/name', $ministry);
+		$expected = array(
+			'Another test involvement'
+		);
+		$this->assertEqual($results, $expected);
 	}
 
 	function testEdit() {

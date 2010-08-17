@@ -148,6 +148,20 @@ class Involvement extends AppModel {
 	);
 
 /**
+ * HasAndBelongsToMany association link
+ *
+ * @var array
+ */
+	var $hasAndBelongsToMany = array(
+		'DisplayMinistry' => array(
+			'className' => 'Ministry',
+			'table' => 'involvements_ministries',
+			'foreignKey' => 'involvement_id',
+			'associationForeignKey' => 'ministry_id'
+		)
+	);
+	
+/**
  * Checks if a user is a leader for an involvement
  *
  * @param integer $userId The user id

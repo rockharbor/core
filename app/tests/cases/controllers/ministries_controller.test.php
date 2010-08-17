@@ -11,24 +11,44 @@ Mock::generatePartial('MinistriesController', 'TestMinistriesController', array(
 class MinistriesControllerTestCase extends CoreTestCase {
 
 	function startTest() {
+		// necessary fixtures
+		$this->loadSettings();
+		$this->loadFixtures('Ministry', 'MinistriesRev');
 		$this->Ministries =& new TestMinistriesController();
-		Core::loadSettings(true);
 		$this->Ministries->constructClasses();
 		$this->Ministries->QueueEmail = new MockQueueEmailComponent();
 		$this->Ministries->QueueEmail->setReturnValue('send', true);
 		$this->Ministries->Notifier = new MockNotifierComponent();
 		$this->Ministries->Notifier->setReturnValue('_render', 'Notification body text');
 		$this->Ministries->setReturnValue('isAuthorized', true);
-		// necessary fixtures
-		$this->loadFixtures('Ministry', 'MinistriesRev', 'AppSetting');
 		$this->testController = $this->Ministries;
 	}
 
 	function endTest() {
 		$this->Ministries->Session->destroy();
 		unset($this->Ministries);
-		Cache::delete('core_app_settings');
+		$this->unloadSettings();
 		ClassRegistry::flush();
+	}
+
+	function testIndex() {
+		Core::read('ministry_content_edit_user');
+		$this->loadFixtures('Involvement', 'InvolvementsMinistry');
+		$vars = $this->testAction('/ministries/index');
+		$results = Set::extract('/Ministry[id=3]/../DisplayInvolvement/name', $vars['ministries']);
+		sort($results);
+		$expected = array(
+			'Rock Climbing',
+			'Team CORE'
+		);
+		$this->assertEqual($results, $expected);
+
+		$results = Set::extract('/Ministry[id=4]/../DisplayInvolvement/name', $vars['ministries']);
+		sort($results);
+		$expected = array(
+			'Rock Climbing'
+		);
+		$this->assertEqual($results, $expected);
 	}
 
 	function testAdd() {

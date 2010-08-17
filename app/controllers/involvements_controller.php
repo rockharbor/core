@@ -172,6 +172,7 @@ class InvolvementsController extends AppController {
 		}
 				
 		$this->set('ministries', $this->Involvement->Ministry->find('list'));
+		$this->set('displayMinistries', array($this->Involvement->Ministry->find('list')));
 		$this->set('involvementTypes', $this->Involvement->InvolvementType->find('list'));
 	}
 	
@@ -218,6 +219,7 @@ class InvolvementsController extends AppController {
 			)
 		)));
 		$this->set('ministries', $this->Involvement->Ministry->find('list'));
+		$this->set('displayMinistries', array($this->Involvement->Ministry->find('list')));
 		$this->set('involvementTypes', $this->Involvement->InvolvementType->find('list'));
 		$this->set('revision', $revision);
 	}

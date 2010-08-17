@@ -53,6 +53,7 @@ class CoreTestCase extends CakeTestCase {
 		'app.household_member',
 		'app.image',
 		'app.involvement',
+		'app.involvements_ministry',
 		'app.involvement_type',
 		'app.involvements_rev',
 		'app.job_category',

@@ -116,6 +116,20 @@ class Ministry extends AppModel {
 			'conditions' => array('Leader.model' => 'Ministry')
 		)
 	);
+
+/**
+ * HasAndBelongsToMany association link
+ *
+ * @var array
+ */
+	var $hasAndBelongsToMany = array(
+		'DisplayInvolvement' => array(
+			'className' => 'Involvement',
+			'table' => 'involvements_ministries',
+			'foreignKey' => 'ministry_id',
+			'associationForeignKey' => 'involvement_id'
+		)
+	);
 	
 /**
  * Checks if a user is a manager for a ministry
