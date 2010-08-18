@@ -7,6 +7,7 @@ class ProfileTestCase extends CoreTestCase {
 
 	function startTest() {
 		$this->loadFixtures('Profile');
+		$this->loadFixtures('Involvement', 'Leader', 'Ministry', 'Campus');
 		$this->Profile =& ClassRegistry::init('Profile');
 	}
 
@@ -61,6 +62,18 @@ class ProfileTestCase extends CoreTestCase {
 
 		$result = $profile['Profile']['child'];
 		$this->assertTrue($result, 1);
+
+		$profile = $this->Profile->read(null, 1);
+		$this->assertTrue($profile['Profile']['leading']);
+
+		$profile = $this->Profile->read(null, 3);
+		$this->assertFalse($profile['Profile']['leading']);
+
+		$profile = $this->Profile->read(null, 2);
+		$this->assertTrue($profile['Profile']['managing']);
+
+		$profile = $this->Profile->read(null, 2);
+		$this->assertFalse($profile['Profile']['leading']);
 	}
 
 }
