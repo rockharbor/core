@@ -89,7 +89,9 @@ class AppController extends Controller {
 	var $helpers = array(
 		'Js' => array('Jquery'),
 		'Session',
-		'Text'
+		'Text',
+		'Media.Media',
+		'Tree'
 	);
 
 /**
@@ -153,40 +155,36 @@ class AppController extends Controller {
 		if ($this->Auth->user()) {
 			// keep user available
 			$this->activeUser = array_merge($this->Auth->user(), $this->Session->read('User'));
-			
-			// get latest alert
-			$userGroups = Set::extract('/Group/id', $this->activeUser);
-			$Alert = ClassRegistry::init('Alert');
-						
-			// get notifications count
-			$newNotifications = $User->Notification->find('count', array(
-				'conditions' => array(
-					'Notification.user_id' => $this->Auth->user('id'),
-					'Notification.read' => false
-				),
-				'contain' => false
-			));
-			
-			$unread = $Alert->getUnreadAlerts($this->activeUser['User']['id'], $userGroups, false);
-			
-			$lastUnreadAlert = $Alert->find('first', array(
-				'conditions' => array(
-					'Alert.id' => $unread
-				),
-				'order' => 'Alert.created DESC'
-			));
-			if ($lastUnreadAlert) {
-				$this->activeUser = array_merge($lastUnreadAlert, $this->activeUser);
-			}
-			$this->activeUser['User']['new_notifications'] = $newNotifications;
-			$this->activeUser['User']['new_alerts'] = count($unread);
 
 			// force redirect if they need to reset their password
-			if ($this->Auth->user('reset_password')) {
+			if ($this->activeUser['User']['reset_password']) {
 				$this->Session->setFlash('Your last password was automatically generated. Please reset it.');
 				$this->redirect(array('controller' => 'users', 'action' => 'edit', 'User' => $this->Auth->user('id')));
 			}
-			
+
+			// get notifications
+			$newNotifications = $User->Notification->find('all', array(
+				'conditions' => array(
+					'Notification.user_id' => $this->Auth->user('id')
+				),
+				'order' => 'Notification.created DESC',
+				'contain' => false,
+				'limit' => 5
+			));
+
+			// get latest alert
+			$Alert = ClassRegistry::init('Alert');
+			$unread = $Alert->getUnreadAlerts($this->activeUser['User']['id'], $this->activeUser['Group']['id'], false);
+			$newAlerts = $Alert->find('all', array(
+				'conditions' => array(
+					'Alert.id' => $unread
+				),
+				'order' => 'Alert.created DESC',
+				'limit' => 5
+			));
+			$this->activeUser['Notification'] = Set::extract('/Notification', $newNotifications);
+			$this->activeUser['Alert'] = Set::extract('/Alert', $newAlerts);
+		
 			// global allowed actions
 			$this->Auth->allow('display');
 		} else {
@@ -241,9 +239,27 @@ class AppController extends Controller {
  *
  * @see Controller::beforeRender()
  */	
-	function beforeRender() {
+	function beforeRender() {	
 		$this->set('activeUser', $this->activeUser);	
 		$this->set('defaultSubmitOptions', $this->defaultSubmitOptions);
+
+		// get ministry list
+		$User = ClassRegistry::init('User');
+		$ministries = $User->Roster->Involvement->Ministry->find('all', array(
+			'conditions' => array(
+				'Group.lft >=' => $this->activeUser['Group']['lft'],
+				'Ministry.active' => true,
+				'Ministry.parent_id' => null
+			),
+			'order' => 'Ministry.lft ASC',
+			'contain' => array(
+				'Group',
+				'ChildMinistry' => array(
+					'limit' => 5
+				)
+			)
+		));
+		$this->set('ministries', $ministries);
 	}
 	
 /**

@@ -64,6 +64,7 @@ CORE.modal = function(id, options) {
 		// load the link into the modal
 		$('#modal').load(this.href, function() {
 			$('#modal').dialog('open');
+			$('button, input:submit, a.button').button();
 		});
 		
 		// stop href
