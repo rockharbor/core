@@ -135,28 +135,36 @@ CORE.register = function(alias, div, url) {
 CORE.init = function() {
 	// finally, register content as a global "updateable"
 	CORE.register('content', 'content', location.href);
+	// attach auto complete
+	CORE.autoComplete("SearchQuery", $('#nav-search form').attr('action')+'.json', function(item) {
+		redirect(item.action);
+	});
+	CORE.defaultSearchText = $("#SearchQuery").val();
+	$("#SearchQuery").focus(function() {if ($(this).val() == CORE.defaultSearchText) {
+		$(this).val("");
+		$(this).attr('class', 'search-over');
+	}});
+	$("#SearchQuery").blur(function() {if ($(this).val() == "") {
+		$(this).val(CORE.defaultSearchText);
+		$(this).attr('class', 'search-out');
+	}});
+	// init ui elements
+	CORE.initUI();
+}
+
+/**
+ * These are all items that should be initialized on a new page or when a modal
+ * opens
+ */
+CORE.initUI = function() {
+	// create buttons on proper elements
+	$('button, input:submit, a.button').button();
 	// hide flash message
 	$('div[id^=flash]').delay(5000).slideUp();
 	// display any validation errors
 	CORE.showValidationErrors();
-	// attach modals to proper elements
+	// attach tabbed behavior
+	CORE.attachTabbedBehavior();
+	// attach modal behavior
 	CORE.attachModalBehavior();
-	// create buttons on proper elements
-	$('button, input:submit, a.button').button();
-	// attach auto complete
-	CORE.autoComplete("SearchQuery", $('#SearchDisplayForm').val('action')+'.json', function(item) {
-		redirect(item.action);
-	});
-	// to b
-	CORE.defaultSearchText = $("#SearchQuery").val();
-	$("#SearchQuery").focus(function() { if ($(this).val() == CORE.defaultSearchText) {
-		$(this).val("");
-		$(this).attr('class', 'search-over');
-	}});
-	$("#SearchQuery").blur(function() { if ($(this).val() == "") {
-		$(this).val(CORE.defaultSearchText);
-		$(this).attr('class', 'search-out');
-	}});
-
 }
-
