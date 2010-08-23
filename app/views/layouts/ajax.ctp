@@ -18,8 +18,7 @@
  */
 ?>
 <?php
-$this->Js->buffer('CORE.attachModalBehavior();');
-$this->Js->buffer('$("div[id^=flash]").delay(5000).slideUp();');
+$this->Js->buffer('CORE.initUI();');
 $this->Js->buffer('$("#modal").dialog("option", "title", "'.$title_for_layout.'");');
 
 echo $this->Session->flash('auth');
