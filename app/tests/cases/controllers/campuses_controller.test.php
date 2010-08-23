@@ -71,6 +71,25 @@ class CampusesControllerTestCase extends CoreTestCase {
 		$this->assertNotEqual($this->Campuses->Campus->field('modified'), '2010-03-11 13:34:41');
 	}
 
+	function testToggleActivity() {
+		$this->testAction('/campuses/toggle_activity/1/Campus:2');
+		$this->Campuses->Campus->id = 2;
+		$this->assertEqual($this->Campuses->Session->read('Message.flash.element'), 'flash'.DS.'failure');
+
+		$data = array(
+			'Leader' => array(
+				'user_id' => 1,
+				'model' => 'Campus',
+				'model_id' => 2
+			)
+		);
+		$this->Campuses->Campus->Leader->save($data);
+		$this->testAction('/campuses/toggle_activity/1/Campus:2');
+		$this->Campuses->Campus->id = 2;
+		$this->assertEqual($this->Campuses->Campus->field('active'), 1);
+		$this->assertEqual($this->Campuses->Session->read('Message.flash.element'), 'flash'.DS.'success');
+	}
+
 	function testDelete() {
 		$this->testAction('/campuses/delete/1');
 		$this->assertFalse($this->Campuses->Campus->read(null, 1));

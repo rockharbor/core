@@ -57,7 +57,7 @@ class MinistryFixture extends CakeTestFixture {
 			'group_id' => 8,
 			'created' => '2010-03-08 13:26:45',
 			'modified' => '2010-03-08 13:26:45',
-			'active' => 1
+			'active' => 0
 		),
 		array(
 			'id' => 4,

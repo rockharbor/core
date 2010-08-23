@@ -227,6 +227,10 @@ class InvolvementsController extends AppController {
 /**
  * Toggles the `active` field for an involvement
  *
+ * ### Requirements:
+ * - At least 1 leader must be added
+ * - If the involvement takes payment, at least 1 PaymentOption must be defined
+ *
  * @param boolean $active Whether to make the model inactive or active
  * @param boolean $recursive Whether to iterate through the model's relationships and mark them as $active
  */
@@ -239,7 +243,7 @@ class InvolvementsController extends AppController {
 		}
 		
 		// get involvement
-		$this->Involvement->contain(array('PaymentOption'));
+		$this->Involvement->contain(array('PaymentOption', 'Leader'));
 		$involvement = $this->Involvement->read(null, $id);
 		if ($involvement['Involvement']['take_payment'] && $active) {
 			if (empty($involvement['PaymentOption'])) {
@@ -247,6 +251,11 @@ class InvolvementsController extends AppController {
 				$this->redirect($this->emptyPage);
 				return;
 			}
+		}
+		if (empty($involvement['Leader']) && $active) {
+			$this->Session->setFlash('Cannot activate until a leader is added', 'flash'.DS.'failure');
+			$this->redirect($this->emptyPage);
+			return;
 		}
 		
 		$this->Involvement->Behaviors->disable('Confirm');

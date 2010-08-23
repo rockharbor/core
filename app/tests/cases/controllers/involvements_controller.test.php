@@ -12,7 +12,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 
 	function startTest() {
 		$this->loadFixtures('Involvement', 'Roster', 'User', 'InvolvementType', 'Group', 'Ministry');
-		$this->loadFixtures('InvolvementsRev', 'MinistriesRev');
+		$this->loadFixtures('InvolvementsRev', 'MinistriesRev', 'Leader');
 		$this->Involvements =& new TestInvolvementsController();
 		$this->Involvements->constructClasses();
 		$this->Involvements->Notifier = new MockNotifierComponent();
@@ -120,6 +120,26 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		));
 		$this->Involvements->Involvement->id = 1;
 		$this->assertEqual($this->Involvements->Involvement->field('name'), 'New name');
+	}
+
+	function testToggleActivityWithoutLeader() {
+		$this->testAction('/involvements/toggle_activity/1/Involvement:2');
+		$this->Involvements->Involvement->id = 2;
+		$this->assertEqual($this->Involvements->Involvement->field('active'), 0);
+		$this->assertEqual($this->Involvements->Session->read('Message.flash.element'), 'flash'.DS.'failure');
+
+		$data = array(
+			'Leader' => array(
+				'user_id' => 1,
+				'model' => 'Involvement',
+				'model_id' => 2
+			)
+		);
+		$this->Involvements->Involvement->Leader->save($data);
+		$this->testAction('/involvements/toggle_activity/1/Involvement:2');
+		$this->Involvements->Involvement->id = 2;
+		$this->assertEqual($this->Involvements->Involvement->field('active'), 1);
+		$this->assertEqual($this->Involvements->Session->read('Message.flash.element'), 'flash'.DS.'success');
 	}
 
 	function testToggleActivity() {

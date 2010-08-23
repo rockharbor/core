@@ -101,6 +101,25 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, 'New name');
 	}
 
+	function testToggleActivity() {
+		$this->testAction('/ministries/toggle_activity/1/Ministry:3');
+		$this->Ministries->Ministry->id = 3;
+		$this->assertEqual($this->Ministries->Session->read('Message.flash.element'), 'flash'.DS.'failure');
+
+		$data = array(
+			'Leader' => array(
+				'user_id' => 1,
+				'model' => 'Ministry',
+				'model_id' => 3
+			)
+		);
+		$this->Ministries->Ministry->Leader->save($data);
+		$this->testAction('/ministries/toggle_activity/1/Ministry:3');
+		$this->Ministries->Ministry->id = 3;
+		$this->assertEqual($this->Ministries->Ministry->field('active'), 1);
+		$this->assertEqual($this->Ministries->Session->read('Message.flash.element'), 'flash'.DS.'success');
+	}
+
 	function testHistory() {
 		$data = $this->Ministries->Ministry->read(null, 1);
 		$data['Ministry']['name'] = 'New name';

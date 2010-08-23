@@ -96,7 +96,53 @@ class CampusesController extends AppController {
 			$this->data = $this->Campus->read(null, $id);
 		}
 	}
-	
+
+/**
+ * Toggles the `active` field for a Campus
+ *
+ * ### Requirements:
+ * - At least 1 leader must be added
+ *
+ * @param boolean $active Whether to make the model inactive or active
+ * @param boolean $recursive Whether to iterate through the model's relationships and mark them as $active
+ */
+	function toggle_activity($active = false, $recursive = false) {
+		$id = $this->passedArgs['Campus'];
+
+		if (!$id) {
+			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
+			$this->redirect(array('action' => 'edit', $id));
+		}
+
+		// get involvement
+		$this->Campus->contain(array('Leader'));
+		$campus = $this->Campus->read(null, $id);
+		if (empty($campus['Leader'])) {
+			$this->Session->setFlash('Cannot activate until a manager is added', 'flash'.DS.'failure');
+			$this->redirect($this->emptyPage);
+			return;
+		}
+
+		$success = $this->Campus->toggleActivity($id, $active, $recursive);
+
+		if ($success) {
+			$this->Session->setFlash(
+				'Successfully '.($active ? 'activated' : 'deactivated')
+				.' Campus '.$id.' '
+				.($recursive ? ' and all related items' : ''),
+				'flash'.DS.'success'
+			);
+		} else {
+			$this->Session->setFlash(
+				'Failed to '.($active ? 'activate' : 'deactivate')
+				.' Campus '.$id.' '
+				.($recursive ? ' and all related items' : ''),
+				'flash'.DS.'failure'
+			);
+		}
+		$this->data = array();
+		$this->redirect($this->emptyPage);
+	}
 	
 /**
  * Deletes a campus

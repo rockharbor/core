@@ -15,8 +15,7 @@
 		echo $this->Form->input('campus_id');
 		echo $this->Form->input('group_id', array(
 			'label' => 'Private for everyone below:'
-		)); 
-		echo $this->Form->input('active');
+		));
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit', true));?>

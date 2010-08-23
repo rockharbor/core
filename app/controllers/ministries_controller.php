@@ -166,6 +166,55 @@ class MinistriesController extends AppController {
 		
 		$this->set('revision', $revision);
 	}
+
+/**
+ * Toggles the `active` field for a Ministry
+ *
+ * ### Requirements:
+ * - At least 1 leader must be added
+ *
+ * @param boolean $active Whether to make the model inactive or active
+ * @param boolean $recursive Whether to iterate through the model's relationships and mark them as $active
+ */
+	function toggle_activity($active = false, $recursive = false) {
+		$id = $this->passedArgs['Ministry'];
+
+		if (!$id) {
+			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
+			$this->redirect(array('action' => 'edit', $id));
+		}
+
+		// get involvement
+		$this->Ministry->contain(array('Leader'));
+		$ministry = $this->Ministry->read(null, $id);
+		if (empty($ministry['Leader'])) {
+			$this->Session->setFlash('Cannot activate until a manager is added', 'flash'.DS.'failure');
+			$this->redirect($this->emptyPage);
+			return;
+		}
+
+		$this->Ministry->Behaviors->disable('Confirm');
+		$success = $this->Ministry->toggleActivity($id, $active, $recursive);
+		$this->Ministry->Behaviors->enable('Confirm');
+
+		if ($success) {
+			$this->Session->setFlash(
+				'Successfully '.($active ? 'activated' : 'deactivated')
+				.' Ministry '.$id.' '
+				.($recursive ? ' and all related items' : ''),
+				'flash'.DS.'success'
+			);
+		} else {
+			$this->Session->setFlash(
+				'Failed to '.($active ? 'activate' : 'deactivate')
+				.' Ministry '.$id.' '
+				.($recursive ? ' and all related items' : ''),
+				'flash'.DS.'failure'
+			);
+		}
+		$this->data = array();
+		$this->redirect($this->emptyPage);
+	}
 	
 /**
  * Displays ministry revision history (up to 1 change)
