@@ -1,10 +1,16 @@
+html {
+	height:100%;
+}
 body {
 	background: #EAEAEA;
 	font-family: Helvetica,Arial,sans-serif;
 	font-size:11px;
+	height:100%;
+	margin:0;
 }
 div#wrapper {
 	background:#FFF;
+	height:100%;
 }
 
 /*
@@ -14,54 +20,34 @@ div#header {
 	height:29px;
 }
 div#header>div#primary {
-	background: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0.5, #343434),
-		color-stop(1, #424243)
-	);
-	background-image:-moz-linear-gradient(
-		center bottom,
-		#343434 50%,
-		#424243 100%
-	);
+	background: url(images/ui-bg_highlight-soft_20_343434_1x100.png) #343434 repeat-x 50% 50%;
 	height:100%;
 	margin:0;
 }
 div#header>div#primary>ul>li>ul {
 	background: #FFF;
-	box-shadow: 0 2px 8px #999, 0 0 1px #999, 0 0 1px #999;
-	-o-box-shadow: 0 2px 8px #999, 0 0 1px #999, 0 0 1px #999;
-	-webkit-box-shadow: 0 2px 8px #999, 0 0 1px #999, 0 0 1px #999;
-	-moz-box-shadow: 0 2px 8px #999, 0 0 1px #999, 0 0 1px #999;
 }
 div#header>div#primary a {
 	color: #807980;
+	font-style: italic;
+}
+div#header>div#primary a:hover {
+	text-decoration: underline;
 }
 div#header>div#primary>ul>li {
 	border-right: 1px solid #706F6F;
 }
 div#header>div#primary>ul>li>a:hover {
-	background: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0.5, #16B96D),
-		color-stop(1, #1ADB83)
-	);
-	background-image:-moz-linear-gradient(
-		center bottom,
-		#16B96D 50%,
-		#1ADB83 100%
-	);
+	background: url(images/ui-bg_highlight-soft_75_16b96d_1x100.png) #16b96d repeat-x 50% 50%;
 	color: #343434;
+	text-decoration: none;
 }
 div#header>div#primary>ul>li>a {
 	color:#FFF;
 	text-transform: uppercase;
 	font-family: LeagueGothicRegular,Helvetica,Arial,sans-serif;
 	text-decoration: none;
+	font-style:normal;
 	font-size: 16px;
 	padding: 5px 10px;
 }
@@ -69,6 +55,11 @@ li#nav-profile li.profile-link a {
 	font-family: LeagueGothicRegular,Helvetica,Arial,sans-serif;
 	font-size: 18px;
 	text-transform:uppercase;
+	text-decoration: none !important;
+	font-style:normal !important;
+}
+li#nav-profile li.profile-link a:hover {
+	text-decoration: none !important;
 }
 li#nav-profile .profile-information {
 	margin: 5px;
@@ -106,6 +97,10 @@ li#nav-ministries a.parent {
 	padding: 0;
 	padding-bottom:1px;
 	text-transform:uppercase;
+	font-style:normal !important;
+}
+li#nav-ministries a.parent:hover {
+	text-decoration: none !important;
 }
 li#nav-ministries a.child {
 	display:inline;
@@ -132,6 +127,8 @@ div#header>div#primary #nav-search button {
 	height:18px;
 	float:left;
 	-moz-border-radius: 0 4px 4px 0;
+	-webkit-border-radius: 0 4px 4px 0;
+	border-radius: 0 4px 4px 0;
 	margin-left:-2px;
 }
 div#header>div#primary #nav-search input[type=text] {
@@ -146,7 +143,7 @@ h1, h2, h3 {
 	font-family: LeagueGothicRegular,Helvetica,Arial,sans-serif;
 	font-weight:normal;
 }
-h1 { font-size: 40px; }
+h1 { font-size: 40px; margin-bottom:10px; }
 h2 { font-size: 20px; }
 h3 { font-size: 16px; }
 
@@ -156,6 +153,29 @@ a {
 a:hover {
 	color: #807980;
 	text-decoration: underline;
+}
+
+/*
+Global Classes
+*/
+div#header>div#primary>ul>li>ul,
+div.content-box,
+.shadow {
+	box-shadow:0 0 0, 0 2px 8px #999999, 0 0 5px #666666, 0 0 1px #999999;
+	-moz-box-shadow:0 0 0,0 2px 8px #999999, 0 0 5px #666666, 0 0 1px #999999;
+	-webkit-box-shadow:0 0 0,0 2px 8px #999999, 0 0 5px #666666, 0 0 1px #999999;
+	border: 1px solid #999;
+}
+
+/*
+Containers
+*/
+div.content-box{	
+	background:#FFFFFF;
+	padding:10px;
+}
+div#content {
+	padding-bottom:30px;
 }
 
 /*

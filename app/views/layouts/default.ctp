@@ -3,7 +3,7 @@
 <head>
 	<?php echo $this->Html->charset(); ?>
 	<title>
-		<?php echo Core::read('site_name_tagless').' '.COre::read('version').' :: '.$title_for_layout; ?>
+		<?php echo Core::read('site_name_tagless').' '.Core::read('version').' :: '.$title_for_layout; ?>
 	</title>
 	<?php
 		echo $this->Html->meta('icon');
@@ -17,7 +17,10 @@
 		echo $this->Html->css('menu');
 		echo $this->Html->css('styles');
 		echo $this->Html->css('jquery-ui');
-		
+		if(preg_match('/MSIE/i', $_SERVER['HTTP_USER_AGENT'])) {
+			echo $this->Html->css('ie');
+		}
+
 		// google cdn scripts
 		echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js');
 		echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.js');
@@ -165,23 +168,15 @@
 				?>
 			</div>
 		</div>
-		<div id="modal"></div>
-		<div id="notification" style="display:none;"><div id="notification_content"><?php echo $this->Html->image('indicator.gif', array('border:none')); ?>&nbsp;Please wait...</div></div>
-		<div id="content">
-		
-			<?php echo $this->Session->flash('auth'); ?>
-			<?php echo $this->Session->flash(); ?>
-			
-			<?php echo $content_for_layout; ?>
+		<div id="content-container" class="container_12 clearfix">
+			<div id="content" class="grid_10 prefix_1 suffix_1">
+				<?php echo $this->Session->flash('auth'); ?>
+				<?php echo $this->Session->flash(); ?>
 
+				<?php echo $content_for_layout; ?>
+			</div>
 		</div>
-		<div id="footer">
-			<?php echo $this->Html->link(
-					$this->Html->image('cake.power.gif', array('alt'=> __('CakePHP: the rapid development php framework', true), 'border' => '0')),
-					'http://www.cakephp.org/',
-					array('target' => '_blank', 'escape' => false)
-				);
-			?>
+		<div id="footer" class="container_12 clearfix">
 		</div>
 	</div>	
 	<?php //echo $this->element('sql_dump'); ?>
