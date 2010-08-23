@@ -1,23 +1,23 @@
-<h2>Edit Profile</h2>
+<h1>Edit Profile</h1>
 
-<div id="profile_tabs" class="profiles form" class="ui-tabs">
+<div class="profiles form ui-tabs" rel="tabs">
 
-
-<ul class="tabs">
-	<li class="tab"><a href="#one">Personal Information</a></li>
-	<li class="tab"><a href="#two">Contact Information</a></li> 
-	<li class="tab"><a href="#three">Child Alerts &amp; Needs</a></li> 
-	<li class="tab"><a href="<?php echo Router::url(array(
+<ul>
+	<li><a href="#one">Profile</a></li>
+	<li><a href="#two">Information</a></li> 
+	<li><a href="#three">Child Alerts &amp; Needs</a></li> 
+	<li><a href="<?php echo Router::url(array(
 		'controller' => 'publications',
 		'action' => 'subscriptions',
 		'User' => $this->data['User']['id']
 		)); ?>" title="subscriptions">Subscriptions</a></li> 
-	<li class="tab"><a href="<?php echo Router::url(array(
+	<li><a href="<?php echo Router::url(array(
 		'controller' => 'user_addresses',
 		'User' => $this->data['User']['id']
 		)); ?>" title="addresses">Address</a></li> 
-	<li class="tab"><a href="#admin">Administration</a></li> 
-	<li class="tab"><a href="<?php
+
+	<li class="admin"><a href="#admin">Administration</a></li>
+	<li class="admin"><a href="<?php
 	echo Router::url(array(
 		'controller' => 'user_documents',
 		'User' => $this->data['User']['id']
@@ -25,8 +25,7 @@
 	?>" title="docs">Documents</a></li>
 </ul>
 
-
-
+<div class="content-box">
 <?php 
 echo $this->Form->create('User', array(
 	'default'=> false,
@@ -191,66 +190,5 @@ echo $this->Js->submit('Save', $defaultSubmitOptions);
 echo $this->Form->end();
 ?>
 	
-
 </div>
-
-<div class="actions">
-	<h3>My Profile</h3>
-	<ul>
-		<li><?php echo $this->Html->link('View Household(s)', array(
-			'controller' => 'households',
-			'User' => $this->data['User']['id']
-		));
-		?></li>
-		
-		<li><?php echo $this->Html->link('View Comments', array(
-			'controller' => 'comments',
-			'User' => $this->data['User']['id']
-		));		
-		?></li>
-		
-		<li><?php echo $this->Html->link('My Involvement', array(
-			'controller' => 'rosters',
-			'action' => 'involvement',
-			'User' => $this->data['User']['id']
-		));		
-		?></li>
-		
-		<li><?php echo $this->Html->link('My Payments', array(
-			'controller' => 'payments',
-			'User' => $this->data['User']['id']
-		));		
-		?></li>
-	</ul>
-	
-	<div id="image"></div>
-	<div id="image_upload">
-	<?php
-		// register this div as 'updateable'
-		$this->Js->buffer('CORE.register(\'ImageAttachments\', \'image_upload\', \''.Router::url(array(
-			'controller' => 'user_images',
-			'action' => 'index',
-			'User' => $this->data['User']['id']
-		)).'\')');
-		// and tell it to update image as well
-		$this->Js->buffer('CORE.register(\'ImageAttachments\', \'image\', \''.Router::url(array(
-			'controller' => 'user_images',
-			'action' => 'view',
-			'User' => $this->data['User']['id'],
-			0, // just pull the first image
-			's'
-		)).'\')');
-
-		$this->Js->buffer('CORE.update(\'ImageAttachments\');');
-	?></div>
-	
 </div>
-
-
-
-<?php
-
-/** tab js **/
-$this->Js->buffer('CORE.tabs(\'profile_tabs\');');
-
-?>
