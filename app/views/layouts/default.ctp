@@ -14,9 +14,9 @@
 		// CORE css
 		echo $this->Html->css('960');
 		echo $this->Html->css('font-face');
-		echo $this->Html->css('menu');
-		echo $this->Html->css('styles');
+		echo $this->Html->css('menu');		
 		echo $this->Html->css('jquery-ui');
+		echo $this->Html->css('styles');
 		if(preg_match('/MSIE/i', $_SERVER['HTTP_USER_AGENT'])) {
 			echo $this->Html->css('ie');
 		}
@@ -39,10 +39,6 @@
 		$this->Js->buffer('CORE.init()');		
 		
 		echo $scripts_for_layout;
-		
-		// extra js
-		echo $this->Js->writeBuffer();
-
 	?>
 </head>
 <body>
@@ -99,10 +95,25 @@
 								}
 
 								foreach ($activeUser['Notification'] as $notification) {
-									echo '<li>';
-									$desc = $this->Html->tag('div', $this->Text->truncate($notification['Notification']['body'], 100), array('class' => 'notification-description'));
-									echo $this->Html->link($desc, array('controller' => 'notifications'), array('escape' => false));
-									echo '</li>';
+									$class = $notification['Notification']['read'] ? 'read' : 'unread';
+									echo '<li id="notification-'.$notification['Notification']['id'].'" class="'.$class.'"><p>';
+									echo $this->Text->truncate($notification['Notification']['body'], 100, array('html' => true));
+									echo $this->Js->link('[X]', array(
+										'controller' => 'notifications',
+										'action' => 'delete',
+										$notification['Notification']['id']
+									), array(
+										'complete' => '$("#notification-'.$notification['Notification']['id'].'").remove()',
+										'class' => 'delete'
+									));
+									echo '</p></li>';
+									if ($class == 'unread') {
+										$this->Js->buffer('$("#notification-'.$notification['Notification']['id'].'").bind("mouseenter", function() {
+											CORE.request("'.Router::url(array('controller' => 'notifications', 'action' => 'read', $notification['Notification']['id'])).'");
+											$(this).unbind("mouseenter");
+											$(this).animate({borderLeftColor:"#fff"}, "slow");
+										});');
+									}
 								}
 							?>
 						</ul>
@@ -127,12 +138,14 @@
 						</ul>
 					</li>
 					<li><?php echo $this->Html->link('Calendar', array('controller' => 'dates', 'action' => 'calendar')); ?></li>
+					<?php if (Configure::read()): ?>
 					<li><?php echo $this->Html->link('Debugging', array('controller' => 'reports', 'action' => 'index')); ?>
 						<ul><li><?php
-					echo $this->Html->link(' Report a bug on this page', array('controller' => 'sys_emails', 'action' => 'bug_compose'), array('rel' => 'modal-none'));
-					echo $this->Html->link(' View activity logs', array('controller' => 'logs', 'action' => 'index'), array('rel' => 'modal-none'));
+					echo $this->Html->link('Report a bug on this page', array('controller' => 'sys_emails', 'action' => 'bug_compose'), array('rel' => 'modal-none'));
+					echo $this->Html->link('View activity logs', array('controller' => 'logs', 'action' => 'index'), array('rel' => 'modal-none'));
 					?></li></ul>
 					</li>
+					<?php endif; ?>
 				</ul>
 				<div id="nav-search">
 					<?php
@@ -178,7 +191,7 @@
 		</div>
 		<div id="footer" class="container_12 clearfix">
 		</div>
-	</div>	
-	<?php //echo $this->element('sql_dump'); ?>
+	</div>
+	<?php echo $this->Js->writeBuffer(); ?>
 </body>
 </html>

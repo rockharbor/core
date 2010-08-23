@@ -10,7 +10,6 @@ body {
 }
 div#wrapper {
 	background:#FFF;
-	height:100%;
 }
 
 /*
@@ -86,6 +85,23 @@ li#nav-profile .profile-address a {
 	display:inline;
 	padding:0;
 }
+li#nav-notifications p {
+	padding:5px;
+	color:#807980;
+	margin:0;
+	clear:both;
+}
+li#nav-notifications li a {
+	display:inline;
+}
+li#nav-notifications .delete {
+	float:right;
+}
+li#nav-notifications .read {
+}
+li#nav-notifications .unread {
+	border-left:3px solid #B2F5D5;
+}
 li#nav-ministries li {
 	float:left;
 	padding:5px;
@@ -147,12 +163,62 @@ h1 { font-size: 40px; margin-bottom:10px; }
 h2 { font-size: 20px; }
 h3 { font-size: 16px; }
 
-a {
-	color:#16B96D;
+.content-box a {
+	color:#16B96D !important;
 }
-a:hover {
-	color: #807980;
-	text-decoration: underline;
+.content-box a:hover {
+	color: #807980 !important;
+	text-decoration: underline !important;
+}
+
+/*
+Flags and icons
+*/
+.flagged {
+	padding-left:20px;
+	background:url('../img/warning.icon.png') no-repeat 0 50%;
+}
+.inactive {
+	padding-left:20px;
+	background:url('../img/inactive.icon.png') no-repeat 0 50%;
+}
+.private {
+	padding-left:20px;
+	background:url('../img/private.icon.png') no-repeat 0 50%;
+}
+
+/*
+Highlight and flash classes
+*/
+.highlight {
+	font-weight:bold;
+	background:yellow;
+}
+div.message {
+	clear: both;
+	font-size: 140%;
+	font-weight: bold;
+	margin: 0 0 1em 0;
+	padding: 5px;
+}
+
+div.error {
+	color: #fff;
+	background: #c73e14;
+}
+
+div.success {
+	background: green;
+	color: #fff;
+}
+
+div.change {
+	background: purple;
+	color:#FFF;
+}
+
+div.message a {
+	color:#fff;
 }
 
 /*
@@ -187,4 +253,16 @@ input.search-out {
 }
 input.search-over {
 	color: #807980;	
+}
+div.input {
+	padding: 5px 0px;
+}
+div.input label {
+	display:block;
+}
+div.input input {
+	padding:3px;
+}
+div.checkbox label {
+	display: inline;
 }

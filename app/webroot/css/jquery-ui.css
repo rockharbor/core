@@ -476,10 +476,10 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 .ui-tabs-nav .ui-widget :active { outline: none; }
 
 .ui-tabs ul.admin {
-	bottom:-20px;
+	bottom:-22px;
 	padding:0;
 	position:absolute;
-	right:1px;
+	right:0px;
 }
 .ui-tabs li.admin {
 	font-family:Helvetica,Arial,sans-serif;
@@ -488,7 +488,7 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 	margin:0 0 0 5px !important;
 }
 
-.ui-tabs { position: relative; padding: .2em; zoom: 1; } /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
+.ui-tabs { position: relative; zoom: 1; } /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
 .ui-tabs .ui-tabs-nav { margin: 0; background:none;}
 .ui-tabs .ui-tabs-nav li { list-style: none; float: left; position: relative; top: 1px; margin: 0 .2em 1px 0; border-bottom: 0 !important; padding: 0; white-space: nowrap; }
 .ui-tabs .ui-tabs-nav li a { float: left; padding: 5px 10px; text-decoration: none; }
