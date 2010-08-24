@@ -169,7 +169,7 @@ class AppController extends Controller {
 				),
 				'order' => 'Notification.created DESC',
 				'contain' => false,
-				'limit' => 5
+				'limit' => 10
 			));
 
 			// get latest alert

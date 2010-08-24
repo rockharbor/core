@@ -46,7 +46,7 @@
 		<div class="container_12 clearfix" id="header">
 			<div class="grid_10 main-nav-menu" id="primary">
 				<ul>
-					<li><?php echo $this->Html->link('☻', '/'); ?></li>
+					<li><?php echo $this->Html->link('☻', '/', array('class' => 'nav-home')); ?></li>
 					<li id="nav-profile"><?php echo $this->Html->link('Profile', array('controller' => 'users', 'action' => 'edit_profile', 'User' => $activeUser['User']['id'])); ?>
 						<ul>
 							<li>
@@ -80,9 +80,11 @@
 						</ul>
 					</li>
 					<li id="nav-notifications"><?php
-					$new = count(Set::extract('/Notifications[read=0]', $activeUser['Notification']));
-					$new += count($activeUser['Alert']);
-					echo $this->Html->link('Notifications ('.$new.')', array('controller' => 'notifications', 'action' => 'index'));
+					$new = count(Set::extract('/Notification[read=0]', $activeUser['Notification']));
+					echo $this->Html->link('Notifications', array('controller' => 'notifications', 'action' => 'index'));
+					if ($new > 0) {
+						echo $this->Html->tag('span', $new, array('class' => 'notification-count'));
+					}
 					?>
 						<ul>
 							<?php
@@ -96,25 +98,35 @@
 
 								foreach ($activeUser['Notification'] as $notification) {
 									$class = $notification['Notification']['read'] ? 'read' : 'unread';
-									echo '<li id="notification-'.$notification['Notification']['id'].'" class="'.$class.'"><p>';
+									echo '<li id="notification-'.$notification['Notification']['id'].'" class="'.$class.' notification"><p>';
 									echo $this->Text->truncate($notification['Notification']['body'], 100, array('html' => true));
+									echo '</p>';
 									echo $this->Js->link('[X]', array(
 										'controller' => 'notifications',
 										'action' => 'delete',
 										$notification['Notification']['id']
 									), array(
-										'complete' => '$("#notification-'.$notification['Notification']['id'].'").remove()',
+										'complete' => '$("#notification-'.$notification['Notification']['id'].'").fadeOut("fast")',
 										'class' => 'delete'
 									));
-									echo '</p></li>';
+									echo '</li>';
 									if ($class == 'unread') {
 										$this->Js->buffer('$("#notification-'.$notification['Notification']['id'].'").bind("mouseenter", function() {
 											CORE.request("'.Router::url(array('controller' => 'notifications', 'action' => 'read', $notification['Notification']['id'])).'");
 											$(this).unbind("mouseenter");
 											$(this).animate({borderLeftColor:"#fff"}, "slow");
+											var count = Number($(".notification-count").text()) - 1;											
+											if (count == 0) {
+												$(".notification-count").fadeOut("fast");
+											} else {
+												$(".notification-count").fadeOut("fast").text(count).fadeIn("fast");
+											}
 										});');
 									}
 								}
+								echo '<li>';
+								echo $this->Html->link('View All Notifications', array('controller' => 'notifications'));
+								echo '</li>';
 							?>
 						</ul>
 					</li>
@@ -128,6 +140,9 @@
 								$childrenLinks = array();
 								foreach ($ministry['ChildMinistry'] as $childMinistry) {
 									$childrenLinks[] = $this->Html->link($childMinistry['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $childMinistry['id']), array('class' => 'child'));
+								}
+								if (count($childrenLinks) > 4) {
+									$childrenLinks[] = $this->Html->link('the rest...', array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $ministry['Ministry']['id']), array('class' => 'child'));
 								}
 								if (count($childrenLinks) > 0) {
 									echo implode(', ', $childrenLinks);

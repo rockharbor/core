@@ -16,7 +16,7 @@
 	.main-nav-menu li a{
 		display:block;
 		margin:0px;
-		padding:10px 5px;
+		padding:15px 5px;
 		text-align:center;
 		text-decoration:none;
 		}
@@ -30,7 +30,7 @@
 		border:0px;
 		position:absolute;
 		z-index:200;
-		max-width:620px;
+		max-width:550px;
 		/*top:1em;
 		/*left:0;*/
 		}
@@ -46,7 +46,7 @@
 		float:none;
 		margin:0px;
 		padding:0px;
-		min-width:180px;
+		min-width:160px;
 		}
 	.main-nav-menu li:hover li a{
 		background:none;		
