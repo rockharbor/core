@@ -97,9 +97,9 @@ class CampusesController extends AppController {
 				if ($this->Campus->save($this->data)) {
 					$this->Session->setFlash('The changes to this campus are pending.', 'flash'.DS.'success');
 					
-					$this->Notifier->notify(Core::read('campus_content_edit_user'), 'campuses_edit');
+					$this->Notifier->notify(Core::read('notifications.campus_content'), 'campuses_edit');
 					$this->QueueEmail->send(array(
-						'to' => Core::read('campus_content_edit_user'),
+						'to' => Core::read('notifications.campus_content'),
 						'subject' => 'Campus content change',
 						'template' => 'campuses_edit'
 					));

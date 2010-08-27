@@ -55,7 +55,7 @@
 	<fieldset>
 	<?php
 		echo $this->Form->input('SysEmail.subject', array(
-			'between' => Core::read('email_subject_prefix').' ',
+			'between' => Core::read('notifications.email_subject_prefix').' ',
 			'style' => 'width:300px'
 		));
 		$val = (empty($this->data['SysEmail']['body']) && $bodyElement) ? $this->element($bodyElement, $this->viewVars) : $this->data['SysEmail']['body'];

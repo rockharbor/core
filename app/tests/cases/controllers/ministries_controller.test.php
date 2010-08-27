@@ -32,7 +32,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 	}
 
 	function testIndex() {
-		Core::read('ministry_content_edit_user');
+		Core::read('notifications.ministry_content');
 		$this->loadFixtures('Involvement', 'InvolvementsMinistry');
 		$vars = $this->testAction('/ministries/index');
 		$results = Set::extract('/Ministry[id=3]/../DisplayInvolvement/name', $vars['ministries']);

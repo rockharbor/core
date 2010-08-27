@@ -97,7 +97,7 @@ class EmailListener {
 	function _getEmailUsers() {
 		$_emails = array();
 
-		$devEmail = Core::read('debug_email');
+		$devEmail = Core::read('development.debug_email');
 
 		if (!is_null($devEmail) && !empty($devEmail)) {
 			$_emails[] = $devEmail;

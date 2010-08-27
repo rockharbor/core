@@ -19,7 +19,7 @@ class AppSettingFixture extends CakeTestFixture {
 	var $records = array(
 		array(
 			'id' => 1,
-			'name' => 'church_name',
+			'name' => 'general.church_name',
 			'description' => 'The name of your church. Wrap it in a span tag with your own class for easy customization.',
 			'created' => '2010-03-11 10:44:40',
 			'modified' => '2010-03-25 08:07:32',
@@ -29,7 +29,7 @@ class AppSettingFixture extends CakeTestFixture {
 		),
 		array(
 			'id' => 2,
-			'name' => 'ebulletin',
+			'name' => 'general.ebulletin',
 			'description' => 'The publication that is the main church ebulletin.',
 			'created' => '2010-03-18 00:00:00',
 			'modified' => '2010-06-02 12:25:22',
@@ -39,7 +39,7 @@ class AppSettingFixture extends CakeTestFixture {
 		),
 		array(
 			'id' => 3,
-			'name' => 'ministry_content_edit_user',
+			'name' => 'notifications.ministry_content',
 			'description' => 'The user to alert when content needs to be updated.',
 			'created' => '2010-03-18 00:00:00',
 			'modified' => '2010-06-02 12:25:22',
@@ -49,7 +49,7 @@ class AppSettingFixture extends CakeTestFixture {
 		),
 		array(
 			'id' => 4,
-			'name' => 'activation_requests_user',
+			'name' => 'notifications.activation_requests',
 			'description' => 'The user to alert when an activation request is sent.',
 			'created' => '2010-03-18 00:00:00',
 			'modified' => '2010-06-02 12:25:22',
@@ -59,7 +59,7 @@ class AppSettingFixture extends CakeTestFixture {
 		),
 		array(
 			'id' => 5,
-			'name' => 'debug_email',
+			'name' => 'development.debug_email',
 			'description' => 'The debug user',
 			'created' => '2010-03-18 00:00:00',
 			'modified' => '2010-06-02 12:25:22',
@@ -69,7 +69,7 @@ class AppSettingFixture extends CakeTestFixture {
 		),
 		array(
 			'id' => 6,
-			'name' => 'campus_content_edit_user',
+			'name' => 'notifications.campus_content',
 			'description' => 'The user to alert when content needs to be updated.',
 			'created' => '2010-03-18 00:00:00',
 			'modified' => '2010-06-02 12:25:22',
