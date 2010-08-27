@@ -2,27 +2,17 @@
 
 App::import('Lib', array('CoreTestCase'));
 App::import('Model', 'AppSetting');
-if (!class_exists('Cache')) {
-	require LIBS . 'cache.php';
-}
 
 class CoreConfigureTestCase extends CoreTestCase {
 
 	function startTest() {
-		$this->_cacheDisable = Configure::read('Cache.disable');
-		Configure::write('Cache.disable', false);
 		$this->loadFixtures('AppSetting');
 		$this->AppSetting =& ClassRegistry::init('AppSetting');
 		Core::loadSettings(true);
 	}
 
 	function endTest() {
-		Cache::delete('core_app_settings');
-		Configure::write('Cache.disable', $this->_cacheDisable);
-	}
-
-	function testCache() {
-		$this->assertTrue(Cache::read('core_app_settings'));
+		unset($this->AppSetting);
 	}
 
 	function testRead() {

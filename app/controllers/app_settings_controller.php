@@ -67,7 +67,7 @@ class AppSettingsController extends AppController {
 		if (!empty($this->data)) {
 			if ($this->AppSetting->save($this->data)) {
 				// clear cached settings
-				Cache::delete('core_app_settings');
+				$this->AppSetting->clearCache();
 				$this->Session->setFlash('The setting has been saved', 'flash'.DS.'success');
 			} else {
 				$this->Session->setFlash('The setting could not be saved. Please, try again.', 'flash'.DS.'failure');

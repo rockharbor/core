@@ -113,33 +113,32 @@ class Core {
 	}
 
 /**
- * Loads and caches settings from the database
+ * Loads settings from the database. Caching is taken care of by Cacher.Cache
  *
  * @param boolean $force Force re-writing cache
  * @return array Array of app settings
  */
 	function _loadDbSettings($force = false) {
-		$appSettings = Cache::read('core_app_settings');
-		if (empty($appSettings) || $force) {
-			App::import('Model', 'AppSetting');
-			$AppSetting = ClassRegistry::init('AppSetting');
-			$appSettings = $AppSetting->find('all');
-			// add tagless versions of the html tagged ones
-			$tagless = array();
-			foreach ($appSettings as $appSetting) {
-				if ($appSetting['AppSetting']['html']) {
-					$tagless[] = array(
-						'AppSetting' => array(
-							'name' => $appSetting['AppSetting']['name'].'_tagless',
-							'value' => strip_tags($appSetting['AppSetting']['value'])
-						)
-					);
-				}
+		App::import('Model', 'AppSetting');
+		$AppSetting = ClassRegistry::init('AppSetting');
+		if ($force) {
+			$AppSetting->clearCache();
+		}		
+		$appSettings = $AppSetting->find('all');
+		// add tagless versions of the html tagged ones
+		$tagless = array();
+		foreach ($appSettings as $appSetting) {
+			if ($appSetting['AppSetting']['html']) {
+				$tagless[] = array(
+					'AppSetting' => array(
+						'name' => $appSetting['AppSetting']['name'].'_tagless',
+						'value' => strip_tags($appSetting['AppSetting']['value'])
+					)
+				);
 			}
-			$appSettings = array_merge($appSettings, $tagless);
-			$appSettings = Set::combine($appSettings, '{n}.AppSetting.name', '{n}.AppSetting.value');
-			Cache::write('core_app_settings', $appSettings);
 		}
+		$appSettings = array_merge($appSettings, $tagless);
+		$appSettings = Set::combine($appSettings, '{n}.AppSetting.name', '{n}.AppSetting.value');
 
 		return $appSettings;
 	}
