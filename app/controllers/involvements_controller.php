@@ -158,9 +158,7 @@ class InvolvementsController extends AppController {
  * By default, Involvement is inactive until Involvement::toggleActivity() is called. Additional
  * validation is performed then.
  */
-	function add() {
-		$this->Involvement->Behaviors->disable('Confirm');
-		
+	function add() {		
 		if (!empty($this->data)) {
 			$this->Involvement->create();
 			if ($this->Involvement->save($this->data)) {
@@ -187,27 +185,12 @@ class InvolvementsController extends AppController {
 			$this->redirect(array('action' => 'index'));
 		}
 
-		// if they can confirm a revision, there's no need to go through the confirmation process
-		if ($this->isAuthorized('involvements/revise')) {
-			$this->Involvement->Behaviors->disable('Confirm');
-		}		
-		
-		$this->Involvement->id = $id;
-		$revision = $this->Involvement->revision($id);
-		
 		if (!empty($this->data)) {
-			if (!$revision) {
-				if ($this->Involvement->save($this->data)) {
-					$this->Session->setFlash('The changes to this involvement opportunity are pending.', 'flash'.DS.'success');
-					$this->redirect(array('action' => 'view', 'Involvement' => $id));
-				} else {
-					$this->Session->setFlash('There were problems saving the changes.', 'flash'.DS.'failure');
-				}
-				
-				$revision = $this->Involvement->revision($id);
+			if ($this->Involvement->save($this->data)) {
+				$this->Session->setFlash('Updated Involvement!', 'flash'.DS.'success');
 			} else {
-				$this->Session->setFlash('There\'s already a pending revision for this involvement opportunity.', 'flash'.DS.'failure');
-			}		
+				$this->Session->setFlash('There were problems saving the changes.', 'flash'.DS.'failure');
+			}	
 		}
 		if (empty($this->data)) {
 			$this->data = $this->Involvement->read(null, $id);			
@@ -221,7 +204,6 @@ class InvolvementsController extends AppController {
 		$this->set('ministries', $this->Involvement->Ministry->find('list'));
 		$this->set('displayMinistries', array($this->Involvement->Ministry->find('list')));
 		$this->set('involvementTypes', $this->Involvement->InvolvementType->find('list'));
-		$this->set('revision', $revision);
 	}
 
 /**
@@ -258,9 +240,7 @@ class InvolvementsController extends AppController {
 			return;
 		}
 		
-		$this->Involvement->Behaviors->disable('Confirm');
 		$success = $this->Involvement->toggleActivity($id, $active, $recursive);
-		$this->Involvement->Behaviors->enable('Confirm');
 		
 		if ($success) {
 			$this->Session->setFlash(
@@ -280,52 +260,6 @@ class InvolvementsController extends AppController {
 		$this->data = array();
 		$this->redirect($this->emptyPage);
 	}
-	
-		
-/**
- * Displays involvement revision history (up to 1 change)
- */ 	
-	function history() {
-		$id = $this->passedArgs['Involvement'];
-		
-		if (!$id) {
-			$this->Session->setFlash('Invalid involvement');
-			$this->redirect(array('action' => 'index'));
-		}
-		
-		$this->set('involvement', $this->Involvement->read(null, $id));
-		
-		// get the most recent change (not quite using revisions as defined, but close)
-		$this->set('groups', $this->Involvement->Group->find('list'));
-		$this->set('ministries', $this->Involvement->Ministry->find('list'));
-		$this->set('involvementTypes', $this->Involvement->InvolvementType->find('list'));
-		$this->set('revision', $this->Involvement->revision($id));
-	}
-	
-
-/**
- * Revises a involvement (confirm or deny revision)
- *
- * @param boolean $confirm Whether this is a confirmation or denial
- */ 	
-	function revise($confirm = false) {
-		$id = $this->passedArgs['Involvement'];
-		
-		if ($confirm) {
-			$success = $this->Involvement->confirmRevision($id);
-		} else {
-			$success = $this->Involvement->denyRevision($id);
-		}
-		
-		if ($success) {
-			$this->Session->setFlash('Action taken');
-		} else {
-			$this->Session->setFlash('Error');
-		}
-		
-		$this->redirect(array('action' => 'history', 'Involvement' => $id));
-	}
-
 	
 /**
  * Deletes an involvement opportunity

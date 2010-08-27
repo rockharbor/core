@@ -66,7 +66,6 @@ class Involvement extends AppModel {
  */
 	var $actsAs = array(
 		'Containable',
-		'Confirm',
 		'Logable'
 	);
 

@@ -55,7 +55,6 @@ class CoreTestCase extends CakeTestCase {
 		'app.involvement',
 		'app.involvements_ministry',
 		'app.involvement_type',
-		'app.involvements_rev',
 		'app.job_category',
 		'app.leader',
 		'app.log',

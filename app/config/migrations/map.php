@@ -6,5 +6,7 @@ $map = array(
 		'added_involvement_links' => 'M4c695e1dc65c4cb596470fccb36fd16a'),
 	3 => array(
 		'changed_campus_and_ministry_defaults' => 'M4c72c00b70744bbd88180734b36fd16a'),
+	4 => array(
+		'removed_confirm_from_involvement' => 'M4c780160d7f84093b0eb111cb36fd16a'),
 );
 ?>
