@@ -19,7 +19,7 @@ class CoreConfigureTestCase extends CoreTestCase {
 		$result = Core::read('version');
 		$this->assertTrue(is_string($result));
 
-		$result = Core::read('debug_email');
+		$result = Core::read('development.debug_email');
 		$this->assertEqual($result, 2);
 
 		Core::_write('a.deep.array.test', array(
@@ -36,6 +36,18 @@ class CoreConfigureTestCase extends CoreTestCase {
 			)
 		);
 		$this->assertEqual($result, $expected);
+
+		$result = Core::read('a.deep.array');
+		$expected = array(
+			'test' => array(
+				'something' => 'cool'
+			)
+		);
+		$this->assertEqual($result, $expected);
+
+		$this->assertIdentical(Core::read('UndefinedSetting'), null);
+
+		$this->assertIdentical(Core::read('a.deep.UndefinedSetting'), null);
 	}
 
 	function testWrite() {

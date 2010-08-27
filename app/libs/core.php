@@ -29,6 +29,13 @@ class Core {
 	var $_version = '2.0.0-alpha';
 
 /**
+ * Stored settings
+ *
+ * @var array
+ */
+	var $settings = array();
+
+/**
  * Loads settings into config and stores them in cache
  *
  * @param boolean $force Force re-writing cache
@@ -64,18 +71,28 @@ class Core {
  * @param string $var The key to read
  * @return mixed The setting value or all settings
  */
-	function read($var = 'version') {
+	function read($var = '') {
 		$self =& Core::getInstance();
 		if ($var == 'version' || $var == '_version') {
 			return $self->_version;
 		}
-		$keys = explode('.', $var);
-		$var = $self->{$keys[0]};
-		array_shift($keys);
-		foreach ($keys as $k) {
-			$var = $var[$k];
+		if (empty($var)) {
+			return $self->settings;
 		}
-		return $var;
+		$keys = explode('.', $var);
+		if (isset($self->settings[$keys[0]])) {
+			$var = $self->settings[$keys[0]];
+			array_shift($keys);
+			foreach ($keys as $k) {
+				if (isset($var[$k])) {
+					$var = $var[$k];
+				} else {
+					return null;
+				}
+			}
+			return $var;
+		}
+		return null;
 	}
 
 /**
@@ -91,8 +108,8 @@ class Core {
 		$keys = explode('.', $key);
 		$keys = array_reverse($keys);
 		if (count($keys) == 1) {
-			$self->{$keys[0]} = $value;
-			return $self->{$keys[0]};
+			$self->settings[$keys[0]] = $value;
+			return $self->settings[$keys[0]];
 		}
 		$child = array(
 			$keys[0] => $value
@@ -104,12 +121,12 @@ class Core {
 			);
 		}
 		$var = key($child);
-		if (!isset($self->{$var})) {
-			$self->{$var} = $child[$var];
+		if (!isset($self->settings[$var])) {
+			$self->settings[$var] = $child[$var];
 		} else {
-			$self->{$var} = Set::merge($self->{$var}, $child[$var]);
+			$self->settings[$var] = Set::merge($self->settings[$var], $child[$var]);
 		}
-		return $self->{$var};
+		return $self->settings[$var];
 	}
 
 /**
@@ -123,7 +140,7 @@ class Core {
 		$AppSetting = ClassRegistry::init('AppSetting');
 		if ($force) {
 			$AppSetting->clearCache();
-		}		
+		}
 		$appSettings = $AppSetting->find('all');
 		// add tagless versions of the html tagged ones
 		$tagless = array();
