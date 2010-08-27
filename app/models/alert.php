@@ -112,14 +112,18 @@ class Alert extends AppModel {
  * @param boolean $getExpired Whether or not to get expired alerts as well
  * @return array List of ids
  */ 	
-	function getUnreadAlerts($userId = null, $groupId = 8, $getExpired = true) {
-		if (!$userId || !$groupId) {
+	function getUnreadAlerts($userId = null, $groupId = null, $getExpired = true) {
+		if (!$userId) {
 			return false;
 		}
-
 		// get group's lft value
-		$this->Group->id = $groupId;
-		$lft = $this->Group->field('lft');
+		if (!$groupId) {
+			$public = $this->Group->findByName('User');
+			$lft = $public['Group']['lft'];
+		} else {
+			$this->Group->id = $groupId;
+			$lft = $this->Group->field('lft');
+		}
 
 		// get ids of alerts this user has read
 		$readAlerts = $this->getReadAlerts($userId);

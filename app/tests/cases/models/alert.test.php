@@ -21,7 +21,6 @@ class AlertTestCase extends CoreTestCase {
 
 	function testGetUnreadAlerts() {
 		$this->assertFalse($this->Alert->getUnreadAlerts());
-		$this->assertFalse($this->Alert->getUnreadAlerts(1, null));
 		$this->assertEqual($this->Alert->getUnreadAlerts(1), array(2,3));
 		$this->assertEqual($this->Alert->getUnreadAlerts(1, 1), array(2, 3, 4));
 		$this->assertEqual($this->Alert->getUnreadAlerts(1, 1, false), array(2, 3, 4));
