@@ -42,6 +42,7 @@ class CoreTestCase extends CakeTestCase {
 		'app.app_setting',
 		'app.attachment',
 		'app.campus',
+		'app.campuses_rev',
 		'app.classification',
 		'app.comment',
 		'app.comment_type',

@@ -10,7 +10,8 @@ Mock::generatePartial('CampusesController', 'TestCampusesController', array('isA
 class CampusesControllerTestCase extends CoreTestCase {
 
 	function startTest() {
-		$this->loadFixtures('Campus', 'Ministry', 'Involvement');
+		$this->loadSettings();
+		$this->loadFixtures('Campus', 'Ministry', 'Involvement', 'CampusesRev');
 		$this->Campuses =& new TestCampusesController();
 		$this->Campuses->constructClasses();
 		$this->Campuses->Component->initialize($this->Campuses);
@@ -21,6 +22,7 @@ class CampusesControllerTestCase extends CoreTestCase {
 	}
 
 	function endTest() {
+		$this->unloadSettings();
 		unset($this->Campuses);		
 		ClassRegistry::flush();
 	}
@@ -88,6 +90,47 @@ class CampusesControllerTestCase extends CoreTestCase {
 		$this->Campuses->Campus->id = 2;
 		$this->assertEqual($this->Campuses->Campus->field('active'), 1);
 		$this->assertEqual($this->Campuses->Session->read('Message.flash.element'), 'flash'.DS.'success');
+	}
+
+	function testHistory() {
+		$data = $this->Campuses->Campus->read(null, 1);
+		$data['Campus']['name'] = 'New name';
+
+		$this->Campuses->Campus->save($data);
+
+		$vars = $this->testAction('/campuses/history/Campus:1', array(
+			'return' => 'vars'
+		));
+
+		$result = $vars['revision']['Revision']['id'];
+		$this->assertEqual($result, 1);
+
+		$result = $vars['revision']['Revision']['name'];
+		$this->assertEqual($result, 'New name');
+	}
+
+	function testRevise() {
+		$data = $this->Campuses->Campus->read(null, 1);
+		$data['Campus']['name'] = 'New name';
+		$data = array(
+			'Revision' => $data['Campus']
+		);
+
+		$this->Campuses->Campus->RevisionModel->save($data);
+		$this->Campuses->Campus->id = 1;
+		$this->testAction('/campuses/revise/0/Campus:1');
+		$result = $this->Campuses->Campus->RevisionModel->find('all');
+		$this->assertFalse($result);
+		$result = $this->Campuses->Campus->field('name');
+		$this->assertEqual($result, 'RH Central');
+
+		$this->Campuses->Campus->RevisionModel->save($data);
+		$this->Campuses->Campus->id = 1;
+		$this->testAction('/campuses/revise/1/Campus:1');
+		$result = $this->Campuses->Campus->RevisionModel->find('all');
+		$this->assertFalse($result);
+		$result = $this->Campuses->Campus->field('name');
+		$this->assertEqual($result, 'New name');
 	}
 
 	function testDelete() {

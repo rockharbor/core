@@ -30,6 +30,7 @@ class Campus extends AppModel {
  */
 	var $actsAs = array(
 		'Logable',
+		'Confirm',
 		'Containable'
 	);
 

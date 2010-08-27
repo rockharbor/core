@@ -59,7 +59,9 @@ class CampusesController extends AppController {
 /**
  * Adds a campus
  */ 
-	function add() {		
+	function add() {
+		$this->Campus->Behaviors->disable('Confirm');
+
 		if (!empty($this->data)) {
 			$this->Campus->create();
 			if ($this->Campus->save($this->data)) {
@@ -80,21 +82,42 @@ class CampusesController extends AppController {
 		if (!$id) {
 			$this->Session->setFlash('Invalid campus');
 			$this->redirect(array('action' => 'index'));
-		}		
-		
+		}
+
+		// if they can confirm a revision, there's no need to go through the confirmation process
+		if ($this->isAuthorized('campuses/revise')) {
+			$this->Campus->Behaviors->disable('Confirm');
+		}
+
 		$this->Campus->id = $id;
+		$revision = $this->Campus->revision($id);
 		
 		if (!empty($this->data)) {
-			if ($this->Campus->save($this->data)) {
-				$this->Session->setFlash('The changes to this campus have been made.', 'flash'.DS.'success');
+			if (!$revision) {
+				if ($this->Campus->save($this->data)) {
+					$this->Session->setFlash('The changes to this campus are pending.', 'flash'.DS.'success');
+					
+					$this->Notifier->notify(Core::read('campus_content_edit_user'), 'campuses_edit');
+					$this->QueueEmail->send(array(
+						'to' => Core::read('campus_content_edit_user'),
+						'subject' => 'Campus content change',
+						'template' => 'campuses_edit'
+					));
+				} else {
+					$this->Campus->setFlash('There were problems saving the changes.', 'flash'.DS.'failure');
+				}
+				
+				$revision = $this->Campus->revision($id);
 			} else {
-				$this->Session->setFlash('There were problems saving the changes.', 'flash'.DS.'failure');
+				$this->Session->setFlash('There\'s already a pending revision for this campus.', 'flash'.DS.'failure');
 			}
 		}
 		
 		if (empty($this->data)) {
 			$this->data = $this->Campus->read(null, $id);
 		}
+
+		$this->set('revision', $revision);
 	}
 
 /**
@@ -123,7 +146,9 @@ class CampusesController extends AppController {
 			return;
 		}
 
+		$this->Campus->Behaviors->disable('Confirm');
 		$success = $this->Campus->toggleActivity($id, $active, $recursive);
+		$this->Campus->Behaviors->enable('Confirm');
 
 		if ($success) {
 			$this->Session->setFlash(
@@ -142,6 +167,49 @@ class CampusesController extends AppController {
 		}
 		$this->data = array();
 		$this->redirect($this->emptyPage);
+	}
+
+/**
+ * Displays campus revision history (up to 1 change)
+ *
+ * @param integer $id The id of the campus
+ */
+	function history() {
+		$id = $this->passedArgs['Campus'];
+
+		if (!$id) {
+			$this->Session->setFlash(__('Invalid campus', true));
+			$this->redirect(array('action' => 'index'));
+		}
+
+		$this->set('campus', $this->Campus->read(null, $id));
+
+		// get the most recent change
+		$this->set('revision', $this->Campus->revision($id));
+	}
+
+/**
+ * Revises a campus (confirm or deny revision)
+ *
+ * @param integer $id The id of the campus
+ * @param boolean $confirm Whether or not to approve the revision
+ */
+	function revise($confirm = false) {
+		$id = $this->passedArgs['Campus'];
+
+		if ($confirm) {
+			$success = $this->Campus->confirmRevision($id);
+		} else {
+			$success = $this->Campus->denyRevision($id);
+		}
+
+		if ($success) {
+			$this->Session->setFlash('Action taken');
+		} else {
+			$this->Session->setFlash('Error');
+		}
+
+		$this->redirect(array('action' => 'history', 'Campus' => $id));
 	}
 	
 /**

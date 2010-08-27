@@ -1,0 +1,1 @@
+A campus has either been created or edited, and requires approval.
