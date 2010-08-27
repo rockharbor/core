@@ -113,7 +113,6 @@ class CacheBehavior extends ModelBehavior {
 		} else {
 			return Cache::clear(false);
 		}
-		Cache::config($this->_originalCacheConfig);
 	}
 }
 
