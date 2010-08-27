@@ -28,6 +28,19 @@ class SluggableRouteTestCase extends CakeTestCase {
 		ClassRegistry::flush();
 	}
 
+	function testEmptyTable() {
+		$this->RouteTest->deleteAll(array(
+			'id >' => 0
+		));
+		$result = Router::url(array(
+			'controller' => 'route_tests',
+			'action' => 'view',
+			'RouteTest' => 1
+		));
+		$expected = '/route_tests/view/RouteTest:1';
+		$this->assertEqual($result, $expected);
+	}
+
 	function testPrependPk() {
 		Router::reload();
 		Router::connect('/:controller/:action/*',

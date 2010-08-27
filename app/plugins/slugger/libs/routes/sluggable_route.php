@@ -143,6 +143,9 @@ class SluggableRoute extends CakeRoute {
 				),
 				'recursive' => -1
 			));
+			if (empty($results)) {
+				return array();
+			}
 			Cache::write('slugger_'.$Model->name.'_slugs', $results, 'Slugger.short');
 		}
 		$results = Set::filter($results);
