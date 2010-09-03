@@ -18,12 +18,10 @@ App::import('Lib', 'Folder');
  *
  * Gets find results from cache instead of the original datasource. The cache
  * is stored under CACHE/find_results/{model alias}. Each model has separate
- * cache so you can easily clear it on a per-model basis. In order to clear it
- * for the specified model, you must use CacheSource::setCachePath first.
+ * cache so you can easily clear it on a per-model basis.
  *
  * @package       cacher
  * @subpackage    cacher.models.datasources
- * @todo cache based on original datasource so not to have conflicting models
  */
 class CacheSource extends DataSource {
 
@@ -35,26 +33,19 @@ class CacheSource extends DataSource {
 	var $source = null;
 
 /**
- * The root cache path
- *
- * @var string
- * @access protected
- */
-	var $_rootPath = null;
-
-/**
- * Stored cache config settings
- *
- * @var array
- */
-	var $_settings = array();
-
-/**
  * The name of the cache configuration for this datasource instance
  *
  * @var string
  */
-	var $cacheConfig = null;
+	var $cacheConfig = 'CacherResults';
+
+
+/**
+ * The name of the cache's map configuration for this datasource instance
+ *
+ * @var string
+ */
+	var $cacheMapConfig = 'CacherMap';
 
 /**
  * Constructor
@@ -79,15 +70,28 @@ class CacheSource extends DataSource {
 		$settings = array(
 			'engine' => 'File',
 			'duration' => '+6 hours',
-			'path' => CACHE.'cacher'
+			'path' => CACHE.'cacher',
+			'prefix' => 'cacher_'
 		);
 		if (isset($this->config['config']) && Cache::isInitialized($this->config['config'])) {
 			$_existingCache = Cache::config($this->config['config']);
 			$settings = array_merge($settings, $_existingCache['settings']);
 		}
-		$this->_settings = $settings;
 
 		$this->source =& ConnectionManager::getDataSource($this->config['original']);
+
+		new Folder(CACHE.'cacher', true, 0775);
+		Cache::config($this->cacheConfig, $settings);
+		Cache::config($this->cacheMapConfig, array(
+			'engine' => 'File',
+			'duration' => '+10 years',
+			'path' => CACHE.'cacher',
+			'prefix' => 'cacher_'
+		));
+		$map = Cache::read('map', $this->cacheMapConfig);
+		if ($map === false) {
+			Cache::write('map', array(), $this->cacheMapConfig);
+		}
 	}
 
 /**
@@ -137,12 +141,26 @@ class CacheSource extends DataSource {
 		if (Configure::read('Cache.disable')) {
 			return $this->source->read($Model, $queryData);
 		}
-		$this->setCachePath($Model);
-		$key = $this->_hash($queryData);
-		$results = Cache::read(Inflector::underscore($Model->alias).'_'.$key, $this->cacheConfig);
+		$key = $this->_key($Model, $queryData);
+		$results = Cache::read($key, $this->cacheConfig);
 		if ($results == false) {		
 			$results = $this->source->read($Model, $queryData);
-			Cache::write(Inflector::underscore($Model->alias).'_'.$key, $results, $this->cacheConfig);
+			Cache::write($key, $results, $this->cacheConfig);
+			$map = Cache::read('map', $this->cacheMapConfig);
+			if (!isset($map[$this->source->configKeyName])) {
+				$map[$this->source->configKeyName] = array();
+			}
+			if (!isset($map[$this->source->configKeyName][$Model->alias])) {
+				$map[$this->source->configKeyName][$Model->alias] = array();
+			}
+			$map = Set::merge($map, array(
+				$this->source->configKeyName => array(
+					$Model->alias => array(
+						$key
+					)
+				)
+			));
+			Cache::write('map', $map, $this->cacheMapConfig);
 		}
 		return $results;
 	}
@@ -170,47 +188,52 @@ class CacheSource extends DataSource {
 		return $this->source->delete($Model, $id);
 	}
 
-/**
- * Sets the cache path based on the model
+/*
+ * Clears the cache for a specific model and rewrites the map. Pass query to
+ * clear a specific query's cached results
  *
- * @param Model $Model
+ * @param array $query If null, clears all for this model
+ * @param Model $Model The model to clear the cache for
  */
-	function setCachePath($Model) {
-		$this->_initializeCache();
-		$path = $this->_rootPath.Inflector::underscore($Model->alias);
-		$Folder = new Folder($path, true, 0777);
-		Cache::config($this->cacheConfig, array(
-			'path' => $path
-		));
+	function clearModelCache($Model, $query = null) {
+		$map = Cache::read('map', $this->cacheMapConfig);
+		if (isset($map[$this->source->configKeyName]) && isset($map[$this->source->configKeyName][$Model->alias])) {
+			foreach ($map[$this->source->configKeyName][$Model->alias] as $key => $modelCacheKey) {
+				if ($query !== null) {
+					$findKey = $this->_key($Model, $query);
+					if ($modelCacheKey == $findKey) {
+						Cache::delete($modelCacheKey, $this->cacheConfig);
+						unset($map[$this->source->configKeyName][$Model->alias][$key]);
+					}
+				} else {
+					Cache::delete($modelCacheKey, $this->cacheConfig);
+					unset($map[$this->source->configKeyName][$Model->alias][$key]);
+				}
+			}
+			Cache::write('map', $map, $this->cacheMapConfig);
+		}
+		return true;
 	}
 
 /**
- * Initializes the cache configuration for this instance of the data source
+ * Hashes a query into a unique string and creates a cache key
  *
- * @access protected
- */
-	function _initializeCache() {
-		if ($this->_rootPath !== null) {
-			return;
-		}
-		$this->cacheConfig = $this->configKeyName.'SourceCache';
-		Cache::config($this->cacheConfig, $this->_settings);
-		$Folder = new Folder($this->_settings['path'], true, 0777);
-		$this->_rootPath = $this->_settings['path'];
-		if (substr($this->_rootPath, -1) != DS) {
-			$this->_rootPath .= DS;
-		}
-	}
-
-/**
- * Hashes a query into a unique string for the cache key
- *
- * @param array $query
+ * @param Model $Model The model
+ * @param array $query The query
  * @return string
  * @access protected
  */
-	function _hash($query) {
-		return md5(serialize($query['conditions']));
+	function _key($Model, $query) {
+		$query = array_merge(
+			array(
+				'conditions' => null, 'fields' => null, 'joins' => array(), 'limit' => null,
+				'offset' => null, 'order' => null, 'page' => null, 'group' => null, 'callbacks' => true
+			),
+			(array)$query
+		);
+		$queryHash = md5(serialize($query));
+		$sourceName = $this->source->configKeyName;
+		return Inflector::underscore($sourceName).'_'.Inflector::underscore($Model->alias).'_'.$queryHash;
 	}
 
 }

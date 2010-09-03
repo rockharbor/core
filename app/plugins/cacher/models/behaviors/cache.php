@@ -78,11 +78,13 @@ class CacheBehavior extends ModelBehavior {
  *
  * @param Model $Model The calling model
  * @param array $queryData The query data sent
+ * @return Modified query
  */
 	function beforeFind(&$Model, $queryData) {
 		$cache = Cache::getInstance();
 		$this->_originalCacheConfig = $cache->__name;
 		$Model->setDataSource('cache');
+		return $queryData;
 	}
 
 /**
@@ -103,16 +105,47 @@ class CacheBehavior extends ModelBehavior {
  * @return boolean
  */
 	function clearCache(&$Model, $queryData = null) {
+		if ($queryData !== null) {
+			$queryData = $this->_prepareFind($Model, $queryData);
+		}
 		$cache = Cache::getInstance();
 		$this->_originalCacheConfig = $cache->__name;
 		$ds = ConnectionManager::getDataSource('cache');
-		$ds->setCachePath($Model);
-		if ($queryData !== null) {
-			$key = $ds->_hash($queryData);
-			return Cache::delete(Inflector::underscore($Model->alias).'_'.$key, $ds->cacheConfig);
-		} else {
-			return Cache::clear(false);
+		$success = $ds->clearModelCache($Model, $queryData);
+		Cache::config($this->_originalCacheConfig);
+		return $success;
+	}
+
+/*
+ * Prepares a query by adding missing data. This function is needed because
+ * reads on the database typically bypass Model::find() which is where the query
+ * is changed.
+ *
+ * @param array $query The query
+ * @return array The modified query
+ * @access protected
+ * @see Model::find()
+ */
+	function _prepareFind($Model, $query = array()) {
+		$query = array_merge(
+			array(
+				'conditions' => null, 'fields' => null, 'joins' => array(), 'limit' => null,
+				'offset' => null, 'order' => null, 'page' => null, 'group' => null, 'callbacks' => true
+			),
+			(array)$query
+		);
+		if (!is_numeric($query['page']) || intval($query['page']) < 1) {
+			$query['page'] = 1;
 		}
+		if ($query['page'] > 1 && !empty($query['limit'])) {
+			$query['offset'] = ($query['page'] - 1) * $query['limit'];
+		}
+		if ($query['order'] === null && $Model->order !== null) {
+			$query['order'] = $Model->order;
+		}
+		$query['order'] = array($query['order']);
+
+		return $query;
 	}
 }
 
