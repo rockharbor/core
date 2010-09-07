@@ -45,6 +45,15 @@ class AppModel extends Model {
 	var $recursive = -1;
 
 /**
+ * Behaviors to attach
+ *
+ * @var array
+ */
+	var $actsAs = array(
+		'Sanitizer.Sanitize'
+	);
+
+/**
  * Extends model construction
  * 
  * ### Extended functionality:

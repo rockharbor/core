@@ -50,6 +50,16 @@ class Ministry extends AppModel {
 	);
 
 /**
+ * Sanitization rules
+ *
+ * @var array
+ * @see Sanitizer.SanitizeBehavior
+ */
+	var $sanitize = array(
+		'description' => 'html'
+	);
+
+/**
  * BelongsTo association link
  *
  * @var array

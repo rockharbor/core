@@ -53,13 +53,23 @@ class SysEmail extends AppModel {
 	var $validate = array(
 		'subject' => array(
 			'rule' => 'notempty',
-			'required' => 'true'
+			'required' => true
 		),
 		'body' => array(
 			'rule' => 'notempty',
-			'required' => 'true'
+			'required' => true
 		)
-	);	
+	);
+
+/**
+ * Sanitization rules
+ *
+ * @var array
+ * @see Sanitizer.SanitizeBehavior
+ */
+	var $sanitize = array(
+		'body' => 'html'
+	);
 	
 /**
  * Overwrite Model::exists() due to Cake looking for a table when validating.

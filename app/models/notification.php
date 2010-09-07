@@ -48,5 +48,15 @@ class Notification extends AppModel {
 		'invitation' => 'Invitation',
 		'default' => 'Notification'
 	);
+
+/**
+ * Sanitization rules
+ *
+ * @var array
+ * @see Sanitizer.SanitizeBehavior
+ */
+	var $sanitize = array(
+		'body' => 'html'
+	);
 }
 ?>

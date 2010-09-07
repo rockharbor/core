@@ -44,6 +44,16 @@ class Involvement extends AppModel {
 	);
 
 /**
+ * Sanitization rules
+ *
+ * @var array
+ * @see Sanitizer.SanitizeBehavior
+ */
+	var $sanitize = array(
+		'description' => 'html'
+	);
+
+/**
  * Validation rules
  *
  * @var array
@@ -66,7 +76,10 @@ class Involvement extends AppModel {
  */
 	var $actsAs = array(
 		'Containable',
-		'Logable'
+		'Logable',
+		'Sanitizer.Sanitize' => array(
+			'validate' => 'after'
+		)
 	);
 
 /**

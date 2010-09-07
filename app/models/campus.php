@@ -35,6 +35,30 @@ class Campus extends AppModel {
 	);
 
 /**
+ * Validation rules
+ *
+ * @var array
+ */
+	var $validate = array(
+		'name' => array(
+			'rule' => 'notempty'
+		),
+		'description' => array(
+			'rule' => 'notempty'
+		)
+	);
+
+/**
+ * Sanitization rules
+ *
+ * @var array
+ * @see Sanitizer.SanitizeBehavior
+ */
+	var $sanitize = array(
+		'description' => 'html'
+	);
+
+/**
  * HasMany association link
  *
  * @var array
