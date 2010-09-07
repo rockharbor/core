@@ -32,8 +32,7 @@ class CacheSourceTestCase extends CakeTestCase {
 	function testUseExistingConfig() {
 		Cache::config('cacheTest', array(
 			'engine' => 'File',
-			'duration' => '+1 days',
-			'path' => CACHE.'cacher_test'
+			'duration' => '+1 days'
 		));
 
 		ConnectionManager::create('newCache', array(
@@ -43,15 +42,33 @@ class CacheSourceTestCase extends CakeTestCase {
 		));
 		$this->dataSource =& ConnectionManager::getDataSource('newCache');
 
-		$key = $this->dataSource->_hash(array('conditions' => array()));
-		$results = $this->dataSource->read($this->CacheData, array('conditions' => array()));
+		$key = $this->dataSource->_key($this->CacheData, array());
+		$this->dataSource->read($this->CacheData, array());
 
 		$result = Cache::config($this->dataSource->cacheConfig);
-		$expected = CACHE.'cacher_test'.DS.'cache_data';
-		$this->assertEqual($result['settings']['path'], $expected);
+		$result = $result['settings']['duration'];
+		$expected = strtotime('+1 days') - strtotime('now');
+		$this->assertEqual($result, $expected);
 
-		$this->assertTrue(Cache::read('cache_data_'.$key, $this->dataSource->cacheConfig));
+		$result = Cache::read('map', $this->dataSource->cacheMapConfig);
+		$expected = array(
+			'test_suite' => array(
+				'CacheData' => array(
+					0 => $key
+				)
+			)
+		);
+		$this->assertEqual($result, $expected);
 
+		$results = Cache::read($key, $this->dataSource->cacheConfig);
+		$results = Set::extract('/CacheData/name', $results);
+		$expected = array(
+			'A Cached Thing',
+			'Cache behavior'
+		);
+		$this->assertEqual($results, $expected);
+
+		Cache::clear(false, $this->dataSource->cacheMapConfig);
 		Cache::clear(false, $this->dataSource->cacheConfig);
 	}
 
@@ -61,15 +78,15 @@ class CacheSourceTestCase extends CakeTestCase {
 				'CacheData.id' => 1
 			)
 		);
-		$key = $this->dataSource->_hash($conditions);
+		$key = $this->dataSource->_key($this->CacheData, $conditions);
 		
 		$results = $this->dataSource->read($this->CacheData, $conditions);
 		// test that we get the correct data
 		$this->assertEqual(Set::extract('/CacheData/name', $results), array('A Cached Thing'));
 		// test that we wrote to the cache
-		$this->assertTrue(Cache::read('cache_data_'.$key, $this->dataSource->cacheConfig));
+		$this->assertTrue(Cache::read($key, $this->dataSource->cacheConfig));
 		// test that the cache results match the results
-		$this->assertEqual(Cache::read('cache_data_'.$key, $this->dataSource->cacheConfig), $results);
+		$this->assertEqual(Cache::read($key, $this->dataSource->cacheConfig), $results);
 		
 		// test multiple cached results
 		$moreConditions = array(
@@ -85,18 +102,82 @@ class CacheSourceTestCase extends CakeTestCase {
 		$results = $this->dataSource->read($this->CacheData, $conditions);
 		$this->assertEqual(Set::extract('/CacheData/name', $results), array('A Cached Thing'));
 
+		$results = Cache::read('map', $this->dataSource->cacheMapConfig);
+		$this->assertEqual(count($results['test_suite']['CacheData']), 2);
+
+		Cache::clear(false, $this->dataSource->cacheConfig);
+		Cache::clear(false, $this->dataSource->cacheMapConfig);
+	}
+
+	function testClearModelCache() {
+		$conditions = array(
+			'conditions' => array(
+				'CacheData.id' => 1
+			)
+		);
+		$results = $this->dataSource->read($this->CacheData, $conditions);
+
+		$moreConditions = array(
+			'conditions' => array(
+				'CacheData.name' => 'non-existent'
+			)
+		);
+		$results = $this->dataSource->read($this->CacheData, $moreConditions);
+
+		$results = Cache::read('map', $this->dataSource->cacheMapConfig);
+		$this->assertEqual(count($results['test_suite']['CacheData']), 2);
+
+		$this->dataSource->clearModelCache($this->CacheData);
+		$results = Cache::read('map', $this->dataSource->cacheMapConfig);
+		$this->assertEqual(count($results['test_suite']['CacheData']), 0);
+	}
+
+	function testClearOnDelete() {
+		ConnectionManager::create('deleteCache', array(
+			'original' => $this->CacheData->useDbConfig,
+			'datasource' => 'Cacher.cache',
+			'clearOnDelete' => true
+		));
+		$this->dataSource =& ConnectionManager::getDataSource('deleteCache');
+
+		// create cache
+		$this->dataSource->read($this->CacheData);
+		$results = Cache::read('map', $this->dataSource->cacheMapConfig);
+		$this->assertEqual(count($results['test_suite']['CacheData']), 1);
+		$this->assertTrue($this->dataSource->delete($this->CacheData));
+		$results = Cache::read('map', $this->dataSource->cacheMapConfig);
+		$this->assertEqual(count($results['test_suite']['CacheData']), 0);
+		
+		Cache::clear(false, $this->dataSource->cacheMapConfig);
 		Cache::clear(false, $this->dataSource->cacheConfig);
 	}
 
-	function testSetCachePath() {
-		$empty = new Model(array(
-			'name' => 'EmptyThing',
-			'table' => false
+	function testClearOnSave() {
+		ConnectionManager::create('saveCache', array(
+			'original' => $this->CacheData->useDbConfig,
+			'datasource' => 'Cacher.cache',
+			'clearOnSave' => true
 		));
-		$this->dataSource->setCachePath($empty);
-		$results = Cache::config($this->dataSource->cacheConfig);
-		$expected = CACHE.'cacher'.DS.'empty_thing';
-		$this->assertEqual($results['settings']['path'], $expected);
+		$this->dataSource =& ConnectionManager::getDataSource('saveCache');
+
+		// create cache
+		$this->dataSource->read($this->CacheData);
+		$results = Cache::read('map', $this->dataSource->cacheMapConfig);
+		$this->assertEqual(count($results['test_suite']['CacheData']), 1);
+		$this->assertTrue($this->dataSource->create($this->CacheData, array('name'), array('new')));
+		$results = Cache::read('map', $this->dataSource->cacheMapConfig);
+		$this->assertEqual(count($results['test_suite']['CacheData']), 0);
+
+		// create cache
+		$this->dataSource->read($this->CacheData);
+		$results = Cache::read('map', $this->dataSource->cacheMapConfig);
+		$this->assertEqual(count($results['test_suite']['CacheData']), 1);
+		$this->assertTrue($this->dataSource->update($this->CacheData, array('name'), array('new')));
+		$results = Cache::read('map', $this->dataSource->cacheMapConfig);
+		$this->assertEqual(count($results['test_suite']['CacheData']), 0);
+
+		Cache::clear(false, $this->dataSource->cacheMapConfig);
+		Cache::clear(false, $this->dataSource->cacheConfig);
 	}
 
 	function testHash() {
@@ -105,7 +186,7 @@ class CacheSourceTestCase extends CakeTestCase {
 				'SomeModel.name' => 'CakePHP'
 			)
 		);
-		$this->assertTrue(is_string($this->dataSource->_hash($query)));
+		$this->assertTrue(is_string($this->dataSource->_key($this->CacheData, $query)));
 	}
 }
 
