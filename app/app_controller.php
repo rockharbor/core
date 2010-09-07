@@ -78,7 +78,8 @@ class AppController extends Controller {
 				'type' => 'default'
 			)
 		),
-		'QueueEmail'
+		'QueueEmail',
+		'Security'
 	);
 
 /**
@@ -396,6 +397,15 @@ class AppController extends Controller {
 				$this->params['named']['User'] = $this->activeUser['User']['id'];
 			}
 		}		
+	}
+
+/**
+ * Forces the user to use SSL for this request
+ *
+ * @see SecurityComponent::blackHoleCallback
+ */
+	function _forceSSL() {
+		$this->redirect('https://' . env('SERVER_NAME') . $this->here);
 	}
 }
 ?>
