@@ -358,7 +358,7 @@ CORE.autoComplete = function(id, datasource, onSelect) {
 				success: function(data) {
 					response(data);
 				},
-				data: $('#'+id).attr('name')+'='+$('#'+id).val(),
+				data: $('#'+id).closest('form').serializeArray(),
 				type: 'post'
 			});
 		},
