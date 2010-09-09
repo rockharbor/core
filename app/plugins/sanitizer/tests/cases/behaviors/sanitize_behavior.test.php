@@ -19,7 +19,7 @@ class Clean extends CakeTestModel {
 		'description' => array(
 			'rule' => 'notEmpty',
 			'required' => false,
-			'allowEmpty' => true,
+			'allowEmpty' => false,
 		)
 	);
 }
@@ -50,6 +50,16 @@ class SanitizeBehaviorTestCase extends CakeTestCase {
 	function endTest() {
 		unset($this->Clean);
 		ClassRegistry::flush();
+	}
+
+	function testExitEarly() {
+		$this->Clean->Behaviors->Sanitize->settings['Clean']['validate'] = 'before';
+		$data = array(
+			'name' => '<b>Html!</b>',
+			'description' => ''
+		);
+		$this->Clean->create();
+		$this->assertFalse($this->Clean->save($data));
 	}
 
 	function testSanitizeMulti() {

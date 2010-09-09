@@ -93,7 +93,7 @@ class SanitizeBehavior extends ModelBehavior {
  */
 	function beforeValidate(&$Model) {
 		if ($this->settings[$Model->alias]['validate'] == 'before') {
-			return;
+			return true;
 		}
 		$this->_sanitize($Model);
 		return true;
@@ -107,7 +107,7 @@ class SanitizeBehavior extends ModelBehavior {
  */
 	function beforeSave(&$Model) {
 		if ($this->settings[$Model->alias]['validate'] == 'after') {
-			return;
+			return true;
 		}
 		$this->_sanitize($Model);
 		return true;
