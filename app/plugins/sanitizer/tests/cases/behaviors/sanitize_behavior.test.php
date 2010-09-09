@@ -24,9 +24,24 @@ class Clean extends CakeTestModel {
 	);
 }
 
+class MultiClean extends CakeTestModel {
+
+	var $name = 'MultiClean';
+
+	var $actsAs = array(
+		'Sanitizer.Sanitize'
+	);
+
+	var $sanitize = null;
+
+	var $hasMany = array(
+		'Clean'
+	);
+}
+
 class SanitizeBehaviorTestCase extends CakeTestCase {
 
-	var $fixtures = array('plugin.sanitizer.clean');
+	var $fixtures = array('plugin.sanitizer.clean', 'plugin.sanitizer.multi_clean');
 
 	function startTest() {
 		$this->Clean =& new Clean();
@@ -35,6 +50,50 @@ class SanitizeBehaviorTestCase extends CakeTestCase {
 	function endTest() {
 		unset($this->Clean);
 		ClassRegistry::flush();
+	}
+
+	function testSanitizeMulti() {
+		$MultiClean =& new MultiClean();
+
+		$data = array(
+			'MultiClean' => array(
+				'name' => 'Multi<b>clean</b>me'
+			),
+			'Clean' => array(
+				0 => array(
+					'name' => '<em>italic</em>'
+				),
+				1 => array(
+					'name' => 'Test<br />multi'
+				)
+			)
+		);
+		$MultiClean->create();
+		$this->assertTrue($MultiClean->saveAll($data));
+		
+		$result = $MultiClean->read();
+		$expected = array(
+			'MultiClean' => array(
+				'id' => 1,
+				'name' => 'Multicleanme',
+				'description' => null
+			),
+			'Clean' => array(
+				0 => array(
+					'id' => 1,
+					'name' => 'italic',
+					'description' => null,
+					'multi_clean_id' => 1
+				),
+				1 => array(
+					'id' => 2,
+					'name' => 'Testmulti',
+					'description' => null,
+					'multi_clean_id' => 1
+				)
+			)
+		);
+		$this->assertEqual($result, $expected);
 	}
 
 	function testSetup() {
@@ -60,7 +119,8 @@ class SanitizeBehaviorTestCase extends CakeTestCase {
 			'Clean' => array(
 				'id' => 1,
 				'name' => '<b>Html!</b>',
-				'description' => null
+				'description' => null,
+				'multi_clean_id' => null
 			)
 		);
 		$this->assertEqual($result, $expected);
@@ -78,7 +138,8 @@ class SanitizeBehaviorTestCase extends CakeTestCase {
 			'Clean' => array(
 				'id' => 1,
 				'name' => 'Html!',
-				'description' => null
+				'description' => null,
+				'multi_clean_id' => null
 			)
 		);
 		$this->assertEqual($result, $expected);
@@ -88,6 +149,25 @@ class SanitizeBehaviorTestCase extends CakeTestCase {
 		);
 		$this->Clean->create();
 		$this->assertFalse($this->Clean->save($data));
+
+		$data = array(
+			'Clean' => array(
+				'name' => '<em>italic</em>'
+			)
+		);
+		$this->Clean->create();
+		$this->assertTrue($this->Clean->save($data));
+
+		$result = $this->Clean->read();
+		$expected = array(
+			'Clean' => array(
+				'id' => 2,
+				'name' => 'italic',
+				'description' => null,
+				'multi_clean_id' => null
+			)
+		);
+		$this->assertEqual($result, $expected);
 	}
 
 	function testSanitizeWithOptions() {
@@ -107,7 +187,8 @@ class SanitizeBehaviorTestCase extends CakeTestCase {
 			'Clean' => array(
 				'id' => 1,
 				'name' => '&lt;b&gt;Html!&lt;/b&gt;',
-				'description' => null
+				'description' => null,
+				'multi_clean_id' => null
 			)
 		);
 		$this->assertEqual($result, $expected);
@@ -136,7 +217,8 @@ class SanitizeBehaviorTestCase extends CakeTestCase {
 			'Clean' => array(
 				'id' => 2,
 				'name' => 'Try this',
-				'description' => '*Somesillytring@42'
+				'description' => '*Somesillytring@42',
+				'multi_clean_id' => null
 			)
 		);
 		$this->assertEqual($result, $expected);
@@ -159,7 +241,8 @@ class SanitizeBehaviorTestCase extends CakeTestCase {
 			'Clean' => array(
 				'id' => 1,
 				'name' => '&lt;b&gt;Html!&lt;/b&gt;',
-				'description' => null
+				'description' => null,
+				'multi_clean_id' => null
 			)
 		);
 		$this->assertEqual($result, $expected);
@@ -189,7 +272,8 @@ class SanitizeBehaviorTestCase extends CakeTestCase {
 			'Clean' => array(
 				'id' => 1,
 				'name' => '&lt;b&gt;Html!&lt;/b&gt;',
-				'description' => null
+				'description' => null,
+				'multi_clean_id' => null
 			)
 		);
 		$this->assertEqual($result, $expected);
