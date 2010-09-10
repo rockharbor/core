@@ -122,27 +122,48 @@ class AttachmentsController extends AppController {
  */ 	
 	function upload() {
 		if (!empty($this->data)) {
-			Configure::write('debug', 0);
-			
-			$this->data[$this->model]['id'] = $this->modelId;
-			$this->data[$this->modelClass][0]['model'] = $this->model;
-			$this->data[$this->modelClass][0]['foreign_key'] = $this->modelId;
-			$this->data[$this->modelClass][0]['group'] = $this->modelClass;
-			$friendly = explode('.', $this->data[$this->modelClass][0]['file']['name']);
+			$friendly = explode('.', $this->data[$this->modelClass]['file']['name']);
 			array_pop($friendly);
 			$friendly = implode('.', $friendly);
-			$this->data[$this->modelClass][0]['alternative'] = low($friendly);			
-			$this->{$this->modelClass}->unbindModel(array('belongsTo' => array($this->model)));
-			/* 
-			save all was breaking it, but save worked so let's move the data
-			into the right place
-			*/			
-			$this->data[$this->modelClass] = $this->data[$this->modelClass][0];
-			
-			if ($this->{$this->modelClass}->save($this->data, array('validate' => 'first'))) {
+			$this->data[$this->modelClass]['alternative'] = low($friendly);
+			$this->data[$this->modelClass]['approved'] = false;
+			if ($this->isAuthorized('attachments/approve')) {
+				$this->data[$this->modelClass]['approved'] = true;
+			}
+			if ($this->{$this->modelClass}->save($this->data)) {
 				$this->Session->setFlash(Inflector::humanize($this->modelKey).' added!', 'flash'.DS.'success');
+			} else {
+				debug($this->{$this->modelClass}->data);
+				$this->{$this->modelClass}->invalidate('file', 'Error saving '.Inflector::humanize($this->modelKey));
 			}
 		}
+	}
+
+/**
+ * Approves or denies an attachment. Attachments that are denied are deleted
+ *
+ * @param integer $id The attachment id
+ * @param boolean $approve Whether or not to approve
+ */
+	function approve($id = null, $approve = false) {
+		if (!$id) {
+			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
+		} else {
+			if ($approve) {
+				if ($this->{$this->modelClass}->saveField('approved', true)) {
+					$this->Session->setFlash(Inflector::humanize($this->modelKey).' approved', 'flash'.DS.'success');
+				} else {
+					$this->Session->setFlash(Inflector::humanize($this->modelKey).' was not approved', 'flash'.DS.'failure');
+				}
+			} else {
+				$this->setAction('delete', $id);
+			}
+		}
+
+		$this->redirect(array(
+			'action' => 'index',
+			$model => $this->modelId
+		));
 	}
 	
 /**
