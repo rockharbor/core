@@ -1,7 +1,11 @@
 <?php
 
-// this layout is here for debugging json via direct access
+Configure::write('debug', 0);
+
+header("Pragma: no-cache");
+header("Cache-Control: no-store, no-cache, max-age=0, must-revalidate");
+header("X-JSON: ".$content_for_layout);
+
 echo $content_for_layout;
 
-echo $this->element('sql_dump');
 ?>

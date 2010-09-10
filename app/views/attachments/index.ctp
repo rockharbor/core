@@ -1,4 +1,4 @@
-<?php echo $this->Html->script('jquery.plugins/jquery.jup'); ?>
+<?php echo $this->Html->script('jquery.plugins/jquery.form'); ?>
 
 <?php
 
@@ -47,13 +47,9 @@ foreach ($attachments as $attachment) {
 
 	
 <?php
-
-/*
-To debug "ajax" uploading, comment out the JavasScript below where the
-jup function is called.
---OR--
-Firebug the iframe that jUp creates at the end of the DOM
-*/
+/**
+ * To debug, comment the 'ext' key from the form url, and the Js buffer at the end
+ */
 $settingName = Inflector::pluralize(strtolower($model)).'.'.strtolower($attachmentModel).'_limit';
 if (count($attachments) < (Core::read($settingName) !== null ? Core::read($settingName) : 1)) {
 	echo $this->Form->create($model, array(
@@ -72,32 +68,16 @@ if (count($attachments) < (Core::read($settingName) !== null ? Core::read($setti
 	<fieldset>
 		<legend>Upload <?php echo Inflector::humanize($attachmentModel); ?></legend>
 <?php
-	echo $this->Form->file($attachmentModel.'.0.file', array(
+	echo $this->Form->hidden($attachmentModel.'.foreign_key', array('value' => $modelId));
+	echo $this->Form->hidden($attachmentModel.'.model', array('value' => $model));
+	echo $this->Form->hidden($attachmentModel.'.group', array('value' => $attachmentModel));
+	echo $this->Form->file($attachmentModel.'.file', array(
 		'id' => $attachmentModel.'File'.$uid
 	));
-	echo '<div id="error'.$uid.'"></div>';
 
 	echo $this->Form->end('Upload');
 
-	$this->Html->scriptStart(array('inline'=>true));
-	echo '$("#Upload'.$model.'Form'.$uid.'").jup({
-		onComplete: function(response, formId) {
-			var e = $("#error'.$uid.'");
-			if (response.length == 0) {
-				CORE.update("'.$attachmentModel.'Attachments");
-			} else if (response == false) {
-				var msg = "Unknown error."
-				e.text(msg);
-				e.addClass("error-message");
-			} else {
-				var msg = response.'.$attachmentModel.'.file;
-				$("#'.$attachmentModel.'File'.$uid.'").addClass("error");
-				e.text(msg);
-				e.addClass("error-message");
-}
-		}
-	})';
-	echo $this->Html->scriptEnd();
+	$this->Js->buffer('CORE.ajaxUpload("Upload'.$model.'Form'.$uid.'", "'.$attachmentModel.'Attachments");');
 }
 ?>
 	</fieldset>
