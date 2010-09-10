@@ -98,6 +98,8 @@ class PermissionsShell extends Shell {
  * Updates the permissions. If groups have changed, run create_groups first
  *
  * @return void
+ * @todo Make it sync instead of deleting everything
+ * @todo Swallow acl errors
  */ 
 	function update() {
 		$this->Group->query('DELETE FROM `aros_acos`;');
@@ -130,6 +132,7 @@ class PermissionsShell extends Shell {
  * Deletes and recreates groups
  *
  * @return void
+ * @todo make it sync so adding groups is easier and doesn't affect app
  */ 
 	function create_groups() {
 		$this->Group->deleteAll(array('id >' => 0), false);
@@ -342,10 +345,9 @@ class PermissionsShell extends Shell {
 			'controllers/InvolvementAddresses/delete',
 			'controllers/InvolvementAddresses/edit',
 			'controllers/InvolvementDocuments/delete',
-			'controllers/InvolvementDocuments/upload',
 			'controllers/InvolvementImages/delete',
 			'controllers/InvolvementImages/index',
-			'controllers/InvolvementImages/upload',
+			'controllers/InvolvementImages/approve',
 			'controllers/PaymentOptions',
 			'controllers/Questions',
 			'controllers/MergeRequests',
@@ -355,13 +357,14 @@ class PermissionsShell extends Shell {
 			'controllers/Ministries/revise',
 			'controllers/MinistryImages/delete',
 			'controllers/MinistryImages/index',
-			'controllers/MinistryImages/upload',
+			'controllers/MinistryImages/approve',
 			'controllers/Regions',	
 			'controllers/Zipcodes',
 			'controllers/Schools',
 			'controllers/UserImages/delete',
 			'controllers/UserImages/index',
-			'controllers/UserImages/upload',			
+			'controllers/UserImages/upload',
+			'controllers/UserImages/approve',
 		),		
 		// staff
 		5 => array(			
@@ -381,6 +384,7 @@ class PermissionsShell extends Shell {
 			'controllers/UserDocuments/download',
 			'controllers/UserDocuments/index',
 			'controllers/UserDocuments/upload',
+			'controllers/UserDocuments/approve',
 			'controllers/UserAddresses/add',
 			'controllers/UserAddresses/edit',
 			'controllers/UserAddresses/index',
@@ -400,7 +404,11 @@ class PermissionsShell extends Shell {
 			'controllers/Reports/ministry',
 			'controllers/SysEmails/compose',
 			'controllers/SysEmailDocuments',
-			'controllers/Involvements/invite'
+			'controllers/Involvements/invite',
+			'controllers/MinistryImages/upload',
+			'controllers/InvolvementDocuments/upload',
+			'controllers/InvolvementDocuments/approve',
+			'controllers/InvolvementImages/upload',
 		),
 		// developer
 		7 => array(
