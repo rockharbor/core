@@ -611,7 +611,7 @@ class User extends AppModel {
 	function beforeSave() {
 		$this->hashPasswords(null, true);
 		
-		return true;
+		return parent::beforeSave();
 	}
 	
 
