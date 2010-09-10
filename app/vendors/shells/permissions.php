@@ -368,7 +368,6 @@ class PermissionsShell extends Shell {
 		),
 		// intern
 		6 => array(
-			'controllers/Comments/view',
 			'controllers/Comments/index',
 			'controllers/Comments/add',
 			'controllers/Rosters/index',
