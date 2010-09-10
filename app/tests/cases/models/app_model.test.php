@@ -2,6 +2,18 @@
 App::import('Lib', 'CoreTestCase');
 App::import('Model', 'User');
 
+class VirtualFieldModel extends AppModel {
+
+	var $useTable = false;
+
+	var $name = 'VirtualField';
+
+	var $virtualFields = array(
+		'name' => 'CONCAT(:ALIAS:.first_name, " ", :ALIAS:.last_name)',
+	);
+
+}
+
 class AppModelTestCase extends CoreTestCase {
 
 	function startTest() {
@@ -12,6 +24,18 @@ class AppModelTestCase extends CoreTestCase {
 	function endTest() {
 		unset($this->User);
 		ClassRegistry::flush();
+	}
+
+	function testAliasInVirtualFields() {
+		$VirtualField = new VirtualFieldModel();
+		$result = $VirtualField->getVirtualField('name');
+		$expected = 'CONCAT(VirtualField.first_name, " ", VirtualField.last_name)';
+		$this->assertEqual($result, $expected);
+
+		$VirtualField = new VirtualFieldModel(array('alias' => 'SomeOtherName'));
+		$result = $VirtualField->getVirtualField('name');
+		$expected = 'CONCAT(SomeOtherName.first_name, " ", SomeOtherName.last_name)';
+		$this->assertEqual($result, $expected);
 	}
 
 	function testPostContains() {
