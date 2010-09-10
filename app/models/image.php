@@ -105,17 +105,6 @@ class Image extends AppModel {
 			)
 		)
 	);
-
-/**
- * BelongsTo association link
- *
- * @var array
- */
-	var $belongsTo = array(
-		'User' => array(
-			'foreignKey' => 'foreign_key'	
-		)
-	);
 		
 /**
  * Generate a version of a file
