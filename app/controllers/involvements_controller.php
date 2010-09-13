@@ -59,6 +59,10 @@ class InvolvementsController extends AppController {
 				'Ministry'
 			)
 		);
+
+		if (!$this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id'])) {
+			$this->paginate['conditions']['Involvement.private'] = false;
+		}
 		
 		$this->set('involvements', $this->paginate());
 	}
@@ -82,7 +86,14 @@ class InvolvementsController extends AppController {
 			'InvolvementType',
 			'Date'
 		));
-		$this->set('involvement', $this->Involvement->read(null, $id));
+		$involvement = $this->Involvement->read(null, $id);
+
+		if ($involvement['Involvement']['private'] && !$this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id'])) {
+			$this->Session->setFlash('That Involvement is private', 'flash'.DS.'failure');
+			$this->redirect(array('action' => 'index'));
+		}
+
+		$this->set(compact('involvement'));
 	}
 
 /**
@@ -196,11 +207,6 @@ class InvolvementsController extends AppController {
 			$this->data = $this->Involvement->read(null, $id);			
 		}
 		
-		$this->set('groups', $this->Involvement->Group->find('list', array(
-			'conditions' => array(
-				'Group.conditional' => false
-			)
-		)));
 		$this->set('ministries', $this->Involvement->Ministry->find('list'));
 		$this->set('displayMinistries', array($this->Involvement->Ministry->find('list')));
 		$this->set('involvementTypes', $this->Involvement->InvolvementType->find('list'));

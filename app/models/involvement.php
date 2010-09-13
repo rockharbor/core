@@ -115,8 +115,7 @@ class Involvement extends AppModel {
 			'fields' => '',
 			'order' => ''
 		),
-		'InvolvementType',
-		'Group'
+		'InvolvementType'
 	);
 
 /**

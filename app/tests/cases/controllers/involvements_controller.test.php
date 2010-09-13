@@ -58,7 +58,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 				'description' => 'this is a test',
 				'roster_limit' => null,
 				'roster_visible' => 1,
-				'group_id' => NULL,
+				'private' => NULL,
 				'signup' => 1,
 				'take_payment' => 1,
 				'offer_childcare' => 0,
@@ -70,7 +70,6 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 			'data' => $data
 		));
 		$this->assertEqual($this->Involvements->Involvement->field('name'), 'A test involvement');
-		$this->assertEqual($this->Involvements->Involvement->field('group_id'), 0);
 
 		$data = array(
 			'Involvement' => array(
@@ -80,7 +79,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 				'description' => 'Test using linked ministries',
 				'roster_limit' => null,
 				'roster_visible' => 1,
-				'group_id' => NULL,
+				'private' => NULL,
 				'signup' => 0,
 				'take_payment' => 0,
 				'offer_childcare' => 0,
