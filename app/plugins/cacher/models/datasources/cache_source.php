@@ -39,15 +39,12 @@ class CacheSource extends DataSource {
  */
 	var $cacheConfig = 'CacherResults';
 
-
 /**
  * The name of the cache's map configuration for this datasource instance
  *
  * @var string
  */
 	var $cacheMapConfig = 'CacherMap';
-
-	var $_clearCache = null;
 
 /**
  * Constructor
@@ -64,10 +61,6 @@ class CacheSource extends DataSource {
  * @param array $config Configure options
  */
 	function __construct($config = array()) {
-		$config = array_merge(array(
-			'clearOnSave' => false,
-			'clearOnDelete' => false
-		), (array)$config);
 		parent::__construct($config);
 		if (!isset($this->config['original'])) {
 			trigger_error('Cacher.CacheSource::__construct() :: Missing name of original datasource', E_USER_WARNING);
@@ -82,10 +75,6 @@ class CacheSource extends DataSource {
 			$_existingCache = Cache::config($this->config['config']);
 			$settings = array_merge($settings, $_existingCache['settings']);
 		}
-		$this->_clearCache = array(
-			'save' => $this->config['clearOnSave'],
-			'delete' => $this->config['clearOnDelete']
-		);
 
 		$this->source =& ConnectionManager::getDataSource($this->config['original']);
 
@@ -121,6 +110,19 @@ class CacheSource extends DataSource {
  * Fallback to original datasource's function
  *
  * @param Model $Model
+ * @param string $func
+ * @param array $params
+ * @return string
+ * @see DataSource::calculate()
+ */
+	function calculate($Model, $func, $params = array()) {
+		return $this->source->calculate($Model, $func, $params);
+	}
+
+/**
+ * Fallback to original datasource's function
+ *
+ * @param Model $Model
  * @return array
  * @see DataSource::describe()
  */
@@ -148,9 +150,6 @@ class CacheSource extends DataSource {
  * @see DataSource::create()
  */
 	function create($Model, $fields = null, $values = null) {
-		if ($this->_clearCache['save']) {
-			$this->clearModelCache($Model);
-		}
 		return $this->source->create($Model, $fields, $values);
 	}
 
@@ -169,11 +168,11 @@ class CacheSource extends DataSource {
 		}
 		$key = $this->_key($Model, $queryData);
 		$results = Cache::read($key, $this->cacheConfig);
-		if ($results == false) {		
+		if ($results === false) {
 			$results = $this->source->read($Model, $queryData);
 			Cache::write($key, $results, $this->cacheConfig);
 			$map = Cache::read('map', $this->cacheMapConfig);
-			$sourceName = ConnectionManager::getSourceName($this->source);
+			$sourceName = $this->config['original'];
 			if (!isset($map[$sourceName])) {
 				$map[$sourceName] = array();
 			}
@@ -201,9 +200,6 @@ class CacheSource extends DataSource {
  * @see DataSource::update()
  */
 	function update($Model, $fields = null, $values = null) {
-		if ($this->_clearCache['save']) {
-			$this->clearModelCache($Model);
-		}
 		return $this->source->update($Model, $fields, $values);
 	}
 
@@ -215,9 +211,6 @@ class CacheSource extends DataSource {
  * @see DataSource::update()
  */
 	function delete($Model, $id = null) {
-		if ($this->_clearCache['delete']) {
-			$this->clearModelCache($Model);
-		}
 		return $this->source->delete($Model, $id);
 	}
 

@@ -27,13 +27,6 @@ class CacheBehavior extends ModelBehavior {
 	var $settings;
 
 /**
- * The model's original DbConfig
- *
- * @var string
- */
-	var $_originalDbConfig = null;
-
-/**
  * The original cache configuration
  *
  * @var string
@@ -45,8 +38,8 @@ class CacheBehavior extends ModelBehavior {
  *
  * ### Config
  * - `config` The name of an existing Cache configuration to duplicate
- * - `save` Whether or not to delete the cache on saves
- * - `delete` Whether or not to delete the cache on deletes
+ * - `clearOnSave` Whether or not to delete the cache on saves
+ * - `clearOnDelete` Whether or not to delete the cache on deletes
  * - any options taken by Cache::config() will be used if `config` is not defined
  *
  * @param Model $Model The calling model
@@ -81,21 +74,11 @@ class CacheBehavior extends ModelBehavior {
  * Intercepts find to use the caching datasource instead
  *
  * @param Model $Model The calling model
- * @param array $queryData The query data sent
- * @return Modified query
+ * @param array $queryData The query
  */
 	function beforeFind(&$Model, $queryData) {
-		$this->_toggleConfig($Model, true);
+		$Model->setDataSource('cache');
 		return $queryData;
-	}
-
-/**
- * Resets the datasource
- *
- * @param Model $Model The calling model
- */
-	function afterFind(&$Model) {
-		$this->_toggleConfig($Model, false);
 	}
 
 /**
@@ -104,17 +87,11 @@ class CacheBehavior extends ModelBehavior {
  * @param Model $Model The calling model
  */	
 	function beforeDelete(&$Model) {
-		$this->_toggleConfig($Model, true);
+		$Model->setDataSource('cache');
+		if ($this->settings[$Model->alias]['clearOnDelete']) {
+			$this->clearCache($Model);
+		}
 		return true;
-	}
-
-/**
- * Resets the datasource
- *
- * @param Model $Model The calling model
- */	
-	function afterDelete(&$Model) {
-		$this->_toggleConfig($Model, false);
 	}
 
 /**
@@ -123,17 +100,11 @@ class CacheBehavior extends ModelBehavior {
  * @param Model $Model The calling model
  */
 	function beforeSave(&$Model) {
-		$this->_toggleConfig($Model, true);
+		$Model->setDataSource('cache');
+		if ($this->settings[$Model->alias]['clearOnSave']) {
+			$this->clearCache($Model);
+		}
 		return true;
-	}
-
-/**
- * Resets the datasource
- *
- * @param Model $Model The calling model
- */
-	function afterSave(&$Model) {
-		$this->_toggleConfig($Model, false);
 	}
 
 /**
@@ -153,24 +124,6 @@ class CacheBehavior extends ModelBehavior {
 		$success = $ds->clearModelCache($Model, $queryData);
 		Cache::config($this->_originalCacheConfig);
 		return $success;
-	}
-
-/*
- * Toggles the datasource to use the cache data source if enable=true
- *
- * @param Model $Model Calling model
- * @param boolean $enable True uses cache datasource, false reverts to original
- * @access protected
- */
-	function _toggleConfig(&$Model, $enable = false) {
-		if ($enable === true) {
-			$cache = Cache::getInstance();
-			$this->_originalCacheConfig = $cache->__name;
-			$Model->setDataSource('cache');
-		} else {
-			Cache::config($this->_originalCacheConfig);
-			$Model->setDataSource($this->_originalDbConfig);
-		}
 	}
 
 /*
