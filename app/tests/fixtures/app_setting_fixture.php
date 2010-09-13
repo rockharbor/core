@@ -169,6 +169,15 @@ class AppSettingFixture extends CakeTestFixture {
 			'value' => NULL,
 			'type' => 'list'
 		),
+		array(
+			'id' => 23,
+			'name' => 'general.private_group',
+			'description' => 'The group that a user must be above in order to see private Involvements and Ministries.',
+			'created' => '2010-09-13 00:00:00',
+			'modified' => '2010-09-13 00:00:00',
+			'value' => 8,
+			'type' => 'Group'
+		),
 	);
 }
 ?>

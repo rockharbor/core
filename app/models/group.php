@@ -72,7 +72,7 @@ class Group extends AppModel {
  * @return array Results
  */
 	function findGroups($groupId = null, $operation = 'list', $operator = '<=') {
-		if (!$groupId || !is_numeric($groupId)) {
+		if (!$groupId) {
 			return false;
 		}
 
@@ -90,6 +90,22 @@ class Group extends AppModel {
 				'Group.lft '.$operatorMap[$operator] => $groupId
 			)
 		));
+	}
+
+/**
+ * Determines whether a user in a group can see private records
+ *
+ * @param integer $groupId
+ * @return boolean
+ */
+	function canSeePrivate($groupId = null) {
+		if (!$groupId) {
+			return false;
+		}
+
+		$groups = $this->findGroups(Core::read('general.private_group'), 'list', '>');
+		
+		return in_array($groupId, array_keys($groups));
 	}
 }
 ?>
