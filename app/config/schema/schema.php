@@ -1,6 +1,6 @@
 <?php 
 /* SVN FILE: $Id$ */
-/* App schema generated on: 2010-08-16 08:08:12 : 1281973752*/
+/* App schema generated on: 2010-09-13 10:09:58 : 1284400318*/
 class AppSchema extends CakeSchema {
 	var $name = 'App';
 
@@ -70,33 +70,6 @@ class AppSchema extends CakeSchema {
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
-	var $api_classes = array(
-		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
-		'api_package_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index'),
-		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 200),
-		'slug' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 200),
-		'file_name' => array('type' => 'text', 'null' => true, 'default' => NULL),
-		'method_index' => array('type' => 'text', 'null' => true, 'default' => NULL),
-		'property_index' => array('type' => 'text', 'null' => true, 'default' => NULL),
-		'flags' => array('type' => 'integer', 'null' => true, 'default' => '0', 'length' => 5),
-		'coverage_cache' => array('type' => 'float', 'null' => true, 'default' => NULL, 'length' => '4,4'),
-		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'api_package_id' => array('column' => 'api_package_id', 'unique' => 0)),
-		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
-	);
-	var $api_packages = array(
-		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
-		'parent_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index'),
-		'name' => array('type' => 'string', 'null' => false, 'default' => NULL),
-		'slug' => array('type' => 'string', 'null' => false, 'default' => NULL),
-		'lft' => array('type' => 'integer', 'null' => true, 'default' => NULL),
-		'rght' => array('type' => 'integer', 'null' => true, 'default' => NULL),
-		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'parent_id' => array('column' => 'parent_id', 'unique' => 0)),
-		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
-	);
 	var $app_settings = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 45),
@@ -104,8 +77,7 @@ class AppSchema extends CakeSchema {
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
 		'value' => array('type' => 'text', 'null' => true, 'default' => NULL),
-		'model' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 45),
-		'html' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
+		'type' => array('type' => 'string', 'null' => false, 'default' => '0', 'length' => 45),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
@@ -142,6 +114,7 @@ class AppSchema extends CakeSchema {
 		'group' => array('type' => 'string', 'null' => true, 'default' => NULL),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
+		'approved' => array('type' => 'integer', 'null' => false, 'default' => '0', 'length' => 3),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
@@ -149,43 +122,16 @@ class AppSchema extends CakeSchema {
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 64),
 		'description' => array('type' => 'text', 'null' => true, 'default' => NULL),
-		'active' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
+		'active' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
-		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
-	);
-	var $campuses_revs = array(
-		'version_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
-		'version_created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
-		'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 64),
-		'description' => array('type' => 'text', 'null' => true, 'default' => NULL),
-		'active' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
-		'indexes' => array('PRIMARY' => array('column' => 'version_id', 'unique' => 1)),
-		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
-	);
-	var $classifications = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
-		'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 45),
-		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
-		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
-	);
-	var $comment_types = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
-		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 45),
-		'group_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10),
-		'created' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
-		'modified' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
 	var $comments = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
 		'user_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
-		'comment_type_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
+		'group_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
 		'comment' => array('type' => 'text', 'null' => true, 'default' => NULL),
 		'created_by' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
@@ -211,16 +157,6 @@ class AppSchema extends CakeSchema {
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'exemption' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'offset' => array('type' => 'integer', 'null' => true, 'default' => '0', 'length' => 2),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
-		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
-	);
-	var $errors = array(
-		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
-		'level' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 15),
-		'file' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 200),
-		'line' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 5),
-		'message' => array('type' => 'text', 'null' => false, 'default' => NULL),
-		'created' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
@@ -271,7 +207,7 @@ class AppSchema extends CakeSchema {
 		'description' => array('type' => 'text', 'null' => true, 'default' => NULL),
 		'roster_limit' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 3),
 		'roster_visible' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
-		'group_id' => array('type' => 'integer', 'null' => true, 'default' => '0', 'length' => 10),
+		'private' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'signup' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'take_payment' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'offer_childcare' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
@@ -282,22 +218,11 @@ class AppSchema extends CakeSchema {
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
-	var $involvements_revs = array(
-		'version_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
-		'version_created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
-		'ministry_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
-		'involvement_type_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
-		'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 64),
-		'description' => array('type' => 'text', 'null' => true, 'default' => NULL),
-		'roster_limit' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 3),
-		'roster_visible' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
-		'group_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
-		'signup' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
-		'require_payment' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
-		'offer_childcare' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
-		'active' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
-		'indexes' => array('PRIMARY' => array('column' => 'version_id', 'unique' => 1)),
+	var $involvements_ministries = array(
+		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
+		'involvement_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10),
+		'ministry_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10),
+		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
 	var $job_categories = array(
@@ -349,24 +274,11 @@ class AppSchema extends CakeSchema {
 		'lft' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
 		'rght' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
 		'campus_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
-		'group_id' => array('type' => 'integer', 'null' => true, 'default' => '9', 'length' => 10),
+		'private' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'active' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
+		'active' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
-		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
-	);
-	var $ministries_revs = array(
-		'version_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
-		'version_created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
-		'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 64),
-		'description' => array('type' => 'text', 'null' => true, 'default' => NULL),
-		'campus_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
-		'group_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
-		'active' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
-		'parent_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
-		'indexes' => array('PRIMARY' => array('column' => 'version_id', 'unique' => 1)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
 	var $notifications = array(
@@ -455,7 +367,6 @@ class AppSchema extends CakeSchema {
 		'created_by_type' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'default_address' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
 		'campus_id' => array('type' => 'integer', 'null' => true, 'default' => '0', 'length' => 10),
 		'email_on_notification' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
 		'allow_sponsorage' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
@@ -525,14 +436,6 @@ class AppSchema extends CakeSchema {
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
-	var $schema_migrations = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
-		'version' => array('type' => 'integer', 'null' => false, 'default' => NULL),
-		'type' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 50),
-		'created' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
-		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
-	);
 	var $schools = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 64),
@@ -552,6 +455,7 @@ class AppSchema extends CakeSchema {
 		'last_logged_in' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'flagged' => array('type' => 'boolean', 'null' => false, 'default' => NULL),
 		'group_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10),
+		'reset_password' => array('type' => 'boolean', 'null' => true, 'default' => '1'),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
