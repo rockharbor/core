@@ -62,6 +62,7 @@ class InvolvementsController extends AppController {
 
 		if (!$this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id'])) {
 			$this->paginate['conditions']['Involvement.private'] = false;
+			$this->paginate['conditions']['Ministry.private'] = false;
 		}
 		
 		$this->set('involvements', $this->paginate());

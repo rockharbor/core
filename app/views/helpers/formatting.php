@@ -433,7 +433,9 @@ class FormattingHelper extends AppHelper {
 		
 		// default associated data that is needed
 		$_defaults = array(
-			'Group' => array()
+			'Ministry' => array(
+				'private' => 0
+			),
 		);
 		
 		// move it if it was found via containable
@@ -456,7 +458,7 @@ class FormattingHelper extends AppHelper {
 			));
 		}
 		
-		if (!empty($ministry['Group']['level'])) {
+		if ($ministry['Ministry']['private']) {
 			$output .= $this->Html->tag('span', '', array(
 				'class' => 'private',
 				'title' => 'Private Ministry',

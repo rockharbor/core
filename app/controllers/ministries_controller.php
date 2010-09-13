@@ -54,9 +54,18 @@ class MinistriesController extends AppController {
 			)
 		);
 
+		$menuConditions = array(
+			'order' => 'Ministry.lft ASC'
+		);
+		if (!$this->Ministry->Leader->User->Group->canSeePrivate($this->activeUser['Group']['id'])) {
+			$this->paginate['conditions']['Ministry.private'] = false;
+			$this->paginate['contain']['Involvement']['conditions']['Involvement.private'] = false;
+			$menuConditions['conditions']['Ministry.private'] = false;
+		}
+
 		$this->set('ministries', $this->paginate());
 		
-		$this->set('ministryMenu', $this->Ministry->find('all', array('order' => 'Ministry.lft ASC')));
+		$this->set('ministryMenu', $this->Ministry->find('all', $menuConditions));
 	}
 
 /**
@@ -70,9 +79,7 @@ class MinistriesController extends AppController {
 			$this->redirect(array('action' => 'index'));
 		}
 		
-		$this->set('ministryMenu', $this->Ministry->find('all', array('order' => 'Ministry.lft ASC')));
-		
-		$this->set('ministry', $this->Ministry->find('first', array(
+		$ministry = $this->Ministry->find('first', array(
 			'conditions' => array(
 				'Ministry.id' => $id
 			),
@@ -80,10 +87,17 @@ class MinistriesController extends AppController {
 				'Involvement' => array(
 					'InvolvementType'
 				),
-				'Campus',
-				'Group'
+				'Campus'
 			)
-		)));
+		));
+
+		if ($involvement['Ministry']['private'] && !$this->Ministry->Leader->User->Group->canSeePrivate($this->activeUser['Group']['id'])) {
+			$this->Session->setFlash('That Ministry is private', 'flash'.DS.'failure');
+			$this->redirect(array('action' => 'index'));
+		}
+
+		$this->set(compact('ministry'));
+		$this->set('ministryMenu', $this->Ministry->find('all', array('order' => 'Ministry.lft ASC')));
 	}
 
 /**
@@ -102,7 +116,6 @@ class MinistriesController extends AppController {
 			}
 		}
 		
-		$this->set('groups', $this->Ministry->Group->find('list'));
 		$this->set('campuses', $this->Ministry->Campus->find('list'));
 		$this->set('ministries', $this->Ministry->find('list', array(
 			'conditions' => array(
@@ -153,7 +166,6 @@ class MinistriesController extends AppController {
 		
 		$this->data = $this->Ministry->read(null, $id);		
 		
-		$this->set('groups', $this->Ministry->Group->find('list'));
 		$this->set('campuses', $this->Ministry->Campus->find('list'));
 		$this->set('ministries', $this->Ministry->find('list', array(
 			'conditions' => array(
@@ -232,7 +244,6 @@ class MinistriesController extends AppController {
 		$this->set('ministry', $this->Ministry->read(null, $id));
 		
 		// get the most recent change (not quite using revisions as defined, but close)
-		$this->set('groups', $this->Ministry->Group->find('list'));
 		$this->set('campuses', $this->Ministry->Campus->find('list'));
 		$this->set('parents', $this->Ministry->find('list'));
 		$this->set('revision', $this->Ministry->revision($id));

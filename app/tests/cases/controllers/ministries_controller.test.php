@@ -58,7 +58,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 				'description' => 'Description',
 				'parent_id' => 1,
 				'campus_id' => 1,
-				'group_id' => 8,
+				'private' => 1,
 				'active' => 1
 			)
 		);

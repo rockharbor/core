@@ -79,7 +79,6 @@ class Ministry extends AppModel {
 			'fields' => '',
 			'order' => ''
 		),
-		'Group'
 	);
 
 
