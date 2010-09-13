@@ -30,7 +30,9 @@ class AppSetting extends AppModel {
  */
 	var $actsAs = array(
 		'Cacher.Cache' => array(
-			'duration' => '+1 year'
+			'duration' => '+1 year',
+			'clearOnSave' => true,
+			'clearOnDelete' => true
 		),
 		'Logable'
 	);

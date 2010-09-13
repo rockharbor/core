@@ -2,11 +2,27 @@
 /**
  * AppSetting controller class.
  *
+ * By default, AppSettings can only be added manually. There are a few
+ * AppSetting types:
+ *
+ * ### Types
+ * - `html` Allows html content
+ * - `string` Basic string
+ * - `integer` An integer
+ * - `list` A comma delimited list
+ * - default: Looks for the model based on the type. If one is found then all
+ * records from that model are considered options and the primaryKey is saved
+ *
  * @copyright     Copyright 2010, *ROCK*HARBOR
  * @link          http://rockharbor.org *ROCK*HARBOR
  * @package       core
  * @subpackage    core.app.controllers
  */
+
+/**
+ * Includes
+ */
+App::import('Core', 'Sanitize');
 
 /**
  * AppSettings Controller
@@ -22,6 +38,15 @@ class AppSettingsController extends AppController {
  * @var string
  */
 	var $name = 'AppSettings';
+
+/**
+ * List of types that shouldn't be considered models
+ *
+ * @var array
+ */
+	var $_reservedTypes = array(
+		'list', 'string', 'html', 'integer'
+	);
 
 /**
  * Model::beforeFilter() callback
@@ -46,9 +71,9 @@ class AppSettingsController extends AppController {
 		$appSettings = $this->paginate();
 		
 		foreach ($appSettings as $appSetting) {
-			if (!empty($appSetting['AppSetting']['model'])) {
-				$models = ClassRegistry::init($appSetting['AppSetting']['model'])->find('list');
-				$this->set($appSetting['AppSetting']['model'].'Options', $models);
+			if (!in_array($appSetting['AppSetting']['type'], $this->_reservedTypes)) {
+				$models = ClassRegistry::init($appSetting['AppSetting']['type'])->find('list');
+				$this->set($appSetting['AppSetting']['type'].'Options', $models);
 			}
 		}
 		
@@ -65,9 +90,28 @@ class AppSettingsController extends AppController {
 			$this->Session->setFlash('Invalid setting', 'flash'.DS.'failure');
 		}
 		if (!empty($this->data)) {
+			$this->AppSetting->Behaviors->detach('Sanitizer.Sanitize');
+
+			switch($this->data['AppSetting']['type']) {
+				case 'html':
+					$this->data['AppSetting']['value'] = Sanitize::html($this->data['AppSetting']['value']);
+				break;
+				case 'string':
+					$this->data['AppSetting']['value'] = Sanitize::clean($this->data['AppSetting']['value'], array('remove_html' => true));
+				break;
+				case 'list':
+					$exps = explode(',', $this->data['AppSetting']['value']);
+					foreach ($exps as &$exp) {
+						$exp = Sanitize::clean($exp, array('remove_html' => true));
+					}
+					$this->data['AppSetting']['value'] = implode(',', $exps);
+				break;
+				case 'integer':
+					$this->data['AppSetting']['value'] = preg_replace('/[^0-9]/', '', $this->data['AppSetting']['value']);
+				break;
+			}
+
 			if ($this->AppSetting->save($this->data)) {
-				// clear cached settings
-				$this->AppSetting->clearCache();
 				$this->Session->setFlash('The setting has been saved', 'flash'.DS.'success');
 			} else {
 				$this->Session->setFlash('The setting could not be saved. Please, try again.', 'flash'.DS.'failure');
@@ -77,9 +121,8 @@ class AppSettingsController extends AppController {
 		if (empty($this->data)) {
 			$this->data = $this->AppSetting->read(null, $id);
 		}
-		
-		if (!empty($this->data['AppSetting']['model'])) {
-			$models = ClassRegistry::init($this->data['AppSetting']['model'])->find('list');
+		if (!in_array(strtolower($this->data['AppSetting']['type']), $this->_reservedTypes)) {
+			$models = ClassRegistry::init($this->data['AppSetting']['type'])->find('list');
 			$this->set('valueOptions', $models);
 		}
 	}

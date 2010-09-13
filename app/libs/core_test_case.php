@@ -208,7 +208,7 @@ class CoreTestCase extends CakeTestCase {
 	}
 
 	function unloadSettings() {
-		Cache::delete('core_app_settings');
+		ClassRegistry::init('AppSetting')->clearCache();
 		Configure::write('Cache.disable', $this->_cacheDisable);
 	}
 

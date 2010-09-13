@@ -145,7 +145,7 @@ class Core {
 		// add tagless versions of the html tagged ones
 		$tagless = array();
 		foreach ($appSettings as $appSetting) {
-			if ($appSetting['AppSetting']['html']) {
+			if ($appSetting['AppSetting']['type'] == 'html') {
 				$tagless[] = array(
 					'AppSetting' => array(
 						'name' => $appSetting['AppSetting']['name'].'_tagless',

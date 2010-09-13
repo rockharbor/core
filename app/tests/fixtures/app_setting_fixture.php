@@ -1,5 +1,5 @@
 <?php
-/* AppSetting Fixture generated on: 2010-06-28 09:06:53 : 1277741213 */
+/* AppSetting Fixture generated on: 2010-09-10 09:09:37 : 1284136897 */
 class AppSettingFixture extends CakeTestFixture {
 	var $name = 'AppSetting';
 
@@ -10,8 +10,7 @@ class AppSettingFixture extends CakeTestFixture {
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
 		'value' => array('type' => 'text', 'null' => true, 'default' => NULL),
-		'model' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 45),
-		'html' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
+		'type' => array('type' => 'string', 'null' => false, 'default' => '0', 'length' => 45),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
@@ -22,60 +21,153 @@ class AppSettingFixture extends CakeTestFixture {
 			'name' => 'general.church_name',
 			'description' => 'The name of your church. Wrap it in a span tag with your own class for easy customization.',
 			'created' => '2010-03-11 10:44:40',
-			'modified' => '2010-03-25 08:07:32',
-			'value' => '<span class=\"churchname\"><b>ROCK</b>HA<i>R</i>BOR</span>',
-			'model' => '',
-			'html' => 1
+			'modified' => '2010-08-17 14:38:33',
+			'value' => '<span class=\"churchname\"><b>ROCK</b>HARBOR</span>',
+			'type' => 'html'
 		),
 		array(
-			'id' => 2,
+			'id' => 3,
+			'name' => 'general.church_site_url',
+			'description' => 'The church website url.',
+			'created' => '2010-03-11 10:57:11',
+			'modified' => '2010-03-11 10:57:11',
+			'value' => 'http://www.rockharbor.org',
+			'type' => 'string'
+		),
+		array(
+			'id' => 4,
+			'name' => 'users.user_document_limit',
+			'description' => 'The maximum number of documents that can be uploaded to a user profile.',
+			'created' => '2010-03-11 11:01:02',
+			'modified' => '2010-03-11 11:01:02',
+			'value' => '3',
+			'type' => 'integer'
+		),
+		array(
+			'id' => 8,
+			'name' => 'general.site_name',
+			'description' => 'The application display name.',
+			'created' => '2010-03-11 13:04:01',
+			'modified' => '2010-03-18 13:13:11',
+			'value' => 'CORE',
+			'type' => 'html'
+		),
+		array(
+			'id' => 9,
 			'name' => 'general.ebulletin',
 			'description' => 'The publication that is the main church ebulletin.',
 			'created' => '2010-03-18 00:00:00',
 			'modified' => '2010-06-02 12:25:22',
 			'value' => '1',
-			'model' => 'Publication',
-			'html' => 0
+			'type' => 'Publication'
 		),
 		array(
-			'id' => 3,
-			'name' => 'notifications.ministry_content',
-			'description' => 'The user to alert when content needs to be updated.',
+			'id' => 10,
+			'name' => 'development.core_developer',
+			'description' => 'The main CORE developer. (App Setting test.)',
 			'created' => '2010-03-18 00:00:00',
-			'modified' => '2010-06-02 12:25:22',
+			'modified' => '2010-03-18 13:12:24',
 			'value' => '1',
-			'model' => 'User',
-			'html' => 0
+			'type' => 'User'
 		),
 		array(
-			'id' => 4,
-			'name' => 'notifications.activation_requests',
-			'description' => 'The user to alert when an activation request is sent.',
+			'id' => 11,
+			'name' => 'notifications.site_email',
+			'description' => 'The system email address. Used as a fallback for any non-customized email addresses.',
 			'created' => '2010-03-18 00:00:00',
-			'modified' => '2010-06-02 12:25:22',
-			'value' => '1',
-			'model' => 'User',
-			'html' => 0
+			'modified' => '2010-03-25 12:30:41',
+			'value' => 'core@rockharbor.org',
+			'type' => 'string'
 		),
 		array(
-			'id' => 5,
+			'id' => 12,
+			'name' => 'users.user_image_limit',
+			'description' => 'The maximum number of images that can be uploaded to a user profile.',
+			'created' => '2010-03-18 00:00:00',
+			'modified' => '0000-00-00 00:00:00',
+			'value' => '1',
+			'type' => 'integer'
+		),
+		array(
+			'id' => 13,
 			'name' => 'development.debug_email',
-			'description' => 'The debug user',
-			'created' => '2010-03-18 00:00:00',
-			'modified' => '2010-06-02 12:25:22',
-			'value' => '2',
-			'model' => 'User',
-			'html' => 0
+			'description' => 'The email to send debug info, including test emails.',
+			'created' => '2010-03-25 00:00:00',
+			'modified' => '2010-03-25 12:30:27',
+			'value' => '1',
+			'type' => 'User'
 		),
 		array(
-			'id' => 6,
-			'name' => 'notifications.campus_content',
-			'description' => 'The user to alert when content needs to be updated.',
-			'created' => '2010-03-18 00:00:00',
-			'modified' => '2010-06-02 12:25:22',
+			'id' => 14,
+			'name' => 'involvements.question_limit',
+			'description' => 'The maximum number of questions an involvement can have.',
+			'created' => '2010-04-09 00:00:00',
+			'modified' => '2010-04-09 12:24:21',
+			'value' => '5',
+			'type' => 'integer'
+		),
+		array(
+			'id' => 15,
+			'name' => 'notifications.credit_card_email',
+			'description' => 'The email address to send credit card payment receipts.',
+			'created' => '0000-00-00 00:00:00',
+			'modified' => '0000-00-00 00:00:00',
+			'value' => 'jharris@rockharbor.org',
+			'type' => 'string'
+		),
+		array(
+			'id' => 16,
+			'name' => 'notifications.email_subject_prefix',
+			'description' => 'A prefix to put in front of the subject of each email sent through the app.',
+			'created' => '2010-05-24 00:00:00',
+			'modified' => '2010-05-24 00:00:00',
+			'value' => 'CORE ::',
+			'type' => 'string'
+		),
+		array(
+			'id' => 17,
+			'name' => 'notifications.activation_requests',
+			'description' => 'The user to notify when account activation requests are sent.',
+			'created' => '2010-05-27 00:00:00',
+			'modified' => '2010-05-27 00:00:00',
 			'value' => '1',
-			'model' => 'User',
-			'html' => 0
+			'type' => 'User'
+		),
+		array(
+			'id' => 18,
+			'name' => 'notifications.ministry_content',
+			'description' => 'The user to notify when Ministry content has been changed.',
+			'created' => '2010-05-27 00:00:00',
+			'modified' => '2010-05-27 00:00:00',
+			'value' => '1',
+			'type' => 'User'
+		),
+		array(
+			'id' => 19,
+			'name' => 'notifications.support_email',
+			'description' => 'The address to send support email.',
+			'created' => '2010-06-02 00:00:00',
+			'modified' => '2010-06-02 00:00:00',
+			'value' => 'jharris@rockharbor.org',
+			'type' => 'string'
+		),
+		array(
+			'id' => 20,
+			'name' => 'notifications.campus_content',
+			'description' => 'The user to notify when Campus content has been changed.',
+			'created' => '2010-08-27 00:00:00',
+			'modified' => '2010-08-27 00:00:00',
+			'value' => '1',
+			'type' => 'User'
+		),
+		array(
+			'id' => 21,
+			'name' => 'involvements.types',
+			'description' => 'The types of involvement opportunities',
+			'created' => '2010-09-10 00:00:00',
+			'modified' => '2010-09-10 00:00:00',
+			'value' => NULL,
+			'type' => 'list'
 		),
 	);
 }
