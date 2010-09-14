@@ -1,32 +1,32 @@
 <?php
 /**
- * Permissions shell class.
+ * Install shell class.
  *
  * @copyright     Copyright 2010, *ROCK*HARBOR
  * @link          http://rockharbor.org *ROCK*HARBOR
- * @package       core
- * @subpackage    core.app.libs.shells
+ * @package       install
+ * @subpackage    install.vendors.shells
  */
 
 /**
  * Includes
  */
-App::import('Core', 'Controller');
+App::import('Vendor', 'Install.Records');
+App::import('Core', array('Controller', 'Folder', 'ModelBehavior'));
 App::import('Component', 'Acl');
-App::import('Model', array('DbAcl', 'Group'));
+App::import('Behavior', 'Tree');
+App::import('Model', array('DbAcl', 'User', 'Group'));
 
 /**
- * Permissions shell.
+ * Install shell.
  *
- * Shell to create/update permissions
+ * Shell that takes care of basic database installation. Creates schema,
+ * default data, admin user and ACL records.
  *
- * Allows creation of groups for CORE, as well as setting permissions. Use this shell
- * if permissions change. Use acl_extras to sync ACOs first.
- *
- * @package       core
- * @subpackage    core.app.libs.shells
+ * @package       install
+ * @subpackage    install.vendors.shells
  */
-class PermissionsShell extends Shell {
+class InstallShell extends Shell {
 	
 /**
  * Start up and load dependent components and models
@@ -34,11 +34,24 @@ class PermissionsShell extends Shell {
  * @return void
  **/
 	function startup() {
-		$this->Acl =& new AclComponent();
-		$controller = null;
-		$this->Acl->startup($controller);
-		$this->Aco =& $this->Acl->Aco;
-		$this->Group =& new Group();
+		if (App::import('Shell', 'AclExtras.AclExtras') == false) {
+			$this->out('ERROR: Missing acl_extras plugin.');
+			$this->_stop();
+		}
+		if (App::import('Shell', 'Schema') == false) {
+			$this->out('ERROR: Schema shell missing.');
+			$this->_stop();
+		}
+		if (App::import('Shell', 'ApiGenerator.ApiIndex') == false) {
+			$this->out('ERROR: Missing api_generator plugin.');
+			$this->_stop();
+		}
+		
+		$this->SchemaShell = new SchemaShell($this->Dispatch);
+		$this->SchemaShell->startup();
+		$this->_welcome();
+		$this->out('CORE Install Shell');
+		$this->hr();
 	}
 	
 /**
@@ -47,9 +60,8 @@ class PermissionsShell extends Shell {
  * @access public
  */
 	function main() {
-		$out  = "Available Permission commands:"."\n";
-		$out .= "\t - update\n";
-		$out .= "\t - create_groups\n";
+		$out  = "Available Install commands:"."\n";
+		$out .= "\t - install\n";
 		$out .= "\t - help\n\n";
 		$out .= "For help, run the 'help' command.  For help on a specific command, run 'help <command>'";
 		$this->out($out);
@@ -61,29 +73,23 @@ class PermissionsShell extends Shell {
  * @access public
  */ 
 	function help() {
-		$out  = "Usage: cake permissions <command>"."\n";
+		$out  = "Usage: cake install <command>"."\n";
 		$out .= "-----------------------------------------------\n";
 		
 		$command = $this->args[0];
 		
 		if (empty($command)) {
-			$out  = "Available Permission commands:"."\n";
-			$out .= "\t - update\n";
-			$out .= "\t - create_groups\n";
+			$out  = "Available Install commands:"."\n";
+			$out .= "\t - install\n";
 			$out .= "\t - help\n\n";
 			$out .= "For help, run the 'help' command.  For help on a specific command, run 'help <command>'";
 			$this->out($out);
 		} else {
 			switch ($command) {
-				case 'update':
-				$out .= "\tcake acl_extras update\n";
-				$out .= "\t\tUpdates the permissions. If groups have changed, run create_groups first.\n";
-				$out .= "\t\tYou should run cake acl_extras aco_sync first if controller actions have changed.\n";
-				break;
-				case 'create_groups':
-				$out .= "\tcake acl_extras create_groups\n";
-				$out .= "\t\tRemoves any existing groups and re-creates them from scratch. Run this if it\'s a fresh\n";
-				$out .= "\t\tinstall or if the group table has been corrupted or compromised somehow.\n";
+				case 'install':
+				$out .= "\tcake install install\n";
+				$out .= "\t\tInstalls the CORE database and inserts default data.\n";
+				$out .= "\t\tThe default admin user is user:admin / pass:password\n";
 				break;
 				default:
 				$out .= "$command does not exist. Run 'help' for a list of commands.\n";
@@ -95,184 +101,115 @@ class PermissionsShell extends Shell {
 	}
 
 /**
- * Updates the permissions. If groups have changed, run create_groups first
+ * Installs the database. Generates all permissions and creates an Admin user
  *
  * @return void
  * @todo Make it sync instead of deleting everything
- * @todo Swallow acl errors
  */ 
-	function update() {
-		$this->Group->query('DELETE FROM `aros_acos`;');
-		$this->Group->query('ALTER TABLE `aros_acos` AUTO_INCREMENT = 1');
+	function install() {
+		$response = $this->in('Install CORE database? Doing so will drop all current tables and records!', array('y', 'n'), 'n');
+		if (strtolower($response) !== 'y') {
+			$this->_stop();
+		}
 
-		foreach ($this->_allowPermissions as $id => $perms) {
-			$this->Group->id = $id;
-			if (array_key_exists($id, $this->_denyPermissions)) {
-				foreach ($this->_denyPermissions[$id] as $deny) {
-					if ($this->Acl->deny($this->Group, $deny)) {
-						$this->out('Permission denied for '.$id.' at '.$deny);
-					} else {
-						$this->out('Error: Could not set permission for '.$id.' at '.$allow);
-					}					
-				}
+		// insert tables
+		$this->SchemaShell->params['plugin'] = 'install';
+		$this->SchemaShell->create();
+
+		// insert all records
+		$Folder = new Folder(APP.'plugins'.DS.'install'.DS.'config'.DS.'records');
+		$files = $Folder->find();
+		foreach ($files as $file) {
+			if (preg_match('/[A-Za-z]_records.php/', $file)) {
+				require_once APP.'plugins'.DS.'install'.DS.'config'.DS.'records'.DS.$file;
+				$className = str_replace('.php', '', Inflector::camelize($file));
+				$records = new $className;
+				$records->insert();
+				$this->out('Records added for '.str_replace('Records', '', $className));
 			}
+		}
+
+		// create Acos
+		$this->Acl =& new AclComponent();
+		$controller = null;
+		$this->Acl->startup($controller);
+		$this->Aco =& $this->Acl->Aco;
+		$this->AclExtras = new AclExtrasShell($this->Dispatch);
+		$this->AclExtras->startup();
+		$this->AclExtras->aco_sync();
+
+		// create aros
+		$this->_createGroupAros();
+		// create acl
+		$this->_createAcl();
+
+		// create api indices
+		$ApiIndex = new ApiIndexShell($this->Dispatch);
+		$ApiIndex->startup();
+		$ApiIndex->update();
+		
+		$this->out('Complete!');
+	}
+
+	function _createAcl() {
+		$Group = ClassRegistry::init('Group');
+
+		foreach ($this->_allowPermissions as $alias => $perms) {
+			$group = $Group->findByName($alias);
+			$Group->id = $group['Group']['id'];
+			
 			foreach ($perms as $allow) {
-				if ($this->Acl->allow($this->Group, $allow)) {
-					$this->out('Permission allowed for '.$id.' at '.$allow);
+				if (@$this->Acl->allow($Group, $allow)) {
+					$this->out('Permission allowed for '.$alias.' at '.$allow);
 				} else {
-					$this->out('Error: Could not set permission for '.$id.' at '.$allow);
+					$this->out('Error: Could not set permission for '.$alias.' at '.$allow);
 				}
 			}
 		}
-		
-		$this->out('Complete');
+	}
+
+	function _createTable($schema, $table, $fields) {
+		$db =& ConnectionManager::getDataSource('default');
+		$schema->_build(array($table => $fields));
+		$db->execute($db->dropSchema($schema), array('log' => false));
+
+		$schema->_build(array($table => $fields));
+		$db->execute($db->createSchema($schema), array('log' => false));
 	}
 
 /**
- * Deletes and recreates groups
+ * Creates aros for groups
  *
  * @return void
  * @todo make it sync so adding groups is easier and doesn't affect app
  */ 
-	function create_groups() {
-		$this->Group->deleteAll(array('id >' => 0), false);
-		$this->out('All groups deleted.');
-		$this->Group->query('ALTER TABLE `groups` AUTO_INCREMENT = 1');
-		$this->out('Auto increment reset to 1.');
+	function _createGroupAros() {
+		$Group = ClassRegistry::init('Group');
+		$Group->Behaviors->attach('Tree');
+		$groups = $Group->find('all', array(
+			'order' => 'lft DESC'
+		));
 
-		foreach ($this->_groups as $group) {
-			$this->Group->create();
-			unset($group['aro_parent']);
-			if ($this->Group->save($group)) {
-				$this->out($group['name'].' group created.');
-			} else {
-				$this->out($group['name'].' group could not be created.');
+		foreach ($groups as $group) {
+			$child = $Group->children($group['Group']['id'], true);
+			$parent = null;
+			if (count($child) > 0 && $group['Group']['conditional'] == $child[0]['Group']['conditional']) {
+				$parentAro = $this->Acl->Aro->findByAlias($child[0]['Group']['name']);
+				$parent = $parentAro['Aro']['id'];
 			}
-		}
-		
-		$this->Acl->Aro->deleteAll(array('id >' => 0), false);
-		$this->out('All aros deleted.');
-		$this->Group->query('ALTER TABLE `aros` AUTO_INCREMENT = 1');
-		$this->out('Auto increment reset to 1.');
-		
-		foreach ($this->_groups as $id => $arogroup) {
 			$this->Acl->Aro->create();
 			if ($this->Acl->Aro->save(array(
 				'model' => 'Group',
-				'foreign_key' => $id,
-				'alias' => $arogroup['name']
+				'foreign_key' => $group['Group']['id'],
+				'alias' => $group['Group']['name'],
+				'parent_id' => $parent
 			))) {
-				$this->out('Aro for group '.$arogroup['name'].' created.');
+				$this->out('Aro for group '.$group['Group']['name'].' created.');
 			} else {
-				$this->out('Error: Aro for group '.$arogroup['name'].' could not created.');
+				$this->out('Error: Aro for group '.$group['Group']['name'].' could not created.');
 			}
 		}
-		$id = $arogroup = null;
-		foreach ($this->_groups as $id => $arogroup) {
-			if ($arogroup['aro_parent'] == null) {
-				continue;
-			}			
-			// get parent's aro
-			$aro = $this->Acl->Aro->read('id', $arogroup['aro_parent']);
-		
-			$this->Acl->Aro->id = $id;
-			if ($this->Acl->Aro->saveField('parent_id', $aro['Aro']['id'])) {		
-				$this->out('Aro for group '.$arogroup['name'].' moved under parent '.$aro['Aro']['id'].'.');
-			} else {
-				$this->out('Error: Aro for group '.$arogroup['name'].' could not moved.');
-			}
-		}
-		
-		$this->out('Complete');
 	}
-	
-/**
- * Groups
- *
- * @var array
- * @access private
- */ 
-	var $_groups = array(
-		1 => array(
-			'name' => 'Super Administrator',
-			'conditional' => false,
-			'parent_id' => null,
-			'aro_parent' => 2
-		),
-		2 => array(
-			'name' => 'Administrator',
-			'conditional' => false,
-			'parent_id' => 1,
-			'aro_parent' => 3
-		),
-		3 => array(
-			'name' => 'Pastor',
-			'conditional' => false,
-			'parent_id' => 2,
-			'aro_parent' => 4
-		),
-		4 => array(
-			'name' => 'Communications Admin',
-			'conditional' => false,
-			'parent_id' => 3,
-			'aro_parent' => 5
-		),
-		5 => array(
-			'name' => 'Staff',
-			'conditional' => false,
-			'parent_id' => 4,
-			'aro_parent' => 6
-		),
-		6 => array(
-			'name' => 'Intern',
-			'conditional' => false,
-			'parent_id' => 5,
-			'aro_parent' => 7
-		),
-		7 => array(
-			'name' => 'Developer',
-			'conditional' => false,
-			'parent_id' => 6,
-			'aro_parent' => 8
-		),
-		8 => array(
-			'name' => 'User',
-			'conditional' => false,
-			'parent_id' => 7,
-			'aro_parent' => null
-		),
-		9 => array(
-			'name' => 'Campus Manager',
-			'conditional' => true,
-			'parent_id' => 8,
-			'aro_parent' => 10
-		),
-		10 => array(
-			'name' => 'Ministry Manager',
-			'conditional' => true,
-			'parent_id' => 9,
-			'aro_parent' => 11
-		),
-		11 => array(
-			'name' => 'Involvement Leader',
-			'conditional' => true,
-			'parent_id' => 10,
-			'aro_parent' => null
-		),
-		12 => array(
-			'name' => 'Owner',
-			'conditional' => true,
-			'parent_id' => 8,
-			'aro_parent' => 13
-		),
-		13 => array(
-			'name' => 'Household Contact',
-			'conditional' => true,
-			'parent_id' => 12,
-			'aro_parent' => null
-		)
-	);		
-	
 	
 /**
  * Denied permissions
@@ -303,12 +240,10 @@ class PermissionsShell extends Shell {
  * @access private
  */ 
 	var $_allowPermissions = array(		
-		// super administrator
-		1 => array(
+		'Super Administrator' => array(
 			'controllers'
-		),		 
-		// administrator
-		2 => array(
+		),
+		'Administrator' => array(
 			'controllers/ApiGenerator/ApiClasses/view_source',
 			'controllers/Campuses/delete',
 			'controllers/Involvements/delete',
@@ -319,8 +254,7 @@ class PermissionsShell extends Shell {
 			'controllers/Rosters/delete',
 			'controllers/Rosters/edit'
 		),
-		// communications administrator
-		4 => array(
+		'Communications Admin' => array(
 			'controllers/Alerts/add',
 			'controllers/Alerts/edit',
 			'controllers/Alerts/index',
@@ -365,12 +299,8 @@ class PermissionsShell extends Shell {
 			'controllers/UserImages/index',
 			'controllers/UserImages/upload',
 			'controllers/UserImages/approve',
-		),		
-		// staff
-		5 => array(			
 		),
-		// intern
-		6 => array(
+		'Intern' => array(
 			'controllers/Comments/index',
 			'controllers/Comments/add',
 			'controllers/Rosters/index',
@@ -410,16 +340,14 @@ class PermissionsShell extends Shell {
 			'controllers/InvolvementDocuments/approve',
 			'controllers/InvolvementImages/upload',
 		),
-		// developer
-		7 => array(
+		'Developer' => array(
 			'controllers/ApiGenerator/ApiClasses/index',
 			'controllers/ApiGenerator/ApiClasses/classes',
 			'controllers/ApiGenerator/ApiClasses/view_class',
 			'controllers/ApiGenerator/ApiClasses/search',
 			'controllers/SysEmails/bug_compose'
-		),		
-		// user
-		8 => array(
+		),
+		'User' => array(
 			'controllers/Alerts/history',
 			'controllers/Alerts/read',
 			'controllers/Alerts/view',
@@ -447,17 +375,15 @@ class PermissionsShell extends Shell {
 			'controllers/DebugKit',
 			'controllers/CoreDebugPanels',
 			'controllers/MultiSelect'
-		),		
-		// campus manager
-		9 => array(
+		),
+		'Campus Manager' => array(
 			'controllers/Ministries/add',
 			'controllers/Campuses/edit',
 			'controllers/Campuses/history',
 			'controllers/CampusLeaders/add',
 			'controllers/CampusLeaders/delete'
 		),
-		// ministry manager
-		10 => array(
+		'Ministry Manager' => array(
 			'controllers/MinistryImages/delete',
 			'controllers/MinistryImages/index',
 			'controllers/MinistryImages/upload',
@@ -472,8 +398,7 @@ class PermissionsShell extends Shell {
 			'controllers/MinistryLeaders/add',
 			'controllers/MinistryLeaders/delete'
 		),
-		// involvement leader
-		11 => array(
+		'Involvement Leader' => array(
 			'controllers/Involvements/invite',
 			'controllers/Involvements/invite_roster',
 			'controllers/Rosters/add',
@@ -508,16 +433,14 @@ class PermissionsShell extends Shell {
 			'controllers/Questions/index',
 			'controllers/Questions/move',
 			'controllers/Payments/add'
-		),			
-		// owner
-		12 => array(
+		),
+		'Owner' => array(
 			'controllers/Users/edit',			
 			'controllers/CampusLeaders/delete',
 			'controllers/MinistryLeaders/delete',
 			'controllers/InvolvementLeaders/delete'
-		),		
-		// household contact
-		13 => array(
+		),
+		'Household Contact' => array(
 			'controllers/UserImages/delete',
 			'controllers/UserImages/index',
 			'controllers/UserImages/upload',
