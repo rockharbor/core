@@ -186,17 +186,17 @@ class AppController extends Controller {
 			$this->activeUser['User']['new_alerts'] = count($unread);
 
 			// force redirect if they need to reset their password
-			if ($this->Auth->user('reset_password')) {
+			if ($this->activeUser['User']['reset_password'] && !($this->name == 'Users' && ($this->action == 'edit' || $this->action != 'logout'))) {
 				$this->Session->setFlash('Your last password was automatically generated. Please reset it.');
 				$this->redirect(array('controller' => 'users', 'action' => 'edit', 'User' => $this->Auth->user('id')));
 			}
-			
+
 			// global allowed actions
 			$this->Auth->allow('display');
 		} else {
 			$this->layout = 'public';
 		}
-		
+
 		// use custom authentication (password encrypt/decrypt)
 		$this->Auth->authenticate = $User;
 		

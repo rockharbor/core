@@ -273,7 +273,6 @@ class UsersController extends AppController {
 					$subject = 'New username';
 				break;
 				case 'password':
-					$this->data['User']['reset_password'] = false;
 					unset($this->data['User']['username']);
 					if ($needCurrentPassword && $this->Auth->password($this->data['User']['current_password']) != $this->User->field('password')) {
 						$invalidPassword = true;
@@ -282,6 +281,7 @@ class UsersController extends AppController {
 					if ($this->User->validates(array('fieldList' => array('password', 'confirm_password')))) {
 						$this->User->id = $this->data['User']['id'];
 						$success = $this->User->saveField('password', $this->data['User']['password']);
+						$this->User->saveField('reset_password', false);
 					} else {
 						$success = false;
 					}
@@ -318,6 +318,7 @@ class UsersController extends AppController {
 			$this->User->id = $this->passedArgs['User'];
 			$this->User->contain(false);
 			$this->data = $this->User->read();
+			unset($this->data['User']['password']);
 		}
 		
 		$this->set('needCurrentPassword', $needCurrentPassword);
