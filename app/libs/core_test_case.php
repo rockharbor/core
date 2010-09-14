@@ -175,7 +175,7 @@ class CoreTestCase extends CakeTestCase {
 		if (isset($Controller->Auth)) {
 			$Controller->Auth->initialize($Controller);
 			if (!$Controller->Session->check('Auth.User') && !$Controller->Session->check('User')) {
-				$Controller->Session->write('Auth.User', array('id' => 1, 'username' => 'testadmin'));
+				$Controller->Session->write('Auth.User', array('id' => 1, 'username' => 'testadmin', 'reset_password' => 0));
 				$Controller->Session->write('User', array(
 					'Group' => array('id' => 1, 'lft' => 1),
 					'Profile' => array('name' => 'Test Admin', 'primary_email' => 'test@test.com')
