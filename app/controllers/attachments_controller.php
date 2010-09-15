@@ -153,7 +153,7 @@ class AttachmentsController extends AppController {
 				if ($this->{$this->modelClass}->saveField('approved', true)) {
 					$this->Session->setFlash(Inflector::humanize($this->modelKey).' approved', 'flash'.DS.'success');
 				} else {
-					$this->Session->setFlash(Inflector::humanize($this->modelKey).' was not approved', 'flash'.DS.'failure');
+					$this->Session->setFlash(Inflector::humanize($this->modelKey).' could not be approved', 'flash'.DS.'failure');
 				}
 			} else {
 				$this->setAction('delete', $id);
@@ -162,7 +162,7 @@ class AttachmentsController extends AppController {
 
 		$this->redirect(array(
 			'action' => 'index',
-			$model => $this->modelId
+			$this->model => $this->modelId
 		));
 	}
 	
@@ -184,7 +184,7 @@ class AttachmentsController extends AppController {
 		
 		$this->redirect(array(
 			'action' => 'index',
-			$model => $this->modelId
+			$this->model => $this->modelId
 		));	
 	}
 }

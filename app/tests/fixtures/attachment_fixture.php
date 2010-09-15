@@ -14,6 +14,7 @@ class AttachmentFixture extends CakeTestFixture {
 		'group' => array('type' => 'string', 'null' => true, 'default' => NULL),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
+		'approved' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
@@ -27,6 +28,7 @@ class AttachmentFixture extends CakeTestFixture {
 			'basename' => 'image.jpg',
 			'alternative' => 'Image',
 			'group' => 'Image',
+			'approved' => 1,
 			'created' => '2010-03-29 13:35:39',
 			'modified' => '2010-03-29 13:35:39'
 		),
@@ -38,6 +40,7 @@ class AttachmentFixture extends CakeTestFixture {
 			'basename' => 'document.xlsx',
 			'alternative' => 'List of people to remove from CORE',
 			'group' => 'Document',
+			'approved' => 1,
 			'created' => '2010-03-26 13:35:16',
 			'modified' => '2010-03-26 13:35:16'
 		),
@@ -49,6 +52,19 @@ class AttachmentFixture extends CakeTestFixture {
 			'basename' => 'document2.xlsx',
 			'alternative' => 'List of people to add to CORE',
 			'group' => 'Document',
+			'approved' => 1,
+			'created' => '2010-03-26 13:35:16',
+			'modified' => '2010-03-26 13:35:16'
+		),
+		array(
+			'id' => 4,
+			'model' => 'User',
+			'foreign_key' => 1,
+			'dirname' => 'img',
+			'basename' => 'image.jpg',
+			'alternative' => 'Profile photo',
+			'group' => 'Image',
+			'approved' => 0,
 			'created' => '2010-03-26 13:35:16',
 			'modified' => '2010-03-26 13:35:16'
 		)
