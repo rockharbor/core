@@ -121,7 +121,15 @@ class AttachmentsController extends AppController {
  * should be sent so the file can be attached to the user, involvement, or whatever.
  */ 	
 	function upload() {
-		if (!empty($this->data)) {
+		$settingName = Inflector::pluralize(strtolower($this->model)).'.'.strtolower($this->modelClass).'_limit';
+		$attachments = $this->{$this->modelClass}->find('all', array(
+			'conditions' => array(
+				'foreign_key' => $this->modelId,
+				'group' => $this->modelClass,
+				'model' => $this->model
+			)
+		));
+		if (!empty($this->data) && (count($attachments) < (Core::read($settingName) !== null ? Core::read($settingName) : 1))) {
 			$friendly = explode('.', $this->data[$this->modelClass]['file']['name']);
 			array_pop($friendly);
 			$friendly = implode('.', $friendly);
@@ -130,13 +138,16 @@ class AttachmentsController extends AppController {
 			if ($this->isAuthorized('attachments/approve')) {
 				$this->data[$this->modelClass]['approved'] = true;
 			}
+
 			if ($this->{$this->modelClass}->save($this->data)) {
 				$this->Session->setFlash(Inflector::humanize($this->modelKey).' added!', 'flash'.DS.'success');
 			} else {
-				debug($this->{$this->modelClass}->data);
+				$this->Session->setFlash('Error uploading '.Inflector::humanize($this->modelKey).'!', 'flash'.DS.'failure');
 				$this->{$this->modelClass}->invalidate('file', 'Error saving '.Inflector::humanize($this->modelKey));
 			}
 		}
+
+		$this->set(compact('attachments'));
 	}
 
 /**
