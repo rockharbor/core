@@ -55,116 +55,60 @@ class UsersController extends AppController {
 	}
 	
 /**
- * Runs a search on simple fields (username, first_name, etc.)
+ * Runs a search on simple fields (username, first_name, etc.). Accepts a filter
+ * key and filters using User::searchFilter's value as conditions.
  *
  * ### Params:
- * - Every named parameter is treated as an "action". Each action should have a key 
- * value pair. The key is the name to display, value is the js function to run (no parens).
- * The selected user id is always passed as the first param to the js function
+ * - Any passed params after $filter are considered the arguments to insert in
+ *		the filters array where :0: is replaced by the first argument after
+ *		$filter, :1: the second and so on.
+ * - Any named params are considered JavaScript actions to be taken on individual
+ *		users (see the view)
  *
- * ### Filters: Everything passed as an argument are considered filters.
- * Filters are used to help pre-filter the results (i.e., don't show people 
- * who are in a specific household). Passed like filter:[filter] [Model].[field] [value]
- * Example: not HouseholdMember.household_id 12
- * - Filters of the same model are grouped together, i.e., is Leader.model ministry AND not Leader.model_id 1
- * would produce a condition (Leader.model="ministry" AND Leader.model_id<>1) ...
- * - "NOT" filters also produce a OR NULL condition so that users without records still show up
+ * @param string $filter The name of a filter to perform on the search
+ * @see User::searchFilter
  */
-	function simple_search() {
-		$filters = func_get_args();
-		$allowedFilters = array('in', 'not', 'is');
-		
+	function simple_search($filter = '') {
 		$results = array();
 		$searchRan = false;
 
-		if (!empty($this->data)) {
-			$conditions = array();
-			// at the very least, we want profile too
-			$contain = array('Profile'=>array());			
-			// create conditions
-			foreach ($this->data as $model => $fields) {
-				foreach ($fields as $key => $value) {
-					if ($value != '') {
-						$conditions[$model.'.'.$key.' like'] = '%'.$value.'%';
-						// use it in the find
-						$contain[$model] = array();
-					}
-				}
-			}
-			
-			// add filters
-			$tables = array();	
-			$joinConditions = array();
-			$nullConditions = array();
-			foreach ($filters as $filter) {				
-				$filter = explode(' ', $filter);
-				// get filter info
-				list($filter, $modelField, $modelId) = $filter;
-				$modelField = explode('.', $modelField);
-				$model = $modelField[0];
-				$field = $modelField[1];				
-					
-				if (in_array($filter, $allowedFilters)) {
-					// workaround for now					
-					if ($this->User->{$model}->isVirtualField($field)) {
-						$conditionField = $this->User->{$model}->getVirtualField($field);
-					} else {
-						$conditionField = $model.'.'.$field;
-					}
-					
-					// temp belongsTo (to join, use conditions, etc.)
-					$hasOne = array(
-						$model => array(
-							'className' => Inflector::classify($model),
-							'foreignKey' => 'user_id',
-							'conditions' => array(
-								$conditionField => $modelId
-							)
-						)
-					);
-					
-					// merge, just in case it already exists
-					$this->User->hasOne = Set::merge($this->User->hasOne, $hasOne);
+		if (!empty($this->data)) {	
+			// create conditions and contain
+			$options = array(
+				'conditions' => $this->postConditions($this->data, 'LIKE'),
+				'link' => array_merge($this->User->postContains($this->data), array('Profile'=>array()))
+			);
 
-					$contain[$model] = array();
-					
-					switch ($filter) {
-						case 'in':
-							$joinConditions[$model][$conditionField] = array($modelId);
-						break;
-						case 'is':
-							$joinConditions[$model][$conditionField] = $modelId;
-						break;
-						case 'not':						
-							// add the null condition for users without a record
-							$joinConditions[$model][$conditionField.' <>'] = $modelId;
-							$nullConditions[$model][$conditionField] = null;
-						break;
+			if (!empty($filter) && isset($this->User->searchFilter[$filter])) {
+				$filterArgs = func_get_args();
+				array_shift($filterArgs);
+				/**
+				 * Recursively runs an array through String::insert
+				 *
+				 * @param array $input The array
+				 * @param array $args The insert values
+				 * @return array
+				 * @see String::insert()
+				 */
+				$string_insert_recursive = function ($input, $args) use (&$string_insert_recursive) {
+					foreach ($input as &$value) {
+						if (is_array($value)) {
+							$value = $string_insert_recursive($value, $args);
+						} elseif ($value !== null) {
+							$value = String::insert($value, $args, array('after' => ':'));
+						}
 					}
-				}
+					return $input;
+				};
+				$filters = $string_insert_recursive($this->User->searchFilter[$filter], $filterArgs);
+				$options = Set::merge($options, $filters);
 			}
-
-			foreach ($joinConditions as $modelVal => $modelConditions) {
-				// combine model conditions with null conditions to prevent misleading
-				// results due to lack of records (i.e., a user isn't leading)
-				if (!empty($nullConditions[$modelVal])) {
-					$conditions[] = array(
-						'or' => array($joinConditions[$modelVal], $nullConditions[$modelVal])
-					);
-				} else {
-					$conditions[] = $modelConditions;
-				}
-			}
-			
-			// User can't contain User!
-			unset($contain['User']);
-			$this->paginate = compact('conditions', 'contain');
+			$this->paginate = $options;
 			$searchRan = true;
 		}
 		
 		$results = $this->FilterPagination->paginate();
-		
-		$this->set('filters', implode(',',$filters));
+
 		// remove pagination info from action list
 		$actions = array_diff_key($this->params['named'], array('page'=>array(),'sort'=>array(),'direction'=>array()));
 		$this->set(compact('results','searchRan','actions'));

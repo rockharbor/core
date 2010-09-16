@@ -19,6 +19,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->Users->QueueEmail->setReturnValue('send', true);
 		$this->Users->Notifier = new MockNotifierComponent();
 		$this->Users->Notifier->setReturnValue('_render', 'This is a notification');
+		$this->Users->FilterPagination->initialize($this->Users);
 		$this->testController = $this->Users;
 	}
 
@@ -312,6 +313,132 @@ class UsersControllerTestCase extends CoreTestCase {
 		$user = $this->Users->User->read(null, 1);
 		$result = $user['Profile']['name'];
 		$this->assertEqual($result, 'NotJeremy Harris');
+	}
+
+	function testSimpleSearch() {
+		$data = array(
+			'User' => array(
+				'username' => 'a'
+			)
+		);
+		$vars = $this->testAction('/users/simple_search/', compact('data'));
+		$results = Set::extract('/User/username', $vars['results']);
+		$expected = array(
+			'jharris',
+			'rickyrockharbor',
+			'rickyrockharborjr'
+		);
+		$this->assertEqual($results, $expected);
+		$this->Users->Session->delete('FilterPagination');
+
+		$data = array(
+			'User' => array(
+				'username' => 'a'
+			),
+			'Profile' => array(
+				'first_name' => 'jeremy'
+			)
+		);
+		$vars = $this->testAction('/users/simple_search/', compact('data'));
+		$results = Set::extract('/User/username', $vars['results']);
+		$expected = array(
+			'jharris',
+		);
+		$this->assertEqual($results, $expected);
+		$this->Users->Session->delete('FilterPagination');
+	}
+
+	function testNotInHouseholdSearchFilter() {
+		$this->loadFixtures('Household', 'HouseholdMember');
+
+		$data = array(
+			'User' => array(
+				'username' => 'jharris'
+			)
+		);
+		$vars = $this->testAction('/users/simple_search/notInHousehold/2', compact('data'));
+		$results = Set::extract('/User/username', $vars['results']);
+		$expected = array(
+			'jharris',
+		);
+		$this->assertEqual($results, $expected);
+		$this->Users->Session->delete('FilterPagination');
+
+		$data = array(
+			'User' => array(
+				'username' => 'a'
+			)
+		);
+		$vars = $this->testAction('/users/simple_search/notInHousehold/1', compact('data'));
+		$results = Set::extract('/User/username', $vars['results']);
+		$expected = array(
+			'rickyrockharbor',
+		);
+		$this->assertEqual($results, $expected);
+		$this->Users->Session->delete('FilterPagination');
+	}
+
+	function testNotLeaderOfSearchFilter() {
+		$this->loadFixtures('Leader');
+
+		$data = array(
+			'User' => array(
+				'username' => ''
+			)
+		);
+		$vars = $this->testAction('/users/simple_search/notLeaderOf/Involvement/1', compact('data'));
+		$results = Set::extract('/User/username', $vars['results']);
+		$expected = array(
+			'rickyrockharbor',
+		);
+		$this->assertEqual($results, $expected);
+		$this->Users->Session->delete('FilterPagination');
+
+			$data = array(
+			'User' => array(
+				'username' => ''
+			)
+		);
+		$vars = $this->testAction('/users/simple_search/notLeaderOf/Involvement/20', compact('data'));
+		$results = Set::extract('/User/username', $vars['results']);
+		$expected = array(
+			'jharris',
+			'rickyrockharbor',
+		);
+		$this->assertEqual($results, $expected);
+		$this->Users->Session->delete('FilterPagination');
+	}
+
+	function testNotSignedUpSearchFilter() {
+		$this->loadFixtures('Roster');
+
+		$data = array(
+			'User' => array(
+				'username' => ''
+			)
+		);
+		$vars = $this->testAction('/users/simple_search/notSignedUp/1', compact('data'));
+		$results = Set::extract('/User/username', $vars['results']);
+		$expected = array(
+			'jharris',
+		);
+		$this->assertEqual($results, $expected);
+		$this->Users->Session->delete('FilterPagination');
+
+		$data = array(
+			'User' => array(
+				'username' => ''
+			)
+		);
+		$vars = $this->testAction('/users/simple_search/notSignedUp/20', compact('data'));
+		$results = Set::extract('/User/username', $vars['results']);
+		$expected = array(
+			'jharris',
+			'rickyrockharbor',
+			'rickyrockharborjr',
+		);
+		$this->assertEqual($results, $expected);
+		$this->Users->Session->delete('FilterPagination');
 	}
 
 }
