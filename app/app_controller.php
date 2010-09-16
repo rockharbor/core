@@ -264,6 +264,7 @@ class AppController extends Controller {
  * @link http://book.cakephp.org/view/989/postConditions
  */
 	function postConditions($data = array(), $op = null, $bool = 'AND', $exclusive = false) {
+		unset($data['_Token']);
 		$registered = ClassRegistry::keys();
 		$bools = array('and', 'or', 'not', 'and not', 'or not', 'xor', '||', '&&');
 		$cond = array();
