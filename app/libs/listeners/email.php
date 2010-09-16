@@ -56,6 +56,9 @@ class EmailListener {
  * @access public
  */
 	function error($error, $configuration = array()) {
+		if (Configure::read('debug') > 0) {
+			return;
+		}
 		extract($error);
 
 		$body = '<strong>'.$this->levels[$level].'</strong>';
