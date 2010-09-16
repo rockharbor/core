@@ -125,7 +125,7 @@ class ProfileFixture extends CakeTestFixture {
 			'alternate_email_2' => '',
 			'cpr_certified_date' => NULL,
 			'baby_dedication_date' => '0000-00-00',
-			'qualified_leader' => NULL,
+			'qualified_leader' => 1,
 			'background_check_complete' => NULL,
 			'background_check_by' => NULL,
 			'background_check_date' => NULL,

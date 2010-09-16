@@ -96,7 +96,7 @@ class Date extends AppModel {
 			$this->data['Date']['frequency'] = 1;	
 		}
 		
-		return true;
+		return parent::beforeSave();
 	}
 
 	

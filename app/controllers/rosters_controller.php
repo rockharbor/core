@@ -45,6 +45,8 @@ class RostersController extends AppController {
  * @access private
  */ 
 	function beforeFilter() {
+		$this->Security->blackHoleCallback = '_forceSSL';
+		$this->Security->requireSecure('add');
 		parent::beforeFilter();
 	}
 	

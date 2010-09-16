@@ -22,7 +22,7 @@
 <head>
 	<?php echo $this->Html->charset(); ?>
 	<title>
-		<?php echo Core::read('site_name_tagless').' '.Configure::read('CORE.version').' :: '.$title_for_layout; ?>
+		<?php echo Core::read('general.site_name_tagless').' '.Core::read('version').' :: '.$title_for_layout; ?>
 	</title>
 	<?php
 		echo $this->Html->meta('icon');
@@ -57,7 +57,7 @@
 		<div id="header">
 			<h1><?php 
 			
-			echo $this->Html->link(Core::read('site_name').' '.Configure::read('CORE.version'), '/', array('escape' => false));
+			echo $this->Html->link(Core::read('general.site_name').' '.Core::read('version'), '/', array('escape' => false));
 			echo ' | ';			
 			echo $this->Html->link('Login', array('controller' => 'users', 'action' => 'login'));
 			echo ' | ';

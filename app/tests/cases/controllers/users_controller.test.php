@@ -19,6 +19,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->Users->QueueEmail->setReturnValue('send', true);
 		$this->Users->Notifier = new MockNotifierComponent();
 		$this->Users->Notifier->setReturnValue('_render', 'This is a notification');
+		$this->Users->FilterPagination->initialize($this->Users);
 		$this->testController = $this->Users;
 	}
 

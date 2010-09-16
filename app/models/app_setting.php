@@ -28,6 +28,13 @@ class AppSetting extends AppModel {
  *
  * @var array
  */
-	var $actsAs = array('Logable');
+	var $actsAs = array(
+		'Cacher.Cache' => array(
+			'duration' => '+1 year',
+			'clearOnSave' => true,
+			'clearOnDelete' => true
+		),
+		'Logable'
+	);
 }
 ?>

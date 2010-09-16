@@ -63,10 +63,10 @@
 
 echo $this->Html->link('Add someone', 
 	array(
-		'controller' => 'users', 
-		'action' => 'simple_search',
+		'controller' => 'searches',
+		'action' => 'simple',
+		'User', 'notInHousehold', $household['Household']['id'],
 		'Add User' => 'addTo'.$household['Household']['id'].'HH',
-		'not HouseholdMember.household_id '.$household['Household']['id']
 	),
 	array(
 		'class' => 'button',

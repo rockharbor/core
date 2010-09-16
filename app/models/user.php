@@ -179,6 +179,48 @@ class User extends AppModel {
 	);
 
 /**
+ * Array of search filters for SearchesController::simple().
+ * 
+ * They are merged with any existing conditions and parameters sent to
+ * Controller::paginate(). Works in conjunction with
+ * SearchesController::simple() where arguments sent after the filter name are
+ * inserted in order within the filter. Make sure to include contains or links
+ * where related model data is needed.
+ *
+ * @var array
+ */
+	var $searchFilter = array(
+		'notInHousehold' => array(
+			'conditions' => array(
+				'NOT EXISTS (SELECT 1 FROM household_members WHERE household_members.household_id = :0:
+				AND household_members.user_id = User.id)'
+			),
+			'link' => array(
+				'Profile'
+			)
+		),
+		'notLeaderOf' => array(
+			'conditions' => array(
+				'Profile.qualified_leader' => true,
+				'NOT EXISTS (SELECT 1 FROM leaders WHERE leaders.model = ":0:"
+				AND leaders.model_id = :1: AND leaders.user_id = User.id)'
+			),
+			'link' => array(
+				'Profile'
+			)
+		),
+		'notSignedUp' => array(
+			'conditions' => array(
+				'NOT EXISTS (SELECT 1 FROM rosters WHERE rosters.involvement_id = :0:
+				AND rosters.user_id = User.id)'
+			),
+			'link' => array(
+				'Profile'
+			)
+		)
+	);
+
+/**
  * Gets a user id using an arbitrary amount of data by searching a set of
  * distinguishable fields (username, email fields, name, etc.). If more than
  * one match is found it fails.
@@ -617,7 +659,7 @@ class User extends AppModel {
 	function beforeSave() {
 		$this->hashPasswords(null, true);
 		
-		return true;
+		return parent::beforeSave();
 	}
 	
 

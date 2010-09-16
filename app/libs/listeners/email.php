@@ -56,6 +56,9 @@ class EmailListener {
  * @access public
  */
 	function error($error, $configuration = array()) {
+		if (Configure::read('debug') > 0) {
+			return;
+		}
 		extract($error);
 
 		$body = '<strong>'.$this->levels[$level].'</strong>';
@@ -97,7 +100,7 @@ class EmailListener {
 	function _getEmailUsers() {
 		$_emails = array();
 
-		$devEmail = Core::read('debug_email');
+		$devEmail = Core::read('development.debug_email');
 
 		if (!is_null($devEmail) && !empty($devEmail)) {
 			$_emails[] = $devEmail;

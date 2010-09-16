@@ -32,7 +32,6 @@
 		));
 		
 		echo $this->Form->input('offer_childcare');
-		echo $this->Form->hidden('active');
 	?>
 		</fieldset>
 	</fieldset>

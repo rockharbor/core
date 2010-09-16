@@ -370,10 +370,10 @@ class FormattingHelper extends AppHelper {
 		// default associated data that is needed
 		$_defaults = array(
 			'Involvement' => array(
-				'passed' => 0
+				'passed' => 0,
+				'private' => 0
 			),
 			'Date' => array(),
-			'Group' => array(),
 			'InvolvementType' => array(
 				'name' => 'Involvement'
 			)
@@ -407,7 +407,7 @@ class FormattingHelper extends AppHelper {
 			));
 		}
 		
-		if (!empty($involvement['Group'])) {
+		if ($involvement['Involvement']['private']) {
 			$output .= $this->Html->tag('span', '', array(
 				'class' => 'private',
 				'title' => 'Private '.$involvement['InvolvementType']['name'],
@@ -433,7 +433,9 @@ class FormattingHelper extends AppHelper {
 		
 		// default associated data that is needed
 		$_defaults = array(
-			'Group' => array()
+			'Ministry' => array(
+				'private' => 0
+			),
 		);
 		
 		// move it if it was found via containable
@@ -456,7 +458,7 @@ class FormattingHelper extends AppHelper {
 			));
 		}
 		
-		if (!empty($ministry['Group']['level'])) {
+		if ($ministry['Ministry']['private']) {
 			$output .= $this->Html->tag('span', '', array(
 				'class' => 'private',
 				'title' => 'Private Ministry',

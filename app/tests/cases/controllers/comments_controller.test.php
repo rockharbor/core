@@ -10,7 +10,7 @@ Mock::generatePartial('CommentsController', 'TestCommentsController', array('ren
 class CommentsControllerTestCase extends CoreTestCase {
 
 	function startTest() {
-		$this->loadFixtures('Comment', 'Group', 'CommentType');
+		$this->loadFixtures('Comment', 'Group');
 		$this->Comments =& new TestCommentsController();
 		$this->Comments->constructClasses();
 		$this->Comments->QueueEmail = new MockQueueEmailComponent();
@@ -28,73 +28,16 @@ class CommentsControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/comments/index/User:1', array(
 			'return' => 'vars'
 		));
-		$results = Set::extract('/Comment', $vars['comments']);
-		$expected = array(
-			array(
-				'Comment' => array(
-					'id' => 1,
-					'user_id' => 1,
-					'comment_type_id' => 3,
-					'comment' => 'another comment',
-					'created_by' => NULL,
-					'created' => '2010-03-24 09:53:55',
-					'modified' => '2010-03-24 09:53:55'
-				)
-			),
-			array(
-				'Comment' => array(
-					'id' => 2,
-					'user_id' => 1,
-					'comment_type_id' => 1,
-					'comment' => 'comment\'d!',
-					'created_by' => NULL,
-					'created' => '2010-03-24 10:04:59',
-					'modified' => '2010-03-24 10:04:59'
-				)
-			),
-			array(
-				'Comment' => array(
-					'id' => 3,
-					'user_id' => 1,
-					'comment_type_id' => 1,
-					'comment' => 'test',
-					'created_by' => NULL,
-					'created' => '2010-04-08 07:46:26',
-					'modified' => '2010-04-08 07:46:26'
-				)
-			)
-		);
+		$results = Set::extract('/Comment/id', $vars['comments']);
+		$expected = array(1, 2, 3);
 		$this->assertEqual($results, $expected);
 
-		$this->Comments->Session->write('User', array('Group' => array('id' => 5, 'lft' => 5)));
+		$this->Comments->Session->write('User', array('Group' => array('id' => 5)));
 		$vars = $this->testAction('/comments/index/User:1', array(
 			'return' => 'vars'
 		));
-		$results = Set::extract('/Comment', $vars['comments']);
-		$expected = array(
-			array(
-				'Comment' => array(
-					'id' => 2,
-					'user_id' => 1,
-					'comment_type_id' => 1,
-					'comment' => 'comment\'d!',
-					'created_by' => NULL,
-					'created' => '2010-03-24 10:04:59',
-					'modified' => '2010-03-24 10:04:59'
-				)
-			),
-			array(
-				'Comment' => array(
-					'id' => 3,
-					'user_id' => 1,
-					'comment_type_id' => 1,
-					'comment' => 'test',
-					'created_by' => NULL,
-					'created' => '2010-04-08 07:46:26',
-					'modified' => '2010-04-08 07:46:26'
-				)
-			)
-		);
+		$results = Set::extract('/Comment/id', $vars['comments']);
+		$expected = array(2, 3);
 		$this->assertEqual($results, $expected);
 
 		$vars = $this->testAction('/comments/index/User:2', array(
@@ -108,10 +51,12 @@ class CommentsControllerTestCase extends CoreTestCase {
 		$data = array(
 			'Comment' => array(
 				'user_id' => 1,
-				'comment_type_id' => 1,
+				'group_id' => 1,
 				'comment' => 'This is a new comment'
 			)
 		);
+		$this->Comments->Session->write('Auth.User', array('id' => 1));
+		$this->Comments->Session->write('User', array('Group' => array('id' => 5)));
 		$vars = $this->testAction('/comments/add/User:1', array(
 			'data' => $data,
 			'return' => 'vars'
@@ -119,11 +64,13 @@ class CommentsControllerTestCase extends CoreTestCase {
 		$this->Comments->Comment->id = 4;
 		$results = $this->Comments->Comment->read();
 		$this->assertEqual($results['Comment']['comment'], 'This is a new comment');
-		$results = $vars['commentTypes'];
+		
+		$results = $vars['groups'];
 		$expected = array(
-			1 => 'Staff',
-			2 => 'Pastoral',
-			3 => 'Admin'
+			5 => 'Staff',
+			6 => 'Intern',
+			7 => 'Developer',
+			8 => 'User'
 		);
 		$this->assertEqual($results, $expected);
 	}
@@ -135,35 +82,43 @@ class CommentsControllerTestCase extends CoreTestCase {
 				'comment' => 'This is an updated comment'
 			)
 		);
-		$vars = $this->testAction('/comments/edit/3/User:3', array(
+		$vars = $this->testAction('/comments/edit/Comment:3/User:3', array(
 			'data' => $data,
 			'return' => 'vars'
 		));
 		$this->Comments->Comment->id = 3;
 		$results = $this->Comments->Comment->read();
 		$this->assertEqual($results['Comment']['comment'], 'This is an updated comment');
-		$results = $vars['commentTypes'];
+		$results = $vars['groups'];
 		$expected = array(
-			1 => 'Staff',
-			2 => 'Pastoral',
-			3 => 'Admin'
+			1 => 'Super Administrator',
+			2 => 'Administrator',
+			3 => 'Pastor',
+			4 => 'Communications Admin',
+			5 => 'Staff',
+			6 => 'Intern',
+			7 => 'Developer',
+			8 => 'User'
 		);
 		$this->assertEqual($results, $expected);
 
-		$this->Comments->Session->write('User', array('Group' => array('id' => 5, 'lft' => 5)));
-		$vars = $this->testAction('/comments/edit/3/User:3', array(
+		$this->Comments->Session->write('User', array('Group' => array('id' => 5)));
+		$vars = $this->testAction('/comments/edit/Comment:3/User:3', array(
 			'data' => $data,
 			'return' => 'vars'
 		));
-		$results = $vars['commentTypes'];
+		$results = $vars['groups'];
 		$expected = array(
-			1 => 'Staff',
+			5 => 'Staff',
+			6 => 'Intern',
+			7 => 'Developer',
+			8 => 'User'
 		);
 		$this->assertEqual($results, $expected);
 	}
 
 	function testDelete() {
-		$this->testAction('/comments/delete/1');
+		$this->testAction('/comments/delete/Comment:1');
 		$result = $this->Comments->Comment->read(null, 1);
 		$this->assertFalse($result);
 	}

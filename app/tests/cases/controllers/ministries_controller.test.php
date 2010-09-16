@@ -32,7 +32,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 	}
 
 	function testIndex() {
-		Core::read('ministry_content_edit_user');
+		Core::read('notifications.ministry_content');
 		$this->loadFixtures('Involvement', 'InvolvementsMinistry');
 		$vars = $this->testAction('/ministries/index');
 		$results = Set::extract('/Ministry[id=3]/../DisplayInvolvement/name', $vars['ministries']);
@@ -58,7 +58,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 				'description' => 'Description',
 				'parent_id' => 1,
 				'campus_id' => 1,
-				'group_id' => 8,
+				'private' => 1,
 				'active' => 1
 			)
 		);
@@ -99,6 +99,25 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$this->Ministries->Ministry->id = 1;
 		$result = $this->Ministries->Ministry->field('name');
 		$this->assertEqual($result, 'New name');
+	}
+
+	function testToggleActivity() {
+		$this->testAction('/ministries/toggle_activity/1/Ministry:3');
+		$this->Ministries->Ministry->id = 3;
+		$this->assertEqual($this->Ministries->Session->read('Message.flash.element'), 'flash'.DS.'failure');
+
+		$data = array(
+			'Leader' => array(
+				'user_id' => 1,
+				'model' => 'Ministry',
+				'model_id' => 3
+			)
+		);
+		$this->Ministries->Ministry->Leader->save($data);
+		$this->testAction('/ministries/toggle_activity/1/Ministry:3');
+		$this->Ministries->Ministry->id = 3;
+		$this->assertEqual($this->Ministries->Ministry->field('active'), 1);
+		$this->assertEqual($this->Ministries->Session->read('Message.flash.element'), 'flash'.DS.'success');
 	}
 
 	function testHistory() {

@@ -393,7 +393,7 @@ CORE.autoComplete = function(id, datasource, onSelect) {
 				success: function(data) {
 					response(data);
 				},
-				data: $('#'+id).attr('name')+'='+$('#'+id).val(),
+				data: $('#'+id).closest('form').serializeArray(),
 				type: 'post'
 			});
 		},
@@ -407,6 +407,66 @@ CORE.autoComplete = function(id, datasource, onSelect) {
 	
 	return true;
 }
+
+/**
+ * Creates an ajax-like (since ajax upload is technically impossible) behavior
+ * for upload fields. Only works for single file upload forms.
+ *
+ * @param string id The id of form
+ * @param string updateable An updateable to update after success
+ */
+CORE.ajaxUpload = function(id, updateable) {
+	var form = $('#'+id);	
+	var input = $('#'+id+' input[type=file]');
+	var submit = $('#'+id+' div.submit');
+	$(input).after('<button id="'+id+'_button">'+$(submit).children('input').attr('value')+'</button>');
+	var button = $('#'+id+'_button').button();
+	$(button).css({
+		zIndex: 99
+	});
+	$(submit).hide();
+	$('#'+id+'_error').hide();
+	$(input).css({
+		opacity:0,
+		width: $(button).width(),
+		height: $(button).height(),
+		zIndex:100,
+		position:'absolute'
+	});
+	$(input).click(function() { $(form).each(function() { this.reset() }) } );
+	$(input).mouseenter(function() { $(button).mouseenter() });
+	$(input).mouseleave(function() { $(button).mouseleave() });
+	$(input).mouseover(function() { $(button).mouseover() });
+	$(input).mouseout(function() { $(button).mouseout() });
+	$(input).mousedown(function() { $(button).mousedown() });
+	$(input).mouseup(function() { $(button).mouseup() });
+	$(input).change(function() { $(form).submit() });
+
+	$(form).ajaxForm({
+		//iframe: true,
+		success: function(response) {
+			$(input).after('<div class="error-message" id="'+id+'_error"></div>');
+			var e = $('#'+id+'_error');
+			var msg = '';
+			console.log(response);
+			if (response.length == 0) {
+				if (updateable != undefined) {
+					CORE.update(updateable);
+				}
+			} else if (response == null) {
+				msg = "Unknown error."
+				e.text(msg);
+				e.addClass("error-message");
+			} else {
+				var model = $(input).attr('name').substring($(input).attr('name').indexOf('[')+1, $(input).attr('name').indexOf(']'));
+				msg = response[model]['file'];
+				e.text(msg);
+			}
+		},
+		dataType: 'json'
+	});
+}
+
 
 /**
  * Closes all modals and popups

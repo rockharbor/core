@@ -3,7 +3,7 @@
 <head>
 	<?php echo $this->Html->charset(); ?>
 	<title>
-		<?php echo Core::read('site_name_tagless').' '.Core::read('version').' :: '.$title_for_layout; ?>
+		<?php echo Core::read('general.site_name_tagless').' '.Core::read('version').' :: '.$title_for_layout; ?>
 	</title>
 	<?php
 		echo $this->Html->meta('icon');

@@ -115,6 +115,19 @@ class LeadersController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		}
 
+		$leaderCount = $this->Leader->find('count', array(
+			'conditions' => array(
+				'model' => $this->model,
+				'model_id' => $this->modelId
+			)
+		));
+
+		if ($leaderCount <= 1) {
+			$type = $this->model == 'Involvement' ? 'leader' : 'manager';
+			$this->Session->setFlash('There needs to be at least one '.$type.'!', 'flash'.DS.'failure');
+			$this->redirect(array('action'=>'index'));
+		}
+
 		$leaderId = $this->Leader->find('first', array(
 			'fields' => array(
 				'id'

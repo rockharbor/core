@@ -2,6 +2,18 @@
 App::import('Lib', 'CoreTestCase');
 App::import('Model', 'User');
 
+class VirtualFieldModel extends AppModel {
+
+	var $useTable = false;
+
+	var $name = 'VirtualField';
+
+	var $virtualFields = array(
+		'name' => 'CONCAT(:ALIAS:.first_name, " ", :ALIAS:.last_name)',
+	);
+
+}
+
 class AppModelTestCase extends CoreTestCase {
 
 	function startTest() {
@@ -12,6 +24,18 @@ class AppModelTestCase extends CoreTestCase {
 	function endTest() {
 		unset($this->User);
 		ClassRegistry::flush();
+	}
+
+	function testAliasInVirtualFields() {
+		$VirtualField = new VirtualFieldModel();
+		$result = $VirtualField->getVirtualField('name');
+		$expected = 'CONCAT(VirtualField.first_name, " ", VirtualField.last_name)';
+		$this->assertEqual($result, $expected);
+
+		$VirtualField = new VirtualFieldModel(array('alias' => 'SomeOtherName'));
+		$result = $VirtualField->getVirtualField('name');
+		$expected = 'CONCAT(SomeOtherName.first_name, " ", SomeOtherName.last_name)';
+		$this->assertEqual($result, $expected);
 	}
 
 	function testPostContains() {
@@ -120,13 +144,15 @@ class AppModelTestCase extends CoreTestCase {
 		$this->assertEqual($this->Ministry->Involvement->field('active'), 0);
 	}
 
-	function test_createPartialDates() {
+	function testDeconstruct() {
 		$data = array(
 			'month' => 4,
 			'day' => 14,
 			'year' => 1984
-		);		
-		$this->assertEqual($this->User->Profile->_createPartialDates('birth_date', $data), $data);
+		);
+		$results = $this->User->Profile->deconstruct('birth_date', $data);
+		$expected = '1984-4-14';
+		$this->assertEqual($results, $expected);
 
 		$data = array(
 			'month' => 4,
@@ -134,7 +160,7 @@ class AppModelTestCase extends CoreTestCase {
 			'year' => ''
 		);
 		$expected = '0000-4-14';
-		$results = $this->User->Profile->_createPartialDates('background_check_date', $data);
+		$results = $this->User->Profile->deconstruct('background_check_date', $data);
 		$this->assertEqual($results, $expected);
 
 		$data = array(
@@ -143,7 +169,7 @@ class AppModelTestCase extends CoreTestCase {
 			'year' => 1984
 		);
 		$expected = '1984-4-00';
-		$results = $this->User->Profile->_createPartialDates('background_check_date', $data);
+		$results = $this->User->Profile->deconstruct('background_check_date', $data);
 		$this->assertEqual($results, $expected);
 	}
 }

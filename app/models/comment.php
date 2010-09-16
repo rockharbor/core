@@ -71,9 +71,9 @@ class Comment extends AppModel {
 			'fields' => '',
 			'order' => ''
 		),
-		'CommentType' => array(
-			'className' => 'CommentType',
-			'foreignKey' => 'comment_type_id',
+		'Group' => array(
+			'className' => 'Group',
+			'foreignKey' => 'group_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''

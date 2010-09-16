@@ -78,7 +78,8 @@ class AppController extends Controller {
 				'type' => 'default'
 			)
 		),
-		'QueueEmail'
+		'QueueEmail',
+		'Security'
 	);
 
 /**
@@ -148,6 +149,9 @@ class AppController extends Controller {
  * @see Controller::beforeFilter()
  */
 	function beforeFilter() {
+		// WORKAROUND: Firefox tries to open json instead of reading it, so use different headers
+		$this->RequestHandler->setContent('json', 'text/plain');
+
 		$User = ClassRegistry::init('User');
 
 		$this->Notifier->notification = $User->Notification;
@@ -190,7 +194,7 @@ class AppController extends Controller {
 		} else {
 			$this->layout = 'public';
 		}
-		
+
 		// use custom authentication (password encrypt/decrypt)
 		$this->Auth->authenticate = $User;
 		
@@ -276,6 +280,7 @@ class AppController extends Controller {
  * @link http://book.cakephp.org/view/989/postConditions
  */
 	function postConditions($data = array(), $op = null, $bool = 'AND', $exclusive = false) {
+		unset($data['_Token']);
 		$registered = ClassRegistry::keys();
 		$bools = array('and', 'or', 'not', 'and not', 'or not', 'xor', '||', '&&');
 		$cond = array();
@@ -412,6 +417,15 @@ class AppController extends Controller {
 				$this->params['named']['User'] = $this->activeUser['User']['id'];
 			}
 		}		
+	}
+
+/**
+ * Forces the user to use SSL for this request
+ *
+ * @see SecurityComponent::blackHoleCallback
+ */
+	function _forceSSL() {
+		$this->redirect('https://' . env('SERVER_NAME') . $this->here);
 	}
 }
 ?>

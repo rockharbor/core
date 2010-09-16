@@ -191,10 +191,10 @@ class AuthorizeDotNetComponent extends Object {
 		// check debug
 		if (Configure::read() > 0) {
 			$this->_data['x_Test_Request'] = 'TRUE';
-			$id = Core::read('debug_email');
+			$id = Core::read('development.debug_email');
 		} else {
 			$this->_data['x_Test_Request'] = 'FALSE';
-			$id = Core::read('credit_card_email');
+			$id = Core::read('notifications.credit_card_email');
 		}
 
 		$user = ClassRegistry::init('User')->find('first', array(

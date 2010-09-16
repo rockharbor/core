@@ -45,6 +45,15 @@ class AppModel extends Model {
 	var $recursive = -1;
 
 /**
+ * Behaviors to attach
+ *
+ * @var array
+ */
+	var $actsAs = array(
+		'Sanitizer.Sanitize'
+	);
+
+/**
  * Extends model construction
  * 
  * ### Extended functionality:
@@ -153,35 +162,6 @@ class AppModel extends Model {
 		return $this->field($field) == $userId;
 	}
 
-
-/**
- * Runs before saving model data. 
- *
- * #### Extra functionality:
- * - Allow partial dates to be saved
- *
- * @return boolean Feel free to save the model, Cake!
- */
-	function beforeSave() {
-		if (!empty($this->data)) {			
-			if (isset($this->data[$this->alias][0])) {
-				// hasmany?
-				foreach ($this->data[$this->alias] as &$modelSave) {
-					foreach ($modelSave as $field => &$value) {
-						$value = $this->_createPartialDates($field, $value);
-					}
-				}
-			} else {
-				// has one
-				foreach ($this->data[$this->alias] as $field => &$value) {
-					$value = $this->_createPartialDates($field, $value);
-				}
-			}		
-		}
-		
-		return true;
-	}
-
 /**
  * Toggles the `active` field
  *
@@ -244,23 +224,23 @@ class AppModel extends Model {
 		return ($this->data[$this->name][$compareField] == $comparewithvalue);
 	}
 
-
 /**
- * Creates a partial date from a Cake date value
+ * Deconstructs complex data (specifically here, date) and creates a partial
+ * date from a Cake date array
  *
  * The Form helper in Cake splits dates into 3 pieces: month, day and year.
  * If the column in the database is set to a string, we'll allow a "partial
  * date" so users can, say, estimate the time they were baptized.
  *
  * @param string $field The name of the column
- * @param mixed $value The value being saved. An array or string.
- * @return mixed Either the original value or the modified partial one.
+ * @param array $value The complex value being saved
+ * @return mixed A string if it should be a date string, or deconstructed data
+ *		as determined by Model::deconstruct()
+ * @see Model::deconstruct()
+ * @see FormHelper::dateTime()
  */
-	function _createPartialDates($field, $value) {
-		// checks for date inputs that are being placed in string columns
-		// dates put in date or datetime cols are strict
-		if (is_array($value) && $this->getColumnType($field) == 'string') {
-			// replace empty values with 0's instead
+	function deconstruct($field, $value) {
+		if ($this->getColumnType($field) == 'string') {
 			if (isset($value['month']) && empty($value['month'])) {
 				$value['month'] = '00';
 			}
@@ -276,8 +256,7 @@ class AppModel extends Model {
 				$value = $value['year'].'-'.$value['month'].'-'.$value['day'];
 			}
 		}
-		
-		return $value;
+		return parent::deconstruct($field, $value);
 	}
 
 }

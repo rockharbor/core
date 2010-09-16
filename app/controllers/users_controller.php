@@ -55,122 +55,6 @@ class UsersController extends AppController {
 	}
 	
 /**
- * Runs a search on simple fields (username, first_name, etc.)
- *
- * ### Params:
- * - Every named parameter is treated as an "action". Each action should have a key 
- * value pair. The key is the name to display, value is the js function to run (no parens).
- * The selected user id is always passed as the first param to the js function
- *
- * ### Filters: Everything passed as an argument are considered filters.
- * Filters are used to help pre-filter the results (i.e., don't show people 
- * who are in a specific household). Passed like filter:[filter] [Model].[field] [value]
- * Example: not HouseholdMember.household_id 12
- * - Filters of the same model are grouped together, i.e., is Leader.model ministry AND not Leader.model_id 1
- * would produce a condition (Leader.model="ministry" AND Leader.model_id<>1) ...
- * - "NOT" filters also produce a OR NULL condition so that users without records still show up
- */
-	function simple_search() {
-		$filters = func_get_args();
-		$allowedFilters = array('in', 'not', 'is');
-		
-		$results = array();
-		$searchRan = false;
-
-		if (!empty($this->data)) {
-			$conditions = array();
-			// at the very least, we want profile too
-			$contain = array('Profile'=>array());			
-			// create conditions
-			foreach ($this->data as $model => $fields) {
-				foreach ($fields as $key => $value) {
-					if ($value != '') {
-						$conditions[$model.'.'.$key.' like'] = '%'.$value.'%';
-						// use it in the find
-						$contain[$model] = array();
-					}
-				}
-			}
-			
-			// add filters
-			$tables = array();	
-			$joinConditions = array();
-			$nullConditions = array();
-			foreach ($filters as $filter) {				
-				$filter = explode(' ', $filter);
-				// get filter info
-				list($filter, $modelField, $modelId) = $filter;
-				$modelField = explode('.', $modelField);
-				$model = $modelField[0];
-				$field = $modelField[1];				
-					
-				if (in_array($filter, $allowedFilters)) {
-					// workaround for now					
-					if ($this->User->{$model}->isVirtualField($field)) {
-						$conditionField = $this->User->{$model}->getVirtualField($field);
-					} else {
-						$conditionField = $model.'.'.$field;
-					}
-					
-					// temp belongsTo (to join, use conditions, etc.)
-					$hasOne = array(
-						$model => array(
-							'className' => Inflector::classify($model),
-							'foreignKey' => 'user_id',
-							'conditions' => array(
-								$conditionField => $modelId
-							)
-						)
-					);
-					
-					// merge, just in case it already exists
-					$this->User->hasOne = Set::merge($this->User->hasOne, $hasOne);
-
-					$contain[$model] = array();
-					
-					switch ($filter) {
-						case 'in':
-							$joinConditions[$model][$conditionField] = array($modelId);
-						break;
-						case 'is':
-							$joinConditions[$model][$conditionField] = $modelId;
-						break;
-						case 'not':						
-							// add the null condition for users without a record
-							$joinConditions[$model][$conditionField.' <>'] = $modelId;
-							$nullConditions[$model][$conditionField] = null;
-						break;
-					}
-				}
-			}
-
-			foreach ($joinConditions as $modelVal => $modelConditions) {
-				// combine model conditions with null conditions to prevent misleading
-				// results due to lack of records (i.e., a user isn't leading)
-				if (!empty($nullConditions[$modelVal])) {
-					$conditions[] = array(
-						'or' => array($joinConditions[$modelVal], $nullConditions[$modelVal])
-					);
-				} else {
-					$conditions[] = $modelConditions;
-				}
-			}
-			
-			// User can't contain User!
-			unset($contain['User']);
-			$this->paginate = compact('conditions', 'contain');
-			$searchRan = true;
-		}
-		
-		$results = $this->FilterPagination->paginate();
-		
-		$this->set('filters', implode(',',$filters));
-		// remove pagination info from action list
-		$actions = array_diff_key($this->params['named'], array('page'=>array(),'sort'=>array(),'direction'=>array()));
-		$this->set(compact('results','searchRan','actions'));
-	}
-	
-/**
  * Logs a user into CORE, saves their profile data in session
  *
  * @param string $username Used to auto-fill the username field
@@ -273,7 +157,6 @@ class UsersController extends AppController {
 					$subject = 'New username';
 				break;
 				case 'password':
-					$this->data['User']['reset_password'] = false;
 					unset($this->data['User']['username']);
 					if ($needCurrentPassword && $this->Auth->password($this->data['User']['current_password']) != $this->User->field('password')) {
 						$invalidPassword = true;
@@ -282,6 +165,7 @@ class UsersController extends AppController {
 					if ($this->User->validates(array('fieldList' => array('password', 'confirm_password')))) {
 						$this->User->id = $this->data['User']['id'];
 						$success = $this->User->saveField('password', $this->data['User']['password']);
+						$this->User->saveField('reset_password', false);
 					} else {
 						$success = false;
 					}
@@ -318,6 +202,7 @@ class UsersController extends AppController {
 			$this->User->id = $this->passedArgs['User'];
 			$this->User->contain(false);
 			$this->data = $this->User->read();
+			unset($this->data['User']['password']);
 		}
 		
 		$this->set('needCurrentPassword', $needCurrentPassword);
@@ -384,9 +269,9 @@ class UsersController extends AppController {
 					'merge_id' => $this->User->id,
 					'requester_id' => $this->User->id
 				));
-				$this->Notifier->notify(Core::read('activation_requests_user'), 'users_request_activation');
+				$this->Notifier->notify(Core::read('notifications.activation_requests'), 'users_request_activation');
 				$this->QueueEmail->send(array(
-					'to' => Core::read('activation_requests_user'),
+					'to' => Core::read('notifications.activation_requests'),
 					'subject' => 'Account activation request',
 					'template' => 'users_request_activation'
 				));

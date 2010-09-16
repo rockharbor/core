@@ -44,6 +44,16 @@ class Involvement extends AppModel {
 	);
 
 /**
+ * Sanitization rules
+ *
+ * @var array
+ * @see Sanitizer.SanitizeBehavior
+ */
+	var $sanitize = array(
+		'description' => 'html'
+	);
+
+/**
  * Validation rules
  *
  * @var array
@@ -66,8 +76,10 @@ class Involvement extends AppModel {
  */
 	var $actsAs = array(
 		'Containable',
-		'Confirm',
-		'Logable'
+		'Logable',
+		'Sanitizer.Sanitize' => array(
+			'validate' => 'after'
+		)
 	);
 
 /**
@@ -103,8 +115,7 @@ class Involvement extends AppModel {
 			'fields' => '',
 			'order' => ''
 		),
-		'InvolvementType',
-		'Group'
+		'InvolvementType'
 	);
 
 /**
@@ -158,6 +169,17 @@ class Involvement extends AppModel {
 			'table' => 'involvements_ministries',
 			'foreignKey' => 'involvement_id',
 			'associationForeignKey' => 'ministry_id'
+		)
+	);
+
+	var $searchFilter = array(
+		'notInvolvementAndIsLeading' => array(
+			'conditions' => array(
+				'Involvement.id <>' => ':0:',
+				'EXISTS (SELECT 1 FROM leaders WHERE leaders.model = "Involvement"
+					AND leaders.model_id = Involvement.id
+					AND leaders.user_id = :1:)'
+			)
 		)
 	);
 	

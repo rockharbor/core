@@ -39,6 +39,16 @@ class CommentsController extends AppController {
  * @access private
  */
 	function beforeFilter() {
+		// only creators of the comment can edit/delete (unless they have ACL permission)
+		if (in_array($this->action, array('edit', 'delete'))) {
+			if (isset($this->passedArgs['Comment'])) {
+				$comment = $this->Comment->read(array('created_by'), $this->passedArgs['Comment']);
+				if ($comment['Comment']['created_by'] == $this->activeUser['User']['id']) {
+					$this->Auth->allow($this->action);
+				}
+			}
+		}
+
 		parent::beforeFilter();
 	}
 	
@@ -48,21 +58,20 @@ class CommentsController extends AppController {
 	function index() {
 		$viewUser = $this->passedArgs['User'];
 
+		$groups = $this->Comment->Group->findGroups($this->activeUser['Group']['id']);
 		$this->paginate = array(
 			'conditions' => array(
 				'Comment.user_id' => $viewUser,
-				'Group.lft >=' => $this->activeUser['Group']['lft']
+				'Group.id' => array_keys($groups)
 			),
-			'link' => array(
-				'CommentType' => array(
-					'Group'
-				)
+			'contain' => array(
+				'Group'
 			)
 		);
-		$this->set('comments', $this->paginate('Comment'));
+		$this->set('comments', $this->paginate());
 		
 		$this->set('userId', $viewUser);
-		$this->set('commentTypes', $this->Comment->CommentType->find('list'));
+		$this->set('groups', $groups);
 	}
 
 /**
@@ -82,24 +91,16 @@ class CommentsController extends AppController {
 			}
 		}
 		$this->set('users', $this->Comment->User->find('list'));
-		$this->set('commentTypes', $this->Comment->CommentType->find('list', array(
-			'conditions' => array(
-				'Group.lft >=' => $this->activeUser['Group']['lft'],
-				'Group.conditional' => false
-			),
-			'link' => array(
-				'Group'
-			)
-		)));
+		$groups = $this->Comment->Group->findGroups($this->activeUser['Group']['id']);
+		$this->set('groups', $groups);
 		$this->set('userId', $viewUser);
 	}
 
 /**
  * Edits a comment
- *
- * @param integer $id The id of the comment to edit
  */ 
-	function edit($id = null) {
+	function edit() {
+		$id = $this->passedArgs['Comment'];
 		$viewUser = $this->passedArgs['User'];
 		
 		if (!$id && empty($this->data)) {
@@ -115,26 +116,22 @@ class CommentsController extends AppController {
 			}
 		}
 		if (empty($this->data)) {
+			$this->Comment->contain(array(
+				'Group'
+			));
 			$this->data = $this->Comment->read(null, $id);
 		}
-		
-		$this->set('commentTypes', $this->Comment->CommentType->find('list', array(
-			'conditions' => array(
-				'Group.lft >=' => $this->activeUser['Group']['lft'],
-				'Group.conditional' => false
-			),
-			'link' => array(
-				'Group'
-			)
-		)));
+
+		$groups = $this->Comment->Group->findGroups($this->activeUser['Group']['id']);
+		$this->set('groups', $groups);
 	}
 	
 /**
  * Deletes a comment
- *
- * @param integer $id The id of the comment to delete
  */ 
-	function delete($id = null) {
+	function delete() {
+		$id = $this->passedArgs['Comment'];
+
 		if (!$id) {
 			$this->Session->setFlash('Invalid id for comment');
 			$this->redirect(array('action'=>'index'));

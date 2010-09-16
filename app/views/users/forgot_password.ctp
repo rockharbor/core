@@ -1,5 +1,5 @@
 <h2>Forgot password</h2>
-<p>Try entering your username, or one of the emails you have entered into <?php echo Core::read('site_name'); ?>.
+<p>Try entering your username, or one of the emails you have entered into <?php echo Core::read('general.site_name'); ?>.
 <?php
 echo $this->Form->create('User', array(
 	'default' => false,

@@ -30,7 +30,7 @@
 /**
  * Bring in custom routing libraries
  */
-	App::import('Lib', 'routes/UsernameRoute'); 
+	App::import('Lib', array('Slugger.routes/SluggableRoute'));
  
 /**
  * Here, we are connecting '/' (base path) to controller called 'Pages',
@@ -42,15 +42,13 @@
 /**
  * Custom routes
  */
-	//Router::connect('/:controller/:action/*/:user', 
-	/*	array(), 
+	Router::connect('/:controller/:action/*',
+	   array(),
 		array(
-			'routeClass' => 'UsernameRoute',
-			'pass' => array('user'),
-			'id' => '[0-9]+'
+			'routeClass' => 'SluggableRoute',
+			'models' => array('User', 'Ministry', 'Involvement')
 		)
-	); */
- 
+	); 
  
 /**
  * ...and connect the rest of 'Pages' controller's urls.

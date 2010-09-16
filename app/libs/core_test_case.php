@@ -42,10 +42,9 @@ class CoreTestCase extends CakeTestCase {
 		'app.app_setting',
 		'app.attachment',
 		'app.campus',
+		'app.campuses_rev',
 		'app.classification',
 		'app.comment',
-		'app.comment_type',
-		'app.comments',
 		'app.date',
 		'app.error',
 		'app.group',
@@ -55,7 +54,6 @@ class CoreTestCase extends CakeTestCase {
 		'app.involvement',
 		'app.involvements_ministry',
 		'app.involvement_type',
-		'app.involvements_rev',
 		'app.job_category',
 		'app.leader',
 		'app.log',
@@ -177,7 +175,7 @@ class CoreTestCase extends CakeTestCase {
 		if (isset($Controller->Auth)) {
 			$Controller->Auth->initialize($Controller);
 			if (!$Controller->Session->check('Auth.User') && !$Controller->Session->check('User')) {
-				$Controller->Session->write('Auth.User', array('id' => 1, 'username' => 'testadmin'));
+				$Controller->Session->write('Auth.User', array('id' => 1, 'username' => 'testadmin', 'reset_password' => 0));
 				$Controller->Session->write('User', array(
 					'Group' => array('id' => 1, 'lft' => 1),
 					'Profile' => array('name' => 'Test Admin', 'primary_email' => 'test@test.com')
@@ -210,7 +208,7 @@ class CoreTestCase extends CakeTestCase {
 	}
 
 	function unloadSettings() {
-		Cache::delete('core_app_settings');
+		ClassRegistry::init('AppSetting')->clearCache();
 		Configure::write('Cache.disable', $this->_cacheDisable);
 	}
 

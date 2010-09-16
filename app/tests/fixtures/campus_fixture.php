@@ -27,7 +27,7 @@ class CampusFixture extends CakeTestFixture {
 			'id' => 2,
 			'name' => 'Fullerton',
 			'description' => 'Slightly more hip than RH Central.',
-			'active' => 1,
+			'active' => 0,
 			'created' => '2010-04-14 13:45:17',
 			'modified' => '2010-04-14 13:45:17'
 		),

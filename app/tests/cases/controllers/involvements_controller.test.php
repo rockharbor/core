@@ -12,7 +12,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 
 	function startTest() {
 		$this->loadFixtures('Involvement', 'Roster', 'User', 'InvolvementType', 'Group', 'Ministry');
-		$this->loadFixtures('InvolvementsRev', 'MinistriesRev');
+		$this->loadFixtures('MinistriesRev', 'Leader');
 		$this->Involvements =& new TestInvolvementsController();
 		$this->Involvements->constructClasses();
 		$this->Involvements->Notifier = new MockNotifierComponent();
@@ -58,7 +58,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 				'description' => 'this is a test',
 				'roster_limit' => null,
 				'roster_visible' => 1,
-				'group_id' => NULL,
+				'private' => NULL,
 				'signup' => 1,
 				'take_payment' => 1,
 				'offer_childcare' => 0,
@@ -70,7 +70,6 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 			'data' => $data
 		));
 		$this->assertEqual($this->Involvements->Involvement->field('name'), 'A test involvement');
-		$this->assertEqual($this->Involvements->Involvement->field('group_id'), 0);
 
 		$data = array(
 			'Involvement' => array(
@@ -80,7 +79,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 				'description' => 'Test using linked ministries',
 				'roster_limit' => null,
 				'roster_visible' => 1,
-				'group_id' => NULL,
+				'private' => NULL,
 				'signup' => 0,
 				'take_payment' => 0,
 				'offer_childcare' => 0,
@@ -122,6 +121,26 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($this->Involvements->Involvement->field('name'), 'New name');
 	}
 
+	function testToggleActivityWithoutLeader() {
+		$this->testAction('/involvements/toggle_activity/1/Involvement:2');
+		$this->Involvements->Involvement->id = 2;
+		$this->assertEqual($this->Involvements->Involvement->field('active'), 0);
+		$this->assertEqual($this->Involvements->Session->read('Message.flash.element'), 'flash'.DS.'failure');
+
+		$data = array(
+			'Leader' => array(
+				'user_id' => 1,
+				'model' => 'Involvement',
+				'model_id' => 2
+			)
+		);
+		$this->Involvements->Involvement->Leader->save($data);
+		$this->testAction('/involvements/toggle_activity/1/Involvement:2');
+		$this->Involvements->Involvement->id = 2;
+		$this->assertEqual($this->Involvements->Involvement->field('active'), 1);
+		$this->assertEqual($this->Involvements->Session->read('Message.flash.element'), 'flash'.DS.'success');
+	}
+
 	function testToggleActivity() {
 		$this->testAction('/involvements/toggle_activity/1/Involvement:3');
 		$this->Involvements->Involvement->id = 3;
@@ -143,46 +162,6 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$this->Involvements->Involvement->id = 3;
 		$this->assertEqual($this->Involvements->Involvement->field('active'), 1);
 		$this->assertEqual($this->Involvements->Session->read('Message.flash.element'), 'flash'.DS.'success');
-	}
-
-	function testHistory() {
-		$data = $this->Involvements->Involvement->read(null, 1);
-		$data['Involvement']['name'] = 'New name';
-		$this->Involvements->Involvement->save($data);
-
-		$vars = $this->testAction('/involvements/history/Involvement:1', array(
-			'return' => 'vars'
-		));
-
-		$result = $vars['revision']['Revision']['id'];
-		$this->assertEqual($result, 1);
-
-		$result = $vars['revision']['Revision']['name'];
-		$this->assertEqual($result, 'New name');
-	}
-
-	function testRevise() {
-		$data = $this->Involvements->Involvement->read(null, 1);
-		$data['Involvement']['name'] = 'New name';
-		$data = array(
-			'Revision' => $data['Involvement']
-		);		
-
-		$this->Involvements->Involvement->RevisionModel->save($data);
-		$this->Involvements->Involvement->id = 1;
-		$this->testAction('/involvements/revise/0/Involvement:1');
-		$result = $this->Involvements->Involvement->RevisionModel->find('all');
-		$this->assertFalse($result);
-		$result = $this->Involvements->Involvement->field('name');
-		$this->assertEqual($result, 'CORE 2.0 testing');
-
-		$this->Involvements->Involvement->RevisionModel->save($data);
-		$this->Involvements->Involvement->id = 1;
-		$this->testAction('/involvements/revise/1/Involvement:1');
-		$result = $this->Involvements->Involvement->RevisionModel->find('all');
-		$this->assertFalse($result);
-		$result = $this->Involvements->Involvement->field('name');
-		$this->assertEqual($result, 'New name');
 	}
 
 	function testDelete() {

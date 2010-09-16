@@ -8,9 +8,11 @@ class GroupTestCase extends CoreTestCase {
 	function startTest() {
 		$this->loadFixtures('Group');
 		$this->Group =& ClassRegistry::init('Group');
+		$this->loadSettings();
 	}
 
 	function endTest() {
+		$this->unloadSettings();
 		unset($this->Group);		
 		ClassRegistry::flush();
 	}
@@ -39,6 +41,20 @@ class GroupTestCase extends CoreTestCase {
 		$results = Set::extract('/Group/id', $this->Group->findGroups(5, 'all', '<='));
 		$expected = array(5, 6, 7, 8);
 		$this->assertEqual($results, $expected);
+	}
+
+	function testCanSeePrivate() {
+		$result = $this->Group->canSeePrivate(8);
+		$this->assertFalse($result);
+
+		$result = $this->Group->canSeePrivate(9);
+		$this->assertFalse($result);
+
+		$result = $this->Group->canSeePrivate(2);
+		$this->assertTrue($result);
+
+		$result = $this->Group->canSeePrivate(3);
+		$this->assertTrue($result);
 	}
 
 }

@@ -143,8 +143,8 @@ if ($involvement['Involvement']['roster_visible']) {
 		}		
 		?> </li>
 		<li><?php echo $this->Html->link('Edit Involvement', array('action' => 'edit', 'Involvement' => $involvement['Involvement']['id'])); ?> </li>
-		<li><?php echo $this->Html->link('Invite Users', array('controller' => 'users', 'action' => 'simple_search', 'Invite To '.$involvement['InvolvementType']['name'] => 'invite', 'not Roster.involvement_id '.$involvement['Involvement']['id']), array('rel' => 'modal-content')); ?> </li>
-		<li><?php echo $this->Html->link('Invite Roster', array('controller' => 'involvements', 'action' => 'simple_search', 'Invite To '.$involvement['InvolvementType']['name'] => 'inviteRoster', 'not Involvement.id '.$involvement['Involvement']['id']), array('rel' => 'modal-content')); ?> </li>
+		<li><?php echo $this->Html->link('Invite Users', array('controller' => 'searches', 'action' => 'simple', 'User', 'notSignedUp', $involvement['Involvement']['id'], 'Invite To '.$involvement['InvolvementType']['name'] => 'invite'), array('rel' => 'modal-content')); ?> </li>
+		<li><?php echo $this->Html->link('Invite Roster', array('controller' => 'searches', 'action' => 'simple', 'Involvement', 'notInvolvementAndIsLeading', $involvement['Involvement']['id'], $activeUser['User']['id'], 'Invite To '.$involvement['InvolvementType']['name'] => 'inviteRoster'), array('rel' => 'modal-content')); ?> </li>
 	</ul>
 </div>
 

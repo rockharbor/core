@@ -159,5 +159,173 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($this->Searches->viewPath, 'elements');
 	}
 
+	function testSimpleSearch() {
+		$data = array(
+			'User' => array(
+				'username' => 'a'
+			)
+		);
+		$vars = $this->testAction('/searches/simple/User/', compact('data'));
+		$results = Set::extract('/User/username', $vars['results']);
+		$expected = array(
+			'jharris',
+			'rickyrockharbor',
+			'rickyrockharborjr'
+		);
+		$this->assertEqual($results, $expected);
+		$this->Searches->Session->delete('FilterPagination');
+
+		$data = array(
+			'User' => array(
+				'username' => 'a'
+			),
+			'Profile' => array(
+				'first_name' => 'jeremy'
+			)
+		);
+		$vars = $this->testAction('/searches/simple/User/', compact('data'));
+		$results = Set::extract('/User/username', $vars['results']);
+		$expected = array(
+			'jharris',
+		);
+		$this->assertEqual($results, $expected);
+		$this->Searches->Session->delete('FilterPagination');
+	}
+
+	function testNotInHouseholdSearchFilter() {
+		$this->loadFixtures('Household', 'HouseholdMember');
+
+		$data = array(
+			'User' => array(
+				'username' => 'jharris'
+			)
+		);
+		$vars = $this->testAction('/searches/simple/User/notInHousehold/2', compact('data'));
+		$results = Set::extract('/User/username', $vars['results']);
+		$expected = array(
+			'jharris',
+		);
+		$this->assertEqual($results, $expected);
+		$this->Searches->Session->delete('FilterPagination');
+
+		$data = array(
+			'User' => array(
+				'username' => 'a'
+			)
+		);
+		$vars = $this->testAction('/searches/simple/User/notInHousehold/1', compact('data'));
+		$results = Set::extract('/User/username', $vars['results']);
+		$expected = array(
+			'rickyrockharbor',
+		);
+		$this->assertEqual($results, $expected);
+		$this->Searches->Session->delete('FilterPagination');
+	}
+
+	function testNotLeaderOfSearchFilter() {
+		$this->loadFixtures('Leader');
+
+		$data = array(
+			'User' => array(
+				'username' => ''
+			)
+		);
+		$vars = $this->testAction('/searches/simple/User/notLeaderOf/Involvement/1', compact('data'));
+		$results = Set::extract('/User/username', $vars['results']);
+		$expected = array(
+			'rickyrockharbor',
+		);
+		$this->assertEqual($results, $expected);
+		$this->Searches->Session->delete('FilterPagination');
+
+			$data = array(
+			'User' => array(
+				'username' => ''
+			)
+		);
+		$vars = $this->testAction('/searches/simple/User/notLeaderOf/Involvement/20', compact('data'));
+		$results = Set::extract('/User/username', $vars['results']);
+		$expected = array(
+			'jharris',
+			'rickyrockharbor',
+		);
+		$this->assertEqual($results, $expected);
+		$this->Searches->Session->delete('FilterPagination');
+	}
+
+	function testNotSignedUpSearchFilter() {
+		$this->loadFixtures('Roster');
+
+		$data = array(
+			'User' => array(
+				'username' => ''
+			)
+		);
+		$vars = $this->testAction('/searches/simple/User/notSignedUp/1', compact('data'));
+		$results = Set::extract('/User/username', $vars['results']);
+		$expected = array(
+			'jharris',
+		);
+		$this->assertEqual($results, $expected);
+		$this->Searches->Session->delete('FilterPagination');
+
+		$data = array(
+			'User' => array(
+				'username' => ''
+			)
+		);
+		$vars = $this->testAction('/searches/simple/User/notSignedUp/20', compact('data'));
+		$results = Set::extract('/User/username', $vars['results']);
+		$expected = array(
+			'jharris',
+			'rickyrockharbor',
+			'rickyrockharborjr',
+		);
+		$this->assertEqual($results, $expected);
+		$this->Searches->Session->delete('FilterPagination');
+	}
+
+	function testNotInvolvementAndIsLeading() {
+		$this->loadFixtures('Leader');
+
+		$data = array(
+			'Involvement' => array(
+				'name' => ''
+			)
+		);
+		$vars = $this->testAction('/searches/simple/Involvement/notInvolvementAndIsLeading/1/1', compact('data'));
+		$results = Set::extract('/Involvement/name', $vars['results']);
+		$expected = array(
+			'Team CORE',
+		);
+		$this->assertEqual($results, $expected);
+		$this->Searches->Session->delete('FilterPagination');
+
+		$data = array(
+			'Involvement' => array(
+				'name' => 'wed'
+			)
+		);
+		$vars = $this->testAction('/searches/simple/Involvement/notInvolvementAndIsLeading/3/1', compact('data'));
+		$results = Set::extract('/Involvement/name', $vars['results']);
+		$expected = array(
+		);
+		$this->assertEqual($results, $expected);
+		$this->Searches->Session->delete('FilterPagination');
+
+		$data = array(
+			'Involvement' => array(
+				'name' => 'core'
+			)
+		);
+		$vars = $this->testAction('/searches/simple/Involvement/notInvolvementAndIsLeading/3/1', compact('data'));
+		$results = Set::extract('/Involvement/name', $vars['results']);
+		$expected = array(
+			'CORE 2.0 testing'
+		);
+		$this->assertEqual($results, $expected);
+		$this->Searches->Session->delete('FilterPagination');
+	}
+
 }
 ?>
