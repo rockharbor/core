@@ -1,10 +1,10 @@
 <h2>Simple Search</h2>
 
 <div class="searches">
-<?php echo $this->Form->create($model, array(
+<?php echo $this->Form->create(null, array(
 	'default' => false,
 	'url' => array(
-		$filters
+		implode('/', array_merge($this->params['pass'], $this->params['named']))
 	)
 ));
 echo $this->element('search'.DS.strtolower($model).'_simple', array(), true);
