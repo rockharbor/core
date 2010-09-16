@@ -171,6 +171,17 @@ class Involvement extends AppModel {
 			'associationForeignKey' => 'ministry_id'
 		)
 	);
+
+	var $searchFilter = array(
+		'notInvolvementAndIsLeading' => array(
+			'conditions' => array(
+				'Involvement.id <>' => ':0:',
+				'EXISTS (SELECT 1 FROM leaders WHERE leaders.model = "Involvement"
+					AND leaders.model_id = Involvement.id
+					AND leaders.user_id = :1:)'
+			)
+		)
+	);
 	
 /**
  * Checks if a user is a leader for an involvement

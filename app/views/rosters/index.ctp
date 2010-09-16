@@ -113,10 +113,10 @@ $this->Paginator->options(array(
 	<p><?php 
 	echo $this->Html->link('Add A User', 
 		array(
-			'controller' => 'users', 
-			'action' => 'simple_search',
+			'controller' => 'searches',
+			'action' => 'simple',
+			'User', 'notSignedUp', $roster['Involvement']['id'],
 			'Add User' => 'addToRoster',
-			'not Roster.involvement_id '.$involvementId
 		),
 		array(
 			'class' => 'button',

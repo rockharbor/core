@@ -55,66 +55,6 @@ class UsersController extends AppController {
 	}
 	
 /**
- * Runs a search on simple fields (username, first_name, etc.). Accepts a filter
- * key and filters using User::searchFilter's value as conditions.
- *
- * ### Params:
- * - Any passed params after $filter are considered the arguments to insert in
- *		the filters array where :0: is replaced by the first argument after
- *		$filter, :1: the second and so on.
- * - Any named params are considered JavaScript actions to be taken on individual
- *		users (see the view)
- *
- * @param string $filter The name of a filter to perform on the search
- * @see User::searchFilter
- */
-	function simple_search($filter = '') {
-		$results = array();
-		$searchRan = false;
-
-		if (!empty($this->data)) {	
-			// create conditions and contain
-			$options = array(
-				'conditions' => $this->postConditions($this->data, 'LIKE'),
-				'link' => array_merge($this->User->postContains($this->data), array('Profile'=>array()))
-			);
-
-			if (!empty($filter) && isset($this->User->searchFilter[$filter])) {
-				$filterArgs = func_get_args();
-				array_shift($filterArgs);
-				/**
-				 * Recursively runs an array through String::insert
-				 *
-				 * @param array $input The array
-				 * @param array $args The insert values
-				 * @return array
-				 * @see String::insert()
-				 */
-				$string_insert_recursive = function ($input, $args) use (&$string_insert_recursive) {
-					foreach ($input as &$value) {
-						if (is_array($value)) {
-							$value = $string_insert_recursive($value, $args);
-						} elseif ($value !== null) {
-							$value = String::insert($value, $args, array('after' => ':'));
-						}
-					}
-					return $input;
-				};
-				$filters = $string_insert_recursive($this->User->searchFilter[$filter], $filterArgs);
-				$options = Set::merge($options, $filters);
-			}
-			$this->paginate = $options;
-			$searchRan = true;
-		}
-		
-		$results = $this->FilterPagination->paginate();
-
-		// remove pagination info from action list
-		$actions = array_diff_key($this->params['named'], array('page'=>array(),'sort'=>array(),'direction'=>array()));
-		$this->set(compact('results','searchRan','actions'));
-	}
-	
-/**
  * Logs a user into CORE, saves their profile data in session
  *
  * @param string $username Used to auto-fill the username field

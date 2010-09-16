@@ -50,12 +50,10 @@
 	}');
 
 	echo $this->Html->link('Add Leader', array(
-		'controller' => 'users',
-		'action' => 'simple_search',
+		'controller' => 'searches',
+		'action' => 'simple',
+		'User','notLeaderOf',$model,$modelId,
 		'Add Leader' => 'addLeader',
-		'is Leader.model '.$model, 
-		'not Leader.model_id '.$modelId,
-		'is Profile.qualified_leader 1'
 	), array (
 		'rel' => 'modal-leaders',
 		'class' => 'button'

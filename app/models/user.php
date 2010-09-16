@@ -173,12 +173,13 @@ class User extends AppModel {
 	);
 
 /**
- * Array of search filters for UsersController::simple_search().
+ * Array of search filters for SearchesController::simple().
  * 
  * They are merged with any existing conditions and parameters sent to
  * Controller::paginate(). Works in conjunction with
- * UsersController::simple_search() where arguments sent after the filter name
- * are inserted in order within the filter.
+ * SearchesController::simple() where arguments sent after the filter name are
+ * inserted in order within the filter. Make sure to include contains or links
+ * where related model data is needed.
  *
  * @var array
  */
@@ -187,6 +188,9 @@ class User extends AppModel {
 			'conditions' => array(
 				'NOT EXISTS (SELECT 1 FROM household_members WHERE household_members.household_id = :0:
 				AND household_members.user_id = User.id)'
+			),
+			'link' => array(
+				'Profile'
 			)
 		),
 		'notLeaderOf' => array(
@@ -203,6 +207,9 @@ class User extends AppModel {
 			'conditions' => array(
 				'NOT EXISTS (SELECT 1 FROM rosters WHERE rosters.involvement_id = :0:
 				AND rosters.user_id = User.id)'
+			),
+			'link' => array(
+				'Profile'
 			)
 		)
 	);

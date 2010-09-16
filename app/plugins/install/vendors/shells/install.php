@@ -369,6 +369,7 @@ class InstallShell extends Shell {
 			'controllers/Searches/index',
 			'controllers/Searches/involvement',
 			'controllers/Searches/ministry',
+			'controllers/Searches/simple',
 			'controllers/CampusLeaders/index',
 			'controllers/MinistryLeaders/index',
 			'controllers/InvolvementLeaders/index',
