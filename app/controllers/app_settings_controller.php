@@ -40,6 +40,13 @@ class AppSettingsController extends AppController {
 	var $name = 'AppSettings';
 
 /**
+ * Additional helpers for this controller
+ *
+ * @var array
+ */
+	var $helpers = array('Formatting');
+
+/**
  * List of types that shouldn't be considered models
  *
  * @var array
