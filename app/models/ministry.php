@@ -32,7 +32,10 @@ class Ministry extends AppModel {
 		'Logable',
 		'Containable',
 		'Tree',
-		'Confirm'
+		'Confirm',
+		'Cacher.Cache' => array(
+			'auto' => false
+		)
 	);
 
 /**

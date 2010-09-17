@@ -260,7 +260,8 @@ class AppController extends Controller {
 				'ChildMinistry' => array(
 					'limit' => 5
 				)
-			)
+			),
+			'cache' => '+1 day'
 		);
 		if (!in_array($this->activeUser['Group']['id'], array_keys($Group->findGroups(Core::read('general.private_group'), 'list', '>')))) {
 			$options['conditions']['Ministry.private'] = false;
