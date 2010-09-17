@@ -14,7 +14,7 @@ class CacheBehaviorTestCase extends CakeTestCase {
 		$this->_cacheDisable = Configure::read('Cache.disable');
 		Configure::write('Cache.disable', false);
 		$this->CacheData =& ClassRegistry::init('CacheData');
-		$this->CacheData->Behaviors->attach('Cacher.Cache', array('clearOnDelete' => false));
+		$this->CacheData->Behaviors->attach('Cacher.Cache', array('clearOnDelete' => false, 'auto' => true));
 	}
 
 	function endTest() {
@@ -24,6 +24,107 @@ class CacheBehaviorTestCase extends CakeTestCase {
 		Configure::write('Cache.disable', $this->_cacheDisable);
 		unset($this->CacheData);
 		ClassRegistry::flush();
+	}
+
+	function testChangeDurationOnTheFly() {
+		$this->CacheData->Behaviors->attach('Cacher.Cache', array(
+			'auto' => false
+		));
+
+		$results = $this->CacheData->find('all', array(
+			'conditions' => array(
+				'CacheData.name LIKE' => '%cache%'
+			),
+			'cache' => '+42 weeks'
+		));
+		$results = Set::extract('/CacheData/name', $results);
+		$expected = array(
+			'A Cached Thing',
+			'Cache behavior'
+		);
+		$this->assertEqual($results, $expected);
+
+		// test that it's pulling from the cache
+		$this->CacheData->delete(1);
+		$results = $this->CacheData->find('all', array(
+			'conditions' => array(
+				'CacheData.name LIKE' => '%cache%'
+			)
+		));
+		$results = Set::extract('/CacheData/name', $results);
+		$expected = array(
+			'A Cached Thing',
+			'Cache behavior'
+		);
+		$this->assertEqual($results, $expected);
+
+		$ds = ConnectionManager::getDataSource('cache');
+		$result = Cache::config($ds->cacheConfig);
+		$this->assertEqual($result['settings']['duration'], strtotime('+42weeks') - strtotime('now'));
+	}
+
+	function testCacheOnTheFly() {
+		$this->CacheData->Behaviors->attach('Cacher.Cache', array(
+			'auto' => false
+		));
+
+		$results = $this->CacheData->find('all', array(
+			'conditions' => array(
+				'CacheData.name LIKE' => '%cache%'
+			),
+			'cache' => true
+		));
+		$results = Set::extract('/CacheData/name', $results);
+		$expected = array(
+			'A Cached Thing',
+			'Cache behavior'
+		);
+		$this->assertEqual($results, $expected);
+
+		// test that it's pulling from the cache
+		$this->CacheData->delete(1);
+		$results = $this->CacheData->find('all', array(
+			'conditions' => array(
+				'CacheData.name LIKE' => '%cache%'
+			)
+		));
+		$results = Set::extract('/CacheData/name', $results);
+		$expected = array(
+			'A Cached Thing',
+			'Cache behavior'
+		);
+		$this->assertEqual($results, $expected);
+	}
+
+	function testNoAuto() {
+		$this->CacheData->Behaviors->attach('Cacher.Cache', array(
+			'auto' => false
+		));
+
+		$results = $this->CacheData->find('all', array(
+			'conditions' => array(
+				'CacheData.name LIKE' => '%cache%'
+			)
+		));
+		$results = Set::extract('/CacheData/name', $results);
+		$expected = array(
+			'A Cached Thing',
+			'Cache behavior'
+		);
+		$this->assertEqual($results, $expected);
+
+		// test that it's not pulling from the cache
+		$this->CacheData->delete(1);
+		$results = $this->CacheData->find('all', array(
+			'conditions' => array(
+				'CacheData.name LIKE' => '%cache%'
+			)
+		));
+		$results = Set::extract('/CacheData/name', $results);
+		$expected = array(
+			'Cache behavior'
+		);
+		$this->assertEqual($results, $expected);
 	}
 
 	function testUseDifferentCacheEngine() {
@@ -58,8 +159,6 @@ class CacheBehaviorTestCase extends CakeTestCase {
 			'Cache behavior'
 		);
 		$this->assertEqual($results, $expected);
-
-		$ds = ConnectionManager::getDataSource('cache');
 	}
 
 	function testRememberCache() {
@@ -75,8 +174,6 @@ class CacheBehaviorTestCase extends CakeTestCase {
 		$settings = Cache::config();
 		$result = $settings['settings']['path'];
 		$this->assertEqual($result, $oldPath);
-
-		$ds = ConnectionManager::getDataSource('cache');
 	}
 
 	function testSetup() {
@@ -142,8 +239,6 @@ class CacheBehaviorTestCase extends CakeTestCase {
 			'Cache behavior'
 		);
 		$this->assertEqual($results, $expected);
-
-		$ds = ConnectionManager::getDataSource('cache');
 	}
 
 	function testSave() {

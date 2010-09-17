@@ -20,9 +20,16 @@
 class CacheBehavior extends ModelBehavior {
 
 /**
+ * Whether or not to cache this call's results
+ *
+ * @var boolean
+ */
+	var $cacheResults = false;
+
+/**
  * Settings
  *
- * @param array
+ * @var array
  */
 	var $settings;
 
@@ -40,6 +47,8 @@ class CacheBehavior extends ModelBehavior {
  * - `config` The name of an existing Cache configuration to duplicate
  * - `clearOnSave` Whether or not to delete the cache on saves
  * - `clearOnDelete` Whether or not to delete the cache on deletes
+ * - `auto` Automatically cache or look for `'cache'` in the find conditions
+ *		where the key is `true` or a duration
  * - any options taken by Cache::config() will be used if `config` is not defined
  *
  * @param Model $Model The calling model
@@ -52,7 +61,8 @@ class CacheBehavior extends ModelBehavior {
 			'engine' => 'File',
 			'duration' => '+6 hours',
 			'clearOnDelete' => true,
-			'clearOnSave' => true
+			'clearOnSave' => true,
+			'auto' => false
 		);
 		$settings = array_merge($_defaults, $config);
 
@@ -73,11 +83,28 @@ class CacheBehavior extends ModelBehavior {
 /**
  * Intercepts find to use the caching datasource instead
  *
+ * If `$queryData['cache']` is true, it will cache based on the setup settings
+ * If `$queryData['cache']` is a duration, it will cache using the setup settings
+ * and the new duration.
+ *
  * @param Model $Model The calling model
  * @param array $queryData The query
  */
 	function beforeFind(&$Model, $queryData) {
-		$Model->setDataSource('cache');
+		$this->cacheResults = false;
+		if (isset($queryData['cache'])) {
+			if ($queryData['cache'] !== true) {
+				$ds = ConnectionManager::getDataSource('cache');
+				Cache::config($ds->cacheConfig, array('duration' => $queryData['cache']));
+			}
+			$this->cacheResults = true;
+			unset($queryData['cache']);
+		}
+		$this->cacheResults = $this->settings[$Model->alias]['auto'] || $this->cacheResults;
+		
+		if ($this->cacheResults) {
+			$Model->setDataSource('cache');
+		}
 		return $queryData;
 	}
 
@@ -87,7 +114,9 @@ class CacheBehavior extends ModelBehavior {
  * @param Model $Model The calling model
  */	
 	function beforeDelete(&$Model) {
-		$Model->setDataSource('cache');
+		if ($this->cacheResults) {
+			$Model->setDataSource('cache');
+		}
 		if ($this->settings[$Model->alias]['clearOnDelete']) {
 			$this->clearCache($Model);
 		}
@@ -100,7 +129,9 @@ class CacheBehavior extends ModelBehavior {
  * @param Model $Model The calling model
  */
 	function beforeSave(&$Model) {
-		$Model->setDataSource('cache');
+		if ($this->cacheResults) {
+			$Model->setDataSource('cache');
+		}
 		if ($this->settings[$Model->alias]['clearOnSave']) {
 			$this->clearCache($Model);
 		}
@@ -115,6 +146,9 @@ class CacheBehavior extends ModelBehavior {
  * @return boolean
  */
 	function clearCache(&$Model, $queryData = null) {
+		if (!$this->cacheResults) {
+			return;
+		}
 		if ($queryData !== null) {
 			$queryData = $this->_prepareFind($Model, $queryData);
 		}
