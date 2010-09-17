@@ -248,22 +248,25 @@ class AppController extends Controller {
 		$this->set('defaultSubmitOptions', $this->defaultSubmitOptions);
 
 		// get ministry list
-		$User = ClassRegistry::init('User');
-		$ministries = $User->Roster->Involvement->Ministry->find('all', array(
+		$Ministry = ClassRegistry::init('Ministry');
+		$Group = ClassRegistry::init('Group');
+		$options = array(
 			'conditions' => array(
-				'Group.lft >=' => $this->activeUser['Group']['lft'],
 				'Ministry.active' => true,
 				'Ministry.parent_id' => null
 			),
 			'order' => 'Ministry.lft ASC',
 			'contain' => array(
-				'Group',
 				'ChildMinistry' => array(
 					'limit' => 5
 				)
 			)
-		));
-		$this->set('ministries', $ministries);
+		);
+		if (!in_array($this->activeUser['Group']['id'], array_keys($Group->findGroups(Core::read('general.private_group'), 'list', '>')))) {
+			$options['conditions']['Ministry.private'] = false;
+			$options['contain']['ChildMinistry']['conditions'] = array('ChildMinistry.private' => false);
+		}
+		$this->set('ministries', $Ministry->find('all', $options));
 	}
 	
 /**
