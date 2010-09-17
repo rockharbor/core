@@ -123,7 +123,7 @@ class AppSettingRecords extends Records {
 		array(
 			'id' => 16,
 			'name' => 'general.private_group',
-			'description' => 'The group that a user must be above in order to see private Involvements and Ministries.',
+			'description' => 'User must be above this group in order to see private Involvements and Ministries.',
 			'value' => 8,
 			'type' => 'Group'
 		),
