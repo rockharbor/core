@@ -61,6 +61,7 @@ class CoreTestCase extends CakeTestCase {
 		'app.ministries_rev',
 		'app.ministry',
 		'app.notification',
+		'app.paginate_test',
 		'app.payment',
 		'app.payment_option',
 		'app.payment_type',
@@ -191,7 +192,7 @@ class CoreTestCase extends CakeTestCase {
 		
 		$Controller->beforeFilter();
 		$Controller->Component->startup($Controller);
-		
+
 		call_user_func_array(array(&$Controller, $urlParams['action']), $urlParams['pass']);
 
 		$Controller->beforeRender();
