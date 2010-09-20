@@ -1346,7 +1346,6 @@ class MockGenerator {
         $code .= $this->_addMethodList($methods);
         $code .= "\n";
         $code .= "    function " . $this->_mock_class . "() {\n";
-		$code .= "        parent::__construct();\n";
         $code .= "        \$this->_mock = &new " . $this->_mock_base . "();\n";
         $code .= "        \$this->_mock->disableExpectationNameChecks();\n";
         $code .= "    }\n";
