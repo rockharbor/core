@@ -20,7 +20,7 @@ class CoreConfigureTestCase extends CoreTestCase {
 		$this->assertTrue(is_string($result));
 
 		$result = Core::read('development.debug_email');
-		$this->assertEqual($result, 2);
+		$this->assertEqual($result, 1);
 
 		Core::_write('a.deep.array.test', array(
 			'something' => 'cool'

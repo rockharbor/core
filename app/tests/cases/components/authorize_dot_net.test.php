@@ -29,8 +29,7 @@ class AuthorizeDotNetTestCase extends CoreTestCase {
 		$User->contain(array('Profile'));
 		$AppSetting = ClassRegistry::init('AppSetting');
 
-		$setting = $AppSetting->findByName('debug_email');
-		$id = $setting['AppSetting']['value'];
+		$id = Core::read('development.debug_email');
 
 		$debugUser = $User->findById($id);
 		$email = $debugUser['Profile']['primary_email'];

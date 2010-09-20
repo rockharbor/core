@@ -21,7 +21,7 @@ class EmailListenerTestCase extends CoreTestCase {
 
 	function testGetEmailUsers() {
 		$users = $this->EmailListener->_getEmailUsers();
-		$this->assertIdentical($users, array('2'));
+		$this->assertIdentical($users, array('1'));
 	}
 
 }
