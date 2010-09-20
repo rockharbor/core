@@ -15,6 +15,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$this->loadSettings();
 		$this->loadFixtures('Ministry', 'MinistriesRev');
 		$this->Ministries =& new TestMinistriesController();
+		$this->Ministries->__construct();
 		$this->Ministries->constructClasses();
 		$this->Ministries->QueueEmail = new MockQueueEmailComponent();
 		$this->Ministries->QueueEmail->setReturnValue('send', true);

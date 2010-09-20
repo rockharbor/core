@@ -12,6 +12,7 @@ class NotificationsControllerTestCase extends CoreTestCase {
 	function startTest() {
 		$this->loadFixtures('Notification');
 		$this->Notifications =& new TestNotificationsController();
+		$this->Notifications->__construct();
 		$this->Notifications->constructClasses();
 		$this->Notifications->QueueEmail = new MockQueueEmailComponent();
 		$this->Notifications->QueueEmail->setReturnValue('send', true);

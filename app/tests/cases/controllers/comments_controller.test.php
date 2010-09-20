@@ -12,6 +12,7 @@ class CommentsControllerTestCase extends CoreTestCase {
 	function startTest() {
 		$this->loadFixtures('Comment', 'Group');
 		$this->Comments =& new TestCommentsController();
+		$this->Comments->__construct();
 		$this->Comments->constructClasses();
 		$this->Comments->QueueEmail = new MockQueueEmailComponent();
 		$this->Comments->QueueEmail->setReturnValue('send', true);

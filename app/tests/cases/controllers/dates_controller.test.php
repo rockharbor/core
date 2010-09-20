@@ -13,6 +13,7 @@ class DatesControllerTestCase extends CoreTestCase {
 	function startTest() {
 		$this->loadFixtures('Involvement', 'Date');
 		$this->Dates =& new TestDatesController();
+		$this->Dates->__construct();
 		$this->Dates->constructClasses();
 		$this->Dates->Component->initialize($this->Dates);
 		$this->Dates->QueueEmail = new MockQueueEmailComponent();

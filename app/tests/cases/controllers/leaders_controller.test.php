@@ -11,6 +11,7 @@ class LeadersControllerTestCase extends CoreTestCase {
 
 	function startTest() {
 		$this->Leaders =& new TestLeadersController();
+		$this->Leaders->__construct();
 		$this->Leaders->constructClasses();
 		// necessary fixtures
 		$this->loadFixtures('Leader', 'User', 'Profile', 'Involvement', 'Notification', 'Group');

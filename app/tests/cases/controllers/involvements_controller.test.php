@@ -14,6 +14,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$this->loadFixtures('Involvement', 'Roster', 'User', 'InvolvementType', 'Group', 'Ministry');
 		$this->loadFixtures('MinistriesRev', 'Leader');
 		$this->Involvements =& new TestInvolvementsController();
+		$this->Involvements->__construct();
 		$this->Involvements->constructClasses();
 		$this->Involvements->Notifier = new MockNotifierComponent();
 		$this->Involvements->Notifier->setReturnValue('_render', 'Notification body text');

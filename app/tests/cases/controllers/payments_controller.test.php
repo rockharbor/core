@@ -11,6 +11,7 @@ class PaymentsControllerTestCase extends CoreTestCase {
 
 	function startTest() {
 		$this->Payments =& new TestPaymentsController();
+		$this->Payments->__construct();
 		$this->Payments->constructClasses();
 		$this->Payments->QueueEmail = new MockQueueEmailComponent();
 		$this->Payments->QueueEmail->setReturnValue('send', true);

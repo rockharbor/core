@@ -13,8 +13,8 @@ class ReportsControllerTestCase extends CoreTestCase {
 	function startTest() {
 		// necessary fixtures
 		$this->loadFixtures('User', 'Roster', 'Ministry', 'Involvement', 'Campus');
-
 		$this->Reports = new TestReportsController();
+		$this->Reports->__construct();
 		$this->Reports->constructClasses();
 		$this->Reports->Component->initialize($this->Reports);
 		$this->Reports->RequestHandler = new MockRequestHandlerComponent();

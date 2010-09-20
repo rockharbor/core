@@ -14,6 +14,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->loadFixtures('User', 'Profile', 'Group');
 		$this->loadSettings();
 		$this->Users =& new MockUsersController();
+		$this->Users->__construct();
 		$this->Users->constructClasses();
 		$this->Users->QueueEmail = new MockQueueEmailComponent();
 		$this->Users->QueueEmail->setReturnValue('send', true);

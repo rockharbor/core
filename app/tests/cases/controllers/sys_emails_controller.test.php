@@ -12,6 +12,7 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 	function startTest() {
 		$this->loadFixtures('User', 'Group', 'Involvement', 'Roster');
 		$this->SysEmails =& new MockSysEmailsController();
+		$this->SysEmails->__construct();
 		$this->SysEmails->constructClasses();
 		$this->SysEmails->QueueEmail = new MockQueueEmailComponent();
 		$this->SysEmails->QueueEmail->setReturnValue('send', true);

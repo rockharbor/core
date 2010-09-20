@@ -17,6 +17,7 @@ class RostersControllerTestCase extends CoreTestCase {
 			'Payment', 'Notification', 'PaymentOption', 'PaymentType',
 			'InvolvementType');		
 		$this->Rosters =& new MockRostersController();
+		$this->Rosters->__construct();
 		$this->Rosters->constructClasses();
 		$this->Rosters->QueueEmail = new MockQueueEmailComponent();
 		$this->Rosters->QueueEmail->setReturnValue('send', true);

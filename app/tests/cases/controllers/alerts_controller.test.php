@@ -12,6 +12,7 @@ class AlertsControllerTestCase extends CoreTestCase {
 	function startTest() {
 		$this->loadFixtures('Alert', 'Group', 'AlertsUser', 'User');
 		$this->Alerts =& new TestAlertsController();
+		$this->Alerts->__construct();
 		$this->Alerts->constructClasses();
 		$this->Alerts->Component->initialize($this->Alerts);
 		$this->Alerts->QueueEmail = new MockQueueEmailComponent();

@@ -12,6 +12,7 @@ class HouseholdsControllerTestCase extends CoreTestCase {
 	function startTest() {
 		$this->loadFixtures('Household', 'HouseholdMember', 'User', 'Profile', 'Group');
 		$this->Households =& new TestHouseholdsController();
+		$this->Households->__construct();
 		$this->Households->constructClasses();
 		$this->Households->Component->initialize($this->Households);
 		$this->Households->QueueEmail = new MockQueueEmailComponent();

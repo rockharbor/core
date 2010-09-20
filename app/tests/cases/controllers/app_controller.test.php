@@ -8,6 +8,7 @@ class AppControllerTestCase extends CoreTestCase {
 		$this->loadFixtures('User', 'Group', 'Notification', 'Alert', 'Household', 'HouseholdMember');
 		$this->loadFixtures('Leader', 'Campus', 'Ministry', 'Involvement');
 		$this->App =& new AppController();
+		$this->App->__construct();
 		$this->App->constructClasses();
 		$this->App->Component->initialize($this->App);
 		$this->App->activeUser = array(

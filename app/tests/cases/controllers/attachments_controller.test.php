@@ -13,6 +13,7 @@ class UserImagesControllerTestCase extends CoreTestCase {
 
 	function startTest() {
 		$this->Attachments =& new MockUserImagesController();
+		$this->Attachments->__construct();
 		$this->Attachments->constructClasses();
 		$this->Attachments->QueueEmail = new MockQueueEmailComponent();
 		$this->Attachments->QueueEmail->setReturnValue('send', true);

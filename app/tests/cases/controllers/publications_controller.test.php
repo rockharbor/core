@@ -12,6 +12,7 @@ class PublicationsControllerTestCase extends CoreTestCase {
 	function startTest() {
 		$this->loadFixtures('Publication', 'PublicationsUser', 'User', 'Group');
 		$this->Publications =& new TestPublicationsController();
+		$this->Publications->__construct();
 		$this->Publications->constructClasses();		
 		$this->Publications->Component->initialize($this->Publications);
 		$this->Publications->QueueEmail = new MockQueueEmailComponent();

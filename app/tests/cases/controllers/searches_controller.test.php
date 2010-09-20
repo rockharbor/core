@@ -12,6 +12,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 	function startTest() {
 		$this->loadFixtures('User', 'Ministry', 'Involvement', 'Profile', 'InvolvementType');
 		$this->Searches =& new MockSearchesController();
+		$this->Searches->__construct();
 		$this->Searches->constructClasses();
 		$this->Searches->FilterPagination->initialize($this->Searches);
 		$this->Searches->QueueEmail = new MockQueueEmailComponent();

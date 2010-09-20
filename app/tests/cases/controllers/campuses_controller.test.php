@@ -13,6 +13,7 @@ class CampusesControllerTestCase extends CoreTestCase {
 		$this->loadSettings();
 		$this->loadFixtures('Campus', 'Ministry', 'Involvement', 'CampusesRev');
 		$this->Campuses =& new TestCampusesController();
+		$this->Campuses->__construct();
 		$this->Campuses->constructClasses();
 		$this->Campuses->Component->initialize($this->Campuses);
 		$this->Campuses->QueueEmail = new MockQueueEmailComponent();

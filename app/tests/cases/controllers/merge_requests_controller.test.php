@@ -12,6 +12,7 @@ class MergeRequestsControllerTestCase extends CoreTestCase {
 
 	function startTest() {
 		$this->MergeRequests =& new TestMergeRequestsController();
+		$this->MergeRequests->__construct();
 		$this->MergeRequests->constructClasses();
 		// necessary fixtures
 		$this->loadFixtures('User', 'Profile', 'MergeRequest');
