@@ -127,14 +127,16 @@ class SluggableRoute extends CakeRoute {
 		$cache = Cache::getInstance();
 		$originalCacheConfig = $cache->__name;
 		Cache::config('Slugger.short', array(
-			'duration' => '+1 days'
+			'engine' => 'File',
+			'duration' => '+1 days',
+			'prefix' => 'slugger_',
 		));
 
 		if (!$field) {
 			$field = $Model->displayField;
 		}
 
-		$results = Cache::read('slugger_'.$Model->name.'_slugs', 'Slugger.short');
+		$results = Cache::read($Model->name.'_slugs', 'Slugger.short');
 		if (empty($results)) {
 			$results = $Model->find('list', array(
 				'fields' => array(
@@ -146,7 +148,7 @@ class SluggableRoute extends CakeRoute {
 			if (empty($results)) {
 				return array();
 			}
-			Cache::write('slugger_'.$Model->name.'_slugs', $results, 'Slugger.short');
+			Cache::write($Model->name.'_slugs', $results, 'Slugger.short');
 		}
 		$results = Set::filter($results);
 		$slugs = array_map(array($this, '_slug'), $results);
