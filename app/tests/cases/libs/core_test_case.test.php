@@ -12,7 +12,6 @@
  * Includes
  */
 App::import('Lib', 'CoreTestCase');
-App::import('Controller', 'App');
 App::import('Component', 'RequestHandler');
 App::import('Model', 'App');
 
@@ -94,7 +93,6 @@ class DummiesController extends Controller {
 	}
 }
 
-Mock::generatePartial('DummiesController', 'MockDummiesController', array('header', 'render', 'redirect'));
 Mock::generatePartial('RequestHandlerComponent', 'MockRequestHandlerComponent', array('_header'));
 
 /**
@@ -107,7 +105,7 @@ class CoreTestCaseTestCase extends CakeTestCase {
 
 	function startTest() {
 		$this->CoreTestCase =& new CoreTestCase();
-		$this->Dummies = new MockDummiesController();
+		$this->Dummies = new DummiesController();
 		$this->Dummies->constructClasses();
 		$this->Dummies->RequestHandler = new MockRequestHandlerComponent();
 		$this->Dummies->Component->initialize($this->Dummies);
@@ -142,19 +140,19 @@ class CoreTestCaseTestCase extends CakeTestCase {
 
 	function testExtension() {
 		Router::parseExtensions('csv');
-		$vars = $this->CoreTestCase->testAction('/dummies/dummy_action/test.csv');
+		$vars = $this->CoreTestCase->testAction('/dummies/dummy_action/testVar.csv');
 		$this->assertEqual($this->Dummies->params['url']['ext'], 'csv');
 	}
 
 	function testComponent() {
-		$vars = $this->CoreTestCase->testAction('/dummies/dummy_action/test');
+		$vars = $this->CoreTestCase->testAction('/dummies/dummy_action/testVar');
 		$this->assertEqual($vars['component'], 'dumb!');
 
 		$this->assertTrue($this->Dummies->Dumb->enabled);
 	}
 
 	function testBehavior() {
-		$vars = $this->CoreTestCase->testAction('/dummies/test_save/test', array(
+		$vars = $this->CoreTestCase->testAction('/dummies/test_save/testVar', array(
 			'data' => array(
 				'somedata' => 'test'
 			)
