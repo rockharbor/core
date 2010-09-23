@@ -13,3 +13,6 @@
 [submodule "app/plugins/api_generator"]
 	path = app/plugins/api_generator
 	url = http://github.com/cakephp/api_generator.git
+[submodule "app/plugins/search"]
+	path = app/plugins/search
+	url = http://github.com/CakeDC/search.git
