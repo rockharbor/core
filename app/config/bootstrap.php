@@ -70,11 +70,6 @@ Configure::write('Media.filter.image', array(
 );
 
 /**
- * Api Generator plugin settings
- */
-Configure::write('ApiGenerator.config_path', APP.'config'.DS.'api_config.ini');
-
-/**
  * Referee plugin constant to define path
  */
 define('LISTENER_PATH', APP . 'libs' . DS . 'listeners');

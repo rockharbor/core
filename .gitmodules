@@ -10,3 +10,6 @@
 [submodule "app/plugins/referee"]
 	path = app/plugins/referee
 	url = http://github.com/joebeeson/referee.git
+[submodule "app/plugins/api_generator"]
+	path = app/plugins/api_generator
+	url = http://github.com/cakephp/api_generator.git
