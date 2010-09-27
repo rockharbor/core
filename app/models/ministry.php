@@ -32,7 +32,8 @@ class Ministry extends AppModel {
 		'Logable',
 		'Containable',
 		'Tree',
-		'Confirm'
+		'Confirm',
+		'Search.Searchable'
 	);
 
 /**
@@ -137,6 +138,24 @@ class Ministry extends AppModel {
 			'table' => 'involvements_ministries',
 			'foreignKey' => 'ministry_id',
 			'associationForeignKey' => 'involvement_id'
+		)
+	);
+
+/**
+ * Filter args for the Search.Searchable behavior
+ *
+ * @var array
+ * @see Search.Searchable::parseCriteria()
+ */
+	var $filterArgs = array(
+		array(
+			'name' => 'simple',
+			'type' => 'query',
+			'method' => 'makeFulltext',
+			'field' => array(
+				'Ministry.name',
+				'Ministry.description',
+			)
 		)
 	);
 	

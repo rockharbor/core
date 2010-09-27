@@ -48,7 +48,7 @@ class ProfileFixture extends CakeTestFixture {
 		'middle_school_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
 		'high_school_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
 		'college_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
+		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'FULLTEXT' => array('type' => 'fulltext', 'column' => array('first_name', 'last_name'), 'unique' => 0)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
 

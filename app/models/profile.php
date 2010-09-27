@@ -30,7 +30,8 @@ class Profile extends AppModel {
  */
 	var $actsAs = array(
 		'Logable',
-		'Containable'
+		'Containable',
+		'Search.Searchable'
 	);
 
 /**
@@ -180,6 +181,24 @@ class Profile extends AppModel {
 		'College' => array(
 			'className' => 'School',
 			'foreignKey' => 'college_id'
+		)
+	);
+
+/**
+ * Filter args for the Search.Searchable behavior
+ *
+ * @var array
+ * @see Search.Searchable::parseCriteria()
+ */
+	var $filterArgs = array(
+		array(
+			'name' => 'simple',
+			'type' => 'query',
+			'method' => 'makeFulltext',
+			'field' => array(
+				'Profile.first_name',
+				'Profile.last_name',
+			)
 		)
 	);
 

@@ -39,7 +39,8 @@ class User extends AppModel {
 		'Logable',	
 		'Containable',
 		'Merge',
-		'Linkable.AdvancedLinkable'
+		'Linkable.AdvancedLinkable',
+		'Search.Searchable'
 	);
 
 /**
@@ -210,6 +211,23 @@ class User extends AppModel {
 			),
 			'link' => array(
 				'Profile'
+			)
+		)
+	);
+
+/**
+ * Filter args for the Search.Searchable behavior
+ *
+ * @var array
+ * @see Search.Searchable::parseCriteria()
+ */
+	var $filterArgs = array(
+		array(
+			'name' => 'simple',
+			'type' => 'query',
+			'method' => 'makeFulltext',
+			'field' => array(
+				'User.username',
 			)
 		)
 	);

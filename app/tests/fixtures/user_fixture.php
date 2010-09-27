@@ -14,7 +14,7 @@ class UserFixture extends CakeTestFixture {
 		'flagged' => array('type' => 'boolean', 'null' => false, 'default' => NULL),
 		'group_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10),
 		'reset_password' => array('type' => 'boolean', 'null' => true, 'default' => '1'),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
+		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'FULLTEXT' => array('type' => 'fulltext', 'column' => 'username', 'unique' => 0)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
 

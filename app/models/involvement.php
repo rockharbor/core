@@ -79,7 +79,8 @@ class Involvement extends AppModel {
 		'Logable',
 		'Sanitizer.Sanitize' => array(
 			'validate' => 'after'
-		)
+		),
+		'Search.Searchable'
 	);
 
 /**
@@ -172,6 +173,17 @@ class Involvement extends AppModel {
 		)
 	);
 
+/**
+ * Array of search filters for SearchesController::simple().
+ *
+ * They are merged with any existing conditions and parameters sent to
+ * Controller::paginate(). Works in conjunction with
+ * SearchesController::simple() where arguments sent after the filter name are
+ * inserted in order within the filter. Make sure to include contains or links
+ * where related model data is needed.
+ *
+ * @var array
+ */
 	var $searchFilter = array(
 		'notInvolvementAndIsLeading' => array(
 			'conditions' => array(
@@ -179,6 +191,24 @@ class Involvement extends AppModel {
 				'EXISTS (SELECT 1 FROM leaders WHERE leaders.model = "Involvement"
 					AND leaders.model_id = Involvement.id
 					AND leaders.user_id = :1:)'
+			)
+		)
+	);
+
+/**
+ * Filter args for the Search.Searchable behavior
+ *
+ * @var array
+ * @see Search.Searchable::parseCriteria()
+ */
+	var $filterArgs = array(
+		array(
+			'name' => 'simple',
+			'type' => 'query',
+			'method' => 'makeFulltext',
+			'field' => array(
+				'Involvement.description',
+				'Involvement.name'
 			)
 		)
 	);

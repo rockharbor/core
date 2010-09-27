@@ -30,14 +30,13 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/searches/index', array(
 			'data' => array(
 				'Search' => array(
-					'query' => 'a'
+					'query' => 'third core team rick alpha'
 				)
 			)
 		));
 
 		$results = Set::extract('/User/username', $vars['users']);
 		$expected = array(
-			'jharris',
 			'rickyrockharbor',
 			'rickyrockharborjr'
 		);
@@ -45,30 +44,26 @@ class SearchesControllerTestCase extends CoreTestCase {
 
 		$results = Set::extract('/Ministry/name', $vars['ministries']);
 		$expected = array(
-			'Communications',
 			'Alpha',
-			'All Church'
 		);
 		$this->assertEqual($results, $expected);
 
 		$results = Set::extract('/Involvement/name', $vars['involvements']);
 		$expected = array(
 			'CORE 2.0 testing',
-			'Third Wednesday',
-			'Team CORE'
+			'Team CORE',
 		);
 		$this->assertEqual($results, $expected);
 
 		$vars = $this->testAction('/searches/index/model:User', array(
 			'data' => array(
 				'Search' => array(
-					'query' => 'a'
+					'query' => 'rick'
 				)
 			)
 		));
 		$results = Set::extract('/User/username', $vars['users']);
 		$expected = array(
-			'jharris',
 			'rickyrockharbor',
 			'rickyrockharborjr'
 		);
