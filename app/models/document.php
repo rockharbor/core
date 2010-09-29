@@ -57,9 +57,16 @@ class Document extends MediaAppModel {
 			'baseDirectory' => MEDIA_TRANSFER
 		),
 		'Logable',
-		'Sanitizer.Sanitize' => array(
-			'file' => 'html'
-		)
+	);
+
+/**
+ * Sanitization rules for this model
+ *
+ * @var array
+ * @see Sanitizer.Sanitize
+ */
+	var $sanitize = array(
+		'file' => false
 	);
 
 /**
@@ -115,38 +122,33 @@ class Document extends MediaAppModel {
 	);
 
 /**
- * Generate a version of a file
- *
- * Uncomment to force Generator Behavior to use this method when
- * generating versions of files.
- *
- * If you want to fall back from your code back to the default method use:
- * `return $this->Behaviors->Generator->makeVersion($this, $file, $process);`
- *
- * $process an array with the following contents:
- *  directory - The destination directory (If this method was called
- *              by `make()` the directory is already created)
- *  version - The version requested to be processed (e.g. `l`)
- *  instructions - An array containing which names of methods to be called
- *
- * @param file $file Absolute path to source file
- * @param array $process version, directory, instructions
- * @return boolean `true` if version for the file was successfully stored
- */
-	// function makeVersion($file, $process) {
-	// }
-
-/**
  * Returns the relative path to the destination file
- *
- * Uncomment to force Transfer Behavior to use this method when
- * determining the destination path instead of the builtin one.
  *
  * @param array $via Information about the temporary file
  * @param array $from Information about the source file
  * @return string The path to the destination file or false
  */
-	// function transferTo($via, $from) {
-	// }
+	function transferTo($via, $from) {
+		extract($from);
+
+		$irregular = array(
+			'image' => 'img',
+			'text' => 'txt'
+		);
+		$name = Mime_Type::guessName($mimeType ? $mimeType : $file);
+
+		if (isset($irregular[$name])) {
+			$short = $irregular[$name];
+		} else {
+			$short = substr($name, 0, 3);
+		}
+
+		$path  = $short . DS;
+		$path .= strtolower(Inflector::underscore($this->model)) . DS;
+		$path .= String::uuid();
+		$path .= !empty($extension) ? '.' . strtolower($extension) : null;
+
+		return $path;
+	}
 }
 ?>

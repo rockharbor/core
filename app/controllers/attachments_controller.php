@@ -59,6 +59,7 @@ class AttachmentsController extends AppController {
 	function beforeFilter() {
 		parent::beforeFilter();
 		$this->modelClass = Inflector::singularize($this->name);
+		$this->{$this->modelClass}->model = $this->model;
 	}
 
 /**
