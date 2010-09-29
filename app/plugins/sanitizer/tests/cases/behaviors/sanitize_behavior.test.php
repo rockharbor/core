@@ -116,6 +116,50 @@ class SanitizeBehaviorTestCase extends CakeTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
+	function testSkipSanitizeField() {
+		$this->Clean->sanitize = array(
+			'name' => false,
+		);
+
+		$data = array(
+			'name' => '<b>Html!</b>',
+			'description' => '<b>More Html!</b>',
+		);
+		$this->Clean->create();
+		$this->Clean->save($data);
+		$result = $this->Clean->read();
+		$expected = array(
+			'Clean' => array(
+				'id' => 1,
+				'name' => '<b>Html!</b>',
+				'description' => 'More Html!',
+				'multi_clean_id' => null
+			)
+		);
+		$this->assertEqual($result, $expected);
+	}
+
+	function testSkipSanitizeAll() {
+		$this->Clean->sanitize = false;
+
+		$data = array(
+			'name' => '<b>Html!</b>',
+			'description' => '<b>More Html!</b>',
+		);
+		$this->Clean->create();
+		$this->Clean->save($data);
+		$result = $this->Clean->read();
+		$expected = array(
+			'Clean' => array(
+				'id' => 1,
+				'name' => '<b>Html!</b>',
+				'description' => '<b>More Html!</b>',
+				'multi_clean_id' => null
+			)
+		);
+		$this->assertEqual($result, $expected);
+	}
+
 	function testNoSanitize() {
 		$this->Clean->Behaviors->detach('Sanitize');
 

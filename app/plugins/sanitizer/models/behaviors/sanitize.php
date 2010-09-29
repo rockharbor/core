@@ -61,6 +61,7 @@ class SanitizeBehavior extends ModelBehavior {
  * @var array
  */
 	var $_methods = array(
+		'clean',
 		'html',
 		'paranoid',
 		'stripAll',
@@ -122,8 +123,11 @@ class SanitizeBehavior extends ModelBehavior {
  */
 	function _sanitize($Model) {
 		$sanitize = isset($Model->sanitize) ? $Model->sanitize : array();
+		if ($sanitize === false) {
+			return;
+		}
 		foreach ($Model->data[$Model->alias] as $field => &$value) {
-			$method = false;
+			$method = null;
 			if (isset($sanitize[$field])) {
 				$method = $sanitize[$field];
 				if (is_array($sanitize[$field])) {
@@ -131,7 +135,10 @@ class SanitizeBehavior extends ModelBehavior {
 					$options = array($sanitize[$field][$method]);
 				}
 			}
-			if ($method !== false && in_array($method, $this->_methods)) {
+			if ($method === false) {
+				continue;
+			}
+			if (in_array($method, $this->_methods)) {
 				$args = isset($options) ? $options : array();
 				array_unshift($args, $value);
 				$value = call_user_func_array(array('Sanitize', $method), $args);
@@ -140,8 +147,7 @@ class SanitizeBehavior extends ModelBehavior {
 					'remove_html' => true
 				));
 			}
-		}
-		
+		}		
 	}
 
 }

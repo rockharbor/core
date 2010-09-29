@@ -29,10 +29,26 @@ normally pass to the Sanitize method you want to use.
         )
     );
 
-If you don't define the `$sanitize` var on the model, the Sanitize behavior will
-automatically use Sanitize::clean() on every field passed on Model::save().
+If you don't define the field in the `$sanitize` var on the model, the Sanitize
+behavior will automatically use `Sanitize::clean($value, array('remove_html' => true));`
+on every field passed on `Model::save()`.
 
-Sanitization methods supported (aside from clean):
+If you wish to skip a specific field, set the field to false
+
+    // clean everything except the description
+    var $sanitize = array(
+        'description' => false
+    );
+
+If you wish to skip everything for a specific model, set the `$sanitize` var to
+false. This is useful if you want to sanitize everything by default by applying
+the behavior to your AppModel but have special case models.
+
+    // sanitize nothing on this model
+    var $sanitize = false;
+
+Sanitization methods supported:
+* clean
 * html
 * paranoid
 * stripAll
@@ -52,6 +68,11 @@ validate *then* sanitize, use:
     );
 
 See the test cases for code samples.
+
+## Notes
+
+* If you upload files, the Sanitize behavior will by default sanitize and escape
+  the file path. Make sure to set `'file' => false` in your `$sanitize` var!
 
 ## Future plans
 
