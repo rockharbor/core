@@ -224,10 +224,11 @@ echo $this->Form->end();
 	</ul>
 	
 	<div id="image"></div>
+	<div id="images_view"></div>
 	<div id="image_upload">
 	<?php
 		// register this div as 'updateable'
-		$this->Js->buffer('CORE.register(\'ImageAttachments\', \'image_upload\', \''.Router::url(array(
+		$this->Js->buffer('CORE.register(\'ImageAttachments\', \'images_view\', \''.Router::url(array(
 			'controller' => 'user_images',
 			'action' => 'index',
 			'User' => $this->data['User']['id']
@@ -239,6 +240,12 @@ echo $this->Form->end();
 			'User' => $this->data['User']['id'],
 			0, // just pull the first image
 			's'
+		)).'\')');
+		// and show the update button
+		$this->Js->buffer('CORE.register(\'ImageAttachments\', \'image_upload\', \''.Router::url(array(
+			'controller' => 'user_images',
+			'action' => 'upload',
+			'User' => $this->data['User']['id'],
 		)).'\')');
 
 		$this->Js->buffer('CORE.update(\'ImageAttachments\');');
