@@ -51,7 +51,10 @@ class Image extends AppModel {
 		'Media.Coupler' => array(
 			'baseDirectory' => MEDIA_TRANSFER
 		),
-		'Logable'
+		'Logable',
+		'Sanitizer.Sanitize' => array(
+			'file' => 'html'
+		)
 	);
 
 /**
