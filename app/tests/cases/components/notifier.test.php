@@ -3,6 +3,7 @@ App::import('Lib', 'CoreTestCase');
 App::import('Model', 'Notification');
 App::import('Component', array('Notifier', 'QueueEmail.QueueEmail'));
 
+Mock::generatePartial('NotifierComponent', 'MockNotifierComponent', array('_render'));
 Mock::generatePartial('QueueEmailComponent', 'MockQueueEmailComponent', array('send'));
 
 class TestNotifierController extends Controller {}
@@ -10,17 +11,19 @@ class TestNotifierController extends Controller {}
 class NotifierTestCase extends CoreTestCase {
 
 	function startTest() {
-		$this->loadFixtures('Notification');
-		$this->Notifier = new NotifierComponent();
-		$this->Controller = new TestNotifierController();
-		$this->Notifier->initialize($this->Controller, array());
+		$this->loadFixtures('Notification', 'User', 'Profile', 'Queue');
+		$this->loadSettings();
 		$this->Notification = ClassRegistry::init('Notification');
-		$this->Notification->QueueEmail = new MockQueueEmailComponent();
-		$this->Notification->QueueEmail->initialize($this->Controller);
-		$this->Notification->QueueEmail->setReturnValue('send', true);
+		$this->Controller = new TestNotifierController();
+		$this->Notifier = new MockNotifierComponent();
+		$this->Notifier->setReturnValue('_render', 'A notification');
+		$this->Notifier->initialize($this->Controller, array());		
+		$this->Notifier->QueueEmail = new MockQueueEmailComponent();
+		$this->Notifier->QueueEmail->setReturnValue('send', true);
 	}
 
 	function endTest() {
+		$this->unloadSettings();
 		unset($this->Notifier);
 		unset($this->Notification);
 		unset($this->Controller);
@@ -28,77 +31,63 @@ class NotifierTestCase extends CoreTestCase {
 	}
 
 	function testNotify() {
-		$this->Controller->set('name', 'Jeremy');
-		$this->Controller->set('type', 'leading');
-		$this->Controller->set('itemType', 'Team');
-		$this->Controller->set('itemName', 'Core Developers');
-
-		$this->assertTrue($this->Notifier->notify(1, 'leaders_add'));
-		$this->assertFalse($this->Notifier->notify(1, 'nonexistantnotification'));
+		$this->assertTrue($this->Notifier->notify(array(
+			'to' => 1,
+			'template' => 'ministries_edit'
+		)));
+		$this->assertFalse($this->Notifier->notify(array(
+			'to' => 100,
+			'template' => 'ministries_edit'
+		)));
 	}
 
 	function testSend() {
+		$this->Notification->User->contain(array('Profile'));
+		$user = $this->Notification->User->read(null, 1);
 
+		$this->assertTrue($this->Notifier->_send($user));
+		$expected = 'CORE <core@rockharbor.org>';
+		$this->assertEqual($this->Notifier->QueueEmail->from, $expected);
+
+		$this->assertTrue($this->Notifier->_send($user, array('from' => 2)));
+		$expected = 'ricky rockharbor <ricky@rockharbor.org>';
+		$this->assertEqual($this->Notifier->QueueEmail->from, $expected);
 	}
 
 	function testSave() {
-		$dateReg = 'preg:/([0-9]{2,4})-([0-1][0-9])-([0-3][0-9]) (?:([0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?/';
+		$this->Notification->User->contain(array('Profile'));
+		$user = $this->Notification->User->read(null, 1);
 
 		$data = array(
-			$this->Notifier->foreignKey => 1,
-			$this->Notifier->contentField => 'A notification'
+			'template' => 'leaders_add'
 		);
-
-		unset($this->Notifier->notification);
-		$this->Notifier->_save($data);
-		$this->assertError('Notifier::_save() : Notification model does not exist.');
-		$this->Notifier->notification = $this->Notification;
-
-		$this->Notifier->_save($data);
+		$this->Notifier->_save($user, $data);
 		$this->Notification->recursive = -1;
-		$result = $this->Notification->read(array('user_id', 'body', 'read', 'type'));
+		$result = $this->Notification->read(array('user_id', 'read', 'type'));
 		$expected = array(
-			$this->Notifier->notification->name => array(
+			'Notification' => array(
 				'user_id' => 1,
-				'body' => 'A notification',
 				'read' => false,
-				'type' => null
+				'type' => 'default'
 			)
 		);
 		$this->assertEqual($result, $expected);
 		
-		$this->Notifier->saveData = array(
+		$data = $this->Notifier->saveData = array(
+			'template' => 'leaders_add',
 			'type' => 'invitation'
 		);
-		$this->Notifier->_save($data);
+		$this->Notifier->_save($user, $data);
 		$this->Notification->recursive = -1;
-		$result = $this->Notification->read(array('user_id', 'body', 'read', 'type'));
+		$result = $this->Notification->read(array('user_id', 'read', 'type'));
 		$expected = array(
-			$this->Notifier->notification->name => array(
+			'Notification' => array(
 				'user_id' => 1,
-				'body' => 'A notification',
 				'read' => false,
 				'type' => 'invitation'
 			)
 		);
 		$this->assertEqual($result, $expected);
 	}
-
-	function testRender() {
-		$this->Controller->set('name', 'Jeremy');
-		$this->Controller->set('type', 'leading');
-		$this->Controller->set('itemType', 'Team');
-		$this->Controller->set('itemName', 'Core Developers');
-
-		$expected = 'Jeremy is now leading the team Core Developers.';
-		$result = $this->Notifier->_render('leaders_add');
-		$this->assertEqual($result, $expected);
-
-		$this->assertFalse($this->Notifier->_render('nonexistantnotification'));
-	}
-
 }
-
-
-
 ?>

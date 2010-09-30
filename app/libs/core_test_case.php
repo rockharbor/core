@@ -75,6 +75,7 @@ class CoreTestCase extends CakeTestCase {
 		'app.school',
 		'app.user',
 		'app.zipcode',
+		'plugin.queue_email.queue',
 	);
 
 /**
