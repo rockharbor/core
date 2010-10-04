@@ -1,6 +1,10 @@
 <?php
 
+App::import('Component', array('Notifier'));
+App::import('Core', 'Controller');
 App::import('Lib', array('CoreTestCase', 'Email'));
+
+Mock::generatePartial('NotifierComponent', 'MockNotifierComponent', array('notify'));
 
 class EmailListenerTestCase extends CoreTestCase {
 
@@ -14,9 +18,22 @@ class EmailListenerTestCase extends CoreTestCase {
 		$this->unloadSettings();
 	}
 
-	function testGetEmailer() {
-		$result = $this->EmailListener->_getEmailer();
-		$this->assertIsA($result, 'QueueEmailComponent');
+	function testError() {
+		$this->EmailListener->Notifier = new MockNotifierComponent();
+		$this->EmailListener->Notifier->initialize(new Controller());
+		$this->EmailListener->Notifier->setReturnValue('notify', true);
+		$this->assertNoErrors();
+		$this->EmailListener->error(array(
+			'message' => 'Some error',
+			'file' => 'file.php',
+			'line' => 2,
+			'level' => E_USER_ERROR
+		));
+	}
+
+	function testGetNotifier() {
+		$result = $this->EmailListener->_getNotifier();
+		$this->assertIsA($result, 'NotifierComponent');
 	}
 
 	function testGetEmailUsers() {

@@ -65,11 +65,17 @@ class EmailListener {
 		$body .= '<br />'.$message;
 		$body .= '<br />'.$file.' on line '.$line;
 
-		$this->_getEmailer()->send(array(
-			'to' => $this->_getEmailUsers(),
-			'subject' => 'Application error!',
-			'body' => $body
-		));
+		$notifyUsers = $this->_getEmailUsers();
+		foreach ($notifyUsers as $user) {
+			$this->_getNotifier()->notify(
+				array(
+					'to' => $user,
+					'subject' => 'Application error!',
+					'body' => $body,
+				), 
+				'email'
+			);
+		}
 	}
 
 /**
@@ -78,14 +84,14 @@ class EmailListener {
  * @return object
  * @access protected
  */
-	function _getEmailer() {
-		if (!isset($this->Email)) {
+	function _getNotifier() {
+		if (!isset($this->Notifier)) {
 			$this->Controller = new AppController();
 			$this->Controller->constructClasses();
-			$this->Controller->QueueEmail->initialize($this->Controller);
-			$this->Email = $this->Controller->QueueEmail;
+			$this->Controller->Notifier->initialize($this->Controller);
+			$this->Notifier = $this->Controller->Notifier;
 		}
-		return $this->Email;
+		return $this->Notifier;
 	}
 
 /**
