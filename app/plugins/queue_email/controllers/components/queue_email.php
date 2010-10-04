@@ -48,6 +48,13 @@ class QueueEmailComponent extends EmailComponent {
 	var $Model = null;
 
 /**
+ * Whether or not the component is enabled.
+ *
+ * @var boolean
+ */
+	var $enabled = true;
+
+/**
  * The initialize function
  *
  * Saves an instance of the Queue model for use
@@ -73,6 +80,9 @@ class QueueEmailComponent extends EmailComponent {
  * @access public
  */
 	function send($content = null, $template = null, $layout = null) {
+		if (!$this->enabled) {
+			return false;
+		}
 		if ($this->queue === true) {
 			$this->_oldDelivery = $this->delivery;
 			$this->delivery = 'db';
