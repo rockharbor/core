@@ -73,7 +73,7 @@ class NotifierTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($result, $expected);
 		
-		$data = $this->Notifier->saveData = array(
+		$data = array(
 			'template' => 'leaders_add',
 			'type' => 'invitation'
 		);

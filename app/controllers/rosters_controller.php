@@ -335,11 +335,10 @@ class RostersController extends AppController {
 							// include transaction id
 							$signuproster['Payment'][0]['transaction_id'] = $CreditCard->transactionId;
 							$this->Roster->saveAll($signuproster, array('validate' => false));							
-							$this->Notifier->notify($signuproster['Roster']['user_id'], 'involvements_signup');
-							$this->QueueEmail->send(array(
+							$this->Notifier->notify(array(
 								'to' => $signuproster['Roster']['user_id'],
+								'template' => 'involvements_signup',
 								'subject' => 'Signed up for '.$involvement['InvolvementType']['name'],
-								'template' => 'involvements_add_signup'
 							));
 						}
 					
@@ -350,17 +349,18 @@ class RostersController extends AppController {
 								// include transaction id
 								$signupchild['Payment'][0]['transaction_id'] = $CreditCard->transactionId;
 								$this->Roster->saveAll($signupchild, array('validate' => false));
-								$this->Notifier->notify($signupchild['Roster']['user_id'], 'involvements_signup');
+								$this->Notifier->notify(array(
+								'to' => $signupchild['Roster']['user_id'],
+								'template' => 'involvements_signup',
+								), 'notification');
 							}
 						}
 						
-						$this->Notifier->notify($this->activeUser['User']['id'], 'payments_payment_made');
-						$this->QueueEmail->send(array(
+						$this->Notifier->notify(array(
 							'to' => $this->activeUser['User']['id'],
+							'template' => 'payments_payment_made',
 							'subject' => 'Payment made for '.$involvement['InvolvementType']['name'],
-							'template' => 'payments_payment_made'
 						));
-						
 						$this->Session->setFlash('You\'ve been signed up!', 'flash'.DS.'success');
 						$this->redirect(array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvementId));
 					} else {
@@ -373,11 +373,10 @@ class RostersController extends AppController {
 					foreach ($this->data['Roster'] as $signuproster) {
 						$this->Roster->create();
 						$this->Roster->saveAll($signuproster, array('validate' => false));
-						$this->Notifier->notify($signuproster['Roster']['user_id'], 'involvements_signup');
-						$this->QueueEmail->send(array(
+						$this->Notifier->notify(array(
 							'to' => $signuproster['Roster']['user_id'],
+							'template' => 'involvements_signup',
 							'subject' => 'Signed up for '.$involvement['InvolvementType']['name'],
-							'template' => 'involvements_add_signup'
 						));
 					}
 					
@@ -386,7 +385,10 @@ class RostersController extends AppController {
 						foreach ($this->data['Child'] as $signupchild) {
 							$this->Roster->create();
 							$this->Roster->saveAll($signupchild, array('validate' => false));
-							$this->Notifier->notify($signupchild['Roster']['user_id'], 'involvements_signup');
+							$this->Notifier->notify(array(
+								'to' => $signupchild['Roster']['user_id'],
+								'template' => 'involvements_signup',
+							), 'notification');
 						}
 					}
 					
@@ -560,11 +562,10 @@ class RostersController extends AppController {
 			$this->set('involvement', $this->Roster->Involvement->read(null, $roster['Roster']['involvement_id']));
 			$this->set('user', $this->Roster->Involvement->Leader->User->read(null, $roster['Roster']['user_id']));
 			// notify the user that they left
-			$this->Notifier->notify($roster['Roster']['user_id'], 'rosters_delete');
-			$this->QueueEmail->send(array(
+			$this->Notifier->notify(array(
 				'to' => $roster['Roster']['user_id'],
-				'subject' => 'Password reset',
-				'template' => 'rosters_delete'
+				'template' => 'rosters_delete',
+				'subject' => 'Left involvement',
 			));
 			
 			// notify all the leaders
@@ -576,11 +577,10 @@ class RostersController extends AppController {
 			));
 			foreach ($leaders as $leader) {
 				$this->set('user', $this->Roster->Involvement->Leader->User->read(null, $leader['Leader']['user_id']));
-				$this->Notifier->notify($leader['Leader']['user_id'], 'rosters_delete');
-				$this->QueueEmail->send(array(
+				$this->Notifier->notify(array(
 					'to' => $leader['Leader']['user_id'],
-					'subject' => 'Password reset',
-					'template' => 'rosters_delete'
+					'template' => 'rosters_delete',
+					'subject' => 'Left involvement',
 				));
 			}
 			

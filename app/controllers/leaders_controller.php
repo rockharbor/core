@@ -79,13 +79,19 @@ class LeadersController extends AppController {
 				$this->set(compact('itemType','itemName','name','type'));
 				
 				// notify this user
-				$this->Notifier->notify($leader['User']['id'], 'leaders_add');
+				$this->Notifier->notify(array(
+					'to' => $leader['User']['id'],
+					'template' => 'leaders_add'
+				), 'notification');
 				
 				// notify the managers as well
 				$managers = $this->Leader->getManagers($this->data['Leader']['model'], $this->data['Leader']['model_id']);
 				
 				foreach ($managers as $manager) {
-					$this->Notifier->notify($manager['User']['id'], 'leaders_add');
+					$this->Notifier->notify(array(
+						'to' => $manager['User']['id'],
+						'template' => 'leaders_add'
+					), 'notification');
 				}
 				
 				$this->Session->setFlash('The leader has been added', 'flash'.DS.'success');
@@ -151,14 +157,20 @@ class LeadersController extends AppController {
 			$this->set(compact('itemType','itemName','name','type'));
 			
 			// notify this user
-			$this->Notifier->notify($leader['User']['id'], 'leaders_delete');
+			$this->Notifier->notify(array(
+					'to' => $leader['User']['id'],
+					'template' => 'leaders_delete'
+				), 'notification');
 			
 			// notify the managers as well
 			$managers = $this->Leader->getManagers($this->model, $this->modelId);
 			
 			foreach ($managers as $manager) {
 				if ($manager['User']['id'] != $this->passedArgs['User']) {
-					$this->Notifier->notify($manager['User']['id'], 'leaders_delete');
+					$this->Notifier->notify(array(
+						'to' => $manager['User']['id'],
+						'template' => 'leaders_delete'
+					), 'notification');
 				}
 			}
 		

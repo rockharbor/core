@@ -91,11 +91,23 @@ class HouseholdsController extends AppController {
 				);
 				
 				if ($addUser['Profile']['child'] && $success) {
-					$this->Notifier->notify($user, 'households_join');
+					$this->Notifier->notify(
+						array(
+							'to' => $user,
+							'template' => 'households_join'
+						),
+						'notification'
+					);
 					$this->Session->setFlash('Added that dude.', 'flash'.DS.'success');
 				} elseif (!$addUser['Profile']['child'] && $success) {
-					$this->Notifier->saveData = array('type' => 'invitation');
-					$this->Notifier->notify($user, 'households_invite');
+					$this->Notifier->notify(
+						array(
+							'to' => $user,
+							'template' => 'households_invite',
+							'type' => 'invitation'
+						),
+						'notification'
+					);
 					$this->Session->setFlash('Invited that dude.', 'flash'.DS.'success');
 				} else {
 					$this->Session->setFlash('Error joining household!', 'flash'.DS.'failure');
@@ -165,9 +177,7 @@ class HouseholdsController extends AppController {
 				),
 				'HouseholdContact'
 			)
-		)));
-
-		$this->set('user', $viewUser);		
+		)));	
 	}
 }
 ?>

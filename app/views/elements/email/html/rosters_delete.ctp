@@ -1,4 +1,4 @@
-<h1>Leaving Event</h1>
+<h1>Leaving <?php echo $involvement['InvolvementType']['name']; ?></h1>
 <p><?php 
 if ($this->activeUser['User']['id'] == $user['User']['id']) {
 	echo 'You have';

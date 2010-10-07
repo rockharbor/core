@@ -117,18 +117,17 @@ class InvolvementsController extends AppController {
 		$this->Involvement->Roster->User->contain(array('Profile'));
 		$this->set('notifier', $this->Involvement->Roster->User->read(null, $this->activeUser['User']['id']));
 
-		$this->Notifier->saveData = array('type' => 'invitation');
 		foreach ($userIds as $userId) {
 			$this->Involvement->contain(array('InvolvementType'));
 			$this->set('involvement', $this->Involvement->read(null, $to));
-
-			$this->Notifier->notify($userId, 'involvements_invite');
-			$this->QueueEmail->send(array(
-				'to' => $userId,
-				'subject' => 'Invitation',
-				'template' => 'involvements_invite'
-			));
-			
+			$this->Notifier->notify(
+				array(
+					'to' => $userId,
+					'type' => 'invitation',
+					'template' => 'involvements_invite',
+					'subject' => 'Invitation'
+				)
+			);
 			$this->Session->setFlash('The user was invited.', 'flash'.DS.'success');			
 		}
 		
@@ -153,14 +152,14 @@ class InvolvementsController extends AppController {
 		$this->set('notifier', $this->Involvement->Roster->User->read(null, $this->activeUser['User']['id']));
 		$this->set('involvement', $this->Involvement->read(null, $involvementId));
 
-		$this->Notifier->saveData = array('type' => 'invitation');
-		$this->Notifier->notify($userId, 'involvements_invite');
-		$this->QueueEmail->send(array(
-			'to' => $userId,
-			'subject' => 'Invitation',
-			'template' => 'involvements_invite'
-		));
-		
+		$this->Notifier->notify(
+			array(
+				'to' => $userId,
+				'type' => 'invitation',
+				'template' => 'involvements_invite',
+				'subject' => 'Invitation'
+			)
+		);
 		$this->redirect(array('action' => 'view', $involvementId));
 	}
 	

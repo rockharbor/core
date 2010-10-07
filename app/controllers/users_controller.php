@@ -184,11 +184,11 @@ class UsersController extends AppController {
 			if ($success) {
 				$this->Session->setFlash('Please log in with your new credentials.', 'flash'.DS.'success');
 				$this->set('reset', $this->data['User']['reset']);
-				$this->QueueEmail->send(array(
+				$this->Notifier->notify(array(
 					'to' => $this->data['User']['id'],
 					'subject' => $subject,
 					'template' => 'users_edit'
-				));
+				), 'email');
 				$this->redirect(array('action' => 'logout'));
 			} else {
 				if ($invalidPassword) {
@@ -269,13 +269,11 @@ class UsersController extends AppController {
 					'merge_id' => $this->User->id,
 					'requester_id' => $this->User->id
 				));
-				$this->Notifier->notify(Core::read('notifications.activation_requests'), 'users_request_activation');
-				$this->QueueEmail->send(array(
+				$this->Notifier->notify(array(
 					'to' => Core::read('notifications.activation_requests'),
+					'template' => 'users_request_activation',
 					'subject' => 'Account activation request',
-					'template' => 'users_request_activation'
 				));
-
 				$this->Session->setFlash('Request sent!', 'flash'.DS.'success');
 				$this->redirect('/');
 			} else {
@@ -313,15 +311,21 @@ class UsersController extends AppController {
 						'template' => 'users_register',
 						'subject' => 'Account registration'
 					));
-					$this->Notifier->notify($notifyUser['id'], 'users_register');
+					$this->Notifier->notify(array(
+						'to' => $notifyUser['id'],
+						'template' => 'users_register'
+					), 'notification');
 				}
 
 				foreach ($this->User->tmpInvited as $notifyUser) {
 					$this->User->contain(array('Profile'));
 					$this->set('notifier', $this->User->read(null, $this->activeUser['User']['id']));
 					$this->set('contact', $this->User->read(null, $this->User->id));
-					$this->Notifier->saveData = array('type' => 'invitation');
-					$this->Notifier->notify($notifyUser['id'], 'households_invite');
+					$this->Notifier->notify(array(
+						'to' => $notifyUser['id'],
+						'template' => 'households_invite',
+						'type' => 'invitation',
+					), 'notification');
 				}
 
 				$this->Session->setFlash('User(s) added and notified!', 'flash'.DS.'success');
@@ -369,20 +373,22 @@ class UsersController extends AppController {
 				foreach ($this->User->tmpAdded as $notifyUser) {
 					$this->set('username', $notifyUser['username']);
 					$this->set('password', $notifyUser['password']);
-					$sent = $this->QueueEmail->send(array(
+					$this->Notifier->notify(array(
 						'to' => $notifyUser['id'],
 						'template' => 'users_register',
 						'subject' => 'Account registration'
 					));
-					$this->Notifier->notify($notifyUser['id'], 'users_register');
 				}
 
 				foreach ($this->User->tmpInvited as $notifyUser) {
 					$this->User->contain(array('Profile'));
 					$this->set('notifier', $this->User->read(null, $this->User->id));
 					$this->set('contact', $this->User->read(null, $this->User->id));
-					$this->Notifier->saveData = array('type' => 'invitation');
-					$this->Notifier->notify($notifyUser['user'], 'households_invite');
+					$this->Notifier->notify(array(
+						'to' => $notifyUser['user'],
+						'template' => 'households_invite',
+						'type' => 'invitation'
+					), 'notification');
 				}
 
 				$this->redirect(array(

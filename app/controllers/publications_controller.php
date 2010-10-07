@@ -122,9 +122,10 @@ class PublicationsController extends SimpleCrudsController {
 		$this->set(compact('subscribe', 'publication'));
 		
 		if ($this->Publication->User->saveAll($data)) {
-			$this->Notifier->notify($userId, 'publications_toggle_subscribe');
-		} else {
-			$this->Notifier->notify($userId, 'publications_toggle_subscribe');
+			$this->Notifier->notify(array(
+				'to' => $userId,
+				'template' => 'publications_toggle_subscribe'
+			), 'notification');
 		}
 	}
 

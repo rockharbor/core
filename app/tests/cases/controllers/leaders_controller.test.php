@@ -1,10 +1,11 @@
 <?php
 /* Leaders Test cases generated on: 2010-07-14 12:07:47 : 1279136267 */
 App::import('Lib', 'CoreTestCase');
-App::import('Component', 'QueueEmail');
+App::import('Component', array('QueueEmail.QueueEmail', 'Notifier'));
 App::import('Controller', 'InvolvementLeaders');
 
-Mock::generate('QueueEmailComponent');
+Mock::generatePartial('QueueEmailComponent', 'MockQueueEmailComponent', array('_smtp', '_mail'));
+Mock::generatePartial('NotifierComponent', 'MockNotifierComponent', array('_render'));
 Mock::generatePartial('InvolvementLeadersController', 'TestLeadersController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
 
 class LeadersControllerTestCase extends CoreTestCase {
@@ -16,9 +17,12 @@ class LeadersControllerTestCase extends CoreTestCase {
 		// necessary fixtures
 		$this->loadFixtures('Leader', 'User', 'Profile', 'Involvement', 'Notification', 'Group');
 		$this->Leaders->Component->initialize($this->Leaders);
-		$this->Leaders->QueueEmail = new MockQueueEmailComponent();
-		$this->Leaders->setReturnValue('isAuthorized', true);
-		$this->Leaders->QueueEmail->setReturnValue('send', true);
+		$this->Leaders->Notifier = new MockNotifierComponent();
+		$this->Leaders->Notifier->initialize($this->Ministries);
+		$this->Leaders->Notifier->setReturnValue('_render', 'Notification body text');
+		$this->Leaders->Notifier->QueueEmail = new MockQueueEmailComponent();
+		$this->Leaders->Notifier->QueueEmail->setReturnValue('_smtp', true);
+		$this->Leaders->Notifier->QueueEmail->setReturnValue('_mail', true);
 		$this->testController = $this->Leaders;
 	}
 

@@ -55,20 +55,6 @@ class QueueEmailComponent extends EmailComponent {
 	var $enabled = true;
 
 /**
- * The initialize function
- *
- * Saves an instance of the Queue model for use
- *
- * @param Controller $controller
- * @param array $settings
- * @see Component::initialize()
- */
-	function initialize(&$controller, $settings = array()) {
-		$this->Model = ClassRegistry::init('Queue');
-		parent::initialize($controller, $settings);
-	}
-
-/**
  * Forces the email to queue instead of send if `$this->queue = true`
  *
  * @param mixed $content Either an array of text lines, or a string with
@@ -98,6 +84,7 @@ class QueueEmailComponent extends EmailComponent {
  * @return boolean Success
  */
 	function _db() {
+		$this->Model = ClassRegistry::init('Queue');
 		$this->Model->create();
 		return $this->Model->save(array(
 			'to' => serialize($this->to),

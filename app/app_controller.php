@@ -152,8 +152,6 @@ class AppController extends Controller {
 
 		$User = ClassRegistry::init('User');
 
-		$this->Notifier->notification = $User->Notification;
-
 		if ($this->Auth->user()) {
 			// keep user available
 			$this->activeUser = array_merge($this->Auth->user(), $this->Session->read('User'));
