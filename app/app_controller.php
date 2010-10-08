@@ -78,7 +78,7 @@ class AppController extends Controller {
 				'type' => 'default'
 			)
 		),
-		'QueueEmail',
+		'QueueEmail.QueueEmail',
 		'Security'
 	);
 

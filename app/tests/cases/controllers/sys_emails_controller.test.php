@@ -1,21 +1,27 @@
 <?php
 /* SysEmails Test cases generated on: 2010-08-05 08:08:46 : 1281021586 */
 App::import('Lib', 'CoreTestCase');
-App::import('Component', array('QueueEmail'));
+App::import('Component', array('QueueEmail.QueueEmail', 'Notifier'));
 App::import('Controller', 'SysEmails');
 
-Mock::generate('QueueEmailComponent');
+Mock::generatePartial('QueueEmailComponent', 'MockQueueEmailComponent', array('_smtp', '_mail'));
+Mock::generatePartial('NotifierComponent', 'MockNotifierComponent', array('_render'));
 Mock::generatePartial('SysEmailsController', 'MockSysEmailsController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
 
 class SysEmailsControllerTestCase extends CoreTestCase {
 	
 	function startTest() {
-		$this->loadFixtures('User', 'Group', 'Involvement', 'Roster');
+		$this->loadFixtures('User', 'Group', 'Involvement', 'Roster', 'Profile');
 		$this->SysEmails =& new MockSysEmailsController();
 		$this->SysEmails->__construct();
 		$this->SysEmails->constructClasses();
-		$this->SysEmails->QueueEmail = new MockQueueEmailComponent();
-		$this->SysEmails->QueueEmail->setReturnValue('send', true);
+		$this->SysEmails->Notifier = new MockNotifierComponent();
+		$this->SysEmails->Notifier->initialize($this->Involvements);
+		$this->SysEmails->Notifier->setReturnValue('_render', 'Notification body text');
+		$this->SysEmails->Notifier->QueueEmail = new MockQueueEmailComponent();
+		$this->SysEmails->Notifier->QueueEmail->initialize($this->SysEmails);
+		$this->SysEmails->Notifier->QueueEmail->setReturnValue('_smtp', true);
+		$this->SysEmails->Notifier->QueueEmail->setReturnValue('_mail', true);
 		$this->testController = $this->SysEmails;
 	}
 
@@ -60,8 +66,9 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/sys_emails/compose/model:User/User:1', array(
 			'data' => $data
 		));
+		$this->assertPattern('/1\/1/', $this->SysEmails->Session->read('Message.flash.message'));
 		$this->assertEqual($this->SysEmails->Session->read('Message.flash.element'), 'flash'.DS.'success');
-		$this->assertEqual($vars['message'], 'Test message');
+		$this->assertEqual($vars['content'], 'Test message');
 	}
 
 	function testComposeToRoster() {
@@ -89,6 +96,7 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 			'rickyrockharborjr'
 		);
 		$this->assertEqual($results, $expected);
+		$this->assertPattern('/2\/2/', $this->SysEmails->Session->read('Message.flash.message'));
 		$this->assertEqual($this->SysEmails->Session->read('Message.flash.element'), 'flash'.DS.'success');
 	}
 

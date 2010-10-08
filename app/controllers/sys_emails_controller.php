@@ -66,11 +66,11 @@ class SysEmailsController extends AppController {
 			$this->SysEmail->set($this->data);
 			
 			// send it!
-			if ($this->SysEmail->validates() && $this->QueueEmail->send(array(
+			if ($this->SysEmail->validates() && $this->Notifier->notify(array(
 				'from' => $fromUser, 
 				'to' => $toUsers, 
 				'subject' => $this->data['SysEmail']['subject']
-			))) {
+			), 'email')) {
 				$this->Session->setFlash('Message sent!', 'flash'.DS.'success');
 			} else {
 				$this->Session->setFlash('Error sending message', 'flash'.DS.'failure');
@@ -185,17 +185,24 @@ class SysEmailsController extends AppController {
 			$this->SysEmail->set($this->data);
 			
 			// send it!
-			if ($this->SysEmail->validates() && $this->QueueEmail->send(array(
-				'from' => $fromUser, 
-				'to' => $toUsers, 
-				'subject' => $this->data['SysEmail']['subject']
-			))) {
-				$this->Session->setFlash('Message sent!', 'flash'.DS.'success');
+			if ($this->SysEmail->validates()) {
+				$e = 0;
+				foreach ($toUsers as $toUser) {
+					if ($this->Notifier->notify(array(
+						'from' => $fromUser,
+						'to' => $toUser,
+						'subject' => $this->data['SysEmail']['subject']
+					), 'email')) {
+						$e++;
+					}
+				}
+
+				$this->Session->setFlash('Successfully sent '.$e.'/'.count($toUsers).' messages', 'flash'.DS.'success');
 				
 				// delete attachments related with this email
 				$this->SysEmail->gcAttachments($uid);
 			} else {
-				$this->Session->setFlash('Error sending message', 'flash'.DS.'failure');
+				$this->Session->setFlash('Error sending messages', 'flash'.DS.'failure');
 			}			
 		} else {
 			// clear old attachments that people aren't using anymore
