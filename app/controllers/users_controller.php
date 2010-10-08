@@ -228,7 +228,7 @@ class UsersController extends AppController {
 					$this->User->saveField('reset_password', true);
 					$this->Session->setFlash('Your new password has been sent via email.', 'flash'.DS.'success');
 					$this->set('password', $newPassword);
-					$this->QueueEmail->send(array(
+					$this->Notifier->notify(array(
 						'to' => $user,
 						'subject' => 'Password reset',
 						'template' => 'users_forgot_password'
@@ -306,15 +306,11 @@ class UsersController extends AppController {
 				foreach ($this->User->tmpAdded as $notifyUser) {
 					$this->set('username', $notifyUser['username']);
 					$this->set('password', $notifyUser['password']);
-					$this->QueueEmail->send(array(
+					$this->Notifier->notify(array(
 						'to' => $notifyUser['id'],
 						'template' => 'users_register',
 						'subject' => 'Account registration'
 					));
-					$this->Notifier->notify(array(
-						'to' => $notifyUser['id'],
-						'template' => 'users_register'
-					), 'notification');
 				}
 
 				foreach ($this->User->tmpInvited as $notifyUser) {

@@ -1,0 +1,1 @@
+A new password was sent to your email!
