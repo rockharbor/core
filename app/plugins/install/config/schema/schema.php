@@ -419,6 +419,7 @@ class AppSchema extends CakeSchema {
 		'cell_phone' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 10),
 		'home_phone' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 10),
 		'work_phone' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 10),
+		'work_phone_ext' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 10),
 		'primary_email' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 64),
 		'alternate_email_1' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 64),
 		'alternate_email_2' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 64),
