@@ -134,8 +134,8 @@ class SelectOptionsHelper extends AppHelper {
  */		
 	var $grades = array(
 		null => 'Unknown',
-		'p' => 'Pre-kinder',
-		'k' => 'Kindergarten',
+		-1 => 'Pre-kinder',
+		0 => 'Kindergarten',
 		1 => '1st',
 		2 => '2nd',
 		3 => '3rd',

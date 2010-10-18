@@ -429,7 +429,7 @@ class AppSchema extends CakeSchema {
 		'background_check_complete' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
 		'background_check_by' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),
 		'background_check_date' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),
-		'grade' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 1),
+		'grade' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 2),
 		'graduation_year' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 4),
 		'created_by' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
 		'created_by_type' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),
