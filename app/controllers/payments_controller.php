@@ -70,7 +70,8 @@ class PaymentsController extends AppController {
 			),
 			'contain' => array(
 				'Roster' => array(	
-					'Involvement'
+					'Involvement',
+					'PaymentOption'
 				),
 				'PaymentType',
 				'User' => array(
@@ -79,7 +80,6 @@ class PaymentsController extends AppController {
 				'Payer' => array(
 					'Profile'
 				),
-				'PaymentOption'
 			)
 		);
 		
@@ -163,11 +163,10 @@ class PaymentsController extends AppController {
 					'amount' => $amt,
 					'payment_type_id' => $this->data['Payment']['payment_type_id'],
 					'payment_placed_by' => $this->activeUser['User']['id'],
-					'payment_option_id' => $user['Roster']['payment_option_id']
 				);
 				
 				// to associate with invoice number
-				$paymentOption = $this->Payment->PaymentOption->read(null, $user['Roster']['payment_option_id']);
+				$paymentOption = $this->Payment->Roster->PaymentOption->read(null, $user['Roster']['payment_option_id']);
 			}			
 			
 			// if there was any left over, distribute to other users, otherwise, remove unwanted field

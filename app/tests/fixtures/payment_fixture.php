@@ -13,7 +13,6 @@ class PaymentFixture extends CakeTestFixture {
 		'transaction_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 64),
 		'payment_placed_by' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
 		'refunded' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
-		'payment_option_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'comment' => array('type' => 'text', 'null' => true, 'default' => NULL),
@@ -32,7 +31,6 @@ class PaymentFixture extends CakeTestFixture {
 			'transaction_id' => '1234',
 			'payment_placed_by' => 1,
 			'refunded' => 0,
-			'payment_option_id' => 1,
 			'created' => '2010-05-04 07:33:03',
 			'modified' => '2010-05-04 07:33:03',
 			'comment' => 'Jeremy Harris\'s card processed by Jeremy Harris.'
@@ -47,7 +45,6 @@ class PaymentFixture extends CakeTestFixture {
 			'transaction_id' => '1234',
 			'payment_placed_by' => 1,
 			'refunded' => 0,
-			'payment_option_id' => 3,
 			'created' => '2010-05-04 07:33:03',
 			'modified' => '2010-05-04 07:33:03',
 			'comment' => 'Jeremy Harris\'s card processed by Jeremy Harris.'
@@ -62,7 +59,6 @@ class PaymentFixture extends CakeTestFixture {
 			'transaction_id' => NULL,
 			'payment_placed_by' => 2,
 			'refunded' => 0,
-			'payment_option_id' => 3,
 			'created' => '2010-05-04 07:33:03',
 			'modified' => '2010-05-04 07:33:03',
 			'comment' => 'Ricky made a cash payment to pay his balance.'
@@ -77,7 +73,6 @@ class PaymentFixture extends CakeTestFixture {
 			'transaction_id' => NULL,
 			'payment_placed_by' => 5,
 			'refunded' => 0,
-			'payment_option_id' => 4,
 			'created' => '2010-05-04 07:33:03',
 			'modified' => '2010-05-04 07:33:03',
 			'comment' => 'Invisible user made a payment'

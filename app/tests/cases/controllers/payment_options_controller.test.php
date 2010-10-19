@@ -1,10 +1,8 @@
 <?php
 /* PaymentOptions Test cases generated on: 2010-07-16 11:07:27 : 1279303767 */
 App::import('Lib', 'CoreTestCase');
-App::import('Component', 'QueueEmail');
 App::import('Controller', 'PaymentOptions');
 
-Mock::generate('QueueEmailComponent');
 Mock::generatePartial('PaymentOptionsController', 'TestPaymentOptionsController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
 
 class PaymentOptionsControllerTestCase extends CoreTestCase {
@@ -13,8 +11,6 @@ class PaymentOptionsControllerTestCase extends CoreTestCase {
 		$this->PaymentOptions =& new TestPaymentOptionsController();
 		$this->PaymentOptions->__construct();
 		$this->PaymentOptions->constructClasses();
-		$this->PaymentOptions->QueueEmail = new MockQueueEmailComponent();
-		$this->PaymentOptions->QueueEmail->setReturnValue('send', true);
 		// necessary fixtures
 		$this->loadFixtures('PaymentOption');
 		$this->testController = $this->PaymentOptions;

@@ -1,10 +1,8 @@
 <?php
 /* Payments Test cases generated on: 2010-07-16 08:07:32 : 1279295912 */
 App::import('Lib', 'CoreTestCase');
-App::import('Component', 'QueueEmail');
 App::import('Controller', 'Payments');
 
-Mock::generate('QueueEmailComponent');
 Mock::generatePartial('PaymentsController', 'TestPaymentsController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
 
 class PaymentsControllerTestCase extends CoreTestCase {
@@ -13,8 +11,6 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		$this->Payments =& new TestPaymentsController();
 		$this->Payments->__construct();
 		$this->Payments->constructClasses();
-		$this->Payments->QueueEmail = new MockQueueEmailComponent();
-		$this->Payments->QueueEmail->setReturnValue('send', true);
 		// necessary fixtures
 		$this->loadFixtures('Payment', 'User', 'Roster', 'PaymentType', 
 		'PaymentOption', 'Involvement', 'InvolvementType', 'Profile',
@@ -45,7 +41,6 @@ class PaymentsControllerTestCase extends CoreTestCase {
 					'transaction_id' => '1234',
 					'payment_placed_by' => 1,
 					'refunded' => 0,
-					'payment_option_id' => 1,
 					'created' => '2010-05-04 07:33:03',
 					'modified' => '2010-05-04 07:33:03',
 					'comment' => 'Jeremy Harris\'s card processed by Jeremy Harris.'
@@ -62,7 +57,6 @@ class PaymentsControllerTestCase extends CoreTestCase {
 					'transaction_id' => '1234',
 					'payment_placed_by' => 1,
 					'refunded' => 0,
-					'payment_option_id' => 3,
 					'created' => '2010-05-04 07:33:03',
 					'modified' => '2010-05-04 07:33:03',
 					'comment' => 'Jeremy Harris\'s card processed by Jeremy Harris.'
@@ -87,7 +81,6 @@ class PaymentsControllerTestCase extends CoreTestCase {
 					'transaction_id' => '1234',
 					'payment_placed_by' => 1,
 					'refunded' => 0,
-					'payment_option_id' => 3,
 					'created' => '2010-05-04 07:33:03',
 					'modified' => '2010-05-04 07:33:03',
 					'comment' => 'Jeremy Harris\'s card processed by Jeremy Harris.'
@@ -104,7 +97,6 @@ class PaymentsControllerTestCase extends CoreTestCase {
 					'transaction_id' => NULL,
 					'payment_placed_by' => 2,
 					'refunded' => 0,
-					'payment_option_id' => 3,
 					'created' => '2010-05-04 07:33:03',
 					'modified' => '2010-05-04 07:33:03',
 					'comment' => 'Ricky made a cash payment to pay his balance.'

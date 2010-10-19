@@ -391,7 +391,6 @@ class AppSchema extends CakeSchema {
 		'transaction_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 64),
 		'payment_placed_by' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
 		'refunded' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
-		'payment_option_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'comment' => array('type' => 'text', 'null' => true, 'default' => NULL),
