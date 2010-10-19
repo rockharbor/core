@@ -47,11 +47,6 @@ class Document extends MediaAppModel {
 			'createDirectory' => true,
 			'alternativeFile' => 100
 		),
-		'Media.Generator' => array(
-			'baseDirectory' => MEDIA_TRANSFER,
-			'filterDirectory' => MEDIA_FILTER,
-			'createDirectory' => true,
-		),
 		'Media.Polymorphic',
 		'Media.Coupler' => array(
 			'baseDirectory' => MEDIA_TRANSFER
@@ -136,6 +131,9 @@ class Document extends MediaAppModel {
 			'text' => 'txt'
 		);
 		$name = Mime_Type::guessName($mimeType ? $mimeType : $file);
+		if (empty($extension)) {
+			$extension = Mime_Type::guessExtension($mimeType ? $mimeType : $file);
+		}
 
 		if (isset($irregular[$name])) {
 			$short = $irregular[$name];

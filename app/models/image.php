@@ -132,6 +132,9 @@ class Image extends AppModel {
 			'text' => 'txt'
 		);
 		$name = Mime_Type::guessName($mimeType ? $mimeType : $file);
+		if (empty($extension)) {
+			$extension = Mime_Type::guessExtension($mimeType ? $mimeType : $file);
+		}
 
 		if (isset($irregular[$name])) {
 			$short = $irregular[$name];
