@@ -18,7 +18,7 @@
 	url = http://github.com/CakeDC/search.git
 [submodule "app/plugins/cacher"]
 	path = app/plugins/cacher
-	url = git://codaset.com/jeremyharris/cacher.git
+	url = git@codaset.com:jeremyharris/cacher.git
 [submodule "app/plugins/sanitizer"]
 	path = app/plugins/sanitizer
 	url = git://codaset.com/jeremyharris/sanitizer.git
