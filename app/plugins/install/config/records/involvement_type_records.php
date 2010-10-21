@@ -22,6 +22,14 @@ class InvolvementTypeRecords extends Records {
 		array(
 			'id' => 2,
 			'name' => 'Team',
+		),
+		array(
+			'id' => 3,
+			'name' => 'Group',
+		),
+		array(
+			'id' => 4,
+			'name' => 'Interest List',
 		)
 	);
 
