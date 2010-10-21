@@ -13,8 +13,9 @@ class MigratorShell extends Shell {
  */
 	var $tasks = array(
 		'User',
-		'Address', 
+		'Address',
 		'Ministry',
+		'Event',
 		'Attachment',
 		'Payment',
 		'Cleanup',
