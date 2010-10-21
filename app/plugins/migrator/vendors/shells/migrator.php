@@ -1,16 +1,23 @@
 <?php
 
 Configure::write('Cache.disable', false);
+require_once 'tasks'.DS.'migrator.php';
 
 class MigratorShell extends Shell {
 
+/**
+ * Tasks should be in the ORDER they are to be performed! MigratorTask
+ * will be ignored
+ *
+ * @var array
+ */
 	var $tasks = array(
-		'Migrator', 'Cleanup',
-		'Address', 
-		'Attachment',
-		'Ministry',
-		'Payment',
 		'User',
+		'Address', 
+		'Ministry',
+		'Attachment',
+		'Payment',
+		'Cleanup',
 	);
 
 	var $_oldDbConfig = 'old';
