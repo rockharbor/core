@@ -39,17 +39,16 @@ class SluggableRoute extends CakeRoute {
 					$checkNamed = $slugField;
 					$slugField = null;
 				}
-				$Model = ClassRegistry::init($checkNamed);
-				if ($Model === false) {
+				$slugSet = $this->getSlugs($checkNamed, $slugField);
+				if ($slugSet === false) {
 					continue;
 				}
-				$slugSet = $this->getSlugs($Model, $slugField);				
 				$slugSet = array_flip($slugSet);
 				$passed = explode('/', $params['_args_']);
 				foreach ($passed as $key => $pass) {
 					if (isset($slugSet[$pass])) {
 						unset($passed[$key]);
-						$passed[] = $Model->name.':'.$slugSet[$pass];
+						$passed[] = $checkNamed.':'.$slugSet[$pass];
 					}
 				}
 				$params['_args_'] = implode('/', $passed);
@@ -75,12 +74,10 @@ class SluggableRoute extends CakeRoute {
 					$slugField = null;
 				}
 				if (isset($url[$checkNamed])) {
-					$Model = ClassRegistry::init($checkNamed);
-					if ($Model === false) {
+					$slugSet = $this->getSlugs($checkNamed, $slugField);
+					if ($slugSet === false) {
 						continue;
-					}
-					$slugSet = $this->getSlugs($Model, $slugField);
-					
+					}					
 					if (isset($slugSet[$url[$checkNamed]])) {
 						$url[] = $slugSet[$url[$checkNamed]];
 						unset($url[$checkNamed]);
@@ -122,8 +119,9 @@ class SluggableRoute extends CakeRoute {
  * Gets slugs from cache
  *
  * @param Model $Model
+ * @return mixed False if the model fails to initialize, slug set array on success
  */
-	function getSlugs(&$Model, $field = null) {
+	function getSlugs($modelName, $field = null) {
 		$cache = Cache::getInstance();
 		$originalCacheConfig = $cache->__name;
 		Cache::config('Slugger.short', array(
@@ -132,12 +130,16 @@ class SluggableRoute extends CakeRoute {
 			'prefix' => 'slugger_',
 		));
 
-		if (!$field) {
-			$field = $Model->displayField;
-		}
+		$slugs = Cache::read($modelName.'_slugs', 'Slugger.short');
+		if (empty($slugs)) {
+			$Model = ClassRegistry::init($modelName);
+			if ($Model === false) {
+				return false;
+			}
 
-		$results = Cache::read($Model->name.'_slugs', 'Slugger.short');
-		if (empty($results)) {
+			if (!$field) {
+				$field = $Model->displayField;
+			}
 			$results = $Model->find('list', array(
 				'fields' => array(
 					$Model->name.'.'.$Model->primaryKey,
@@ -148,13 +150,14 @@ class SluggableRoute extends CakeRoute {
 			if (empty($results)) {
 				return array();
 			}
-			Cache::write($Model->name.'_slugs', $results, 'Slugger.short');
-		}
-		$results = Set::filter($results);
-		$slugs = array_map(array($this, '_slug'), $results);
-		foreach ($slugs as $key => &$slug) {
-			$slug = $this->slug($key, $results);
-		}
+			
+			$results = Set::filter($results);
+			$slugs = array_map(array($this, '_slug'), $results);
+			foreach ($slugs as $key => &$slug) {
+				$slug = $this->slug($key, $results);
+			}
+			Cache::write($modelName.'_slugs', $slugs, 'Slugger.short');
+		}		
 		
 		Cache::config($originalCacheConfig);
 		return $slugs;
