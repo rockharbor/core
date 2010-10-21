@@ -16,7 +16,10 @@ class MigratorShell extends Shell {
 		'Address',
 		'Ministry',
 		'Event',
-		'Attachment',
+		'Date',
+		'Group',
+		'Image',
+		'Document',
 		'Payment',
 		'Cleanup',
 	);
