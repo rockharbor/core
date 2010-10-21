@@ -6,8 +6,8 @@ class MigratorTask extends MigratorShell {
 
 	var $_booleanMap = array(
 		'UNKNOWN' => null,
-		'T' => 1,
-		'F' => 0,
+		'T' => true,
+		'F' => false,
 	);
 
 	var $orphans = array();
