@@ -18,51 +18,27 @@ class MigratorTask extends MigratorShell {
  * @param integer $limit
  */
 	function migrate($limit = null) {
-		if ($this->_newModel === null) {
-			$this->out('You must define the _newModel var in the subtask');
-			$this->_stop();
-		}
-		if ($this->_oldTable === null) {
-			$this->out('You must define the _oldTable var in the subtask');
-			$this->_stop();
-		}
-		if ($this->_oldPk === null) {
-			$this->out('You must define the _oldPk var in the subtask');
-			$this->_stop();
-		}
-		if (!method_exists($this, 'mapData')) {
-			$this->out('You must create a mapData in the subtask to map the data');
-			$this->_stop();
-		}
+		$this->_initModels();
+		$oldData = $this->findData($limit);
+		$this->_migrate($oldData);
 
-		// import all
-		$alreadyMigrated = $this->IdLinkage->find('all', array(
-			'conditions' => array(
-				'old_table' => $this->_oldTable,
-				'new_model' => $this->_newModel
-			)
-		));
-		$alreadyMigrated = Set::extract('/IdLinkage/old_pk', $alreadyMigrated);
-		$old = new Model(false, $this->_oldTable, $this->_oldDbConfig);
-		$options = array(
-			'order' => $this->_oldPk.' ASC',
-			'conditions' => array(
-				'not' => array(
-					$this->_oldPk => $alreadyMigrated
-				)
-			)
-		);
-		if ($limit) {
-			$options['limit'] = $limit;
+		if (!empty($this->orphans)) {
+			$this->out("The following $this->_oldTable records are considered orphaned:");
+			$this->out(implode(',', $this->orphans));
+			if ($this->in('Continue with migration?', array('y', 'n')) == 'n') {
+				$this->_stop();
+				break;
+			}
 		}
-		$oldData = $old->find('all', $options);
+	}
 
-		$this->{$this->_newModel} =& ClassRegistry::init($this->_newModel);
-		if ($this->{$this->_newModel}->Behaviors->attached('Logable')) {
-			$this->{$this->_newModel}->Behaviors->detach('Logable');
-		}
-
-		foreach ($oldData as $oldRecord) {
+/**
+ * Migrates old data
+ *
+ * @param array $data
+ */
+	function _migrate($data) {
+		foreach ($data as $oldRecord) {
 			$timestart = microtime(true);
 			$oldRecord = $oldRecord['Model'];
 			$oldPk = $oldRecord[$this->_oldPk];
@@ -106,11 +82,63 @@ class MigratorTask extends MigratorShell {
 			$timetook = (microtime(true)-$timestart);
 			$this->out('Migrated '.$this->_oldTable.' # '.$oldPk.' to '.$this->_newModel.' # '.$this->{$this->_newModel}->id.' ('.$timetook.' s)');
 		}
+	}
 
-		if (!empty($this->orphans)) {
-			$this->out("The following $this->_oldTable records are considered orphaned:");
-			$this->out(implode(',', $this->orphans));
+/**
+ * Gets old data
+ *
+ * @param integer $limit
+ * @return array
+ */
+	function findData($limit = null) {
+		$options = array(
+			'order' => $this->_oldPk.' ASC',
+			'conditions' => array(
+				'not' => array(
+					$this->_oldPk => $this->_getPreMigrated()
+				)
+			)
+		);
+		if ($limit) {
+			$options['limit'] = $limit;
 		}
+		return $this->old->find('all', $options);
+	}
+
+/**
+ * mapData needs to be overridden in subtasks and should map the data to the
+ * correct fields on the new model
+ */
+	function mapData() {
+		$this->out('ERROR: mapData needs to be overridden in subtask');
+		$this->_stop();
+	}
+
+/**
+ * Initializes models
+ */
+	function _initModels() {
+		$this->{$this->_newModel} =& ClassRegistry::init($this->_newModel);
+		if ($this->{$this->_newModel}->Behaviors->attached('Logable')) {
+			$this->{$this->_newModel}->Behaviors->detach('Logable');
+		}
+		$this->old = new Model(false, $this->_oldTable, $this->_oldDbConfig);
+	}
+
+/**
+ * Gets a list of any pk's that have already migrated for this table/model
+ *
+ * @return array
+ */
+	function _getPreMigrated() {
+		// import all
+		$alreadyMigrated = $this->IdLinkage->find('all', array(
+			'conditions' => array(
+				'old_table' => $this->_oldTable,
+				'new_model' => $this->_newModel
+			)
+		));
+		return Set::extract('/IdLinkage/old_pk', $alreadyMigrated);
 	}
 
 /**
