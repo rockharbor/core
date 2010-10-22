@@ -7,7 +7,7 @@ Mock::generatePartial('CreditCard', 'MockCreditCard', array('save'));
 
 class RosterTestCase extends CoreTestCase {
 	function startTest() {
-		$this->loadFixtures('Roster', 'Payment', 'PaymentOption', 'Involvement', 'PaymentType');
+		$this->loadFixtures('Roster', 'Payment', 'PaymentOption', 'Involvement', 'PaymentType', 'Role', 'RolesRoster');
 		$CreditCard = new MockCreditCard();
 		$CreditCard->setReturnValue('save', true);
 		ClassRegistry::removeObject('CreditCard');
@@ -18,6 +18,23 @@ class RosterTestCase extends CoreTestCase {
 	function endTest() {
 		unset($this->Roster);		
 		ClassRegistry::flush();
+	}
+
+	function testRoles() {
+		$this->Roster->contain(array('Role'));
+		$results = $this->Roster->read(null, 5);
+		$results = Set::extract('/Role/id', $results);
+		$expected = array(1, 2);
+		$this->assertEqual($results, $expected);
+
+		$roster = $this->Roster->read(null, 1);
+		$roster['Role']['Role'] = array(2, 3);
+		$this->Roster->saveAll($roster);
+		$this->Roster->contain(array('Role'));
+		$results = $this->Roster->read();
+		$results = Set::extract('/Role/id', $results);
+		$expected = array(2, 3);
+		$this->assertEqual($results, $expected);
 	}
 
 	function testSetDefaultChildcare() {
@@ -74,16 +91,12 @@ class RosterTestCase extends CoreTestCase {
 			'roster_status' => 1,
 			'parent' => 1,
 			'payment_option_id' => 2,
-			'role_id' => null
 		);
 		$this->assertEqual($result, $expected);
 	}
 
 	function testSetDefaultDataNoPayment() {
 		$involvement = $this->Roster->Involvement->read(null, 5);
-		$defaults = array(
-			'role_id' => 2
-		);
 		$roster = array(
 			'Roster' => array(
 				'user_id' => 1
@@ -91,7 +104,7 @@ class RosterTestCase extends CoreTestCase {
 		);
 
 		$newRoster = $this->Roster->setDefaultData(compact(
-			'roster', 'involvement', 'defaults'
+			'roster', 'involvement'
 		));
 
 		$result = $newRoster;
@@ -102,7 +115,6 @@ class RosterTestCase extends CoreTestCase {
 				'roster_status' => 1,
 				'parent' => null,
 				'payment_option_id' => null,
-				'role_id' => 2
 			)
 		);
 		$this->assertEqual($result, $expected);

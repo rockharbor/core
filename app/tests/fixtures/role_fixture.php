@@ -16,18 +16,26 @@ class RoleFixture extends CakeTestFixture {
 
 	var $records = array(
 		array(
-			'id' => 2,
-			'ministry_id' => 1,
+			'id' => 1,
+			'ministry_id' => 4,
 			'name' => 'Snack Bringer',
 			'description' => 'Person who brings the snacks.',
 			'created' => '2010-04-13 14:29:18',
 			'modified' => '2010-04-13 14:29:18'
 		),
 		array(
-			'id' => 9,
-			'ministry_id' => 1,
+			'id' => 2,
+			'ministry_id' => 4,
+			'name' => 'Snack Eater',
+			'description' => 'Person who eats the snacks!',
+			'created' => '2010-04-14 07:16:13',
+			'modified' => '2010-04-14 07:16:13'
+		),
+		array(
+			'id' => 3,
+			'ministry_id' => 3,
 			'name' => 'test',
-			'description' => 'asdfas',
+			'description' => 'test',
 			'created' => '2010-04-14 07:16:13',
 			'modified' => '2010-04-14 07:16:13'
 		),

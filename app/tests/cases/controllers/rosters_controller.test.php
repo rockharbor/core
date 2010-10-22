@@ -15,7 +15,7 @@ class RostersControllerTestCase extends CoreTestCase {
 	function startTest() {
 		$this->loadFixtures('Roster', 'User', 'Involvement', 'Group', 'Date', 
 			'Payment', 'Notification', 'PaymentOption', 'PaymentType',
-			'InvolvementType');		
+			'InvolvementType', 'Role', 'RolesRoster');
 		$this->Rosters =& new MockRostersController();
 		$this->Rosters->__construct();
 		$this->Rosters->constructClasses();
@@ -98,7 +98,6 @@ class RostersControllerTestCase extends CoreTestCase {
 				'payment_type_id' => 1,
 				'pay_later' => false,
 				'pay_deposit_amount' => false,
-				'role_id' => null
 			),
 			'Roster' => array(
 				array(
@@ -148,7 +147,6 @@ class RostersControllerTestCase extends CoreTestCase {
 				'payment_type_id' => 1,
 				'pay_later' => false,
 				'pay_deposit_amount' => false,
-				'role_id' => null
 			),
 			'Roster' => array(
 				array(
@@ -187,8 +185,9 @@ class RostersControllerTestCase extends CoreTestCase {
 	}
 
 	function testEdit() {
+		$this->Rosters->Roster->contain(array('Role'));
 		$data = $this->Rosters->Roster->read(null, 5);
-		$data['Roster']['role_id'] = 1;
+		$data['Role']['Role'] = array(3);
 		
 		$vars = $this->testAction('/rosters/edit/5', array(
 			'data' => $data
@@ -196,7 +195,10 @@ class RostersControllerTestCase extends CoreTestCase {
 		$result = $this->Rosters->Session->read('Message.flash.element');
 		$this->assertEqual($result, 'flash'.DS.'success');
 
-		$this->assertEqual($this->Rosters->Roster->field('role_id'), 1);
+		$this->Rosters->Roster->contain(array('Role'));
+		$roster = $this->Rosters->Roster->read();
+		$roles = Set::extract('/Role/id', $roster);
+		$this->assertEqual($roles, array(3));
 		
 		$data['Child'] = array(
 			array(

@@ -82,10 +82,6 @@ class Roster extends AppModel {
 			'className' => 'Involvement',
 			'foreignKey' => 'involvement_id'
 		),
-		'Role' => array(
-			'className' => 'Role',
-			'foreignKey' => 'role_id'
-		),
 		'PaymentOption' => array(
 			'className' => 'PaymentOption',
 			'foreignKey' => 'payment_option_id'
@@ -112,6 +108,20 @@ class Roster extends AppModel {
 			'foreignKey' => 'roster_id',
 			'dependent' => false
 		)
+	);
+
+/**
+ * HasAndBelongsToMany association link
+ *
+ * @var array
+ */
+	var $hasAndBelongsToMany = array(
+		'Role' => array(
+			'className' => 'Role',
+			'foreignKey' => 'roster_id',
+			'associationForeignKey' => 'role_id',
+			'dependent' => true,
+		),
 	);
 
 /**
@@ -147,7 +157,6 @@ class Roster extends AppModel {
 			'payment_type_id' => null,
 			'pay_later' => false,
 			'pay_deposit_amount' => false,
-			'role_id' => null
 		);
 		$options['defaults'] = array_merge($_defaults, $options['defaults']);
 		
@@ -161,7 +170,6 @@ class Roster extends AppModel {
 		$roster['Roster']['roster_status'] = 1;
 		$roster['Roster']['parent'] = $parent;
 		$roster['Roster']['payment_option_id'] = $defaults['payment_option_id'];
-		$roster['Roster']['role_id'] = $defaults['role_id'];
 		
 		// only add a payment if we're taking one
 		if ($involvement['Involvement']['take_payment'] && $defaults['payment_option_id'] > 0 && !$defaults['pay_later']) {
