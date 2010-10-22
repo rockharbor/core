@@ -17,19 +17,16 @@ class ImageTask extends MigratorTask {
  * @param integer $limit
  */
 	function migrate($limit = null) {
-		$this->{$this->_newModel} =& ClassRegistry::init($this->_newModel);
-		if ($this->{$this->_newModel}->Behaviors->attached('Logable')) {
-			$this->{$this->_newModel}->Behaviors->detach('Logable');
-		}
+		$this->_initModels();
 		$this->{$this->_newModel}->model = 'Image';
-		$this->old = new Model(false, $this->_oldTable, $this->_oldDbConfig);
 		/**
 		 * Person
 		 */
 		$this->_oldPkMapping =array(
 			'owner_id' => array('person' => 'User')
 		);
-		$this->migrateData('person');
+		$oldData = $this->findData($limit, 'person');
+		$this->_migrate($oldData);
 
 		/**
 		 * Ministry
@@ -37,66 +34,33 @@ class ImageTask extends MigratorTask {
 		$this->_oldPkMapping =array(
 			'owner_id' => array('ministry' => 'Ministry')
 		);
-		$this->migrateData('ministry');
+		$oldData = $this->findData($limit, 'ministry');
+		$this->_migrate($oldData);
 
 		if (!empty($this->orphans)) {
 			$this->out("The following $this->_oldTable records are considered orphaned:");
 			$this->out(implode(',', $this->orphans));
+			if ($this->in('Continue with migration?', array('y', 'n')) == 'n') {
+				$this->_stop();
+				break;
+			}
 		}
 	}
 
-	function migrateData($type) {
-		$alreadyMigrated = $this->IdLinkage->find('all', array(
-			'conditions' => array(
-				'old_table' => $this->_oldTable,
-				'new_model' => $this->_newModel
-			)
-		));
-		$alreadyMigrated = Set::extract('/IdLinkage/old_pk', $alreadyMigrated);
-
+	function findData($limit = null, $type = null) {
 		$options = array(
 			'order' => 'id',
 			'conditions' => array(
 				'not' => array(
-					$this->_oldPk => $alreadyMigrated
+					$this->_oldPk => $this->_getPreMigrated()
 				),
 				'owner_type' => $type
 			)
 		);
-		$data = $this->old->find('all', $options);
-
-		foreach ($data as $oldRecord) {
-			$oldRecord = $oldRecord['Model'];
-			$oldPk = $oldRecord[$this->_oldPk];
-			$this->_editingRecord = $oldRecord;
-			$this->_prepareData($this->_oldTable);
-			$this->mapData();
-
-			$this->{$this->_newModel}->create();
-			$success = $this->{$this->_newModel}->saveAll($this->_editingRecord, array('validate' => false));
-			if (!$success) {
-				$this->out('Couldn\'t save '.$this->_newModel.' # '.$oldRecord[$this->_oldPk]);
-				$this->out(print_r($this->_editingRecord));
-				if ($this->in('Continue with migration?', array('y', 'n')) == 'n') {
-					$this->_stop();
-					break;
-				}
-			}
-
-			// save new/old pk map
-			if (!in_array($oldPk, $this->orphans)) {
-				$this->IdLinkage->create();
-				$this->IdLinkage->save(array(
-					'IdLinkage' => array(
-						'old_pk' => $oldPk,
-						'old_table' => $this->_oldTable,
-						'new_pk' => $this->{$this->_newModel}->id,
-						'new_model' => $this->_newModel
-					)
-				));
-			}
-			$this->out('Migrated '.$this->_oldTable.' # '.$oldPk.' to '.$this->_newModel.' # '.$this->{$this->_newModel}->id.' ('.$timetook.' s)');
+		if ($limit) {
+			$options['limit'] = $limit;
 		}
+		return $this->old->find('all', $options);
 	}
 
 	function mapData() {		
@@ -111,8 +75,6 @@ class ImageTask extends MigratorTask {
 				'file' => ROOT.DS.'attachments'.DS.$this->_editingRecord['filename'].'.'.$this->_editingRecord['extension']
 			)
 		);
-
-		$this->Image->model = $newAttachment['Image']['model'];
 	}
 
 }

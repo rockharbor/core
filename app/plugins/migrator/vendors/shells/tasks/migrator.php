@@ -66,17 +66,19 @@ class MigratorTask extends MigratorShell {
 			}
 
 			$start = microtime(true);
-			// save new/old pk map
-			if (!in_array($oldPk, $this->orphans)) {
-				$this->IdLinkage->create();
-				$this->IdLinkage->save(array(
-					'IdLinkage' => array(
-						'old_pk' => $oldPk,
-						'old_table' => $this->_oldTable,
-						'new_pk' => $this->{$this->_newModel}->id,
-						'new_model' => $this->_newModel
-					)
-				));
+			if ($this->addLinkages) {
+				// save new/old pk map
+				if (!in_array($oldPk, $this->orphans)) {
+					$this->IdLinkage->create();
+					$this->IdLinkage->save(array(
+						'IdLinkage' => array(
+							'old_pk' => $oldPk,
+							'old_table' => $this->_oldTable,
+							'new_pk' => $this->{$this->_newModel}->id,
+							'new_model' => $this->_newModel
+						)
+					));
+				}
 			}
 			//$this->out('link: '.(microtime(true)-$start));
 			$timetook = (microtime(true)-$timestart);

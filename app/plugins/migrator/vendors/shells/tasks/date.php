@@ -1,6 +1,6 @@
 <?php
 
-class GroupTask extends MigratorTask {
+class DateTask extends MigratorTask {
 
 	var $_oldPkMapping = array(
 		'involvement_id' => array('events' => 'Involvement')

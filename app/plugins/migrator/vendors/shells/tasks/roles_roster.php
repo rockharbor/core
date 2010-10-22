@@ -1,39 +1,22 @@
 <?php
 
-class DocumentTask extends MigratorTask {
+class RolesRosterTask extends MigratorTask {
 
-	var $_documentTypeMap = array(
-		'EVENT' => 'Involvement',
-		'TEAM' => 'Involvement',
-		'GROUP' => 'Involvement',
-		'PERSON' => 'User'
-	);
+	var $_oldTable = 'role_assignments';
+	var $_oldPk = 'role_assignment_id';
+	var $_newModel = 'RolesRoster';
 
-	var $_oldTable = 'documents';
-	var $_oldPk = 'document_id';
-	var $_newModel = 'Attachment';
-
-/**
- * Migrates data using the subtask's definitions
- *
- * @param integer $limit
- */
 	function migrate($limit = null) {
+		$this->roster = ClassRegistry::init('Roster');
+
 		$this->_initModels();
-		$this->{$this->_newModel}->model = 'Document';
-		/**
-		 * Person
-		 */
-		$this->_oldPkMapping =array(
-			'type_id' => array('person' => 'User')
-		);
-		$oldData = $this->findData($limit, 'PERSON');
-		$this->_migrate($oldData);
 
 		/**
 		 * Event
 		 */
 		$this->_oldPkMapping =array(
+			'person_id' => array('person' => 'User'),
+			'role_id' => array('role' => 'Role'),
 			'type_id' => array('events' => 'Involvement')
 		);
 		$oldData = $this->findData($limit, 'EVENT');
@@ -43,6 +26,8 @@ class DocumentTask extends MigratorTask {
 		 * Team
 		 */
 		$this->_oldPkMapping =array(
+			'person_id' => array('person' => 'User'),
+			'role_id' => array('role' => 'Role'),
 			'type_id' => array('teams' => 'Involvement')
 		);
 		$oldData = $this->findData($limit, 'TEAM');
@@ -52,6 +37,8 @@ class DocumentTask extends MigratorTask {
 		 * Group
 		 */
 		$this->_oldPkMapping =array(
+			'person_id' => array('person' => 'User'),
+			'role_id' => array('role' => 'Role'),
 			'type_id' => array('groups' => 'Involvement')
 		);
 		$oldData = $this->findData($limit, 'GROUP');
@@ -69,12 +56,12 @@ class DocumentTask extends MigratorTask {
 
 	function findData($limit = null, $type = null) {
 		$options = array(
-			'order' => 'document_id',
+			'order' => $this->_oldPk,
 			'conditions' => array(
 				'not' => array(
 					$this->_oldPk => $this->_getPreMigrated()
 				),
-				'document_type' => $type
+				'type' => $type
 			)
 		);
 		if ($limit) {
@@ -84,19 +71,19 @@ class DocumentTask extends MigratorTask {
 	}
 
 	function mapData() {
-		$friendly = explode('.', $this->_editingRecord['displayname']);
-		array_pop($friendly);
-		$friendly = implode('.', $friendly);
+		// get roster id
+		$type = strtolower($this->_editingRecord['type']);
+		$roster = $this->roster->find('first', array(
+			'conditions' => array(
+				'user_id' => $this->_editingRecord['person_id'],
+				'involvement_id' => $this->_editingRecord['type_id'],
+			)
+		));
 
 		$this->_editingRecord = array(
-			'Document' => array(
-				'model' => $this->_editingRecord['document_type'],
-				'foreign_key' => $this->_editingRecord['type_id'],
-				'alternative' => low($friendly),
-				'group' => 'Document',
-				'approved' => true,
-				'created' => $this->_editingRecord['created'],
-				'file' => ROOT.DS.'attachments'.DS.$this->_editingRecord['filename']
+			'RolesRoster' => array(
+				'role_id' => $this->_editingRecord['role_id'],
+				'roster_id' => $roster['Roster']['id']
 			)
 		);
 	}

@@ -6,27 +6,49 @@ require_once 'tasks'.DS.'migrator.php';
 class MigratorShell extends Shell {
 
 /**
- * Tasks should be in the ORDER they are to be performed! MigratorTask
- * will be ignored
+ * Tasks should be in the ORDER they are to be performed! 
  *
  * @var array
  */
 	var $tasks = array(
+		'School',
+		'JobCategory',
 		'User',
+		'Household',
+		'HouseholdMember',
+		'StaffComment',
+		'PastoralComment',
 		'Address',
 		'Ministry',
 		'Event',
 		'Date',
 		'Group',
+		'Team',
+		'Manager',
+		'EventLeader',
+		'GroupLeader',
+		'TeamLeader',
+		'PaymentOption',
+		'Question',
+		'EventRoster',
+		'TeamRoster',
+		'GroupRoster',
+		'Role',
+		'RolesRoster',
 		'Image',
 		'Document',
 		'Payment',
+		'PaymentRoster',
+		'Publication',
+		'Subscription',
+		'Region',
+		'Zipcode',		
 		'Cleanup',
 	);
 
 	var $_oldDbConfig = 'old';
 
-	var $linkages = array();
+	var $addLinkages = true;
 
 	function migrate() {
 		ini_set('memory_limit', '256M');
@@ -45,7 +67,7 @@ class MigratorShell extends Shell {
 			$this->out($this->args[0].' task isn\'t attached.');
 		}
 
-		$this->Cleanup->cleanup();
+		//$this->Cleanup->cleanup();
 
 		$this->out('Migration complete!');
 	}

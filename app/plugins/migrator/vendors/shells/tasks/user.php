@@ -53,6 +53,11 @@ class UserTask extends MigratorTask {
 
 	var $_oldPkMapping = array(
 		'entered_by_person_id' => array('person' => 'User'),
+		'grade_school_id' => array('schools' => 'School'),
+		'middle_school_id' => array('schools' => 'School'),
+		'high_school_id' => array('schools' => 'School'),
+		'college_id' => array('schools' => 'School'),
+		'job_category_id' => array('job_categories' => 'JobCategory'),
 	);
 
 	var $_oldTable = 'person';
