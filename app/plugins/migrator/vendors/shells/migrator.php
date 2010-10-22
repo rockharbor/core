@@ -53,13 +53,15 @@ class MigratorShell extends Shell {
 	function _createLinkageTable() {
 		$ds = ConnectionManager::getDataSource('default');
 		$ds->execute('
-		CREATE TABLE IF NOT EXISTS `id_linkages`(
-			id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,			
-			old_pk VARCHAR(100),
-			old_table VARCHAR(100),
-			new_model VARCHAR(100),
-			new_pk VARCHAR(100)	
-      ) TYPE=innodb;
+		CREATE TABLE IF NOT EXISTS `id_linkages` (
+		  `id` int(11) NOT NULL AUTO_INCREMENT,
+		  `old_pk` varchar(100) DEFAULT NULL,
+		  `old_table` varchar(100) DEFAULT NULL,
+		  `new_model` varchar(100) DEFAULT NULL,
+		  `new_pk` varchar(100) DEFAULT NULL,
+		  PRIMARY KEY (`id`),
+		  KEY `index_2` (`old_pk`,`old_table`,`new_model`)
+		) ENGINE=InnoDB DEFAULT CHARSET=latin1
 		');
 	}
 
