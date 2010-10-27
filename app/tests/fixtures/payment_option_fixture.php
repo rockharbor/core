@@ -4,17 +4,17 @@ class PaymentOptionFixture extends CakeTestFixture {
 	var $name = 'PaymentOption';
 
 	var $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
-		'involvement_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
+		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
+		'involvement_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
 		'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 64),
-		'total' => array('type' => 'float', 'null' => true, 'default' => NULL, 'length' => 10),
-		'deposit' => array('type' => 'float', 'null' => true, 'default' => NULL, 'length' => 10),
-		'childcare' => array('type' => 'float', 'null' => true, 'default' => NULL, 'length' => 10),
+		'total' => array('type' => 'float', 'null' => true, 'default' => NULL, 'length' => '7,2'),
+		'deposit' => array('type' => 'float', 'null' => true, 'default' => NULL, 'length' => '7,2'),
+		'childcare' => array('type' => 'float', 'null' => true, 'default' => NULL, 'length' => '7,2'),
 		'account_code' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),
 		'tax_deductible' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
+		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'involvement_key' => array('column' => 'involvement_id', 'unique' => 0)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
 

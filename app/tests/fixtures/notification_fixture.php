@@ -4,14 +4,14 @@ class NotificationFixture extends CakeTestFixture {
 	var $name = 'Notification';
 
 	var $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
-		'user_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
+		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
+		'user_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'read' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'type' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 45),
-		'body' => array('type' => 'text', 'null' => false, 'default' => NULL),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
+		'body' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 500),
+		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'user_key' => array('column' => 'user_id', 'unique' => 0)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
 

@@ -4,19 +4,19 @@ class PaymentFixture extends CakeTestFixture {
 	var $name = 'Payment';
 
 	var $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
-		'user_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
-		'roster_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
-		'amount' => array('type' => 'float', 'null' => true, 'default' => NULL, 'length' => 10),
-		'payment_type_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
+		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
+		'user_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
+		'roster_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8),
+		'amount' => array('type' => 'float', 'null' => true, 'default' => NULL, 'length' => '7,2'),
+		'payment_type_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8),
 		'number' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 20),
 		'transaction_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 64),
-		'payment_placed_by' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
+		'payment_placed_by' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8),
 		'refunded' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'comment' => array('type' => 'text', 'null' => true, 'default' => NULL),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
+		'comment' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 2500),
+		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'belongsto_key' => array('column' => array('user_id', 'roster_id', 'payment_type_id', 'payment_placed_by'), 'unique' => 0)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
 

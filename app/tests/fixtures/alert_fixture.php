@@ -4,15 +4,15 @@ class AlertFixture extends CakeTestFixture {
 	var $name = 'Alert';
 
 	var $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
+		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 45),
-		'description' => array('type' => 'text', 'null' => false, 'default' => NULL),
+		'description' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 2500),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
-		'group_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10),
+		'group_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
 		'importance' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 12),
 		'expires' => array('type' => 'date', 'null' => true, 'default' => NULL),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
+		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'group_key' => array('column' => 'group_id', 'unique' => 0)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
 

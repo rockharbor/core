@@ -4,13 +4,13 @@ class AnswerFixture extends CakeTestFixture {
 	var $name = 'Answer';
 
 	var $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
-		'roster_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
-		'question_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
-		'description' => array('type' => 'text', 'null' => true, 'default' => NULL),
+		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
+		'roster_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
+		'question_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
+		'description' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 250),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
+		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'roster_key' => array('column' => 'roster_id', 'unique' => 0), 'question_key' => array('column' => 'question_id', 'unique' => 0)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
 

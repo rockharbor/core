@@ -4,15 +4,15 @@ class GroupFixture extends CakeTestFixture {
 	var $name = 'Group';
 
 	var $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
-		'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 45),
+		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
+		'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 45, 'key' => 'unique'),
 		'conditional' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 1),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'parent_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
-		'lft' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10),
-		'rght' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
+		'parent_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),
+		'lft' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
+		'rght' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8),
+		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'tree' => array('column' => array('lft', 'rght'), 'unique' => 1), 'name_key' => array('column' => 'name', 'unique' => 1)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
 

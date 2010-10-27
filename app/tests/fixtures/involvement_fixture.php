@@ -4,14 +4,14 @@ class InvolvementFixture extends CakeTestFixture {
 	var $name = 'Involvement';
 
 	var $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
-		'ministry_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
-		'involvement_type_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
-		'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 64),
+		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
+		'ministry_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
+		'involvement_type_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
+		'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 64, 'key' => 'index'),
 		'description' => array('type' => 'text', 'null' => true, 'default' => NULL),
 		'roster_limit' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 3),
 		'roster_visible' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
-		'private' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
+		'private' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'signup' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'take_payment' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'offer_childcare' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
@@ -19,7 +19,7 @@ class InvolvementFixture extends CakeTestFixture {
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'force_payment' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'FULLTEXT' => array('type' => 'fulltext', 'column' => array('name', 'description'), 'unique' => 0)),
+		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'ministry_key' => array('column' => 'ministry_id', 'unique' => 0), 'involvement_type_key' => array('column' => 'involvement_type_id', 'unique' => 0), 'fulltext' => array('column' => array('name', 'description'), 'unique' => 0, 'type' => 'fulltext')),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
 

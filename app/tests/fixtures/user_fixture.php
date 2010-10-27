@@ -4,17 +4,17 @@ class UserFixture extends CakeTestFixture {
 	var $name = 'User';
 
 	var $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
-		'username' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),
-		'password' => array('type' => 'string', 'null' => true, 'default' => NULL),
+		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
+		'username' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 32, 'key' => 'index'),
+		'password' => array('type' => 'string', 'null' => false, 'default' => NULL),
 		'active' => array('type' => 'boolean', 'null' => true, 'default' => '1'),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'last_logged_in' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'flagged' => array('type' => 'boolean', 'null' => false, 'default' => NULL),
-		'group_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10),
+		'group_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8),
 		'reset_password' => array('type' => 'boolean', 'null' => true, 'default' => '1'),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'FULLTEXT' => array('type' => 'fulltext', 'column' => 'username', 'unique' => 0)),
+		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'login' => array('column' => array('username', 'password', 'active'), 'unique' => 0), 'fulltext' => array('column' => 'username', 'unique' => 0, 'type' => 'fulltext')),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
 

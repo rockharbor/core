@@ -4,18 +4,18 @@ class AttachmentFixture extends CakeTestFixture {
 	var $name = 'Attachment';
 
 	var $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
-		'model' => array('type' => 'string', 'null' => false, 'default' => NULL),
+		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
+		'model' => array('type' => 'string', 'null' => false, 'default' => NULL, 'key' => 'index'),
 		'foreign_key' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 45),
 		'dirname' => array('type' => 'string', 'null' => true, 'default' => NULL),
 		'basename' => array('type' => 'string', 'null' => false, 'default' => NULL),
-		'checksum' => array('type' => 'string', 'null' => false, 'default' => NULL),
+		'checksum' => array('type' => 'string', 'null' => true, 'default' => NULL),
 		'alternative' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 50),
 		'group' => array('type' => 'string', 'null' => true, 'default' => NULL),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'approved' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
+		'approved' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
+		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'model_key' => array('column' => array('model', 'foreign_key'), 'unique' => 0)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
 

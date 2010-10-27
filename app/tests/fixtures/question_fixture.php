@@ -4,13 +4,13 @@ class QuestionFixture extends CakeTestFixture {
 	var $name = 'Question';
 
 	var $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
-		'involvement_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
+		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
+		'involvement_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
 		'order' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 2),
-		'description' => array('type' => 'text', 'null' => true, 'default' => NULL),
+		'description' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 1000),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
+		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'involvement_key' => array('column' => 'involvement_id', 'unique' => 0)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
 

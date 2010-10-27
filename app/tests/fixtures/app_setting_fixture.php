@@ -4,12 +4,12 @@ class AppSettingFixture extends CakeTestFixture {
 	var $name = 'AppSetting';
 
 	var $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
+		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 45),
 		'description' => array('type' => 'string', 'null' => false, 'default' => NULL),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
-		'value' => array('type' => 'text', 'null' => true, 'default' => NULL),
+		'value' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 1000),
 		'type' => array('type' => 'string', 'null' => false, 'default' => '0', 'length' => 45),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')

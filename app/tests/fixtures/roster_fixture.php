@@ -4,15 +4,15 @@ class RosterFixture extends CakeTestFixture {
 	var $name = 'Roster';
 
 	var $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
-		'user_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10),
-		'involvement_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10),
-		'payment_option_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
+		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
+		'user_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8),
+		'involvement_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
+		'payment_option_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
-		'parent_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
-		'roster_status' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
+		'parent_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),
+		'roster_status' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 2),
+		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'involvement_key' => array('column' => 'involvement_id', 'unique' => 0)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
 

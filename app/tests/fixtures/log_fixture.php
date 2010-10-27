@@ -4,7 +4,7 @@ class LogFixture extends CakeTestFixture {
 	var $name = 'Log';
 
 	var $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
+		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'title' => array('type' => 'string', 'null' => true, 'default' => NULL),
 		'description' => array('type' => 'string', 'null' => true, 'default' => NULL),
 		'model' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),

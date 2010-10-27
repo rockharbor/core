@@ -4,7 +4,7 @@ class PublicationFixture extends CakeTestFixture {
 	var $name = 'Publication';
 
 	var $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
+		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 64),
 		'link' => array('type' => 'string', 'null' => true, 'default' => NULL),
 		'description' => array('type' => 'string', 'null' => true, 'default' => NULL),

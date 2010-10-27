@@ -4,7 +4,7 @@ class MergeRequestFixture extends CakeTestFixture {
 	var $name = 'MergeRequest';
 
 	var $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
+		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'model' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 45),
 		'model_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10),
 		'merge_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10),

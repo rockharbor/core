@@ -4,10 +4,10 @@ class CampusFixture extends CakeTestFixture {
 	var $name = 'Campus';
 
 	var $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
+		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 64),
-		'description' => array('type' => 'text', 'null' => true, 'default' => NULL),
-		'active' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
+		'description' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 1000),
+		'active' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),

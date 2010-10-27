@@ -4,9 +4,9 @@ class DateFixture extends CakeTestFixture {
 	var $name = 'Date';
 
 	var $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
+		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'start_date' => array('type' => 'date', 'null' => true, 'default' => NULL),
-		'end_date' => array('type' => 'date', 'null' => true, 'default' => NULL),
+		'end_date' => array('type' => 'date', 'null' => true, 'default' => NULL, 'key' => 'index'),
 		'start_time' => array('type' => 'time', 'null' => true, 'default' => NULL),
 		'end_time' => array('type' => 'time', 'null' => true, 'default' => NULL),
 		'all_day' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
@@ -16,12 +16,12 @@ class DateFixture extends CakeTestFixture {
 		'frequency' => array('type' => 'integer', 'null' => true, 'default' => '0', 'length' => 2),
 		'weekday' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 2),
 		'day' => array('type' => 'integer', 'null' => true, 'default' => '0', 'length' => 2),
-		'involvement_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
+		'involvement_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'exemption' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'offset' => array('type' => 'integer', 'null' => true, 'default' => '0', 'length' => 2),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
+		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'involvement_key' => array('column' => 'involvement_id', 'unique' => 0), 'passed_key' => array('column' => array('end_date', 'end_time', 'permanent', 'involvement_id', 'exemption'), 'unique' => 0)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
 

@@ -4,22 +4,22 @@ class AddressFixture extends CakeTestFixture {
 	var $name = 'Address';
 
 	var $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
+		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),
 		'address_line_1' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),
 		'address_line_2' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),
 		'city' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),
 		'state' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 2),
-		'zip' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 5),
+		'zip' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),
 		'lat' => array('type' => 'float', 'null' => true, 'default' => NULL, 'length' => '10,7'),
 		'lng' => array('type' => 'float', 'null' => true, 'default' => NULL, 'length' => '10,7'),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'foreign_key' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10),
-		'model' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),
+		'foreign_key' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
+		'model' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 32),
 		'primary' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'active' => array('type' => 'boolean', 'null' => true, 'default' => '1'),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
+		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'model_key' => array('column' => array('foreign_key', 'model'), 'unique' => 0)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
 
