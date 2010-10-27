@@ -1,10 +1,10 @@
 <?php
 /* Searches Test cases generated on: 2010-08-04 13:08:57 : 1280952657 */
 App::import('Lib', 'CoreTestCase');
-App::import('Component', array('QueueEmail'));
+App::import('Component', array('QueueEmail.QueueEmail'));
 App::import('Controller', 'Searches');
 
-Mock::generate('QueueEmailComponent');
+Mock::generatePartial('QueueEmailComponent', 'MockQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('SearchesController', 'MockSearchesController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
 
 class SearchesControllerTestCase extends CoreTestCase {
@@ -15,8 +15,9 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$this->Searches->__construct();
 		$this->Searches->constructClasses();
 		$this->Searches->FilterPagination->initialize($this->Searches);
-		$this->Searches->QueueEmail = new MockQueueEmailComponent();
-		$this->Searches->QueueEmail->setReturnValue('send', true);
+		$this->Searches->Notifier->QueueEmail = new MockQueueEmailComponent();
+		$this->Searches->Notifier->QueueEmail->setReturnValue('_smtp', true);
+		$this->Searches->Notifier->QueueEmail->setReturnValue('_mail', true);
 		$this->testController = $this->Searches;
 	}
 
