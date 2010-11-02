@@ -65,11 +65,6 @@ class Profile extends AppModel {
 			'required' => false,
 			'allowEmpty' => true
 		),
-		'marital_status' => array(
-			'rule' => array('inList', array('m','s','d','w')),
-			'required' => false,
-			'allowEmpty' => true
-		),
 		'job_name' => array(
 			'rule' => 'alphaNumeric',
 			'required' => false,
@@ -97,37 +92,26 @@ class Profile extends AppModel {
 		'primary_email' => array(
 			'email' => array(
 				'rule' => 'email',
-				'message' => 'Must be a valid email address.'
+				'message' => 'Must be a valid email address.',
+				'required' => false,
+				'allowEmpty' => true
 			),
-			'isUnique' => array(
-				'rule' => 'isUnique',
-				'message' => 'That email address is being used by another member.'
-			),
-			'required' => true
 		),
 		'alternate_email_1' => array(
 			'email' => array(
 				'rule' => 'email',
-				'required' => false	,
+				'required' => false,
 				'allowEmpty' => true,
 				'message' => 'Must be a valid email address.'
 			),
-			'isUnique' => array(
-				'rule' => 'isUnique',
-				'message' => 'That email address is being used by another member.'
-			)
 		),
 		'alternate_email_2' => array(
 			'email' => array(
 				'rule' => 'email',
-				'required' => false	,
+				'required' => false,
 				'allowEmpty' => true,
 				'message' => 'Must be a valid email address.'
 			),
-			'isUnique' => array(
-				'rule' => 'isUnique',
-				'message' => 'That email address is being used by another member.'
-			)
 		)
 	);
 

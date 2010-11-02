@@ -55,7 +55,7 @@ class Address extends AppModel {
 		'name' => array(
 			'rule' => array('custom', '/^[a-z0-9 ]*$/i'),
 			'required' => false,
-			'allowEmpty' => false,
+			'allowEmpty' => true,
 			'message' => 'Alpha-numeric characters only.'
 		),
 		'address_line_1' => array('rule' => 'notEmpty'),

@@ -68,10 +68,6 @@ class User extends AppModel {
 				'rule' => array('minLength', 6),
 				'message' => 'Your password must be at least 6 characters.'
 			),
-			'alphaNumeric' => array(
-				'rule' => 'alphaNumeric',
-				'message' => 'Your password must contain only letters and numbers.'
-			),
 			'notempty' => array(
 				'rule' => 'notEmpty',
 				'message' => 'Gotta have a password.'
@@ -577,7 +573,7 @@ class User extends AppModel {
 	function generateUsername($first_name = '', $last_name = '') {
 		$this->recursive = -1;
 
-		if (empty($first_name) || empty($last_name)) {
+		if (empty($first_name) && empty($last_name)) {
 			return '';
 		}
 
