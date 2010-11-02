@@ -68,12 +68,8 @@ class DateTask extends MigratorTask {
 			$success = $this->{$this->_newModel}->saveAll($this->_editingRecord, array('validate' => false));
 			//$this->out('save: '.(microtime(true)-$start));
 			if (!$success) {
-				$this->out('Couldn\'t save '.$this->_newModel.' # '.$oldRecord[$this->_oldPk]);
-				$this->out(print_r($this->_editingRecord));
-				if ($this->in('Continue with migration?', array('y', 'n')) == 'n') {
-					$this->_stop();
-					break;
-				}
+				CakeLog::write('migration', print_r($this->_editingRecord, true));
+				CakeLog::write('migration', print_r($this->{$this->_newModel}->validationErrors, true));
 			}
 
 			$start = microtime(true);
@@ -95,8 +91,7 @@ class DateTask extends MigratorTask {
 		}
 
 		if (!empty($this->orphans)) {
-			$this->out("The following $this->_oldTable records are considered orphaned:");
-			$this->out(implode(',', $this->orphans));
+			CakeLog::write('migration', $this->_oldTable.' with orphan links: '.implode(',', $this->orphans));
 		}
 	}
 

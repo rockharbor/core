@@ -38,12 +38,7 @@ class QuestionTask extends MigratorTask {
 		$this->_migrate($oldData);
 
 		if (!empty($this->orphans)) {
-			$this->out("The following $this->_oldTable records are considered orphaned:");
-			$this->out(implode(',', $this->orphans));
-			if ($this->in('Continue with migration?', array('y', 'n')) == 'n') {
-				$this->_stop();
-				break;
-			}
+			CakeLog::write('migration', $this->_oldTable.' with orphan links: '.implode(',', $this->orphans));
 		}
 	}
 
