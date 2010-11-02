@@ -20,7 +20,7 @@ class GroupRosterTask extends MigratorTask {
 		$answers = array();
 		
 		for ($i=1; $i<6; $i++) {
-			if (!empty($this->_editingRecord['question'.$i.'_id'])) {
+			if ($this->_editingRecord['question'.$i.'_id'] > 0 && !empty($this->_editingRecord['answer'.$i])) {
 				$answers[] = array(
 					'question_id' => $this->_editingRecord['question'.$i.'_id'],
 					'description' => $this->_editingRecord['answer'.$i],

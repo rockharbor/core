@@ -9,7 +9,7 @@ class ImageTask extends MigratorTask {
 
 	var $_oldTable = 'images';
 	var $_oldPk = 'id';
-	var $_newModel = 'Attachment';
+	var $_newModel = 'Image';
 
 /**
  * Migrates data using the subtask's definitions
@@ -18,13 +18,13 @@ class ImageTask extends MigratorTask {
  */
 	function migrate($limit = null) {
 		$this->_initModels();
-		$this->{$this->_newModel}->model = 'Image';
 		/**
 		 * Person
 		 */
 		$this->_oldPkMapping =array(
 			'owner_id' => array('person' => 'User')
 		);
+		$this->{$this->_newModel}->model = 'User';
 		$oldData = $this->findData($limit, 'person');
 		$this->_migrate($oldData);
 
@@ -34,16 +34,12 @@ class ImageTask extends MigratorTask {
 		$this->_oldPkMapping =array(
 			'owner_id' => array('ministry' => 'Ministry')
 		);
+		$this->{$this->_newModel}->model = 'Ministry';
 		$oldData = $this->findData($limit, 'ministry');
 		$this->_migrate($oldData);
 
 		if (!empty($this->orphans)) {
-			$this->out("The following $this->_oldTable records are considered orphaned:");
-			$this->out(implode(',', $this->orphans));
-			if ($this->in('Continue with migration?', array('y', 'n')) == 'n') {
-				$this->_stop();
-				break;
-			}
+			CakeLog::write('migration', $this->_oldTable.' with orphan links: '.implode(',', $this->orphans));
 		}
 	}
 
@@ -51,6 +47,7 @@ class ImageTask extends MigratorTask {
 		$options = array(
 			'order' => 'id',
 			'conditions' => array(
+				'masterImage_id' => 0,
 				'not' => array(
 					$this->_oldPk => $this->_getPreMigrated()
 				),

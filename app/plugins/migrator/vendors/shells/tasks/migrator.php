@@ -1,6 +1,6 @@
 <?php
 
-App::import('Core', 'Model');
+App::import('Core', 'Model', 'Validation');
 
 class MigratorTask extends MigratorShell {
 
@@ -11,6 +11,8 @@ class MigratorTask extends MigratorShell {
 	);
 
 	var $orphans = array();
+
+	var $addLinkages = true;
 
 /**
  * Migrates data using the subtask's definitions
@@ -23,12 +25,7 @@ class MigratorTask extends MigratorShell {
 		$this->_migrate($oldData);
 
 		if (!empty($this->orphans)) {
-			$this->out("The following $this->_oldTable records are considered orphaned:");
-			$this->out(implode(',', $this->orphans));
-			if ($this->in('Continue with migration?', array('y', 'n')) == 'n') {
-				$this->_stop();
-				break;
-			}
+			CakeLog::write('migration', $this->_oldTable.' with orphan links: '.implode(',', $this->orphans));
 		}
 	}
 
@@ -58,27 +55,25 @@ class MigratorTask extends MigratorShell {
 			//$this->out('save: '.(microtime(true)-$start));
 			if (!$success) {
 				$this->out('Couldn\'t save '.$this->_newModel.' # '.$oldRecord[$this->_oldPk]);
-				$this->out(print_r($this->_editingRecord));
-				if ($this->in('Continue with migration?', array('y', 'n')) == 'n') {
-					$this->_stop();
-					break;
+				CakeLog::write('migration', 'Couldn\'t save '.$this->_oldTable.' # '.$oldRecord[$this->_oldPk]);
+				if (!empty($this->{$this->_newModel}->validationErrors)) {
+					CakeLog::write('migration', print_r($this->_editingRecord, true));
+					CakeLog::write('migration', print_r($this->{$this->_newModel}->validationErrors, true));
 				}
 			}
 
 			$start = microtime(true);
-			if ($this->addLinkages) {
-				// save new/old pk map
-				if (!in_array($oldPk, $this->orphans)) {
-					$this->IdLinkage->create();
-					$this->IdLinkage->save(array(
-						'IdLinkage' => array(
-							'old_pk' => $oldPk,
-							'old_table' => $this->_oldTable,
-							'new_pk' => $this->{$this->_newModel}->id,
-							'new_model' => $this->_newModel
-						)
-					));
-				}
+			if ($success && $this->addLinkages) {
+				// save new/old pk map				
+				$this->IdLinkage->create();
+				$this->IdLinkage->save(array(
+					'IdLinkage' => array(
+						'old_pk' => $oldPk,
+						'old_table' => $this->_oldTable,
+						'new_pk' => $this->{$this->_newModel}->id,
+						'new_model' => $this->_newModel
+					)
+				));
 			}
 			//$this->out('link: '.(microtime(true)-$start));
 			$timetook = (microtime(true)-$timestart);
@@ -175,6 +170,7 @@ class MigratorTask extends MigratorShell {
 						$this->out("a match $oldTable ($oldCrappyData) > $newModel");
 						$this->out("Something may have been migrated out of order!");
 						$this->orphans[] = $this->_editingRecord[$this->_oldPk];
+						$oldCrappyData = null;
 					} elseif ($oldCrappyData > 0) {
 						$oldCrappyData = $link['IdLinkage']['new_pk'];
 					}
@@ -183,11 +179,11 @@ class MigratorTask extends MigratorShell {
 			if (method_exists($this, '_prepare'.Inflector::camelize($oldCrappyField))) {
 				$oldCrappyData = $this->{'_prepare'.Inflector::camelize($oldCrappyField)}($oldCrappyData);
 			}
-			if (isset($this->_booleanMap[$oldCrappyData])) {
-				$oldCrappyData = $this->_booleanMap[$oldCrappyData];
-			}
 			if (isset($this->{'_'.lcfirst(Inflector::camelize($oldCrappyField).'Map')})) {
 				$oldCrappyData = $this->{'_'.lcfirst(Inflector::camelize($oldCrappyField).'Map')}[$oldCrappyData];
+			}
+			if (isset($this->_booleanMap[$oldCrappyData])) {
+				$oldCrappyData = $this->_booleanMap[$oldCrappyData];
 			}
 		}
 	}

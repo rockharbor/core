@@ -11,7 +11,7 @@ class DocumentTask extends MigratorTask {
 
 	var $_oldTable = 'documents';
 	var $_oldPk = 'document_id';
-	var $_newModel = 'Attachment';
+	var $_newModel = 'Document';
 
 /**
  * Migrates data using the subtask's definitions
@@ -20,13 +20,13 @@ class DocumentTask extends MigratorTask {
  */
 	function migrate($limit = null) {
 		$this->_initModels();
-		$this->{$this->_newModel}->model = 'Document';
 		/**
 		 * Person
 		 */
 		$this->_oldPkMapping =array(
 			'type_id' => array('person' => 'User')
 		);
+		$this->{$this->_newModel}->model = 'User';
 		$oldData = $this->findData($limit, 'PERSON');
 		$this->_migrate($oldData);
 
@@ -36,6 +36,7 @@ class DocumentTask extends MigratorTask {
 		$this->_oldPkMapping =array(
 			'type_id' => array('events' => 'Involvement')
 		);
+		$this->{$this->_newModel}->model = 'Involvement';
 		$oldData = $this->findData($limit, 'EVENT');
 		$this->_migrate($oldData);
 
@@ -45,6 +46,7 @@ class DocumentTask extends MigratorTask {
 		$this->_oldPkMapping =array(
 			'type_id' => array('teams' => 'Involvement')
 		);
+		$this->{$this->_newModel}->model = 'Involvement';
 		$oldData = $this->findData($limit, 'TEAM');
 		$this->_migrate($oldData);
 
@@ -54,16 +56,12 @@ class DocumentTask extends MigratorTask {
 		$this->_oldPkMapping =array(
 			'type_id' => array('groups' => 'Involvement')
 		);
+		$this->{$this->_newModel}->model = 'Involvement';
 		$oldData = $this->findData($limit, 'GROUP');
 		$this->_migrate($oldData);
 
 		if (!empty($this->orphans)) {
-			$this->out("The following $this->_oldTable records are considered orphaned:");
-			$this->out(implode(',', $this->orphans));
-			if ($this->in('Continue with migration?', array('y', 'n')) == 'n') {
-				$this->_stop();
-				break;
-			}
+			CakeLog::write('migration', $this->_oldTable.' with orphan links: '.implode(',', $this->orphans));
 		}
 	}
 

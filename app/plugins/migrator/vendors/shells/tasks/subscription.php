@@ -8,7 +8,7 @@ class SubscriptionTask extends MigratorTask {
 	);
 
 	var $_oldTable = 'publication_subscriptions';
-	var $_oldPk = 'publication_subscriptions_id';
+	var $_oldPk = 'publication_subscription_id';
 	var $_newModel = 'PublicationsUser';
 
 	function mapData() {

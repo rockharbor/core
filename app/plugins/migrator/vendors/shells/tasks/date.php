@@ -106,7 +106,7 @@ class DateTask extends MigratorTask {
 
 		$this->_editingRecord = array(
 			'Date' => array(
-				'involvement_id' => $this->_editingRecord['involvement_id'],
+				'involvement_id' => $this->_editingRecord['event_id'],
 				'start_date' => $startdatetime[0],
 				'end_date' => $enddatetime[0],
 				'start_time' => $startdatetime[1],

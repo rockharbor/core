@@ -10,7 +10,7 @@ class UserTask extends MigratorTask {
 		'F' => 'f',
 	);
 
-	var $_classificationIdMap = array(
+	var $_classificationMap = array(
 		null => null,
 		0 => null,
 		'WEEKEND_FULLERTON' => 1,
@@ -85,6 +85,9 @@ class UserTask extends MigratorTask {
 		if (!isset($oldData['work_phone_ext'])) {
 			$oldData['work_phone_ext'] = null;
 		}
+		if (!isset($oldData['non_migratable'])) {
+			$oldData['non_migratable'] = null;
+		}
 		$userData = array(
 			'User' => array(
 				'username' => $oldData['username'],
@@ -112,7 +115,7 @@ class UserTask extends MigratorTask {
 				'occupation' => $oldData['occupation'],
 				'accepted_christ' => $oldData['accepted_christ'],
 				'accepted_christ_year' => $oldData['accepted_christ_year'],
-				/*'baptism_date' => '2000-00-00',*/
+				'baptism_date' => $oldData['baptism_date'],
 				'allergies' => $oldData['allergies_description'],
 				'special_needs' => $oldData['special_needs_description'],
 				'special_alert' => $oldData['child_special_alert_description'],
@@ -124,11 +127,11 @@ class UserTask extends MigratorTask {
 				'alternate_email_1' => $oldData['alternate_email_1'],
 				'alternate_email_2' => $oldData['alternate_email_2'],
 				'cpr_certified' => $oldData['cpr_certified'],
-				/*'baby_dedication_date' => '0000-08-00',*/
+				'baby_dedication_date' => $oldData['baby_dedication_date'],
 				'qualified_leader' => $oldData['is_qualified_rh_leader'],
 				'background_check_complete' => $oldData['background_check_complete'],
 				'background_check_by' => $oldData['background_check_administered_by'],
-				/*'background_check_date' => '2010-01-06',*/
+				'background_check_date' => $oldData['background_check_date'],
 				'grade' => $oldData['grade'],
 				'graduation_year' => $oldData['high_school_grad_year'],
 				'created_by' => $oldData['entered_by_person_id'],
@@ -142,10 +145,62 @@ class UserTask extends MigratorTask {
 				'elementary_school_id' => $oldData['grade_school_id'],
 				'middle_school_id' => $oldData['middle_school_id'],
 				'high_school_id' => $oldData['high_school_id'],
-				'college_id' => $oldData['college_id']
+				'college_id' => $oldData['college_id'],
+				'non_migratable' => serialize($oldData['non_migratable']),
 			)
 		);
 		$this->_editingRecord = $userData;
+	}
+
+/**
+ * Tries to format baptism date
+ *
+ * @param string $old
+ * @return string
+ */
+	function _prepareBaptismDate($old) {
+		$this->_editingRecord['non_migratable']['baptism_date'] = $old;
+		if (date('Y-m-d', strtotime($old)) !== '1969-12-31') {
+			list($year, $month, $day) = explode('-', date('Y-m-d', strtotime($old)));
+			$old = compact('year', 'month', 'day');
+		} else {
+			$old = '';
+		}
+		return $old;
+	}
+
+/**
+ * Tries to format baby dedication date
+ *
+ * @param string $old
+ * @return string
+ */
+	function _prepareBabyDedicationDate($old) {
+		$this->_editingRecord['non_migratable']['baby_dedication_date'] = $old;
+		if (date('Y-m-d', strtotime($old)) !== '1969-12-31') {
+			list($year, $month, $day) = explode('-', date('Y-m-d', strtotime($old)));
+			$old = compact('year', 'month', 'day');
+		} else {
+			$old = '';
+		}
+		return $old;
+	}
+
+/**
+ * Tries to format background check date
+ *
+ * @param string $old
+ * @return string
+ */
+	function _prepareBackgroundCheckDate($old) {
+		$this->_editingRecord['non_migratable']['background_check_date'] = $old;
+		if (date('Y-m-d', strtotime($old)) !== '1969-12-31') {
+			list($year, $month, $day) = explode('-', date('Y-m-d', strtotime($old)));
+			$old = compact('year', 'month', 'day');
+		} else {
+			$old = '';
+		}
+		return $old;
 	}
 
 /**
@@ -158,7 +213,9 @@ class UserTask extends MigratorTask {
 	function _preparePassword($old) {
 		$decrypted = $this->User->decrypt($old);
 		$this->_editingRecord['reset_password'] = false;
-		if (preg_match('/[^A-Za-z0-9]/', $decrypted)) {
+		$clean = preg_replace('/[^(\x20-\x7F)]*/','', $decrypted);
+		if ($clean != $decrypted || strlen($decrypted) < 6) {
+			CakeLog::write('migration', 'Invalid password, resetting: '.$decrypted);
 			$decrypted = $this->User->generatePassword();
 			$this->_editingRecord['reset_password'] = true;
 		}
@@ -174,7 +231,16 @@ class UserTask extends MigratorTask {
  * @return string
  */
 	function _prepareCellPhone($old) {
-		return substr(preg_replace('/[^0-9]+/', '', $old), 0, 10);
+		$old = trim($old);
+		if (substr($old, 0, 1) == '1') {
+			$old = substr($old, 1, -1);
+		}
+		$old = substr(preg_replace('/[^0-9]+/', '', $old), 0, 10);
+		$Validation = new Validation();
+		if (!$Validation->phone($old)) {
+			$old = '';
+		}
+		return $old;
 	}
 
 /**
@@ -193,10 +259,13 @@ class UserTask extends MigratorTask {
  * 10 digits and assumes it's an extension
  *
  * @param string $old
- * @param array $oldRecord
  * @return string
  */
 	function _prepareWorkPhone($old) {
+		$old = trim($old);
+		if (substr($old, 0, 1) == '1') {
+			$old = substr($old, 1, -1);
+		}
 		$phone = substr(preg_replace('/[^0-9]+/', '', $old), 0, 10);
 		$ext = substr(preg_replace('/[^0-9]+/', '', $old), 11);
 		if ($ext !== false) {
@@ -204,6 +273,45 @@ class UserTask extends MigratorTask {
 		} else {
 			$this->_editingRecord['work_phone_ext'] = null;
 		}
+		$Validation = new Validation();
+		if (!$Validation->phone($phone)) {
+			$phone = '';
+		}
 		return $phone;
 	}
+
+/**
+ * Cleans usernames
+ *
+ * @param string $old
+ * @return string
+ */
+	function _prepareUsername($old) {
+		if (preg_match('/[^a-z0-9_-]/i', $old) == 1 || strlen($old) < 5 || !$this->User->isUnique(array('username' => $old))) {
+			CakeLog::write('migration', 'User did not validate: '.$old);
+			$old = $this->User->generateUsername($this->_editingRecord['first_name'], $this->_editingRecord['last_name']);
+		}
+		return $old;
+	}
+
+/**
+ * Clears out non-emails
+ *
+ * @param string $old
+ * @return string
+ */
+	function _preparePrimaryEmail($old) {
+		$Validation = new Validation();
+		if (!$Validation->email($old)) {
+			$old = '';
+		}
+		return $old;
+	}
+	function _prepareAlternateEmail1($old) {
+		return $this->_preparePrimaryEmail($old);
+	}
+	function _prepareAlternateEmail2($old) {
+		return $this->_preparePrimaryEmail($old);
+	}
+
 }

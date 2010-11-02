@@ -10,6 +10,21 @@ class MinistryTask extends MigratorTask {
 	var $_oldPk = 'ministry_id';
 	var $_newModel = 'Ministry';
 
+	function findData($limit = null) {
+		$options = array(
+			'order' => 'parent_ministry_id ASC',
+			'conditions' => array(
+				'not' => array(
+					$this->_oldPk => $this->_getPreMigrated()
+				)
+			)
+		);
+		if ($limit) {
+			$options['limit'] = $limit;
+		}
+		return $this->old->find('all', $options);
+	}
+
 	function mapData() {
 		$this->Ministry->Behaviors->detach('Confirm');
 		$this->Ministry->Behaviors->detach('Tree');
@@ -30,4 +45,11 @@ class MinistryTask extends MigratorTask {
 		);
 	}
 
+	function _prepareMinistryDescription($old) {
+		$old = Sanitize::clean($old, array(
+			'remove_html' => true,
+			'carriage' => false,
+		));
+		return nl2br($old);
+	}
 }

@@ -5,9 +5,8 @@ class CleanupTask extends MigratorShell {
 /**
  * Handles the things that we couldn't do during migration
  */
-	function cleanup() {
+	function migrate() {
 		$this->out('Cleaning up...');
-		$this->IdLinkage = ClassRegistry::init('IdLinkage');
 
 		// set ministry tree
 		$this->out('Recovering Ministry tree...');

@@ -42,33 +42,35 @@ class MigratorShell extends Shell {
 		'Publication',
 		'Subscription',
 		'Region',
-		'Zipcode',		
+		'Zipcode',
 		'Cleanup',
 	);
 
 	var $_oldDbConfig = 'old';
 
-	var $addLinkages = true;
-
-	function migrate() {
+	function migrate_database() {
 		ini_set('memory_limit', '256M');
 
 		$this->_createLinkageTable();
-		
+		unlink(TMP.'logs'.DS.'migration.log');
+		$start = microtime(true);
 		if (!empty($this->args[0]) && isset($this->{$this->args[0]})) {
 			$limit = null;
 			if (!empty($this->args[1])) {
 				$limit = $this->args[1];
 			}
 			$this->{$this->args[0]}->IdLinkage = ClassRegistry::init('IdLinkage');
-
 			$this->{$this->args[0]}->migrate($limit);
+		} elseif (empty($this->args[0])) {
+			foreach ($this->tasks as $task) {
+				$this->{$task}->IdLinkage = ClassRegistry::init('IdLinkage');
+				$this->{$task}->migrate();
+			}
 		} else {
 			$this->out($this->args[0].' task isn\'t attached.');
 		}
 
-		//$this->Cleanup->cleanup();
-
+		CakeLog::write('migration', 'Total migration time: '.(microtime(true)-$start).' seconds');
 		$this->out('Migration complete!');
 	}
 

@@ -81,4 +81,12 @@ class TeamTask extends MigratorTask {
 		}
 	}
 
+	function _preparePurpose($old) {
+		$old = Sanitize::clean($old, array(
+			'remove_html' => true,
+			'carriage' => false,
+		));
+		return nl2br($old);
+	}
+
 }
