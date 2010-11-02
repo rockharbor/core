@@ -11,17 +11,17 @@
 /**
  * Includes
  */
-App::import('DataSource', 'dbo'.DS.'dbo_mysql');
+App::import('DataSource', 'CoreDboSource');
 
 /**
- * DboCoreMysql
+ * CoreDboMysql
  *
- * Extends CakePHP DboMysqlBase to support FULLTEXT indexes in schemas
+ * Extends CakePHP to support FULLTEXT indexes in schemas
  *
  * @package       core
  * @subpackage    core.app.models.datasources.dbo
  */
-class DboCoreMysql extends DboMysql {
+class CoreDboMysql extends CoreDboSource {
 
 /**
  * Returns an array of the indexes in given datasource name.
