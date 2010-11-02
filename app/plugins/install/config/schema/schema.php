@@ -259,7 +259,7 @@ class AppSchema extends CakeSchema {
 		'ministry_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
 		'involvement_type_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
 		'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 64, 'key' => 'index'),
-		'description' => array('type' => 'text', 'null' => true, 'default' => NULL),
+		'description' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 5000),
 		'roster_limit' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 3),
 		'roster_visible' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
 		'private' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
@@ -324,7 +324,7 @@ class AppSchema extends CakeSchema {
 	var $ministries = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 64, 'key' => 'index'),
-		'description' => array('type' => 'text', 'null' => true, 'default' => NULL),
+		'description' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 5000),
 		'parent_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),
 		'lft' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8, 'key' => 'index'),
 		'rght' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),
@@ -341,7 +341,7 @@ class AppSchema extends CakeSchema {
 		'version_created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),
 		'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 64),
-		'description' => array('type' => 'text', 'null' => true, 'default' => NULL),
+		'description' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 5000),
 		'parent_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),
 		'lft' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),
 		'rght' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),
@@ -391,10 +391,10 @@ class AppSchema extends CakeSchema {
 		'user_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
 		'roster_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8),
 		'amount' => array('type' => 'float', 'null' => true, 'default' => NULL, 'length' => '7,2'),
-		'payment_type_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8),
+		'payment_type_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),
 		'number' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 20),
 		'transaction_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 64),
-		'payment_placed_by' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8),
+		'payment_placed_by' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),
 		'refunded' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
@@ -447,6 +447,7 @@ class AppSchema extends CakeSchema {
 		'middle_school_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),
 		'high_school_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),
 		'college_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),
+		'non_migratable' => array('type' => 'text', 'null' => true, 'default' => null),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'user_key' => array('column' => 'user_id', 'unique' => 0)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
@@ -547,4 +548,3 @@ class AppSchema extends CakeSchema {
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
 	);
 }
-?>
