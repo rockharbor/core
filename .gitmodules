@@ -24,4 +24,4 @@
 	url = git://codaset.com/jeremyharris/sanitizer.git
 [submodule "app/plugins/queue_email"]
 	path = app/plugins/queue_email
-	url = git://codaset.com/jeremyharris/queue-email.git
+	url = git@codaset.com:jeremyharris/queue-email.git
