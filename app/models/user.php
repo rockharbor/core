@@ -142,6 +142,12 @@ class User extends AppModel {
 			'className' => 'Profile',
 			'foreignKey' => 'user_id',
 			'dependent' => true
+		),
+		'ActiveAddress' => array(
+			'className' => 'Address',
+			'foreignKey' => 'foreign_key',
+			'conditions' => array('ActiveAddress.model' => 'User', 'ActiveAddress.primary' => true),
+			'limit' => 1
 		)
 	);
 

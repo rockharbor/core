@@ -33,6 +33,9 @@ class Ministry extends AppModel {
 		'Containable',
 		'Tree',
 		'Confirm',
+		'Cacher.Cache' => array(
+			'auto' => false
+		),
 		'Search.Searchable'
 	);
 

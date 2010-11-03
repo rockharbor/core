@@ -2,7 +2,11 @@
 <h2>Edit App Setting</h2>
 <?php echo $this->Form->create('AppSetting', array('default' => false));?>
 	<fieldset>
- 		<legend><?php echo Inflector::humanize($this->data['AppSetting']['name']); ?></legend>
+ 		<legend><?php 
+		$appSettingName = explode('.', $this->data['AppSetting']['name']);
+		$appSettingName = $appSettingName[1];
+		echo Inflector::humanize($appSettingName); 
+		?></legend>
 		<p><?php echo $this->data['AppSetting']['description']; ?></p>
 	<?php
 		echo $this->Form->input('id');

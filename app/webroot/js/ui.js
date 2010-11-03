@@ -13,7 +13,11 @@ if (CORE == undefined) {
  * @return mixed Modal response
  */
 CORE.modal = function(id, options) {
-	var _defaultOptions = {  
+	if ($('#modal').length == 0) {
+		$('#wrapper').append('<div id="modal"></div>');
+	}
+
+	var _defaultOptions = {
 		modal: true,
 		width: 700,
 		autoOpen: false,
@@ -76,7 +80,34 @@ CORE.modal = function(id, options) {
 }
 
 /**
- * Attaches modal behaviors to appropriate ids
+ * Attaches tab behavior to appropriate elements
+ *
+ * Makes everything with a `rel` property "tabs" a tabbed list. Pulls attached
+ * jQuery data 'cookie' for cookie option
+ *
+ * @return boolean True
+ * @see CORE.tabs()
+ */
+CORE.attachTabbedBehavior = function() {
+	$("[rel=tabs]").each(function() {
+		if ($(this).data('hasTabs') == undefined) {
+			var options = {};
+			if ($(this).data('cookie') != undefined) {
+				options.cookie = $(this).data('cookie');
+			}
+			if ($(this).attr('id') == '') {
+				$(this).attr('id', 'link-'+new Date().getTime());
+			}
+			CORE.tabs($(this).attr('id'), options);
+			$(this).data('hasTabs', true);
+		}
+	});
+
+	return true;
+}
+
+/**
+ * Attaches modal behaviors to appropriate elements
  *
  * Makes everything with a `rel` property "modal-X" a modal
  * where the X is the to-be-updated registered updateable (optional)
@@ -141,7 +172,11 @@ CORE.tabs = function(id, taboptions, options) {
 	}
 	
 	var tabbed = $('#'+id);
-	tabbed.tabs(useOptions)
+	tabbed.tabs(useOptions);
+
+	// pull admin tabs out
+	tabbed.append('<ul class="admin ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"></ul>');
+	$('.ui-tabs-nav li.admin').appendTo($('ul.admin'));
 	
 	// check to see if this is a "wizard"
 	if (options != undefined) {		
