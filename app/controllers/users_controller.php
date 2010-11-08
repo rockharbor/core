@@ -68,7 +68,7 @@ class UsersController extends AppController {
 		// check for remember me checkbox
 		if (!empty($this->data) && $this->data['User']['remember_me']) {
 			unset($this->data['User']['remember_me']);
-			$this->Session->del('Message.auth');
+			$this->Session->delete('Message.auth');
 			$this->Cookie->write('Auth.User', $this->data['User'], false, '+2 weeks');
 		}
 
