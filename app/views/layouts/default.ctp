@@ -23,7 +23,7 @@
 
 		// google cdn scripts
 		echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js');
-		echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.js');
+		echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.js');
 		echo $this->Html->script('http://maps.google.com/maps/api/js?sensor=false');
 		
 		// vendor scripts
@@ -34,10 +34,11 @@
 		echo $this->Html->script('global');
 		echo $this->Html->script('ui');
 		echo $this->Html->script('form');
+		echo $this->Html->script('navigation');
 		
 		// setup
-		$this->Js->buffer('CORE.init()');		
-		
+		$this->Js->buffer('CORE.init()');
+		echo $this->Js->writeBuffer();
 		echo $scripts_for_layout;
 	?>
 </head>
@@ -74,9 +75,9 @@
 								</div>
 								<div style="clear:both" />
 							</li>
-							<li class="profile-link"><?php echo $this->Html->link('My Involvement', array('controller' => 'rosters', 'action' => 'involvement', 'User' => $activeUser['User']['id'])); ?></li>
-							<li class="profile-link"><?php echo $this->Html->link('My Household', array('controller' => 'households', 'User' => $activeUser['User']['id'])); ?></li>
-							<li class="profile-link"><?php echo $this->Html->link('My Payments', array('controller' => 'payments', 'User' => $activeUser['User']['id'])); ?></li>
+							<li class="hover-row"><?php echo $this->Html->link('My Involvement', array('controller' => 'rosters', 'action' => 'involvement', 'User' => $activeUser['User']['id'])); ?></li>
+							<li class="hover-row"><?php echo $this->Html->link('My Household', array('controller' => 'households', 'User' => $activeUser['User']['id'])); ?></li>
+							<li class="hover-row"><?php echo $this->Html->link('My Payments', array('controller' => 'payments', 'User' => $activeUser['User']['id'])); ?></li>
 						</ul>
 					</li>
 					<li id="nav-notifications"><?php
@@ -131,26 +132,10 @@
 						</ul>
 					</li>
 					<li id="nav-ministries">
-						<?php echo $this->Html->link('Ministries', array('controller' => 'ministries')); ?>
-						<ul>
-							<?php
-							foreach ($ministries as $ministry) {
-								echo '<li>';
-								echo $this->Html->link($ministry['Ministry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $ministry['Ministry']['id']), array('class' => 'parent'));
-								$childrenLinks = array();
-								foreach ($ministry['ChildMinistry'] as $childMinistry) {
-									$childrenLinks[] = $this->Html->link($childMinistry['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $childMinistry['id']), array('class' => 'child'));
-								}
-								if (count($childrenLinks) > 4) {
-									$childrenLinks[] = $this->Html->link('the rest...', array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $ministry['Ministry']['id']), array('class' => 'child'));
-								}
-								if (count($childrenLinks) > 0) {
-									echo implode(', ', $childrenLinks);
-								}
-								echo '</li>';
-							}
-							?>
-						</ul>
+						<?php
+						echo $this->Html->link('Ministries', array('controller' => 'ministries'));
+						echo $this->element('menu'.DS.'campus', array('campuses' => $campuses), true);
+						?>
 					</li>
 					<li><?php echo $this->Html->link('Calendar', array('controller' => 'dates', 'action' => 'calendar')); ?></li>
 					<?php if (Configure::read()): ?>
@@ -207,6 +192,5 @@
 		<div id="footer" class="container_12 clearfix">
 		</div>
 	</div>
-	<?php echo $this->Js->writeBuffer(); ?>
 </body>
 </html>

@@ -1,10 +1,3 @@
-<div class="menu">
-<?php 
-echo $this->element('menu'.DS.'ministry', array(
-	'ministries' => $ministryMenu
-)); 
-?>
-</div>
 <div class="ministries view">
 <h2><?php  __('Ministry');?></h2>
 	<dl><?php $i = 0; $class = ' class="altrow"';?>

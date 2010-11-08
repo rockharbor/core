@@ -1,3 +1,172 @@
+/*
+Main navigation CSS file
+*/
+
+/*
+Global styles
+*/
+div#header {
+	height:29px;
+}
+div#header div#primary {
+	background: url(images/ui-bg_highlight-soft_20_343434_1x100.png) #343434 repeat-x 50% 50%;
+	height:100%;
+	margin:0;
+}
+div#header div#primary>ul>li {
+	border-right: 1px solid #706F6F;
+}
+div#header div#primary>ul>li>a:hover {
+	background: url(images/ui-bg_highlight-soft_75_16b96d_1x100.png) #16b96d repeat-x 50% 50%;
+	color: #343434;
+	text-decoration: none;
+}
+div#header div#primary>ul>li>a {
+	color:#FFF;
+	text-transform: uppercase;
+	font-family: LeagueGothicRegular,Lucida Sans,Helvetica,Arial,sans-serif;
+	text-decoration: none;
+	font-style:normal;
+	font-size: 16px;
+	padding: 5px 25px;
+}
+div#header div#primary>ul>li>ul {
+	border:1px solid #000;
+	background: #FFF;
+}
+div#header div#primary .nav-home {
+	padding:5px 10px;
+}
+
+/**
+Profile
+*/
+li#nav-profile .profile-information {
+	margin: 5px;
+	color: #807980;
+	float:left;
+	font-size:10px;
+}
+li#nav-profile .profile-image {
+	float:left;
+	margin: 5px;
+}
+li#nav-profile .profile-name {
+	color:#303030;
+	text-transform: uppercase;
+	font-size:22px;
+	font-family: LeagueGothicRegular,Lucida Sans,Helvetica,Arial,sans-serif;
+}
+li#nav-notifications {
+	position:relative;
+}
+li#nav-notifications .notification {
+	padding:5px;
+	color:#807980;
+	margin:0;
+	clear:both;
+	position: relative;
+	max-width: 400px;
+}
+li#nav-notifications p {
+	margin:0;
+	margin-right:20px;
+}
+li#nav-notifications .delete {
+	background-image: url(images/ui-icons_454545_256x240.png);
+	background-position: -80px -128px;
+	padding:0;
+	height:16px;
+	width:16px;
+	overflow:hidden;
+	text-indent:-99999px;
+	position:absolute;
+	top:0;
+	right:5px;
+}
+li#nav-notifications .delete:hover {
+	background-image: url(images/ui-icons_cd0a0a_256x240.png);
+}
+li#nav-notifications .read {
+	border-left:3px solid #FFF;
+}
+li#nav-notifications .unread {
+	border-left:3px solid #B2F5D5;
+}
+li#nav-notifications .notification-count {
+	font-family: LeagueGothicRegular,Helvetica,Arial,sans-serif;
+	font-size:16px;
+	background:#E03A14;
+	display:block;
+	position:absolute;
+	width:10px;
+	color:#FFF;
+	height:20px;
+	text-align:center;
+	top:0;
+	right:5px;
+}
+	
+
+div#header div#secondary {
+	line-height: 30px;
+	text-transform: uppercase;
+	background:#FFF;
+	height:100%;
+	text-align: right;
+	font-size:10px;
+}
+
+/*
+Search
+*/
+#nav-search {
+	padding-left:5px;
+	padding-top:5px;
+	float:left;
+}
+#nav-search button {
+	height:18px;
+	float:left;
+	-moz-border-radius: 0 4px 4px 0;
+	-webkit-border-radius: 0 4px 4px 0;
+	border-radius: 0 4px 4px 0;
+	margin-left:-2px;
+}
+#nav-search input[type=text] {
+	font-size:9px;
+	float:left;
+}
+
+/*
+Ministry menu CSS
+*/
+#nav-ministries .campuses {
+	width:100%;
+}
+#nav-ministries ul.ministry-column {
+	width:200px;
+	float:left;
+	margin-left:5px;
+}
+#nav-ministries li {
+	margin-bottom: 10px;
+}
+#nav-ministries a.parent-ministry {
+	font-size: 11px;
+	padding: 0;
+	padding-bottom:1px;
+	font-weight: bold !important;
+}
+#nav-ministries a.child-ministry {
+	display:inline;
+	padding:0;
+	font-size: 10px;
+}
+
+/*
+Dropdown menu CSS
+*/
 .main-nav-menu{
 	border:none;
 	border:0px;
@@ -18,11 +187,7 @@
 		margin:0px;
 		padding:15px 5px;
 		text-align:center;
-		text-decoration:none;
 		}
-		.main-nav-menu li a:hover, .main-nav-menu ul li:hover a{
-			text-decoration:none;
-			}
 	.main-nav-menu li ul{
 		display:none;
 		height:auto;		
@@ -34,6 +199,9 @@
 		/*top:1em;
 		/*left:0;*/
 		}
+	.main-nav-menu>ul>li>ul{
+		padding:5px;
+	}
 	.main-nav-menu ul>li>ul>li>ul{
 		position:relative;
 	}
@@ -60,7 +228,6 @@
 		}
 		.main-nav-menu li ul a:hover, .main-nav-menu li ul li:hover a{
 			border:0px;
-			text-decoration:none;
 			}
 	.main-nav-menu p{
 		clear:left;

@@ -150,6 +150,8 @@ CORE.init = function() {
 	}});
 	// init ui elements
 	CORE.initUI();
+	// init navigation
+	CORE.initNavigation();
 }
 
 /**
@@ -159,6 +161,8 @@ CORE.init = function() {
 CORE.initUI = function() {
 	// create buttons on proper elements
 	$('button, input:submit, a.button').button();
+	$('.toggle').button();
+	$('.toggleset').buttonset();
 	// hide flash message
 	$('div[id^=flash]').delay(5000).slideUp();
 	// display any validation errors

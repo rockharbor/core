@@ -3,7 +3,7 @@ html {
 }
 body {
 	background: #EAEAEA;
-	font-family: Helvetica,Arial,sans-serif;
+	font-family: Lucida Sans,Helvetica,Arial,sans-serif;
 	font-size:11px;
 	height:100%;
 	margin:0;
@@ -13,185 +13,10 @@ div#wrapper {
 }
 
 /*
-Header Styles
-*/
-div#header {
-	height:29px;
-}
-div#header>div#primary {
-	background: url(images/ui-bg_highlight-soft_20_343434_1x100.png) #343434 repeat-x 50% 50%;
-	height:100%;
-	margin:0;
-}
-div#header>div#primary>ul>li>ul {
-	background: #FFF;
-}
-div#header>div#primary a {
-	color: #807980;
-	font-style: italic;
-}
-div#header>div#primary a:hover {
-	text-decoration: underline;
-}
-div#header>div#primary>ul>li {
-	border-right: 1px solid #706F6F;
-}
-div#header>div#primary>ul>li>a:hover {
-	background: url(images/ui-bg_highlight-soft_75_16b96d_1x100.png) #16b96d repeat-x 50% 50%;
-	color: #343434;
-	text-decoration: none;
-}
-div#header>div#primary>ul>li>a {
-	color:#FFF;
-	text-transform: uppercase;
-	font-family: LeagueGothicRegular,Helvetica,Arial,sans-serif;
-	text-decoration: none;
-	font-style:normal;
-	font-size: 16px;
-	padding: 5px 25px;
-}
-div#header>div#primary .nav-home {
-	padding:5px 10px;
-}
-li#nav-profile li.profile-link a {
-	font-family: LeagueGothicRegular,Helvetica,Arial,sans-serif;
-	font-size: 18px;
-	text-transform:uppercase;
-	text-decoration: none !important;
-	font-style:normal !important;
-}
-li#nav-profile li.profile-link a:hover {
-	text-decoration: none !important;
-}
-li#nav-profile .profile-information {
-	margin: 5px;
-	color: #807980;
-	float:left;
-}
-li#nav-profile .profile-image {
-	float:left;
-	margin: 5px;
-}
-li#nav-profile .profile-name {
-	color:#303030;
-	text-transform: uppercase;
-	font-size:22px;
-	font-family: LeagueGothicRegular,Helvetica,Arial,sans-serif;
-}
-li#nav-profile .profile-address {
-	color:#807980;
-	font-size:10px;
-}
-li#nav-profile .profile-address a {
-	color:#807980;
-	font-family: Helvetica,Arial,sans-serif;
-	display:inline;
-	padding:0;
-}
-li#nav-notifications {
-	position:relative;
-}
-li#nav-notifications .notification {
-	padding:5px;
-	color:#807980;
-	margin:0;
-	clear:both;
-	position: relative;
-	max-width: 400px;
-}
-li#nav-notifications p {
-	margin:0;
-	margin-right:20px;
-}
-li#nav-notifications .delete {
-	background-image: url(images/ui-icons_454545_256x240.png);
-	background-position: -80px -128px;
-	padding:0;
-	height:16px;
-	width:16px;
-	overflow:hidden;
-	text-indent:-99999px;
-	position:absolute;
-	top:0;
-	right:5px;
-}
-li#nav-notifications .delete:hover {
-	background-image: url(images/ui-icons_cd0a0a_256x240.png);
-}
-li#nav-notifications .read {
-	border-left:3px solid #FFF;
-}
-li#nav-notifications .unread {
-	border-left:3px solid #B2F5D5;
-}
-li#nav-notifications .notification-count {
-	font-family: LeagueGothicRegular,Helvetica,Arial,sans-serif;
-	font-size:16px;
-	background:#E03A14;
-	display:block;
-	position:absolute;
-	width:10px;
-	color:#FFF;
-	height:20px;
-	text-align:center;
-	top:0;
-	right:5px;
-}
-li#nav-ministries li {
-	float:left;
-	padding:5px;
-	max-width: 160px;
-}
-li#nav-ministries a.parent {
-	font-family: LeagueGothicRegular,Helvetica,Arial,sans-serif;
-	font-size: 18px;
-	padding: 0;
-	padding-bottom:1px;
-	text-transform:uppercase;
-	font-style:normal !important;
-}
-li#nav-ministries a.parent:hover {
-	text-decoration: none !important;
-}
-li#nav-ministries a.child {
-	display:inline;
-	padding:0;
-	font-size: 10px;
-}
-div#header>div#secondary {
-	background:#FFF;
-	height:100%;
-	text-align: right;
-	font-size:10px;
-}
-div#header>div#secondary a {
-	color:#807980;
-	line-height: 30px;
-	text-transform: uppercase;
-}
-div#header>div#primary #nav-search {
-	padding-left:5px;
-	padding-top:5px;
-	float:left;
-}
-div#header>div#primary #nav-search button {
-	height:18px;
-	float:left;
-	-moz-border-radius: 0 4px 4px 0;
-	-webkit-border-radius: 0 4px 4px 0;
-	border-radius: 0 4px 4px 0;
-	margin-left:-2px;
-}
-div#header>div#primary #nav-search input[type=text] {
-	font-size:9px;
-	float:left;
-}
-
-/*
 Global Styles
 */
 h1, h2, h3 {
-	font-family: LeagueGothicRegular,Helvetica,Arial,sans-serif;
+	font-family: LeagueGothicRegular,Lucida Sans,Helvetica,Arial,sans-serif;
 	font-weight:normal;
 	text-transform: uppercase;
 }
@@ -260,13 +85,23 @@ div.message a {
 /*
 Global Classes
 */
-div#header>div#primary>ul>li>ul,
 div.content-box,
 .shadow {
 	box-shadow:0 0 0, 0 2px 8px #999999, 0 0 5px #666666, 0 0 1px #999999;
 	-moz-box-shadow:0 0 0,0 2px 8px #999999, 0 0 5px #666666, 0 0 1px #999999;
 	-webkit-box-shadow:0 0 0,0 2px 8px #999999, 0 0 5px #666666, 0 0 1px #999999;
 	border: 1px solid #999;
+}
+
+/*
+Links
+*/
+a {
+	color: #666666;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
 }
 
 /*

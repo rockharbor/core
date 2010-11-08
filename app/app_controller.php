@@ -246,26 +246,47 @@ class AppController extends Controller {
 		$this->set('defaultSubmitOptions', $this->defaultSubmitOptions);
 
 		// get ministry list
-		$Ministry = ClassRegistry::init('Ministry');
+		$Campus = ClassRegistry::init('Campus');
 		$Group = ClassRegistry::init('Group');
 		$options = array(
-			'conditions' => array(
-				'Ministry.active' => true,
-				'Ministry.parent_id' => null
+			'fields' => array(
+				'Campus.name'
 			),
-			'order' => 'Ministry.lft ASC',
+			'conditions' => array(
+				'Campus.active' => true
+			),
+			'order' => 'Campus.id',
 			'contain' => array(
-				'ChildMinistry' => array(
-					'limit' => 5
+				'Ministry' => array(
+					'fields' => array(
+						'Ministry.id',
+						'Ministry.name'
+					),
+					'conditions' => array(
+						'Ministry.active' => true,
+					),
+					'ChildMinistry' => array(
+						'conditions' => array(
+							'ChildMinistry.active' => true,
+						),
+						'fields' => array(
+							'ChildMinistry.id',
+							'ChildMinistry.parent_id',
+							'ChildMinistry.name'
+						),
+						'limit' => 5,
+						'order' => 'ChildMinistry.name',
+					),
+					'order' => 'Ministry.name',
 				)
 			),
 			'cache' => '+1 day'
 		);
 		if (!in_array($this->activeUser['Group']['id'], array_keys($Group->findGroups(Core::read('general.private_group'), 'list', '>')))) {
-			$options['conditions']['Ministry.private'] = false;
-			$options['contain']['ChildMinistry']['conditions'] = array('ChildMinistry.private' => false);
+			$options['contain']['Ministry']['conditions']['Ministry.private'] = false;
+			$options['contain']['Ministry']['ChildMinistry']['conditions']['ChildMinistry.private'] = false;
 		}
-		$this->set('ministries', $Ministry->find('all', $options));
+		$this->set('campuses', $Campus->find('all', $options));
 	}
 	
 /**

@@ -1,11 +1,3 @@
-<div class="menu">
-<?php 
-echo $this->element('menu'.DS.'ministry', array(
-	'ministries' => $ministryMenu
-)); 
-?>
-</div>
-
 <div class="ministries index">
 	<h2><?php __('Ministries');?></h2>
 	<table cellpadding="0" cellspacing="0">
@@ -33,9 +25,7 @@ echo $this->element('menu'.DS.'ministry', array(
 		<td><?php echo $ministry['Ministry']['id']; ?>&nbsp;</td>
 		<td><?php echo $ministry['Ministry']['name']; ?>&nbsp;</td>
 		<td><?php echo $ministry['Ministry']['description']; ?>&nbsp;</td>
-		<td><?php echo $ministry['ParentMinistry']['name']; ?>&nbsp;</td>
 		<td><?php echo $ministry['Campus']['name']; ?>&nbsp;</td>
-		<td><?php echo $ministry['Group']['name']; ?>&nbsp;</td>
 		<td><?php echo $ministry['Ministry']['created']; ?>&nbsp;</td>
 		<td><?php echo $ministry['Ministry']['modified']; ?>&nbsp;</td>
 		<td><?php echo $ministry['Ministry']['active']; ?>&nbsp;</td>
