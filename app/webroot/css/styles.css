@@ -20,17 +20,9 @@ h1, h2, h3 {
 	font-weight:normal;
 	text-transform: uppercase;
 }
-h1 { font-size: 40px; margin-bottom:10px; }
-h2 { font-size: 20px; }
-h3 { font-size: 16px; }
-
-.content-box a {
-	color:#16B96D !important;
-}
-.content-box a:hover {
-	color: #807980 !important;
-	text-decoration: underline !important;
-}
+h1 { font-size: 44px; margin:0 -10px; margin-bottom:10px; }
+h2 { font-size: 20px;}
+h3 { font-size: 16px; margin:0; text-transform: uppercase; }
 
 /*
 Flags and icons
@@ -92,6 +84,9 @@ div.content-box,
 	-webkit-box-shadow:0 0 0,0 2px 8px #999999, 0 0 5px #666666, 0 0 1px #999999;
 	border: 1px solid #999;
 }
+p {
+	margin-top:0;
+}
 
 /*
 Links
@@ -109,10 +104,60 @@ Containers
 */
 div.content-box{	
 	background:#FFFFFF;
-	padding:10px;
+	padding: 10px;
+	margin:0 -12px;
 }
 div#content {
 	padding-bottom:30px;
+	padding-top:30px;
+}
+span.breadcrumb {
+	font-size:10px;
+	margin:0 -12px;
+}
+#columns .column {
+	height:100%;
+}
+#columns .column .font-large {
+	font-size: 52px;
+	font-family: LeagueGothicRegular,Lucida Sans,Helvetica,Arial,sans-serif;
+}
+#columns .border-right {
+	border-right: 1px solid #cccccc;
+}
+
+/*
+Small Tabs
+*/
+ul.core-admin-tabs {	
+	bottom:-20px;
+	padding:0;
+	position:absolute;
+	right:0px;	
+	list-style:none;
+	margin:0 -12px;
+	padding:0;
+}
+ul.core-admin-tabs li {
+	background:url("images/ui-bg_highlight-soft_20_343434_1x100.png") repeat-x scroll 50% 50% #343434;
+	float:left;
+	font-size:10px;
+	font-style:italic;	
+	height:20px;
+	line-height:20px;
+	margin-left:5px;
+}
+ul.core-admin-tabs li:hover {
+	background:url("images/ui-bg_highlight-soft_75_16b96d_1x100.png") repeat-x scroll 50% 50% #16B96D;
+}
+ul.core-admin-tabs a {
+	color:#FFFFFF;
+	padding:0 5px;
+	display:block;
+}
+ul.core-admin-tabs a:hover {
+	color:#212121;
+	text-decoration: none;
 }
 
 /*

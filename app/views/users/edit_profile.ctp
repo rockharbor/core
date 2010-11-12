@@ -1,6 +1,6 @@
 <h1>Edit Profile</h1>
 
-<div class="profiles form ui-tabs" rel="tabs">
+<div class="profiles form ui-tabs core-tabs">
 
 <ul>
 	<li><a href="#one">Profile</a></li>

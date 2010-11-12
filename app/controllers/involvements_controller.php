@@ -79,15 +79,22 @@ class InvolvementsController extends AppController {
 			$this->redirect(array('action' => 'index'));
 		}
 		$this->Involvement->contain(array(
-			'Roster' => array(
-				'User' => array(
-					'Profile'
-				)
-			),
 			'InvolvementType',
-			'Date'
+			'Date',
+			'Ministry' => array(
+				'Campus',
+				'Image'
+			),
+			'Leader' => array(
+				'User' => array(
+					'Profile' => array(
+						'fields' => array('name', 'primary_email')
+					)
+				)
+			)
 		));
 		$involvement = $this->Involvement->read(null, $id);
+		$involvement['Date'] = $this->Involvement->Date->generateDates($id, array('limit' => 5));
 
 		if ($involvement['Involvement']['private'] && !$this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id'])) {
 			$this->Session->setFlash('That Involvement is private', 'flash'.DS.'failure');

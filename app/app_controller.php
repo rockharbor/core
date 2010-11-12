@@ -264,6 +264,7 @@ class AppController extends Controller {
 					),
 					'conditions' => array(
 						'Ministry.active' => true,
+						'Ministry.parent_id' => null
 					),
 					'ChildMinistry' => array(
 						'conditions' => array(

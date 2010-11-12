@@ -50,7 +50,9 @@ class AppModel extends Model {
  * @var array
  */
 	var $actsAs = array(
-		'Sanitizer.Sanitize'
+		'Sanitizer.Sanitize' => array(
+			'decodeHtml' => true
+		)
 	);
 
 /**

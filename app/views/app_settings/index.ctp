@@ -6,7 +6,7 @@ $this->Paginator->options(array(
     'evalScripts' => true
 ));
 ?>
-<div class="app-settings form ui-tabs" rel="tabs">
+<div class="app-settings form ui-tabs core-tabs">
 	<ul>
 		<?php
 		$settings = Core::read();

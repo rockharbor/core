@@ -1,151 +1,105 @@
-<?php echo $this->Html->script('super_date'); ?>
+<?php echo $this->Html->script('super_date', array('inline' => false)); ?>
 
-<div class="involvements view">
-<h2><?php  __('Involvement');?></h2>
-<h3>Information</h3>
-	<dl><?php $i = 0; $class = ' class="altrow"';?>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Id'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $involvement['Involvement']['id']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Ministry Id'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $involvement['Involvement']['ministry_id']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Involvement Type'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $involvement['InvolvementType']['name']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Name'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $involvement['Involvement']['name']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Description'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $involvement['Involvement']['description']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Roster Limit'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $involvement['Involvement']['roster_limit']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Roster Visible'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $involvement['Involvement']['roster_visible']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>>Group</dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $involvement['Involvement']['group_id']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Signup'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $involvement['Involvement']['signup']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Require Payment'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $involvement['Involvement']['take_payment']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Offer Childcare'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $involvement['Involvement']['offer_childcare']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Active'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $involvement['Involvement']['active']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Created'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $involvement['Involvement']['created']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Modified'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $involvement['Involvement']['modified']; ?>
-			&nbsp;
-		</dd>
-	</dl>
-	
-<h3>When is it going down?</h3>
-<?php 
-$i = 0;
-foreach ($involvement['Date'] as $date) {
-	if (!$date['exemption']) {
-		echo $this->Html->tag('div', '&nbsp;', array('escape' => false, 'id' => 'hr_'.$i));
-		$this->Js->buffer('$("#hr_'.$i.'").text(CORE.makeHumanReadable({
-			recurring: '.$date['recurring'].',
-			type: \''.$date['recurrance_type'].'\',
-			frequency: '.$date['frequency'].',
-			day: '.$date['day'].',				
-			weekday: '.$date['weekday'].',
-			offset: '.$date['offset'].',
-			allday: '.$date['all_day'].',
-			permanent: '.$date['permanent'].',
-			startDate: \''.$date['start_date'].'\',
-			endDate: \''.$date['end_date'].'\',
-			startTime: \''.$date['start_time'].'\',
-			endTime: \''.$date['end_time'].'\'
-		}))', array('onDomReady' => false));
-		$i++;
-	}
-}
-?>
-	
-<strong>Except these times</strong>
-<?php 
-$i = 0;
-foreach ($involvement['Date'] as $date) {
-	if ($date['exemption']) {
-		echo $this->Html->tag('div', '&nbsp;', array('escape' => false, 'id' => 'hre_'.$i));
-		$this->Js->buffer('$("#hre_'.$i.'").text(CORE.makeHumanReadable({
-			recurring: '.$date['recurring'].',
-			type: \''.$date['recurrance_type'].'\',
-			frequency: '.$date['frequency'].',
-			day: '.$date['day'].',				
-			weekday: '.$date['weekday'].',
-			offset: '.$date['offset'].',
-			allday: '.$date['all_day'].',
-			permanent: '.$date['permanent'].',
-			startDate: \''.$date['start_date'].'\',
-			endDate: \''.$date['end_date'].'\',
-			startTime: \''.$date['start_time'].'\',
-			endTime: \''.$date['end_time'].'\'
-		}))', array('onDomReady' => false));
-		$i++;
-	}
-}
-?>
-
-<div id="involvement"><?php
-if ($involvement['Involvement']['roster_visible']) {
-	$this->Js->buffer('CORE.register("involvement", "involvement", "'.Router::url(array('controller' => 'rosters', 'Involvement' => $involvement['Involvement']['id'])).'");');
-	echo $this->requestAction(Router::url(array('controller' => 'rosters', 'Involvement' => $involvement['Involvement']['id'])), array('return','bare'=>true));
-} 
-?></div>
-
-</div>
-<div class="actions">
-	<h3><?php __('Actions'); ?></h3>
+<span class="breadcrumb"><?php
+echo $this->Html->link($involvement['Ministry']['Campus']['name'], array('controller' => 'campuses', 'action' => 'view', 'Campus' => $involvement['Ministry']['Campus']['id']));
+echo ' > ';
+echo $this->Html->link($involvement['Ministry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $involvement['Ministry']['id']));
+?></span>
+<h1><?php echo $involvement['Involvement']['name']; ?></h1>
+<div class="involvements view core-tabs">
 	<ul>
-		<li><?php 
-		if ($involvement['Involvement']['signup']) {
-			echo $this->Html->link('Sign up', array('controller' => 'rosters', 'action' => 'add', 'User' => $activeUser['User']['id'], 'Involvement' => $involvement['Involvement']['id']), array('rel' => 'modal-content')); 
-		}		
-		?> </li>
-		<li><?php echo $this->Html->link('Edit Involvement', array('action' => 'edit', 'Involvement' => $involvement['Involvement']['id'])); ?> </li>
-		<li><?php echo $this->Html->link('Invite Users', array('controller' => 'searches', 'action' => 'simple', 'User', 'notSignedUp', $involvement['Involvement']['id'], 'Invite To '.$involvement['InvolvementType']['name'] => 'invite'), array('rel' => 'modal-content')); ?> </li>
-		<li><?php echo $this->Html->link('Invite Roster', array('controller' => 'searches', 'action' => 'simple', 'Involvement', 'notInvolvementAndIsLeading', $involvement['Involvement']['id'], $activeUser['User']['id'], 'Invite To '.$involvement['InvolvementType']['name'] => 'inviteRoster'), array('rel' => 'modal-content')); ?> </li>
+		<li><a href="#details">Details</a></li>
+		<?php if (true || $this->Permission->viewRoster) { ?>
+		<li><?php echo $this->Html->link('Roster', array('controller' => 'rosters', 'Involvement' => $involvement['Involvement']['id']), array('title' => 'roster'));?></li>
+		<?php } ?>
 	</ul>
+
+	<div class="content-box clearfix">
+		<div id="details">
+			<div id="columns">
+				<?php
+				$first = ' alpha';
+				if (!empty($involvement['Ministry']['Image'])) { ?>
+				}
+				<div class="grid_4<?php echo $first; ?>">
+					<?php
+					$path = 'l'.DS.$involvement['Ministry']['Image'][0]['dirname'].DS.$involvement['Ministry']['Image'][0]['basename'];
+					echo $this->Media->embed($path, array('restrict' => 'image'));
+					?>
+				</div>
+				<?php 
+				$first = '';
+				} ?>
+				<?php if (!empty($involvement['Date'])) { ?>
+				<div class="grid_2 column border-right<?php echo $first; ?>" id="date">
+					<span class="font-large">
+					<?php
+						echo date('M. j', strtotime($involvement['Date'][0]['Date']['start_date']));
+						echo '<br />';
+						echo date('Y', strtotime($involvement['Date'][0]['Date']['start_date']));
+					?>
+					</span>
+				</div>
+				<div class="grid_2 column border-right" id="time">
+					<span class="font-large">
+					<?php
+						echo date('h:i', strtotime($involvement['Date'][0]['Date']['start_time']));
+					?>
+					</span>
+				</div>
+				<div class="grid_2 column omega" id="readable-date">
+					<?php
+						echo $this->Formatting->readableDate($involvement['Date'][0]);
+					?>
+				</div>
+				<?php 
+				$first = '';
+				} ?>
+			</div>
+			<div>
+				<div class="grid_6 alpha">
+					<h3>Description</h3>
+					<p><?php echo $involvement['Involvement']['description']; ?></p>
+				</div>
+				<div class="grid_4 omega">
+					<?php if (!empty($involvement['Leader'])) { ?>
+					<h3>Leaders</h3>
+						<?php
+						foreach ($involvement['Leader'] as $leader) {
+							echo $this->Html->link($leader['User']['Profile']['name'], array('controller' => 'sys_emails', 'action' => 'compose', 'model' => 'User', 'User' => $leader['User']['id']), array('class' => 'icon-email', 'rel' => 'compose'));
+							echo '<br />';
+						}
+					} ?>
+					<?php if (!empty($involvement['Address'])) { ?>
+					<h3>Address</h3>
+						<?php
+						$address = $involvement['Address']['address_line_1'];
+						$address .= $involvement['Address']['address_line_2'];
+						$address .= '<br />';
+						$address .= $involvement['Address']['city'].', ';
+						$address .= $involvement['Address']['state'];
+						$address .= $involvement['Address']['zip'];
+						echo $this->Html->link($address, array('controller' => 'addresses', 'action' => 'view', $involvement['Address']['id']), array('rel' => 'modal-none', 'class' => 'icon-map'));
+					} ?>
+				</div>
+			</div>
+			<div class="grid_10 alpha omega">
+				<?php 
+				if ($involvement['Involvement']['signup']) {
+					echo $this->Html->link('Sign up', array('controller' => 'rosters', 'action' => 'add', 'User' => $activeUser['User']['id'], 'Involvement' => $involvement['Involvement']['id']), array('rel' => 'modal-content')); 
+				}		
+				?>
+			</div>
+			<ul class="core-admin-tabs">
+				<li><?php echo $this->Html->link('Edit Involvement', array('action' => 'edit', 'Involvement' => $involvement['Involvement']['id'])); ?> </li>
+				<li><?php echo $this->Html->link('Invite Users', array('controller' => 'searches', 'action' => 'simple', 'User', 'notSignedUp', $involvement['Involvement']['id'], 'Invite To '.$involvement['InvolvementType']['name'] => 'invite'), array('rel' => 'modal-content')); ?> </li>
+				<li><?php echo $this->Html->link('Invite Roster', array('controller' => 'searches', 'action' => 'simple', 'Involvement', 'notInvolvementAndIsLeading', $involvement['Involvement']['id'], $activeUser['User']['id'], 'Invite To '.$involvement['InvolvementType']['name'] => 'inviteRoster'), array('rel' => 'modal-content')); ?> </li>
+			</ul>
+		</div>
+		<div id="roster">
+
+		</div>
+	</div>
 </div>
 
 <?php

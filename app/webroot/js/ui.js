@@ -89,7 +89,7 @@ CORE.modal = function(id, options) {
  * @see CORE.tabs()
  */
 CORE.attachTabbedBehavior = function() {
-	$("[rel=tabs]").each(function() {
+	$('.core-tabs').each(function() {
 		if ($(this).data('hasTabs') == undefined) {
 			var options = {};
 			if ($(this).data('cookie') != undefined) {
