@@ -20,7 +20,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->Rosters->__construct();
 		$this->Rosters->constructClasses();
 		$this->Rosters->Notifier = new MockNotifierComponent();
-		$this->Rosters->Notifier->initialize($this->Involvements);
+		$this->Rosters->Notifier->initialize($this->Rosters);
 		$this->Rosters->Notifier->setReturnValue('_render', 'Notification body text');
 		$this->Rosters->Notifier->QueueEmail = new MockQueueEmailComponent();
 		$this->Rosters->Notifier->QueueEmail->setReturnValue('_smtp', true);
@@ -32,10 +32,12 @@ class RostersControllerTestCase extends CoreTestCase {
 		ClassRegistry::removeObject('CreditCard');
 		ClassRegistry::addObject('CreditCard', $CreditCard);
 		ClassRegistry::init('CreditCard');
+		$this->loadSettings();
 		$this->testController = $this->Rosters;
 	}
 
 	function endTest() {
+		$this->unloadSettings();
 		$this->Rosters->Session->destroy();
 		unset($this->Rosters);		
 		ClassRegistry::flush();
@@ -48,26 +50,30 @@ class RostersControllerTestCase extends CoreTestCase {
 		$expected = array(1, 2);
 		$this->assertEqual($results, $expected);
 
-		$vars = $this->testAction('/rosters/index/User:1');
-		$results = Set::extract('/Involvement/name', $vars['rosters']);
+		$vars = $this->testAction('/rosters/index/User:1/Involvement:2');
+		$results = Set::extract('/Involvement/name', $vars['involvement']);
 		$expected = array(
 			'Third Wednesday',
-			'Team CORE'
 		);
 		$this->assertEqual($results, $expected);
 
+		$results = count($vars['rosters']);
+		$this->assertEqual($results, 1);
+
 		$vars = $this->testAction('/rosters/index/User:1/Involvement:2');
-		$results = Set::extract('/Involvement/name', $vars['rosters']);
+		$results = Set::extract('/Involvement/name', $vars['involvement']);
 		$expected = array(
 			'Third Wednesday'
 		);
 		$this->assertEqual($results, $expected);
 
-		$vars = $this->testAction('/rosters/index/User:2');
-		$results = Set::extract('/Involvement/name', $vars['rosters']);
+		$results = count($vars['rosters']);
+		$this->assertEqual($results, 1);
+
+		$vars = $this->testAction('/rosters/index/User:2/Involvement:1');
+		$results = Set::extract('/Involvement/name', $vars['involvement']);
 		$expected = array(
 			'CORE 2.0 testing',
-			'Team CORE'
 		);
 		$this->assertEqual($results, $expected);
 	}
@@ -214,42 +220,41 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($this->Rosters->Roster->field('parent_id'), 1);
 	}
 
-	function testDeleteWithChildcare() {
-		$this->loadFixtures('Leader');
-		$notificationsBefore = $this->Rosters->Roster->User->Notification->find('count');
+	function testDelete() {
+		$this->loadFixtures('Leader');		
 
-		$data = $this->Rosters->Roster->read(null, 5);
-		$data['Child'] = array(
-			array(
-				'user_id' => 2
-			)
-		);
-		$vars = $this->testAction('/rosters/edit/5', array(
-			'data' => $data
+		$this->Rosters->Session->write('MultiSelect.testDelete', array(
+			'selected' => array(2, 4)
 		));
 
 		$rostersBefore = $this->Rosters->Roster->find('count');
-
-		$vars = $this->testAction('/rosters/delete/5');
-		$this->assertFalse($this->Rosters->Roster->read(null, 5));
-
-		$notificationsAfter = $this->Rosters->Roster->User->Notification->find('count');
-		$this->assertEqual($notificationsAfter-$notificationsBefore, 2);
-
-		$rostersAfter = $this->Rosters->Roster->find('count');
-		$this->assertEqual($rostersBefore-$rostersAfter, 2);
-	}
-
-	function testDelete() {
-		$this->loadFixtures('Leader');
-		
 		$notificationsBefore = $this->Rosters->Roster->User->Notification->find('count');
 
-		$vars = $this->testAction('/rosters/delete/5');
-		$this->assertFalse($this->Rosters->Roster->read(null, 5));
+		$vars = $this->testAction('/rosters/delete/testDelete');
+		$this->assertFalse($this->Rosters->Roster->read(null, 1));
+		$this->assertFalse($this->Rosters->Roster->read(null, 2));
+		$this->assertFalse($this->Rosters->Roster->read(null, 4));
+
+		$rostersAfter = $this->Rosters->Roster->find('count');
+		$this->assertEqual($rostersAfter-$rostersBefore, -3);
 
 		$notificationsAfter = $this->Rosters->Roster->User->Notification->find('count');
-		$this->assertEqual($notificationsAfter-$notificationsBefore, 2);
+		$this->assertEqual($notificationsAfter-$notificationsBefore, 3);
+	}
+
+	function testConfirm() {
+		$this->Rosters->Session->write('MultiSelect.testConfirm', array(
+			'selected' => array(2, 4)
+		));
+
+		$vars = $this->testAction('/rosters/confirm/testConfirm');
+		$rosters = $this->Rosters->Roster->find('all', array(
+			'conditions' => array(
+				'Roster.id' => array(2, 4)
+			)
+		));
+		$results = Set::extract('/Roster/roster_status', $rosters);
+		$this->assertEqual($results, array(1,1));
 	}
 
 }

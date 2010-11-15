@@ -102,7 +102,6 @@ class RostersController extends AppController {
 		$this->set('householdIds', $householdIds);
 		$this->set('rosterIds', $rosterIds);
 		$this->Roster->Involvement->contain(array('InvolvementType'));
-		
 		$this->set('involvement', $this->Roster->Involvement->read(null, $involvementId));
 	}
 
@@ -538,56 +537,71 @@ class RostersController extends AppController {
 	}
 
 /**
- * Deletes a roster
+ * Confirms a set of roster ids
  *
- * @param integer $id The id of the roster to delete
+ * @param integer $uid The multi select id
+ */
+	function confirm($uid = null) {
+		$selected = $this->MultiSelect->getSelected($uid);
+		$this->Roster->updateAll(
+			array('Roster.roster_status' => 1),
+			array('Roster.id' => $selected)
+		);
+		$this->Session->setFlash(__('Roster confirmed', true));
+		$this->redirect(array('action'=>'index'));
+	}
+
+/**
+ * Deletes a set of roster ids
+ *
+ * @param integer $uid The multi select id
  * @todo Restrict to proper permissions
  */
-	function delete($id = null) {
-		if (!$id) {
-			$this->Session->setFlash(__('Invalid id for roster', true));
-			$this->redirect(array('action'=>'index'));
+	function delete($uid = null) {
+		$selected = $this->MultiSelect->getSelected($uid);
+
+		if (empty($selected)) {
+			$this->Session->setFlash(__('Roster was not deleted', true));
+			$this->redirect(array('action' => 'index'));
 		}
-		$this->Roster->recursive = -1;
-		$roster = $this->Roster->read(null, $id);
-		// delete any children too
-		if ($this->Roster->deleteAll(array(
-			'or' => array(
-				'Roster.user_id' => $roster['Roster']['user_id'],
-				'Roster.parent_id' => $roster['Roster']['user_id']
-			),
-			'Roster.involvement_id' => $roster['Roster']['involvement_id']
-		))) {
-			$this->set('involvement', $this->Roster->Involvement->read(null, $roster['Roster']['involvement_id']));
-			$this->set('user', $this->Roster->Involvement->Leader->User->read(null, $roster['Roster']['user_id']));
-			// notify the user that they left
-			$this->Notifier->notify(array(
-				'to' => $roster['Roster']['user_id'],
-				'template' => 'rosters_delete',
-				'subject' => 'Left involvement',
-			));
-			
-			// notify all the leaders
-			$leaders = $this->Roster->Involvement->Leader->find('all', array(
-				'conditions' => array(
-					'model_id' => $roster['Roster']['involvement_id'],
-					'model' => 'Involvement'
-				)
-			));
-			foreach ($leaders as $leader) {
-				$this->set('user', $this->Roster->Involvement->Leader->User->read(null, $leader['Leader']['user_id']));
+		foreach ($selected as $rosterId) {
+			$this->Roster->recursive = -1;
+			$roster = $this->Roster->read(null, $rosterId);
+			// delete any children too
+			if ($this->Roster->deleteAll(array(
+				'or' => array(
+					'Roster.user_id' => $roster['Roster']['user_id'],
+					'Roster.parent_id' => $roster['Roster']['user_id']
+				),
+				'Roster.involvement_id' => $roster['Roster']['involvement_id']
+			))) {
+				$this->set('involvement', $this->Roster->Involvement->read(null, $roster['Roster']['involvement_id']));
+				$this->set('user', $this->Roster->Involvement->Leader->User->read(null, $roster['Roster']['user_id']));
+				// notify the user that they left
 				$this->Notifier->notify(array(
-					'to' => $leader['Leader']['user_id'],
+					'to' => $roster['Roster']['user_id'],
 					'template' => 'rosters_delete',
 					'subject' => 'Left involvement',
 				));
 			}
-			
-			$this->Session->setFlash(__('Roster deleted', true));
-			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash(__('Roster was not deleted', true));
-		$this->redirect(array('action' => 'index'));
+		// notify all the leaders
+		$leaders = $this->Roster->Involvement->Leader->find('all', array(
+			'conditions' => array(
+				'model_id' => $roster['Roster']['involvement_id'],
+				'model' => 'Involvement'
+			)
+		));
+		foreach ($leaders as $leader) {
+			$this->set('user', $this->Roster->Involvement->Leader->User->read(null, $leader['Leader']['user_id']));
+			$this->Notifier->notify(array(
+				'to' => $leader['Leader']['user_id'],
+				'template' => 'rosters_delete',
+				'subject' => 'Left involvement',
+			));
+		}
+		$this->Session->setFlash(__('Roster deleted', true));
+		$this->redirect(array('action'=>'index'));
 	}
 }
 ?>

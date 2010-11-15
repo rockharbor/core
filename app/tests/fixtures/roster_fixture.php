@@ -35,7 +35,7 @@ class RosterFixture extends CakeTestFixture {
 			'created' => '2010-04-19 09:55:07',
 			'modified' => '2010-04-19 11:09:11',
 			'parent_id' => NULL,
-			'roster_status' => 1
+			'roster_status' => 0
 		),
 		array(
 			'id' => 3,
@@ -45,7 +45,7 @@ class RosterFixture extends CakeTestFixture {
 			'created' => '2010-04-19 09:32:49',
 			'modified' => '2010-04-19 12:30:21',
 			'parent_id' => NULL,
-			'roster_status' => 1
+			'roster_status' => 0
 		),
 		array(
 			'id' => 4,
