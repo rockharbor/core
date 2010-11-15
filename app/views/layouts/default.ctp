@@ -28,8 +28,9 @@
 		echo $this->Html->script('http://maps.google.com/maps/api/js?sensor=false');
 		
 		// vendor scripts
+		echo $this->Html->script('jquery.plugins/jquery.qtip');
 		echo $this->Html->script('jquery.plugins/jquery.cookie');
-		echo $this->Html->script('jquery.plugins/jquery.wysiwyg');
+		echo $this->Html->script('jquery.plugins/jquery.wysiwyg');		
 		
 		// CORE scripts
 		echo $this->Html->script('global');

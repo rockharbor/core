@@ -164,6 +164,8 @@ CORE.initUI = function() {
 	$('button.disabled, input:submit.disabled, a.button.disabled, span.button.disabled').button({disabled:true});
 	$('.toggle').button();
 	$('.toggleset').buttonset();
+	// tooltips
+	CORE.attachTooltipBehavior();
 	// hide flash message
 	$('div[id^=flash]').delay(5000).slideUp();
 	// display any validation errors

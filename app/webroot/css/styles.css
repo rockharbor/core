@@ -161,6 +161,30 @@ ul.core-admin-tabs a:hover {
 }
 
 /*
+Tooltip
+*/
+.qtip .qtip-contentWrapper {	
+	border: none !important;	
+}
+.qtip .qtip-content {
+	background: #343434 !important;
+	color: #ffffff !important;
+}
+.qtip a {
+	color: #ffffff;
+	text-decoration: none;
+	float:left;
+	height:20px;
+	line-height:20px;
+	margin-left:5px;
+	padding: 0 5px;
+}
+.qtip a:hover {
+	color: #343434;
+	background:url("images/ui-bg_highlight-soft_75_16b96d_1x100.png") repeat-x scroll 50% 50% #16B96D;
+}
+
+/*
 Form Styles
 */
 input.search-out {

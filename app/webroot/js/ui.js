@@ -79,6 +79,33 @@ CORE.modal = function(id, options) {
 	$('#modal').dialog({autoOpen:false});
 }
 
+CORE.attachTooltipBehavior = function() {
+	$('.core-tooltip').each(function() {
+		$(this).prev().qtip({
+			content: $(this).html(),
+			position: {
+				corner: {
+					target: 'topMiddle',
+					tooltip: 'bottomLeft'
+				}
+			},
+			hide: {
+				fixed: true
+			},			
+			style: {
+				width: {
+					max: 200
+				},
+				tip: {
+					corner: 'bottomLeft',
+					color: '#343434'
+				}
+			}
+		});
+	});
+	$('.core-tooltip').detach();
+}
+
 /**
  * Attaches tab behavior to appropriate elements
  *
