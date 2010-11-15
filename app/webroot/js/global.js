@@ -160,7 +160,8 @@ CORE.init = function() {
  */
 CORE.initUI = function() {
 	// create buttons on proper elements
-	$('button, input:submit, a.button').button();
+	$('button, input:submit, a.button, span.button').button();
+	$('button.disabled, input:submit.disabled, a.button.disabled, span.button.disabled').button({disabled:true});
 	$('.toggle').button();
 	$('.toggleset').buttonset();
 	// hide flash message

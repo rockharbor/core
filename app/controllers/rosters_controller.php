@@ -60,11 +60,10 @@ class RostersController extends AppController {
 	function index() {
 		$conditions = array();
 		$userConditions = array();
+		$involvementId = $this->passedArgs['Involvement'];
 		
 		// if involvement is defined, show just that involvement
-		if (isset($this->passedArgs['Involvement'])) {
-			$conditions['Roster.involvement_id'] = $this->passedArgs['Involvement'];
-		}	
+		$conditions['Roster.involvement_id'] = $involvementId;
 		
 		// get roster ids
 		$roster = $this->Roster->find('all', compact('conditions'));
@@ -85,9 +84,6 @@ class RostersController extends AppController {
 			'User' => array(
 				'Profile'
 			),
-			'Involvement' => array(
-				'InvolvementType'
-			),
 			'Role',
 			'PaymentOption',
 			'Parent',
@@ -105,6 +101,9 @@ class RostersController extends AppController {
 		$this->set('rosters', $this->paginate());
 		$this->set('householdIds', $householdIds);
 		$this->set('rosterIds', $rosterIds);
+		$this->Roster->Involvement->contain(array('InvolvementType'));
+		
+		$this->set('involvement', $this->Roster->Involvement->read(null, $involvementId));
 	}
 
 /**

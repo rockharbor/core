@@ -17,6 +17,7 @@
 		echo $this->Html->css('menu');		
 		echo $this->Html->css('jquery-ui');
 		echo $this->Html->css('styles');
+		echo $this->Html->css('tables');
 		if(preg_match('/MSIE/i', $_SERVER['HTTP_USER_AGENT'])) {
 			echo $this->Html->css('ie');
 		}
