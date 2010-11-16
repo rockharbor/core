@@ -433,7 +433,9 @@ class InstallShell extends Shell {
 			'controllers/Questions/edit',
 			'controllers/Questions/index',
 			'controllers/Questions/move',
-			'controllers/Payments/add'
+			'controllers/Payments/add',
+			'controllers/Rosters/confirm',
+			'controllers/Rosters/roles'
 		),
 		'Owner' => array(
 			'controllers/Users/edit',			

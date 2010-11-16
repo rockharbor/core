@@ -56,6 +56,8 @@ class RostersController extends AppController {
  * ### Passed args:
  * - integer $Involvement The id of the involvement to filter for
  * - integer $User The id of the user to filter for
+ *
+ * @todo place user list limit into involvement()
  */ 
 	function index() {
 		$conditions = array();
@@ -70,13 +72,13 @@ class RostersController extends AppController {
 		$rosterIds = Set::extract('/Roster/user_id', $roster);
 
 		// if we're limiting this to one user, just pull their household signup data
-		$householdIds = array();
+		/*$householdIds = array();
 		if (isset($this->passedArgs['User'])) {
 			$householdIds = $this->Roster->User->HouseholdMember->Household->getMemberIds($this->passedArgs['User'], true);
 			$viewableIds = array_intersect($householdIds, $rosterIds);
 			$viewableIds[] = $this->passedArgs['User'];
 			$conditions['User.id'] = $viewableIds;
-		}
+		}*/
 
 		if (!empty($this->data)) {
 			if ($this->data['Roster']['pending'] == 1) {
@@ -87,7 +89,8 @@ class RostersController extends AppController {
 		
 		$contain = array(
 			'User' => array(
-				'Profile'
+				'Profile',
+				'Image'
 			),
 			'Role',
 			'PaymentOption',
@@ -542,6 +545,31 @@ class RostersController extends AppController {
 		));
 		
 		$this->set(compact('involvement', 'user', 'roster', 'paymentOptions', 'householdMembers'));
+	}
+
+/**
+ * Saves roles to a roster id
+ *
+ * ### Passed Args:
+ * - `Involvement` the involvement id
+ */
+	function roles($roster_id) {
+		if (!empty($this->data)) {
+			$this->Roster->saveAll($this->data);
+		}
+		$this->Roster->contain(array(
+			'Role'
+		));
+		$involvement = $this->Roster->Involvement->read('ministry_id', $this->passedArgs['Involvement']);
+		if (empty($this->data)) {
+			$this->data = $this->Roster->read(null, $roster_id);
+		}
+		$roles = $this->Roster->Role->find('all', array(
+			'conditions' => array(
+				'Role.ministry_id' => $involvement['Involvement']['ministry_id']
+			)
+		));
+		$this->set('roles', $roles);
 	}
 
 /**
