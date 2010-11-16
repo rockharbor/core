@@ -48,7 +48,7 @@ CORE.update = function(updateable, url) {
 	if (updateable != 'none' && updateable != '') {
 		// check to see if it's an "updateable"
 		for (div in CORE.updateables[updateable]) {
-			//console.log(updateable+': updating '+div+' with '+CORE.updateables[updateable][div]); 
+			//console.log(updateable+': updating '+div+' with '+CORE.updateables[updateable][div]);
 			$('#'+div).load(CORE.updateables[updateable][div]);
 		}
 	}
@@ -72,9 +72,10 @@ CORE.request = function(url, options, data) {
 		useOptions = $.extend(useOptions, options);
 	}
 	
-	if (useOptions.update) {
-		useOptions.complete = function() {
-			CORE.update(useOptions.update);
+	if (useOptions.update !== undefined) {
+		update = useOptions.update;
+		useOptions.success = function(data) {
+			$('#'+update).html(data);
 		}
 		
 		delete useOptions.update;
@@ -159,11 +160,8 @@ CORE.init = function() {
  * opens
  */
 CORE.initUI = function() {
-	// create buttons on proper elements
-	$('button, input:submit, a.button, span.button').button();
-	$('button.disabled, input:submit.disabled, a.button.disabled, span.button.disabled').button({disabled:true});
-	$('.toggle').button();
-	$('.toggleset').buttonset();
+	// form elements
+	CORE.initFormUI();
 	// tooltips
 	CORE.attachTooltipBehavior();
 	// hide flash message

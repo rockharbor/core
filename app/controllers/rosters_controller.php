@@ -76,8 +76,13 @@ class RostersController extends AppController {
 			$viewableIds = array_intersect($householdIds, $rosterIds);
 			$viewableIds[] = $this->passedArgs['User'];
 			$conditions['User.id'] = $viewableIds;
-		} else {
-			$conditions['User.id'] = $rosterIds;
+		}
+
+		if (!empty($this->data)) {
+			if ($this->data['Roster']['pending'] == 1) {
+				$conditions['Roster.roster_status'] = 0;
+			}
+			$conditions += $this->Roster->parseCriteria(array('roles' => $this->data['Role']['Role']));
 		}
 		
 		$contain = array(
@@ -89,20 +94,23 @@ class RostersController extends AppController {
 			'Parent',
 			'Payment'
 		);
+		$cache = array(
+			'+10 minutes'
+		);
 		
 		$this->Roster->recursive = 0;
-		$this->paginate = compact('conditions','contain');
+		$this->paginate = compact('conditions','contain','cache');
 		
 		// save search for multi select actions
 		$this->MultiSelect->saveSearch($this->paginate);
 		
 		// set based on criteria
 		$this->set('canCheckAll', !isset($this->passedArgs['User']));
-		$this->set('rosters', $this->paginate());
-		$this->set('householdIds', $householdIds);
-		$this->set('rosterIds', $rosterIds);
-		$this->Roster->Involvement->contain(array('InvolvementType'));
-		$this->set('involvement', $this->Roster->Involvement->read(null, $involvementId));
+		$this->set('rosters', $this->paginate());	
+		$this->Roster->Involvement->contain(array('InvolvementType', 'Leader'));
+		$involvement = $this->Roster->Involvement->read(null, $involvementId);
+		
+		$this->set(compact('involvement', 'rosterIds', 'householdIds'));
 	}
 
 /**

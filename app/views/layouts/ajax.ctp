@@ -26,7 +26,7 @@ echo $this->Session->flash();
 
 echo $content_for_layout;
 
-echo $this->Js->writeBuffer(array('onDomReady'=>false));
+echo $this->Js->writeBuffer();
 
 //echo $this->element('sql_dump');
 

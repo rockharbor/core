@@ -1,14 +1,8 @@
 <?php
-$this->Paginator->options(array(
-    'update' => '#involvement'
-));
+$this->Paginator->options('#roster');
 ?>
 <h1><?php echo $involvement['Involvement']['name']; ?> Roster</h1>
-<div class="rosters">
 <?php
-	echo $this->Form->create('Roster', array(
-		'default' => false
-	));
 	echo $this->MultiSelect->create();
 ?>
 	<table cellpadding="0" cellspacing="0" id="rosterTable">
@@ -88,13 +82,13 @@ $this->Paginator->options(array(
 				'colCount' => 7,
 				'checkAll' => $canCheckAll,
 				'links' => $links
-			), true);
+			));
 			?>			
 			<tr>
 				<th>&nbsp;</th>
-				<th><?php echo $this->Paginator->sort('Name', 'Profile.last_name');?></th>
-				<th><?php echo $this->Paginator->sort('Phone', 'Profile.cell_phone');?></th>
-				<th><?php echo $this->Paginator->sort('Status', 'PaymentOption.name');?></th>
+				<th><?php echo $this->Paginator->sort('Name', 'User.Profile.last_name');?></th>
+				<th><?php echo $this->Paginator->sort('Phone', 'User.Profile.cell_phone');?></th>
+				<th><?php echo $this->Paginator->sort('Status', 'Roster.roster_status');?></th>
 				<th><?php echo $this->Paginator->sort('balance');?></th>
 				<th><?php echo $this->Paginator->sort('Date Joined', 'created');?></th>
 				<th>Roles</th>
@@ -124,7 +118,7 @@ $this->Paginator->options(array(
 				$path = 's'.DS.$roster['User']['Image'][0]['dirname'].DS.$roster['User']['Image'][0]['basename'];
 				echo $this->Media->embed($path, array('restrict' => 'image'));
 			}
-			echo $this->Html->link('Edit Info', array('controller' => 'rosters', 'action' => 'edit', $roster['Roster']['id']), array('rel' => 'modal-involvement'));
+			echo $this->Html->link('Edit Info', array('controller' => 'rosters', 'action' => 'edit', $roster['Roster']['id']), array('rel' => 'modal-roster'));
 			echo $this->Html->link('View Profile', array('controller' => 'users', 'action' => 'view', 'User' => $roster['User']['id']));
 			echo $this->Html->link('View Payments', array('controller' => 'payments', 'action' => 'index', 'User' => $roster['User']['id']));
 		?></div>
@@ -134,10 +128,10 @@ $this->Paginator->options(array(
 		<td><?php echo $this->Formatting->money($roster['Roster']['balance']); ?>&nbsp;</td>
 		<td><?php echo $this->Formatting->date($roster['Roster']['created']); ?>&nbsp;</td>
 		<td><?php
-		echo $this->Html->link(count($roster['Role']).' Roles', array('controller' => 'roles', 'action' => 'add', 'Ministry' => $involvement['Involvement']['id'], 'Roster' => $roster['Roster']['id']), array('class' => 'icon-add', 'rel' => 'modal-involvement'));
+		echo $this->Html->link(count($roster['Role']).' Roles', array('controller' => 'roles', 'action' => 'add', 'Ministry' => $involvement['Involvement']['id'], 'Roster' => $roster['Roster']['id']), array('class' => 'icon-add', 'rel' => 'modal-roster'));
 		if (!empty($roster['Role'])) {
 			echo '<div class="core-tooltip">';
-			echo $this->Text->toList(Set::extract('/Role/name', $roster['Role']));
+			echo $this->Text->toList(Set::extract('/name', $roster['Role']));
 			echo '</div>';
 		}
 		?></td>
@@ -146,30 +140,13 @@ $this->Paginator->options(array(
 	</tbody>
 		<tfoot>
 			<?php
-			echo $this->element('pagination', array('colCount' => 7), true);
+			echo $this->element('pagination', array('colCount' => 7));
 			?>
 		</tfoot>
 	</table>	
 <?php
 	echo $this->MultiSelect->end();
-	echo $this->Form->end();
 ?>
-
-	<p><?php 
-	echo $this->Html->link('Add A User', 
-		array(
-			'controller' => 'searches',
-			'action' => 'simple',
-			'User', 'notSignedUp', $involvement['Involvement']['id'],
-			'Add User' => 'addToRoster',
-		),
-		array(
-			'class' => 'button',
-			'rel' => 'modal-roster'
-		)
-	);
-	?></p>
-</div>
 
 <?php
 

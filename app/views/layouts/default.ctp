@@ -169,7 +169,8 @@
 						echo $this->Form->button(
 							$this->Html->tag('span', '&nbsp;', array('class' => 'ui-button-icon-primary ui-icon ui-icon-search')),
 							array(
-								'escape' => false
+								'escape' => false,
+								'class' => 'reverse'
 							)
 						);
 						echo $this->Form->end();

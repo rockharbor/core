@@ -54,7 +54,9 @@ class Roster extends AppModel {
  */
 	var $actsAs = array(
 		'Logable',
-		'Containable'
+		'Containable',
+		'Search.Searchable',
+		'Cacher.Cache'
 	);
 
 /**
@@ -123,6 +125,39 @@ class Roster extends AppModel {
 			'dependent' => true,
 		),
 	);
+
+/**
+ * Filter args for the Search.Searchable behavior
+ *
+ * @var array
+ * @see Search.Searchable::parseCriteria()
+ */
+	var $filterArgs = array(
+		array(
+			'name' => 'roles',
+			'type' => 'subquery',
+			'method' => 'findByRoles',
+			'field' => 'Roster.id'
+		)
+	);
+
+/**
+ * Generates a query for finding HABTM Role data
+ *
+ * @param array $data Search data
+ * @return array Query
+ */
+	function findByRoles($data = array()) {
+		$this->RolesRoster->bindModel(array('belongsTo' => array('Role', 'Roster')));
+		$this->RolesRoster->Behaviors->attach('Containable', array('autoFields' => false));
+		$this->RolesRoster->Behaviors->attach('Search.Searchable');
+		$query = $this->RolesRoster->getQuery('all', array(
+			'conditions' => array('Role.id'  => $data['roles']),
+			'fields' => array('roster_id'),
+			'contain' => array('Role')
+		));
+		return $query;
+	}
 
 /**
  * Adds necessary information to a new roster record.

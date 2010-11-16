@@ -43,6 +43,31 @@ class RostersControllerTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 
+	function testFilterIndex() {
+		$data = array(
+			'Roster' => array(
+				'roster_status' => 1
+			),
+			'Role' => array(
+				'Role' => array(
+					2
+				)
+			)
+		);
+		$vars = $this->testAction('/rosters/index/Involvement:3');
+		$results = Set::extract('/Roster/id', $vars['rosters']);
+		sort($results);
+		$expected = array(4, 5);
+		$this->assertEqual($results, $expected);
+
+		$vars = $this->testAction('/rosters/index/Involvement:3', array(
+			'data' => $data
+		));
+		$results = Set::extract('/Roster/id', $vars['rosters']);
+		$expected = array(5);
+		$this->assertEqual($results, $expected);		
+	}
+
 	function testIndex() {
 		$vars = $this->testAction('/rosters/index/Involvement:1');
 

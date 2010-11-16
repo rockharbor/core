@@ -132,6 +132,7 @@ Search
 	-webkit-border-radius: 0 4px 4px 0;
 	border-radius: 0 4px 4px 0;
 	margin-left:-2px;
+	background: #16b96d url(images/ui-bg_highlight-soft_75_16b96d_1x100.png) 50% 50% repeat-x;
 }
 #nav-search input[type=text] {
 	font-size:9px;

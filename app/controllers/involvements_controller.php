@@ -64,7 +64,7 @@ class InvolvementsController extends AppController {
 			$this->paginate['conditions']['Involvement.private'] = false;
 			$this->paginate['conditions']['Ministry.private'] = false;
 		}
-		
+
 		$this->set('involvements', $this->paginate());
 	}
 	
@@ -101,7 +101,21 @@ class InvolvementsController extends AppController {
 			$this->redirect(array('action' => 'index'));
 		}
 
-		$this->set(compact('involvement'));
+		$childConditions = $countConditions = $pendingConditions = array('Roster.involvement_id' => $id);
+		$childConditions['Roster.parent_id >'] = 0;
+		$pendingConditions['Roster.roster_status'] = 0;
+		$counts['childcare'] = $this->Involvement->Roster->find('count', array('conditions' => $childConditions));
+		$counts['pending'] = $this->Involvement->Roster->find('count', array('conditions' => $pendingConditions));
+		$counts['leaders'] = count($involvement['Leader']);
+		$counts['total'] = $this->Involvement->Roster->find('count', array('conditions' => $countConditions));
+		
+		$roles = $this->Involvement->Ministry->Role->find('list', array(
+			'conditions' => array(
+				'Role.ministry_id' => $involvement['Involvement']['ministry_id']
+			)
+		));
+
+		$this->set(compact('involvement', 'counts', 'roles'));
 	}
 
 /**
