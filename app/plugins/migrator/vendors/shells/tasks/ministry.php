@@ -46,10 +46,13 @@ class MinistryTask extends MigratorTask {
 	}
 
 	function _prepareMinistryDescription($old) {
-		$old = Sanitize::clean($old, array(
-			'remove_html' => true,
-			'carriage' => false,
+		$old = Sanitize::html($old, array(
+			'remove' => true,
 		));
-		return nl2br($old);
+		return Sanitize::html(nl2br($old));
+	}
+
+	function _prepareMinistryName($old) {
+		return Sanitize::html($old);
 	}
 }
