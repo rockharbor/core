@@ -82,6 +82,7 @@ class DocumentTask extends MigratorTask {
 	}
 
 	function mapData() {
+		$this->{$this->_newModel}->Behaviors->Transfer->runtime[$this->_newModel]['isPrepared'] = false;
 		$friendly = explode('.', $this->_editingRecord['displayname']);
 		array_pop($friendly);
 		$friendly = implode('.', $friendly);

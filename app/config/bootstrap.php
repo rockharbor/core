@@ -60,12 +60,8 @@ require_once APP.'libs'.DS.'core.php';
 require_once APP.'plugins'.DS.'media'.DS.'config'.DS.'core.php';
 
 Configure::write('Media.filter.image', array(
-	'xxs' => array('convert' => 'image/png', 'fitCrop' => array(16, 16)),
-	'xs'  => array('convert' => 'image/png', 'fitCrop' => array(32, 32)),
-	's'   => array('convert' => 'image/png', 'fitCrop' => array(100, 100)),
-	'm'   => array('convert' => 'image/png', 'fit' => array(300, 300)),
-	'l'   => array('convert' => 'image/png', 'fit' => array(450, 450)),
-	'xl'  => array('convert' => 'image/png', 'fit' => array(680, 440)),
+	's'   => array('convert' => 'image/png', 'fitCrop' => array(60, 60)),
+	'm'   => array('convert' => 'image/png', 'fitCrop' => array(90, 90)),
 	)
 );
 

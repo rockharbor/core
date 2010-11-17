@@ -60,7 +60,8 @@ class ImageTask extends MigratorTask {
 		return $this->old->find('all', $options);
 	}
 
-	function mapData() {		
+	function mapData() {
+		$this->{$this->_newModel}->Behaviors->Transfer->runtime[$this->_newModel]['isPrepared'] = false;
 		$this->_editingRecord = array(
 			'Image' => array(
 				'model' => $this->_editingRecord['owner_type'],
