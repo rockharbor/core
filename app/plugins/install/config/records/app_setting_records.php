@@ -68,8 +68,8 @@ class AppSettingRecords extends Records {
 			'id' => 8,
 			'name' => 'development.debug_email',
 			'description' => 'The email to send debug info, including test emails.',
-			'value' => '1',
-			'type' => 'User'
+			'value' => 'jharris@rockharbor.org',
+			'type' => 'string'
 		),
 		array(
 			'id' => 9,
