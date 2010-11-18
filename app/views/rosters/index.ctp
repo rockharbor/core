@@ -128,7 +128,7 @@ $this->Paginator->options('#roster');
 		<td><?php echo $this->Formatting->money($roster['Roster']['balance']); ?>&nbsp;</td>
 		<td><?php echo $this->Formatting->date($roster['Roster']['created']); ?>&nbsp;</td>
 		<td><?php
-		echo $this->Html->link(count($roster['Role']).' Roles', array('controller' => 'roles', 'action' => 'add', 'Ministry' => $involvement['Involvement']['id'], 'Roster' => $roster['Roster']['id']), array('class' => 'icon-add', 'rel' => 'modal-roster'));
+		echo $this->Html->link(count($roster['Role']).' Roles', array('controller' => 'rosters', 'action' => 'roles', 'Involvement' => $involvement['Involvement']['id'], $roster['Roster']['id']), array('class' => 'icon-add', 'rel' => 'modal-roster'));
 		if (!empty($roster['Role'])) {
 			echo '<div class="core-tooltip">';
 			echo $this->Text->toList(Set::extract('/name', $roster['Role']));

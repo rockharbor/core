@@ -48,7 +48,6 @@ CORE.update = function(updateable, url) {
 	if (updateable != 'none' && updateable != '') {
 		// check to see if it's an "updateable"
 		for (div in CORE.updateables[updateable]) {
-			//console.log(updateable+': updating '+div+' with '+CORE.updateables[updateable][div]);
 			$('#'+div).load(CORE.updateables[updateable][div]);
 		}
 	}
@@ -85,7 +84,6 @@ CORE.request = function(url, options, data) {
 		useOptions.type = 'post';
 		useOptions.data = data;
 	}
-		
 	return $.ajax(useOptions);
 }
 

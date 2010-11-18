@@ -72,30 +72,33 @@ class RostersController extends AppController {
 		$rosterIds = Set::extract('/Roster/user_id', $roster);
 
 		// if we're limiting this to one user, just pull their household signup data
-		/*$householdIds = array();
+		$householdIds = array();
 		if (isset($this->passedArgs['User'])) {
 			$householdIds = $this->Roster->User->HouseholdMember->Household->getMemberIds($this->passedArgs['User'], true);
 			$viewableIds = array_intersect($householdIds, $rosterIds);
 			$viewableIds[] = $this->passedArgs['User'];
 			$conditions['User.id'] = $viewableIds;
-		}*/
+		}
 
 		if (!empty($this->data)) {
-			if ($this->data['Roster']['pending'] == 1) {
+			if ($this->data['Filter']['Roster']['pending'] == 1) {
 				$conditions['Roster.roster_status'] = 0;
 			}
-			$conditions += $this->Roster->parseCriteria(array('roles' => $this->data['Role']['Role']));
+			$conditions += $this->Roster->parseCriteria(array('roles' => $this->data['Filter']['Role']));
 		}
 		
 		$contain = array(
 			'User' => array(
-				'Profile',
+				'Profile' => array(
+					'fields' => array(
+						'name',
+						'cell_phone',
+						'allow_sponsorage'
+					)
+				),
 				'Image'
 			),
 			'Role',
-			'PaymentOption',
-			'Parent',
-			'Payment'
 		);
 		$cache = array(
 			'+10 minutes'
@@ -548,28 +551,35 @@ class RostersController extends AppController {
 	}
 
 /**
- * Saves roles to a roster id
+ * Saves roles to a roster id OR
+ * Saves a new role to the ministry
  *
  * ### Passed Args:
  * - `Involvement` the involvement id
  */
 	function roles($roster_id) {
 		if (!empty($this->data)) {
-			$this->Roster->saveAll($this->data);
+			if (isset($this->data['Role']['ministry_id'])) {
+				$this->Roster->Role->save($this->data);
+			} else {
+				$this->Roster->saveAll($this->data);
+				$this->Roster->clearCache();
+			}			
 		}
 		$this->Roster->contain(array(
 			'Role'
 		));
 		$involvement = $this->Roster->Involvement->read('ministry_id', $this->passedArgs['Involvement']);
-		if (empty($this->data)) {
+		if (empty($this->data) || isset($this->data['Role']['ministry_id'])) {
 			$this->data = $this->Roster->read(null, $roster_id);
 		}
-		$roles = $this->Roster->Role->find('all', array(
+		$roles = $this->Roster->Role->find('list', array(
 			'conditions' => array(
 				'Role.ministry_id' => $involvement['Involvement']['ministry_id']
 			)
 		));
-		$this->set('roles', $roles);
+		$ministry_id = $involvement['Involvement']['ministry_id'];
+		$this->set(compact('roles', 'ministry_id'));
 	}
 
 /**

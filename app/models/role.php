@@ -24,6 +24,17 @@ class Role extends AppModel {
 	var $name = 'Role';
 
 /**
+ * Validation rules
+ *
+ * @var array
+ */
+	var $validate = array(
+		'name' => array(
+			'notEmpty'
+		)
+	);
+
+/**
  * BelongsTo association link
  *
  * @var array

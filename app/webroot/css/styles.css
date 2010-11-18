@@ -171,6 +171,7 @@ Tooltip
 .qtip .qtip-content {
 	background: #343434 !important;
 	color: #ffffff !important;
+	padding: 5px !important;
 }
 .qtip a {
 	color: #ffffff;
@@ -178,8 +179,12 @@ Tooltip
 	float:left;
 	height:20px;
 	line-height:20px;
-	margin-left:5px;
 	padding: 0 5px;
+	min-width: 80px;
+}
+.qtip img {
+	float:left;
+	margin-right:5px;
 }
 .qtip a:hover {
 	color: #343434;

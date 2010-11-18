@@ -82,19 +82,25 @@ CORE.modal = function(id, options) {
 CORE.attachTooltipBehavior = function() {
 	$('.core-tooltip').each(function() {
 		$(this).prev().qtip({
-			content: $(this).html(),
+			content: {
+				text: $(this).html()
+			},
 			position: {
 				corner: {
 					target: 'topMiddle',
 					tooltip: 'bottomLeft'
 				}
 			},
+			show: {
+				delay: 50,
+				solo: true
+			},
 			hide: {
 				fixed: true
 			},			
 			style: {
 				width: {
-					max: 200
+					max: 170
 				},
 				tip: {
 					corner: 'bottomLeft',
@@ -342,7 +348,7 @@ CORE.confirmation = function(id, message, options) {
 		$('#modal').dialog('option', 'title', 'Confirmation');
 		$('#modal').dialog('option', 'update', 'none');
 		$('#modal').html(message);
-		$('#modal').dialog('open');		
+		$('#modal').dialog('open');
 		
 		// stop href
 		return false;
@@ -475,7 +481,6 @@ CORE.ajaxUpload = function(id, updateable) {
 			$(input).after('<div class="error-message" id="'+id+'_error"></div>');
 			var e = $('#'+id+'_error');
 			var msg = '';
-			console.log(response);
 			if (response.length == 0) {
 				if (updateable != undefined) {
 					CORE.update(updateable);

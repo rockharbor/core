@@ -45,7 +45,7 @@ class RostersControllerTestCase extends CoreTestCase {
 
 	function testRoles() {
 		$vars = $this->testAction('/rosters/roles/5/Involvement:3');
-		$results = Set::extract('/Role/id', $vars['roles']);
+		$results = array_keys($vars['roles']);
 		sort($results);
 		$expected = array(1, 2);
 		$this->assertEqual($results, $expected);
