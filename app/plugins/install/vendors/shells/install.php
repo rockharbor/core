@@ -101,6 +101,25 @@ class InstallShell extends Shell {
 	}
 
 /**
+ * Updates permissions
+ */
+	function update() {
+		// create Acos
+		$this->Acl =& new AclComponent();
+		$controller = null;
+		$this->Acl->startup($controller);
+		$this->Aco =& $this->Acl->Aco;
+		$this->AclExtras = new AclExtrasShell($this->Dispatch);
+		$this->AclExtras->startup();
+		$this->AclExtras->aco_sync();
+
+		// create aros
+		$this->_createGroupAros();
+		// create acl
+		$this->_createAcl();
+	}
+
+/**
  * Installs the database. Generates all permissions and creates an Admin user
  *
  * @return void
@@ -129,19 +148,7 @@ class InstallShell extends Shell {
 			}
 		}
 
-		// create Acos
-		$this->Acl =& new AclComponent();
-		$controller = null;
-		$this->Acl->startup($controller);
-		$this->Aco =& $this->Acl->Aco;
-		$this->AclExtras = new AclExtrasShell($this->Dispatch);
-		$this->AclExtras->startup();
-		$this->AclExtras->aco_sync();
-
-		// create aros
-		$this->_createGroupAros();
-		// create acl
-		$this->_createAcl();
+		$this->update();
 
 		// create api indices
 		$ApiIndex = new ApiIndexShell($this->Dispatch);
@@ -153,6 +160,9 @@ class InstallShell extends Shell {
 
 	function _createAcl() {
 		$Group = ClassRegistry::init('Group');
+
+		$this->Acl->Aro->query('DELETE FROM aros_acos');
+		$this->Acl->Aro->query('ALTER TABLE aros_acos AUTO_INCREMENT = 1');
 
 		foreach ($this->_allowPermissions as $alias => $perms) {
 			$group = $Group->findByName($alias);
@@ -189,6 +199,9 @@ class InstallShell extends Shell {
 		$groups = $Group->find('all', array(
 			'order' => 'lft DESC'
 		));
+
+		$this->Acl->Aro->deleteAll(array('id >' => 0));
+		$this->Acl->Aro->query('ALTER TABLE aros AUTO_INCREMENT = 1');
 
 		foreach ($groups as $group) {
 			$child = $Group->children($group['Group']['id'], true);
@@ -250,7 +263,6 @@ class InstallShell extends Shell {
 			'controllers/Logs',
 			'controllers/Ministries/delete',
 			'controllers/Publications',
-			'controllers/Roles',
 			'controllers/Rosters/delete',
 			'controllers/Rosters/edit'
 		),
@@ -299,12 +311,16 @@ class InstallShell extends Shell {
 			'controllers/UserImages/index',
 			'controllers/UserImages/upload',
 			'controllers/UserImages/approve',
+			'controllers/Roles/add',
+			'controllers/Roles/edit',
+			'controllers/Roles/delete',
 		),
 		'Intern' => array(
 			'controllers/Comments/index',
 			'controllers/Comments/add',
 			'controllers/Rosters/index',
 			'controllers/Rosters/add',
+			'controllers/Rosters/roles',
 			'controllers/Rosters/involvement',
 			'controllers/Users/add',
 			'controllers/Users/edit',
