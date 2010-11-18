@@ -17,7 +17,8 @@ class RolesRosterTask extends MigratorTask {
 		$this->_oldPkMapping =array(
 			'person_id' => array('person' => 'User'),
 			'role_id' => array('role' => 'Role'),
-			'type_id' => array('events' => 'Involvement')
+			'type_id' => array('events' => 'Involvement'),
+			'ministry_id' => array('ministry' => 'Ministry'),
 		);
 		$oldData = $this->findData($limit, 'EVENT');
 		$this->_migrate($oldData);
@@ -28,7 +29,8 @@ class RolesRosterTask extends MigratorTask {
 		$this->_oldPkMapping =array(
 			'person_id' => array('person' => 'User'),
 			'role_id' => array('role' => 'Role'),
-			'type_id' => array('teams' => 'Involvement')
+			'type_id' => array('teams' => 'Involvement'),
+			'ministry_id' => array('ministry' => 'Ministry'),
 		);
 		$oldData = $this->findData($limit, 'TEAM');
 		$this->_migrate($oldData);
@@ -39,7 +41,8 @@ class RolesRosterTask extends MigratorTask {
 		$this->_oldPkMapping =array(
 			'person_id' => array('person' => 'User'),
 			'role_id' => array('role' => 'Role'),
-			'type_id' => array('groups' => 'Involvement')
+			'type_id' => array('groups' => 'Involvement'),
+			'ministry_id' => array('ministry' => 'Ministry'),
 		);
 		$oldData = $this->findData($limit, 'GROUP');
 		$this->_migrate($oldData);

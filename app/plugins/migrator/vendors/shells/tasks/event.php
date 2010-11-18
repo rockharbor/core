@@ -3,7 +3,8 @@
 class EventTask extends MigratorTask {
 
 	var $_oldPkMapping = array(
-		'ministry_id' => array('ministry' => 'Ministry')
+		'ministry_id' => array('ministry' => 'Ministry'),
+		'subministry_id' => array('ministry' => 'Ministry'),
 	);
 
 	var $_oldTable = 'events';
