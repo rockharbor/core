@@ -160,8 +160,6 @@ CORE.init = function() {
 CORE.initUI = function() {
 	// form elements
 	CORE.initFormUI();
-	// tooltips
-	CORE.attachTooltipBehavior();
 	// hide flash message
 	$('div[id^=flash]').delay(5000).slideUp();
 	// display any validation errors
@@ -170,4 +168,6 @@ CORE.initUI = function() {
 	CORE.attachTabbedBehavior();
 	// attach modal behavior
 	CORE.attachModalBehavior();
+	// tooltips
+	CORE.attachTooltipBehavior();
 }

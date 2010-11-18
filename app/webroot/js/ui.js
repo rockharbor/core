@@ -83,7 +83,7 @@ CORE.attachTooltipBehavior = function() {
 	$('.core-tooltip').each(function() {
 		$(this).prev().qtip({
 			content: {
-				text: $(this).html()
+				text: $(this).clone(true)
 			},
 			position: {
 				corner: {
@@ -157,7 +157,7 @@ CORE.attachModalBehavior = function() {
 			if ($(this).attr('id') == '') {
 				$(this).attr('id', 'link-'+new Date().getTime());
 			}
-			
+
 			if (update[1] != undefined) {
 				CORE.modal($(this).attr('id'), {update:update[1]});
 			} else {
