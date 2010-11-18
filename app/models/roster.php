@@ -151,8 +151,13 @@ class Roster extends AppModel {
 		$this->RolesRoster->bindModel(array('belongsTo' => array('Role', 'Roster')));
 		$this->RolesRoster->Behaviors->attach('Containable', array('autoFields' => false));
 		$this->RolesRoster->Behaviors->attach('Search.Searchable');
+		$existsQuery = array();
+		foreach ($data['roles'] as $role) {
+			$query = 'SELECT 1 FROM '.Inflector::tableize($this->RolesRoster->alias).' WHERE role_id = '.$role.' AND roster_id = RolesRoster.roster_id';
+			$existsQuery[] = 'EXISTS ('.$query.')';
+		}
 		$query = $this->RolesRoster->getQuery('all', array(
-			'conditions' => array('Role.id'  => $data['roles']),
+			'conditions' => implode(' AND ', $existsQuery),
 			'fields' => array('roster_id'),
 			'contain' => array('Role')
 		));
