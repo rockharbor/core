@@ -18,7 +18,8 @@ class CampusRecords extends Records {
 		array(
 			'id' => 1,
 			'name' => 'Main',
-			'description' => 'The main campus.'
+			'description' => 'The main campus.',
+			'active' => true
 		)
 	);
 
