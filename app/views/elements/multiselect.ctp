@@ -26,7 +26,9 @@ if (!isset($links)) {
 			'needCheckAll' => false
 		);
 		$link = array_merge($_default, $link);
-		echo $this->Html->link($link['title'], $link['url'], $link['options']);
+		if ($this->Permission->check($link['url'])) {
+			echo $this->Html->link($link['title'], $link['url'], $link['options']);
+		}
 	}
 	?>
 	</th>

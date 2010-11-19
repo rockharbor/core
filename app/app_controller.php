@@ -92,7 +92,8 @@ class AppController extends Controller {
 		'Session',
 		'Text',
 		'Media.Media',
-		'Tree'
+		'Tree',
+		'Permission'
 	);
 
 /**
@@ -214,6 +215,10 @@ class AppController extends Controller {
 
 		if (empty($action)) {
 			$action = $this->Auth->action();
+		} else {
+			$params = Router::parse($action);
+			$action = Set::filter(array($params['plugin'], $params['controller'], $params['action']));
+			$action = Inflector::camelize(implode('/', $action));
 		}
 		
 		$this->_setConditionalGroups();
@@ -230,7 +235,7 @@ class AppController extends Controller {
 			$foreign_key = $this->activeUser['ConditionalGroup']['id'];
 			$condAccess = $this->Acl->check(compact('model', 'foreign_key'), $action);
 		}
-		
+
 		return $mainAccess || $condAccess;
 	}
 

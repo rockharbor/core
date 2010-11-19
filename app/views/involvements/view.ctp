@@ -9,7 +9,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 <div class="involvements view core-tabs">
 	<ul>
 		<li><a href="#details-tab">Details</a></li>
-		<?php if (true || $this->Permission->viewRoster) { ?>
+		<?php if ($this->Permission->canViewRoster) { ?>
 		<li><a href="#roster-tab">Roster</a></li>
 		<?php } ?>
 	</ul>
@@ -96,6 +96,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 				<li><?php echo $this->Html->link('Invite Roster', array('controller' => 'searches', 'action' => 'simple', 'Involvement', 'notInvolvementAndIsLeading', $involvement['Involvement']['id'], $activeUser['User']['id'], 'Invite To '.$involvement['InvolvementType']['name'] => 'inviteRoster'), array('rel' => 'modal-content')); ?> </li>
 			</ul>
 		</div>
+		<?php if ($this->Permission->canViewRoster) { ?>
 		<div id="roster-tab">
 			<div id="columns" class="grid_10 alpha omega">
 				<div class="grid_2 column border-right alpha">
@@ -204,6 +205,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 				</li>
 			</ul>
 		</div>
+		<?php } ?>
 	</div>
 </div>
 
