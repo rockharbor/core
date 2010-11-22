@@ -146,9 +146,19 @@ class FormattingHelperTestCase extends CakeTestCase {
 		$this->assertEqual('384-0914', $this->Formatting->phone('(384)09asd14'));
 	}
 
+	function testDatetime() {
+		$this->assertEqual('2/24/2010 @ 9:55am', $this->Formatting->datetime('2010-02-24 09:55:30'));
+		$this->assertNull($this->Formatting->datetime());
+	}
+
 	function testDate() {
-		$this->assertEqual('2/24/2010 @ 9:55am', $this->Formatting->date('2010-02-24 09:55:30'));
+		$this->assertEqual('2/24/2010', $this->Formatting->date('2010-02-24 09:55:30'));
 		$this->assertNull($this->Formatting->date());
+	}
+
+	function testTime() {
+		$this->assertEqual('9:55am', $this->Formatting->time('2010-02-24 09:55:30'));
+		$this->assertNull($this->Formatting->time());
 	}
 
 }

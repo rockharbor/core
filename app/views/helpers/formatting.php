@@ -247,70 +247,79 @@ class FormattingHelper extends AppHelper {
 	}
 	
 /**
- * Formats a datetime to output based on whatever data is available.
+ * Formats a datetime
+ *
+ * @param string $datetime MySQL date or datetime to format
+ * @return string
+ * @access public
+ */	
+	function datetime($datetime = '') {
+		$out = $this->date($datetime);
+		$time = $this->time($datetime);
+		if ($time) {
+			$out .= ' @ '.$time;
+		}
+		return $out;
+	}
+
+/**
+ * Formats a date to output based on whatever data is available.
  * For example, if it has all the values it displays as 4/14/1984,
  * if it has just the year, 1984, just the month, April and so on.
  *
  * @param string $datetime MySQL date or datetime to format
  * @return string
  * @access public
- */	
+ */
 	function date($datetime = '') {
 		// we don't want 12/31/1969
 		if ($datetime == '') {
 			return null;
 		}
-		
 		$out = array();
-		
 		// split into date and time
 		$datetime = explode(' ', $datetime);
 		if (count($datetime) == 1) {
 			$datetime[] = '00:00:00';
 		}
-		
-		$time = $datetime[1];
 		$date = $datetime[0];
-		
-		// split time into chunks
-		list($hours, $minutes) = explode(':', $time);
-		$hours = (int)$hours;
-		$minutes = (int)$minutes;		
-		
 		// split date into chunks
 		list($year, $month, $day) = explode('-', $date);
 		$day = (int)$day;
 		$month = (int)$month;
 		$year = (int)$year;
-		
 		// April
 		if (!empty($month)) {
 			$out[] = date('F', strtotime($month.'/1/2000'));
 		}
-		
 		// Saturday; April 14
 		if (!empty($day)) {
 			$out[] = empty($month) ? date('l', strtotime('1/'.$day.'/2000')) : date('j', strtotime('1/'.$day.'/2000'));
 		}
-
 		// April 1984; 1984
 		if (!empty($year)) {
 			$out[] = date('Y', strtotime('1/1/'.$year));
 		}
-		
 		$out = implode(' ', $out);
-		
 		// if we have all the info, so replace it with 4/14/1984
 		if (!empty($day) && !empty($month) && !empty($year)) {
 			$out = date('n/j/Y', strtotime($date));
 		}
-		
-		// at 8:12pm
-		if (!empty($hours) && !empty($minutes)) {
-			$out .= ' @ '.date('g:ia', strtotime($date.' '.$time));
-		}	
-		
-		return $out;				 
+		return $out;
+	}
+
+/**
+ * Formats a time
+ *
+ * @param string $datetime MySQL date or datetime to format
+ * @return string
+ * @access public
+ */
+	function time($datetime = '') {
+		if ($datetime == '') {
+			return null;
+		}
+		return date('g:ia', strtotime($datetime));
 	}
 
 /**
