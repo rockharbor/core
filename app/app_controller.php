@@ -196,6 +196,9 @@ class AppController extends Controller {
 
 		// use custom authentication (password encrypt/decrypt)
 		$this->Auth->authenticate = $User;
+
+		// cache permissions
+		$this->Acl->Aro->Permission->Behaviors->attach('Cacher.cache', array('auto' => true));
 		
 		// set to log using this user (see LogBehavior)
 		if (!$this->params['plugin'] && sizeof($this->uses) && $this->{$this->modelClass}->Behaviors->attached('Logable')) { 
