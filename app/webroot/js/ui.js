@@ -79,11 +79,17 @@ CORE.modal = function(id, options) {
 	$('#modal').dialog({autoOpen:false});
 }
 
+/**
+ * Takes the contents of a div and creates a tooltip on the previous element.
+ *
+ * Looks for the class `core-tooltip` and removes it from the DOM after adding
+ * the tooltip to the previous element.
+ */
 CORE.attachTooltipBehavior = function() {
 	$('.core-tooltip').each(function() {
 		$(this).prev().qtip({
 			content: {
-				text: $(this).clone(true)
+				text: $(this).contents().clone(true)
 			},
 			position: {
 				corner: {
