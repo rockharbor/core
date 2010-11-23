@@ -60,17 +60,23 @@ li#nav-profile .profile-name {
 li#nav-notifications {
 	position:relative;
 }
-li#nav-notifications .notification {
-	padding:5px;
+li#nav-notifications .notification p {
 	color:#807980;
-	margin:0;
+	margin:5px 0;
+	margin-bottom:5px;
+	padding:0 5px;
 	clear:both;
 	position: relative;
 	max-width: 400px;
+	min-width:350px;
 }
-li#nav-notifications p {
+li#nav-notifications .notification {
 	margin:0;
 	margin-right:20px;
+}
+li#nav-notifications p a {
+	display:inline;
+	padding:0;
 }
 li#nav-notifications .delete {
 	background-image: url(images/ui-icons_454545_256x240.png);
@@ -82,7 +88,8 @@ li#nav-notifications .delete {
 	text-indent:-99999px;
 	position:absolute;
 	top:0;
-	right:5px;
+	right:-12px;
+	display: none;
 }
 li#nav-notifications .delete:hover {
 	background-image: url(images/ui-icons_cd0a0a_256x240.png);
@@ -91,7 +98,7 @@ li#nav-notifications .read {
 	border-left:3px solid #FFF;
 }
 li#nav-notifications .unread {
-	border-left:3px solid #B2F5D5;
+	border-left:3px solid #E03A14;
 }
 li#nav-notifications .notification-count {
 	font-family: LeagueGothicRegular,Helvetica,Arial,sans-serif;
@@ -105,6 +112,18 @@ li#nav-notifications .notification-count {
 	text-align:center;
 	top:0;
 	right:5px;
+}
+li#nav-notifications li.notification {
+	padding: 0 5px;
+	position:relative;
+}
+li#nav-notifications #notification-viewall li {
+	padding:0;
+}
+li#nav-notifications #notification-viewall a {
+	text-align: center;
+	background:#eaeaea;
+	border-top:1px solid #cccccc;
 }
 	
 
@@ -200,16 +219,12 @@ Dropdown menu CSS
 		/*top:1em;
 		/*left:0;*/
 		}
-	.main-nav-menu>ul>li>ul{
-		padding:5px;
-	}
 	.main-nav-menu ul>li>ul>li>ul{
 		position:relative;
 	}
 	.main-nav-menu li:hover ul{
-		display:block;
-		
-		}
+		display:block;		
+	}
 	.main-nav-menu li li {
 		display:block;
 		float:none;

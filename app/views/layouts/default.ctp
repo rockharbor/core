@@ -101,33 +101,19 @@
 
 								foreach ($activeUser['Notification'] as $notification) {
 									$class = $notification['Notification']['read'] ? 'read' : 'unread';
-									echo '<li id="notification-'.$notification['Notification']['id'].'" class="'.$class.' notification"><p>';
+									echo '<li id="notification-'.$notification['Notification']['id'].'" class="notification"><p class="'.$class.'">';
 									echo $this->Text->truncate($notification['Notification']['body'], 100, array('html' => true));
 									echo '</p>';
-									echo $this->Js->link('[X]', array(
+									echo $this->Html->link('[X]', array(
 										'controller' => 'notifications',
 										'action' => 'delete',
 										$notification['Notification']['id']
 									), array(
-										'complete' => '$("#notification-'.$notification['Notification']['id'].'").fadeOut("fast")',
 										'class' => 'delete'
 									));
 									echo '</li>';
-									if ($class == 'unread') {
-										$this->Js->buffer('$("#notification-'.$notification['Notification']['id'].'").bind("mouseenter", function() {
-											CORE.request("'.Router::url(array('controller' => 'notifications', 'action' => 'read', $notification['Notification']['id'])).'");
-											$(this).unbind("mouseenter");
-											$(this).animate({borderLeftColor:"#fff"}, "slow");
-											var count = Number($(".notification-count").text()) - 1;											
-											if (count == 0) {
-												$(".notification-count").fadeOut("fast");
-											} else {
-												$(".notification-count").fadeOut("fast").text(count).fadeIn("fast");
-											}
-										});');
-									}
 								}
-								echo '<li>';
+								echo '<li id="notification-viewall">';
 								echo $this->Html->link('View All Notifications', array('controller' => 'notifications'));
 								echo '</li>';
 							?>
