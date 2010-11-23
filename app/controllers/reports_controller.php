@@ -143,18 +143,20 @@ class ReportsController extends AppController {
 /**
  * Shows a map from a list of results
  *
+ * @param string $model The name of the model to search
  * @param string $uid The MultiSelect cache key to get results from
  */
-	function map($uid) {
+	function map($model, $uid) {
 		$search = $this->MultiSelect->getSearch($uid);
 		$selected = $this->MultiSelect->getSelected($uid);
 		// assume they want all if they didn't select any
 		if (!empty($selected)) {
-			$search['conditions']['User.id'] = $selected;
+			$search['conditions'][$model.'.id'] = $selected;
 		}
 		
 		// only need name, picture and address
-		$search['contain'] = array(
+		$search['contain'] = array();
+		$contain = array(
 			'Profile',
 			'Image',
 			'Address' => array(
@@ -163,10 +165,15 @@ class ReportsController extends AppController {
 				)
 			)
 		);
-		
-		$results = $this->User->find('all', $search);
-		
-		$this->set('results', $results);
+		if ($model !== 'User') {
+			$search['contain']['User'] = $contain;
+			$results = $this->User->{$model}->find('all', $search);
+			$this->set('results', Set::extract('/User/.', $results));
+		} else {
+			$search['contain'] = $contain;
+			$results = $this->User->find('all', $search);
+			$this->set('results', $results);
+		}		
 	}
 }
 ?>

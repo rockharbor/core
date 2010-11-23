@@ -20,8 +20,8 @@ if (!empty($image)) {
 }
 
 echo $this->Html->tag('strong', $name);
-echo '<br />';
+echo '<br>';
 echo $street;
-echo '<br />';
+echo '<br>';
 echo $city.', '.$state.' '.$zip;
 ?>

@@ -20,6 +20,14 @@
 class GoogleMapHelper extends AppHelper {
 
 /**
+ * List of options, added on GoogleMapHelper::create()
+ * 
+ * @var array
+ * @access public
+ */
+	var $options = array();
+
+/**
  * The JavaScript to output for this map
  *
  * @var array
@@ -140,8 +148,8 @@ class GoogleMapHelper extends AppHelper {
 		
 		$this->_mapName = $mapName;
 		
-		$options = array_merge($default, $options);
-		return $this->Html->script('http://maps.google.com/maps/api/js?sensor='.($options['inline'] ? 'true': 'false'), array('inline' => $options['inline']));
+		$this->options = array_merge($default, $options);
+		return $this->Html->script('http://maps.google.com/maps/api/js?sensor='.($this->options['sensor'] ? 'true': 'false'), array('inline' => $this->options['inline']));
 	}
 
 /**
@@ -155,10 +163,12 @@ class GoogleMapHelper extends AppHelper {
  * @return void
  * @access public
  */
-	function addAddresses($addresses = array()) {			
+	function addAddresses($addresses = array()) {
 		foreach ($addresses as $address) {
-			$this->_buffer[] = $this->_createMarker($address);
-			$this->_addresses[] = $address;
+			if ($address['lat'] != 0 && $address['lng'] != 0) {
+				$this->_buffer[] = $this->_createMarker($address);
+				$this->_addresses[] = $address;
+			}
 		}
 	}
 
@@ -168,7 +178,10 @@ class GoogleMapHelper extends AppHelper {
  * @return mixed A div tag a mapName was not specified in GoogleMapHelper::create(), or null
  * @access public
  */
-	function end() {	
+	function end() {
+		if (empty($this->_addresses)) {
+			return null;
+		}
 		if (!$this->center) {
 			// set center to average points
 			$this->center = array(
@@ -176,12 +189,12 @@ class GoogleMapHelper extends AppHelper {
 				Set::apply('/lng', $this->_addresses, 'array_sum')/count($this->_addresses)
 			);
 		}
-		
+		$out = '';
 		$mapName = $this->_mapName;
 		$zoom = $this->zoom;
 		$centerLat = $this->center[0];
 		$centerLng = $this->center[1];
-		$mapType = $this->_mapTypesMap[$this->mapType];		
+		$mapType = $this->_mapTypesMap[$this->mapType];
 		
 		array_unshift($this->_buffer, "var $mapName = new google.maps.Map(document.getElementById('$mapName'), {
 			zoom: $zoom,
@@ -189,20 +202,25 @@ class GoogleMapHelper extends AppHelper {
 			mapTypeId: $mapType
 		});");
 		array_unshift($this->_buffer, "var mapCenter = new google.maps.LatLng($centerLat, $centerLng);");
+		array_unshift($this->_buffer, "var infowindow = new google.maps.InfoWindow();");
 		
 		foreach ($this->_buffer as $buffer) {
 			$this->Js->buffer($buffer);
 		}
+		$this->_buffer = array();
+
+		if ($this->options['inline']) {
+			$out .= $this->Js->writeBuffer();
+		}
 		
 		if ($this->_createDiv) {
-			return $this->Html->tag('div', '', array(
+			$out .= $this->Html->tag('div', '', array(
 				'id' => $mapName,
 				'style' => 'width:100%;height:100%;min-width:600px;min-height:600px',
 				'class' => 'google-map'
 			));
-		} else {
-			return null;
 		}
+		return $out;
 	}
 
 /**
@@ -249,10 +267,11 @@ class GoogleMapHelper extends AppHelper {
 		}
 		$marker .= "position: point$count, map: $mapName});";
 		
-		$marker .= "var infowindow = new google.maps.InfoWindow();";
-		
 		if ($image || $name || $city || $state || $zip) {
-			$content = ClassRegistry::getObject('view')->element($this->infoWindowElement, array('data' => $data));
+			$View = ClassRegistry::getObject('view');
+			// trick debug_kit into not rendering the comments before and after the element
+			$View->params['url']['ext'] = 'gm';
+			$content = $this->Html->tag('div', $View->element($this->infoWindowElement, array('data' => $data)));
 			$marker .= "google.maps.event.addListener(marker$count, 'click', function() {
 				infowindow.setContent('$content');
 				infowindow.open($mapName, marker$count);
