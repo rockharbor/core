@@ -7,7 +7,7 @@ class RolesRosterTask extends MigratorTask {
 	var $_newModel = 'RolesRoster';
 
 	function migrate($limit = null) {
-		$this->roster = ClassRegistry::init('Roster');
+		$this->Roster = ClassRegistry::init('Roster');
 
 		$this->_initModels();
 
@@ -71,7 +71,7 @@ class RolesRosterTask extends MigratorTask {
 	function mapData() {
 		// get roster id
 		$type = strtolower($this->_editingRecord['type']);
-		$roster = $this->roster->find('first', array(
+		$roster = $this->Roster->find('first', array(
 			'conditions' => array(
 				'user_id' => $this->_editingRecord['person_id'],
 				'involvement_id' => $this->_editingRecord['type_id'],

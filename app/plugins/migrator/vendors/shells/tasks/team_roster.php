@@ -3,7 +3,7 @@
 class TeamRosterTask extends MigratorTask {
 
 	var $_oldPkMapping = array(
-		'group_id' => array('teams' => 'Involvement'),
+		'team_id' => array('teams' => 'Involvement'),
 		'person_id' => array('person' => 'User'),
 		'question1_id' => array('questions' => 'Question'),
 		'question2_id' => array('questions' => 'Question'),
@@ -15,6 +15,22 @@ class TeamRosterTask extends MigratorTask {
 	var $_oldTable = 'team_roster';
 	var $_oldPk = 'team_roster_id';
 	var $_newModel = 'Roster';
+
+	function findData($limit = null) {
+		$options = array(
+			'order' => $this->_oldPk.' ASC',
+			'conditions' => array(
+				'not' => array(
+					$this->_oldPk => $this->_getPreMigrated(),
+					'isLeader' => 'T'
+				)
+			)
+		);
+		if ($limit) {
+			$options['limit'] = $limit;
+		}
+		return $this->old->find('all', $options);
+	}
 
 	function mapData() {
 		$answers = array();

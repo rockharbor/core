@@ -7,9 +7,9 @@ class ManagerTask extends MigratorTask {
 		'ministry_id' => array('ministry' => 'Ministry'),
 	);
 
-	var $_oldTable = 'household';
-	var $_oldPk = 'household_id';
-	var $_newModel = 'Household';
+	var $_oldTable = 'ministry_manager';
+	var $_oldPk = 'ministry_manager_id';
+	var $_newModel = 'Leader';
 
 	function mapData() {
 		$this->_editingRecord = array(

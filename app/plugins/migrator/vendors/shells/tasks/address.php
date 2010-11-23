@@ -15,7 +15,6 @@ class AddressTask extends MigratorTask {
 
 		$this->_editingRecord = array(
 			'Address' => array(
-				'id' => $this->_editingRecord['address_id'],
 				'name' => $this->_editingRecord['address_label'],
 				'address_line_1' => $this->_editingRecord['address_line1'],
 				'address_line_2' => $this->_editingRecord['address_line2'],

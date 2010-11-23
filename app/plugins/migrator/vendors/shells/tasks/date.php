@@ -3,96 +3,29 @@
 class DateTask extends MigratorTask {
 
 	var $_oldPkMapping = array(
-		'involvement_id' => array('events' => 'Involvement')
+		'event_id' => array('events' => 'Involvement')
 	);
 
 	var $_oldTable = 'event_dates';
 	var $_oldPk = 'eventdate_id';
 	var $_newModel = 'Date';
 
-
-/**
- * Migrates data using the subtask's definitions
- *
- * @param integer $limit
- */
-	function migrate($limit = null) {
-		// import all
-		$alreadyMigrated = $this->IdLinkage->find('all', array(
-			'conditions' => array(
-				'old_table' => $this->_oldTable,
-				'new_model' => $this->_newModel
-			)
-		));
-		$alreadyMigrated = Set::extract('/IdLinkage/old_pk', $alreadyMigrated);
-
-		$old = new Model(false, $this->_oldTable, $this->_oldDbConfig);
-		// get all unique ids
+	function findData($limit = null) {
 		$options = array(
 			'group' => array(
 				'event_id'
 			),
-			'order' => 'eventdate_id',
+			'order' => $this->_oldPk.' ASC',
 			'conditions' => array(
 				'not' => array(
-					$this->_oldPk => $alreadyMigrated
+					$this->_oldPk => $this->_getPreMigrated()
 				)
 			)
 		);
 		if ($limit) {
 			$options['limit'] = $limit;
 		}
-		$oldData = $old->find('all', $options);
-
-		$this->{$this->_newModel} =& ClassRegistry::init($this->_newModel);
-		if ($this->{$this->_newModel}->Behaviors->attached('Logable')) {
-			$this->{$this->_newModel}->Behaviors->detach('Logable');
-		}
-
-		foreach ($oldData as $oldRecord) {
-			$timestart = microtime(true);
-			$oldRecord = $oldRecord['Model'];
-			$oldPk = $oldRecord[$this->_oldPk];
-			$this->_editingRecord = $oldRecord;
-			$start = microtime(true);
-			$this->_prepareData($this->_oldTable);
-			//$this->out('prepare: '.(microtime(true)-$start));
-			$start = microtime(true);
-			$this->mapData();
-			//$this->out('map: '.(microtime(true)-$start));
-
-			$start = microtime(true);
-			$this->{$this->_newModel}->create();
-			//$this->out('create: '.(microtime(true)-$start));
-			$start = microtime(true);
-			$success = $this->{$this->_newModel}->saveAll($this->_editingRecord, array('validate' => false));
-			//$this->out('save: '.(microtime(true)-$start));
-			if (!$success) {
-				CakeLog::write('migration', print_r($this->_editingRecord, true));
-				CakeLog::write('migration', print_r($this->{$this->_newModel}->validationErrors, true));
-			}
-
-			$start = microtime(true);
-			// save new/old pk map
-			if (!in_array($oldPk, $this->orphans)) {
-				$this->IdLinkage->create();
-				$this->IdLinkage->save(array(
-					'IdLinkage' => array(
-						'old_pk' => $oldPk,
-						'old_table' => $this->_oldTable,
-						'new_pk' => $this->{$this->_newModel}->id,
-						'new_model' => $this->_newModel
-					)
-				));
-			}
-			//$this->out('link: '.(microtime(true)-$start));
-			$timetook = (microtime(true)-$timestart);
-			$this->out('Migrated '.$this->_oldTable.' # '.$oldPk.' to '.$this->_newModel.' # '.$this->{$this->_newModel}->id.' ('.$timetook.' s)');
-		}
-
-		if (!empty($this->orphans)) {
-			CakeLog::write('migration', $this->_oldTable.' with orphan links: '.implode(',', $this->orphans));
-		}
+		return $this->old->find('all', $options);
 	}
 
 	function mapData() {
