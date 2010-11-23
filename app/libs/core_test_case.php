@@ -188,6 +188,7 @@ class CoreTestCase extends CakeTestCase {
 		// configure acl
 		if (isset($Controller->Acl)) {
 			$Controller->Acl = new MockAclComponent();
+			$Controller->Acl->__construct();
 			$Controller->Acl->enabled = true;
 			$Controller->Acl->setReturnValue('check', true);
 		}

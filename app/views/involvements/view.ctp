@@ -173,12 +173,14 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 			<ul class="core-admin-tabs">
 				<li>
 				<?php
-				echo $this->Html->link('Add A User',
+				echo $this->Html->link('Invite A User',
 					array(
 						'controller' => 'searches',
 						'action' => 'simple',
-						'User', 'notSignedUp', $involvement['Involvement']['id'],
-						'Add User' => 'addToRoster',
+						'User',
+						'add_invite_user',
+						'notSignedUp',
+						$involvement['Involvement']['id'],
 					),
 					array(
 						'class' => 'button',
@@ -189,12 +191,14 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 				</li>
 				<li>
 				<?php
-				echo $this->Html->link('Add / Invite this roster to',
+				echo $this->Html->link('Invite this roster to',
 					array(
 						'controller' => 'involvements',
 						'action' => 'invite_roster',
-						'User', 'notSignedUp', $involvement['Involvement']['id'],
-						'Add User' => 'addToRoster',
+						'User',
+						'add_invite_roster',
+						'notInvolvement',
+						$involvement['Involvement']['id'],
 					),
 					array(
 						'class' => 'button',
@@ -211,12 +215,12 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 
 <?php
 
-echo $this->Html->scriptBlock('function invite(userid) {
-	CORE.request("'.Router::url(array('controller' => 'involvements', 'action' => 'invite')).'/"+userid+"/'.$involvement['Involvement']['id'].'");
+echo $this->Html->scriptBlock('
+function inviteUser(userid) {
+	CORE.request("'.Router::url(array('controller' => 'involvements', 'action' => 'invite')).'/"+userid+"/Involvement:'.$involvement['Involvement']['id'].'");
 }
-
 function inviteRoster(involvementid) {
-	CORE.request("'.Router::url(array('controller' => 'involvements', 'action' => 'invite_roster')).'/"+involvementid+"/'.$involvement['Involvement']['id'].'");
+	CORE.request("'.Router::url(array('controller' => 'involvements', 'action' => 'invite_roster')).'/"+involvementid+"/Involvement:'.$involvement['Involvement']['id'].'");
 }
 
 ');

@@ -162,7 +162,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 				'username' => 'a'
 			)
 		);
-		$vars = $this->testAction('/searches/simple/User/', compact('data'));
+		$vars = $this->testAction('/searches/simple/User/some_element/', compact('data'));
 		$results = Set::extract('/User/username', $vars['results']);
 		$expected = array(
 			'jharris',
@@ -180,7 +180,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 				'first_name' => 'jeremy'
 			)
 		);
-		$vars = $this->testAction('/searches/simple/User/', compact('data'));
+		$vars = $this->testAction('/searches/simple/User/some_element/', compact('data'));
 		$results = Set::extract('/User/username', $vars['results']);
 		$expected = array(
 			'jharris',
@@ -197,7 +197,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 				'username' => 'jharris'
 			)
 		);
-		$vars = $this->testAction('/searches/simple/User/notInHousehold/2', compact('data'));
+		$vars = $this->testAction('/searches/simple/User/some_element/notInHousehold/2', compact('data'));
 		$results = Set::extract('/User/username', $vars['results']);
 		$expected = array(
 			'jharris',
@@ -210,7 +210,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 				'username' => 'a'
 			)
 		);
-		$vars = $this->testAction('/searches/simple/User/notInHousehold/1', compact('data'));
+		$vars = $this->testAction('/searches/simple/User/some_element/notInHousehold/1', compact('data'));
 		$results = Set::extract('/User/username', $vars['results']);
 		$expected = array(
 			'rickyrockharbor',
@@ -227,7 +227,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 				'username' => ''
 			)
 		);
-		$vars = $this->testAction('/searches/simple/User/notLeaderOf/Involvement/1', compact('data'));
+		$vars = $this->testAction('/searches/simple/User/some_element/notLeaderOf/Involvement/1', compact('data'));
 		$results = Set::extract('/User/username', $vars['results']);
 		$expected = array(
 			'rickyrockharbor',
@@ -240,7 +240,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 				'username' => ''
 			)
 		);
-		$vars = $this->testAction('/searches/simple/User/notLeaderOf/Involvement/20', compact('data'));
+		$vars = $this->testAction('/searches/simple/User/some_element/notLeaderOf/Involvement/20', compact('data'));
 		$results = Set::extract('/User/username', $vars['results']);
 		$expected = array(
 			'jharris',
@@ -258,7 +258,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 				'username' => ''
 			)
 		);
-		$vars = $this->testAction('/searches/simple/User/notSignedUp/1', compact('data'));
+		$vars = $this->testAction('/searches/simple/User/some_element/notSignedUp/1', compact('data'));
 		$results = Set::extract('/User/username', $vars['results']);
 		$expected = array(
 			'jharris',
@@ -271,7 +271,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 				'username' => ''
 			)
 		);
-		$vars = $this->testAction('/searches/simple/User/notSignedUp/20', compact('data'));
+		$vars = $this->testAction('/searches/simple/User/some_element/notSignedUp/20', compact('data'));
 		$results = Set::extract('/User/username', $vars['results']);
 		$expected = array(
 			'jharris',
@@ -290,7 +290,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 				'name' => ''
 			)
 		);
-		$vars = $this->testAction('/searches/simple/Involvement/notInvolvementAndIsLeading/1/1', compact('data'));
+		$vars = $this->testAction('/searches/simple/Involvement/some_element/notInvolvementAndIsLeading/1/1', compact('data'));
 		$results = Set::extract('/Involvement/name', $vars['results']);
 		$expected = array(
 			'Team CORE',
@@ -303,7 +303,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 				'name' => 'wed'
 			)
 		);
-		$vars = $this->testAction('/searches/simple/Involvement/notInvolvementAndIsLeading/3/1', compact('data'));
+		$vars = $this->testAction('/searches/simple/Involvement/some_element/notInvolvementAndIsLeading/3/1', compact('data'));
 		$results = Set::extract('/Involvement/name', $vars['results']);
 		$expected = array(
 		);
@@ -315,7 +315,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 				'name' => 'core'
 			)
 		);
-		$vars = $this->testAction('/searches/simple/Involvement/notInvolvementAndIsLeading/3/1', compact('data'));
+		$vars = $this->testAction('/searches/simple/Involvement/some_element/notInvolvementAndIsLeading/3/1', compact('data'));
 		$results = Set::extract('/Involvement/name', $vars['results']);
 		$expected = array(
 			'CORE 2.0 testing'

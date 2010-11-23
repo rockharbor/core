@@ -17,12 +17,10 @@ echo $this->Form->end();
 <?php
 if (!empty($results)) {
 ?>
-	<h3>Results</h3>
 <?php
-echo $this->element('search'.DS.strtolower($model).'_simple_results', compact('actions', 'results'), true);
+echo $this->element('search'.DS.strtolower($model).'_simple_results', compact('element', 'results'), true);
 } elseif ($searchRan) {
 ?>
-<h3>Results</h3>
 <p>No results</p>
 <?php
 }
