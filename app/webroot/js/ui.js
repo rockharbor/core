@@ -89,7 +89,7 @@ CORE.attachTooltipBehavior = function() {
 	$('.core-tooltip').each(function() {
 		$(this).prev().qtip({
 			content: {
-				text: $(this).contents().clone(true)
+				text: $(this).clone(true).removeClass('core-tooltip')
 			},
 			position: {
 				corner: {
