@@ -9,7 +9,7 @@ foreach ($results as $result) {
 	} else {
 		$imageUrl = null;
 	}
-	
+
 	if (!empty($result['Address'])) {
 	$addresses[] = array(
 		'lat' => $result['Address'][0]['lat'],

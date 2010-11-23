@@ -87,7 +87,7 @@ class RostersController extends AppController {
 			$conditions += $this->Roster->parseCriteria(array('roles' => $this->data['Filter']['Role']));
 		}
 		
-		$contain = array(
+		$link = array(
 			'User' => array(
 				'Profile' => array(
 					'fields' => array(
@@ -98,14 +98,11 @@ class RostersController extends AppController {
 				),
 				'Image'
 			),
-			'Role',
 		);
-		$cache = array(
-			'+10 minutes'
-		);
+		$contain = array('Role');
 		
 		$this->Roster->recursive = 0;
-		$this->paginate = compact('conditions','contain','cache');
+		$this->paginate = compact('conditions','link','contain');
 		
 		// save search for multi select actions
 		$this->MultiSelect->saveSearch($this->paginate);
@@ -115,8 +112,9 @@ class RostersController extends AppController {
 		$this->set('rosters', $this->paginate());	
 		$this->Roster->Involvement->contain(array('InvolvementType', 'Leader'));
 		$involvement = $this->Roster->Involvement->read(null, $involvementId);
+		$statuses = $this->Roster->statuses;
 		
-		$this->set(compact('involvement', 'rosterIds', 'householdIds'));
+		$this->set(compact('involvement', 'rosterIds', 'householdIds', 'statuses'));
 	}
 
 /**

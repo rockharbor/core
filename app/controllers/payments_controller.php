@@ -60,7 +60,7 @@ class PaymentsController extends AppController {
 		}
 		
 		$userId = $this->passedArgs['User'];
-		
+
 		$this->paginate = array(
 			'conditions' => array(
 				'or' => array(
@@ -82,6 +82,12 @@ class PaymentsController extends AppController {
 				),
 			)
 		);
+
+		if (isset($this->passedArgs['Involvement'])) {
+			$this->paginate['conditions'] += array(
+				'Roster.involvement_id' => $this->passedArgs['Involvement']
+			);
+		}
 		
 		$this->set('payments', $this->paginate());
 	}
@@ -101,8 +107,7 @@ class PaymentsController extends AppController {
 		// get selected
 		$users = $this->Payment->Roster->find('all', array(
 			'conditions' => array(
-				'Roster.user_id' => $ids,
-				'Roster.involvement_id' => $this->passedArgs['Involvement']
+				'Roster.id' => $ids,
 			),
 			'contain' => array(
 				'User' => array(
@@ -113,7 +118,7 @@ class PaymentsController extends AppController {
 		
 		$involvement = $this->Payment->Roster->Involvement->find('first', array(
 			'conditions' => array(
-				'Involvement.id' => $this->passedArgs['Involvement']
+				'Involvement.id' => $users[0]['Roster']['involvement_id']
 			),
 			'contain' => array(
 				'InvolvementType'

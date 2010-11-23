@@ -58,10 +58,10 @@
 			'between' => Core::read('notifications.email_subject_prefix').' ',
 			'style' => 'width:300px'
 		));
-		$val = (empty($this->data['SysEmail']['body']) && $bodyElement) ? $this->element($bodyElement, $this->viewVars) : $this->data['SysEmail']['body'];
-		echo $this->Form->input('SysEmail.body', array(
-			'value' => $val
-		));
+		if ($bodyElement && empty($this->data)) {
+			$this->data['SysEmail']['body'] = $this->element($bodyElement, $this->viewVars);
+		}
+		echo $this->Form->input('SysEmail.body');
 	?>
 	</fieldset>
 <?php

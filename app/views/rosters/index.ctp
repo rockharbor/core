@@ -14,7 +14,8 @@ $this->Paginator->options('#roster');
 					'url' => array(
 						'controller' => 'sys_emails',
 						'action' => 'compose',
-						$this->MultiSelect->token
+						$this->MultiSelect->token,
+						'model' => 'Roster'
 					),
 					'options' => array(
 						'rel' => 'modal-none'
@@ -37,6 +38,7 @@ $this->Paginator->options('#roster');
 					'url' => array(
 						'controller' => 'reports',
 						'action' => 'map',
+						'Roster',
 						$this->MultiSelect->token
 					),
 					'options' => array(
@@ -53,7 +55,8 @@ $this->Paginator->options('#roster');
 					),
 					'options' => array(
 						'rel' => 'modal-involvement'
-					)
+					),
+					'permission' => $involvement['Involvement']['take_payment']
 				),
 				array(
 					'title' => 'Remove',
@@ -78,18 +81,24 @@ $this->Paginator->options('#roster');
 					)
 				)
 			);
+			$colCount = 7;
+			if (!$involvement['Involvement']['take_payment']) {
+				$colCount--;
+			}
 			echo $this->element('multiselect', array(
-				'colCount' => 7,
+				'colCount' => $colCount,
 				'checkAll' => $canCheckAll,
 				'links' => $links
 			));
 			?>			
 			<tr>
 				<th>&nbsp;</th>
-				<th><?php echo $this->Paginator->sort('Name', 'User.Profile.last_name');?></th>
-				<th><?php echo $this->Paginator->sort('Phone', 'User.Profile.cell_phone');?></th>
+				<th><?php echo $this->Paginator->sort('Name', 'Profile.last_name');?></th>
+				<th><?php echo $this->Paginator->sort('Phone', 'Profile.cell_phone');?></th>
 				<th><?php echo $this->Paginator->sort('Status', 'Roster.roster_status');?></th>
+				<?php if ($involvement['Involvement']['take_payment']) { ?>
 				<th><?php echo $this->Paginator->sort('balance');?></th>
+				<?php } ?>
 				<th><?php echo $this->Paginator->sort('Date Joined', 'created');?></th>
 				<th>Roles</th>
 			</tr>
@@ -105,27 +114,29 @@ $this->Paginator->options('#roster');
 	?>
 	<tr<?php echo $class;?>>
 		<td><?php 
-		if (in_array($roster['User']['id'], $householdIds) || $roster['User']['Profile']['allow_sponsorage'] || $canCheckAll) {
+		if (in_array($roster['User']['id'], $householdIds) || $roster['Profile']['allow_sponsorage'] || $canCheckAll) {
 			echo $this->MultiSelect->checkbox($roster['Roster']['id']);
 		}
 		?></td>
 		<td><?php 
-		$name = $roster['User']['Profile']['name'].$this->Formatting->flags('User', $roster);
-		echo $this->Html->link($name, array('controller' => 'user', 'action' => 'view', 'User' => $roster['User']['id']), array('escape' => false));
+		$name = $roster['Profile']['name'].$this->Formatting->flags('User', $roster);
+		echo $this->Html->link($name, array('controller' => 'users', 'action' => 'view', 'User' => $roster['User']['id']), array('escape' => false));
 		?>&nbsp;
 		<div class="core-tooltip"><?php
-			if (!empty($roster['User']['Image'])) {
-				$path = 's'.DS.$roster['User']['Image'][0]['dirname'].DS.$roster['User']['Image'][0]['basename'];
+			if (!empty($roster['Image'])) {
+				$path = 's'.DS.$roster['Image']['dirname'].DS.$roster['Image']['basename'];
 				echo $this->Media->embed($path, array('restrict' => 'image'));
 			}
 			echo $this->Html->link('Edit Info', array('controller' => 'rosters', 'action' => 'edit', $roster['Roster']['id']), array('rel' => 'modal-roster'));
 			echo $this->Html->link('View Profile', array('controller' => 'users', 'action' => 'view', 'User' => $roster['User']['id']));
-			echo $this->Html->link('View Payments', array('controller' => 'payments', 'action' => 'index', 'User' => $roster['User']['id']));
+			echo $this->Html->link('View Payments', array('controller' => 'payments', 'action' => 'index', 'User' => $roster['User']['id'], 'Involvement' => $involvement['Involvement']['id']), array('rel' => 'modal-none'));
 		?></div>
 		</td>
-		<td><?php echo $this->Formatting->phone($roster['User']['Profile']['cell_phone']); ?>&nbsp;</td>
-		<td><?php echo $roster['Roster']['roster_status']; ?>&nbsp;</td>
+		<td><?php echo $this->Formatting->phone($roster['Profile']['cell_phone']); ?>&nbsp;</td>
+		<td><?php echo $statuses[$roster['Roster']['roster_status']]; ?>&nbsp;</td>
+		<?php if ($involvement['Involvement']['take_payment']) { ?>
 		<td><?php echo $this->Formatting->money($roster['Roster']['balance']); ?>&nbsp;</td>
+		<?php } ?>
 		<td><?php echo $this->Formatting->date($roster['Roster']['created']); ?>&nbsp;</td>
 		<td><?php
 		echo $this->Html->link(count($roster['Role']).' Roles', array('controller' => 'rosters', 'action' => 'roles', 'Involvement' => $involvement['Involvement']['id'], $roster['Roster']['id']), array('class' => 'icon-add', 'rel' => 'modal-roster'));
@@ -140,7 +151,7 @@ $this->Paginator->options('#roster');
 	</tbody>
 		<tfoot>
 			<?php
-			echo $this->element('pagination', array('colCount' => 7));
+			echo $this->element('pagination', array('colCount' => $colCount));
 			?>
 		</tfoot>
 	</table>	

@@ -56,7 +56,8 @@ class Roster extends AppModel {
 		'Logable',
 		'Containable',
 		'Search.Searchable',
-		'Cacher.Cache'
+		'Cacher.Cache',
+		'Linkable.AdvancedLinkable'
 	);
 
 /**

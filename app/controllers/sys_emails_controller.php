@@ -112,7 +112,7 @@ class SysEmailsController extends AppController {
  *
  * @param string $uid The unique cache id of the list to pull
  */ 
-	function compose($uid = null) {		
+	function compose($uid = null) {
 		$User = ClassRegistry::init('User');
 		
 		// check if we're emailing an involvement and we don't have a saved search
@@ -132,7 +132,7 @@ class SysEmailsController extends AppController {
 					));
 					
 					$toUsers = Set::extract('/Roster/user_id', $involvementRoster);
-				break;			
+				break;
 			}
 			
 			$search = array(
@@ -148,14 +148,23 @@ class SysEmailsController extends AppController {
 			$this->MultiSelect->saveSearch($search);
 			$uid = $this->MultiSelect->_token;
 		} else {
-			$search = $this->MultiSelect->getSearch($uid);
-			$userIds = $this->MultiSelect->getSelected($uid);
+			//$search = $this->MultiSelect->getSearch($uid);
+			$Model = ClassRegistry::init($this->passedArgs['model']);
+			$modelIds = $this->MultiSelect->getSelected($uid);
 			// assume they want all if they didn't select any
-			if (!empty($userIds)) {
-				$search['conditions']['User.id'] = $userIds;
-			}
-			
-			$toUsers = $User->find('all', array_merge($search));
+			if (!empty($modelIds)) {
+				$search['conditions'][$Model->alias.'.'.$Model->primaryKey] = $modelIds;
+				if ($this->passedArgs['model'] !== 'User') {
+					$search['contain'] = array(
+						'User' => array(
+							'fields' => array(
+								'id'
+							)
+						)
+					);
+				}
+			}			
+			$toUsers = $Model->find('all', $search);
 			$toUsers = Set::extract('/User/id', $toUsers);
 		}
 		
@@ -208,9 +217,23 @@ class SysEmailsController extends AppController {
 			// clear old attachments that people aren't using anymore
 			$this->SysEmail->gcAttachments();
 		}
-		
+
+		$User->contain(array(
+			'Profile' => array(
+				'fields' => array(
+					'id','name','primary_email'
+				)
+			)
+		));
 		$this->set('bodyElement', false);
 		$this->set('toUsers', $User->find('all', array('conditions'=>array('User.id'=>$toUsers))));
+		$User->contain(array(
+			'Profile' => array(
+				'fields' => array(
+					'id','name','primary_email'
+				)
+			)
+		));
 		$this->set('fromUser', $User->read(null, $fromUser));
 		$this->set('cacheuid', $uid);
 		$this->set('showAttachments', true);
