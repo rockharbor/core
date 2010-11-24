@@ -2,13 +2,12 @@
 Yes, IE gets its own stylesheet :/
 */
 
-div#header>div#primary>ul>li>ul,
 div.content-box,
 .shadow {
 	margin-left:-3px;
 	filter:
 		/*progid:DXImageTransform.Microsoft.Shadow(color=#999999,direction=0,strength=3)*/
-		progid:DXImageTransform.Microsoft.Shadow(color=#999999,direction=90,strength=5)
-		progid:DXImageTransform.Microsoft.Shadow(color=#999999,direction=180,strength=5)
-		progid:DXImageTransform.Microsoft.Shadow(color=#999999,direction=270,strength=3);
+		progid:DXImageTransform.Microsoft.Shadow(color=#D7D7D7,direction=90,strength=5)
+		progid:DXImageTransform.Microsoft.Shadow(color=#ABABAB,direction=180,strength=8)
+		progid:DXImageTransform.Microsoft.Shadow(color=#D7D7D7,direction=270,strength=3);
 }
