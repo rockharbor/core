@@ -22,3 +22,12 @@ function stripslashes (str) {
         }
     });
 }
+
+/**
+ * Convenience wrapper function for redirecting
+ *
+ * @param string url The url to redirect to
+ */
+function redirect(url) {
+	window.location.href = url;
+}

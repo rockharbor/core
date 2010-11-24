@@ -88,15 +88,6 @@ CORE.request = function(url, options, data) {
 }
 
 /**
- * Convenience wrapper function for redirecting
- *
- * @param string url The url to redirect to
- */
-function redirect(url) {
-	window.location.href = url;
-}
-
-/**
  * Registers a div as an "updateable"
  *
  * By registering a div as an updateable and linking it to a url,
