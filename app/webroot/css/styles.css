@@ -46,8 +46,7 @@ Flags and icons
 Highlight and flash classes
 */
 .highlight {
-	font-weight:bold;
-	background:yellow;
+	border-bottom: 2px dashed #000;
 }
 div.message {
 	clear: both;

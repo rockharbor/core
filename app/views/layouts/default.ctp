@@ -33,6 +33,7 @@
 		echo $this->Html->script('jquery.plugins/jquery.wysiwyg');		
 		
 		// CORE scripts
+		echo $this->Html->script('functions');
 		echo $this->Html->script('global');
 		echo $this->Html->script('ui');
 		echo $this->Html->script('form');

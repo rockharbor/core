@@ -128,25 +128,10 @@ CORE.register = function(alias, div, url) {
 
 /**
  * Inits CORE js
- *
- * @todo remove default text swap on the search bar when HTML5 comes in
  */
 CORE.init = function() {
 	// finally, register content as a global "updateable"
 	CORE.register('content', 'content', location.href);
-	// attach auto complete
-	CORE.autoComplete("SearchQuery", $('#nav-search form').attr('action')+'.json', function(item) {
-		redirect(item.action);
-	});
-	CORE.defaultSearchText = $("#SearchQuery").val();
-	$("#SearchQuery").focus(function() {if ($(this).val() == CORE.defaultSearchText) {
-		$(this).val("");
-		$(this).attr('class', 'search-over');
-	}});
-	$("#SearchQuery").blur(function() {if ($(this).val() == "") {
-		$(this).val(CORE.defaultSearchText);
-		$(this).attr('class', 'search-out');
-	}});
 	// init ui elements
 	CORE.initUI();
 	// init navigation

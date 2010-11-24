@@ -333,6 +333,32 @@
  * http://docs.jquery.com/UI/Autocomplete#theming
  */
 .ui-autocomplete { position: absolute; cursor: default; }
+.ui-autocomplete {
+	padding:0 !important;
+	width: 300px;
+	border: 1px solid #000;
+}
+.ui-autocomplete .ui-state-hover {
+	background: #16b96d;
+	margin:0 !important;
+}
+.ui-autocomplete .ui-menu-item a {
+	padding:5px !important;
+	overflow:hidden;
+}
+.ui-autocomplete .ui-menu-item p a {
+	padding:0px !important;
+}
+.ui-autocomplete .autocomplete-image {
+	float:left;
+	margin-right: 5px;
+}
+.ui-autocomplete .autocomplete-row {
+	float:left;	
+}
+.ui-autocomplete p {
+	margin:2px 0;
+}
 
 /* workarounds */
 * html .ui-autocomplete { width:1px; } /* without this, the menu expands to 100% in IE6 */

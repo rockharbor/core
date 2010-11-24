@@ -442,7 +442,12 @@ CORE.autoComplete = function(id, datasource, onSelect) {
 				onSelect(ui.item);
 			}
 		}
-	});
+	}).data('autocomplete')._renderItem = function( ul, item ) {
+		return $('<li></li>')
+			.data('item.autocomplete', item)
+			.append('<a>' + stripslashes(item.label) + '</a>')
+			.appendTo(ul);
+	};
 	
 	return true;
 }
