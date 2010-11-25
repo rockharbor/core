@@ -26,6 +26,16 @@ class AppModelTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 
+	function testMakeFulltext() {
+		$data = array(
+			'simple' => 'soft* cuddly*'
+		);
+		$result = $this->User->Profile->makeFulltext($data);
+		$result = $result[0]->value;
+		$expected = 'MATCH (`Profile`.`first_name`,`Profile`.`last_name`) AGAINST (\'soft* cuddly*\' IN BOOLEAN MODE)';
+		$this->assertEqual($result, $expected);
+	}
+
 	function testAliasInVirtualFields() {
 		$VirtualField = new VirtualFieldModel();
 		$result = $VirtualField->getVirtualField('name');
