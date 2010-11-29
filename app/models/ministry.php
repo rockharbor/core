@@ -85,22 +85,6 @@ class Ministry extends AppModel {
 		),
 	);
 
-
-/**
- * HasOne association link
- *
- * @var array
- */
-	var $hasOne = array(
-		'Image' => array(
-			'className' => 'Attachment',
-			'foreignKey' => 'foreign_key',
-			'dependent' => true,
-			'conditions' => array('Image.model' => 'Ministry')
-		)
-	);
-
-
 /**
  * HasMany association link
  *
@@ -127,6 +111,12 @@ class Ministry extends AppModel {
 			'foreignKey' => 'model_id',
 			'dependent' => true,
 			'conditions' => array('Leader.model' => 'Ministry')
+		),
+		'Image' => array(
+			'className' => 'Attachment',
+			'foreignKey' => 'foreign_key',
+			'dependent' => true,
+			'conditions' => array('Image.model' => 'Ministry')
 		)
 	);
 
@@ -152,9 +142,19 @@ class Ministry extends AppModel {
  */
 	var $filterArgs = array(
 		array(
-			'name' => 'simple',
+			'name' => 'simple_fulltext',
 			'type' => 'query',
 			'method' => 'makeFulltext',
+			'field' => array(
+				'Ministry.name',
+				'Ministry.description',
+			)
+		),
+		array(
+			'name' => 'simple',
+			'type' => 'query',
+			'method' => 'makeLikeConditions',
+			'operator' => 'OR',
 			'field' => array(
 				'Ministry.name',
 				'Ministry.description',

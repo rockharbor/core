@@ -176,9 +176,19 @@ class Profile extends AppModel {
  */
 	var $filterArgs = array(
 		array(
-			'name' => 'simple',
+			'name' => 'simple_fulltext',
 			'type' => 'query',
 			'method' => 'makeFulltext',
+			'field' => array(
+				'Profile.first_name',
+				'Profile.last_name',
+			)
+		),
+		array(
+			'name' => 'simple',
+			'type' => 'query',
+			'method' => 'makeLikeConditions',
+			'operator' => 'OR',
 			'field' => array(
 				'Profile.first_name',
 				'Profile.last_name',

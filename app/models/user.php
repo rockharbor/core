@@ -225,9 +225,17 @@ class User extends AppModel {
  */
 	var $filterArgs = array(
 		array(
-			'name' => 'simple',
+			'name' => 'simple_fulltext',
 			'type' => 'query',
 			'method' => 'makeFulltext',
+			'field' => array(
+				'User.username',
+			)
+		),
+		array(
+			'name' => 'simple',
+			'type' => 'query',
+			'method' => 'makeLikeConditions',
 			'field' => array(
 				'User.username',
 			)

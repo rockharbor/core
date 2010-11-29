@@ -105,6 +105,44 @@ class AppModel extends Model {
 	}
 
 /**
+ * Creates a LIKE '%foo%' AND LIKE '%bar%' statement as defined in filterArgs
+ *
+ * ### Options:
+ * - including a `operator` key in the filterArg will change the operator (AND
+ *   or OR)
+ *
+ * @param array $data The key value pair for the filterArg's name to the query
+ * @return string
+ */
+	function makeLikeConditions($data = array()) {
+		$filterName = key($data);
+		$filter = Set::extract('/.[name='.$filterName.']', $this->filterArgs);
+		if (!isset($filter[0]['field'])) {
+			$filter[0]['field'] = $this->alias.'.'.$this->displayField;
+		}
+		if (!isset($filter[0]['operator'])) {
+			$filter[0]['operator'] = 'AND';
+		}
+		$field = $filter[0]['field'];
+		$operator = $filter[0]['operator'];
+		$query = $data[$filterName];
+		if (!is_array($field)) {
+			$field = array($field);
+		}
+		$conditions = array();
+		foreach ($field as $val) {
+			$conditions[$val.' LIKE'] = $query.'%';
+		}
+		if (strtoupper($operator) === 'AND') {
+			return $conditions;
+		} else {
+			return array(
+				$operator => $conditions
+			);
+		}
+	}
+
+/**
  * Creates a simplistic `contain` array from post data
  *
  * Use in conjunction with Controller::postConditions() to make search forms super-quick!

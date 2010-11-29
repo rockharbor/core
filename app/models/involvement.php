@@ -78,7 +78,8 @@ class Involvement extends AppModel {
 		'Containable',
 		'Logable',
 		'Sanitizer.Sanitize' => array(
-			'validate' => 'after'
+			'validate' => 'after',
+			'decodeHtml' => true
 		),
 		'Search.Searchable'
 	);
@@ -94,12 +95,6 @@ class Involvement extends AppModel {
 			'foreignKey' => 'foreign_key',
 			'dependent' => true,
 			'conditions' => array('Address.model' => 'Involvement')
-		),
-		'Image' => array(
-			'className' => 'Media.Attachment',
-			'foreignKey' => 'foreign_key',
-			'dependent' => true,
-			'conditions' => array('Image.model' => 'Involvement')
 		)
 	);
 
@@ -156,6 +151,12 @@ class Involvement extends AppModel {
 			'foreignKey' => 'foreign_key',
 			'dependent' => true,
 			'conditions' => array('Document.model' => 'Involvement')
+		),
+		'Image' => array(
+			'className' => 'Media.Attachment',
+			'foreignKey' => 'foreign_key',
+			'dependent' => true,
+			'conditions' => array('Image.model' => 'Involvement')
 		)
 	);
 
@@ -192,6 +193,11 @@ class Involvement extends AppModel {
 					AND leaders.model_id = Involvement.id
 					AND leaders.user_id = :1:)'
 			)
+		),
+		'notInvolvement' => array(
+			'conditions' => array(
+				'Involvement.id <>' => ':0:'
+			)
 		)
 	);
 
@@ -203,12 +209,22 @@ class Involvement extends AppModel {
  */
 	var $filterArgs = array(
 		array(
-			'name' => 'simple',
+			'name' => 'simple_fulltext',
 			'type' => 'query',
 			'method' => 'makeFulltext',
 			'field' => array(
 				'Involvement.description',
 				'Involvement.name'
+			)
+		),
+		array(
+			'name' => 'simple',
+			'type' => 'query',
+			'method' => 'makeLikeConditions',
+			'operator' => 'OR',
+			'field' => array(
+				'Involvement.name',
+				'Involvement.description',
 			)
 		)
 	);
