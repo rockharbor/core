@@ -342,11 +342,11 @@
 	background: #16b96d;
 	margin:0 !important;
 }
-.ui-autocomplete .ui-menu-item a {
+.ui-autocomplete .ui-menu-item div {
 	padding:5px !important;
 	overflow:hidden;
 }
-.ui-autocomplete .ui-menu-item p a {
+.ui-autocomplete .ui-menu-item div a {
 	padding:0px !important;
 }
 .ui-autocomplete .autocomplete-image {
