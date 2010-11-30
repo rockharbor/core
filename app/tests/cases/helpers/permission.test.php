@@ -14,6 +14,11 @@ class PermissionHelperTestCase extends CakeTestCase {
 		ClassRegistry::flush();
 	}
 
+	function testNoView() {
+		$this->assertNoErrors();
+		$this->Permission->beforeRender();
+	}
+
 	function testGetNonExistentPermission() {
 		$this->assertFalse($this->Permission->canSeeSomething);
 	}

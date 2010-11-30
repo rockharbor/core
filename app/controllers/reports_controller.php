@@ -69,7 +69,6 @@ class ReportsController extends AppController {
 			'Involvement' => array(
 				'Leader'
 			),
-			'Group',
 			'Leader'
 		);
 		

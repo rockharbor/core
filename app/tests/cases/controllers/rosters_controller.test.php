@@ -23,6 +23,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->Rosters->Notifier->initialize($this->Rosters);
 		$this->Rosters->Notifier->setReturnValue('_render', 'Notification body text');
 		$this->Rosters->Notifier->QueueEmail = new MockQueueEmailComponent();
+		$this->Rosters->Notifier->QueueEmail->initialize($this->Rosters);
 		$this->Rosters->Notifier->QueueEmail->setReturnValue('_smtp', true);
 		$this->Rosters->Notifier->QueueEmail->setReturnValue('_mail', true);
 		$CreditCard =& new MockCreditCard();
@@ -33,6 +34,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		ClassRegistry::addObject('CreditCard', $CreditCard);
 		ClassRegistry::init('CreditCard');
 		$this->loadSettings();
+		$this->Rosters->setReturnValue('isAuthorized', true);
 		$this->testController = $this->Rosters;
 	}
 
@@ -77,10 +79,10 @@ class RostersControllerTestCase extends CoreTestCase {
 
 	function testFilterIndex() {
 		$data = array(
-			'Roster' => array(
-				'pending' => 0
-			),
-			'Role' => array(
+			'Filter' => array(
+				'Roster' => array(
+					'pending' => 0
+				),
 				'Role' => array(
 					2
 				)
@@ -107,7 +109,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$expected = array(1, 2);
 		$this->assertEqual($results, $expected);
 
-	/*	$vars = $this->testAction('/rosters/index/User:1/Involvement:2');
+		$vars = $this->testAction('/rosters/index/User:1/Involvement:2');
 		$results = Set::extract('/Involvement/name', $vars['involvement']);
 		$expected = array(
 			'Third Wednesday',
@@ -132,7 +134,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$expected = array(
 			'CORE 2.0 testing',
 		);
-		$this->assertEqual($results, $expected);*/
+		$this->assertEqual($results, $expected);
 	}
 
 	function testInvolvement() {

@@ -1,7 +1,7 @@
 <?php
 /* Households Test cases generated on: 2010-07-12 10:07:39 : 1278957279 */
 App::import('Lib', 'CoreTestCase');
-App::import('Component', 'QueueEmail.QueueEmail');
+App::import('Component', array('QueueEmail.QueueEmail', 'Notifier'));
 App::import('Controller', 'Households');
 
 Mock::generatePartial('QueueEmailComponent', 'MockQueueEmailComponent', array('_smtp', '_mail'));

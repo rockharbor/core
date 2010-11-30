@@ -1,10 +1,11 @@
 <?php
 /* Comments Test cases generated on: 2010-07-12 08:07:14 : 1278946994 */
 App::import('Lib', 'CoreTestCase');
-App::import('Component', 'QueueEmail');
+App::import('Component', array('QueueEmail.QueueEmail', 'Notifier'));
 App::import('Controller', 'Comments');
 
-Mock::generate('QueueEmailComponent');
+Mock::generatePartial('QueueEmailComponent', 'MockQueueEmailComponent', array('_smtp', '_mail'));
+Mock::generatePartial('NotifierComponent', 'MockNotifierComponent', array('_render'));
 Mock::generatePartial('CommentsController', 'TestCommentsController', array('render', 'redirect', '_stop', 'header'));
 
 class CommentsControllerTestCase extends CoreTestCase {
@@ -14,8 +15,12 @@ class CommentsControllerTestCase extends CoreTestCase {
 		$this->Comments =& new TestCommentsController();
 		$this->Comments->__construct();
 		$this->Comments->constructClasses();
-		$this->Comments->QueueEmail = new MockQueueEmailComponent();
-		$this->Comments->QueueEmail->setReturnValue('send', true);
+		$this->Comments->Notifier = new MockNotifierComponent();
+		$this->Comments->Notifier->initialize($this->Comments);
+		$this->Comments->Notifier->setReturnValue('_render', 'Notification body text');
+		$this->Comments->Notifier->QueueEmail = new MockQueueEmailComponent();
+		$this->Comments->Notifier->QueueEmail->setReturnValue('_smtp', true);
+		$this->Comments->Notifier->QueueEmail->setReturnValue('_mail', true);
 		$this->testController = $this->Comments;
 	}
 

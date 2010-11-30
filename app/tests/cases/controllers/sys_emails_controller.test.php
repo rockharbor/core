@@ -22,10 +22,13 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$this->SysEmails->Notifier->QueueEmail->initialize($this->SysEmails);
 		$this->SysEmails->Notifier->QueueEmail->setReturnValue('_smtp', true);
 		$this->SysEmails->Notifier->QueueEmail->setReturnValue('_mail', true);
+		$this->SysEmails->setReturnValue('isAuthorized', true);
+		$this->loadSettings();
 		$this->testController = $this->SysEmails;
 	}
 
 	function endTest() {
+		$this->unloadSettings();
 		$this->SysEmails->Session->destroy();
 		unset($this->SysEmails);		
 		ClassRegistry::flush();
@@ -49,7 +52,7 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 				1,2
 			)
 		));
-		$vars = $this->testAction('/sys_emails/compose/test');
+		$vars = $this->testAction('/sys_emails/compose/test/model:User');
 		$results = Set::extract('/User/username', $vars['toUsers']);
 		$expected = array(
 			'jharris',
@@ -82,7 +85,7 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 
-		$vars = $this->testAction('/sys_emails/compose/'.$vars['cacheuid'], array(
+		$vars = $this->testAction('/sys_emails/compose/'.$vars['cacheuid'].'/model:User', array(
 			'data' => array(
 				'SysEmail' => array(
 					'body' => 'Test message',

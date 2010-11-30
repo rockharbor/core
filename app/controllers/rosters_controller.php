@@ -619,8 +619,11 @@ class RostersController extends AppController {
 				),
 				'Roster.involvement_id' => $roster['Roster']['involvement_id']
 			))) {
+				$this->Roster->Involvement->contain(array('InvolvementType'));
+				$this->Roster->Involvement->Leader->User->contain(array('Profile'));
 				$this->set('involvement', $this->Roster->Involvement->read(null, $roster['Roster']['involvement_id']));
 				$this->set('user', $this->Roster->Involvement->Leader->User->read(null, $roster['Roster']['user_id']));
+				$this->set('activeUser', $this->activeUser);
 				// notify the user that they left
 				$this->Notifier->notify(array(
 					'to' => $roster['Roster']['user_id'],

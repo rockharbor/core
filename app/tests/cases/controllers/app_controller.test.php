@@ -116,7 +116,7 @@ class AppControllerTestCase extends CoreTestCase {
 			'Group' => array('id' => 8)
 		);
 
-		$result = $this->App->isAuthorized('involvements/revise');
+		$result = $this->App->isAuthorized('involvements/delete');
 		$this->assertFalse($result);
 
 		$result = $this->App->isAuthorized('involvements/view');

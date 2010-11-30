@@ -59,6 +59,9 @@ class PermissionHelper extends AppHelper {
  */
 	function beforeRender() {
 		$view =& ClassRegistry::getObject('view');
+		if ($view === false) {
+			return;
+		}
 		foreach ($view->viewVars as $varName => $value) {
 			if (strpos($varName, '_can') !== false) {
 				$this->{$varName} = $value;

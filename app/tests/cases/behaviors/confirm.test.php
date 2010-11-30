@@ -54,20 +54,21 @@ class ConfirmBehaviorTestCase extends CoreTestCase {
 
 	function testRevision() {
 		$this->Ministry->id = 1;
+		$this->Ministry->read();
 		$success = $this->Ministry->save(array(
 			'name' => 'Revised Name',
 			'active' => false
 		));
 		$this->assertTrue($success);
-		$results = $this->Ministry->revision(1);
+		$results = $this->Ministry->revision(1);		
 		$expected = array(
 			'Revision' => array(
 				'version_id' => 1,
 				'id' => 1,
 				'name' => 'Revised Name',
-				'description' => null,
-				'campus_id' => null,
-				'group_id' => null,
+				'description' => 'Description',
+				'campus_id' => 1,
+				'private' => 0,
 				'active' => 0,
 				'parent_id' => null
 			)

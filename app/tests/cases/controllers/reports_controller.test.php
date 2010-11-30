@@ -1,10 +1,11 @@
 <?php
 /* Reports Test cases generated on: 2010-07-19 12:07:49 : 1279566109 */
 App::import('Lib', 'CoreTestCase');
-App::import('Component', array('RequestHandler', 'QueueEmail'));
+App::import('Component', array('RequestHandler', 'QueueEmail.QueueEmail', 'Notifier'));
 App::import('Controller', 'Reports');
 
-Mock::generate('QueueEmailComponent');
+Mock::generatePartial('QueueEmailComponent', 'MockQueueEmailComponent', array('_smtp', '_mail'));
+Mock::generatePartial('NotifierComponent', 'MockNotifierComponent', array('_render'));
 Mock::generatePartial('RequestHandlerComponent', 'MockRequestHandlerComponent', array('_header'));
 Mock::generatePartial('ReportsController', 'TestReportsController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
 
@@ -16,11 +17,14 @@ class ReportsControllerTestCase extends CoreTestCase {
 		$this->Reports = new TestReportsController();
 		$this->Reports->__construct();
 		$this->Reports->constructClasses();
-		$this->Reports->Component->initialize($this->Reports);
+		$this->Reports->Notifier = new MockNotifierComponent();
+		$this->Reports->Notifier->initialize($this->Reports);
+		$this->Reports->Notifier->setReturnValue('_render', 'Notification body text');
+		$this->Reports->Notifier->QueueEmail = new MockQueueEmailComponent();
+		$this->Reports->Notifier->QueueEmail->setReturnValue('_smtp', true);
+		$this->Reports->Notifier->QueueEmail->setReturnValue('_mail', true);
 		$this->Reports->RequestHandler = new MockRequestHandlerComponent();
-		$this->Reports->QueueEmail = new MockQueueEmailComponent();
 		$this->Reports->setReturnValue('isAuthorized', true);
-		$this->Reports->QueueEmail->setReturnValue('send', true);
 
 		$this->testController = $this->Reports;
 	}
@@ -61,7 +65,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 			)
 		));
 
-		$vars = $this->testAction('/reports/map/testMap');
+		$vars = $this->testAction('/reports/map/User/testMap');
 		$results = Set::extract('/Profile/name', $vars['results']);
 		$expected = array('Jeremy Harris');
 		$this->assertEqual($results, $expected);

@@ -2,8 +2,10 @@
 /* Payments Test cases generated on: 2010-07-16 08:07:32 : 1279295912 */
 App::import('Lib', 'CoreTestCase');
 App::import('Controller', 'Payments');
+App::import('Model', 'CreditCard');
 
 Mock::generatePartial('PaymentsController', 'TestPaymentsController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
+Mock::generatePartial('CreditCard', 'MockCreditCard', array('save', 'saveAll'));
 
 class PaymentsControllerTestCase extends CoreTestCase {
 
@@ -11,6 +13,13 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		$this->Payments =& new TestPaymentsController();
 		$this->Payments->__construct();
 		$this->Payments->constructClasses();
+		$CreditCard =& new MockCreditCard();
+		$CreditCard->something = 'nothing';
+		$CreditCard->setReturnValue('save', true);
+		$CreditCard->setReturnValue('saveAll', true);
+		ClassRegistry::removeObject('CreditCard');
+		ClassRegistry::addObject('CreditCard', $CreditCard);
+		ClassRegistry::init('CreditCard');
 		// necessary fixtures
 		$this->loadFixtures('Payment', 'User', 'Roster', 'PaymentType', 
 		'PaymentOption', 'Involvement', 'InvolvementType', 'Profile',
@@ -111,7 +120,7 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		$this->Payments->Session->write('User.Group.id', 1);
 		$this->Payments->Session->write('User.Profile.primary_email', 'test@test.com');
 		$this->Payments->Session->write('MultiSelect.test', array(
-			'selected' => array(2,3)
+			'selected' => array(2,1)
 		));
 
 		$data = array(
@@ -135,6 +144,7 @@ class PaymentsControllerTestCase extends CoreTestCase {
 			)
 		);
 
+		// too much
 		$vars = $this->testAction('/payments/add/test/Involvement:1', array(
 			'return' => 'vars',
 			'data' => $data
@@ -149,6 +159,7 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		));
 		$this->assertEqual($results, array());
 
+		// split between 2 people
 		$data['Payment']['amount'] = 10;
 		$vars = $this->testAction('/payments/add/test/Involvement:1', array(
 			'return' => 'vars',
@@ -166,6 +177,7 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		$expected = array(5, 5);
 		$this->assertEqual($results, $expected);
 
+		// pay the rest of 1 person who only has 5 left, then the other 20 on the other
 		$data['Payment']['amount'] = 25;
 		$vars = $this->testAction('/payments/add/test/Involvement:1', array(
 			'return' => 'vars',

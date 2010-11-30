@@ -3,9 +3,10 @@
 App::import('Controller', 'MergeRequests');
 App::import('Model', array('User', 'Profile'));
 App::import('Lib', 'CoreTestCase');
-App::import('Component', 'QueueEmail');
+App::import('Component', array('QueueEmail.QueueEmail', 'Notifier'));
 
-Mock::generate('QueueEmailComponent');
+Mock::generatePartial('QueueEmailComponent', 'MockQueueEmailComponent', array('_smtp', '_mail'));
+Mock::generatePartial('NotifierComponent', 'MockNotifierComponent', array('_render'));
 Mock::generatePartial('MergeRequestsController', 'TestMergeRequestsController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
 
 class MergeRequestsControllerTestCase extends CoreTestCase {
@@ -16,10 +17,13 @@ class MergeRequestsControllerTestCase extends CoreTestCase {
 		$this->MergeRequests->constructClasses();
 		// necessary fixtures
 		$this->loadFixtures('User', 'Profile', 'MergeRequest');
-		$this->MergeRequests->Component->initialize($this->MergeRequests);
-		$this->MergeRequests->QueueEmail = new MockQueueEmailComponent();
+		$this->MergeRequests->Notifier = new MockNotifierComponent();
+		$this->MergeRequests->Notifier->initialize($this->MergeRequests);
+		$this->MergeRequests->Notifier->setReturnValue('_render', 'Notification body text');
+		$this->MergeRequests->Notifier->QueueEmail = new MockQueueEmailComponent();
+		$this->MergeRequests->Notifier->QueueEmail->setReturnValue('_smtp', true);
+		$this->MergeRequests->Notifier->QueueEmail->setReturnValue('_mail', true);
 		$this->MergeRequests->setReturnValue('isAuthorized', true);
-		$this->MergeRequests->QueueEmail->setReturnValue('send', true);
 		$this->testController = $this->MergeRequests;;
 	}
 

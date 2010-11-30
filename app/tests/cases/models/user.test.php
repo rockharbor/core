@@ -30,7 +30,7 @@ class UserTestCase extends CoreTestCase {
 		);
 		$data = $this->User->hashPasswords($data);
 		$result = $data['User']['password'];
-		$expected = 'e8b43e0909e7adcda8d78698bf144ec517568ccc';
+		$expected = '005b8f6046bb2039063d9dde0678f9f28ae38827';
 		$this->assertEqual($result, $expected);
 
 		// as if sent by edit but doesn't validate
@@ -55,7 +55,7 @@ class UserTestCase extends CoreTestCase {
 		);
 		$data = $this->User->hashPasswords(null, true);
 		$result = $data['User']['password'];
-		$expected = 'e8b43e0909e7adcda8d78698bf144ec517568ccc';
+		$expected = '005b8f6046bb2039063d9dde0678f9f28ae38827';
 		$this->assertEqual($result, $expected);
 	}
 
@@ -110,27 +110,6 @@ class UserTestCase extends CoreTestCase {
 		$this->assertEqual(count($this->User->tmpAdded), 1);
 		$user = $this->User->read('reset_password', $this->User->tmpAdded[0]['id']);
 		$this->assertTrue($user['User']['reset_password']);
-
-		$this->User->tmpAdded = $this->User->tmpInvited = array();
-		$user = array(
-			'Address' => array(
-					0 => array(
-						'name' => 'Work',
-						'address_line_1' => '3080 Airway',
-						'address_line_2' => '',
-						'city' => 'Costa Mesa',
-						'state' => 'CA',
-						'zip' => 92886
-					)
-			),
-			'Profile' => array(
-				'first_name' => 'Test',
-				'last_name' => 'User',
-				'primary_email' => 'test@example.com'
-			)
-		);
-		$this->assertFalse($this->User->createUser($user, null, $creator));
-		$this->assertEqual(count($this->User->tmpAdded), 0);
 
 		$this->User->tmpAdded = $this->User->tmpInvited = array();
 		$user = array(

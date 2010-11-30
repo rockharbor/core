@@ -130,7 +130,7 @@ class SysEmailsController extends AppController {
 							'Roster'
 						)
 					));
-					
+
 					$toUsers = Set::extract('/Roster/user_id', $involvementRoster);
 				break;
 			}
@@ -138,9 +138,6 @@ class SysEmailsController extends AppController {
 			$search = array(
 				'conditions' => array(
 					'User.id' => $toUsers
-				),
-				'contain' => array(
-					'Profile'
 				)
 			);
 			
@@ -148,22 +145,23 @@ class SysEmailsController extends AppController {
 			$this->MultiSelect->saveSearch($search);
 			$uid = $this->MultiSelect->_token;
 		} else {
-			//$search = $this->MultiSelect->getSearch($uid);
+			$search = $this->MultiSelect->getSearch($uid);
 			$Model = ClassRegistry::init($this->passedArgs['model']);
 			$modelIds = $this->MultiSelect->getSelected($uid);
 			// assume they want all if they didn't select any
 			if (!empty($modelIds)) {
 				$search['conditions'][$Model->alias.'.'.$Model->primaryKey] = $modelIds;
-				if ($this->passedArgs['model'] !== 'User') {
-					$search['contain'] = array(
-						'User' => array(
-							'fields' => array(
-								'id'
-							)
+			}
+			if ($this->passedArgs['model'] !== 'User') {
+				$search['contain'] = array(
+					'User' => array(
+						'fields' => array(
+							'id'
 						)
-					);
-				}
-			}			
+					)
+				);
+			}
+					
 			$toUsers = $Model->find('all', $search);
 			$toUsers = Set::extract('/User/id', $toUsers);
 		}

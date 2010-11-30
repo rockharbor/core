@@ -18,6 +18,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$this->Searches->Notifier->QueueEmail = new MockQueueEmailComponent();
 		$this->Searches->Notifier->QueueEmail->setReturnValue('_smtp', true);
 		$this->Searches->Notifier->QueueEmail->setReturnValue('_mail', true);
+		$this->Searches->setReturnValue('isAuthorized', true);
 		$this->testController = $this->Searches;
 	}
 
