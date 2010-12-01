@@ -25,3 +25,6 @@
 [submodule "app/plugins/queue_email"]
 	path = app/plugins/queue_email
 	url = git@codaset.com:jeremyharris/queue-email.git
+[submodule "app/plugins/slugger"]
+	path = app/plugins/slugger
+	url = git://codaset.com/jeremyharris/slugger.git
