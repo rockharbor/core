@@ -24,6 +24,22 @@ class FormattingHelperTestCase extends CakeTestCase {
 		ClassRegistry::flush();
 	}
 
+	function testEmail() {
+		$result = $this->Formatting->email('jeremy@42pixels.com');
+		$this->assertTags($result, array(
+			'span' => array('class' => 'email'),
+			'jeremy@42pixels.com',
+			'/span'
+		));
+
+		$result = $this->Formatting->email('jeremy@42pixels.com', 1);
+		$this->assertTags($result, array(
+			'a' => array('class' => 'email', 'rel' => 'modal-none', 'href' => '/sys_emails/compose/model:User/User:1'),
+			'jeremy@42pixels.com',
+			'/a'
+		));
+	}
+
 	function testAddress() {
 		$address = array(
 			'address_line_1' => '123 Main',

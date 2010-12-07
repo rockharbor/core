@@ -31,6 +31,20 @@ class FormattingHelper extends AppHelper {
 	);
 
 /**
+ * Formats an email
+ *
+ * @param string $email The email address
+ * @param integer $id The user's id, if any
+ */
+	function email($email, $id = null) {
+		$url = array('controller' => 'sys_emails', 'action' => 'compose', 'model' => 'User', 'User' => $id);
+		if ($id !== null) {
+			return $this->Html->link($email, $url, array('rel' => 'modal-none', 'class' => 'email'));
+		}
+		return $this->Html->tag('span', $email, array('class' => 'email'));
+	}
+
+/**
  * Formats an address
  *
  * @param array $address The address model data
