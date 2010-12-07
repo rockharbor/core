@@ -31,6 +31,25 @@ class FormattingHelper extends AppHelper {
 	);
 
 /**
+ * Formats an address
+ *
+ * @param array $address The address model data
+ * @param boolean $html Allow html (default: true)
+ */
+	function address($data, $html = true) {
+		$address = $data['address_line_1'];
+		if (!empty($data['address_line_2'])) {
+			$address .= PHP_EOL.$data['address_line_2'];
+		}
+		$address .= PHP_EOL.$data['city'].', '.$data['state'].' '.$data['zip'];
+
+		if ($html) {
+			$address = $this->Html->tag('span', str_replace(PHP_EOL, '<br />', $address), array('class' => 'address'));
+		}
+		return $address;
+	}
+
+/**
  * Makes a recurring Date model record more readable. Supports all-day,
  * recurring, permanent, etc.
  *

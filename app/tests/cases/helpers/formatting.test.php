@@ -1,6 +1,6 @@
 <?php
 /* Formatting Test cases generated on: 2010-06-29 13:06:36 : 1277844756 */
-App::import('Helper', 'Formatting');
+App::import('Helper', array('Formatting', 'Html', 'Text', 'Time', 'Number'));
 
 class FormattingHelperTestCase extends CakeTestCase {
 
@@ -12,12 +12,47 @@ class FormattingHelperTestCase extends CakeTestCase {
 	}
 
 	function startTest() {
-		$this->Formatting =& new FormattingHelper();
+		$this->Formatting = new FormattingHelper();
+		$this->Formatting->Html = new HtmlHelper();
+		$this->Formatting->Text = new TextHelper();
+		$this->Formatting->Time = new TimeHelper();
+		$this->Formatting->Number = new NumberHelper();
 	}
 
 	function endTest() {
 		unset($this->Formatting);
 		ClassRegistry::flush();
+	}
+
+	function testAddress() {
+		$address = array(
+			'address_line_1' => '123 Main',
+			'address_line_2' => '',
+			'city' => 'Somewhere',
+			'state' => 'CA',
+			'zip' => '',
+		);
+		$this->assertTags($this->Formatting->address($address), array(
+			'span' => array('class' => 'address'),
+			'123 Main',
+			'br' => array(),
+			'Somewhere, CA ',
+			'/span'
+		));
+		
+		$address = array(
+			'address_line_1' => '123 Main',
+			'address_line_2' => 'Ste. 42',
+			'city' => 'Somewhere',
+			'state' => 'CA',
+			'zip' => '12345',
+		);
+		$expected = <<<TEXT
+123 Main
+Ste. 42
+Somewhere, CA 12345
+TEXT;
+		$this->assertEqual($this->Formatting->address($address, false), $expected);
 	}
 
 	function testReadableDate() {
