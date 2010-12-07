@@ -7,5 +7,6 @@ class HelpersGroupTest extends TestSuite {
 	function HelpersGroupTest() {
 		TestManager::addTestFile($this, APP . 'tests' . DS . 'cases' . DS . 'helpers' . DS . 'formatting');
 		TestManager::addTestFile($this, APP . 'tests' . DS . 'cases' . DS . 'helpers' . DS . 'permission');
+		TestManager::addTestFile($this, APP . 'tests' . DS . 'cases' . DS . 'helpers' . DS . 'select_options');
 	}
 }

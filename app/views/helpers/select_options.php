@@ -161,6 +161,20 @@ class SelectOptionsHelper extends AppHelper {
 		0 => 'No',
 		1 => 'Yes'
 	);
+
+/**
+ * Magic method to allow calling singular function names to get the value from
+ * the pluralized array
+ *
+ * @param string $name The function name
+ * @param array $arguments Should only have 1 value, the string to map
+ * @return string Mapped string
+ */
+	function __call($name, $arguments) {
+		if (isset($this->{Inflector::pluralize($name)})) {
+			return $this->{Inflector::pluralize($name)}[$arguments[0]];
+		}
+	}
 	
 	
 /**
