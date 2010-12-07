@@ -52,7 +52,6 @@ class UserTask extends MigratorTask {
 	);
 
 	var $_oldPkMapping = array(
-		'entered_by_person_id' => array('person' => 'User'),
 		'grade_school_id' => array('schools' => 'School'),
 		'middle_school_id' => array('schools' => 'School'),
 		'high_school_id' => array('schools' => 'School'),
@@ -287,7 +286,7 @@ class UserTask extends MigratorTask {
  * @return string
  */
 	function _prepareUsername($old) {
-		if (preg_match('/[^a-z0-9_-]/i', $old) == 1 || strlen($old) < 5 || !$this->User->isUnique(array('username' => $old))) {
+		if (preg_match('/[^a-z0-9_-]/i', $old) == 1 || strlen($old) < 5) {
 			CakeLog::write('migration', 'User did not validate: '.$old);
 			$old = $this->User->generateUsername($this->_editingRecord['first_name'], $this->_editingRecord['last_name']);
 		}

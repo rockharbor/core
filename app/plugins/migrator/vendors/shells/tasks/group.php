@@ -27,6 +27,22 @@ class GroupTask extends MigratorTask {
 		}
 
 		$dates = array();
+		$this->_editingRecord = array(
+			'Involvement' => array(
+				'ministry_id' => $this->_editingRecord['ministry_id'],
+				'involvement_type_id' => 3, //group
+				'name' => $this->_editingRecord['group_name'],
+				'description' => $this->_editingRecord['purpose'],
+				'roster_limit' => $this->_editingRecord['maxNumberPeople'],
+				'roster_visible' => $this->_editingRecord['allowMembersViewOtherMembers'],
+				'private' => !$this->_editingRecord['isPublic'],
+				'signup' => true,
+				'take_payment' => false,
+				'offer_childcare' => false,
+				'active' => $this->_editingRecord['active'],
+				'force_payment' => false,
+			)
+		);
 		if (!empty($this->_editingRecord['meetingDay'])) {
 			foreach (explode(',', $this->_editingRecord['meetingDay']) as $meetingDay) {
 				$dates[] = array(
@@ -45,42 +61,8 @@ class GroupTask extends MigratorTask {
 					'offset' => 0
 				);
 			}
-
-			$this->_editingRecord = array(
-				'Involvement' => array(
-					'ministry_id' => $this->_editingRecord['ministry_id'],
-					'involvement_type_id' => 3, //group
-					'name' => $this->_editingRecord['group_name'],
-					'description' => $this->_editingRecord['purpose'],
-					'roster_limit' => $this->_editingRecord['maxNumberPeople'],
-					'roster_visible' => $this->_editingRecord['allowMembersViewOtherMembers'],
-					'private' => !$this->_editingRecord['isPublic'],
-					'signup' => true,
-					'take_payment' => false,
-					'offer_childcare' => false,
-					'active' => $this->_editingRecord['active'],
-					'force_payment' => false,
-				),
-				'Date' => $dates
-			);
-		} else {
-			$this->_editingRecord = array(
-				'Involvement' => array(
-					'ministry_id' => $this->_editingRecord['ministry_id'],
-					'involvement_type_id' => 3, //group
-					'name' => $this->_editingRecord['group_name'],
-					'description' => $this->_editingRecord['purpose'],
-					'roster_limit' => $this->_editingRecord['maxNumberPeople'],
-					'roster_visible' => $this->_editingRecord['allowMembersViewOtherMembers'],
-					'private' => !$this->_editingRecord['isPublic'],
-					'signup' => true,
-					'take_payment' => false,
-					'offer_childcare' => false,
-					'active' => $this->_editingRecord['active'],
-					'force_payment' => false,
-				)
-			);
-		}	
+			$this->_editingRecord['Date'] = $dates;
+		}
 	}
 
 	function _preparePurpose($old) {

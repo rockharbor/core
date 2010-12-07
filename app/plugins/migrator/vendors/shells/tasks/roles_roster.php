@@ -12,25 +12,12 @@ class RolesRosterTask extends MigratorTask {
 		$this->_initModels();
 
 		/**
-		 * Event
-		 */
-		$this->_oldPkMapping =array(
-			'person_id' => array('person' => 'User'),
-			'role_id' => array('role' => 'Role'),
-			'type_id' => array('events' => 'Involvement'),
-			'ministry_id' => array('ministry' => 'Ministry'),
-		);
-		$oldData = $this->findData($limit, 'EVENT');
-		$this->_migrate($oldData);
-
-		/**
 		 * Team
 		 */
 		$this->_oldPkMapping =array(
 			'person_id' => array('person' => 'User'),
 			'role_id' => array('role' => 'Role'),
 			'type_id' => array('teams' => 'Involvement'),
-			'ministry_id' => array('ministry' => 'Ministry'),
 		);
 		$oldData = $this->findData($limit, 'TEAM');
 		$this->_migrate($oldData);
@@ -42,7 +29,6 @@ class RolesRosterTask extends MigratorTask {
 			'person_id' => array('person' => 'User'),
 			'role_id' => array('role' => 'Role'),
 			'type_id' => array('groups' => 'Involvement'),
-			'ministry_id' => array('ministry' => 'Ministry'),
 		);
 		$oldData = $this->findData($limit, 'GROUP');
 		$this->_migrate($oldData);
@@ -77,6 +63,10 @@ class RolesRosterTask extends MigratorTask {
 				'involvement_id' => $this->_editingRecord['type_id'],
 			)
 		));
+		if ($roster === false || empty($roster)) {
+			$msg = "Couldn't find roster for user ".$this->_editingRecord['person_id']." in involvement ".$this->_editingRecord['type_id'];
+			CakeLog::write('migration', $msg);
+		}
 
 		$this->_editingRecord = array(
 			'RolesRoster' => array(
