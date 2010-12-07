@@ -164,6 +164,9 @@ ul.core-admin-tabs a:hover {
 /*
 Tooltip
 */
+.qtip {
+	z-index: 15000;
+}
 .qtip .qtip-contentWrapper {	
 	border: none !important;	
 }

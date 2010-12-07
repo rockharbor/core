@@ -84,38 +84,67 @@ CORE.modal = function(id, options) {
  *
  * Looks for the class `core-tooltip` and removes it from the DOM after adding
  * the tooltip to the previous element.
+ *
+ * @param ele Element The element to attach it to. By default, it uses the
+ *		element previous to the class
  */
 CORE.attachTooltipBehavior = function() {
 	$('.core-tooltip').each(function() {
-		$(this).prev().qtip({
-			content: {
-				text: $(this).clone(true).removeClass('core-tooltip')
-			},
-			position: {
-				corner: {
-					target: 'topMiddle',
-					tooltip: 'bottomLeft'
-				}
-			},
-			show: {
-				delay: 50,
-				solo: true
-			},
-			hide: {
-				fixed: true
-			},			
-			style: {
-				width: {
-					max: 170
-				},
-				tip: {
-					corner: 'bottomLeft',
-					color: '#343434'
-				}
-			}
-		});
+		CORE.tooltip($(this).prev(), this)
 	});
-	$('.core-tooltip').detach();
+}
+
+/**
+ * Adds a tooltip to an element
+ *
+ * If `content` is not a string, it will be considered an element and the html
+ * content will be pulled as the tooltip content
+ *
+ * @param ele Element The element to turn into a tooltip link
+ * @param content mixed The content to use
+ * @param detachAfter boolean Remove the content div after creating the tooltip
+ */
+CORE.tooltip = function(ele, content, detachAfter) {
+	if (detachAfter == undefined) {
+		detachAfter = true;
+	}
+
+	var _content = content;
+	if (typeof content != 'string') {
+		_content = $(content).clone(true).removeClass('core-tooltip')
+	}
+
+	$(ele).qtip({
+		content: {
+			text: _content
+		},
+		position: {
+			corner: {
+				target: 'topMiddle',
+				tooltip: 'bottomLeft'
+			}
+		},
+		show: {
+			delay: 50,
+			solo: true
+		},
+		hide: {
+			fixed: true
+		},
+		style: {
+			width: {
+				max: 170
+			},
+			tip: {
+				corner: 'bottomLeft',
+				color: '#343434'
+			}
+		}
+	});
+
+	if (detachAfter && typeof content != 'string') {
+		$(content).detach();
+	}
 }
 
 /**
