@@ -292,7 +292,7 @@ class AppController extends Controller {
 			$options['contain']['Ministry']['conditions']['Ministry.private'] = false;
 			$options['contain']['Ministry']['ChildMinistry']['conditions']['ChildMinistry.private'] = false;
 		}
-		$this->set('campuses', $Campus->find('all', $options));
+		$this->set('campusesMenu', $Campus->find('all', $options));
 	}
 	
 /**
