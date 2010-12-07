@@ -42,6 +42,11 @@ CORE.initNavigation = function() {
 		$(this).parent().fadeOut('fast');
 		return false;
 	});
+
+	$('#nav-calendar').one('mouseover', function() {
+		var cal = $(this).find('.fc')
+		cal.fullCalendar('render');
+	});
 }
 
 /**
@@ -62,4 +67,45 @@ CORE.readNotification = function(id, ele) {
 	} else {
 		$('.notification-count').fadeOut('fast').text(count).fadeIn('fast');
 	}
+}
+
+/**
+ * Attaches tooltips to event dates
+ *
+ * @param ele Element The id attribute of the calendar
+ */
+CORE.createEventTooltips = function(ele) {
+	$('#'+ele+' .fc-event').each(function() {
+		var classes = $(this).attr('class').split(/\s+/);
+		for (var c in classes) {
+			if (classes[c].match(/(\d{4})-(\d{1,2})-(\d{1,2})/)) {
+				var html = $(this).html();
+				$('.event.'+classes[c]).children('.fc-day-content').children('div').filter(function() {
+					// don't add duplicate events
+					return $(this).html().indexOf(html) == -1;
+				}).append(html);
+			}
+		}
+	});
+	$('#'+ele+' .event').each(function() {
+		CORE.tooltip(this, $(this).children('.fc-day-content').children('div'), false);
+	});
+}
+
+/**
+ * Removes tooltips to event dates, event styling and data
+ *
+ * @param ele Element The id attribute of the calendar
+ */
+CORE.removeEventTooltips = function(ele) {
+	$('#'+ele+' .event').each(function() {
+		$(this).qtip('destroy');
+		$(this).children('.fc-day-content').children('div').html('');
+		$(this).removeClass('event');
+		var dates = $(this).data('dates');
+		for (var d in dates) {
+			$(this).removeClass(dates[d]);
+		}
+		$(this).removeData('dates');
+	});
 }

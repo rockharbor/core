@@ -21,6 +21,9 @@
 		if(preg_match('/MSIE/i', $_SERVER['HTTP_USER_AGENT'])) {
 			echo $this->Html->css('ie');
 		}
+		echo $this->Html->css('fullcalendar/main');
+		echo $this->Html->css('fullcalendar/grid');
+		echo $this->Html->css('calendar');
 
 		// google cdn scripts
 		echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js');
@@ -30,7 +33,11 @@
 		// vendor scripts
 		echo $this->Html->script('jquery.plugins/jquery.qtip');
 		echo $this->Html->script('jquery.plugins/jquery.cookie');
-		echo $this->Html->script('jquery.plugins/jquery.wysiwyg');		
+		echo $this->Html->script('jquery.plugins/jquery.wysiwyg');
+		echo $this->Html->script('fullcalendar/main');
+		echo $this->Html->script('fullcalendar/grid');
+		echo $this->Html->script('fullcalendar/view');
+		echo $this->Html->script('fullcalendar/util');
 		
 		// CORE scripts
 		echo $this->Html->script('functions');
@@ -126,7 +133,13 @@
 						echo $this->element('menu'.DS.'campus', array('campuses' => $campuses), true);
 						?>
 					</li>
-					<li><?php echo $this->Html->link('Calendar', array('controller' => 'dates', 'action' => 'calendar')); ?></li>
+					<li id="nav-calendar"><?php echo $this->Html->link('Calendar', array('controller' => 'dates', 'action' => 'calendar')); ?>
+						<ul>
+							<li>
+								<?php echo $this->element('calendar'); ?>
+							</li>
+						</ul>
+					</li>
 					<?php if (Configure::read()): ?>
 					<li><?php echo $this->Html->link('Debugging', array('controller' => 'reports', 'action' => 'index')); ?>
 						<ul><li><?php

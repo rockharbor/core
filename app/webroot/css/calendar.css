@@ -1,0 +1,86 @@
+.fc table, .fc td {
+	border:none;
+}
+.fc tr {
+	height:auto;
+}
+.fc-header {
+	border: 1px solid #cccccc !important;
+	border-bottom: none !important;
+}
+#nav-calendar .fc-header {
+	border:none !important;
+}
+.fc-header .fc-state-default, .fc-header .fc-state-default a, .fc-header .fc-state-default span {
+	border: none;
+	background:none;
+	padding:0;
+}
+.fc-state-hover {
+	color: #cccccc !important;
+}
+.fc-button-prev, .fc-button-next {
+	background:none;
+	padding: 0;
+	margin: 0 !important;
+}
+.fc-button-prev a:hover, .fc-button-next a:hover {
+	color:#cccccc;
+}
+.fc-header-title {
+	font-size: 16px;
+	margin:0;
+}
+.fc-header-left table {
+	width:auto;
+	float: right;
+}
+.fc-header-right table {
+	width:auto;
+	float: left;
+}
+.fc-content {
+	color: #666666;
+	border-top:none;
+}
+#nav-calendar .fc-content {
+	border:none;
+}
+.fc-content th {
+	font-family: Lucida Sans,Helvetica,Arial,sans-serif;
+	color:#cccccc !important;
+	background:none !important;
+	font-size:11px;
+	border:none !important;
+	text-transform: none;
+}
+.fc-day-content div {
+	display:none;
+}
+.fc-content tr:hover, .fc-header tr:hover {
+	background:none;
+}
+.fc-grid .fc-other-month .fc-day-number, .fc-grid .fc-other-month .fc-day-content {
+	visibility: hidden;
+}
+.fc-grid .fc-other-month {
+	background:none !important;
+}
+.fc-event {
+	display:none;
+}
+.fc-grid .event {
+	background:#16b96d;
+}
+.fc-grid .fc-day-number {
+	font-family: LeagueGothicRegular,Lucida Sans,Helvetica,Arial,sans-serif;
+	font-size: 14px;
+	padding: 5px;
+	text-align: center;
+}
+.fc-grid .fc-not-today .fc-day-number {	
+	color:#666666;
+}
+.fc-grid .fc-day-number {
+	color:#000000;
+}

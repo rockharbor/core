@@ -1,43 +1,57 @@
 <?php
+if (!isset($width)) {
+	$width = 200;
+}
+if (!isset($filters)) {
+	$filters = array();
+}
 
-echo $this->Html->css('fullcalendar/main', array(), array('inline' => false));
-echo $this->Html->css('fullcalendar/grid', array(), array('inline' => false));
-echo $this->Html->css('fullcalendar/agenda', array(), array('inline' => false));
-
-echo $this->Html->script('fullcalendar/main', array('inline' => false));
-echo $this->Html->script('fullcalendar/grid', array('inline' => false));
-echo $this->Html->script('fullcalendar/agenda', array('inline' => false));
-echo $this->Html->script('fullcalendar/view', array('inline' => false));
-echo $this->Html->script('fullcalendar/util', array('inline' => false));
-
+$id = uniqid();
+$url = array(
+	'controller' => 'dates',
+	'action' => 'calendar',
+	'ext' => 'json'
+);
+foreach ($filters as $key => $value) {
+	$url[$key] = $value;
+}
+$url = Router::url($url);
 ?>
-<div id="calendar" style="width:700px;height:700px"></div>
-<script type="text/javascript">		
-		var date = new Date();
-		var d = date.getDate();
-		var m = date.getMonth();
-		var y = date.getFullYear();
-		
-		$('#calendar').fullCalendar({
-			theme: true,
+<div id="calendar<?php echo $id; ?>" style="width:<?php echo $width; ?>px;"></div>
+<?php echo $this->Html->scriptBlock(
+<<<JS
+		$('#calendar$id').fullCalendar({
 			header: {
-				left: 'prev,next today',
+				left: 'prev',
 				center: 'title',
-				right: 'month,agendaWeek,basicWeek,agendaDay,basicDay'
+				right: 'next'
 			},
-			events: '<?php 
-			$url = array(
-				'controller' => 'dates',
-				'action' => 'calendar',
-				'ext' => 'json'
-			);
-			foreach ($filters as $key => $value) {
-				$url[$key] = $value;
+			events: '$url',
+			eventAfterRender: function(event, element) {
+				var currentMonth = $('#calendar$id').fullCalendar('getDate').getMonth();
+				var currentDate = event.start;
+				var dates = [];
+				while(currentDate < event.end) {
+					var dayClass = currentDate.getFullYear() + '-' + (currentDate.getMonth()+1) + '-' + currentDate.getDate();
+					dates.push(dayClass);
+					if (currentDate.getMonth() == currentMonth) {
+						$('.fc-day-number').filter(function() {
+							return $(this).text().toLowerCase() == Number(currentDate.getDate());
+						}).parent().addClass('event '+dayClass).data('dates', dates);
+					}					
+					currentDate = new Date(currentDate.getTime() + 86400000);
+					element.addClass(dayClass);
+				}
+			},
+			loading: function (start) {
+				if (start) {
+					CORE.removeEventTooltips('calendar$id');
+				} else {
+					CORE.createEventTooltips('calendar$id');
+				}
 			}
-			
-			echo Router::url($url);			
-			?>'
 		});
-</script>
+JS
+);
 
 

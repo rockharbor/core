@@ -7,7 +7,7 @@ foreach ($events as $event) {
 	foreach ($event['dates'] as $date) {
 		$fcEvents[] = array(
 			'id' => $date['Date']['id'],
-			'title' => $event['Involvement']['name'],
+			'title' => $this->Text->truncate($event['Involvement']['name'], 20),
 			'allDay' => ($date['Date']['all_day']==1),
 			'start' => date('Y-m-d H:i', strtotime($date['Date']['start_date'].' '.$date['Date']['start_time'])),
 			'end' => date('Y-m-d H:i', strtotime($date['Date']['end_date'].' '.$date['Date']['end_time'])),
