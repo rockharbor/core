@@ -41,7 +41,7 @@ class MigratorTask extends MigratorShell {
 			$oldPk = $oldRecord[$this->_oldPk];
 			$this->_editingRecord = $oldRecord;
 			$start = microtime(true);
-			$this->_prepareData($this->_oldTable);
+			$this->_prepareData();
 			//$this->out('prepare: '.(microtime(true)-$start));
 			$start = microtime(true);
 			$this->mapData();
@@ -54,8 +54,9 @@ class MigratorTask extends MigratorShell {
 			$success = $this->{$this->_newModel}->saveAll($this->_editingRecord, array('validate' => false));
 			//$this->out('save: '.(microtime(true)-$start));
 			if (!$success) {
-				$this->out('Couldn\'t save '.$this->_newModel.' # '.$oldRecord[$this->_oldPk]);
-				CakeLog::write('migration', 'Couldn\'t save '.$this->_oldTable.' # '.$oldRecord[$this->_oldPk]);
+				$msg = 'Couldn\'t save '.$this->_newModel.' ('.$this->_oldTable.' # '.$oldRecord[$this->_oldPk].')';
+				$this->out($msg);
+				CakeLog::write('migration', $msg);
 				if (!empty($this->{$this->_newModel}->validationErrors)) {
 					CakeLog::write('migration', print_r($this->_editingRecord, true));
 					CakeLog::write('migration', print_r($this->{$this->_newModel}->validationErrors, true));
@@ -170,6 +171,8 @@ class MigratorTask extends MigratorShell {
 						$this->out("a match $oldTable ($oldCrappyData) > $newModel");
 						$this->out("Something may have been migrated out of order!");
 						$this->orphans[] = $this->_editingRecord[$this->_oldPk];
+						$msg = "Missing linkage for $oldTable # $oldCrappyData when adding checking $newModel";
+						CakeLog::write('migration', $msg);
 						$oldCrappyData = null;
 					} elseif ($oldCrappyData > 0) {
 						$oldCrappyData = $link['IdLinkage']['new_pk'];
