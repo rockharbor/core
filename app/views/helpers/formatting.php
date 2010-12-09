@@ -261,22 +261,27 @@ class FormattingHelper extends AppHelper {
 	}
 
 /**
- * Formats a phone number to output as (123) 456-7890
+ * Formats a phone number to output as (123) 456-7890 x1234
  *
  * @param string $var 10-digit number to format
+ * @param string $ext Extension, if any
  * @return string
  * @access public
  */
-	function phone($var = '') {
+	function phone($var = '', $ext = '') {
 		$var = preg_replace('/[^\d]/', '', $var);
-		if (strlen($var) == 10) {
-			return preg_replace('/(\d{3})(\d{3})(\d{4})/', '($1) $2-$3', $var);
+		$ext = preg_replace('/[^\d]/', '', $ext);
+		if (strlen($var) >= 10) {
+			$phone = preg_replace('/(\d{3})(\d{3})(\d{4})/', '($1) $2-$3', $var);
 		} else if (strlen($var) == 7) {
-			return preg_replace('/(\d{3})(\d{4})/', '$1-$2', $var);
+			$phone = preg_replace('/(\d{3})(\d{4})/', '$1-$2', $var);
 		} else {
 			return null;
 		}
-		
+		if ($ext) {
+			$phone .= ' x'.$ext;
+		}
+		return $phone;
 	}
 	
 /**

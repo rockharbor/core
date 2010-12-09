@@ -195,6 +195,11 @@ TEXT;
 		$this->assertEqual('(714) 384-0914', $this->Formatting->phone('714d)_384091-4'));
 		$this->assertEqual('384-0914', $this->Formatting->phone('3840914'));
 		$this->assertEqual('384-0914', $this->Formatting->phone('(384)09asd14'));
+		$this->assertEqual('(714) 384-0914 x1234', $this->Formatting->phone('7143840914', '1234'));
+		$this->assertEqual('(714) 384-0914 x1234', $this->Formatting->phone('7143840914', 'ext1234'));
+		$this->assertEqual('(714) 384-0914 x1234', $this->Formatting->phone('7143840914', 'x1234'));
+		$this->assertEqual('(714) 384-0914', $this->Formatting->phone('7143840914', null));
+		$this->assertEqual('(714) 384-0914', $this->Formatting->phone('7143840914', ''));
 	}
 
 	function testDatetime() {
