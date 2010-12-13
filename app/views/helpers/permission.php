@@ -28,6 +28,16 @@ class PermissionHelper extends AppHelper {
 	var $AppController = null;
 
 /**
+ * Additional helpers needed by this helper
+ *
+ * @var array
+ */
+	var $helpers = array(
+		'Html',
+		'Js'
+	);
+
+/**
  * Grabs permissions set in the controller
  *
  * {{{
@@ -71,12 +81,40 @@ class PermissionHelper extends AppHelper {
 	}
 
 /**
+ * Creates a link if the user is authorized to access it. Tries to determine
+ * if it should be an HTML or JavaScript link
+ *
+ * @param string $title The link title
+ * @param array $url Only accepts cake-based url and NEEDS controller defined
+ * @param array $options Options to pass to link
+ * @param string $confirmMessage A javascript confirm message
+ * @return string The link
+ */
+	function link($title, $url = null, $options = array(), $confirmMessage = false) {
+		if (!isset($url['action'])) {
+			$url['action'] = 'index';
+		}
+		if ($this->check($url['controller'].'/'.$url['action'])) {
+			$helper = 'Html';
+			$hasJs = array_intersect(array('update', 'success', 'complete', 'beforeSend', 'error'), array_keys($options));
+			if (!empty($hasJs)) {
+				$helper = 'Js';
+			}
+			return $this->{$helper}->link($title, $url, $options, $confirmMessage);
+		}
+		return null;
+	}
+
+/**
  * Checks if the logged in user has access to a controller/action path
  *
  * @param string $path The controller/action path
+ * @param array $params Params to use when checking
+ * @param array $user The user to check
  * @return boolean
+ * @see AppController::isAuthorized()
  */
-	function check($path = '') {
+	function check($path = '', $params = array(), $user = array()) {
 		if (empty($path)) {
 			return false;
 		}
@@ -90,6 +128,6 @@ class PermissionHelper extends AppHelper {
 			$this->AppController->constructClasses();
 		}
 		$this->AppController->activeUser = $view->viewVars['activeUser'];
-		return $this->AppController->isAuthorized($path);
+		return $this->AppController->isAuthorized($path, $params, $user);
 	}
 }

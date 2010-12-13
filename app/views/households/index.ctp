@@ -1,32 +1,99 @@
+<h1>Households</h1>
 <div class="households">
-	<h2>Households</h2>
-	
+	<div class="grid_10 alpha omega">
 	<?php
 	$h = 0;
 	foreach ($households as $household):
 		$h++;
 	?>
-	<h3>Household #<?php echo $h; ?></h3>
-	<table cellpadding="0" cellspacing="0">
-	<tr>
-			<th>User</th>
-			<th>Confirmed?</th>
-			<th class="actions">Actions</th>
-	</tr>
-	
+	<h3>Household #<?php echo $h; ?></h3>	
 	<?php
 	$m = 0;
 	foreach ($household['HouseholdMember'] as $householdMember):
-		$class = '';
-		if ($m++ % 2 == 0) {
-			$class = ' class="altrow"';
-		}
-	?>
-	<tr<?php echo $class;?>>
-		<td><?php  
+		$class = 'household_member';
 		if ($householdMember['User']['id'] == $household['HouseholdContact']['id']) {
-			echo '*';
+			$class = 'household_contact';
 		}
+		$user = $householdMember['User'];
+	?>
+	<div class="grid_5 alpha omega <?php echo $class; ?>">
+		<div class="grid_2 alpha">
+			<?php
+				$path = null;
+				$upload = false;
+				if (!empty($user['Image'])) {
+					$path = 'm'.DS.$user['Image'][0]['dirname'].DS.$user['Image'][0]['basename'];
+				} else {
+					$default = Core::read('user.default_image');
+					if ($default) {
+						$path = 'm'.DS.$default['Image']['dirname'].DS.$default['Image']['basename'];
+					}
+					$upload = true;
+				}
+				echo '<div id='.$user['User']['id'].'Image'.'>';
+					echo $this->Media->embed($path, array('restrict' => 'image'));
+				echo '</div>';
+				if ($upload) {
+					echo $this->element('upload', array(
+						'type' => 'image',
+						'model' => 'User',
+						'User' => $user['User']['id'],
+						'title' => 'Upload Photo',
+						'update' => $user['User']['id'].'Image'
+					));
+				} else {
+					echo $this->Js->link('Remove Photo', array('controller' => 'user_images', 'action' => 'delete', $user['Image'][0]['id'], 'User' => $user['User']['id']), array('class' => 'button', 'update' => '#'.$user['User']['id'].'Image'));
+				}
+			?>
+		</div>
+		<div class="grid_3 omega">
+			<?php
+			echo $this->Html->link($user['Profile']['name'], array('controller' => 'profiles', 'action' => 'view', 'User' => $user['id']));
+			echo $this->Formatting->flags('User', $householdMember);
+			echo $this->Formatting->email($user['Profile']['primary_email']);
+			echo $this->Html->tag('dl',
+				$this->Html->tag('dt', 'Age:').
+				$this->Html->tag('dd', $this->Formatting->age($user['Profile']['age']))
+			);
+			if ($user['Profile']['child']) {
+				echo $this->Html->tag('dl',
+					$this->Html->tag('dt', 'Dedication Date:').
+					$this->Html->tag('dd', $this->Formatting->age($user['Profile']['baby_dedication_date']))
+				);
+			}
+			if ($class == 'household_contact') {
+				echo $this->Html->tag('span', 'Household Contact', array('class' => 'household_contact'));
+			}
+			?>
+			<hr>
+			<?php
+			echo $this->Permission->link('Edit Profile', array('controller' => 'profiles', 'action' => 'edit', 'User' => $user['id']));
+			echo $this->Permission->link('View Involvement', array('controller' => 'profiles', 'action' => 'view', 'User' => $user['id']));
+			echo $this->Permission->link('Remove', array('controller' => 'households', 'action' => 'shift_households', $user['id'], $household['Household']['id'], 'User' => $activeUser['User']['id']));
+			echo $this->Permission->link('Make Household Contact', array('controller' => 'households', 'action' => 'make_household_contact', $user['id'], $household['Household']['id'], 'User' => $activeUser['User']['id']));
+			echo $this->Permission->link('Confirm', array('controller' => 'households', 'action' => 'confirm', $user['id'], $household['Household']['id'], 'User' => $activeUser['User']['id']));
+			?>
+		</div>
+		<?php if ($user['Profile']['child']): ?>
+		<div class="grid_5 alpha omega">
+			<hr>
+			<?php
+			echo $this->Html->tag('dl',
+				$this->Html->tag('dt', 'Special Needs:').
+				$this->Html->tag('dd', $user['Profile']['special_needs'])
+			);
+			echo $this->Html->tag('dl',
+				$this->Html->tag('dt', 'Special Alerts:').
+				$this->Html->tag('dd', $user['Profile']['special_alerts'])
+			);
+			echo $this->Html->tag('dl',
+				$this->Html->tag('dt', 'Allergies:').
+				$this->Html->tag('dd', $user['Profile']['allergies'])
+			);
+			?>
+		</div>
+		<?php endif; ?>
+		<?php
 		echo $this->Html->link($householdMember['User']['Profile']['name'], array(
 				'controller'=>'users',
 				'action'=>'edit',
@@ -58,7 +125,7 @@
 		?></td>
 	</tr>
 	<?php endforeach; ?>
-	</table>
+	</div>
 <?php 
 
 echo $this->Html->link('Add someone', 
