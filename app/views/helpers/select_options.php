@@ -175,7 +175,41 @@ class SelectOptionsHelper extends AppHelper {
 			return $this->{Inflector::pluralize($name)}[$arguments[0]];
 		}
 	}
-	
+
+/**
+ * Returns the data value provided by viewVars, similar to how
+ * FormHelper::input() auto-fills the values with `$this->data`. Returns a
+ * non-breaking space if the index is missing from the viewVars array, or the
+ * value if the viewVars array is missing altogether
+ *
+ * Helps prevent Undefined Index errors when trying things like
+ * `$jobCategories[$profile['Profile']['job_category_id']]` and the user has no
+ * job category. Instead, use
+ * `$this->SelectOptions->list('Profile.job_category_id', $profile)`
+ *
+ * @param string $modelField The model field string, separated with a '.' like
+ *		how FormHelper::input() accepts
+ * @param array $data The data to use
+ * @param mixed $return What to return on missing/empty values
+ * @return string
+ */
+	function value($modelField, $data = array(), $return = '&nbsp;') {
+		list($model, $field) = explode('.', $modelField);
+		if (isset($data[$model]) && isset($data[$model][$field])) {
+			$View = ClassRegistry::getObject('view');
+			$name = Inflector::variable(
+				Inflector::pluralize(preg_replace('/_id$/', '', $field))
+			);
+			if (isset($View->viewVars[$name])) {
+				if (isset($View->viewVars[$name][$data[$model][$field]])) {
+					$return = $View->viewVars[$name][$data[$model][$field]];
+				}
+			} else {
+				$return = $data[$model][$field];
+			}
+		}
+		return $return;
+	}
 	
 /**
  * Generates option lists for common <select /> menus.
