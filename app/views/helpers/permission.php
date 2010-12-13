@@ -28,6 +28,20 @@ class PermissionHelper extends AppHelper {
 	var $AppController = null;
 
 /**
+ * The user to check in PermissionHelper::check()
+ *
+ * @var array
+ */
+	var $activeUser = array();
+
+/**
+ * The parameters to use in PermissionHelper::check()
+ *
+ * @var array
+ */
+	var $params = array();
+
+/**
  * Additional helpers needed by this helper
  *
  * @var array
@@ -114,7 +128,7 @@ class PermissionHelper extends AppHelper {
  * @return boolean
  * @see AppController::isAuthorized()
  */
-	function check($path = '', $params = array(), $user = array()) {
+	function check($path = '') {
 		if (empty($path)) {
 			return false;
 		}
@@ -128,6 +142,6 @@ class PermissionHelper extends AppHelper {
 			$this->AppController->constructClasses();
 		}
 		$this->AppController->activeUser = $view->viewVars['activeUser'];
-		return $this->AppController->isAuthorized($path, $params, $user);
+		return $this->AppController->isAuthorized($path, $this->params, $this->user);
 	}
 }

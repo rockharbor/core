@@ -23,7 +23,7 @@ class AppControllerTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 
-	/*function test_setConditionalGroups() {
+	function test_setConditionalGroups() {
 		$this->App->passedArgs = array('User' => 1);
 		$results = $this->App->_setConditionalGroups($this->App->passedArgs, $this->App->activeUser);
 		$expected = array(
@@ -102,7 +102,7 @@ class AppControllerTestCase extends CoreTestCase {
 			'rght' => 12
 		);
 		$this->assertEqual($results, $expected);
-	}*/
+	}
 
 	function testIsAuthorized() {
 		$this->App->Acl = new MockAclComponent();
@@ -148,7 +148,7 @@ class AppControllerTestCase extends CoreTestCase {
 		$this->assertTrue($result);
 	}
 
-	/*function test_editSelf() {
+	function test_editSelf() {
 		$this->App->action = 'edit';
 		$this->App->_editSelf('edit');
 		$results = $this->App->_setConditionalGroups($this->App->passedArgs, $this->App->activeUser);
@@ -163,7 +163,7 @@ class AppControllerTestCase extends CoreTestCase {
 			'rght' => 18
 		);
 		$this->assertEqual($results, $expected);
-	}*/
+	}
 }
 
 ?>
