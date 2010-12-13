@@ -209,33 +209,43 @@ class AppController extends Controller {
 /**
  * Authorizes a user to access an action based on ACLs
  *
+ * @param string $action The action aco to check
+ * @param array $params Parameters to use for checking conditional groups. Default
+ *		params are the passedArgs
+ * @param array $user The user to test. Default is the active user
  * @return boolean True if user can continue.
  */ 
-	function isAuthorized($action = '') {
-		if (!$this->activeUser) {
+	function isAuthorized($action = '', $params = array(), &$user = array()) {
+		if (!$this->activeUser && empty($user)) {
 			return false;
 		}
 
 		if (empty($action)) {
 			$action = $this->Auth->action();
 		} else {
-			$params = Router::parse($action);
-			$action = Set::filter(array($params['plugin'], $params['controller'], $params['action']));
+			$parsed = Router::parse($action);
+			$action = Set::filter(array($parsed['plugin'], $parsed['controller'], $parsed['action']));
 			$action = Inflector::camelize(implode('/', $action));
 		}
-		
-		$this->_setConditionalGroups();
-		
+
+		if (empty($user)) {
+			$user =& $this->activeUser;
+		}
+		if (empty($params)) {
+			$params = $this->passedArgs;
+		}
+		unset($user['ConditionalGroup']);
+		$user['ConditionalGroup'] = $this->_setConditionalGroups($params, $user);
 		$model = 'Group';
-		$foreign_key = $this->activeUser['Group']['id'];
+		$foreign_key = $user['Group']['id'];
 
 		// main group
 		$mainAccess = $this->Acl->check(compact('model', 'foreign_key'), $action);
 		
 		$condAccess = false;
 		// check for conditional group
-		if (isset($this->activeUser['ConditionalGroup'])) {
-			$foreign_key = $this->activeUser['ConditionalGroup']['id'];
+		if (!empty($user['ConditionalGroup'])) {
+			$foreign_key = $user['ConditionalGroup']['id'];
 			$condAccess = $this->Acl->check(compact('model', 'foreign_key'), $action);
 		}
 
@@ -386,52 +396,55 @@ class AppController extends Controller {
  * active user owns the record they are trying to edit, they are added to the Owner
  * conditional group. These groups are not persistent.
  *
- * @return void
+ * @param array $params The parameters to use in the check (default is passedArgs)
+ * @param array $user The user to check
+ * @return array Conditional groups
  * @access protected
  */ 
-	function _setConditionalGroups() {
-		unset($this->activeUser['ConditionalGroup']);
-
+	function _setConditionalGroups($params = array(), $user = array()) {
+		$groups = array();
 		$Group = ClassRegistry::init('Group');
 		$Group->recursive = -1;
-
-		if (isset($this->passedArgs['User'])) {
+		
+		if (isset($params['User'])) {
 			$User = ClassRegistry::init('User');
-			
+
 			// check household contact
-			if ($User->HouseholdMember->Household->isContactFor($this->activeUser['User']['id'], $this->passedArgs['User'])) {
-				$this->activeUser['ConditionalGroup'] = reset($Group->findByName('Household Contact'));
+			if ($User->HouseholdMember->Household->isContactFor($user['User']['id'], $params['User'])) {
+				$groups = reset($Group->findByName('Household Contact'));
 			}
 		
 			// check owner
-			if ($User->ownedBy($this->activeUser['User']['id'], $this->passedArgs['User'])) {
-				$this->activeUser['ConditionalGroup'] = reset($Group->findByName('Owner'));
+			if ($User->ownedBy($user['User']['id'], $params['User'])) {
+				$groups = reset($Group->findByName('Owner'));
 			}
 		}
 		
 		// check leader
-		if (isset($this->passedArgs['Involvement'])) {
+		if (isset($params['Involvement'])) {
 			$Involvement = ClassRegistry::init('Involvement');
-			if ($Involvement->isLeader($this->activeUser['User']['id'], $this->passedArgs['Involvement'])) {
-				$this->activeUser['ConditionalGroup'] = reset($Group->findByName('Involvement Leader'));
+			if ($Involvement->isLeader($user['User']['id'], $params['Involvement'])) {
+				$groups = reset($Group->findByName('Involvement Leader'));
 			}
 		}
 		
 		// check ministry manager
-		if (isset($this->passedArgs['Ministry'])) {
+		if (isset($params['Ministry'])) {
 			$Ministry = ClassRegistry::init('Ministry');
-			if ($Ministry->isManager($this->activeUser['User']['id'], $this->passedArgs['Ministry'])) {
-				$this->activeUser['ConditionalGroup'] = reset($Group->findByName('Ministry Manager'));
+			if ($Ministry->isManager($user['User']['id'], $params['Ministry'])) {
+				$groups = reset($Group->findByName('Ministry Manager'));
 			}
 		}
 		
 		// check campus manager
-		if (isset($this->passedArgs['Campus'])) {
+		if (isset($params['Campus'])) {
 			$Campus = ClassRegistry::init('Campus');
-			if ($Campus->isManager($this->activeUser['User']['id'], $this->passedArgs['Campus'])) {
-				$this->activeUser['ConditionalGroup'] = reset($Group->findByName('Campus Manager'));
+			if ($Campus->isManager($user['User']['id'], $params['Campus'])) {
+				$groups = reset($Group->findByName('Campus Manager'));
 			}
 		}
+
+		return $groups;
 	}
 
 /**
