@@ -122,10 +122,8 @@ class RostersController extends AppController {
  *
  * ### Passed args:
  * - integer $User The id of the user
- *
- * @param string $passed 'passed' to show opportunities that have passed
  */ 	
-	function involvement($passed = '') {
+	function involvement() {
 		if (isset($this->passedArgs['User'])) {
 			$userId = $this->passedArgs['User'];
 		} else {
@@ -136,26 +134,60 @@ class RostersController extends AppController {
 			$this->Session->setFlash(__('Invalid user', true));
 			$this->redirect($this->referer());
 		}
+
+		$leaderOf = $this->Roster->Involvement->Leader->find('list', array(
+			'fields' => array(
+				'Leader.id',
+				'Leader.model_id'				
+			),
+			'conditions' => array(
+				'Leader.model' => 'Involvement',
+				'Leader.user_id' => $userId
+			)
+		));
+
+		$conditions = array(
+			'or' => array(
+				'Roster.user_id' => $userId,
+			)
+		);
+		if (empty($this->data)) {
+			$this->data = array(
+				'Roster' => array(
+					'passed' => 0,
+					'leading' => 1
+				)
+			);
+		}
 		
-		$conditions['Roster.user_id'] = $userId;
-		if ($passed != 'passed') {
+		if ($this->data['Roster']['leading']) {
+			$conditions['or']['Roster.involvement_id'] = array_values($leaderOf);
+		}
+		if ($this->data['Roster']['passed'] == false) {
 			$db = $this->Roster->getDataSource();
-			$conditions[] = $db->expression('('.$this->Roster->Involvement->getVirtualField('passed').') = 0');
+			$conditions[] = $db->expression('('.$this->Roster->Involvement->getVirtualField('passed').') = '.$this->data['Roster']['passed']);
 		}
 
 		$this->paginate = array(
 			'conditions' => $conditions,
 			'contain' => array(
-				'User',
 				'Involvement' => array(
-					'Date'
-				)
-			)
+					'fields' => array(
+						'id', 'name', 'passed', 'active', 'private'
+					),
+					'Date',
+					'InvolvementType'
+				),
+				'Role'
+			),
+			'group' => 'Involvement.id'
 		);
+		$rosters = $this->paginate();
+		foreach ($rosters as &$roster) {
+			$roster['Involvement']['dates'] = $this->Roster->Involvement->Date->generateDates($roster['Involvement']['id'], array('limit' => 1));
+		}
 		
-		$this->set('passed', $passed);
-		$this->set('userId', $userId);
-		$this->set('rosters', $this->paginate());
+		$this->set(compact('passed', 'userId', 'leaderOf', 'rosters'));
 	}
 
 /**

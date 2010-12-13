@@ -66,17 +66,22 @@ class DatesController extends AppController {
  * @param string $passed `passed` to show past events
  */ 
 	function calendar($passed = '') {
-		$filterModel = $filterModelId = '';
+		$filters = array();
 		
 		if (isset($this->passedArgs['model'])) {
 			$filterModel = $this->passedArgs['model'];
 			
 			if (isset($this->passedArgs[$this->passedArgs['model']])) {
 				$filterModelId = $this->passedArgs[$this->passedArgs['model']];
+				$filters['model'] = $filterModel;
+				$filters[$filterModel] = $filterModelId;
 			}
-		}	
+		}
+		if (!empty($passed)) {
+			$filters[] = 'passed';
+		}
 		
-		$this->set(compact('passed', 'filterModel', 'filterModelId'));		
+		$this->set(compact('filters'));
 		
 		// if it's not the calendar calling, just leave. there's nothing 
 		// special to pass to the calendar view		

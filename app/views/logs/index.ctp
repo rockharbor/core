@@ -34,7 +34,7 @@ $this->Paginator->options(array(
 		<td><?php echo $log['Log']['model_id']; ?>&nbsp;</td>
 		<td><?php echo $log['Log']['action']; ?>&nbsp;</td>
 		<td>
-			<?php echo $this->Html->link($log['User']['username'], array('controller' => 'users', 'action' => 'edit_profile', 'User'=>$log['User']['id'])); ?>
+			<?php echo $this->Html->link($log['User']['username'], array('controller' => 'profiles', 'action' => 'view', 'User'=>$log['User']['id'])); ?>
 		</td>
 		<td><?php echo $log['Log']['created']; ?>&nbsp;</td> 
 	</tr>

@@ -51,7 +51,7 @@ class UsersController extends AppController {
 		// public actions
 		$this->Auth->allow('login', 'logout', 'forgot_password', 'register', 'request_activation');
 		
-		$this->_editSelf('edit', 'edit_profile');
+		$this->_editSelf('edit');
 	}
 	
 /**
@@ -405,61 +405,6 @@ class UsersController extends AppController {
 		$this->set('jobCategories', $this->User->Profile->JobCategory->find('list'));
 		$this->set('classifications', $this->User->Profile->Classification->find('list'));
 		$this->set('campuses', $this->User->Profile->Campus->find('list'));
-	}
-
-/**
- * Edits a user. Includes their group and profile information
- */	
-	function edit_profile() {
-		// get user id
-		if (isset($this->passedArgs['User'])) {
-			$id = $this->passedArgs['User'];
-		} else {
-			$id = $this->activeUser['User']['id'];
-		}
-		
-		if (!$id && empty($this->data)) {
-			$this->Session->setFlash('Invalid user');
-			$this->redirect(array('action' => 'index'));
-		}
-		if (!empty($this->data)) {
-			if ($this->User->saveAll($this->data)) {
-				$this->Session->setFlash('The user has been saved', 'flash'.DS.'success');
-			} else {
-				$this->Session->setFlash('The user could not be saved. Please, try again.', 'flash'.DS.'failure');
-			}
-		}
-		if (empty($this->data)) {
-			$this->User->contain(array(
-				'Profile',
-				'Group',
-				'Publication'
-			));
-			$this->data = $this->User->read(null, $id);
-		}
-		
-		$user = $this->User->find('first', array(
-			'conditions' => array(
-				'id' => $id
-			),
-			'contain' => false
-		));
-		
-		$this->set('user', $user); 
-		$this->set('publications', $this->User->Publication->find('list')); 
-		$this->set('groups', $this->User->Group->find('list', array(
-			'conditions' => array(
-				'Group.conditional' => false,
-				'Group.lft >' => $this->activeUser['Group']['lft']
-			)
-		))); 
-		$this->set('campuses', $this->User->Profile->Campus->find('list')); 
-		$this->set('jobCategories', $this->User->Profile->JobCategory->find('list'));
-		$this->set('elementarySchools', $this->User->Profile->ElementarySchool->find('list'));
-		$this->set('middleSchools', $this->User->Profile->MiddleSchool->find('list'));
-		$this->set('highSchools', $this->User->Profile->HighSchool->find('list'));
-		$this->set('colleges', $this->User->Profile->College->find('list'));
-		$this->set('classifications', $this->User->Profile->Classification->find('list'));
 	}
 
 /**

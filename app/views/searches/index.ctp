@@ -10,7 +10,7 @@
 		echo '&nbsp;&nbsp;&nbsp;';
 		echo $this->Html->link(
 			$this->Text->highlight($user['Profile']['name'], $query),
-			array('controller' => 'users', 'action' => 'edit_profile', 'User' => $user['User']['id']),
+			array('controller' => 'profiles', 'action' => 'view', 'User' => $user['User']['id']),
 			array('escape' => false)
 		);
 	?></li>

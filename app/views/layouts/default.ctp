@@ -34,6 +34,7 @@
 		echo $this->Html->script('jquery.plugins/jquery.qtip');
 		echo $this->Html->script('jquery.plugins/jquery.cookie');
 		echo $this->Html->script('jquery.plugins/jquery.wysiwyg');
+		echo $this->Html->script('jquery.plugins/jquery.equalheights');
 		echo $this->Html->script('fullcalendar/main');
 		echo $this->Html->script('fullcalendar/grid');
 		echo $this->Html->script('fullcalendar/view');
@@ -58,7 +59,7 @@
 			<div class="grid_10 main-nav-menu" id="primary">
 				<ul>
 					<li><?php echo $this->Html->link('☻', '/', array('class' => 'nav-home')); ?></li>
-					<li id="nav-profile"><?php echo $this->Html->link('Profile', array('controller' => 'users', 'action' => 'edit_profile', 'User' => $activeUser['User']['id'])); ?>
+					<li id="nav-profile"><?php echo $this->Html->link('Profile', array('controller' => 'profiles', 'action' => 'view', 'User' => $activeUser['User']['id'])); ?>
 						<ul>
 							<li>
 								<?php
@@ -78,7 +79,7 @@
 											echo '<br />'.$activeUser['ActiveAddress']['address_line_2'];
 										}
 										echo '<br />'.$activeUser['ActiveAddress']['city'].', '.$activeUser['ActiveAddress']['state'].' '.$activeUser['ActiveAddress']['zip'];
-										echo '<div>'.$this->Html->link('Change', array('controller' => 'users', 'action' => 'edit_profile', 'User' => $activeUser['User']['id'], '#' => 'addresses'));
+										echo '<div>'.$this->Html->link('Change', array('controller' => 'profiles', 'action' => 'view', 'User' => $activeUser['User']['id']));
 										echo '</div>';
 										echo '</div>';
 									?>

@@ -15,7 +15,7 @@ class RostersControllerTestCase extends CoreTestCase {
 	function startTest() {
 		$this->loadFixtures('Roster', 'User', 'Involvement', 'Group', 'Date', 
 			'Payment', 'Notification', 'PaymentOption', 'PaymentType',
-			'InvolvementType', 'Role', 'RolesRoster');
+			'InvolvementType', 'Role', 'RolesRoster', 'Leader');
 		$this->Rosters =& new MockRostersController();
 		$this->Rosters->__construct();
 		$this->Rosters->constructClasses();
@@ -145,7 +145,30 @@ class RostersControllerTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 
-		$vars = $this->testAction('/rosters/involvement/passed/User:1');
+		$vars = $this->testAction('/rosters/involvement/User:1', array(
+			'data' => array(
+				'Roster' => array(
+					'passed' => true,
+					'leading' => true
+				)
+			)
+		));
+		$results = Set::extract('/Involvement/name', $vars['rosters']);		
+		$expected = array(
+			'CORE 2.0 testing',
+			'Third Wednesday',
+			'Team CORE'
+		);
+		$this->assertEqual($results, $expected);
+
+		$vars = $this->testAction('/rosters/involvement/User:1', array(
+			'data' => array(
+				'Roster' => array(
+					'passed' => true,
+					'leading' => false
+				)
+			)
+		));
 		$results = Set::extract('/Involvement/name', $vars['rosters']);
 		$expected = array(
 			'Third Wednesday',

@@ -1,6 +1,6 @@
 <?php
 if (!isset($colCount)) {
-	$colCount = 1;
+	$colCount = 3;
 }
 ?>
 <tr class="pagination">
@@ -9,6 +9,6 @@ if (!isset($colCount)) {
 		echo $this->Paginator->next('Next', array('class' => 'button'), null, array('class' => 'button disabled'));
 	?></td>
 	<td colspan="<?php echo $colCount-2; ?>"><?php
-		echo $this->Paginator->counter(array('format' => 'Pages: %start%-%end% of %count%'));
+		echo $this->Paginator->counter(array('format' => 'Records: %start%-%end% of %count%'));
 	?></td>
 </tr>

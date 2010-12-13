@@ -311,9 +311,6 @@ class InstallShell extends Shell {
 			'controllers/UserImages/index',
 			'controllers/UserImages/upload',
 			'controllers/UserImages/approve',
-			'controllers/Roles/add',
-			'controllers/Roles/edit',
-			'controllers/Roles/delete',
 		),
 		'Intern' => array(
 			'controllers/Comments/index',
@@ -324,7 +321,6 @@ class InstallShell extends Shell {
 			'controllers/Rosters/involvement',
 			'controllers/Users/add',
 			'controllers/Users/edit',
-			'controllers/Users/edit_profile',
 			'controllers/Users/view',
 			'controllers/UserDocuments/delete',
 			'controllers/UserDocuments/download',
@@ -355,6 +351,7 @@ class InstallShell extends Shell {
 			'controllers/InvolvementDocuments/upload',
 			'controllers/InvolvementDocuments/approve',
 			'controllers/InvolvementImages/upload',
+			'controllers/Profiles/view',
 		),
 		'Developer' => array(
 			'controllers/ApiGenerator/ApiClasses/index',
@@ -407,11 +404,6 @@ class InstallShell extends Shell {
 			'controllers/Involvements/add',
 			'controllers/Ministries/edit',
 			'controllers/Ministries/history',
-			'controllers/Roles/add',
-			'controllers/Roles/delete',
-			'controllers/Roles/edit',
-			'controllers/Roles/index',
-			'controllers/Roles/view',
 			'controllers/MinistryLeaders/add',
 			'controllers/MinistryLeaders/delete'
 		),
@@ -457,7 +449,8 @@ class InstallShell extends Shell {
 			'controllers/Users/edit',			
 			'controllers/CampusLeaders/delete',
 			'controllers/MinistryLeaders/delete',
-			'controllers/InvolvementLeaders/delete'
+			'controllers/InvolvementLeaders/delete',
+			'controllers/Profiles/view',
 		),
 		'Household Contact' => array(
 			'controllers/UserImages/delete',
@@ -471,7 +464,7 @@ class InstallShell extends Shell {
 			'controllers/Rosters/delete',
 			'controllers/Rosters/edit',
 			'controllers/Rosters/involvement',
-			'controllers/Users/edit_profile',
+			'controllers/Profiles/view',
 			'controllers/UserAddresses/add',
 			'controllers/UserAddresses/delete',
 			'controllers/UserAddresses/edit',

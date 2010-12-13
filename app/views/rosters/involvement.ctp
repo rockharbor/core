@@ -1,61 +1,64 @@
 <?php
 $this->Paginator->options(array(
-    'update' => '#content', 
+    'update' => '#involvement',
     'evalScripts' => true
 ));
 ?>
-
-<div class="rosters">
-	<h2>My Involvement</h2>
-	<p><?php
-	if ($passed == 'passed') {
-		echo $this->Html->link('Hide past involvement', array('action' => 'involvement', 'User'=>$userId), array('class' => 'button'));
-	} else {
-		echo $this->Html->link('Show past involvement', array('action' => 'involvement', 'User'=>$userId, 'passed'), array('class' => 'button'));
-	}
-	?></p>
-	<table cellpadding="0" cellspacing="0">
-	<tr>
-			<th><?php echo $this->Paginator->sort('Involvement', 'Involvement.name');?></th>
-			<th><?php echo $this->Paginator->sort('Joined', 'created');?></th>
-	</tr>
+<h1>My Involvement</h1>
+<div class="content-box">
 	<?php
-	$i = 0;
-	foreach ($rosters as $roster):
-		$class = null;
-		if ($i++ % 2 == 0) {
-			$class = ' class="altrow"';
-		}
-	?>
-	<tr<?php echo $class;?>>
-		<td><?php echo $this->Formatting->flags('Involvement', $roster).$this->Html->link($roster['Involvement']['name'], array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $roster['Involvement']['id'])) ; ?>&nbsp;</td>
-		<td><?php echo $this->Formatting->date($roster['Roster']['created']); ?>&nbsp;</td>
-	</tr>
-<?php endforeach; ?>
-	</table>
-	<p>
-	<?php
-	echo $this->Paginator->counter(array(
-	'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
+	echo $this->Form->create(null, array(
+		'class' => 'core-filter-form update-involvement',
+		'url' => $this->passedArgs,
 	));
-	?>	</p>
-
-	<div class="paging">
-		<?php echo $this->Paginator->prev('<< '.__('previous', true), array(), null, array('class'=>'disabled'));?>
-	 | 	<?php echo $this->Paginator->numbers();?>
- |
-		<?php echo $this->Paginator->next(__('next', true).' >>', array(), null, array('class' => 'disabled'));?>
-	</div>
-</div>
-
-<div id="involvementCalendar">
-<?php
-echo $this->element('calendar', array(
-	'filters' => array(
-		$passed,
-		'model' => 'User',
-		'User' => $userId
-	)
-));
-?>
+	echo $this->Form->input('passed', array(
+		'type' => 'checkbox',
+		'class' => 'toggle',
+		'div' => false
+	));
+	echo $this->Form->input('leading', array(
+		'type' => 'checkbox',
+		'class' => 'toggle',
+		'div' => false
+	));
+	echo $this->Js->submit('Filter');
+	echo $this->Form->end();
+	?>
+	<table>
+		<tbody>
+			<?php foreach ($rosters as $roster): ?>
+			<tr>				
+				<td colspan="3"><?php
+				$roles = Set::extract('/Role/name', $roster);
+				if (empty($roles)) {
+					$roles[] = 'Member';
+				}
+				if (in_array($roster['Involvement']['id'], array_values($leaderOf))) {
+					array_unshift($roles, 'Leader');
+				}
+				$inv = $this->Text->toList($roles);
+				$inv .= (count($roles) > 1) ? ' for ' : ' of ';
+				$inv .= $this->Html->link($roster['Involvement']['name'], array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $roster['Involvement']['id']));
+				$inv_flags = array(
+					'Involvement' => $roster['Involvement'],
+					'Date' => $roster['Involvement']['Date'],
+					'InvolvementType' => $roster['Involvement']['InvolvementType']
+				);
+				$inv .= $this->Formatting->flags('Involvement', $inv_flags);
+				if ($roster['Roster']['amount_due'] > 0) {
+					$inv .= ' | '.$this->Html->tag('span', $roster['Roster']['amount_due'], array('class' => 'balance'));
+				}
+				if (!empty($roster['Involvement']['dates'])) {
+					$inv .= ' | '.$this->Formatting->datetime($roster['Involvement']['dates'][0]['start_date'].' '.$roster['Involvement']['dates'][0]['start_time']);
+				}
+				echo $inv;
+				?>
+				</td>				
+			</tr>
+			<?php endforeach; ?>
+		</tbody>
+		<tfoot>
+			<?php echo $this->element('pagination', array('colCount' => 3)); ?>
+		</tfoot>
+	</table>
 </div>

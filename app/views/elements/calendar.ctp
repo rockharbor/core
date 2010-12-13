@@ -5,8 +5,9 @@ if (!isset($width)) {
 if (!isset($filters)) {
 	$filters = array();
 }
-
-$id = uniqid();
+if (!isset($id)) {
+	$id = uniqid();
+}
 $url = array(
 	'controller' => 'dates',
 	'action' => 'calendar',
