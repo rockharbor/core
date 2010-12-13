@@ -58,10 +58,10 @@ class PermissionHelper extends AppHelper {
  * $this->set('_canSeeThisThing', true);
  * }}}
  *
- * And attaches them to the helper as
+ * Then you get the permission using
  *
  * {{{
- * $Permission->canSeeThisThing
+ * $this->Permission->can("seeThisThing");
  * }}}
  *
  * Automatically denies permission for missing permissions
@@ -69,9 +69,10 @@ class PermissionHelper extends AppHelper {
  * @param string $name The name of the missing permission
  * @return false
  */
-	function  __get($name) {
-		if (isset($this->{'_'.$name})) {
-			return $this->{'_'.$name};
+	function can($name) {
+		$prop = '_can'.Inflector::camelize($name);
+		if (isset($this->{$prop})) {
+			return $this->{$prop};
 		}
 		CakeLog::write('Auth', 'Missing permission check for "'.$name.'"');
 		return false;
@@ -142,6 +143,6 @@ class PermissionHelper extends AppHelper {
 			$this->AppController->constructClasses();
 		}
 		$this->AppController->activeUser = $view->viewVars['activeUser'];
-		return $this->AppController->isAuthorized($path, $this->params, $this->user);
+		return $this->AppController->isAuthorized($path, $this->params, $this->activeUser);
 	}
 }
