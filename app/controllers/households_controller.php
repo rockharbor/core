@@ -42,6 +42,31 @@ class HouseholdsController extends AppController {
  */
 	function beforeFilter() {
 		parent::beforeFilter();
+		$this->_editSelf('index');
+	}
+
+/**
+ * Confirms a user's addition to the household
+ *
+ * @param integer $user The user id
+ * @param integer $household The household id
+ */
+	function confirm($user, $household) {
+		$viewUser = $this->passedArgs['User'];
+		
+		$householdMember = $this->Household->HouseholdMember->find('first', array(
+			'conditions' => array(
+				'household_id' => $household,
+				'user_id' => $user
+			)
+		));
+		$this->Household->HouseholdMember->id = $householdMember['HouseholdMember']['id'];
+		$this->Household->HouseholdMember->saveField('confirmed', true);
+
+		$this->redirect(array(
+			'action' => 'index',
+			'User' => $viewUser
+		));
 	}
 
 /**

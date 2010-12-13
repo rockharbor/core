@@ -30,6 +30,12 @@ class HouseholdsControllerTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 
+	function testConfirm() {
+		$this->testAction('/households/confirm/6/6');
+		$results = $this->Households->Household->HouseholdMember->read(null, 6);
+		$this->assertTrue($results['HouseholdMember']['confirmed']);
+	}
+
 	function testShiftHousehold() {
 		$this->testAction('/households/shift_households/1/1/User:1');
 		$householdMember = $this->Households->Household->HouseholdMember->find('all', array(
