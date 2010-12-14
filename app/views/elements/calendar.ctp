@@ -36,7 +36,7 @@ $url = Router::url($url);
 					var dayClass = currentDate.getFullYear() + '-' + (currentDate.getMonth()+1) + '-' + currentDate.getDate();
 					dates.push(dayClass);
 					if (currentDate.getMonth() == currentMonth) {
-						$('.fc-day-number').filter(function() {
+						$('#calendar$id .fc-day-number').filter(function() {
 							return $(this).text().toLowerCase() == Number(currentDate.getDate());
 						}).parent().addClass('event '+dayClass).data('dates', dates);
 					}					

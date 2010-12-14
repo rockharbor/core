@@ -80,7 +80,7 @@ CORE.createEventTooltips = function(ele) {
 		for (var c in classes) {
 			if (classes[c].match(/(\d{4})-(\d{1,2})-(\d{1,2})/)) {
 				var html = $(this).html();
-				$('.event.'+classes[c]).children('.fc-day-content').children('div').filter(function() {
+				$('#'+ele+' .event.'+classes[c]).children('.fc-day-content').children('div').filter(function() {
 					// don't add duplicate events
 					return $(this).html().indexOf(html) == -1;
 				}).append(html);
