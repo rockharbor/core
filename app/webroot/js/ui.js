@@ -100,13 +100,24 @@ CORE.attachTooltipBehavior = function() {
  * If `content` is not a string, it will be considered an element and the html
  * content will be pulled as the tooltip content
  *
+ * ### Options:
+ * - `detachAfter` boolean Remove the content div after creating the tooltip
+ * - `container` Element The container. Default is document body
+ *
  * @param ele Element The element to turn into a tooltip link
  * @param content mixed The content to use
- * @param detachAfter boolean Remove the content div after creating the tooltip
+ * @param options hash List of options
  */
-CORE.tooltip = function(ele, content, detachAfter) {
-	if (detachAfter == undefined) {
-		detachAfter = true;
+CORE.tooltip = function(ele, content, options) {
+	var _default = {
+		detachAfter: true,
+		container: $(document.body)
+	}
+	var useOptions;
+	if (options != undefined) {
+		useOptions = $.extend(_default, options);
+	} else {
+		useOptions = _default;
 	}
 
 	var _content = content;
@@ -122,6 +133,12 @@ CORE.tooltip = function(ele, content, detachAfter) {
 			corner: {
 				target: 'topMiddle',
 				tooltip: 'bottomLeft'
+			},
+			container: useOptions.container,
+			type: 'fixed',
+			adjust: {
+				screen: true,
+				y: 10
 			}
 		},
 		show: {
@@ -142,7 +159,7 @@ CORE.tooltip = function(ele, content, detachAfter) {
 		}
 	});
 
-	if (detachAfter && typeof content != 'string') {
+	if (useOptions.detachAfter && typeof content != 'string') {
 		$(content).detach();
 	}
 }

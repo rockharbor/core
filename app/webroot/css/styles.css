@@ -211,9 +211,9 @@ Tooltip
 	color: #ffffff;
 	text-decoration: none;
 	float:left;
-	height:20px;
-	line-height:20px;
-	padding: 0 5px;
+	height:20px !important;
+	line-height:20px !important;
+	padding: 0 5px !important;
 	min-width: 80px;
 }
 .qtip img {
@@ -221,8 +221,8 @@ Tooltip
 	margin-right:5px;
 }
 .qtip a:hover {
-	color: #343434;
-	background:url("images/ui-bg_highlight-soft_75_16b96d_1x100.png") repeat-x scroll 50% 50% #16B96D;
+	color: #343434 !important;
+	background:url("images/ui-bg_highlight-soft_75_16b96d_1x100.png") repeat-x scroll 50% 50% #16B96D !important;
 }
 
 /*

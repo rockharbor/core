@@ -88,7 +88,10 @@ CORE.createEventTooltips = function(ele) {
 		}
 	});
 	$('#'+ele+' .event').each(function() {
-		CORE.tooltip(this, $(this).children('.fc-day-content').children('div'), false);
+		CORE.tooltip(this, $(this).children('.fc-day-content').children('div'), {
+			detachAfter: false,
+			container: $('#'+ele)
+		});
 	});
 }
 
