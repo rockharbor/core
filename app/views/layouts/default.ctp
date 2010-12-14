@@ -12,6 +12,7 @@
 		echo $this->Html->css('jquery.wysiwyg');
 
 		// CORE css
+		echo $this->Html->css('reset');
 		echo $this->Html->css('960');
 		echo $this->Html->css('font-face');
 		echo $this->Html->css('menu');		
