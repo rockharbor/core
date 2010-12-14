@@ -59,7 +59,7 @@
 		<div class="container_12 clearfix" id="header">
 			<div class="grid_10 main-nav-menu" id="primary">
 				<ul>
-					<li><?php echo $this->Html->link('☻', '/', array('class' => 'nav-home')); ?></li>
+					<li id="nav-home"><?php echo $this->Html->link('☻', '/'); ?></li>
 					<li id="nav-profile"><?php echo $this->Html->link('Profile', array('controller' => 'profiles', 'action' => 'view', 'User' => $activeUser['User']['id'])); ?>
 						<ul>
 							<li>
@@ -150,33 +150,34 @@
 					?></li></ul>
 					</li>
 					<?php endif; ?>
+					<li id="nav-search">
+						<?php
+							echo $this->Form->create('Search', array(
+								'url' => array(
+									'controller' => 'searches',
+									'action' => 'index'
+								),
+								'inputDefaults' => array(
+									'div' => false
+								)
+							));
+							echo $this->Form->input('Search.query', array(
+								'label' => false,
+								'value' => 'Search CORE',
+								'size' => 30,
+								'class' => 'search-out'
+							));
+							echo $this->Form->button(
+								$this->Html->tag('span', '&nbsp;', array('class' => 'ui-button-icon-primary ui-icon ui-icon-search')),
+								array(
+									'escape' => false,
+									'class' => 'reverse'
+								)
+							);
+							echo $this->Form->end();
+						?>
+					</li>
 				</ul>
-				<div id="nav-search">
-					<?php
-						echo $this->Form->create('Search', array(
-							'url' => array(
-								'controller' => 'searches',
-								'action' => 'index'
-							),
-							'inputDefaults' => array(
-								'div' => false
-							)
-						));
-						echo $this->Form->input('Search.query', array(
-							'label' => false,
-							'value' => 'Search CORE',
-							'size' => 30,
-							'class' => 'search-out'
-						));
-						echo $this->Form->button(
-							$this->Html->tag('span', '&nbsp;', array('class' => 'ui-button-icon-primary ui-icon ui-icon-search')),
-							array(
-								'escape' => false,
-								'class' => 'reverse'
-							)
-						);
-						echo $this->Form->end();
-					?></div>
 			</div>
 			<div class="grid_2" id="secondary">
 				<?php

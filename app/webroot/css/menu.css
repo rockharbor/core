@@ -15,6 +15,7 @@ div#header div#primary {
 }
 div#header div#primary>ul>li {
 	border-right: 1px solid #706F6F;
+	height:100%;
 }
 div#header div#primary>ul>li>a:hover {
 	background: url(images/ui-bg_highlight-soft_75_16b96d_1x100.png) #16b96d repeat-x 50% 50%;
@@ -28,14 +29,20 @@ div#header div#primary>ul>li>a {
 	text-decoration: none;
 	font-style:normal;
 	font-size: 16px;
-	padding: 5px 25px;
+	height:100%;
+	line-height:30px;
 }
 div#header div#primary>ul>li>ul {
 	border:1px solid #000;
+	border-top:none;
 	background: #FFF;
 }
-div#header div#primary .nav-home {
-	padding:5px 10px;
+
+/**
+Home
+**/
+#nav-home a {
+	padding:0 10px;
 }
 
 /**
@@ -125,7 +132,6 @@ li#nav-notifications #notification-viewall a {
 	background:#eaeaea;
 	border-top:1px solid #cccccc;
 }
-	
 
 div#header div#secondary {
 	line-height: 30px;
@@ -142,7 +148,7 @@ Search
 #nav-search {
 	padding-left:5px;
 	padding-top:5px;
-	float:left;
+	border-right:none !important;
 }
 #nav-search button {
 	height:18px;
@@ -152,6 +158,7 @@ Search
 	border-radius: 0 4px 4px 0;
 	margin-left:-2px;
 	background: #16b96d url(images/ui-bg_highlight-soft_75_16b96d_1x100.png) 50% 50% repeat-x;
+	margin-top:0;
 }
 #nav-search input[type=text] {
 	font-size:9px;
@@ -197,15 +204,16 @@ Dropdown menu CSS
 	list-style:none;
 	margin:0;
 	padding:0;
+	height:100%;
 	}
 	.main-nav-menu li{
-		float:left;
-		padding:0px;
+		float:left;		
+		height:100%;
 		}
 	.main-nav-menu li a{
 		display:block;
 		margin:0px;
-		padding:15px 5px;
+		padding:0 20px;
 		text-align:center;
 		}
 	.main-nav-menu li ul{
