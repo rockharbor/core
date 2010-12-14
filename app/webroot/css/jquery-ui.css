@@ -37,9 +37,9 @@
 
 /* Component containers
 ----------------------------------*/
-.ui-widget { font-family: Helvetica,Arial,sans-serif; font-size: 1.1em; }
+.ui-widget {font-family: 'Lucida Sans',Helvetica,Arial,sans-serif, font-size: 11px; }
 .ui-widget .ui-widget { font-size: 1em; }
-.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: Helvetica,Arial,sans-serif; font-size: 1em; }
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: 'Lucida Sans',Helvetica,Arial,sans-serif, font-size: 11px; }
 .ui-widget-content { background: #ffffff url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x; color: #222222; }
 .ui-widget-content a { color: #222222; }
 .ui-widget-header { font-family: LeagueGothicRegular,Helvetica,Arial,sans-serif; font-size:18px; border: none; color:#FFF; background: #343434 url(images/ui-bg_highlight-soft_20_343434_1x100.png) 50% 50% repeat-x; font-weight: normal; }

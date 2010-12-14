@@ -4,7 +4,7 @@
 
 	<ul>
 		<li><a href="#my-profile">My Profile</a></li>
-		<li><a href="#household">Household</a></li>
+		<li><?php echo $this->Html->link('My Household', array('controller' => 'households'), array('title' => 'household')); ?></li>
 		<li><a href="#payments">Payments</a></li>
 	</ul>
 
@@ -38,15 +38,23 @@
 					} else {
 						echo $this->Js->link('Remove Photo', array('controller' => 'user_images', 'action' => 'delete', $profile['Image'][0]['id'], 'User' => $profile['User']['id']), array('class' => 'button', 'update' => '#'.$profile['User']['id'].'Image'));
 					}
-					?>
+				?>
 				</div>
 
 				<div class="grid_3">
+					<dl>
+					<?php
+					echo $this->Html->tag('dt', 'Username:');
+					echo $this->Html->tag('dd', $profile['User']['username'].$this->Formatting->flags('User', $profile));
+					?>
+					</dl>
+					<hr>
 					<p>
 					<?php
 					echo $this->Formatting->address($profile['ActiveAddress']);
 					?>
 					</p>
+					<hr>
 					<p>
 					<?php $emails = array();
 					$emails[] = $profile['Profile']['primary_email'];
@@ -59,6 +67,8 @@
 					echo implode('<br />', $emails);
 					?>
 					</p>
+				</div>
+				<div class="grid_5 omega">
 					<dl>
 						<?php
 						$phones = array(
@@ -75,12 +85,11 @@
 						}
 						?>
 					</dl>
-				</div>
-				<div class="grid_5 omega">
+					<hr>
 					<dl>
 						<?php
-							echo $this->Html->tag('dt', 'Username:');
-							echo $this->Html->tag('dd', $profile['User']['username'].$this->Formatting->flags('User', $profile));
+							echo $this->Html->tag('dt', 'Birthday:');
+							echo $this->Html->tag('dd', $this->Formatting->date($profile['Profile']['birth_date']));
 							echo $this->Html->tag('dt', 'Age:');
 							echo $this->Html->tag('dd', $this->Formatting->age($profile['Profile']['age']));
 							echo $this->Html->tag('dt', 'Gender:');
@@ -96,9 +105,10 @@
 			</div>
 			<div class="grid_10 alpha omega">
 				<?php echo $this->Html->link('More', 'javascript:;', array('style' => 'float:right', 'class' => 'button', 'id' => 'details-more')); ?>
-				<hr>
+				<hr style="margin-bottom:0;">
 				<div id="details-toggle">
 					<div class="grid_5 alpha">
+						<dl>
 						<?php
 							echo $this->Html->tag('dt', 'Marital Status:');
 							echo $this->Html->tag('dd', $this->SelectOptions->maritalStatus($profile['Profile']['marital_status']));
@@ -126,8 +136,10 @@
 							}
 							echo $this->Html->tag('dd', $bt);
 						?>
+						</dl>
 					</div>
 					<div class="grid_5 omega">
+						<dl>
 						<?php
 							echo $this->Html->tag('dt', 'Grade School:');
 							echo $this->Html->tag('dd', $this->SelectOptions->value('Profile.elementary_school_id', $profile));
@@ -142,9 +154,10 @@
 							echo $this->Html->tag('dt', 'Graduation Year:');
 							echo $this->Html->tag('dd', $profile['Profile']['graduation_year']);
 						?>
+						</dl>
 					</div>
-					<hr>
 				</div>
+				<br />
 				<?php
 				$this->Js->buffer('$("#details-toggle").hide()');
 				$this->Js->buffer('$("#details-more").click(function() {
