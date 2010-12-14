@@ -134,7 +134,7 @@ CORE.init = function() {
  * opens
  */
 CORE.initUI = function() {
-	$('.equal-height .content-box').equalHeights();
+	$('.equal-height:visible .content-box').equalHeights();
 	// form elements
 	CORE.initFormUI();
 	// hide flash message
