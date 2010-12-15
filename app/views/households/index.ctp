@@ -81,15 +81,15 @@
 					echo $this->Permission->link('View Involvement', array('controller' => 'profiles', 'action' => 'view', 'User' => $user['id']));
 					echo '<br />';
 					if ($class != 'household-contact' && !$user['Profile']['child']) {
-						echo $this->Permission->link('Remove', array('controller' => 'households', 'action' => 'shift_households', $user['id'], $household['Household']['id'], 'User' => $activeUser['User']['id']), array('complete' => 'CORE.update("households");', 'id' => 'household_remove_'.$m));
+						echo $this->Permission->link('Remove', array('controller' => 'households', 'action' => 'shift_households', $user['id'], $household['Household']['id'], 'User' => $activeUser['User']['id']), array('id' => 'household_remove_'.$m));
 						$this->Js->buffer('CORE.confirmation("household_remove_'.$m.'","Are you sure you want to remove '.$user['Profile']['name'].' from this household?", {update:"households"});');
 						echo '<br />';
-						echo $this->Permission->link('Make Household Contact', array('controller' => 'households', 'action' => 'make_household_contact', $user['id'], $household['Household']['id'], 'User' => $activeUser['User']['id']), array('complete' => 'CORE.update("households");', 'id' => 'household_contact_'.$m));
+						echo $this->Permission->link('Make Household Contact', array('controller' => 'households', 'action' => 'make_household_contact', $user['id'], $household['Household']['id'], 'User' => $activeUser['User']['id']), array('id' => 'household_contact_'.$m));
 						$this->Js->buffer('CORE.confirmation("household_contact_'.$m.'","Are you sure you want to make '.$user['Profile']['name'].' the household contact?", {update:"households"});');
 						echo '<br />';
 					}
 					if (!$householdMember['confirmed']) {
-						echo $this->Permission->link('Confirm', array('controller' => 'households', 'action' => 'confirm', $user['id'], $household['Household']['id'], 'User' => $activeUser['User']['id']), array('complete' => 'CORE.update("households");', 'id' => 'household_confirm_'.$m));
+						echo $this->Permission->link('Confirm', array('controller' => 'households', 'action' => 'confirm', $user['id'], $household['Household']['id'], 'User' => $activeUser['User']['id']), array('id' => 'household_confirm_'.$m));
 						$this->Js->buffer('CORE.confirmation("household_confirm_'.$m.'","Are you sure you want to confirm '.$user['Profile']['name'].'\'s addition to this household?", {update:"households"});');
 						echo '<br />';
 					}
