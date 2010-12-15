@@ -102,15 +102,15 @@
 					<?php
 					echo $this->Html->tag('dl',
 						$this->Html->tag('dt', 'Special Needs:').
-						$this->Html->tag('dd', $user['Profile']['special_needs'])
+						$this->Html->tag('dd', $user['Profile']['special_needs'].'&nbsp;')
 					);
 					echo $this->Html->tag('dl',
 						$this->Html->tag('dt', 'Special Alerts:').
-						$this->Html->tag('dd', $user['Profile']['special_alert'])
+						$this->Html->tag('dd', $user['Profile']['special_alert'].'&nbsp;')
 					);
 					echo $this->Html->tag('dl',
 						$this->Html->tag('dt', 'Allergies:').
-						$this->Html->tag('dd', $user['Profile']['allergies'])
+						$this->Html->tag('dd', $user['Profile']['allergies'].'&nbsp;')
 					);
 					?>
 				</div>
