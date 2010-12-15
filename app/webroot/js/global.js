@@ -72,9 +72,9 @@ CORE.request = function(url, options, data) {
 	}
 	
 	if (useOptions.update !== undefined) {
-		update = useOptions.update;
+		var update = useOptions.update;
 		useOptions.success = function(data) {
-			$('#'+update).html(data);
+			CORE.update(update);
 		}
 		
 		delete useOptions.update;
