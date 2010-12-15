@@ -70,24 +70,24 @@ CORE.readNotification = function(id, ele) {
 }
 
 /**
- * Attaches tooltips to event dates
+ * Called after the ajax event is complete
  *
  * @param ele Element The id attribute of the calendar
  */
-CORE.createEventTooltips = function(ele) {
+CORE.eventAfterLoad = function(ele) {
 	$('#'+ele+' .fc-event').each(function() {
 		var classes = $(this).attr('class').split(/\s+/);
 		for (var c in classes) {
 			if (classes[c].match(/(\d{4})-(\d{1,2})-(\d{1,2})/)) {
 				var html = $(this).html();
-				$('#'+ele+' .event.'+classes[c]).children('.fc-day-content').children('div').filter(function() {
+				$('#'+ele+' .event:not(.fc-other-month).'+classes[c]).children('.fc-day-content').children('div').filter(function() {
 					// don't add duplicate events
 					return $(this).html().indexOf(html) == -1;
 				}).append(html);
 			}
 		}
 	});
-	$('#'+ele+' .event').each(function() {
+	$('#'+ele+' .event:not(.fc-other-month)').each(function() {
 		CORE.tooltip(this, $(this).children('.fc-day-content').children('div'), {
 			detachAfter: false,
 			container: $('#'+ele)
@@ -96,11 +96,38 @@ CORE.createEventTooltips = function(ele) {
 }
 
 /**
- * Removes tooltips to event dates, event styling and data
+ * Called after an event is rendered
+ *
+ * Attaches tooltips to event dates
  *
  * @param ele Element The id attribute of the calendar
  */
-CORE.removeEventTooltips = function(ele) {
+CORE.eventRender = function(cal, event, element, view) {
+	var currentMonth = $('#'+cal).fullCalendar('getDate').getMonth();
+	var currentDate = event.start;
+	var dates = [];
+	//var td;
+	while(currentDate < event.end) {
+		var dayClass = currentDate.getFullYear() + '-' + (currentDate.getMonth()+1) + '-' + currentDate.getDate();
+		dates.push(dayClass);
+		if (currentDate.getMonth() == currentMonth) {
+			$('#'+cal+' .fc-day-number').filter(function() {
+				return $(this).text() == Number(currentDate.getDate());
+			}).parent().addClass('event '+dayClass).data('dates', dates);			
+		}
+		currentDate = new Date(currentDate.getTime() + 86400000);
+		element.addClass(dayClass);
+	}
+}
+
+/**
+ * Called when an ajax event gets called to load events
+ *
+ * Clears event information added by CORE.eventRender()
+ *
+ * @param ele Element The id attribute of the calendar
+ */
+CORE.eventLoading = function(ele) {
 	$('#'+ele+' .event').each(function() {
 		$(this).qtip('destroy');
 		$(this).children('.fc-day-content').children('div').html('');

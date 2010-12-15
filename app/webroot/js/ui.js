@@ -122,7 +122,7 @@ CORE.tooltip = function(ele, content, options) {
 
 	var _content = content;
 	if (typeof content != 'string') {
-		_content = $(content).clone(true).removeClass('core-tooltip')
+		_content = $(content).clone(true).removeClass('core-tooltip');
 	}
 
 	$(ele).qtip({

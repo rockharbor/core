@@ -10,6 +10,7 @@
 
 		// vendor css
 		echo $this->Html->css('jquery.wysiwyg');
+		echo $this->Html->css('fullcalendar');
 
 		// CORE css
 		echo $this->Html->css('reset');
@@ -21,9 +22,7 @@
 		echo $this->Html->css('tables');
 		if(preg_match('/MSIE/i', $_SERVER['HTTP_USER_AGENT'])) {
 			echo $this->Html->css('ie');
-		}
-		echo $this->Html->css('fullcalendar/main');
-		echo $this->Html->css('fullcalendar/grid');
+		}		
 		echo $this->Html->css('calendar');
 
 		// google cdn scripts
@@ -36,10 +35,7 @@
 		echo $this->Html->script('jquery.plugins/jquery.cookie');
 		echo $this->Html->script('jquery.plugins/jquery.wysiwyg');
 		echo $this->Html->script('jquery.plugins/jquery.equalheights');
-		echo $this->Html->script('fullcalendar/main');
-		echo $this->Html->script('fullcalendar/grid');
-		echo $this->Html->script('fullcalendar/view');
-		echo $this->Html->script('fullcalendar/util');
+		echo $this->Html->script('jquery.plugins/jquery.fullcalendar');
 		
 		// CORE scripts
 		echo $this->Html->script('functions');

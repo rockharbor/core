@@ -28,31 +28,12 @@ $url = Router::url($url);
 				right: 'next'
 			},
 			events: '$url',
-			eventAfterRender: function(event, element) {
-				var currentMonth = $('#calendar$id').fullCalendar('getDate').getMonth();
-				var currentDate = event.start;
-				var dates = [];
-				while(currentDate < event.end) {
-					var dayClass = currentDate.getFullYear() + '-' + (currentDate.getMonth()+1) + '-' + currentDate.getDate();
-					dates.push(dayClass);
-					if (currentDate.getMonth() == currentMonth) {
-						$('#calendar$id .fc-day-number').filter(function() {
-							return $(this).text().toLowerCase() == Number(currentDate.getDate());
-						}).parent().addClass('event '+dayClass).data('dates', dates);
-					}					
-					currentDate = new Date(currentDate.getTime() + 86400000);
-					element.addClass(dayClass);
-				}
+			eventAfterRender: function(event, element, view) {
+				CORE.eventRender('calendar$id', event, element, view);
 			},
 			loading: function (start) {
-				if (start) {
-					CORE.removeEventTooltips('calendar$id');
-				} else {
-					CORE.createEventTooltips('calendar$id');
-				}
+				(start) ? CORE.eventLoading('calendar$id') : CORE.eventAfterLoad('calendar$id');
 			}
 		});
 JS
 );
-
-
