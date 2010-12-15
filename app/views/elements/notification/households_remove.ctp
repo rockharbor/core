@@ -1,0 +1,1 @@
+You have been removed from <?php echo $contact['Profile']['name']; ?>'s household.

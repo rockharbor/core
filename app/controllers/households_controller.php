@@ -63,6 +63,17 @@ class HouseholdsController extends AppController {
 		$this->Household->HouseholdMember->id = $householdMember['HouseholdMember']['id'];
 		$this->Household->HouseholdMember->saveField('confirmed', true);
 
+		$this->Household->contain(array('HouseholdContact' => array('Profile')));
+		$contact = $this->Household->read(null, $household);
+		$this->set('contact', $contact['HouseholdContact']);
+		$this->Notifier->notify(
+			array(
+				'to' => $user,
+				'template' => 'households_join'
+			),
+			'notification'
+		);
+
 		$this->redirect(array(
 			'action' => 'index',
 			'User' => $viewUser
@@ -99,14 +110,11 @@ class HouseholdsController extends AppController {
 					),
 					'contain' => 'Profile'
 				));
-				$this->Household->recursive = 1;
 				$this->Household->HouseholdContact->contain(array('Profile'));
 				$this->set('notifier', $this->Household->HouseholdContact->read(null, $this->activeUser['User']['id']));
-				$this->Household->contain(array(
-						'HouseholdContact' => array(
-							'Profile'
-				)));
-				$this->set('contact', $this->Household->read(null, $household));
+				$this->Household->contain(array('HouseholdContact' => array('Profile')));
+				$contact = $this->Household->read(null, $household);
+				$this->set('contact', $contact['HouseholdContact']);
 				
 				$success = $this->Household->join(
 					$household,
@@ -145,9 +153,21 @@ class HouseholdsController extends AppController {
 			$dSuccess = $this->Household->HouseholdMember->delete($householdMember['HouseholdMember']['id']);
 			
 			// add user to a household (function will check if they have one or not)
-			$cSuccess = $this->Household->createHousehold($user);		
+			$cSuccess = $this->Household->createHousehold($user);
 			
 			if ($dSuccess && $cSuccess) {
+				$this->Household->contain(array('HouseholdContact' => array('Profile')));
+				$contact = $this->Household->read(null, $household);
+				$this->set('contact', $contact['HouseholdContact']);
+				$this->Notifier->notify(
+					array(
+						'to' => $user,
+						'template' => 'households_remove',
+						'type' => 'invitation'
+					),
+					'notification'
+				);
+
 				$this->Session->setFlash('He left in a hurry.', 'flash'.DS.'success');
 			} else {
 				$this->Session->setFlash('Something broke. FIX IT!', 'flash'.DS.'failure');				

@@ -1,1 +1,1 @@
-You have joined <?php echo $contact['User']['Profile']['name']; ?>'s household.
+You have joined <?php echo $contact['Profile']['name']; ?>'s household.
