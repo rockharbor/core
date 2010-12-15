@@ -333,6 +333,7 @@ class InstallShell extends Shell {
 			'controllers/UserAddresses/delete',
 			'controllers/UserImages/view',
 			'controllers/Households/index',
+			'controllers/Households/confirm',
 			'controllers/Households/make_household_contact',
 			'controllers/Households/shift_households',
 			'controllers/Publications/subscriptions',
@@ -352,6 +353,7 @@ class InstallShell extends Shell {
 			'controllers/InvolvementDocuments/approve',
 			'controllers/InvolvementImages/upload',
 			'controllers/Profiles/view',
+			'controllers/Profiles/edit'
 		),
 		'Developer' => array(
 			'controllers/ApiGenerator/ApiClasses/index',
@@ -451,6 +453,8 @@ class InstallShell extends Shell {
 			'controllers/MinistryLeaders/delete',
 			'controllers/InvolvementLeaders/delete',
 			'controllers/Profiles/view',
+			'controllers/Households/confirm',
+			'controllers/Profiles/edit'
 		),
 		'Household Contact' => array(
 			'controllers/UserImages/delete',
@@ -470,7 +474,8 @@ class InstallShell extends Shell {
 			'controllers/UserAddresses/edit',
 			'controllers/UserAddresses/index',
 			'controllers/Publications/subscriptions',
-			'controllers/Publications/toggle_subscribe'
+			'controllers/Publications/toggle_subscribe',
+			'controllers/Profiles/edit'
 		)
 	);
 	

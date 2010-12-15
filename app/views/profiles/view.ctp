@@ -4,7 +4,7 @@
 
 	<ul>
 		<li><a href="#my-profile">My Profile</a></li>
-		<li><?php echo $this->Html->link('My Household', array('controller' => 'households'), array('title' => 'household')); ?></li>
+		<li><?php echo $this->Html->link('My Household', array('controller' => 'households', 'User' => $profile['User']['id']), array('title' => 'household')); ?></li>
 		<li><a href="#payments">Payments</a></li>
 	</ul>
 
@@ -178,7 +178,9 @@
 				<div class="grid_3 omega">
 					<h3>Calendar</h3>
 				</div>
-				<div class="grid_7 alpha equal-height">
+			</div>
+			<div class="grid_10 alpha omega">
+				<div class="grid_7 alpha">
 					<div id="involvement">
 						<?php
 						$url = Router::url(array(
@@ -191,7 +193,7 @@
 						?>
 					</div>
 				</div>
-				<div class="grid_3 omega equal-height">
+				<div class="grid_3 omega">
 					<div id="calendar">
 						<?php
 						$url = Router::url(array(
@@ -220,7 +222,7 @@
 		</div>
 
 		<div id="household">
-		
+		<?php $this->Js->buffer('CORE.register("households", "household", "'.Router::url(array('controller' => 'households', 'User' => $profile['User']['id'])).'");'); ?>
 		</div>
 		<div id="payments">
 		

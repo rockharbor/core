@@ -213,7 +213,7 @@ class AppController extends Controller {
  * @param array $params Parameters to use for checking conditional groups. Default
  *		params are the passedArgs
  * @param array $user The user to test. Default is the active user
- * @return boolean True if user can continue.
+	 * @return boolean True if user can continue.
  */ 
 	function isAuthorized($action = '', $params = array(), &$user = array()) {
 		if (!$this->activeUser && empty($user)) {
@@ -224,8 +224,8 @@ class AppController extends Controller {
 			$action = $this->Auth->action();
 		} else {
 			$parsed = Router::parse($action);
-			$action = Set::filter(array($parsed['plugin'], $parsed['controller'], $parsed['action']));
-			$action = Inflector::camelize(implode('/', $action));
+			$action = Set::filter(array(Inflector::camelize($parsed['plugin']), Inflector::camelize($parsed['controller']), $parsed['action']));
+			$action = implode('/', $action);
 		}
 
 		if (empty($user)) {

@@ -135,9 +135,7 @@ span.breadcrumb {
 #columns .border-right {
 	border-right: 1px solid #cccccc;
 }
-.equal-height > div {
-	height:100%;
-}
+/* Ajax content boxes */
 div.content-box .content-box {
 	padding:10px;
 	margin:0;
@@ -146,7 +144,6 @@ div.content-box .content-box {
 	box-shadow:none;
 	-moz-box-shadow:none;
 	-webkit-box-shadow:none;
-
 }
 /** special containers, perhaps place somewhere else **/
 #details-toggle {
@@ -157,6 +154,18 @@ div.content-box .content-box {
 }
 #details-toggle dl {
 	margin-left:10px;
+}
+div.household-member, div.household-contact {
+	padding:10px;
+	min-height: 150px;
+	margin-bottom:10px;
+}
+div.household-member {
+	background: #f2f2f2;
+}
+div.household-contact {
+	border: 1px solid #16b96d;
+	background: #B5FFDC;
 }
 
 /*

@@ -197,7 +197,9 @@ class HouseholdsController extends AppController {
 			'contain' => array(
 				'HouseholdMember' => array(
 					'User' => array(
-						'Profile'
+						'Profile',
+						'Image',
+						'Group'
 					)
 				),
 				'HouseholdContact'
