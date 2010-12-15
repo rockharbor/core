@@ -275,7 +275,7 @@
 */
 
 /* Overlays */
-.ui-widget-overlay { background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x; opacity: .30;filter:Alpha(Opacity=30); }
+.ui-widget-overlay { background: #ffffff; opacity: .70;filter:Alpha(Opacity=70); }
 .ui-widget-shadow { margin: -8px 0 0 -8px; padding: 8px; background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x; opacity: .30;filter:Alpha(Opacity=30); -moz-border-radius: 8px; -webkit-border-radius: 8px; border-radius: 8px; }/*
  * jQuery UI Resizable @VERSION
  *
@@ -445,10 +445,30 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
  *
  * http://docs.jquery.com/UI/Dialog#theming
  */
-.ui-dialog { position: absolute; padding: .2em; width: 300px; overflow: hidden; }
-.ui-dialog .ui-dialog-titlebar { padding: .5em 1em .3em; position: relative;  }
+.ui-dialog { position: absolute; width: 300px; overflow: hidden; border: 1px solid #666666; }
+.ui-dialog .ui-dialog-titlebar {
+	background: none repeat scroll 0 0 #F2F2F2;
+	color: #000000;
+	font-size: 16px;
+	padding: 5px;
+	position: relative;
+	text-transform: uppercase;
+	border-bottom: 1px solid #666666;
+}
 .ui-dialog .ui-dialog-title { float: left; margin: .1em 16px .2em 0; }
-.ui-dialog .ui-dialog-titlebar-close { position: absolute; right: .3em; top: 50%; width: 19px; margin: -10px 0 0 0; padding: 1px; height: 18px; }
+.ui-dialog .ui-dialog-titlebar-close { 
+	position: absolute; right: .3em; top: 50%; width: 19px; margin: -10px 0 0 0; padding: 1px; height: 18px;
+}
+.ui-dialog .ui-dialog-titlebar-close span {
+	background-image: url(images/ui-icons_454545_256x240.png);
+	background-position: -80px -128px;
+}
+.ui-dialog .ui-dialog-titlebar-close span:hover {
+	background-image: url(/img/ui-icons_cd0a0a_256x240.png);
+}
+.ui-dialog .ui-dialog-titlebar .ui-state-hover {
+	background:transparent;
+}
 .ui-dialog .ui-dialog-titlebar-close span { display: block; margin: 1px; }
 .ui-dialog .ui-dialog-titlebar-close:hover, .ui-dialog .ui-dialog-titlebar-close:focus { padding: 0; }
 .ui-dialog .ui-dialog-content { position: relative; border: 0; padding: .5em 1em; background: none; overflow: auto; zoom: 1; }
