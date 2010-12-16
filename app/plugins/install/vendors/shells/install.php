@@ -341,7 +341,6 @@ class InstallShell extends Shell {
 			'controllers/Payments/add',
 			'controllers/Payments/index',
 			'controllers/Searches/user',
-			'controllers/Reports/export',
 			'controllers/Reports/map',
 			'controllers/Reports/index',
 			'controllers/Reports/ministry',
@@ -353,7 +352,8 @@ class InstallShell extends Shell {
 			'controllers/InvolvementDocuments/approve',
 			'controllers/InvolvementImages/upload',
 			'controllers/Profiles/view',
-			'controllers/Profiles/edit'
+			'controllers/Profiles/edit',
+			'controllers/Payments/view'
 		),
 		'Developer' => array(
 			'controllers/ApiGenerator/ApiClasses/index',
@@ -390,7 +390,8 @@ class InstallShell extends Shell {
 			'controllers/InvolvementLeaders/index',
 			'controllers/DebugKit',
 			'controllers/CoreDebugPanels',
-			'controllers/MultiSelect'
+			'controllers/MultiSelect',
+			'controllers/Reports/export',
 		),
 		'Campus Manager' => array(
 			'controllers/Ministries/add',
@@ -454,7 +455,8 @@ class InstallShell extends Shell {
 			'controllers/InvolvementLeaders/delete',
 			'controllers/Profiles/view',
 			'controllers/Households/confirm',
-			'controllers/Profiles/edit'
+			'controllers/Profiles/edit',
+			'controllers/Payments/view'
 		),
 		'Household Contact' => array(
 			'controllers/UserImages/delete',

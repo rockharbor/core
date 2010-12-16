@@ -5,7 +5,7 @@
 	<ul>
 		<li><a href="#my-profile">My Profile</a></li>
 		<li><?php echo $this->Html->link('My Household', array('controller' => 'households', 'User' => $profile['User']['id']), array('title' => 'household')); ?></li>
-		<li><a href="#payments">Payments</a></li>
+		<li><?php echo $this->Html->link('Payments', array('controller' => 'payments', 'User' => $profile['User']['id']), array('title' => 'payments')); ?></li>
 	</ul>
 
 	<div class="content-box clearfix">
@@ -222,12 +222,15 @@
 		</div>
 
 		<div id="household">
-		<?php $this->Js->buffer('CORE.register("households", "household", "'.Router::url(array('controller' => 'households', 'User' => $profile['User']['id'])).'");'); ?>
 		</div>
 		<div id="payments">
-		
 		</div>
 		
 
 	</div>
 </div>
+
+<?php
+$this->Js->buffer('CORE.register("households", "household", "'.Router::url(array('controller' => 'households', 'User' => $profile['User']['id'])).'");');
+$this->Js->buffer('CORE.register("payments", "payments", "'.Router::url(array('controller' => 'payments', 'User' => $profile['User']['id'])).'");');
+?>

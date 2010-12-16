@@ -128,11 +128,11 @@ span.breadcrumb {
 #columns .column {
 	height:130px;
 }
-#columns .column .font-large {
+.font-large {
 	font-size: 52px;
 	font-family: LeagueGothicRegular,'Lucida Sans',Helvetica,Arial,sans-serif;
 }
-#columns .border-right {
+.border-right {
 	border-right: 1px solid #cccccc;
 }
 /* Ajax content boxes */
@@ -166,6 +166,20 @@ div.household-member {
 div.household-contact {
 	border: 1px solid #16b96d;
 	background: #B5FFDC;
+}
+div.receipt {
+	min-height: 150px;
+	border:1px solid #666666;
+	margin-bottom:10px;
+}
+div.receipt-title {
+	background:#f2f2f2;
+	padding: 10px;
+	font-weight:bold;
+	border-bottom:1px solid #666666;
+}
+div.receipt-body {
+	padding: 10px;
 }
 
 /*

@@ -197,7 +197,7 @@ class AppModel extends Model {
 		$class = $field = null;
 
 		// get the field the user id might be in
-		$fields = array('user_id', 'model_id', 'foreign_key', 'id');
+		$fields = array('user_id', 'model_id', 'foreign_key', 'id', 'payment_placed_by');
 		$field = 'user_id';
 		$f = 0;
 		while (!$this->hasField($field) && $f < count($fields)) {

@@ -28,7 +28,7 @@ class ReportsController extends AppController {
  *
  * @var string
  */
-	var $uses = array('User', 'Roster', 'Ministry', 'Involvement', 'Campus');
+	var $uses = array('User', 'Roster', 'Ministry', 'Involvement', 'Campus', 'Payment');
 
 /**
  * Extra helpers for this controller
@@ -114,7 +114,9 @@ class ReportsController extends AppController {
 			}
 			// set render path (which sets response type)
 			$this->RequestHandler->renderAs($this, $this->data['Export']['type'], $options);
+			$aliases = $this->data['Export']['header_aliases'];
 			unset($this->data['Export']['type']);
+			unset($this->data['Export']['header_aliases']);
 			
 			$search = $this->MultiSelect->getSearch($uid);
 			$selected = $this->MultiSelect->getSelected($uid);
@@ -126,7 +128,7 @@ class ReportsController extends AppController {
 			$results = $this->{$model}->find('all', $search);
 			
 			$this->set('models', $this->data['Export']);
-			$this->set('results', $results);
+			$this->set(compact('results', 'aliases'));
 		}
 		
 		$this->set(compact('uid', 'model'));

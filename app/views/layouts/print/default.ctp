@@ -6,6 +6,10 @@
 		<?php echo Core::read('general.site_name_tagless').' '.Core::read('version').' :: '.$title_for_layout; ?>
 	</title>
 	<?php
+		echo $this->Html->css('reset');
+		echo $this->Html->css('font-face');
+		echo $this->Html->css('styles');
+		echo $this->Html->css('tables');
 		echo $this->Html->css('print');
 		
 		// google cdn scripts

@@ -35,7 +35,7 @@ class PaymentsController extends AppController {
  *
  * @var array
  */
-	var $helpers = array('Text', 'Formatting');
+	var $helpers = array('MultiSelect.MultiSelect', 'Text', 'Formatting');
 
 /**
  * Model::beforeFilter() callback
@@ -48,6 +48,38 @@ class PaymentsController extends AppController {
 		$this->Security->blackHoleCallback = '_forceSSL';
 		$this->Security->requireSecure('add');
 		parent::beforeFilter();
+	}
+
+/**
+ * Shows a single payment
+ *
+ * @param integer $id The id of the payment
+ */
+	function view($id) {
+		$payment = $this->Payment->find('first', array(
+			'conditions' => array(
+				'Payment.id' => $id
+			),
+			'contain' => array(
+				'Roster' => array(
+					'Involvement' => array(
+						'fields' => array('name')
+					)
+				),
+				'PaymentType',
+				'User' => array(
+					'Profile' => array(
+						'fields' => array('name')
+					)
+				),
+				'Payer' => array(
+					'Profile' => array(
+						'fields' => array('name')
+					)
+				),
+			)
+		));
+		$this->set('payment', $payment);
 	}
 
 /**
@@ -70,15 +102,20 @@ class PaymentsController extends AppController {
 			),
 			'contain' => array(
 				'Roster' => array(	
-					'Involvement',
-					'PaymentOption'
+					'Involvement' => array(
+						'fields' => array('name')
+					)
 				),
 				'PaymentType',
 				'User' => array(
-					'Profile'
+					'Profile' => array(
+						'fields' => array('name')
+					)
 				),
 				'Payer' => array(
-					'Profile'
+					'Profile' => array(
+						'fields' => array('name')
+					)
 				),
 			)
 		);
@@ -88,8 +125,12 @@ class PaymentsController extends AppController {
 				'Roster.involvement_id' => $this->passedArgs['Involvement']
 			);
 		}
+
+		$this->MultiSelect->saveSearch($this->paginate);
 		
 		$this->set('payments', $this->paginate());
+		$this->Payment->User->contain(array('Profile'));
+		$this->set('user', $this->Payment->User->read(null, $userId));
 	}
 
 /**
