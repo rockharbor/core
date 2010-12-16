@@ -12,6 +12,53 @@ class ReportHelperTestCase extends CakeTestCase {
 		ClassRegistry::flush();
 	}
 
+	function testAlias() {
+		$this->Report->alias(array('Some.Field.value' => 'Readable Title'));
+		$expected = array(
+			'Some.Field.value' => 'Readable Title'
+		);
+		$this->assertEqual($this->Report->_aliases, $expected);
+		
+		$result = $this->Report->alias();
+		$this->assertEqual($result, $expected);
+
+		$this->Report->alias('Another', 'alias');
+		$result = $this->Report->alias();
+		$expected = array(
+			'Some.Field.value' => 'Readable Title',
+			'Another' => 'alias'
+		);
+		$this->assertEqual($result, $expected);
+	}
+
+	function testHeaderAliases() {
+		$this->Report->alias(array('Some.Field.value' => 'Readable Title'));
+
+		$result = $this->Report->headerAliases();
+		$this->assertEqual($result, serialize($this->Report->_aliases));
+
+		$this->Report->headerAliases($result);
+		$this->assertEqual($this->Report->alias(), array('Some.Field.value' => 'Readable Title'));
+	}
+
+	function testCreateHeadersWithAliases() {
+		$data = array(
+			'User' => array(
+				'username' => null,
+				'Profile' => array(
+					'name' => 0,
+					'first_name' => null,
+					'last_name' => null
+				)
+			)
+		);
+		$this->Report->alias(array('User.username' => 'Alias Username'));
+		$this->Report->alias(array('User.Profile.first_name' => 'Whaaaaaaaaat?'));
+		$results = $this->Report->createHeaders($data);
+		$expected = array('Alias Username', 'Whaaaaaaaaat?', 'Last Name');
+		$this->assertEqual($results, $expected);
+	}
+
 	function testNormalize() {
 		$data = array(
 			'User' => array(

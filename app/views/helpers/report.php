@@ -19,27 +19,64 @@
 class ReportHelper extends AppHelper {
 
 /**
+ * List of field name aliases so printed headers are the same as field labels
+ *
+ * @var array
+ * @access protected
+ */
+	var $_aliases = array();
+
+/**
  * Array of normalized fields to use to create headers and to determine what
  * data to pull from results
  *
  * @var array
+ * @access protected
  */
 	var $_fields = array();
-
-/**
- * Array of headers set by ReportHelper::createHeaders()
- *
- * @var array
- */
-	var $headers = array();
 
 /**
  * Resets the ReportHelper so it can used again
  */
 	function reset() {
 		$this->_fields = array();
-		$this->headers = array();
-		$this->results = array();
+		$this->_aliases = array();
+	}
+
+/**
+ * Stores an alias. Gets aliases if no argument is passed. 
+ *
+ * {{{
+ * $this->Report->alias(array('User.Profile.birth_date' => 'DOB'));
+ * $this->Report->alias('User.Profile.birth_date', 'DOB');
+ * }}}
+ *
+ * @param mixed $field An array with the field=>alias, or a field string
+ * @param string $alias Alias string
+ * @return array
+ */
+	function alias($field = array(), $alias = '') {
+		if (empty($field)) {
+			return $this->_aliases;
+		}
+		if (is_array($field)) {
+			$alias = $field[key($field)];
+			$field = key($field);
+		}
+		$this->_aliases[$field] = $alias;
+	}
+
+/**
+ * Sets/gets aliases as a serialized string to pass through a form
+ *
+ * @param string $str Serialized array. Blank to get
+ */
+	function headerAliases($str = '') {
+		if (!empty($str)) {
+			$this->_aliases = unserialize($str);
+		} else {
+			return serialize($this->_aliases);
+		}
 	}
 
 /**
@@ -69,18 +106,25 @@ class ReportHelper extends AppHelper {
  */
 	function createHeaders($data) {
 		if (empty($this->_fields)) {
-			$this->_fields = $data = $this->normalize($data);
+			$this->_fields = $this->normalize($data);
 		}
 
-		foreach ($data as $model => $fields) {
-			if (is_array($fields)) {
-				$this->createHeaders($fields);
+		$paths = array_keys(Set::flatten($this->_fields));
+		$allpaths = array_keys(Set::flatten($data));
+		$flat = array_intersect($paths, $allpaths);
+		$headers = array();
+
+		foreach ($flat as $path) {
+			$exp = explode('.', $path);
+			$name = $exp[count($exp)-1];
+			if (array_key_exists($path, $this->_aliases)) {
+				$headers[] = $this->_aliases[$path];
 			} else {
-				$this->headers[] = Inflector::humanize($model);
+				$headers[] = Inflector::humanize($name);
 			}
 		}
 
-		return $this->headers;
+		return $headers;
 	}
 
 /**

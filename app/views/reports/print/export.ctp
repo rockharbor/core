@@ -1,3 +1,6 @@
+<?php
+$this->Report->headerAliases($aliases);
+?>
 <table>
 	<thead>
 		<?php	echo $this->Html->tableHeaders($this->Report->createHeaders($models)); ?>

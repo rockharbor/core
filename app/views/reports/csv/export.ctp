@@ -1,4 +1,5 @@
 <?php
+$this->Report->headerAliases($aliases);
 $this->Csv->addRow($this->Report->createHeaders($models));
 
 $rows = $this->Report->getResults($results);
