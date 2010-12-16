@@ -150,8 +150,10 @@ class AppController extends Controller {
  * @see Controller::beforeFilter()
  */
 	function beforeFilter() {
+		// add extra mappings
 		// WORKAROUND: Firefox tries to open json instead of reading it, so use different headers
 		$this->RequestHandler->setContent('json', 'text/plain');
+		$this->RequestHandler->setContent('print', 'text/html');
 		
 		$User = ClassRegistry::init('User');
 

@@ -35,7 +35,7 @@ class ReportsController extends AppController {
  *
  * @var array
  */
-	var $helpers = array('GoogleMap', 'Media.Media');
+	var $helpers = array('GoogleMap', 'Media.Media', 'Report');
 
 /**
  * Extra components for this controller
@@ -106,18 +106,15 @@ class ReportsController extends AppController {
  * @see MultiSelectComponent::getSearch();
  */ 
 	function export($model, $uid) {
-		if (!empty($this->data)) {			
-			unset($this->data['Export']['type']);
-
-			// add extra mappings
-			$this->RequestHandler->setContent('print', 'text/html');			
+		if (!empty($this->data)) {
 			$options = array();
-			if (in_array($this->RequestHandler->ext, array('csv'))) {				
+			if ($this->data['Export']['type'] == 'csv') {
 				$this->set('title_for_layout', strtolower($model).'-search-export');
 				$options['attachment'] = $this->viewVars['title_for_layout'].'.csv';
 			}
 			// set render path (which sets response type)
-			$this->RequestHandler->renderAs($this, $this->RequestHandler->ext, $options);
+			$this->RequestHandler->renderAs($this, $this->data['Export']['type'], $options);
+			unset($this->data['Export']['type']);
 			
 			$search = $this->MultiSelect->getSearch($uid);
 			$selected = $this->MultiSelect->getSelected($uid);
@@ -125,10 +122,6 @@ class ReportsController extends AppController {
 			if (!empty($selected)) {
 				$search['conditions'][$model.'.id'] = $selected;
 			}
-			
-			// only contain what we need
-			$contain = $this->{$model}->postContains($this->data['Export']);			
-			$search['contain'] = $contain;
 			
 			$results = $this->{$model}->find('all', $search);
 			

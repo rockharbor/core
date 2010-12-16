@@ -4,11 +4,7 @@ echo $this->Form->create('Report', array(
 	'url' => array(
 		$model,
 		$uid
-	),
-	'inputDefaults' => array(
-		'hiddenField' => false
-	),
-	'onsubmit' => "this.action += '.'+$('#ExportType').val()"
+	)
 ));
 
 echo $this->Form->input('Export.type', array(
