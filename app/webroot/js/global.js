@@ -73,11 +73,18 @@ CORE.request = function(url, options, data) {
 	
 	if (useOptions.update !== undefined) {
 		var update = useOptions.update;
-		useOptions.success = function(data) {
+		useOptions.success = function() {
 			CORE.update(update);
-		}
-		
+		}		
 		delete useOptions.update;
+	}
+
+	if (useOptions.updateHtml !== undefined) {
+		var update = useOptions.updateHtml;
+		useOptions.success = function(data) {
+			$('#'+update).html(data);
+		}
+		delete useOptions.updateHtml;
 	}
 
 	if (data != undefined) {

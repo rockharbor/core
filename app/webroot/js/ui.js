@@ -351,7 +351,9 @@ CORE.tabs = function(id, taboptions, options) {
  *
  * #### Options:
  *
- * - `update` An "updatabale" to automatically update on close
+ * - `update` An "updateable" to automatically update on close
+ * - `updateHtml` If a string, replaces this id element with the returned content.
+ *		`update` takes priority over this option
  * - `onYes` Js function to call on confirmation, in addition to calling the href
  * - `yesTitle` Yes button title
  * - `onNo` Js function to call on cancellation
@@ -378,6 +380,7 @@ CORE.confirmation = function(id, message, options) {
 	
 	var _defaultOptions = {
 		update: '',
+		updateHtml: false,
 		yesTitle: 'Yes',
 		onNo: 'CORE.closeModals("confirmation-modal");',
 		noTitle: 'Cancel',
@@ -393,6 +396,8 @@ CORE.confirmation = function(id, message, options) {
 
 	if (useOptions.update != '') {
 		useOptions.onYes = 'CORE.request("'+href+'", {update:"'+useOptions.update+'"});CORE.closeModals("confirmation-modal");'+useOptions.onYes;
+	} else if (useOptions.updateHtml !== false) {
+		useOptions.onYes = 'CORE.request("'+href+'", {updateHtml:"'+useOptions.updateHtml+'"});CORE.closeModals("confirmation-modal");'+useOptions.onYes
 	} else {
 		useOptions.onYes = 'CORE.request("'+href+'");CORE.closeModals("confirmation-modal");'+useOptions.onYes
 	}
