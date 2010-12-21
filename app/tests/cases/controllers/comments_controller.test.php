@@ -35,7 +35,7 @@ class CommentsControllerTestCase extends CoreTestCase {
 			'return' => 'vars'
 		));
 		$results = Set::extract('/Comment/id', $vars['comments']);
-		$expected = array(1, 2, 3);
+		$expected = array(2, 4);
 		$this->assertEqual($results, $expected);
 
 		$this->Comments->Session->write('User', array('Group' => array('id' => 5)));
@@ -43,7 +43,7 @@ class CommentsControllerTestCase extends CoreTestCase {
 			'return' => 'vars'
 		));
 		$results = Set::extract('/Comment/id', $vars['comments']);
-		$expected = array(2, 3);
+		$expected = array(2, 4);
 		$this->assertEqual($results, $expected);
 
 		$vars = $this->testAction('/comments/index/User:2', array(
@@ -57,6 +57,7 @@ class CommentsControllerTestCase extends CoreTestCase {
 		$data = array(
 			'Comment' => array(
 				'user_id' => 1,
+				'created_by' => 1,
 				'group_id' => 1,
 				'comment' => 'This is a new comment'
 			)
@@ -67,18 +68,9 @@ class CommentsControllerTestCase extends CoreTestCase {
 			'data' => $data,
 			'return' => 'vars'
 		));
-		$this->Comments->Comment->id = 4;
+		$this->Comments->Comment->id = 5;
 		$results = $this->Comments->Comment->read();
 		$this->assertEqual($results['Comment']['comment'], 'This is a new comment');
-		
-		$results = $vars['groups'];
-		$expected = array(
-			5 => 'Staff',
-			6 => 'Intern',
-			7 => 'Developer',
-			8 => 'User'
-		);
-		$this->assertEqual($results, $expected);
 	}
 
 	function testEdit() {
@@ -124,7 +116,7 @@ class CommentsControllerTestCase extends CoreTestCase {
 	}
 
 	function testDelete() {
-		$this->testAction('/comments/delete/Comment:1');
+		$this->testAction('/comments/delete/Comment:1/User:1');
 		$result = $this->Comments->Comment->read(null, 1);
 		$this->assertFalse($result);
 	}

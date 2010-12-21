@@ -18,10 +18,10 @@ class CommentFixture extends CakeTestFixture {
 	var $records = array(
 		array(
 			'id' => 1,
-			'user_id' => 1,
+			'user_id' => 4,
 			'group_id' => 2,
 			'comment' => 'another comment',
-			'created_by' => NULL,
+			'created_by' => 1,
 			'created' => '2010-03-24 09:53:55',
 			'modified' => '2010-03-24 09:53:55'
 		),
@@ -30,16 +30,25 @@ class CommentFixture extends CakeTestFixture {
 			'user_id' => 1,
 			'group_id' => 5,
 			'comment' => 'comment\'d!',
-			'created_by' => NULL,
+			'created_by' => 2,
 			'created' => '2010-03-24 10:04:59',
 			'modified' => '2010-03-24 10:04:59'
 		),
 		array(
 			'id' => 3,
-			'user_id' => 1,
+			'user_id' => 3,
 			'group_id' => 5,
 			'comment' => 'test',
-			'created_by' => NULL,
+			'created_by' => 1,
+			'created' => '2010-04-08 07:46:26',
+			'modified' => '2010-04-08 07:46:26'
+		),
+		array(
+			'id' => 4,
+			'user_id' => 1,
+			'group_id' => 8,
+			'comment' => 'test again',
+			'created_by' => 3,
 			'created' => '2010-04-08 07:46:26',
 			'modified' => '2010-04-08 07:46:26'
 		)
