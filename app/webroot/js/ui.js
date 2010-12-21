@@ -36,8 +36,11 @@ CORE.modal = function(id, options) {
 		// rewrite the id's
 		$('#content').attr('id', 'modal');		
 		$('#content-reserved').attr('id', 'content');
-		if ($(this).dialog('option', 'update') != undefined) {
-			CORE.update($(this).dialog('option', 'update'));
+		// re-register original content updateable
+		CORE.unregister('content');
+		CORE.updateables['content'] = $('#modal').data('oldUpdateable');
+		if ($('#modal').dialog('option', 'update') != undefined) {
+			CORE.update($('#modal').dialog('option', 'update'));
 		}
 	};
 	
@@ -45,6 +48,10 @@ CORE.modal = function(id, options) {
 		// rename content so ajax updates will update content in modal
 		$('#content').attr('id', 'content-reserved');
 		$('#modal').attr('id', 'content');
+		// register this new ajax url as the content updateable, so scripts within
+		// the window that update the content updateable update with this url instead
+		$('#modal').data('oldUpdateable', CORE.unregister('content'));
+		CORE.register('content', 'content', $('#'+id).attr('href'));
 	}
 	
 	$('#'+id).click(function(event) {
@@ -356,7 +363,10 @@ CORE.tabs = function(id, taboptions, options) {
  * @return boolean
  * @see CORE.updateables
  */ 
-CORE.confirmation = function(id, message, options) {	
+CORE.confirmation = function(id, message, options) {
+	if ($('#confirmation-modal').length == 0) {
+		$('#wrapper').append('<div id="confirmation-modal"></div>');
+	}
 	if (id == undefined || message == undefined) {
 		return false;
 	}
@@ -369,7 +379,7 @@ CORE.confirmation = function(id, message, options) {
 	var _defaultOptions = {
 		update: '',
 		yesTitle: 'Yes',
-		onNo: 'CORE.closeModals();',
+		onNo: 'CORE.closeModals("confirmation-modal");',
 		noTitle: 'Cancel',
 		onYes: ''
 	};
@@ -380,12 +390,12 @@ CORE.confirmation = function(id, message, options) {
 	} else {
 		useOptions = _defaultOptions;
 	}
-	
+
 	if (useOptions.update != '') {
-		useOptions.onYes = 'CORE.request(\''+href+'\', {update:"'+useOptions.update+'"});CORE.closeModals();'+useOptions.onYes;
+		useOptions.onYes = 'CORE.request("'+href+'", {update:"'+useOptions.update+'"});CORE.closeModals("confirmation-modal");'+useOptions.onYes;
 	} else {
-		useOptions.onYes = 'CORE.request(\''+href+'\');CORE.closeModals();'+useOptions.onYes
-	}	
+		useOptions.onYes = 'CORE.request("'+href+'");CORE.closeModals("confirmation-modal");'+useOptions.onYes
+	}
 
 	el.click(function(event) {
 		// stop href
@@ -395,12 +405,14 @@ CORE.confirmation = function(id, message, options) {
 		extraButtons[useOptions.yesTitle] = function () {eval(useOptions.onYes)};
 		extraButtons[useOptions.noTitle] = function () {eval(useOptions.onNo)};
 
-		$('#modal').dialog('option', 'width', 300);
-		$('#modal').dialog('option', 'buttons', extraButtons);
-		$('#modal').dialog('option', 'title', 'Confirmation');
-		$('#modal').dialog('option', 'update', 'none');
-		$('#modal').html(message);
-		$('#modal').dialog('open');
+		$('#confirmation-modal').dialog({
+			width: 300,
+			buttons: extraButtons,
+			title: 'Confirmation',
+			modal: true
+		});
+		$('#confirmation-modal').html(message);
+		$('#confirmation-modal').dialog('open');
 		
 		// stop href
 		return false;
@@ -629,8 +641,14 @@ CORE.ajaxUpload = function(id, updateable) {
 
 /**
  * Closes all modals and popups
+ *
+ * @param modalName string The name of the modal. If empty, all will close
  */
-CORE.closeModals = function() {
-	$('#content').dialog('close');
-	$('#modal').dialog('close');
+CORE.closeModals = function(modalName) {
+	if (modalName != undefined) {
+		$('#'+modalName).dialog('close');
+	} else {
+		$('#content').dialog('close');
+		$('#modal').dialog('close');
+	}
 }

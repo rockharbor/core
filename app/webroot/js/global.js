@@ -118,6 +118,22 @@ CORE.register = function(alias, div, url) {
 }
 
 /**
+ * Unregisters an updateable and returns the updateable that was removed
+ *
+ * @param alias string The alias for the updateable
+ * @return hash The updateable that was removed
+ * @see CORE.register
+ */
+CORE.unregister = function(alias) {
+	if (alias == undefined) {
+		return false;
+	}
+	var old = CORE.updateables[alias];
+	delete CORE.updateables[alias];
+	return old;
+}
+
+/**
  * Inits CORE js
  */
 CORE.init = function() {
