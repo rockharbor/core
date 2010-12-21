@@ -5,7 +5,7 @@ $this->Paginator->options('#roster');
 <?php
 	echo $this->MultiSelect->create();
 ?>
-	<table cellpadding="0" cellspacing="0" id="rosterTable">
+	<table cellpadding="0" cellspacing="0" id="rosterTable" class="datatable">
 		<thead>
 			<?php
 			$links = array(
