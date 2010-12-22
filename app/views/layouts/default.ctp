@@ -46,7 +46,7 @@
 		echo $this->Html->script('navigation');
 		
 		// setup
-		$this->Js->buffer('CORE.init()');
+		$this->Js->buffer('CORE.init()', true);
 		echo $this->Js->writeBuffer();
 		echo $scripts_for_layout;
 	?>

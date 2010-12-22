@@ -18,7 +18,6 @@
  */
 ?>
 <?php
-$this->Js->buffer('CORE.initUI();');
 $this->Js->buffer('$("#modal").dialog("option", "title", "'.$title_for_layout.'");');
 
 echo $this->Session->flash('auth');
@@ -26,6 +25,7 @@ echo $this->Session->flash();
 
 echo $content_for_layout;
 
+$this->Js->buffer('CORE.initUI();', true);
 echo $this->Js->writeBuffer();
 
 //echo $this->element('sql_dump');
