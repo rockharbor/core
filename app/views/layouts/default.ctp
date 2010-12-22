@@ -47,6 +47,7 @@
 		
 		// setup
 		$this->Js->buffer('CORE.init()', true);
+		$this->Js->buffer('CORE.register("notifications", "nav-notifications", "/notifications/quick")');
 		echo $this->Js->writeBuffer();
 		echo $scripts_for_layout;
 	?>
@@ -89,42 +90,10 @@
 							<li class="hover-row"><?php echo $this->Html->link('My Payments', array('controller' => 'payments', 'User' => $activeUser['User']['id'])); ?></li>
 						</ul>
 					</li>
-					<li id="nav-notifications"><?php
-					$new = count(Set::extract('/Notification[read=0]', $activeUser['Notification']));
-					echo $this->Html->link('Notifications', array('controller' => 'notifications', 'action' => 'index'));
-					if ($new > 0) {
-						echo $this->Html->tag('span', $new, array('class' => 'notification-count'));
-					}
-					?>
-						<ul>
-							<?php
-								foreach ($activeUser['Alert'] as $alert) {
-									echo '<li>';
-									$name = $this->Html->tag('div', $alert['Alert']['name'], array('class' => 'alert-name'));
-									$desc = $this->Html->tag('div', $this->Text->truncate($alert['Alert']['description'], 100), array('class' => 'alert-description'));
-									echo $this->Html->link($name.$desc, array('controller' => 'alerts', 'action' => 'view', $alert['Alert']['id']), array('escape' => false));
-									echo '</li>';
-								}
-
-								foreach ($activeUser['Notification'] as $notification) {
-									$class = $notification['Notification']['read'] ? 'read' : 'unread';
-									echo '<li id="notification-'.$notification['Notification']['id'].'" class="notification"><p class="'.$class.'">';
-									echo $this->Text->truncate($notification['Notification']['body'], 100, array('html' => true));
-									echo '</p>';
-									echo $this->Html->link('[X]', array(
-										'controller' => 'notifications',
-										'action' => 'delete',
-										$notification['Notification']['id']
-									), array(
-										'class' => 'delete'
-									));
-									echo '</li>';
-								}
-								echo '<li id="notification-viewall">';
-								echo $this->Html->link('View All Notifications', array('controller' => 'notifications'));
-								echo '</li>';
-							?>
-						</ul>
+					<li id="nav-notifications">
+						<?php 
+						echo $this->requestAction('/notifications/quick', array('return'));
+						?>
 					</li>
 					<li id="nav-ministries">
 						<?php
@@ -195,5 +164,9 @@
 		<div id="footer" class="container_12 clearfix">
 		</div>
 	</div>
+	<?php
+	// write any buffered scripts that were added in the layout
+	echo $this->Js->writeBuffer();
+	?>
 </body>
 </html>

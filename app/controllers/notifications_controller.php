@@ -45,7 +45,29 @@ class NotificationsController extends AppController {
  * @access private
  */ 
 	function beforeFilter() {
+		$this->_editSelf('quick', 'index');
 		parent::beforeFilter();
+	}
+
+/**
+ * Gets a list of notifications (specifically for the menu)
+ */
+	function quick() {
+		// get notifications
+		$this->set('new', $this->Notification->find('count', array(
+			'conditions' => array(
+				'Notification.user_id' => $this->Auth->user('id'),
+				'Notification.read' => false
+			)
+		)));
+		$this->paginate = array(
+			'conditions' => array(
+				'Notification.user_id' => $this->Auth->user('id')
+			),
+			'order' => 'Notification.created DESC',
+			'limit' => 10
+		);
+		$this->set('notifications', $this->paginate());
 	}
 
 /**
@@ -53,14 +75,8 @@ class NotificationsController extends AppController {
  *
  * @param string $typeFilter A quick filter for the NotificationType
  */
-	function index($typeFilter = '') {
-		if (isset($this->passedArgs['User'])) {
-			$userId = $this->passedArgs['User'];
-		} else {
-			$userId = $this->activeUser['User']['id'];
-		}
-		
-		$conditions['Notification.user_id'] = $userId;
+	function index($typeFilter = '') {		
+		$conditions['Notification.user_id'] = $this->Auth->user('id');
 		if (!empty($typeFilter) && in_array($typeFilter, array_keys($this->Notification->types))) {
 			$conditions['Notification.type'] = $typeFilter;
 		}
@@ -71,31 +87,29 @@ class NotificationsController extends AppController {
 				'Notification.created DESC'
 			)
 		);
-		$this->Notification->recursive = -1;
 		$this->MultiSelect->saveSearch($this->paginate);
 		$this->set('notifications', $this->paginate());
 	}
 
 /**
- * Marks a notification as `read`
+ * Marks a notification as `read` or `unread`
  *
  * @param integer $id The notification id
+ * @param boolean $read 1 for `read`, 0 for `unread`
  */
-	function read($id = null) {
+	function read($id = null, $read = 1) {
 		if (!$id) {
-			//$this->Session->setFlash('Could not mark notification as read', 'flash'.DS.'failure');
 			$this->redirect(array('action'=>'index'));
 		}
 		
 		// check to see if this is a MultiSelect
-		if ($this->MultiSelect->check($id)) {
-			
+		if ($this->MultiSelect->check($id)) {			
 			$search = $this->MultiSelect->getSearch($id);
 			$selected = $this->MultiSelect->getSelected($id);
 			
 			$search['conditions']['Notification.id'] = $selected;
 			$results = $this->Notification->find('all', $search);
-			$ids = $selected; //Set::extract('/Notification/id', $results);
+			$ids = $selected;
 		} else {
 			$ids = array($id);
 		}
@@ -103,13 +117,7 @@ class NotificationsController extends AppController {
 		foreach ($ids as $id) {
 			$this->Notification->id = $id;
 			if ($this->Notification->ownedBy($this->activeUser['User']['id'])) {
-				if ($this->Notification->saveField('read', true)) {
-					//$this->Session->setFlash('Notification marked as read', 'flash'.DS.'success');
-				} else {
-					//$this->Session->setFlash('Could not mark notification as read', 'flash'.DS.'failure');
-				}
-			} else {
-				//$this->Session->setFlash('Could not mark notification as read', 'flash'.DS.'failure');
+				$this->Notification->saveField('read', $read == 1);
 			}
 		}
 	

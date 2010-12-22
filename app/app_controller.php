@@ -166,17 +166,6 @@ class AppController extends Controller {
 				$this->Session->setFlash('Your last password was automatically generated. Please reset it.');
 				$this->redirect(array('controller' => 'users', 'action' => 'edit', 'User' => $this->Auth->user('id')));
 			}
-
-			// get notifications
-			$newNotifications = $User->Notification->find('all', array(
-				'conditions' => array(
-					'Notification.user_id' => $this->Auth->user('id')
-				),
-				'order' => 'Notification.created DESC',
-				'contain' => false,
-				'limit' => 10
-			));
-
 			// get latest alert
 			$Alert = ClassRegistry::init('Alert');
 			$unread = $Alert->getUnreadAlerts($this->activeUser['User']['id'], $this->activeUser['Group']['id'], false);
@@ -187,7 +176,6 @@ class AppController extends Controller {
 				'order' => 'Alert.created DESC',
 				'limit' => 5
 			));
-			$this->activeUser['Notification'] = Set::extract('/Notification', $newNotifications);
 			$this->activeUser['Alert'] = Set::extract('/Alert', $newAlerts);
 		
 			// global allowed actions

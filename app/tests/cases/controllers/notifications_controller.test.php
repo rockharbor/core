@@ -30,6 +30,14 @@ class NotificationsControllerTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 
+	function testQuick() {
+		$vars = $this->testAction('/notifications/quick/User:1', array(
+			'return' => 'vars'
+		));
+		$this->assertTrue(count($vars['notifications']) > 0);
+		$this->assertTrue($vars['new'] > 0);
+	}
+
 	function testIndex() {
 		$vars = $this->testAction('/notifications/index/User:1', array(
 			'return' => 'vars'
@@ -90,6 +98,10 @@ class NotificationsControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/notifications/read/3');
 		$this->Notifications->Notification->id = 3;
 		$this->assertTrue($this->Notifications->Notification->field('read'));
+
+		$vars = $this->testAction('/notifications/read/3/0');
+		$this->Notifications->Notification->id = 3;
+		$this->assertFalse($this->Notifications->Notification->field('read'));
 	}
 
 	function testMultiSelectRead() {

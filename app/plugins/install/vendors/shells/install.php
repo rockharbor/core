@@ -380,6 +380,7 @@ class InstallShell extends Shell {
 			'controllers/MinistryImages/view',
 			'controllers/Notifications/delete',
 			'controllers/Notifications/index',
+			'controllers/Notifications/quick',
 			'controllers/Notifications/read',
 			'controllers/Searches/index',
 			'controllers/Searches/involvement',
