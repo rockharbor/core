@@ -32,7 +32,8 @@ class AttachmentsController extends AppController {
  */
 	var $helpers = array(
 		'Media.Media',
-		'Number'
+		'Number',
+		'Formatting'
 	);
 	
 /**
@@ -122,7 +123,7 @@ class AttachmentsController extends AppController {
  * should be sent so the file can be attached to the user, involvement, or whatever.
  */ 	
 	function upload() {
-		$settingName = Inflector::pluralize(strtolower($this->model)).'.'.strtolower($this->modelClass).'_limit';
+		$settingName = Inflector::pluralize(strtolower($this->model)).'.'.strtolower($this->model).'_'.strtolower($this->modelClass).'_limit';
 		$attachments = $this->{$this->modelClass}->find('all', array(
 			'conditions' => array(
 				'foreign_key' => $this->modelId,
@@ -142,10 +143,9 @@ class AttachmentsController extends AppController {
 
 			if ($this->{$this->modelClass}->save($this->data)) {
 				$this->Session->setFlash(Inflector::humanize($this->modelKey).' added!', 'flash'.DS.'success');
-			} else {
-				$this->Session->setFlash('Error uploading '.Inflector::humanize($this->modelKey).'!', 'flash'.DS.'failure');
-				$this->{$this->modelClass}->invalidate('file', 'Error saving '.Inflector::humanize($this->modelKey));
 			}
+			//failures will be handled by error messages, no need to set flash since they'll see an error (no ajax)
+			//and ajax uploads handle the errors nicely
 		}
 
 		$this->set(compact('attachments'));

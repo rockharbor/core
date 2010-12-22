@@ -1,5 +1,5 @@
 <div class="comments">
-<h2>Add Comment</h2>
+<h1>Add Comment</h1>
 <?php echo $this->Form->create('Comment', array('default' => false));?>
 	<fieldset>
  		<legend>Add Comment</legend>
@@ -7,9 +7,13 @@
 		echo $this->Form->hidden('user_id', array(
 			'value' => $userId
 		));
-		echo $this->Form->input('comment_type_id');
+		echo $this->Form->hidden('group_id', array(
+			'value' => $activeUser['Group']['id']
+		));
 		echo $this->Form->input('comment');
-		//echo $this->Form->input('created_by');
+		echo $this->Form->hidden('created_by', array(
+			'value' => $activeUser['User']['id']
+		));
 	?>
 	</fieldset>
 <?php

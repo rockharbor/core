@@ -39,17 +39,15 @@ class CommentsController extends AppController {
  * @access private
  */
 	function beforeFilter() {
+		parent::beforeFilter();
 		// only creators of the comment can edit/delete (unless they have ACL permission)
 		if (in_array($this->action, array('edit', 'delete'))) {
 			if (isset($this->passedArgs['Comment'])) {
-				$comment = $this->Comment->read(array('created_by'), $this->passedArgs['Comment']);
-				if ($comment['Comment']['created_by'] == $this->activeUser['User']['id']) {
+				if ($this->Comment->{'can'.Inflector::camelize($this->action)}($this->activeUser['User']['id'], $this->passedArgs['Comment'])) {
 					$this->Auth->allow($this->action);
 				}
 			}
 		}
-
-		parent::beforeFilter();
 	}
 	
 /**
@@ -62,11 +60,20 @@ class CommentsController extends AppController {
 		$this->paginate = array(
 			'conditions' => array(
 				'Comment.user_id' => $viewUser,
-				'Group.id' => array_keys($groups)
+				'Comment.group_id' => array_keys($groups)
 			),
 			'contain' => array(
-				'Group'
-			)
+				'Creator' => array(
+					'fields' => array(
+						'id', 'group_id'
+					),
+					'Profile' => array(
+						'name',
+					),
+					'Image'
+				)
+			),
+			'limit' => 5
 		);
 		$this->set('comments', $this->paginate());
 		
@@ -81,16 +88,14 @@ class CommentsController extends AppController {
 		$viewUser = $this->passedArgs['User'];
 	
 		if (!empty($this->data)) {
-			$this->data['Comment']['created_by'] = $this->activeUser['User']['id'];
 			$this->Comment->create();
 			if ($this->Comment->save($this->data)) {
 				$this->Session->setFlash('The comment has been saved', 'flash'.DS.'success');
-				$this->redirect(array('action' => 'edit', $this->Comment->getInsertID(), 'User' => $viewUser));
+				$this->redirect(array('action' => 'index', 'User' => $viewUser));
 			} else {
 				$this->Session->setFlash('The comment could not be saved. Please, try again.', 'flash'.DS.'failure');
 			}
 		}
-		$this->set('users', $this->Comment->User->find('list'));
 		$groups = $this->Comment->Group->findGroups($this->activeUser['Group']['id']);
 		$this->set('groups', $groups);
 		$this->set('userId', $viewUser);
@@ -130,18 +135,19 @@ class CommentsController extends AppController {
  * Deletes a comment
  */ 
 	function delete() {
+		$viewUser = $this->passedArgs['User'];
 		$id = $this->passedArgs['Comment'];
 
 		if (!$id) {
 			$this->Session->setFlash('Invalid id for comment');
-			$this->redirect(array('action'=>'index'));
+			$this->redirect(array('action'=>'index', 'User' => $viewUser));
 		}
 		if ($this->Comment->delete($id)) {
 			$this->Session->setFlash('Comment deleted', 'flash'.DS.'success');
-			$this->redirect(array('action'=>'index'));
+			$this->redirect(array('action'=>'index', 'User' => $viewUser));
 		}
 		$this->Session->setFlash('Comment was not deleted', 'flash'.DS.'failure');
-		$this->redirect(array('action' => 'index'));
+		$this->redirect(array('action' => 'index', 'User' => $viewUser));
 	}
 }
 ?>

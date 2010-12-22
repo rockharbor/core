@@ -118,7 +118,10 @@ CORE.attachTooltipBehavior = function() {
 CORE.tooltip = function(ele, content, options) {
 	var _default = {
 		detachAfter: true,
-		container: $(document.body)
+		container: $(document.body),
+		color: '#343434',
+		autoShow: false,
+		contentClass: 'qtip-content'
 	}
 	var useOptions;
 	if (options != undefined) {
@@ -129,7 +132,7 @@ CORE.tooltip = function(ele, content, options) {
 
 	var _content = content;
 	if (typeof content != 'string') {
-		_content = $(content).clone(true).removeClass('core-tooltip');
+		_content = $(content).clone(true).removeClass('core-tooltip').attr('id', '');
 	}
 
 	$(ele).qtip({
@@ -150,7 +153,8 @@ CORE.tooltip = function(ele, content, options) {
 		},
 		show: {
 			delay: 50,
-			solo: true
+			solo: true,
+			ready: useOptions.autoShow
 		},
 		hide: {
 			fixed: true
@@ -161,7 +165,10 @@ CORE.tooltip = function(ele, content, options) {
 			},
 			tip: {
 				corner: 'bottomLeft',
-				color: '#343434'
+				color: useOptions.color
+			},
+			classes: {
+				content: useOptions.contentClass
 			}
 		}
 	});
@@ -593,36 +600,55 @@ CORE.autoComplete = function(id, datasource, onSelect) {
  * @param string updateable An updateable to update after success
  */
 CORE.ajaxUpload = function(id, updateable) {
-	var form = $('#'+id);	
-	var input = $('#'+id+' input[type=file]');
 	var submit = $('#'+id+' div.submit');
-	$(input).after('<button id="'+id+'_button">'+$(submit).children('input').attr('value')+'</button>');
-	var button = $('#'+id+'_button').button();
-	$(button).css({
-		zIndex: 99
-	});
-	$(submit).hide();
-	$('#'+id+'_error').hide();
-	$(input).css({
-		opacity:0,
-		width: $(button).width(),
-		height: $(button).height(),
-		zIndex:100,
-		position:'absolute'
-	});
-	$(input).click(function() { $(form).each(function() { this.reset() }) } );
-	$(input).mouseenter(function() { $(button).mouseenter() });
-	$(input).mouseleave(function() { $(button).mouseleave() });
-	$(input).mouseover(function() { $(button).mouseover() });
-	$(input).mouseout(function() { $(button).mouseout() });
-	$(input).mousedown(function() { $(button).mousedown() });
-	$(input).mouseup(function() { $(button).mouseup() });
-	$(input).change(function() { $(form).submit() });
+	var input = $('#'+id+' input[type=file]').attr('multiple', 'multiple');
+	var button = $('<button id="'+id+'_button">'+submit.children('input').attr('value')+'</button>').button();
+	// attach/remove to dom to get the width so we don't end up with a 0 width form
+	$('body').append(button);
+	var width = $('#'+id+'_button').width();
+	$('body').remove('#'+id+'_button');
 
-	$(form).ajaxForm({
+	input.before(button);
+
+	var form = $('#'+id).css({
+		position: 'relative',
+		width: width,
+		overflow:'hidden',
+		padding:0,
+		margin:0,
+		textAlign:'center',
+		cursor: 'pointer'
+	});
+
+	button.css({
+		width:'100%',
+		cursor: 'pointer'
+	});
+	submit.hide();
+	$('#'+id+'_error').hide();
+	input.css({
+		opacity:0,
+		fontSize:'120px',
+		margin:0,
+		padding:0,
+		position:'absolute',
+		top:0,
+		right:0,
+		cursor: 'pointer'
+	});
+	input.click(function() { form.each(function() { this.reset() }) } );
+	input.mouseenter(function() { button.mouseenter() });
+	input.mouseleave(function() { button.mouseleave() });
+	input.mouseover(function() { button.qtip('destroy'); button.mouseover() });
+	input.mouseout(function() { button.mouseout() });
+	input.mousedown(function() { button.mousedown() });
+	input.mouseup(function() { button.mouseup() });
+	input.change(function() { form.submit() });
+
+	form.ajaxForm({
 		//iframe: true,
 		success: function(response) {
-			$(input).after('<div class="error-message" id="'+id+'_error"></div>');
+			form.before('<div class="error-message" id="'+id+'_error"></div>');
 			var e = $('#'+id+'_error');
 			var msg = '';
 			if (response.length == 0) {
@@ -632,11 +658,12 @@ CORE.ajaxUpload = function(id, updateable) {
 			} else if (response == null) {
 				msg = "Unknown error."
 				e.text(msg);
-				e.addClass("error-message");
+				e.addClass("error-message upload-error");
 			} else {
-				var model = $(input).attr('name').substring($(input).attr('name').indexOf('[')+1, $(input).attr('name').indexOf(']'));
+				var model = input.attr('name').substring(input.attr('name').indexOf('[')+1, input.attr('name').indexOf(']'));
 				msg = response[model]['file'];
-				e.text(msg);
+				e.html(msg);
+				CORE.tooltip(button, e, {color:'#E03A14', autoShow: true, contentClass: 'qtip-content-error'});
 			}
 		},
 		dataType: 'json'

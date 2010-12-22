@@ -211,12 +211,8 @@
 
 			<ul class="core-admin-tabs">
 				<li><a href="#admin">Administration</a></li>
-				<li><a href="<?php
-				echo Router::url(array(
-					'controller' => 'user_documents',
-					'User' => $profile['User']['id']
-				));
-				?>" title="docs">Documents</a></li>
+				<li><?php echo $this->Permission->link('Documents', array('controller' => 'user_documents', 'User' => $profile['User']['id']), array('rel' => 'modal-none')); ?></li>
+				<li><?php echo $this->Permission->link('Comments', array('controller' => 'comments', 'User' => $profile['User']['id']), array('rel' => 'modal-none')); ?></li>
 			</ul>
 
 		</div>

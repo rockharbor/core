@@ -21,26 +21,10 @@ h1, h2, h3 {
 	font-weight:normal;
 	text-transform: uppercase;
 }
-div .content-box h1 { display:none; }
+div .content-box h1, div.ui-dialog h1 { display:none; }
 h1 { font-size: 44px; margin:0 -10px; margin-bottom:10px; }
 h2 { font-size: 20px;}
 h3 { font-size: 16px; margin:0; text-transform: uppercase; }
-
-/*
-Flags and icons
-*/
-.flagged {
-	padding-left:20px;
-	background:url('../img/warning.icon.png') no-repeat 0 50%;
-}
-.inactive {
-	padding-left:20px;
-	background:url('../img/inactive.icon.png') no-repeat 0 50%;
-}
-.private {
-	padding-left:20px;
-	background:url('../img/private.icon.png') no-repeat 0 50%;
-}
 
 /*
 Highlight and flash classes
@@ -121,6 +105,9 @@ div#content {
 	padding-bottom:30px;
 	padding-top:30px;
 }
+div.ui-dialog div#content {
+	padding: 10px;
+}
 span.breadcrumb {
 	font-size:10px;
 	margin:0 -12px;
@@ -181,6 +168,34 @@ div.receipt-title {
 div.receipt-body {
 	padding: 10px;
 }
+div.attachment {
+	padding: 10px 0;
+	margin-right:10px;
+}
+div.comment {
+	clear:both;
+	padding:10px 0;
+}
+div.comment .icon-delete {
+	display: none;
+}
+div.comment:hover .icon-delete {
+	display: block;
+}
+div.comment .comment-image {
+	margin-right:5px;
+	width:60px;
+	float:left;
+}
+div.comment .comment-body {
+	background:#f2f2f2;
+	width:605px;
+	float:left;
+	padding:5px;
+}
+div.comment .comment-title {
+	margin-bottom:5px;
+}
 
 /*
 Small Tabs
@@ -228,6 +243,11 @@ Tooltip
 .qtip .qtip-content {
 	background: #343434 !important;
 	color: #ffffff !important;
+	padding: 5px !important;
+}
+.qtip .qtip-content-error {
+	background: #E03A14 !important;
+	color:  #ffffff !important;
 	padding: 5px !important;
 }
 .qtip a {
@@ -292,4 +312,36 @@ dt {
 }
 dd {
 	margin-bottom: 5px;
+}
+
+/*
+Custom Icons
+*/
+.core-icon {
+	text-indent:-99999px;
+	height:16px;
+	width:16px;
+	overflow:hidden;
+}
+.icon-delete {
+	background-image: url(images/ui-icons_454545_256x240.png);
+	background-position: -80px -128px;	
+}
+.icon-delete:hover {
+	background-image: url(images/ui-icons_cd0a0a_256x240.png);
+}
+.icon-print {
+
+}
+.flagged {
+	padding-left:20px;
+	background:url('../img/warning.icon.png') no-repeat 0 50%;
+}
+.inactive {
+	padding-left:20px;
+	background:url('../img/inactive.icon.png') no-repeat 0 50%;
+}
+.private {
+	padding-left:20px;
+	background:url('../img/private.icon.png') no-repeat 0 50%;
 }
