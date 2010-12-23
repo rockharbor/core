@@ -109,7 +109,7 @@ class PagesController extends AppController {
 				)
 			));
 			$ids = array_keys($models);
-			$randModelId = $ids[rand(0,count($ids))];
+			$randModelId = $ids[rand(0,count($ids)-1)];
 			$result = $Model->read(null, $randModelId);
 		}
 		$this->set(compact('result', 'model'));
