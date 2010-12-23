@@ -60,11 +60,7 @@ class UsersController extends AppController {
  * @param string $username Used to auto-fill the username field
  * @todo Restrict login to users older than 12 (use Auth.userScope?)
  */
-	function login($username = null) {		
-		if (isset($this->passedArgs['message'])) {
-			$this->Session->setFlash($this->passedArgs['message']);
-		}
-			
+	function login($username = null) {
 		// check for remember me checkbox
 		if (!empty($this->data) && $this->data['User']['remember_me']) {
 			unset($this->data['User']['remember_me']);
@@ -106,6 +102,9 @@ class UsersController extends AppController {
 		$redirect = $this->Auth->logout();
 		$this->Cookie->delete('Auth');
 		$this->Session->destroy();
+		if (isset($this->passedArgs['message'])) {
+			$this->Session->setFlash($this->passedArgs['message']);
+		}
 		$this->redirect($redirect);
 	}
 
@@ -189,7 +188,6 @@ class UsersController extends AppController {
 					'subject' => $subject,
 					'template' => 'users_edit'
 				), 'email');
-				$this->redirect(array('action' => 'logout'));
 			} else {
 				if ($invalidPassword) {
 					$this->User->invalidate('current_password', 'What exactly are you trying to pull? This isn\'t your current password.');

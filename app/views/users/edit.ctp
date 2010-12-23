@@ -36,7 +36,7 @@ $defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {a
 echo $this->Js->submit('Submit', $defaultSubmitOptions);
 echo $this->Form->end();
 $this->Js->buffer('function onComplete() {
-	redirect("'.Router::url(array('action' => 'login', 'message' => 'Please log in with your new credentials.')).'");
+	redirect("'.Router::url(array('action' => 'logout', 'message' => 'Please log in with your new credentials.')).'");
 }');
 $this->Js->buffer('$("#UserReset").bind("change", function() {
 	switch ($(this).val()) {
@@ -62,3 +62,4 @@ $this->Js->buffer('$("#UserReset").bind("change", function() {
 });');
 $this->Js->buffer('$("#UserReset").change()');
 ?>
+</div>

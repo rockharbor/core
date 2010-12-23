@@ -34,3 +34,6 @@ body {
 	display:inline;
 	float:right;
 }
+#login-form .error-message {
+	display:none;
+}

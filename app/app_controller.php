@@ -50,9 +50,8 @@ class AppController extends Controller {
 				'action' => 'login'
 			),
 			'loginRedirect' => array(
-				'controller' => 'pages', 
-				'action' =>'display', 
-				'home'
+				'controller' => 'profiles',
+				'action' =>'view'
 			),
 			'userScope' => array('User.active' => true)
 		),
@@ -162,7 +161,11 @@ class AppController extends Controller {
 			$this->activeUser = array_merge($this->Auth->user(), $this->Session->read('User'));
 
 			// force redirect if they need to reset their password
-			if ($this->activeUser['User']['reset_password']) {
+			if ($this->activeUser['User']['reset_password'] && 
+				!($this->name == 'Users' && ($this->action == 'edit' || $this->action == 'logout')) &&
+				!isset($this->params['requested']) &&
+				!$this->RequestHandler->isAjax()
+			) {				
 				$this->Session->setFlash('Your last password was automatically generated. Please reset it.');
 				$this->redirect(array('controller' => 'users', 'action' => 'edit', 'User' => $this->Auth->user('id')));
 			}
