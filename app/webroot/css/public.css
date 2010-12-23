@@ -1,0 +1,36 @@
+body {
+	background: #ffffff;
+}
+#wrapper {
+	padding-top:100px;
+}
+#login-form {
+	padding: 10px 0;
+}
+#login-form div.input {
+	display:inline;
+	position: relative;
+	padding:0;
+}
+#login-form div.input input {
+	background:#f2f2f2;
+	border:1px solid #707070;
+	color:#707070;
+}
+#login-form div.text {
+	float:left;
+}
+#login-form div.password {
+	float:right;
+}
+#login-form div.input label {
+	position:absolute;
+	top: 5px;
+	left: 5px;
+	cursor: text;
+	color:#707070;
+}
+#login-info div.submit {
+	display:inline;
+	float:right;
+}

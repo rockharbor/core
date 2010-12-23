@@ -1,22 +1,37 @@
-<h2>Login</h2>
-
 <?php
-echo $this->Form->create('User');
+$this->Html->script('login', array('inline' => false));
+$this->Js->buffer('CORE.initLogin()');
 ?>
-<fieldset>
-<?php	
-	echo $this->Form->input('username');
-	echo $this->Form->input('password');	
-	echo $this->Form->input('remember_me', array(
-		'type' => 'checkbox'
-	));
-?>
-</fieldset>
-<?php
-echo $this->Html->link('Forgot password', array('action' => 'forgot_password'), array('rel' => 'modal-none'));
-echo $this->Form->end('Login');
-
-?>
-<style type="text/css">
-.error-message { display:none; }
-</style>
+<div class="grid_6 prefix_3 suffix_3">
+	<div id="logo">
+		<?php echo $this->Html->image('logo.png', array('alt' => Core::read('general.site_name_tagless'))); ?>
+	</div>
+	<?php
+	echo $this->Form->create('User');
+	?>
+	<div id="login-form" class="clearfix">
+		<?php
+		echo $this->Form->input('username', array(
+			'size' => 31
+		));
+		echo $this->Form->input('password', array(
+			'size' => 31
+		));
+		?>
+	</div>
+	<div id="login-info">
+		<?php
+		echo $this->Form->input('remember_me', array(
+			'type' => 'checkbox',
+			'label' => 'Forget me not'
+		));
+		echo ' | ';
+		echo $this->Html->link('Forgot password', array('action' => 'forgot_password'), array('rel' => 'modal-none'));
+		echo ' | ';
+		echo $this->Html->link('Help', array('controller' => 'pages', 'action' => 'display', 'help'), array('rel' => 'modal-none'));
+		echo ' | ';
+		echo $this->Html->link('Sign Up', array('action' => 'register'), array('rel' => 'modal-none'));
+		echo $this->Form->end('Whoosh!');
+		?>
+	</div>
+</div>

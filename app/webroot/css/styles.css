@@ -244,6 +244,7 @@ Tooltip
 	background: #343434 !important;
 	color: #ffffff !important;
 	padding: 5px !important;
+	line-height:13px;
 }
 .qtip .qtip-content-error {
 	background: #E03A14 !important;

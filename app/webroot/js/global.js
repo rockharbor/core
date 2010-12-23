@@ -150,6 +150,8 @@ CORE.init = function() {
 	CORE.initUI();
 	// init navigation
 	CORE.initNavigation();
+	// form elements
+	CORE.initFormUI();
 }
 
 /**
@@ -158,12 +160,8 @@ CORE.init = function() {
  */
 CORE.initUI = function() {
 	$('.equal-height:visible > div').equalHeights();
-	// form elements
-	CORE.initFormUI();
 	// hide flash message
 	$('div[id^=flash]').delay(5000).slideUp();
-	// display any validation errors
-	CORE.showValidationErrors();
 	// attach tabbed behavior
 	CORE.attachTabbedBehavior();
 	// attach modal behavior

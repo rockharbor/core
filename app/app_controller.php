@@ -177,9 +177,6 @@ class AppController extends Controller {
 				'limit' => 5
 			));
 			$this->activeUser['Alert'] = Set::extract('/Alert', $newAlerts);
-		
-			// global allowed actions
-			$this->Auth->allow('display');
 		} else {
 			$this->layout = 'public';
 		}

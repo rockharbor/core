@@ -27,55 +27,45 @@
 	<?php
 		echo $this->Html->meta('icon');
 
-		echo $this->Html->css('cake.generic');
-		echo $this->Html->css('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/themes/flick/jquery-ui.css');
-		
+		// CORE css
+		echo $this->Html->css('reset');
+		echo $this->Html->css('960');
+		echo $this->Html->css('font-face');
+		echo $this->Html->css('jquery-ui');
+		echo $this->Html->css('styles');
+		echo $this->Html->css('public');
+		if(preg_match('/MSIE/i', $_SERVER['HTTP_USER_AGENT'])) {
+			echo $this->Html->css('ie');
+		}
+
 		// google cdn scripts
 		echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js');
-		echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.js');
-		
+		echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.js');
+
 		// vendor scripts
-		echo $this->Html->script('jquery.plugins/jquery.cookie');
-		
+		echo $this->Html->script('jquery.plugins/jquery.qtip');
+		echo $this->Html->script('jquery.plugins/jquery.equalheights');
+
 		// CORE scripts
-		echo $this->Html->script('global');		
+		echo $this->Html->script('functions');
+		echo $this->Html->script('global');
 		echo $this->Html->script('ui');
 		echo $this->Html->script('form');
-		
-		$this->Js->buffer('CORE.attachModalBehavior();');
-		$this->Js->buffer('$(\'div[id^=flash]\').delay(5000).slideUp();');
-		
-		echo $scripts_for_layout;
-		
-		// extra js
+
+		// setup
+		$this->Js->buffer('CORE.initFormUI()');
 		echo $this->Js->writeBuffer();
+		echo $scripts_for_layout;
 
 	?>
 </head>
 <body>
-	<div id="container">
-		<div id="header">
-			<h1><?php 
-			
-			echo $this->Html->link(Core::read('general.site_name').' '.Core::read('version'), '/', array('escape' => false));
-			echo ' | ';			
-			echo $this->Html->link('Login', array('controller' => 'users', 'action' => 'login'));
-			echo ' | ';
-			echo $this->Html->link('Register', array('controller' => 'users', 'action' => 'register'));
-			
-			
-			?></h1>
-		</div>
-		<div id="content">
-			
+	<div class="container_12" id="wrapper">
+		<div id="content-container" class="container_12 clearfix">
 			<?php echo $this->Session->flash('auth'); ?>
 			<?php echo $this->Session->flash(); ?>
-			
 			<?php echo $content_for_layout; ?>
-
 		</div>
 	</div>
-	<div id="modal"></div>	
-	<?php //echo $this->element('sql_dump'); ?>
 </body>
 </html>

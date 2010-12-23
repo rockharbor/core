@@ -48,7 +48,8 @@
 			'routeClass' => 'SluggableRoute',
 			'models' => array('User', 'Ministry', 'Involvement')
 		)
-	); 
+	);
+	Router::connect('/pages/phrase/*', array('controller' => 'pages', 'action' => 'phrase'));
  
 /**
  * ...and connect the rest of 'Pages' controller's urls.
