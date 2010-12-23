@@ -2,7 +2,9 @@
 /* AppSettings Test cases generated on: 2010-07-09 14:07:19 : 1278709879 */
 App::import('Lib', 'CoreTestCase');
 App::import('Controller', 'AppSettings');
+App::import('Component', 'RequestHandler');
 
+Mock::generatePartial('RequestHandlerComponent', 'MockRequestHandlerComponent', array('_header'));
 Mock::generatePartial('AppSettingsController', 'TestAppSettingsController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
 
 class AppSettingsControllerTestCase extends CoreTestCase {
@@ -13,6 +15,7 @@ class AppSettingsControllerTestCase extends CoreTestCase {
 		$this->AppSettings->__construct();
 		$this->AppSettings->constructClasses();
 		$this->AppSettings->setReturnValue('isAuthorized', true);
+		$this->AppSettings->RequestHandler = new MockRequestHandlerComponent();
 		$this->testController = $this->AppSettings;
 	}
 
@@ -20,6 +23,28 @@ class AppSettingsControllerTestCase extends CoreTestCase {
 		$this->AppSettings->AppSetting->clearCache();
 		unset($this->AppSettings);
 		ClassRegistry::flush();
+	}
+
+	function testSearch() {
+		$vars = $this->testAction('/app_settings/search/User.json', array(
+			'data' => array(
+				'AppSetting' => array(
+					'value' => 'rick'
+				)
+			),
+			'return' => 'vars'
+		));
+		$expected = array(
+			2 => 'rickyrockharbor',
+			3 => 'rickyrockharborjr',
+		);
+		$this->assertEqual($vars['results'], $expected);
+		$this->assertEqual($vars['model'], 'User');
+	}
+
+	function testIndex() {
+		$vars = $this->testAction('/app_settings/index');
+		$this->assertIsA($vars, 'array');
 	}
 
 	function testEdit() {
@@ -30,13 +55,6 @@ class AppSettingsControllerTestCase extends CoreTestCase {
 		));
 		$this->AppSettings->AppSetting->id = 1;
 		$this->assertEqual($this->AppSettings->AppSetting->field('value'), 'Other Church');
-
-		$vars = $this->testAction('/app_settings/edit/9');
-		$expected = array(
-			1 => 'ebulletin',
-			2 => 'Family Ministry Update'
-		);
-		$this->assertEqual($vars['valueOptions'], $expected);
 	}
 
 	function testSanitizeHtml() {

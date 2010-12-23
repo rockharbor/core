@@ -75,12 +75,23 @@ class AppSettingsController extends AppController {
 		$this->paginate = array(
 			'order' => 'name ASC'
 		);
-		$appSettings = $this->paginate();
+		$appSettings = $this->AppSetting->find('all');
 		
-		foreach ($appSettings as $appSetting) {
+		foreach ($appSettings as &$appSetting) {
 			if (!in_array($appSetting['AppSetting']['type'], $this->_reservedTypes)) {
-				$models = ClassRegistry::init($appSetting['AppSetting']['type'])->find('list');
-				$this->set($appSetting['AppSetting']['type'].'Options', $models);
+				$Model = ClassRegistry::init($appSetting['AppSetting']['type']);
+				$results = $Model->find('first', array(
+					'fields' => array(
+						$Model->displayField
+					),
+					'conditions' => array(
+						$Model->alias.'.id' => $appSetting['AppSetting']['value']
+					),
+					'contain' => false
+				));
+				if ($results) {
+					$appSetting['AppSetting']['readable_value'] = $results[$Model->alias][$Model->displayField];
+				}
 			}
 		}
 		
@@ -129,9 +140,28 @@ class AppSettingsController extends AppController {
 			$this->data = $this->AppSetting->read(null, $id);
 		}
 		if (!in_array(strtolower($this->data['AppSetting']['type']), $this->_reservedTypes)) {
-			$models = ClassRegistry::init($this->data['AppSetting']['type'])->find('list');
-			$this->set('valueOptions', $models);
+			$this->set('model', $this->data['AppSetting']['type']);
 		}
+	}
+
+/**
+ * Searches a model for auto complete
+ *
+ * @param string $model The model
+ */
+	function search($model = null) {
+		if (!$model || empty($this->data)) {
+			return;
+		}
+		$Model = ClassRegistry::init($model);
+		$results = $Model->find('list', array(
+			'conditions' => array(
+				$Model->alias.'.'.$Model->displayField.' LIKE' => '%'.$this->data['AppSetting']['value'].'%'
+			),
+			'contain' => false,
+			'limit' => 10
+		));
+		$this->set(compact('results', 'model'));
 	}
 
 }

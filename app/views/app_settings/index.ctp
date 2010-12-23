@@ -1,11 +1,4 @@
 <h1>App Settings</h1>
-
-<?php
-$this->Paginator->options(array(
-    'update' => '#content', 
-    'evalScripts' => true
-));
-?>
 <div class="app-settings form ui-tabs core-tabs">
 	<ul>
 		<?php
@@ -13,7 +6,7 @@ $this->Paginator->options(array(
 		ksort($settings);
 		foreach ($settings as $category => $setting):
 		?>
-		<li><a href="#<?php echo Inflector::camelize($category); ?>"><?php echo $category; ?></a></li>
+		<li><a href="#<?php echo Inflector::camelize($category); ?>"><?php echo Inflector::humanize($category); ?></a></li>
 		<?php endforeach; ?>
 	</ul>
 
@@ -34,30 +27,19 @@ $this->Paginator->options(array(
 			if (!in_array($appSettingName, array_keys($settingName))) {
 				continue;
 			}
-
 		?>
-		<dl<?php echo $class;?>>
-			<dt><?php echo Inflector::humanize($appSettingName); ?> |
-			<?php echo $this->Js->link('Edit', array('action' => 'edit', $appSetting['AppSetting']['id']),
-				array(
-					'rel'=>'modal-content'
-				)
-			);?>&nbsp;<em>(last modified <?php echo $this->Formatting->date($appSetting['AppSetting']['modified']); ?>)</em></dt>
-			<dd><?php echo $appSetting['AppSetting']['description']; ?> 
-				</dd>
+		<dl<?php echo $class;?> style="margin-bottom:20px">
+			<dt><?php echo Inflector::humanize($appSettingName); ?>:</dt>
+			<dd><?php echo $appSetting['AppSetting']['description']; ?></dd>
+			<dt>Last Modified:</dt>
+			<dd><?php echo $this->Formatting->date($appSetting['AppSetting']['modified']); ?> | <?php echo $this->Html->link('Edit', array('action' => 'edit', $appSetting['AppSetting']['id']),array('rel' => 'modal-content'));?></dd>
 			<dd><?php
-			if (empty($appSetting['AppSetting']['model'])) {
-				echo $appSetting['AppSetting']['value'];
+			if (isset($appSetting['AppSetting']['readable_value'])) {
+				echo $appSetting['AppSetting']['readable_value'];
 			} else {
-				if (!empty($appSetting['AppSetting']['value'])) {
-					echo ${$appSetting['AppSetting']['model'].'Options'}[$appSetting['AppSetting']['value']];
-				}
+				echo $appSetting['AppSetting']['value'];
 			}
 			?>&nbsp;</dd>
-			<dd>&nbsp;</dd>
-			<dd class="actions">
-				
-			</dd>
 		</dl>
 		<?php endforeach; ?>
 	</div>
