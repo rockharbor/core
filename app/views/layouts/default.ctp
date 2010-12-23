@@ -57,7 +57,7 @@
 		<div class="container_12 clearfix" id="header">
 			<div class="grid_10 main-nav-menu" id="primary">
 				<ul>
-					<li id="nav-home"><?php echo $this->Html->link('☻', '/'); ?></li>
+					<li id="nav-home"><?php echo $this->Html->link('☻', array('controller' => 'pages', 'action' => 'display', 'home')); ?></li>
 					<li id="nav-profile"><?php echo $this->Html->link('Profile', array('controller' => 'profiles', 'action' => 'view', 'User' => $activeUser['User']['id'])); ?>
 						<ul>
 							<li>
