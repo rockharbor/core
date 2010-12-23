@@ -150,8 +150,6 @@ CORE.init = function() {
 	CORE.initUI();
 	// init navigation
 	CORE.initNavigation();
-	// form elements
-	CORE.initFormUI();
 }
 
 /**
@@ -159,6 +157,8 @@ CORE.init = function() {
  * opens
  */
 CORE.initUI = function() {
+	// form elements
+	CORE.initFormUI();
 	$('.equal-height:visible > div').equalHeights();
 	// hide flash message
 	$('div[id^=flash]').delay(5000).slideUp();

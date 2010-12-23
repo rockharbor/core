@@ -53,7 +53,7 @@
 		echo $this->Html->script('form');
 
 		// setup
-		$this->Js->buffer('CORE.initFormUI()');
+		$this->Js->buffer('CORE.initUI()');
 		echo $this->Js->writeBuffer();
 		echo $scripts_for_layout;
 
