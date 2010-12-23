@@ -34,8 +34,7 @@
 							$upload = true;
 						}
 						echo '<div id='.$user['id'].'Image'.'>';
-							echo $this->Media->embed($path, array('restrict' => 'image'));
-						echo '</div>';
+						echo $this->Media->embed($path, array('restrict' => 'image'));						
 						if ($upload) {
 							echo $this->element('upload', array(
 								'type' => 'image',
@@ -47,6 +46,7 @@
 						} else {
 							echo $this->Permission->link('Remove Photo', array('controller' => 'user_images', 'action' => 'delete', $user['Image'][0]['id'], 'User' => $user['id']), array('class' => 'button', 'update' => '#'.$user['id'].'Image'));
 						}
+						echo '</div>';
 					?>
 				</div>
 				<div style="float:left;width:60%">

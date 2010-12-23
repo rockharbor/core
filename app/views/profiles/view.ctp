@@ -25,8 +25,7 @@
 						$upload = true;
 					}
 					echo '<div id='.$profile['User']['id'].'Image'.'>';
-						echo $this->Media->embed($path, array('restrict' => 'image'));
-					echo '</div>';
+					echo $this->Media->embed($path, array('restrict' => 'image'));					
 					if ($upload) {
 						echo $this->element('upload', array(
 							'type' => 'image',
@@ -38,6 +37,7 @@
 					} else {
 						echo $this->Js->link('Remove Photo', array('controller' => 'user_images', 'action' => 'delete', $profile['Image'][0]['id'], 'User' => $profile['User']['id']), array('class' => 'button', 'update' => '#'.$profile['User']['id'].'Image'));
 					}
+					echo '</div>';
 				?>
 				</div>
 
