@@ -38,7 +38,8 @@ CORE.modal = function(id, options) {
 		$('#content-reserved').attr('id', 'content');
 		// re-register original content updateable
 		CORE.unregister('content');
-		CORE.updateables['content'] = $('#modal').data('oldUpdateable');
+		CORE.updateables['content'] = CORE._tmpcontent;
+		delete CORE._tmpcontent;
 		if ($('#modal').dialog('option', 'update') != undefined) {
 			CORE.update($('#modal').dialog('option', 'update'));
 		}
@@ -50,7 +51,7 @@ CORE.modal = function(id, options) {
 		$('#modal').attr('id', 'content');
 		// register this new ajax url as the content updateable, so scripts within
 		// the window that update the content updateable update with this url instead
-		$('#modal').data('oldUpdateable', CORE.unregister('content'));
+		CORE._tmpcontent = CORE.unregister('content');
 		CORE.register('content', 'content', $('#'+id).attr('href'));
 	}
 	
@@ -583,6 +584,7 @@ CORE.autoComplete = function(id, datasource, onSelect) {
 		select: function (event, ui) {
 			if (onSelect != undefined) {
 				onSelect(ui.item);
+				return false;
 			}
 		}
 	}).data('autocomplete')._renderItem = function(ul, item) {
