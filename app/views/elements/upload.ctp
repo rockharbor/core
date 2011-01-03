@@ -20,6 +20,7 @@ echo $this->Form->create($model, array(
 		'controller' => Inflector::tableize($model.$type),
 		'model' => $model,
 		$model => ${$model},
+		null, // force a create instead of update
 		'ext' => 'json'
 	),
 	'id' => 'Upload'.$model.'Form'.$uid
