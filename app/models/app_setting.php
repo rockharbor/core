@@ -36,5 +36,26 @@ class AppSetting extends AppModel {
 		),
 		'Logable'
 	);
+
+/**
+ * Recursive setting
+ *
+ * @var integer
+ */
+	var $recursive = 0;
+
+/**
+ * HasOne association link
+ *
+ * @var array
+ */
+	var $hasOne = array(
+		'Image' => array(
+			'className' => 'Image',
+			'foreignKey' => 'foreign_key',
+			'dependent' => true,
+			'conditions' => array('Image.model' => 'AppSetting', 'Image.group' => 'Image')
+		)
+	);
 }
 ?>

@@ -52,7 +52,7 @@ class AppSettingsController extends AppController {
  * @var array
  */
 	var $_reservedTypes = array(
-		'list', 'string', 'html', 'integer'
+		'list', 'string', 'html', 'integer', 'image'
 	);
 
 /**
@@ -69,9 +69,7 @@ class AppSettingsController extends AppController {
 /**
  * Shows a list of AppSettings
  */
-	function index() {	
-		$this->AppSetting->recursive = 0;
-		
+	function index() {
 		$this->paginate = array(
 			'order' => 'name ASC'
 		);
@@ -86,8 +84,7 @@ class AppSettingsController extends AppController {
 					),
 					'conditions' => array(
 						$Model->alias.'.id' => $appSetting['AppSetting']['value']
-					),
-					'contain' => false
+					)
 				));
 				if ($results) {
 					$appSetting['AppSetting']['readable_value'] = $results[$Model->alias][$Model->displayField];
@@ -137,7 +134,12 @@ class AppSettingsController extends AppController {
 		}
 
 		if (empty($this->data)) {
-			$this->data = $this->AppSetting->read(null, $id);
+			$this->data = $this->AppSetting->find('first', array(
+				'conditions' => array(
+					'AppSetting.id' => $id
+				),
+				'cache' => false
+			));
 		}
 		if (!in_array(strtolower($this->data['AppSetting']['type']), $this->_reservedTypes)) {
 			$this->set('model', $this->data['AppSetting']['type']);
