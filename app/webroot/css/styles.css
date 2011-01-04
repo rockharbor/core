@@ -176,10 +176,11 @@ div.comment {
 	clear:both;
 	padding:10px 0;
 }
-div.comment .icon-delete {
+div.comment .core-icon {
 	display: none;
+	float:left;
 }
-div.comment:hover .icon-delete {
+div.comment:hover .core-icon {
 	display: block;
 }
 div.comment .comment-image {
@@ -329,6 +330,13 @@ Custom Icons
 	background-position: -80px -128px;	
 }
 .icon-delete:hover {
+	background-image: url(images/ui-icons_cd0a0a_256x240.png);
+}
+.icon-edit {
+	background-image: url(images/ui-icons_454545_256x240.png);
+	background-position: -64px -112px;
+}
+.icon-edit:hover {
 	background-image: url(images/ui-icons_cd0a0a_256x240.png);
 }
 .icon-print {

@@ -48,6 +48,7 @@ class CommentsController extends AppController {
 				}
 			}
 		}
+		$this->_editSelf('add', 'edit');
 	}
 	
 /**
@@ -115,15 +116,12 @@ class CommentsController extends AppController {
 		if (!empty($this->data)) {
 			if ($this->Comment->save($this->data)) {
 				$this->Session->setFlash('The comment has been saved', 'flash'.DS.'success');
-
+				$this->redirect(array('action' => 'index') + $this->passedArgs);
 			} else {
 				$this->Session->setFlash('The comment could not be saved. Please, try again.', 'flash'.DS.'failure');
 			}
 		}
 		if (empty($this->data)) {
-			$this->Comment->contain(array(
-				'Group'
-			));
 			$this->data = $this->Comment->read(null, $id);
 		}
 

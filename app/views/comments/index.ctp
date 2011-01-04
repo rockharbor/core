@@ -14,7 +14,7 @@ $this->Paginator->options(array(
 	<div class="comment clearfix">
 		<div class="comment-image">
 		<?php
-		if (isset($activeUser['ImageIcon']) {
+		if (isset($activeUser['ImageIcon'])) {
 			$path = 's'.DS.$activeUser['ImageIcon']['dirname'].DS.$activeUser['ImageIcon']['basename'];
 			echo $this->Media->embed($path, array('restrict' => 'image'));
 		}
@@ -31,7 +31,8 @@ $this->Paginator->options(array(
 				</span>
 				<span style="float:right">
 					<?php
-					echo $this->Html->link('Delete', array('action' => 'delete', 'Comment' => $comment['Comment']['id'], 'User' => $comment['Creator']['id']), array('id' => 'delete_comment_'.$i, 'class' => 'core-icon icon-delete'));
+					echo $this->Js->link('Edit', array('action' => 'edit', 'Comment' => $comment['Comment']['id'], 'User' => $comment['Creator']['id']), array('id' => 'edit_comment_'.$i, 'class' => 'core-icon icon-edit', 'title' => 'Edit', 'update' => '#content'));
+					echo $this->Html->link('Delete', array('action' => 'delete', 'Comment' => $comment['Comment']['id'], 'User' => $comment['Creator']['id']), array('id' => 'delete_comment_'.$i, 'class' => 'core-icon icon-delete', 'title' => 'Delete'));
 					$this->Js->buffer('CORE.confirmation("delete_comment_'.$i.'", "You for sure?", {updateHtml:"content"});')
 					?>
 				</span>
