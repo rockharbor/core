@@ -1,6 +1,6 @@
 <?php
-if (!empty($user['Image'])) {
-	$path = 's'.DS.$user['Image'][0]['dirname'].DS.$user['Image'][0]['basename'];
+if (isset($user['ImageIcon'])) {
+	$path = 's'.DS.$user['ImageIcon']['dirname'].DS.$user['ImageIcon']['basename'];
 	echo $this->Html->tag('div', $this->Media->embed($path, array('restrict' => 'image')), array('class' => 'autocomplete-image'));
 }
 ?>

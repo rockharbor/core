@@ -123,8 +123,8 @@ $this->Paginator->options('#roster');
 		echo $this->Html->link($name, array('controller' => 'users', 'action' => 'view', 'User' => $roster['User']['id']), array('escape' => false));
 		?>&nbsp;
 		<div class="core-tooltip"><?php
-			if (!empty($roster['Image'])) {
-				$path = 's'.DS.$roster['Image']['dirname'].DS.$roster['Image']['basename'];
+			if (isset($roster['ImageIcon'])) {
+				$path = 's'.DS.$roster['ImageIcon']['dirname'].DS.$roster['ImageIcon']['basename'];
 				echo $this->Media->embed($path, array('restrict' => 'image'));
 			}
 			echo $this->Html->link('Edit Info', array('controller' => 'rosters', 'action' => 'edit', $roster['Roster']['id']), array('rel' => 'modal-roster'));

@@ -62,9 +62,9 @@
 						<ul>
 							<li>
 								<?php
-										if (count($activeUser['Image']) > 0) {
+										if (isset($activeUser['ImageIcon'])) {
 											echo '<div class="profile-image">';
-											$path = 's'.DS.$activeUser['Image'][0]['dirname'].DS.$activeUser['Image'][0]['basename'];
+											$path = 's'.DS.$activeUser['ImageIcon']['dirname'].DS.$activeUser['ImageIcon']['basename'];
 											echo $this->Media->embed($path, array('restrict' => 'image'));
 											echo '</div>';
 										}

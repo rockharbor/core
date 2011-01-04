@@ -1,6 +1,6 @@
 <?php
 $this->Paginator->options(array(
-    'update' => '#comments',
+    'update' => '#content',
     'evalScripts' => true
 ));
 ?>
@@ -14,8 +14,8 @@ $this->Paginator->options(array(
 	<div class="comment clearfix">
 		<div class="comment-image">
 		<?php
-		if (count($activeUser['Image']) > 0) {
-			$path = 's'.DS.$activeUser['Image'][0]['dirname'].DS.$activeUser['Image'][0]['basename'];
+		if (isset($activeUser['ImageIcon']) {
+			$path = 's'.DS.$activeUser['ImageIcon']['dirname'].DS.$activeUser['ImageIcon']['basename'];
 			echo $this->Media->embed($path, array('restrict' => 'image'));
 		}
 		?>

@@ -4,8 +4,8 @@
 // prepare addresses
 $addresses = array();
 foreach ($results as $result) {
-	if (!empty($result['Image'])) {
-		$imageUrl = $this->Media->url($this->Media->file('s/', $result['Image'][0]));
+	if (isset($result['ImageIcon'])) {
+		$imageUrl = $this->Media->url($this->Media->file('s/', $result['ImageIcon']));
 	} else {
 		$imageUrl = null;
 	}
