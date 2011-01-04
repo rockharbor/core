@@ -112,7 +112,22 @@ class Image extends AppModel {
 			)
 		)
 	);
-		
+
+/**
+ * Runs before saving and generating the images. Sets the filters from the defaults
+ * defined in `/config/bootstrap.php` base on the model.
+ *
+ * @return boolean True to continue saving
+ */
+	function beforeSave() {
+		$model = $this->data[$this->alias]['model'];
+		if (Configure::read('Core.mediafilters.'.strtolower($model))) {
+			Configure::write('Media.filter.image', Configure::read('Core.mediafilters.'.strtolower($model)));
+		} else {
+			Configure::write('Media.filter.image', Configure::read('Core.mediafilters.default'));
+		}
+		return true;
+	}
 
 /**
  * Returns the relative path to the destination file

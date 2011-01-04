@@ -59,11 +59,26 @@ require_once APP.'libs'.DS.'core.php';
  */
 require_once APP.'plugins'.DS.'media'.DS.'config'.DS.'core.php';
 
-Configure::write('Media.filter.image', array(
+/**
+ * Custom filters based on model
+ */
+Configure::write('Core.mediafilters.user', array(
 	's'   => array('convert' => 'image/png', 'fitCrop' => array(60, 60)),
 	'm'   => array('convert' => 'image/png', 'fitCrop' => array(90, 90)),
-	)
-);
+));
+Configure::write('Core.mediafilters.involvement', array(
+	's'   => array('convert' => 'image/png', 'fitCrop' => array(60, 60)),
+	'm'   => array('convert' => 'image/png', 'fitCrop' => array(260, 90)),
+));
+Configure::write('Core.mediafilters.ministry', array(
+	's'   => array('convert' => 'image/png', 'fitCrop' => array(60, 60)),
+	'm'   => array('convert' => 'image/png', 'fitCrop' => array(260, 90)),
+));
+// fallback defaults
+Configure::write('Core.mediafilters.default', array(
+	's'   => array('convert' => 'image/png', 'fitCrop' => array(60, 60)),
+	'm'   => array('convert' => 'image/png', 'fitCrop' => array(90, 90)),
+));
 
 /**
  * Referee plugin constant to define path
