@@ -92,6 +92,7 @@ class Comment extends AppModel {
 			return false;
 		}
 		$user = $this->User->read(array('group_id'), $userId);
+		$this->User->data = null;
 		if (!$user) {
 			return false;
 		}
