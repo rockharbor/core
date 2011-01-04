@@ -127,6 +127,20 @@ class AppSettingRecords extends Records {
 			'value' => 8,
 			'type' => 'Group'
 		),
+		array(
+			'id' => 17,
+			'name' => 'users.default_image',
+			'description' => 'The default image for a user.',
+			'value' => null,
+			'type' => 'image'
+		),
+		array(
+			'id' => 18,
+			'name' => 'users.default_image',
+			'description' => 'The default icon for a user, if different than the default image.',
+			'value' => null,
+			'type' => 'image'
+		),
 	);
 
 }

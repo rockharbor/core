@@ -187,6 +187,15 @@ class AppSettingFixture extends CakeTestFixture {
 			'value' => null,
 			'type' => 'image'
 		),
+		array(
+			'id' => 25,
+			'name' => 'users.default_icon',
+			'description' => 'The default user icon.',
+			'created' => '2010-09-13 00:00:00',
+			'modified' => '2010-09-13 00:00:00',
+			'value' => null,
+			'type' => 'image'
+		),
 	);
 }
 ?>

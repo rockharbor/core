@@ -26,6 +26,55 @@ class AppModelTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 
+	function testDefaultImage() {
+		$this->loadFixtures('Attachment');
+		$this->loadSettings();
+
+		$find = $this->User->read(null, 1);
+		$this->assertFalse(isset($find['Image']));
+		$this->assertFalse(isset($find['ImageIcon']));
+
+		$this->User->contain(array('Image'));
+		$find = $this->User->read(null, 1);
+		$this->assertEqual($find['Image'][0]['id'], 4);
+		$results = $this->User->defaultImage($find);
+		$this->assertEqual($results['Image'][0]['alternative'], 'Profile photo');
+		$this->assertEqual($results['ImageIcon']['alternative'], 'Profile photo');
+
+		$this->User->contain(array('Image'));
+		$find = $this->User->read(null, 2);
+		$this->assertEqual($find['Image'], array());
+		$results = $this->User->defaultImage($find);
+		$this->assertEqual($results['Image'][0]['alternative'], 'Default profile photo');
+		$this->assertEqual($results['ImageIcon']['alternative'], 'Default profile photo');
+
+		// add an icon image and make sure it's used instead of the default image
+		// if the user doesn't have an image
+		$icon = $this->User->Image->read(null, 5);
+		unset($icon['Image']['id']);
+		$icon['Image']['alternative'] = 'Default icon photo';
+		$icon['Image']['foreign_key'] = 25;
+		$this->User->Image->create();
+		$this->assertTrue($this->User->Image->save($icon, array('callbacks' => false)));
+		$this->loadSettings();
+
+		$this->User->contain(array('Image'));
+		$find = $this->User->read(null, 1);
+		$this->assertEqual($find['Image'][0]['id'], 4);
+		$results = $this->User->defaultImage($find);
+		$this->assertEqual($results['Image'][0]['id'], 4);
+		$this->assertEqual($results['ImageIcon']['id'], 4);
+
+		$this->User->contain(array('Image'));
+		$find = $this->User->read(null, 2);
+		$this->assertEqual($find['Image'], array());
+		$results = $this->User->defaultImage($find);
+		$this->assertEqual($results['Image'][0]['alternative'], 'Default profile photo');
+		$this->assertEqual($results['ImageIcon']['alternative'], 'Default icon photo');
+
+		$this->unloadSettings();
+	}
+
 	function testMakeFulltext() {
 		$data = array(
 			'simple' => 'soft* cuddly*'

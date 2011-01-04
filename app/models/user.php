@@ -243,6 +243,23 @@ class User extends AppModel {
 	);
 
 /**
+ * Checks to see if an image was included in the find. If so, and one is not
+ * found, it will automatically pull the default image
+ *
+ * @param array $results The results
+ * @param boolean $primary Association query?
+ * @return array The modified results
+ */
+	function afterFind($results, $primary) {
+		if ($primary) {
+			foreach ($results as &$result) {
+				$result = $this->defaultImage($result);
+			}
+		}
+		return $results;
+	}
+
+/**
  * Gets a user id using an arbitrary amount of data by searching a set of
  * distinguishable fields (username, email fields, name, etc.). If more than
  * one match is found it fails.

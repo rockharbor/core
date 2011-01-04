@@ -86,7 +86,7 @@ class ProfileFixture extends CakeTestFixture {
 			'background_check_date' => '2010-01-06',
 			'grade' => '',
 			'graduation_year' => 2002,
-			'created_by' => NULL,
+			'created_by' => 1,
 			'created_by_type' => '',
 			'created' => '2010-01-22 07:17:20',
 			'modified' => '2010-06-23 08:17:35',
