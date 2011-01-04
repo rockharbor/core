@@ -67,6 +67,18 @@ class AttachmentFixture extends CakeTestFixture {
 			'approved' => 0,
 			'created' => '2010-03-26 13:35:16',
 			'modified' => '2010-03-26 13:35:16'
+		),
+		array(
+			'id' => 5,
+			'model' => 'AppSetting',
+			'foreign_key' => 24,
+			'dirname' => 'img',
+			'basename' => 'image.jpg',
+			'alternative' => 'Default profile photo',
+			'group' => 'Image',
+			'approved' => 0,
+			'created' => '2010-03-26 13:35:16',
+			'modified' => '2010-03-26 13:35:16'
 		)
 	);
 }

@@ -144,7 +144,7 @@ class Core {
 		$appSettings = $AppSetting->find('all');
 		// add tagless versions of the html tagged ones
 		$tagless = array();
-		foreach ($appSettings as $appSetting) {
+		foreach ($appSettings as &$appSetting) {
 			if ($appSetting['AppSetting']['type'] == 'html') {
 				$tagless[] = array(
 					'AppSetting' => array(
@@ -152,6 +152,8 @@ class Core {
 						'value' => strip_tags($appSetting['AppSetting']['value'])
 					)
 				);
+			} elseif ($appSetting['AppSetting']['type'] == 'image') {
+				$appSetting['AppSetting']['value'] = $appSetting['Image'];
 			}
 		}
 		$appSettings = array_merge($appSettings, $tagless);

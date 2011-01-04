@@ -6,13 +6,20 @@ App::import('Model', 'AppSetting');
 class CoreConfigureTestCase extends CoreTestCase {
 
 	function startTest() {
-		$this->loadFixtures('AppSetting');
+		$this->loadFixtures('AppSetting', 'Attachment');
 		$this->AppSetting =& ClassRegistry::init('AppSetting');
-		Core::loadSettings(true);
+		$this->loadSettings();
 	}
 
 	function endTest() {
+		$this->unloadSettings();
 		unset($this->AppSetting);
+	}
+
+	function testReadImageSetting() {
+		$result = Core::read('users.default_image');
+		$expected = 'Default profile photo';
+		$this->assertTrue($result['alternative'], $expected);
 	}
 
 	function testRead() {
