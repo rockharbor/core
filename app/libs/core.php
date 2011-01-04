@@ -152,7 +152,7 @@ class Core {
 						'value' => strip_tags($appSetting['AppSetting']['value'])
 					)
 				);
-			} elseif ($appSetting['AppSetting']['type'] == 'image') {
+			} elseif ($appSetting['AppSetting']['type'] == 'image' && isset($appSetting['Image']['id'])) {
 				$appSetting['AppSetting']['value'] = $appSetting['Image'];
 			}
 		}

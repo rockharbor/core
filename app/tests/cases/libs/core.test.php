@@ -20,6 +20,8 @@ class CoreConfigureTestCase extends CoreTestCase {
 		$result = Core::read('users.default_image');
 		$expected = 'Default profile photo';
 		$this->assertTrue($result['alternative'], $expected);
+
+		$this->assertNull(Core::read('users.default_icon'));
 	}
 
 	function testRead() {
