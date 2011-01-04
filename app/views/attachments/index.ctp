@@ -6,7 +6,7 @@
 	foreach ($attachments as $attachment) {
 		$item = $attachment[$attachmentModel];
 
-		$file = $this->Media->file($item['file']);
+		$file = $this->Media->file(MEDIA_TRANSFER.$item['dirname'].DS.$item['basename']);
 
 		if ($file) {
 			$Media = Media::factory($file);
