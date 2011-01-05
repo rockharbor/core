@@ -51,7 +51,7 @@ class DatesController extends AppController {
 	}
 
 /**
- * Displays the calendar
+ * Displays a calendar
  *
  * ### Params:
  *
@@ -63,9 +63,9 @@ class DatesController extends AppController {
  * - `model` A model to filter by
  * - `model.id` The model's id to filter by
  *
- * @param string $passed `passed` to show past events
+ * @param string $size A mini or full-size calendar
  */ 
-	function calendar($passed = '') {
+	function calendar($size = 'mini') {
 		$filters = array();
 		
 		if (isset($this->passedArgs['model'])) {
@@ -77,11 +77,8 @@ class DatesController extends AppController {
 				$filters[$filterModel] = $filterModelId;
 			}
 		}
-		if (!empty($passed)) {
-			$filters[] = 'passed';
-		}
 		
-		$this->set(compact('filters'));
+		$this->set(compact('filters', 'size'));
 		
 		// if it's not the calendar calling, just leave. there's nothing 
 		// special to pass to the calendar view		
@@ -111,11 +108,6 @@ class DatesController extends AppController {
 					);
 				break;
 			}			
-		}
-		
-		if ($passed != 'passed') {
-			$db = $this->Date->getDataSource();
-			$filter[] = $db->expression('('.$this->Date->Involvement->getVirtualField('passed').') = 0');
 		}
 		
 		$range = array(
@@ -153,8 +145,7 @@ class DatesController extends AppController {
 		
 			$events[] = array_merge($involvement, array('dates' => $involvement_dates));
 		}
-		
-		$this->set('events', $events);
+		$this->set(compact('events'));
 	}
 
 /**

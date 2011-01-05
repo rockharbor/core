@@ -101,10 +101,13 @@
 						echo $this->element('menu'.DS.'campus', array('campuses' => $campusesMenu), true);
 						?>
 					</li>
-					<li id="nav-calendar"><?php echo $this->Html->link('Calendar', array('controller' => 'dates', 'action' => 'calendar')); ?>
+					<li id="nav-calendar"><?php echo $this->Html->link('Calendar', array('controller' => 'dates', 'action' => 'calendar', 'full')); ?>
 						<ul>
 							<li>
 								<?php echo $this->element('calendar'); ?>
+							</li>
+							<li id="calendar-viewall">
+								<?php echo $this->Html->link('View Full Size Calendar', array('controller' => 'dates', 'action' => 'calendar', 'full')); ?>
 							</li>
 						</ul>
 					</li>

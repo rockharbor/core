@@ -1,6 +1,5 @@
 <h1>Calendar</h1>
 <div class="content-box">
-
 Jump to:&nbsp;
 <?php
 echo $this->Form->create(null, array(
@@ -12,7 +11,11 @@ echo $this->Form->select('Jump.year', $this->SelectOptions->generateOptions('yea
 echo $this->Form->end('Jump');
 
 $calendarid = uniqid();
-echo $this->element('calendar', array('id' => $calendarid, 'filters' => $filters));
+echo $this->element('calendar', array(
+	'id' => $calendarid,
+	'filters' => $filters,
+	'size' => $size
+));
 
 $this->Js->buffer('function gotoDate() {
 	if ($("#JumpYear").val() == "") {

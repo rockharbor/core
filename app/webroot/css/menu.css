@@ -125,10 +125,10 @@ li#nav-notifications li.notification {
 	padding: 0 5px;
 	position:relative;
 }
-li#nav-notifications #notification-viewall li {
+li#nav-notifications #notification-viewall li, li#nav-calendar #calendar-viewall li {
 	padding:0;
 }
-li#nav-notifications #notification-viewall a {
+li#nav-notifications #notification-viewall a, li#nav-calendar #calendar-viewall a {
 	text-align: center;
 	background:#eaeaea;
 	border-top:1px solid #cccccc;

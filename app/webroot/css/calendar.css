@@ -54,7 +54,7 @@
 	border:none !important;
 	text-transform: none;
 }
-.fc-day-content div {
+.mini-calendar .fc-day-content div {
 	display:none;
 }
 .fc-content tr:hover, .fc-header tr:hover {
@@ -66,7 +66,7 @@
 .fc-grid .fc-other-month {
 	background:none !important;
 }
-.fc-event {
+.mini-calendar .fc-event {
 	display:none;
 }
 .fc-grid .event {
@@ -83,4 +83,10 @@
 }
 .fc-grid .fc-day-number {
 	color:#000000;
+}
+.full-calendar .fc-event, .fc-agenda .fc-event-time, .full-calendar .fc-event a {
+	background-color: #B5FFDC;
+	border-color: #16B96D;
+	border-style: solid;
+	color:#666666;
 }
