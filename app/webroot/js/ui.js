@@ -146,10 +146,12 @@ CORE.tooltip = function(ele, content, options) {
 				tooltip: 'bottomLeft'
 			},
 			container: useOptions.container,
-			type: 'fixed',
+			type: $(useOptions.container).is('body') ? 'absolute' : 'fixed',
 			adjust: {
 				screen: true,
-				y: 10
+				scroll: true,
+				mouse: false,
+				y: 5
 			}
 		},
 		show: {
