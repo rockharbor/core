@@ -81,10 +81,16 @@ class RostersController extends AppController {
 		}
 
 		if (!empty($this->data)) {
-			if ($this->data['Filter']['Roster']['pending'] == 1) {
+			if ($this->data['Filter']['pending'] == 1) {
 				$conditions['Roster.roster_status'] = 0;
 			}
 			$conditions += $this->Roster->parseCriteria(array('roles' => $this->data['Filter']['Role']));
+		} else {
+			$this->data = array(
+				'Filter' => array(
+					'pending' => 0
+				)
+			);
 		}
 		
 		$link = array(
@@ -109,12 +115,26 @@ class RostersController extends AppController {
 		
 		// set based on criteria
 		$this->set('canCheckAll', !isset($this->passedArgs['User']));
-		$this->set('rosters', $this->paginate());	
 		$this->Roster->Involvement->contain(array('InvolvementType', 'Leader'));
 		$involvement = $this->Roster->Involvement->read(null, $involvementId);
+
+		$childConditions = $countConditions = $pendingConditions = array('Roster.involvement_id' => $involvementId);
+		$childConditions['Roster.parent_id >'] = 0;
+		$pendingConditions['Roster.roster_status'] = 0;
+		$counts['childcare'] = $this->Roster->find('count', array('conditions' => $childConditions));
+		$counts['pending'] = $this->Roster->find('count', array('conditions' => $pendingConditions));
+		$counts['leaders'] = count($involvement['Leader']);
+		$counts['total'] = $this->Roster->find('count', array('conditions' => $countConditions));
+
+		$roles = $this->Roster->Involvement->Ministry->Role->find('list', array(
+			'conditions' => array(
+				'Role.ministry_id' => $involvement['Involvement']['ministry_id']
+			)
+		));
 		$statuses = $this->Roster->statuses;
-		
-		$this->set(compact('involvement', 'rosterIds', 'householdIds', 'statuses'));
+
+		$this->set('rosters', $this->paginate());
+		$this->set(compact('involvement', 'rosterIds', 'householdIds', 'statuses', 'counts', 'roles'));
 	}
 
 /**
@@ -146,10 +166,18 @@ class RostersController extends AppController {
 			)
 		));
 
-		$conditions = array(
-			'or' => array(
-				'Roster.user_id' => $userId,
+		$memberOf = $this->Roster->find('list', array(
+			'fields' => array(
+				'Roster.id',
+				'Roster.involvement_id'
+			),
+			'conditions' => array(
+				'Roster.user_id' => $userId
 			)
+		));
+
+		$conditions = array(
+			'Involvement.id' => array_values($memberOf)	
 		);
 		if (empty($this->data)) {
 			$this->data = array(
@@ -161,7 +189,7 @@ class RostersController extends AppController {
 		}
 		
 		if ($this->data['Roster']['leading']) {
-			$conditions['or']['Roster.involvement_id'] = array_values($leaderOf);
+			$conditions['Involvement.id'] = array_merge(array_values($leaderOf), array_values($memberOf));
 		}
 		if ($this->data['Roster']['passed'] == false) {
 			$db = $this->Roster->getDataSource();
@@ -169,20 +197,22 @@ class RostersController extends AppController {
 		}
 
 		$this->paginate = array(
-			'conditions' => $conditions,
-			'contain' => array(
-				'Involvement' => array(
-					'fields' => array(
-						'id', 'name', 'passed', 'active', 'private'
-					),
-					'Date',
-					'InvolvementType'
-				),
-				'Role'
+			'fields' => array(
+				'id', 'name', 'passed', 'active', 'private'
 			),
-			'group' => 'Involvement.id'
+			'conditions' => $conditions,
+			'contain' => array(					
+				'Date',
+				'InvolvementType',
+				'Roster' => array(
+					'conditions' => array(
+						'Roster.user_id' => $userId
+					),
+					'Role'
+				)
+			)
 		);
-		$rosters = $this->paginate();
+		$rosters = $this->paginate('Involvement');
 		foreach ($rosters as &$roster) {
 			$roster['Involvement']['dates'] = $this->Roster->Involvement->Date->generateDates($roster['Involvement']['id'], array('limit' => 1));
 		}

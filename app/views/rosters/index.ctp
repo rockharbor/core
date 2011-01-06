@@ -1,7 +1,79 @@
 <?php
-$this->Paginator->options('#roster');
+$this->Paginator->options('#roster-tab');
 ?>
+<div id="roster-index">
 <h1><?php echo $involvement['Involvement']['name']; ?> Roster</h1>
+<div id="columns" class="clearfix">
+	<div class="grid_2 column border-right alpha">
+		<span class="font-large">
+		<?php
+		echo $counts['total'];
+		if ($involvement['Involvement']['roster_limit'] > 0) {
+			echo ' / '.$involvement['Involvement']['roster_limit'];
+		}
+		?>
+		</span>
+		<p>People signed up</p>
+	</div>
+	<div class="grid_2 column border-right">
+		<span class="font-large">
+		<?php
+			echo $counts['pending']
+		?>
+		</span>
+		<p># Pending</p>
+	</div>
+	<?php if ($involvement['Involvement']['offer_childcare']) { ?>
+	<div class="grid_2 column border-right">
+		<span class="font-large">
+		<?php
+			echo $counts['childcare'];
+		?>
+		</span>
+		<p>Childcare</p>
+	</div>
+	<?php } ?>
+	<div class="grid_2 column omega" id="time">
+		<span class="font-large">
+		<?php
+			echo $counts['leaders'];
+		?>
+		</span>
+		<p># of Leaders</p>
+	</div>
+</div>
+<div>
+	<?php
+	echo $this->Form->create('Roster', array(
+		'class' => 'core-filter-form update-roster-index',
+		'url' => array(
+			'controller' => 'rosters',
+			'action'=> 'index',
+			'Involvement' => $involvement['Involvement']['id']
+		)
+	));
+	?>
+	<fieldset>
+		<legend>Filter</legend>
+	<?php
+	echo $this->Form->input('Filter.Role', array(
+		'label' => false,
+		'multiple' => 'checkbox',
+		'div' => array(
+			'tag' => 'span',
+			'class' => 'toggle'
+		)
+	));
+	echo $this->Form->input('Filter.pending', array(
+		'type' => 'checkbox',
+		'class' => 'toggle',
+		'div' => false,
+	));
+	echo $this->Form->end('Filter');
+	?>
+	</fieldset>
+</div>
+<div>
 <?php
 	echo $this->MultiSelect->create();
 ?>
@@ -119,7 +191,7 @@ $this->Paginator->options('#roster');
 		}
 		?></td>
 		<td><?php 
-		$name = $roster['Profile']['name'].$this->Formatting->flags('User', $roster);
+		$name = $roster['Profile']['name'];
 		echo $this->Html->link($name, array('controller' => 'users', 'action' => 'view', 'User' => $roster['User']['id']), array('escape' => false));
 		?>&nbsp;
 		<div class="core-tooltip"><?php
@@ -131,6 +203,7 @@ $this->Paginator->options('#roster');
 			echo $this->Html->link('View Profile', array('controller' => 'users', 'action' => 'view', 'User' => $roster['User']['id']));
 			echo $this->Html->link('View Payments', array('controller' => 'payments', 'action' => 'index', 'User' => $roster['User']['id'], 'Involvement' => $involvement['Involvement']['id']), array('rel' => 'modal-none'));
 		?></div>
+		<?php echo $this->Formatting->flags('User', $roster); ?>
 		</td>
 		<td><?php echo $this->Formatting->phone($roster['Profile']['cell_phone']); ?>&nbsp;</td>
 		<td><?php echo $statuses[$roster['Roster']['roster_status']]; ?>&nbsp;</td>
@@ -158,7 +231,44 @@ $this->Paginator->options('#roster');
 <?php
 	echo $this->MultiSelect->end();
 ?>
-
+</div>
+<ul class="core-admin-tabs">
+	<li>
+	<?php
+	echo $this->Html->link('Invite A User',
+		array(
+			'controller' => 'searches',
+			'action' => 'simple',
+			'User',
+			'add_invite_user',
+			'notSignedUp',
+			$involvement['Involvement']['id'],
+		),
+		array(
+			'rel' => 'modal-roster'
+		)
+	);
+	?>
+	</li>
+	<li>
+	<?php
+	echo $this->Html->link('Invite this roster to',
+		array(
+			'controller' => 'involvements',
+			'action' => 'invite_roster',
+			'User',
+			'add_invite_roster',
+			'notInvolvement',
+			$involvement['Involvement']['id'],
+		),
+		array(
+			'rel' => 'modal-roster'
+		)
+	);
+	?>
+	</li>
+</ul>
+</div>
 <?php
 
 $this->Js->buffer('function addToRoster(userid) {

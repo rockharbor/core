@@ -135,6 +135,11 @@ class RostersControllerTestCase extends CoreTestCase {
 			'CORE 2.0 testing',
 		);
 		$this->assertEqual($results, $expected);
+		$this->assertEqual($vars['counts']['leaders'], 1);
+		$this->assertEqual($vars['roles'], array(
+			1 => 'Snack Bringer',
+			2 => 'Snack Eater'
+		));
 	}
 
 	function testInvolvement() {

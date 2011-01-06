@@ -10,7 +10,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 	<ul>
 		<li><a href="#details-tab">Details</a></li>
 		<?php if ($this->Permission->can('viewRoster')) { ?>
-		<li><a href="#roster-tab">Roster</a></li>
+		<li><?php echo $this->Html->link('Roster', array('controller' => 'rosters', 'Involvement' => $involvement['Involvement']['id']), array('title' => 'roster-tab')); ?></li>
 		<?php } ?>
 	</ul>
 
@@ -92,122 +92,11 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 			</div>
 			<ul class="core-admin-tabs">
 				<li><?php echo $this->Html->link('Edit Involvement', array('action' => 'edit', 'Involvement' => $involvement['Involvement']['id'])); ?> </li>
-				<li><?php echo $this->Html->link('Invite Users', array('controller' => 'searches', 'action' => 'simple', 'User', 'notSignedUp', $involvement['Involvement']['id'], 'Invite To '.$involvement['InvolvementType']['name'] => 'invite'), array('rel' => 'modal-content')); ?> </li>
-				<li><?php echo $this->Html->link('Invite Roster', array('controller' => 'searches', 'action' => 'simple', 'Involvement', 'notInvolvementAndIsLeading', $involvement['Involvement']['id'], $activeUser['User']['id'], 'Invite To '.$involvement['InvolvementType']['name'] => 'inviteRoster'), array('rel' => 'modal-content')); ?> </li>
 			</ul>
 		</div>
 		<?php if ($this->Permission->can('viewRoster')) { ?>
 		<div id="roster-tab">
-			<div id="columns" class="grid_10 alpha omega">
-				<div class="grid_2 column border-right alpha">
-					<span class="font-large">
-					<?php
-					echo $counts['total'];
-					if ($involvement['Involvement']['roster_limit'] > 0) {
-						echo ' / '.$involvement['Involvement']['roster_limit'];
-					}
-					?>
-					</span>
-					<p>People signed up</p>
-				</div>
-				<div class="grid_2 column border-right">
-					<span class="font-large">
-					<?php
-						echo $counts['pending']
-					?>
-					</span>
-					<p># Pending</p>
-				</div>
-				<?php if ($involvement['Involvement']['offer_childcare']) { ?>
-				<div class="grid_2 column border-right">
-					<span class="font-large">
-					<?php
-						echo $counts['childcare'];
-					?>
-					</span>
-					<p>Childcare</p>
-				</div>
-				<?php } ?>
-				<div class="grid_2 column border-right omega" id="time">
-					<span class="font-large">
-					<?php
-						echo $counts['leaders'];
-					?>
-					</span>
-					<p># of Leaders</p>
-				</div>
-			</div>
-			<div class="grid_10 alpha omega">
-				<p>Filter</p>
-				<?php
-				$this->Js->buffer('CORE.register("roster", "roster", "/rosters/index/Involvement:'.$involvement['Involvement']['id'].'")');
-				echo $this->Form->create('Roster', array(
-					'class' => 'core-filter-form update-roster',
-					'url' => array(
-						'controller' => 'rosters',
-						'action'=> 'index',
-						'Involvement' => $involvement['Involvement']['id']
-					)
-				));				
-				echo $this->Form->input('Filter.Role', array(
-					'label' => false,
-					'multiple' => 'checkbox',
-					'div' => array(
-						'tag' => 'span',
-						'class' => 'toggle'
-					)
-				));
-				echo $this->Form->input('Filter.Roster.pending', array(
-					'type' => 'checkbox',
-					'class' => 'toggle',
-					'div' => false,
-				));
-				echo $this->Form->end('Filter');
-				?>				
-			</div>
-			<div id="roster" class="rosters grid_10 alpha omega">
-			<?php
-			$this->Js->buffer('CORE.update("roster")');
-			?>
-			</div>
-			<ul class="core-admin-tabs">
-				<li>
-				<?php
-				echo $this->Html->link('Invite A User',
-					array(
-						'controller' => 'searches',
-						'action' => 'simple',
-						'User',
-						'add_invite_user',
-						'notSignedUp',
-						$involvement['Involvement']['id'],
-					),
-					array(
-						'class' => 'button',
-						'rel' => 'modal-roster'
-					)
-				);
-				?>
-				</li>
-				<li>
-				<?php
-				echo $this->Html->link('Invite this roster to',
-					array(
-						'controller' => 'involvements',
-						'action' => 'invite_roster',
-						'User',
-						'add_invite_roster',
-						'notInvolvement',
-						$involvement['Involvement']['id'],
-					),
-					array(
-						'class' => 'button',
-						'rel' => 'modal-roster'
-					)
-				);
-				?>
-				</li>
-			</ul>
+			<?php $this->Js->buffer('CORE.register("roster", "roster-tab", "/rosters/index/Involvement:'.$involvement['Involvement']['id'].'")'); ?>
 		</div>
 		<?php } ?>
 	</div>
