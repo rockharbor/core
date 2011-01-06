@@ -6,7 +6,7 @@ $acResults = array();
 foreach ($users as $user) {
 	$acResults[] = array(
 		'id' => $user['User']['id'],
-		'action' => Router::url(array('controller' => 'users', 'action' => 'view', 'User' => $user['User']['id'])),
+		'action' => Router::url(array('controller' => 'profiles', 'action' => 'view', 'User' => $user['User']['id'])),
 		'label' => $this->element('search'.DS.'autocomplete'.DS.'user', compact('user', 'query'), true),
 		'value' => $user['Profile']['name']
 	);
