@@ -1,8 +1,8 @@
 <?php
-/* Formatting Test cases generated on: 2010-06-29 13:06:36 : 1277844756 */
+App::import('Lib', 'CoreTestCase');
 App::import('Helper', array('Formatting', 'Html', 'Text', 'Time', 'Number'));
 
-class FormattingHelperTestCase extends CakeTestCase {
+class FormattingHelperTestCase extends CoreTestCase {
 
 	function _prepareAction($action = '') {
 		$this->Formatting->params = Router::parse($action);
@@ -187,6 +187,105 @@ TEXT;
 		$this->assertNull($this->Formatting->flags());
 		$this->assertNull($this->Formatting->flags('NoModel', array('NoModel' => 'nothing')));
 		$this->assertError('FormattingHelper::flags - Missing flagging function FormattingHelper::_flagNoModel.');
+	}
+
+	function testFlagUser() {
+		$user = array(
+			'User' => array(
+				'active' => 1,
+				'flagged' => 0
+			)
+		);
+		$this->assertNull($this->Formatting->flags('User', $user));
+
+		$user = array(
+			'User' => array(
+				'active' => 1,
+				'flagged' => 1
+			)
+		);
+		$result = $this->Formatting->flags('User', $user);
+		$this->assertTags($result, array(
+			'span' => array('class' => 'core-icon flagged', 'title' => 'Flagged User'),
+			'/span'
+		));
+	}
+
+	function testFlagInvolvement() {
+		$involvement = array(
+			'Involvement' => array(
+				'passed' => 0,
+				'private' => 1,
+				'active' => 0
+			),
+			'InvolvementType' => array(
+				'name' => 'Event'
+			)
+		);
+		$result = $this->Formatting->flags('Involvement', $involvement);
+		$this->assertTags($result, array(
+			array('span' => array('class' => 'core-icon inactive', 'title' => 'Inactive Event')),
+			'/span',
+			array('span' => array('class' => 'core-icon private', 'title' => 'Private Event')),
+			'/span'
+		));
+
+		$involvement = array(
+			'Involvement' => array(
+				'passed' => 0,
+				'private' => 1,
+				'active' => 1
+			),
+		);
+		$result = $this->Formatting->flags('Involvement', $involvement);
+		$this->assertTags($result, array(
+			array('span' => array('class' => 'core-icon private', 'title' => 'Private Involvement')),
+			'/span'
+		));
+
+		$involvement = array(
+			'Involvement' => array(
+				'passed' => 1,
+				'private' => 0,
+				'active' => 0
+			),
+			'InvolvementType' => array(
+				'name' => 'Interest List'
+			)
+		);
+		$result = $this->Formatting->flags('Involvement', $involvement);
+		$this->assertTags($result, array(
+			array('span' => array('class' => 'core-icon inactive', 'title' => 'Past and Inactive Interest List')),
+			'/span'
+		));
+	}
+
+	function testFlagMinistry() {
+		$ministry = array(
+			'Ministry' => array(
+				'private' => 1,
+				'active' => 1
+			)
+		);
+		$result = $this->Formatting->flags('Ministry', $ministry);
+		$this->assertTags($result, array(
+			array('span' => array('class' => 'core-icon private', 'title' => 'Private Ministry')),
+			'/span'
+		));
+
+		$ministry = array(
+			'Ministry' => array(
+				'private' => 1,
+				'active' => 0
+			)
+		);
+		$result = $this->Formatting->flags('Ministry', $ministry);
+		$this->assertTags($result, array(
+			array('span' => array('class' => 'core-icon inactive', 'title' => 'Inactive Ministry')),
+			'/span',
+			array('span' => array('class' => 'core-icon private', 'title' => 'Private Ministry')),
+			'/span'
+		));
 	}
 
 	function testPhone() {

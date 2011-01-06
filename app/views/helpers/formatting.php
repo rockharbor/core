@@ -383,23 +383,21 @@ class FormattingHelper extends AppHelper {
 			}
 		}
 		
-		$output = '';
+		$output = null;
 		
-		$user = array_merge($_defaults, $user);
+		$user = Set::merge($_defaults, $user);
 		
 		if ($user['User']['flagged']) {
 			$output .= $this->Html->tag('span', '', array(
-				'class' => 'flagged',
-				'title' => 'Flagged User',
-				'rel' => 'tooltip'
+				'class' => 'core-icon flagged',
+				'title' => 'Flagged User'
 			));
 		}
 		
 		if (!$user['User']['active']) {
 			$output .= $this->Html->tag('span', '', array(
-				'class' => 'inactive',
-				'title' => 'Inactive User',
-				'rel' => 'tooltip'
+				'class' => 'core-icon inactive',
+				'title' => 'Inactive User'
 			));
 		}
 		
@@ -418,9 +416,9 @@ class FormattingHelper extends AppHelper {
 		$_defaults = array(
 			'Involvement' => array(
 				'passed' => 0,
-				'private' => 0
+				'private' => 0,
+				'active' => 1
 			),
-			'Date' => array(),
 			'InvolvementType' => array(
 				'name' => 'Involvement'
 			)
@@ -434,9 +432,9 @@ class FormattingHelper extends AppHelper {
 		}
 		
 		// merge defaults
-		$involvement = array_merge($_defaults, $involvement);
+		$involvement = Set::merge($_defaults, $involvement);
 		
-		$output = '';
+		$output = null;
 		
 		$titles = array();
 		if ($involvement['Involvement']['passed']) {
@@ -448,17 +446,15 @@ class FormattingHelper extends AppHelper {
 		
 		if (!$involvement['Involvement']['active'] || $involvement['Involvement']['passed']) {
 			$output .= $this->Html->tag('span', '', array(
-				'class' => 'inactive',
-				'title' => $this->Text->toList($titles).' '.$involvement['InvolvementType']['name'],
-				'rel' => 'tooltip'
+				'class' => 'core-icon inactive',
+				'title' => $this->Text->toList($titles).' '.$involvement['InvolvementType']['name']
 			));
 		}
 		
 		if ($involvement['Involvement']['private']) {
 			$output .= $this->Html->tag('span', '', array(
-				'class' => 'private',
-				'title' => 'Private '.$involvement['InvolvementType']['name'],
-				'rel' => 'tooltip'
+				'class' => 'core-icon private',
+				'title' => 'Private '.$involvement['InvolvementType']['name']
 			));
 		}
 		
@@ -481,7 +477,8 @@ class FormattingHelper extends AppHelper {
 		// default associated data that is needed
 		$_defaults = array(
 			'Ministry' => array(
-				'private' => 0
+				'private' => 0,
+				'active' => 1
 			),
 		);
 		
@@ -493,23 +490,21 @@ class FormattingHelper extends AppHelper {
 		}
 			
 		// merge defaults
-		$ministry = array_merge($_defaults, $ministry);
+		$ministry = Set::merge($_defaults, $ministry);
 		
 		$output = '';
 		
 		if (!$ministry['Ministry']['active']) {
 			$output .= $this->Html->tag('span', '', array(
-				'class' => 'inactive',
-				'title' => 'Inactive Ministry',
-				'rel' => 'tooltip'
+				'class' => 'core-icon inactive',
+				'title' => 'Inactive Ministry'
 			));
 		}
 		
 		if ($ministry['Ministry']['private']) {
 			$output .= $this->Html->tag('span', '', array(
-				'class' => 'private',
-				'title' => 'Private Ministry',
-				'rel' => 'tooltip'
+				'class' => 'core-icon private',
+				'title' => 'Private Ministry'
 			));
 		}
 		

@@ -324,6 +324,7 @@ Custom Icons
 	height:16px;
 	width:16px;
 	overflow:hidden;
+	display:inline-block;
 }
 .icon-delete {
 	background-image: url(images/ui-icons_454545_256x240.png);
@@ -343,14 +344,14 @@ Custom Icons
 
 }
 .flagged {
-	padding-left:20px;
-	background:url('../img/warning.icon.png') no-repeat 0 50%;
+	background-image: url(images/ui-icons_cd0a0a_256x240.png);
+	background-position: 0px -128px;
 }
 .inactive {
-	padding-left:20px;
-	background:url('../img/inactive.icon.png') no-repeat 0 50%;
+	background-image: url(images/ui-icons_454545_256x240.png);
+	background-position: 0px -144px;
 }
 .private {
-	padding-left:20px;
-	background:url('../img/private.icon.png') no-repeat 0 50%;
+	background-image: url(images/ui-icons_454545_256x240.png);
+	background-position: -192px -96px;
 }
