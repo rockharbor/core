@@ -101,8 +101,11 @@ div.content-box{
 	padding: 10px;
 	margin:0 -12px;
 }
-div#content {
+div#content-container {
+	background:#FFF;
 	padding-bottom:30px;
+}
+div#content {
 	padding-top:30px;
 }
 div.ui-dialog div#content {
