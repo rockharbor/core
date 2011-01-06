@@ -56,6 +56,10 @@ CORE.update = function(updateable, url) {
 /**
  * Wraps Ajax request
  *
+ * ### Options:
+ * - `update` An updateable to update on success
+ * - `updateHtml` A div to update with the returned contents on success
+ *
  * @param string url The url to request
  * @param object options Ajax options
  * @param object data Data to POST
