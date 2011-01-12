@@ -47,14 +47,12 @@ class AuthorizeDotNetTestCase extends CoreTestCase {
 			'x_City' => 'Springfield',
 			'x_State' => 'No One Knows',
 			'x_Zip' => '12345',
-			'x_Email' => 'test@test.com'
+			'x_Email' => 'test@test.com',
+			'x_Amount' => 20
 		);
 		$results = $this->AuthorizeDotNet->request();
 		$this->assertTrue($results);
 	}
 
 }
-
-
-
 ?>
