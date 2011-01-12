@@ -176,7 +176,6 @@ class AuthorizeDotNetComponent extends Object {
 		$this->transactionId = $details[6];
 					
 		/* authorize.net returns a 1 on success. */
-		debug($details);
 		$success = $details[0] == '1';
 
 		if ($success) {
