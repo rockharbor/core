@@ -40,7 +40,7 @@ class AuthorizeDotNetComponent extends Object {
  */
 	var $_credentials = array(
 		'username' 	=> '7u9e6TuTw',        // authorize.net username
-		'password' 	=> '77bX8977DquU6LE4',    // authorize.net password
+		'password' 	=> '95MvJs8wP54975qL',    // authorize.net password
 		'useragent' => 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)',    // browser to identify ourselves as
 		'refer'		=> ''
 	);
@@ -176,6 +176,7 @@ class AuthorizeDotNetComponent extends Object {
 		$this->transactionId = $details[6];
 					
 		/* authorize.net returns a 1 on success. */
+		debug($details);
 		$success = $details[0] == '1';
 
 		if ($success) {
