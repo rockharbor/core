@@ -629,17 +629,17 @@ class RostersController extends AppController {
 		$this->Roster->contain(array(
 			'Role'
 		));
-		$involvement = $this->Roster->Involvement->read('ministry_id', $this->passedArgs['Involvement']);
+		$this->Roster->Involvement->contain(array('Ministry' => array('fields' => array('id', 'name'))));
+		$ministry = $this->Roster->Involvement->read(null, $this->passedArgs['Involvement']);
 		if (empty($this->data) || isset($this->data['Role']['ministry_id'])) {
 			$this->data = $this->Roster->read(null, $roster_id);
 		}
 		$roles = $this->Roster->Role->find('list', array(
 			'conditions' => array(
-				'Role.ministry_id' => $involvement['Involvement']['ministry_id']
+				'Role.ministry_id' => $ministry['Ministry']['id']
 			)
 		));
-		$ministry_id = $involvement['Involvement']['ministry_id'];
-		$this->set(compact('roles', 'ministry_id'));
+		$this->set(compact('roles', 'ministry'));
 	}
 
 /**

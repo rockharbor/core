@@ -15,7 +15,7 @@ class RostersControllerTestCase extends CoreTestCase {
 	function startTest() {
 		$this->loadFixtures('Roster', 'User', 'Involvement', 'Group', 'Date', 
 			'Payment', 'Notification', 'PaymentOption', 'PaymentType',
-			'InvolvementType', 'Role', 'RolesRoster', 'Leader');
+			'InvolvementType', 'Role', 'RolesRoster', 'Leader', 'Ministry');
 		$this->Rosters =& new MockRostersController();
 		$this->Rosters->__construct();
 		$this->Rosters->constructClasses();
@@ -80,9 +80,7 @@ class RostersControllerTestCase extends CoreTestCase {
 	function testFilterIndex() {
 		$data = array(
 			'Filter' => array(
-				'Roster' => array(
-					'pending' => 0
-				),
+				'pending' => 0,
 				'Role' => array(
 					2
 				)
