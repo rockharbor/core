@@ -183,7 +183,7 @@ class SysEmailsController extends AppController {
 			
 			$attachments = array();
 			foreach ($documents as $attachment) {
-				$attachments[] = $attachment['Document']['file'];
+				$attachments[] = $attachment['Document']['dirname'].DS.$attachment['Document']['basename'];
 			}
 
 			// attach them to the email
