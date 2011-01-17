@@ -289,18 +289,26 @@ form {
 div.input {
 	padding: 5px 0px;
 }
-div.input label {
-	display:block;
-}
-div.input input {
-	padding:3px;
-}
 div.toggle, div.checkbox, div.checkbox label {
 	display: inline-block;
 }
+label {
+	color: #cccccc;
+	display: block;
+}
 fieldset {
-	margin:0;
-	padding:0;
+	border-top: 1px solid #cccccc;
+	padding: 5px 0;
+}
+legend {
+	background: #ffffff;
+	padding-right: 5px;
+}
+input[type=text] {
+	padding: 3px;
+	background: #F2F2F2;
+	border: 1px solid #666666;
+	color: #666666;
 }
 
 /*
