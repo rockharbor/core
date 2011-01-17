@@ -21,7 +21,7 @@ if ($new > 0) {
 			echo '</li>';
 		}
 		echo '<li id="notification-viewall">';
-		echo $this->Html->link('View All Notifications', array('controller' => 'notifications'), array('rel' => 'modal-notifications'));
+		echo $this->Html->link('View All Notifications', array('controller' => 'notifications', 'action' => 'index'), array('rel' => 'modal-notifications'));
 		echo '</li>';
 	?>
 </ul>
