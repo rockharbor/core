@@ -23,5 +23,32 @@ class MinistryTestCase extends CoreTestCase {
 		$this->assertFalse($this->Ministry->isManager(90, 1));
 	}
 
+	function testGetInvolved() {
+		$this->loadFixtures('Roster', 'Involvement');
+
+		$results = $this->Ministry->getInvolved(1);
+		$this->assertEqual($results, array(5));
+
+		$results = $this->Ministry->getInvolved(1, true);
+		sort($results);
+		$this->assertEqual($results, array(1, 2, 3, 5));
+
+		$results = $this->Ministry->getInvolved(10);
+		$this->assertEqual($results, array());
+	}
+
+	function testGetLeaders() {
+		$this->loadFixtures('Involvement');
+
+		$results = $this->Ministry->getLeaders(1);
+		$this->assertEqual($results, array());
+
+		$results = $this->Ministry->getLeaders(4);
+		$this->assertEqual($results, array(1));
+
+		$results = $this->Ministry->getLeaders(1, true);
+		$this->assertEqual($results, array(1));
+	}
+
 }
 ?>
