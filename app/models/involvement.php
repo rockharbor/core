@@ -247,6 +247,39 @@ class Involvement extends AppModel {
 			'model_id' => $involvementId,
 			'user_id' => $userId
 		));
-	}	
+	}
+
+/**
+ * Returns a list of user ids that are involved an involvement
+ *
+ * @param integer $involvementId The involvement id
+ * @return array A list of users
+ */
+	function getInvolved($involvementId = null) {
+		$results = $this->Roster->find('all', array(
+			'conditions' => array(
+				'Roster.involvement_id' => $involvementId
+			),
+			'fields' => array('user_id')
+		));
+		return Set::extract('/Roster/user_id', $results);
+	}
+
+/**
+ * Returns a list of user ids that lead an involvement
+ *
+ * @param integer $involvementId The involvement id
+ * @return array A list of users
+ */
+	function getLeaders($involvementId) {
+		$results = $this->Leader->find('all', array(
+			'conditions' => array(
+				'Leader.model_id' => $involvementId,
+				'Leader.model' => 'Involvement'
+			),
+			'fields' => array('user_id')
+		));
+		return Set::extract('/Leader/user_id', $results);
+	}
 }
 ?>

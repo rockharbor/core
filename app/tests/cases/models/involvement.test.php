@@ -41,5 +41,29 @@ class InvolvementTestCase extends CoreTestCase {
 		$this->assertFalse($this->Involvement->isLeader(1, 90));
 	}
 
+	function testGetInvolved() {
+		$this->loadFixtures('Roster');
+
+		$results = $this->Involvement->getInvolved(1);
+		sort($results);
+		$this->assertEqual($results, array(2,3));
+
+		$results = $this->Involvement->getInvolved(10);
+		$this->assertEqual($results, array());
+
+		$results = $this->Involvement->getInvolved(5);
+		$this->assertEqual($results, array(5));
+	}
+
+	function testGetLeaders() {
+		$this->loadFixtures('Leader');
+
+		$results = $this->Involvement->getLeaders(1);
+		$this->assertEqual($results, array(1));
+
+		$results = $this->Involvement->getLeaders(10);
+		$this->assertEqual($results, array());
+	}
+
 }
 ?>
