@@ -38,10 +38,11 @@ class FormattingHelper extends AppHelper {
  */
 	function email($email, $id = null) {
 		$url = array('controller' => 'sys_emails', 'action' => 'compose', 'model' => 'User', 'User' => $id);
+		$icon = $this->Html->tag('span', 'Email', array('class' => 'core-icon icon-email'));
 		if ($id !== null) {
-			return $this->Html->link($email, $url, array('rel' => 'modal-none', 'class' => 'email'));
+			return $icon.$this->Html->link($email, $url, array('rel' => 'modal-none'));
 		}
-		return $this->Html->tag('span', $email, array('class' => 'email'));
+		return $this->Html->tag('span', $email);
 	}
 
 /**
@@ -57,8 +58,9 @@ class FormattingHelper extends AppHelper {
 		}
 		$address .= PHP_EOL.$data['city'].', '.$data['state'].' '.$data['zip'];
 
+		$icon = $this->Html->tag('span', 'Map', array('class' => 'core-icon icon-address'));
 		if ($html) {
-			$address = $this->Html->tag('span', str_replace(PHP_EOL, '<br />', $address), array('class' => 'address'));
+			$address = $icon.$this->Html->tag('span', str_replace(PHP_EOL, '<br />', $address));
 		}
 		return $address;
 	}

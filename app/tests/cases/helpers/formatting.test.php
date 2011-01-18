@@ -27,14 +27,17 @@ class FormattingHelperTestCase extends CoreTestCase {
 	function testEmail() {
 		$result = $this->Formatting->email('jeremy@42pixels.com');
 		$this->assertTags($result, array(
-			'span' => array('class' => 'email'),
+			'span' => array(),
 			'jeremy@42pixels.com',
 			'/span'
 		));
 
 		$result = $this->Formatting->email('jeremy@42pixels.com', 1);
 		$this->assertTags($result, array(
-			'a' => array('class' => 'email', 'rel' => 'modal-none', 'href' => '/sys_emails/compose/model:User/User:1'),
+			'span' => array('class' => 'core-icon icon-email'),
+			'Email',
+			'/span',
+			'a' => array('rel' => 'modal-none', 'href' => '/sys_emails/compose/model:User/User:1'),
 			'jeremy@42pixels.com',
 			'/a'
 		));
@@ -49,7 +52,10 @@ class FormattingHelperTestCase extends CoreTestCase {
 			'zip' => '',
 		);
 		$this->assertTags($this->Formatting->address($address), array(
-			'span' => array('class' => 'address'),
+			'span' => array('class' => 'core-icon icon-address'),
+			'Map',
+			'/span',
+			'<span',
 			'123 Main',
 			'br' => array(),
 			'Somewhere, CA ',
