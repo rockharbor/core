@@ -143,24 +143,23 @@ class RostersControllerTestCase extends CoreTestCase {
 	function testInvolvement() {
 		$vars = $this->testAction('/rosters/involvement/User:1');
 		$results = Set::extract('/Involvement/name', $vars['rosters']);
-		$expected = array(
-			'Third Wednesday'
-		);
+		$expected = array();
 		$this->assertEqual($results, $expected);
 
 		$vars = $this->testAction('/rosters/involvement/User:1', array(
 			'data' => array(
 				'Roster' => array(
 					'passed' => true,
-					'leading' => true
+					'leading' => true,
+					'inactive' => true,
+					'private' => false
 				)
 			)
 		));
-		$results = Set::extract('/Involvement/name', $vars['rosters']);		
+		$results = Set::extract('/Involvement/name', $vars['rosters']);
 		$expected = array(
 			'CORE 2.0 testing',
-			'Third Wednesday',
-			'Team CORE'
+			'Third Wednesday',			
 		);
 		$this->assertEqual($results, $expected);
 
@@ -168,7 +167,9 @@ class RostersControllerTestCase extends CoreTestCase {
 			'data' => array(
 				'Roster' => array(
 					'passed' => true,
-					'leading' => false
+					'leading' => false,
+					'inactive' => true,
+					'private' => true
 				)
 			)
 		));

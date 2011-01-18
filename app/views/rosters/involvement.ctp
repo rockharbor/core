@@ -22,6 +22,20 @@ $this->Paginator->options(array(
 			'class' => 'toggle',
 			'div' => false
 		));
+		echo $this->Form->input('inactive', array(
+			'type' => 'checkbox',
+			'class' => 'toggle',
+			'div' => false
+		));
+		if ($private) {
+			echo $this->Form->input('private', array(
+				'type' => 'checkbox',
+				'class' => 'toggle',
+				'div' => false
+			));
+		} else {
+			echo $this->Form->hidden('private', array('value' => 0));
+		}
 		echo $this->Js->submit('Filter');
 		echo $this->Form->end();
 		?>

@@ -179,11 +179,14 @@ class RostersController extends AppController {
 		$conditions = array(
 			'Involvement.id' => array_values($memberOf)	
 		);
+		$private = array_key_exists($this->activeUser['Group']['id'], $this->Roster->User->Group->findGroups(Core::read('general.private_group'), 'list', '>'));
 		if (empty($this->data)) {
 			$this->data = array(
 				'Roster' => array(
 					'passed' => 0,
-					'leading' => 1
+					'leading' => 1,
+					'inactive' => 0,
+					'private' => $private
 				)
 			);
 		}
@@ -194,6 +197,12 @@ class RostersController extends AppController {
 		if ($this->data['Roster']['passed'] == false) {
 			$db = $this->Roster->getDataSource();
 			$conditions[] = $db->expression('('.$this->Roster->Involvement->getVirtualField('passed').') = '.$this->data['Roster']['passed']);
+		}
+		if (!$this->data['Roster']['inactive']) {
+			$conditions['Involvement.active'] = true;
+		}
+		if (!$this->data['Roster']['private']) {
+			$conditions['Involvement.private'] = false;
 		}
 
 		$this->paginate = array(
@@ -216,8 +225,8 @@ class RostersController extends AppController {
 		foreach ($rosters as &$roster) {
 			$roster['Involvement']['dates'] = $this->Roster->Involvement->Date->generateDates($roster['Involvement']['id'], array('limit' => 1));
 		}
-		
-		$this->set(compact('passed', 'userId', 'leaderOf', 'rosters'));
+
+		$this->set(compact('userId', 'leaderOf', 'rosters', 'private'));
 	}
 
 /**
