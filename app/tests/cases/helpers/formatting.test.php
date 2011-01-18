@@ -52,29 +52,23 @@ class FormattingHelperTestCase extends CoreTestCase {
 			'zip' => '',
 		);
 		$this->assertTags($this->Formatting->address($address), array(
-			'span' => array('class' => 'core-icon icon-address'),
-			'Map',
-			'/span',
 			'<span',
 			'123 Main',
 			'br' => array(),
 			'Somewhere, CA ',
 			'/span'
 		));
-		
-		$address = array(
-			'address_line_1' => '123 Main',
-			'address_line_2' => 'Ste. 42',
-			'city' => 'Somewhere',
-			'state' => 'CA',
-			'zip' => '12345',
-		);
-		$expected = <<<TEXT
-123 Main
-Ste. 42
-Somewhere, CA 12345
-TEXT;
-		$this->assertEqual($this->Formatting->address($address, false), $expected);
+
+		$this->assertTags($this->Formatting->address($address, 1), array(
+			'span' => array('class' => 'core-icon icon-address'),
+			'Map',
+			'/span',
+			'a' => array('rel' => 'modal-none', 'href' => '/reports/map/User/User:1'),
+			'123 Main',
+			'br' => array(),
+			'Somewhere, CA ',
+			'/a'
+		));
 	}
 
 	function testReadableDate() {

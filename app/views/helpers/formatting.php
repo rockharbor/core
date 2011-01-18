@@ -49,20 +49,21 @@ class FormattingHelper extends AppHelper {
  * Formats an address
  *
  * @param array $address The address model data
- * @param boolean $html Allow html (default: true)
+ * @param integer $id The user's id, if any
  */
-	function address($data, $html = true) {
+	function address($data, $id = null) {
 		$address = $data['address_line_1'];
 		if (!empty($data['address_line_2'])) {
-			$address .= PHP_EOL.$data['address_line_2'];
+			$address .= '<br />'.$data['address_line_2'];
 		}
-		$address .= PHP_EOL.$data['city'].', '.$data['state'].' '.$data['zip'];
+		$address .= '<br />'.$data['city'].', '.$data['state'].' '.$data['zip'];
 
+		$url = array('controller' => 'reports', 'action' => 'map', 'User', 'User' => $id);
 		$icon = $this->Html->tag('span', 'Map', array('class' => 'core-icon icon-address'));
-		if ($html) {
-			$address = $icon.$this->Html->tag('span', str_replace(PHP_EOL, '<br />', $address));
+		if ($id !== null) {
+			return $icon.$this->Html->link($address, $url, array('rel' => 'modal-none', 'escape' => false));
 		}
-		return $address;
+		return $this->Html->tag('span', $address);
 	}
 
 /**
