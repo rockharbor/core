@@ -135,14 +135,22 @@ class ReportsController extends AppController {
 	}
 
 /**
- * Shows a map from a list of results
+ * Shows a map from a list of results. You can also pass a model's id to map a
+ * single model
+ *
+ * ### Passed args:
+ * - $model The model name as the key, the id as the value to show a single model
  *
  * @param string $model The name of the model to search
  * @param string $uid The MultiSelect cache key to get results from
  */
-	function map($model, $uid) {
+	function map($model, $uid = null) {
 		$search = $this->MultiSelect->getSearch($uid);
 		$selected = $this->MultiSelect->getSelected($uid);
+		if (isset($this->passedArgs[$model])) {
+			$search = array();
+			$selected = $this->passedArgs[$model];
+		}
 		// assume they want all if they didn't select any
 		if (!empty($selected)) {
 			$search['conditions'][$model.'.id'] = $selected;
@@ -151,8 +159,6 @@ class ReportsController extends AppController {
 		// only need name, picture and address
 		$search['contain'] = array();
 		$contain = array(
-			'Profile',
-			'Image',
 			'Address' => array(
 				'conditions' => array(
 					'Address.primary' => true
@@ -160,14 +166,18 @@ class ReportsController extends AppController {
 			)
 		);
 		if ($model !== 'User') {
-			$search['contain']['User'] = $contain;
-			$results = $this->User->{$model}->find('all', $search);
-			$this->set('results', Set::extract('/User/.', $results));
-		} else {
 			$search['contain'] = $contain;
+			$results = $this->{$model}->find('all', $search);
+		} else {
+			$search['contain'] = array_merge($contain, array(
+				'Profile' => array(
+					'fields' => array('name')
+				),
+				'Image'
+			));
 			$results = $this->User->find('all', $search);
-			$this->set('results', $results);
-		}		
+		}
+		$this->set(compact('results'));
 	}
 }
 ?>

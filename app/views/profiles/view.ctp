@@ -51,7 +51,7 @@
 					<hr>
 					<p>
 					<?php
-					echo $this->Formatting->address($profile['ActiveAddress']);
+					echo $this->Formatting->address($profile['ActiveAddress'], $profile['User']['id']);
 					?>
 					</p>
 					<hr>

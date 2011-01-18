@@ -64,10 +64,23 @@ class ReportsControllerTestCase extends CoreTestCase {
 				)
 			)
 		));
-
 		$vars = $this->testAction('/reports/map/User/testMap');
 		$results = Set::extract('/Profile/name', $vars['results']);
 		$expected = array('Jeremy Harris');
+		$this->assertEqual($results, $expected);
+
+		$this->Reports->Session->write('MultiSelect.testMap', array(
+			'selected' => array(1),
+			'search' => array()
+		));
+		$vars = $this->testAction('/reports/map/Involvement/testMap');
+		$results = Set::extract('/Involvement/name', $vars['results']);
+		$expected = array('CORE 2.0 testing');
+		$this->assertEqual($results, $expected);
+
+		$vars = $this->testAction('/reports/map/User/User:2');
+		$results = Set::extract('/User/username', $vars['results']);
+		$expected = array('rickyrockharbor');
 		$this->assertEqual($results, $expected);
 	}
 
@@ -82,14 +95,16 @@ class ReportsControllerTestCase extends CoreTestCase {
 		));
 		$data = array(
 			'Export' => array(
+				'type' => 'csv',
+				'header_aliases' => '',
 				'Ministry' => array(
 					'name'
 				)
 			)
 		);
 		
-		$this->Reports->RequestHandler->expectAt(0, '_header', array('Content-Type: application/vnd.ms-excel; charset=UTF-8'));
-		$this->Reports->RequestHandler->expectAt(1, '_header', array('Content-Disposition: attachment; filename="ministry-search-export.csv"'));
+		$this->Reports->RequestHandler->expectAt(0, '_header', array('Content-Disposition: attachment; filename="ministry-search-export.csv"'));
+		$this->Reports->RequestHandler->expectAt(1, '_header', array('Content-Type: application/vnd.ms-excel; charset=UTF-8'));	
 		$vars = $this->testAction('/reports/export/Ministry/testExportCsvWithSearch.csv', array(
 			'data' => $data
 		));
@@ -108,6 +123,8 @@ class ReportsControllerTestCase extends CoreTestCase {
 		));
 		$data = array(
 			'Export' => array(
+				'type' => 'print',
+				'header_aliases' => '',
 				'Ministry' => array(
 					'name'
 				)
