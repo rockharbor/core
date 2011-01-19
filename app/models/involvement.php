@@ -255,7 +255,7 @@ class Involvement extends AppModel {
  * @param integer $involvementId The involvement id
  * @return array A list of users
  */
-	function getInvolved($involvementId = null) {
+	function getInvolved($involvementId) {
 		$results = $this->Roster->find('all', array(
 			'conditions' => array(
 				'Roster.involvement_id' => $involvementId
