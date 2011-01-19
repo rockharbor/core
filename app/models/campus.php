@@ -114,5 +114,48 @@ class Campus extends AppModel {
 		));
 	}
 
+/**
+ * Gets all users involved in all involvements within a campus
+ *
+ * @param integer $ministryId The ministry id
+ * @param boolean $recursive Whether to pull for subministries as well
+ * @return array The user ids
+ */
+	function getInvolved($campusId, $recursive = false) {
+		$ministries = $this->Ministry->find('list', array(
+			'conditions' => array(
+				'Ministry.campus_id' => $campusId,
+				'or' => array(
+					'Ministry.parent_id' => null,
+					'or' => array(
+						'Ministry.parent_id' => 0,
+					)
+				)
+			)
+		));
+		return array_unique($this->Ministry->getInvolved(array_keys($ministries), $recursive));
+	}
+
+/**
+ * Gets all leaders of all involvements within a campus
+ *
+ * @param integer $ministryId The ministry id
+ * @param boolean $recursive Whether to pull for subministries as well
+ * @return array The user ids
+ */
+	function getLeaders($campusId, $recursive = false) {
+		$ministries = $this->Ministry->find('list', array(
+			'conditions' => array(
+				'Ministry.campus_id' => $campusId,
+				'or' => array(
+					'Ministry.parent_id' => null,
+					'or' => array(
+						'Ministry.parent_id' => 0,
+					)
+				)
+			)
+		));
+		return array_unique($this->Ministry->getLeaders(array_keys($ministries), $recursive));
+	}
 }
 ?>
