@@ -71,10 +71,10 @@ class MergeRequestsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, array());
 
 		$results = $this->User->find('count');
-		$this->assertEqual($results, 2);
+		$this->assertEqual($results, 4);
 
 		$results = $this->Profile->find('count');
-		$this->assertEqual($results, 2);
+		$this->assertEqual($results, 4);
 
 		$this->User->contain(array('Profile'));
 		$user = $this->User->read(null, 2);
@@ -94,10 +94,10 @@ class MergeRequestsControllerTestCase extends CoreTestCase {
 		$this->assertFalse($this->MergeRequests->MergeRequest->read(null, 1));
 
 		$result = $this->Profile->find('count');
-		$this->assertEqual($result, 2);
+		$this->assertEqual($result, 4);
 
 		$result = $this->User->find('count');
-		$this->assertEqual($result, 2);
+		$this->assertEqual($result, 4);
 	}
 
 }

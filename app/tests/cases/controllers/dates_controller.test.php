@@ -46,44 +46,7 @@ class DatesControllerTestCase extends CoreTestCase {
 			array(
 				'Involvement' => array(
 					'id' => 2,
-					'name' => 'Third Wednesday'					
-				)
-			)
-		);
-		$this->assertEqual($results, $expected);
-
-		$vars = $this->testAction('/dates/calendar/passed.json', array(
-			'return' => 'vars',
-			'method' => 'get',
-			'data' => array(
-				'start' => strtotime('4/1/2010'),
-				'end' => strtotime('4/30/2010')
-			)
-		));
-		$results = Set::extract('/Involvement', $vars['events']);
-		$expected = array(
-			array(
-				'Involvement' => array(
-					'id' => 1,
-					'name' => 'CORE 2.0 testing'
-				)
-			),
-			array(
-				'Involvement' => array(
-					'id' => 2,
 					'name' => 'Third Wednesday'
-				)
-			),
-			array(
-				'Involvement' => array(
-					'id' => 3,
-					'name' => 'Team CORE'
-				)
-			),
-			array(
-				'Involvement' => array(
-					'id' => 4,
-					'name' => 'Rock Climbing'
 				)
 			)
 		);

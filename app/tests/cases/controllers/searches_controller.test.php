@@ -147,7 +147,8 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$expected = array(
 			'jharris',
 			'rickyrockharbor',
-			'rickyrockharborjr'
+			'rickyrockharborjr',
+			'joe'
 		);
 		$this->assertEqual($results, $expected);
 
@@ -263,6 +264,8 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/User/username', $vars['results']);
 		$expected = array(
 			'jharris',
+			'joe',
+			'bob'
 		);
 		$this->assertEqual($results, $expected);
 		$this->Searches->Session->delete('FilterPagination');
@@ -278,6 +281,8 @@ class SearchesControllerTestCase extends CoreTestCase {
 			'jharris',
 			'rickyrockharbor',
 			'rickyrockharborjr',
+			'joe',
+			'bob'
 		);
 		$this->assertEqual($results, $expected);
 		$this->Searches->Session->delete('FilterPagination');

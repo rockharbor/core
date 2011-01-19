@@ -130,12 +130,14 @@ class UsersControllerTestCase extends CoreTestCase {
 	function testLogin() {
 		$lastLoggedIn = $this->Users->User->read('last_logged_in', 1);
 
+		// trick CoreTestCase into not setting up a user
+		$this->Users->Session->write('User', true);
 		$vars = $this->testAction('/users/login', array(
 			'data' => array(
 				'User' => array(
 					'username' => 'jharris',
 					'password' => 'password',
-					'remember_me' => false
+					'remember_me' => true
 				)
 			)
 		));
@@ -147,6 +149,9 @@ class UsersControllerTestCase extends CoreTestCase {
 
 		$result = $this->Users->Session->read('User.User.last_logged_in');
 		$this->assertNotEqual($result, $lastLoggedIn['User']['last_logged_in']);
+
+		$this->Users->Session->delete('User');
+		$this->Users->Session->delete('Auth');
 	}
 
 	function testForgotPassword() {
@@ -170,6 +175,8 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->loadFixtures('MergeRequest', 'Address', 'Household', 'HouseholdMember');
 		$MergeRequest = ClassRegistry::init('MergeRequest');
 
+		$oldCount = $this->Users->User->find('count');
+
 		$data = array(
 			'User' => array(
 				'username' => 'newusername'
@@ -190,14 +197,13 @@ class UsersControllerTestCase extends CoreTestCase {
 			'data' => $data
 		));
 		$this->assertEqual($this->Users->Session->read('Message.flash.element'), 'flash'.DS.'success');
-		$newUser = $this->Users->User->id;
 		$request = $MergeRequest->find('first', array(
 			'conditions' => array(
 				'model_id' => 1
 			)
 		));
 		$result = $request['MergeRequest']['merge_id'];
-		$this->assertEqual($result, $newUser);
+		$this->assertEqual($result, $oldCount+1);
 	}
 
 	function testAdd() {
@@ -299,25 +305,6 @@ class UsersControllerTestCase extends CoreTestCase {
 		$user = $this->Users->User->findByUsername('newusername');
 		$result = $user['Profile']['name'];
 		$this->assertEqual($result, 'Test User');
-	}
-
-	function testEditProfile() {
-		$this->Users->User->contain(array('Profile'));
-		$data = $this->Users->User->read(null, 1);
-		unset($data['User']['username']);
-		unset($data['User']['password']);
-		$data['Profile']['first_name'] = 'NotJeremy';
-
-		$vars = $this->testAction('/users/edit_profile/User:1', array(
-			'data' => $data
-		));
-
-		$this->assertEqual($this->Users->Session->read('Message.flash.element'), 'flash'.DS.'success');
-
-		$this->Users->User->contain(array('Profile'));
-		$user = $this->Users->User->read(null, 1);
-		$result = $user['Profile']['name'];
-		$this->assertEqual($result, 'NotJeremy Harris');
 	}
 
 }

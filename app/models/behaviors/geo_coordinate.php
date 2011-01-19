@@ -116,10 +116,6 @@ class GeoCoordinateBehavior extends ModelBehavior {
  * @access public
  */	
 	function geoCoordinates(&$Model, $q = '') {
-		if (is_array($q)) {
-			$q = $q['address_line_1'].' '.$q['address_line_2'].', '.$q['city'].', '.$q['state'].' '.$q['zip'];
-		}
-		
 		// get geo coords
 		return $this->_geocoords($q, $this->settings);
 	}
@@ -127,14 +123,18 @@ class GeoCoordinateBehavior extends ModelBehavior {
 /**
 * Get Lng/Lat from provider
 *
-* @param mixed $q Query
+* @param mixed $query Query
 * @param array $options Options
 * @access private
 * @return array
 */
-	private function _geocoords($q, $options = array()) { 
-		if (is_array($q)) {
-			$q = $q['address_line_1'].' '.$q['address_line_2'].', '.$q['city'].', '.$q['state'].' '.$q['zip'];
+	private function _geocoords($query, $options = array()) {
+		if (is_array($query)) {
+			$q = $query['address_line_1'];
+			if (isset($query['address_line_2'])) {
+				$q .= $query['address_line_2'];
+			}
+			$q .= ', '.$query['city'].', '.$query['state'].' '.$query['zip'];
 		}
 	
 		$data = array();

@@ -87,12 +87,12 @@ class Date extends AppModel {
  */
 	function beforeSave() {
 		// '0' out all unnecessary data
-		if ($this->data['Date']['all_day']) {
+		if (isset($this->data['Date']['all_day']) && $this->data['Date']['all_day']) {
 			$this->data['Date']['start_time'] = '00:00:00';
 			$this->data['Date']['end_time'] = '23:59:00';
 		}
 		
-		if (!$this->data['Date']['frequency']) {
+		if (isset($this->data['Date']['frequency']) && !$this->data['Date']['frequency']) {
 			$this->data['Date']['frequency'] = 1;	
 		}
 		

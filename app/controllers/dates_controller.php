@@ -122,7 +122,7 @@ class DatesController extends AppController {
 		$contain = array(
 			'Date' => array(
 				'conditions' => array(
-					'start_date <=' => $range['end']
+					'Date.start_date <=' => $range['end']
 				) 
 			)
 		);
@@ -135,15 +135,17 @@ class DatesController extends AppController {
 			'contain' => Set::merge($contain, $fcontain),
 			'conditions' => $conditions
 		));
-		
+
 		foreach ($involvements as $involvement) {
 			if (count($involvement['Date']) == 0) {
 				continue;
 			}
 			
 			$involvement_dates = $this->Date->generateDates($involvement['Involvement']['id'], $range);
-		
-			$events[] = array_merge($involvement, array('dates' => $involvement_dates));
+
+			if (!empty($involvement_dates)) {
+				$events[] = array_merge($involvement, array('dates' => $involvement_dates));
+			}
 		}
 		$this->set(compact('events'));
 	}

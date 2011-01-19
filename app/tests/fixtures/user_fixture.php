@@ -24,7 +24,7 @@ class UserFixture extends CakeTestFixture {
 		array(
 			'id' => 1,
 			'username' => 'jharris',
-			'password' => 'e8b43e0909e7adcda8d78698bf144ec517568ccc',
+			'password' => '005b8f6046bb2039063d9dde0678f9f28ae38827',
 			'active' => 1,
 			'created' => NULL,
 			'modified' => '2010-06-25 13:05:34',
@@ -35,7 +35,7 @@ class UserFixture extends CakeTestFixture {
 		array(
 			'id' => 2,
 			'username' => 'rickyrockharbor',
-			'password' => 'e8b43e0909e7adcda8d78698bf144ec517568ccc',
+			'password' => '005b8f6046bb2039063d9dde0678f9f28ae38827',
 			'active' => 1,
 			'created' => '2010-04-07 13:55:09',
 			'modified' => '2010-04-07 13:55:09',
@@ -46,7 +46,29 @@ class UserFixture extends CakeTestFixture {
 		array(
 			'id' => 3,
 			'username' => 'rickyrockharborjr',
-			'password' => 'e8b43e0909e7adcda8d78698bf144ec517568ccc',
+			'password' => '005b8f6046bb2039063d9dde0678f9f28ae38827',
+			'active' => 1,
+			'created' => '2010-04-07 13:55:09',
+			'modified' => '2010-04-07 13:55:09',
+			'last_logged_in' => NULL,
+			'flagged' => 0,
+			'group_id' => 8
+		),
+		array(
+			'id' => 4,
+			'username' => 'joe',
+			'password' => '005b8f6046bb2039063d9dde0678f9f28ae38827',
+			'active' => 0,
+			'created' => '2010-04-07 13:55:09',
+			'modified' => '2010-04-07 13:55:09',
+			'last_logged_in' => NULL,
+			'flagged' => 0,
+			'group_id' => 8
+		),
+		array(
+			'id' => 5,
+			'username' => 'bob',
+			'password' => '005b8f6046bb2039063d9dde0678f9f28ae38827',
 			'active' => 1,
 			'created' => '2010-04-07 13:55:09',
 			'modified' => '2010-04-07 13:55:09',
