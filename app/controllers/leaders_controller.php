@@ -89,7 +89,7 @@ class LeadersController extends AppController {
 				
 				foreach ($managers as $manager) {
 					$this->Notifier->notify(array(
-						'to' => $manager['User']['id'],
+						'to' => $manager,
 						'template' => 'leaders_add'
 					), 'notification');
 				}
@@ -166,9 +166,9 @@ class LeadersController extends AppController {
 			$managers = $this->Leader->getManagers($this->model, $this->modelId);
 			
 			foreach ($managers as $manager) {
-				if ($manager['User']['id'] != $this->passedArgs['User']) {
+				if ($manager != $this->passedArgs['User']) {
 					$this->Notifier->notify(array(
-						'to' => $manager['User']['id'],
+						'to' => $manager,
 						'template' => 'leaders_delete'
 					), 'notification');
 				}

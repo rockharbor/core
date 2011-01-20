@@ -17,45 +17,15 @@ class LeaderTestCase extends CoreTestCase {
 
 	function testGetManagers() {
 		$results = $this->Leader->getManagers('Involvement', 1);
-		$expected = array(
-			0 => array(
-				'Leader' => array(
-					'id' => 1,
-					'user_id' => 1,
-					'model' => 'Ministry',
-					'model_id' => 4,
-					'created' => '2010-03-30 14:09:19',
-					'modified' => '2010-03-30 14:09:19'
-				)
-			),
-			1 => array(
-				'Leader' => array(
-					'id' => 4,
-					'user_id' => 2,
-					'model' => 'Ministry',
-					'model_id' => 4,
-					'created' => '2010-03-30 14:09:19',
-					'modified' => '2010-03-30 14:09:19'
-				)
-			)
-		);
-		$results = Set::extract('/Leader', $results);
+		$expected = array(1, 2);
+		$this->assertEqual($results, $expected);
+
+		$results = $this->Leader->getManagers('Involvement', array(1, 2));
+		$expected = array(1, 2);
 		$this->assertEqual($results, $expected);
 
 		$results = $this->Leader->getManagers('Ministry', 1);
-		$expected = array(
-			0 => array(
-				'Leader' => array(
-					'id' => 3,
-					'user_id' => 1,
-					'model' => 'Campus',
-					'model_id' => 1,
-					'created' => '2010-06-04 10:14:00',
-					'modified' => '2010-06-04 10:14:00'
-				)
-			)
-		);
-		$results = Set::extract('/Leader', $results);
+		$expected = array(1);
 		$this->assertEqual($results, $expected);
 
 		$this->assertFalse($this->Leader->getManagers('Campus', 1));

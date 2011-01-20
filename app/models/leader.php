@@ -76,7 +76,7 @@ class Leader extends AppModel {
 		if (!$model || !$modelId || !($model == 'Involvement' || $model == 'Ministry')) {
 			return false;
 		}
-		
+
 		// get managers based on type
 		$this->bindModel(array(
 			'belongsTo' => array(
@@ -88,34 +88,34 @@ class Leader extends AppModel {
 
 		$parentModel = $model == 'Involvement' ? 'Ministry' : 'Campus';
 		
-		$this->{$model}->contain(false);
-		$item = $this->{$model}->read(
-			array(
+		$this->{$model}->recursive = -1;
+		$items = $this->{$model}->find('all', array(
+			'fields' => array(
 				$model.'.id',
 				strtolower($parentModel.'_id')
 			),
-			$modelId
-		);
+			'conditions' => array(
+				$model.'.id' => $modelId
+			)
+		));
 
-		if (empty($item)) {
+		if (empty($items)) {
 			return false;
 		}
 
-		$parentModelId = $item[$model][strtolower($parentModel.'_id')];
+		$parentModelId = Set::extract('/'.$model.'/'.strtolower($parentModel.'_id'), $items); //$item[$model][strtolower($parentModel.'_id')];
 
-		$managers = $this->find('all', array(
+		$managers = $this->find('list', array(
+			'fields' => array(
+				'id', 'user_id'
+			),
 			'conditions' => array(
 				'model' => $parentModel,
 				'model_id' => $parentModelId
-			),
-			'contain' => array(
-				'User' => array(
-					'Profile'
-				)
 			)
 		));
 			
-		return $managers;
+		return array_values($managers);
 	}
 }
 ?>
