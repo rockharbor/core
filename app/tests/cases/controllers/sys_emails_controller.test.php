@@ -34,18 +34,64 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 
+	function testMassCompose() {
+		$this->loadFixtures('Campus', 'Ministry', 'Leader');
+
+		$vars = $this->testAction('/sys_emails/compose/model:Involvement/Involvement:1/submodel:Roster');
+		$results = Set::extract('/User/id', $vars['toUsers']);
+		sort($results);
+		$this->assertEqual($results, array(2, 3));
+
+		$this->SysEmails->Session->write('MultiSelect.test', array(
+			'selected' => array(1,2),
+			'search' => array()
+		));
+		$vars = $this->testAction('/sys_emails/compose/test/model:Involvement/submodel:Roster');
+		$results = Set::extract('/User/id', $vars['toUsers']);
+		sort($results);
+		$this->assertEqual($results, array(1, 2, 3));
+
+		$this->SysEmails->Session->write('MultiSelect.test', array(
+			'selected' => array(1, 2),
+			'search' => array()
+		));
+		$vars = $this->testAction('/sys_emails/compose/test/model:Campus/submodel:Leader');
+		$results = Set::extract('/User/id', $vars['toUsers']);
+		sort($results);
+		$this->assertEqual($results, array());
+
+		$this->SysEmails->Session->write('MultiSelect.test', array(
+			'selected' => array(1),
+			'search' => array()
+		));
+		$vars = $this->testAction('/sys_emails/compose/test/model:Ministry/submodel:Roster');
+		$results = Set::extract('/User/id', $vars['toUsers']);
+		sort($results);
+		$this->assertEqual($results, array(5));
+
+		$vars = $this->testAction('/sys_emails/compose/model:Ministry/Ministry:1');
+		$results = Set::extract('/User/id', $vars['toUsers']);
+		sort($results);
+		$this->assertEqual($results, array(5));
+
+		$vars = $this->testAction('/sys_emails/compose/model:Campus/Campus:1');
+		$results = Set::extract('/User/id', $vars['toUsers']);
+		sort($results);
+		$this->assertEqual($results, array(1, 5));
+
+		$this->SysEmails->Session->write('MultiSelect.test', array(
+			'selected' => array(1, 2),
+			'search' => array()
+		));
+		$vars = $this->testAction('/sys_emails/compose/test/model:Involvement/submodel:Manager');
+		$results = Set::extract('/User/id', $vars['toUsers']);
+		sort($results);
+		$this->assertEqual($results, array(1, 2));
+	}
+
 	function testComposeToUser() {
 		$vars = $this->testAction('/sys_emails/compose/model:User/User:1');
-		$this->assertPattern("/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/", $vars['cacheuid']);
 		$this->assertEqual($vars['toUsers'][0]['User']['username'], 'jharris');
-
-		$vars = $this->testAction('/sys_emails/compose/model:User/User:1,2');
-		$results = Set::extract('/User/username', $vars['toUsers']);
-		$expected = array(
-			'jharris',
-			'rickyrockharbor'
-		);
-		$this->assertEqual($results, $expected);
 
 		$this->SysEmails->Session->write('MultiSelect.test', array(
 			'selected' => array(
@@ -72,35 +118,6 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$this->assertPattern('/1\/1/', $this->SysEmails->Session->read('Message.flash.message'));
 		$this->assertEqual($this->SysEmails->Session->read('Message.flash.element'), 'flash'.DS.'success');
 		$this->assertEqual($vars['content'], 'Test message');
-	}
-
-	function testComposeToRoster() {
-		$vars = $this->testAction('/sys_emails/compose/model:Involvement/Involvement:1');
-		$this->assertPattern("/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/", $vars['cacheuid']);
-
-		$results = Set::extract('/User/username', $vars['toUsers']);
-		$expected = array(
-			'rickyrockharbor',
-			'rickyrockharborjr'
-		);
-		$this->assertEqual($results, $expected);
-
-		$vars = $this->testAction('/sys_emails/compose/'.$vars['cacheuid'].'/model:User', array(
-			'data' => array(
-				'SysEmail' => array(
-					'body' => 'Test message',
-					'subject' => 'Email'
-				)
-			)
-		));
-		$results = Set::extract('/User/username', $vars['toUsers']);
-		$expected = array(
-			'rickyrockharbor',
-			'rickyrockharborjr'
-		);
-		$this->assertEqual($results, $expected);
-		$this->assertPattern('/2\/2/', $this->SysEmails->Session->read('Message.flash.message'));
-		$this->assertEqual($this->SysEmails->Session->read('Message.flash.element'), 'flash'.DS.'success');
 	}
 
 }

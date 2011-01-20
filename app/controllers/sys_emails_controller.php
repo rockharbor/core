@@ -103,69 +103,65 @@ class SysEmailsController extends AppController {
  * Creates a new email
  *
  * Get's list of email addresses from previously cached search results.
- * Allows for an attachment. If the passed args are sent, the user email(s)
- * for that model and id will be used instead.
+ * Allows for an attachment.
+ *
+ * There are a few different options for mass emails. The first is by simply
+ * supplying two passed args, `model` and `$model`. These will run the `getInvolved()`
+ * function on the passed model.
+ *
+ * If a `model` passed arg is sent as well as a multi-select id, all of those
+ * id's for that model will be pulled.
+ *
+ * Additionally, you can pull the 'Leaders' or 'Managers' of specific models by
+ * passing the `submodel` passed arg along with the `model` passed arg, where
+ * `submodel` is Leader, Roster or Manager. Note: Managers are leaders who are
+ * *above* the current model, i.e., Involvement managers are leaders of that
+ * Involvement's Ministry.
+ *
+ * If no passed args are sent but a multi-select id is, it's assumed that the
+ * selections are Users.
  *
  * ### Passed args:
  * - string $model A model to look up
  * - integer [$model] The id of the model
+ * - string `submodel` A special key for mass emails, like emailing all of the
+ * leaders within a set of involvements. Valid: 'Leader', 'Roster'
  *
  * @param string $uid The unique cache id of the list to pull
  */ 
 	function compose($uid = null) {
 		$User = ClassRegistry::init('User');
-		
-		// check if we're emailing an involvement and we don't have a saved search
-		if (isset($this->passedArgs['model']) && isset($this->passedArgs[$this->passedArgs['model']]) && !$uid) {
-			switch ($this->passedArgs['model']) {
-				case 'User':
-					$toUsers = explode(',', $this->passedArgs[$this->passedArgs['model']]);
-				break;
-				case 'Involvement':
-					$involvementRoster = ClassRegistry::init('Involvement')->find('all', array(
-						'conditions' => array(
-							'Involvement.id' => $this->passedArgs[$this->passedArgs['model']]
-						),
-						'contain' => array(
-							'Roster'
-						)
-					));
 
-					$toUsers = Set::extract('/Roster/user_id', $involvementRoster);
-				break;
+		$modelIds = $this->MultiSelect->getSelected($uid);
+		$toUsers = $modelIds;
+		if (isset($this->passedArgs['model'])) {
+			if (isset($this->passedArgs[$this->passedArgs['model']])) {
+				$modelIds = array($this->passedArgs[$this->passedArgs['model']]);
+			}			
+			if (isset($this->passedArgs['submodel'])) {
+				switch ($this->passedArgs['submodel']) {
+					case 'Leader':
+						$toUsers = ClassRegistry::init($this->passedArgs['model'])->getLeaders($modelIds);
+					break;
+					case 'Manager':
+						$toUsers = ClassRegistry::init('Leader')->getManagers($this->passedArgs['model'], $modelIds);
+					break;
+					default:
+						$toUsers = ClassRegistry::init($this->passedArgs['model'])->getInvolved($modelIds);
+					break;
+				}
+			} else {
+				switch ($this->passedArgs['model']) {
+					case 'User':
+						$toUsers = $modelIds;
+					break;
+					default:
+						$toUsers = ClassRegistry::init($this->passedArgs['model'])->getInvolved($this->passedArgs[$this->passedArgs['model']]);
+					break;
+				}
 			}
-			
-			$search = array(
-				'conditions' => array(
-					'User.id' => $toUsers
-				)
-			);
-			
-			// no uid will be set, so set one and save this search
-			$this->MultiSelect->saveSearch($search);
-			$uid = $this->MultiSelect->_token;
-		} else {
-			$search = $this->MultiSelect->getSearch($uid);
-			$Model = ClassRegistry::init($this->passedArgs['model']);
-			$modelIds = $this->MultiSelect->getSelected($uid);
-			// assume they want all if they didn't select any
-			if (!empty($modelIds)) {
-				$search['conditions'][$Model->alias.'.'.$Model->primaryKey] = $modelIds;
-			}
-			if ($this->passedArgs['model'] !== 'User') {
-				$search['contain'] = array(
-					'User' => array(
-						'fields' => array(
-							'id'
-						)
-					)
-				);
-			}
-					
-			$toUsers = $Model->find('all', $search);
-			$toUsers = Set::extract('/User/id', $toUsers);
 		}
-		
+
 		$fromUser = $this->activeUser['User']['id'];
 		
 		if (!empty($this->data)) {
@@ -233,7 +229,6 @@ class SysEmailsController extends AppController {
 			)
 		));
 		$this->set('fromUser', $User->read(null, $fromUser));
-		$this->set('cacheuid', $uid);
 		$this->set('showAttachments', true);
 	}
 }	
