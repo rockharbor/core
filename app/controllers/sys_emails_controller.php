@@ -28,7 +28,7 @@ class SysEmailsController extends AppController {
  *
  * @var array
  */
-	var $helpers = array('Formatting');
+	var $helpers = array('Formatting', 'MultiSelect.MultiSelect');
 
 /**
  * Extra components for this controller

@@ -1,3 +1,6 @@
+<?php
+$this->MultiSelect->create();
+?>
 <div class="email">
 <h2>Compose Email</h2>
 
@@ -30,6 +33,7 @@
 		);
 		?>
 	</fieldset>
+	<?php if ($showAttachments): ?>
 	<div id="email_attachments">
 		<?php
 		/*
@@ -39,18 +43,17 @@
 		if ($showAttachments) {
 			$this->Js->buffer('CORE.register("DocumentAttachments", "email_attachments", "'.Router::url(array(
 				'controller' => 'sys_email_documents',
-				'SysEmail' => $cacheuid
+				'SysEmail' => $this->MultiSelect->token
 			)).'");');
-			
+
 			$this->Js->buffer('CORE.update("DocumentAttachments");');
 		}
 		?>
 	</div>
+	<?php endif; ?>
 		<?php echo $this->Form->create('SysEmail', array(
 			'default' => false,
-			'url' => array(
-				$cacheuid
-			)
+			'url' => $this->passedArgs
 		));?>
 	<fieldset>
 	<?php
