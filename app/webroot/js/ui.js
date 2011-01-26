@@ -394,7 +394,8 @@ CORE.confirmation = function(id, message, options) {
 		yesTitle: 'Yes',
 		onNo: 'CORE.closeModals("confirmation-modal");',
 		noTitle: 'Cancel',
-		onYes: ''
+		onYes: '',
+		title: 'Confirmation'
 	};
 		
 	var useOptions;
@@ -417,13 +418,17 @@ CORE.confirmation = function(id, message, options) {
 		event.preventDefault();
 		
 		var extraButtons = {};
-		extraButtons[useOptions.yesTitle] = function () {eval(useOptions.onYes)};
-		extraButtons[useOptions.noTitle] = function () {eval(useOptions.onNo)};
+		if (useOptions.yesTitle !== false) {
+			extraButtons[useOptions.yesTitle] = function () {eval(useOptions.onYes)};
+		}
+		if (useOptions.noTitle !== false) {
+			extraButtons[useOptions.noTitle] = function () {eval(useOptions.onNo)};
+		}
 
 		$('#confirmation-modal').dialog({
 			width: 300,
 			buttons: extraButtons,
-			title: 'Confirmation',
+			title: useOptions.title,
 			modal: true
 		});
 		$('#confirmation-modal').html(message);
@@ -538,6 +543,7 @@ CORE.autoComplete = function(id, datasource, onSelect) {
 			.mouseleave(function() {
 				self.deactivate();
 			});
+		CORE.attachModalBehavior();
 	};
 
 	$.ui.menu.prototype.activate = function(event, item) {
@@ -667,8 +673,13 @@ CORE.ajaxUpload = function(id, updateable) {
 			} else {
 				var model = input.attr('name').substring(input.attr('name').indexOf('[')+1, input.attr('name').indexOf(']'));
 				msg = response[model]['file'];
-				e.html(msg);
-				CORE.tooltip(button, e, {color:'#E03A14', autoShow: true, contentClass: 'qtip-content-error'});
+				CORE.confirmation(id+'_error', msg, {
+					yesTitle: false,
+					noTitle: 'Try Again',
+					title: 'Whoops',
+					onNo: 'CORE.closeModals("confirmation-modal");$("#'+id+'_error").remove();'
+				});
+				$('#'+id+'_error').click();
 			}
 		},
 		dataType: 'json'
