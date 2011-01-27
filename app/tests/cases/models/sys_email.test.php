@@ -1,53 +1,48 @@
 <?php
 /* SysEmail Test cases generated on: 2010-08-05 09:08:32 : 1281025892 */
 App::import('Lib', 'CoreTestCase');
-App::import('Model', array('SysEmail', 'Document'));
 
 class SysEmailTestCase extends CoreTestCase {
+
 	function startTest() {
-		$this->loadFixtures('Attachment');
+		$this->loadFixtures('Attachment', 'Queue');
 		$this->SysEmail =& ClassRegistry::init('SysEmail');
 		$this->Document =& ClassRegistry::init('Document');
+		$this->Queue =& ClassRegistry::init('QueueEmail.Queue');
 	}
 
 	function endTest() {
 		unset($this->SysEmail);
 		unset($this->Document);
+		unset($this->Queue);
 		ClassRegistry::flush();
 	}
 
-	function testGcAttachment() {
-		$this->SysEmail->gcAttachments('anothertest');
-		$results = $this->Document->find('all', array(
-			'fields' => array('id'),
+	function testGcAttachment() {		
+		$attachCount = $this->Document->find('count', array(
 			'conditions' => array(
 				'model' => 'SysEmail'
 			)
 		));
-		$this->assertEqual(count($results), 2);
-
-		$attachment = $this->Document->read(null, 1);
-		$attachment['Document']['created'] = date('Y-m-d');
-		$this->Document->save($attachment);
 		$this->SysEmail->gcAttachments();
-		$results = $this->Document->find('all', array(
-			'fields' => array('id'),
+		$results = $this->Document->find('count', array(
 			'conditions' => array(
 				'model' => 'SysEmail'
 			)
 		));
-		$this->assertEqual(count($results), 1);
-	}
+		$this->assertTrue($attachCount > 0);
+		$this->assertEqual($results, $attachCount);
 
-	function testGcAttachmentsAll() {
+		// simulate the queued emails were sent
+		$this->Queue->deleteAll(array('Queue.id > ' => 0));
+		$this->assertTrue($this->Queue->find('count') == 0);
 		$this->SysEmail->gcAttachments();
-		$results = $this->Document->find('all', array(
-			'fields' => array('id'),
+		$results = $this->Document->find('count', array(
 			'conditions' => array(
 				'model' => 'SysEmail'
 			)
 		));
-		$this->assertEqual(count($results), 0);
+		$this->assertEqual($results, 0);
 	}
 
 }
