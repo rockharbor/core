@@ -630,6 +630,7 @@ CORE.ajaxUpload = function(id, updateable) {
 		textAlign:'center',
 		cursor: 'pointer'
 	});
+	form.attr('action', form.attr('action')+'.json');
 
 	button.css({
 		width:'100%',
