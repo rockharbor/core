@@ -184,9 +184,6 @@ class SysEmailsController extends AppController {
 				$attachments[] = $attachment['Document']['dirname'].DS.$attachment['Document']['basename'];
 			}
 
-			// attach them to the email
-			$this->Email->attachments = $attachments;		
-			
 			$this->SysEmail->set($this->data);
 			
 			// send it!
@@ -196,7 +193,8 @@ class SysEmailsController extends AppController {
 					if ($this->Notifier->notify(array(
 						'from' => $fromUser,
 						'to' => $toUser,
-						'subject' => $this->data['SysEmail']['subject']
+						'subject' => $this->data['SysEmail']['subject'],
+						'attachments' => $attachments
 					), 'email')) {
 						$e++;
 					}

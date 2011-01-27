@@ -52,6 +52,15 @@ class NotifierTestCase extends CoreTestCase {
 		$this->assertTrue($this->Notifier->_send($user, array('from' => 2)));
 		$expected = 'ricky rockharbor <ricky@rockharbor.org>';
 		$this->assertEqual($this->Notifier->QueueEmail->from, $expected);
+
+		$this->Notifier->_send($user, array(
+			'from' => 2,
+			'attachments' => array(
+				'/path/to/file.txt'
+			)
+		));
+		$expected = array('/path/to/file.txt');
+		$this->assertEqual($this->Notifier->QueueEmail->attachments, $expected);
 	}
 
 	function testSave() {
