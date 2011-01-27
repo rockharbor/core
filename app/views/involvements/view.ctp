@@ -66,7 +66,8 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 					<h3>Leaders</h3>
 						<?php
 						foreach ($involvement['Leader'] as $leader) {
-							echo $this->Html->link($leader['User']['Profile']['name'], array('controller' => 'sys_emails', 'action' => 'compose', 'model' => 'User', 'User' => $leader['User']['id']), array('class' => 'icon-email', 'rel' => 'compose'));
+							$icon = $this->Html->tag('span', 'Email', array('class' => 'core-icon icon-email'));
+							echo $icon.$this->Html->link($leader['User']['Profile']['name'], array('controller' => 'sys_emails', 'action' => 'compose', 'model' => 'User', 'User' => $leader['User']['id']), array('rel' => 'compose'));
 							echo '<br />';
 						}
 					} ?>

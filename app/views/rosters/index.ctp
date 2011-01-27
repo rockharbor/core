@@ -53,8 +53,7 @@ $this->Paginator->options('#roster-tab');
 		)
 	));
 	?>
-	<fieldset>
-		<legend>Filter</legend>
+	<p>Filter</p>
 	<?php
 	echo $this->Form->input('Filter.Role', array(
 		'label' => false,
@@ -71,7 +70,6 @@ $this->Paginator->options('#roster-tab');
 	));
 	echo $this->Form->end('Filter');
 	?>
-	</fieldset>
 </div>
 <div>
 <?php

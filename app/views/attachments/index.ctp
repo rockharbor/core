@@ -21,7 +21,10 @@
 
 		?>
 		<div style="width:33%;float:left" class="<?php echo $class; ?>">
-			<?php echo $this->Html->link($item['alternative'], array('action' => 'download', $item['id']), array('class' => 'download')); ?>
+			<?php
+			$icon = $this->Html->tag('span', 'Download', array('class' => 'core-icon icon-download'));
+			echo $icon.$this->Html->link($item['alternative'], array('action' => 'download', $item['id']));
+			?>
 			<dl>
 				<?php
 				echo $this->Html->tag('dt', 'Uploaded:');

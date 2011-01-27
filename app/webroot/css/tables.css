@@ -1,11 +1,14 @@
 table {
 	width: 100%;
 }
+table tr {
+	line-height: 22px;
+}
 table.datatable tbody {
 
 }
 table.datatable tr {
-	height: 20px;
+	line-height: 20px;
 }
 table.datatable .altrow {
 	background: #ededed;
@@ -56,9 +59,9 @@ table.datatable th a.desc:after {
 	content: ' ⇡';
 }
 table.datatable td {
-	padding:5px;
+	padding: 2px 7px;
 	border-right: 1px solid #cccccc
 }
 table.datatable tbody tr:hover, .hover-row:hover {
-	background:#16b96d;
+	background:#d0f4e4;
 }

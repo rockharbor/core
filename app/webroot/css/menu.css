@@ -9,23 +9,47 @@ div#header {
 	height:29px;
 }
 div#header div#primary {
-	background: url(images/ui-bg_highlight-soft_20_343434_1x100.png) #343434 repeat-x 50% 50%;
+	background: rgb(48,48,48);
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.25, rgb(48,48,48)),
+		color-stop(0.61, rgb(68,68,69))
+	);
+	background-image: -moz-linear-gradient(
+		center bottom,
+		rgb(48,48,48) 25%,
+		rgb(68,68,69) 61%
+	);
 	height:100%;
 	margin:0;
 }
 div#header div#primary>ul>li {
-	border-right: 1px solid #706F6F;
+	border-right: 1px solid #838383;
 	height:100%;
 }
 div#header div#primary>ul>li>a:hover {
-	background: url(images/ui-bg_highlight-soft_75_16b96d_1x100.png) #16b96d repeat-x 50% 50%;
+	background: rgb(55,174,107);
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, rgb(55,174,107)),
+		color-stop(0.61, rgb(69,218,136))
+	);
+	background-image: -moz-linear-gradient(
+		center bottom,
+		rgb(55,174,107) 0%,
+		rgb(69,218,136) 61%
+	);
 	color: #343434;
 	text-decoration: none;
 }
 div#header div#primary>ul>li>a {
 	color:#FFF;
 	text-transform: uppercase;
-	font-family: LeagueGothicRegular,Lucida Sans,Helvetica,Arial,sans-serif;
+	font-family: LeagueGothicRegular,'Lucida Sans',Helvetica,Arial,sans-serif;
 	text-decoration: none;
 	font-style:normal;
 	font-size: 16px;
@@ -62,7 +86,7 @@ li#nav-profile .profile-name {
 	color:#303030;
 	text-transform: uppercase;
 	font-size:22px;
-	font-family: LeagueGothicRegular,Lucida Sans,Helvetica,Arial,sans-serif;
+	font-family: LeagueGothicRegular,'Lucida Sans',Helvetica,Arial,sans-serif;
 }
 li#nav-notifications {
 	position:relative;
@@ -147,23 +171,37 @@ div#header div#secondary {
 Search
 */
 #nav-search {
-	padding-left:5px;
+	padding-left:10px;
 	padding-top:5px;
 	border-right:none !important;
 }
 #nav-search button {
-	height:18px;
+	height:19px;
 	float:left;
 	-moz-border-radius: 0 4px 4px 0;
 	-webkit-border-radius: 0 4px 4px 0;
 	border-radius: 0 4px 4px 0;
 	margin-left:-2px;
-	background: #16b96d url(images/ui-bg_highlight-soft_75_16b96d_1x100.png) 50% 50% repeat-x;
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, rgb(55,174,107)),
+		color-stop(0.61, rgb(69,218,136))
+	);
+	background-image: -moz-linear-gradient(
+		center bottom,
+		rgb(55,174,107) 0%,
+		rgb(69,218,136) 61%
+	);
 	margin-top:0;
 }
 #nav-search input[type=text] {
 	font-size:9px;
 	float:left;
+	border:none;
+	-moz-border-radius: 4px 0 0 4px;
+	-webkit-border-radius: 4px 0 0 4px;
 }
 
 /*

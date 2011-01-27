@@ -2,11 +2,12 @@ html {
 	height:100%;
 }
 body {
-	background: #EAEAEA;
+	background: #e9e9e9;
 	font-family: 'Lucida Sans',Helvetica,Arial,sans-serif;
 	font-size:11px;
 	height:100%;
 	margin:0;
+	color: #838383;
 }
 div#wrapper {
 	background:#FFF;
@@ -20,6 +21,7 @@ h1, h2, h3 {
 	font-family: LeagueGothicRegular,'Lucida Sans',Helvetica,Arial,sans-serif;
 	font-weight:normal;
 	text-transform: uppercase;
+	color: #444445;
 }
 div .content-box h1, div.ui-dialog h1 { display:none; }
 h1 { font-size: 44px; margin:0 -10px; margin-bottom:10px; }
@@ -30,7 +32,7 @@ h3 { font-size: 16px; margin:0; text-transform: uppercase; }
 Highlight and flash classes
 */
 .highlight {
-	border-bottom: 2px dashed #000;
+	border-bottom: 1px dotted #000;
 }
 div.message {
 	clear: both;
@@ -74,7 +76,7 @@ p {
 	margin-bottom: 10px;
 }
 hr {
-	background: #666666;
+	background: #acacac;
 	border: 0;
 	height: 1px;
 	clear: both;
@@ -86,7 +88,7 @@ hr {
 Links
 */
 a {
-	color: #666666;
+	color: #444445;
 	text-decoration: none;
 }
 a:hover {
@@ -97,12 +99,12 @@ a:hover {
 Containers
 */
 div.content-box{	
-	background:#FFFFFF;
+	background:#ffffff;
 	padding: 10px;
 	margin:0 -12px;
 }
 div#content-container {
-	background:#FFF;
+	background:#ffffff;
 	padding-bottom:30px;
 }
 div#content {
@@ -121,25 +123,26 @@ span.breadcrumb {
 .font-large {
 	font-size: 52px;
 	font-family: LeagueGothicRegular,'Lucida Sans',Helvetica,Arial,sans-serif;
+	color: #444445;
 }
 .border-right {
-	border-right: 1px solid #cccccc;
+	border-right: 1px solid #acacac;
 }
 /* Ajax content boxes */
 div.content-box .content-box {
 	padding:10px;
 	margin:0;
-	border: 1px solid #666666;
-	background: #f2f2f2;
+	border: 1px solid #acacac;
+	background: #f1f1f1;
 	box-shadow:none;
 	-moz-box-shadow:none;
 	-webkit-box-shadow:none;
 }
 /** special containers, perhaps place somewhere else **/
 #details-toggle {
-	background: #f2f2f2;
+	background: #f1f1f1;
 	padding: 10px 0;
-	border-bottom: 1px solid #666666;
+	border-bottom: 1px solid #acacac;
 	height:120px; /* jQuery.slideToggle() needs a height to display the bg properly */
 }
 #details-toggle dl {
@@ -151,11 +154,11 @@ div.household-member, div.household-contact {
 	margin-bottom:10px;
 }
 div.household-member {
-	background: #f2f2f2;
+	background: #f1f1f1;
 }
 div.household-contact {
-	border: 1px solid #16b96d;
-	background: #B5FFDC;
+	border: 1px solid #45da88;
+	background: #d0f4e4;
 }
 div.receipt {
 	min-height: 150px;
@@ -163,7 +166,7 @@ div.receipt {
 	margin-bottom:10px;
 }
 div.receipt-title {
-	background:#f2f2f2;
+	background:#f1f1f1;
 	padding: 10px;
 	font-weight:bold;
 	border-bottom:1px solid #666666;
@@ -214,19 +217,42 @@ ul.core-admin-tabs {
 	padding:0;
 }
 ul.core-admin-tabs li {
-	background:url("images/ui-bg_highlight-soft_20_343434_1x100.png") repeat-x scroll 50% 50% #343434;
+	background: rgb(48,48,48);
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.25, rgb(48,48,48)),
+		color-stop(0.61, rgb(68,68,69))
+	);
+	background-image: -moz-linear-gradient(
+		center bottom,
+		rgb(48,48,48) 25%,
+		rgb(68,68,69) 61%
+	);
 	float:left;
 	font-size:10px;
-	font-style:italic;	
 	height:20px;
 	line-height:20px;
 	margin-left:5px;
 }
 ul.core-admin-tabs li:hover {
-	background:url("images/ui-bg_highlight-soft_75_16b96d_1x100.png") repeat-x scroll 50% 50% #16B96D;
+	background: rgb(55,174,107);
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, rgb(55,174,107)),
+		color-stop(0.61, rgb(69,218,136))
+	);
+	background-image: -moz-linear-gradient(
+		center bottom,
+		rgb(55,174,107) 0%,
+		rgb(69,218,136) 61%
+	);
 }
 ul.core-admin-tabs a {
-	color:#FFFFFF;
+	color:#ffffff;
 	padding:0 5px;
 	display:block;
 }
@@ -277,11 +303,8 @@ Tooltip
 Form Styles
 */
 input.search-out {
-	color: #CCC;
+	color: #acacac !important;
 	font-style: italic;
-}
-input.search-over {
-	color: #807980;	
 }
 form {
 	padding-bottom:10px;
@@ -293,22 +316,36 @@ div.toggle, div.checkbox, div.checkbox label {
 	display: inline-block;
 }
 label {
-	color: #cccccc;
+	color: #acacac;
 	display: block;
+	margin-bottom: 3px;
 }
 fieldset {
-	border-top: 1px solid #cccccc;
+	border-top: 1px solid #acacac;
 	padding: 5px 0;
 }
 legend {
 	background: #ffffff;
+	color: #838383;
 	padding-right: 5px;
 }
-input[type=text] {
+input, textarea {
+	color: #838383;
+	border: 1px solid #838383;
+	font-family: 'Lucida Sans',Helvetica,Arial,sans-serif;
+	margin-right:0px;
+}
+input[type=text], textarea {
 	padding: 3px;
-	background: #F2F2F2;
-	border: 1px solid #666666;
-	color: #666666;
+	background: #f1f1f1;
+}
+select {
+	color: #838383;
+	border: 1px solid #838383;
+	padding: 2px;
+	background: #f1f1f1;
+	font-family: 'Lucida Sans',Helvetica,Arial,sans-serif;
+	font-size: 11px;
 }
 
 /*
@@ -319,23 +356,33 @@ dl {
 }
 dt {
 	float:left;
-	color:#cccccc;
+	color:#acacac;
 	padding-right:5px;
 	margin-bottom: 5px;
 }
 dd {
 	margin-bottom: 5px;
+	color: #838383;
 }
 
 /*
 Custom Icons
 */
 .core-icon {
-	text-indent:-99999px;
-	height:16px;
-	width:16px;
-	overflow:hidden;
-	display:inline-block;
+	text-indent: -99999px;
+	height: 16px;
+	width: 16px;
+	overflow: hidden;
+	display: inline-block;
+	position: relative;
+	top: 3px;
+}
+.core-text-icon {
+	padding-left: 18px;
+}
+.icon-email {
+	background-image: url(images/ui-icons_454545_256x240.png);
+	background-position: -80px -96px;
 }
 .icon-delete {
 	background-image: url(images/ui-icons_454545_256x240.png);
@@ -351,8 +398,17 @@ Custom Icons
 .icon-edit:hover {
 	background-image: url(images/ui-icons_cd0a0a_256x240.png);
 }
+.icon-address {
+	background-image: url(images/ui-icons_454545_256x240.png);
+	background-position: -144px -144px;
+}
 .icon-print {
-
+	background-image: url(images/ui-icons_454545_256x240.png);
+	background-position: -160px -96px;
+}
+.icon-download {
+	background-image: url(images/ui-icons_454545_256x240.png);
+	background-position: -224px -48px;
 }
 .flagged {
 	background-image: url(images/ui-icons_cd0a0a_256x240.png);

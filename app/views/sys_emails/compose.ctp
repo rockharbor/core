@@ -1,9 +1,8 @@
 <?php
 $this->MultiSelect->create();
 ?>
+<h1>Compose Email</h1>
 <div class="email">
-<h2>Compose Email</h2>
-
 	<fieldset>
 	<?php
 		$toEmails = array();
@@ -34,14 +33,14 @@ $this->MultiSelect->create();
 		?>
 	</fieldset>
 	<?php if ($showAttachments): ?>
-	<div id="email_attachments">
+	<div id="document_attachments">
 		<?php
 		/*
 		we're going to use the attachment uploader here. after the email has been sent, the attachments will
 		be removed from the server
 		*/
 		if ($showAttachments) {
-			$this->Js->buffer('CORE.register("DocumentAttachments", "email_attachments", "'.Router::url(array(
+			$this->Js->buffer('CORE.register("DocumentAttachments", "document_attachments", "'.Router::url(array(
 				'controller' => 'sys_email_documents',
 				'SysEmail' => $this->MultiSelect->token
 			)).'");');

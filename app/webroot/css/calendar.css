@@ -3,6 +3,7 @@
 }
 .fc tr {
 	height:auto;
+	line-height: 1;
 }
 .fc-header {
 	border: 1px solid #cccccc !important;
@@ -70,7 +71,7 @@
 	display:none;
 }
 .fc-grid .event {
-	background:#16b96d;
+	background:#d0f4e4;
 }
 .fc-grid .fc-day-number {
 	font-family: LeagueGothicRegular,Lucida Sans,Helvetica,Arial,sans-serif;
