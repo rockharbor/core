@@ -130,8 +130,6 @@ class SysEmailsController extends AppController {
  * @param string $uid The unique cache id of the list to pull
  */ 
 	function compose($uid = null) {
-		// clear old attachments that people aren't using anymore
-		$this->SysEmail->gcAttachments();
 		$User = ClassRegistry::init('User');
 
 		$modelIds = $this->MultiSelect->getSelected();
@@ -201,9 +199,15 @@ class SysEmailsController extends AppController {
 				}
 
 				$this->Session->setFlash('Successfully sent '.$e.'/'.count($toUsers).' messages', 'flash'.DS.'success');
+				
+				// delete attachments related with this email
+				$this->SysEmail->gcAttachments($uid);
 			} else {
 				$this->Session->setFlash('Error sending messages', 'flash'.DS.'failure');
 			}			
+		} else {
+			// clear old attachments that people aren't using anymore
+			$this->SysEmail->gcAttachments();
 		}
 
 		$User->contain(array(
