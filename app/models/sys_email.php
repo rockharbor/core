@@ -84,28 +84,36 @@ class SysEmail extends AppModel {
 /**
  * Garbage collects email attachments
  *
- * Deletes all attachments that are older than 1 day. Or, if $uid is defined,
- * it will clear out attachments associated with that id.
+ * Deletes all attachments that are older than 1 day (orphaned). Or, if $uid is
+ * defined, it will clear out attachments associated with that id.
  *
  * @param string $uid A foreign_key to look for
- * @return boolean True on success, false on failure
  */
 	function gcAttachments($uid = null) {
 		// load documents
 		$Document = ClassRegistry::init('Document');
-		// Model::deleteAll() currently doesn't honor recursive (cake ticket #561)
 		$Document->recursive = -1;
+
 		if (!$uid) {
 			// delete all attachments that don't have a cache file associated
-			return $Document->deleteAll(array(
-				'Document.model' => 'SysEmail',
-				'Document.created <' => date('Y-m-d')
+			$results =  $Document->find('all', array(
+				'conditions' => array(
+					'Document.model' => 'SysEmail',
+					'Document.created <' => date('Y-m-d')
+				)
 			));
 		} else {
-			return $Document->deleteAll(array(
-				'Document.foreign_key' => $uid,
-				'Document.model' => 'SysEmail'
+			$results =  $Document->find('all', array(
+				'conditions' => array(
+					'Document.foreign_key' => $uid,
+					'Document.model' => 'SysEmail'
+				)
 			));
+		}
+		// iterate through each one so callbacks are called (specifically, so Media
+		// plugin removes the files)
+		foreach ($results as $result) {
+			$Document->delete($result['Document']['id']);
 		}
 	}
 }

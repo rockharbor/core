@@ -42,7 +42,8 @@ $this->MultiSelect->create();
 		if ($showAttachments) {
 			$this->Js->buffer('CORE.register("DocumentAttachments", "document_attachments", "'.Router::url(array(
 				'controller' => 'sys_email_documents',
-				'SysEmail' => $this->MultiSelect->token
+				'SysEmail' => $this->MultiSelect->token,
+				'mstoken' => $this->MultiSelect->token
 			)).'");');
 
 			$this->Js->buffer('CORE.update("DocumentAttachments");');
@@ -68,6 +69,10 @@ $this->MultiSelect->create();
 	</fieldset>
 <?php
 //$defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals:true})';
+$defaultSubmitOptions['url'] = array_merge(
+	array($this->MultiSelect->token),
+	$this->passedArgs
+);
 
 echo $this->Js->submit('Send', $defaultSubmitOptions);
 echo $this->Form->end();

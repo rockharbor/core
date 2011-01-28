@@ -179,7 +179,8 @@ class SysEmailsController extends AppController {
 			
 			$attachments = array();
 			foreach ($documents as $attachment) {
-				$attachments[] = MEDIA_TRANSFER.$attachment['Document']['dirname'].DS.$attachment['Document']['basename'];
+				list($filename, $ext) = explode('.', $attachment['Document']['basename']);
+				$attachments[$attachment['Document']['alternative'].'.'.$ext] = $attachment['Document']['file'];
 			}
 
 			$this->SysEmail->set($this->data);
@@ -201,7 +202,7 @@ class SysEmailsController extends AppController {
 				$this->Session->setFlash('Successfully sent '.$e.'/'.count($toUsers).' messages', 'flash'.DS.'success');
 				
 				// delete attachments related with this email
-				$this->SysEmail->gcAttachments($uid);
+				$this->SysEmail->gcAttachments($this->MultiSelect->_token);
 			} else {
 				$this->Session->setFlash('Error sending messages', 'flash'.DS.'failure');
 			}			

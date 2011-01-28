@@ -8,6 +8,12 @@ class SysEmailTestCase extends CoreTestCase {
 		$this->loadFixtures('Attachment');
 		$this->SysEmail =& ClassRegistry::init('SysEmail');
 		$this->Document =& ClassRegistry::init('Document');
+		// detach behaviors so they get deleted properly (since the files don't really exist)
+		$this->Document->Behaviors->detach('Media.Transfer');
+		$this->Document->Behaviors->detach('Media.Polymorphic');
+		$this->Document->Behaviors->detach('Media.Coupler');
+		ClassRegistry::removeObject('Document');
+		ClassRegistry::addObject('Document', $this->Document);
 	}
 
 	function endTest() {
@@ -17,7 +23,7 @@ class SysEmailTestCase extends CoreTestCase {
 	}
 
 	function testGcAttachment() {
-		$this->SysEmail->gcAttachments('anothertest');
+		$this->SysEmail->gcAttachments('anotherTest');
 		$results = $this->Document->find('all', array(
 			'fields' => array('id'),
 			'conditions' => array(
