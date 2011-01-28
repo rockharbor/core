@@ -134,7 +134,7 @@ class SysEmailsController extends AppController {
 		$this->SysEmail->gcAttachments();
 		$User = ClassRegistry::init('User');
 
-		$modelIds = $this->MultiSelect->getSelected($uid);
+		$modelIds = $this->MultiSelect->getSelected();
 		$toUsers = $modelIds;
 		if (isset($this->passedArgs['model'])) {
 			if (isset($this->passedArgs[$this->passedArgs['model']])) {
@@ -175,13 +175,13 @@ class SysEmailsController extends AppController {
 			$Document->recursive = -1;
 			$documents = $Document->find('all', array(
 				'conditions' => array(
-					'foreign_key' => $uid
+					'foreign_key' => $this->MultiSelect->_token
 				)
 			));
 			
 			$attachments = array();
 			foreach ($documents as $attachment) {
-				$attachments[] = $attachment['Document']['dirname'].DS.$attachment['Document']['basename'];
+				$attachments[] = MEDIA_TRANSFER.$attachment['Document']['dirname'].DS.$attachment['Document']['basename'];
 			}
 
 			$this->SysEmail->set($this->data);
