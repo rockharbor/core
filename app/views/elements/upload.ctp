@@ -13,15 +13,20 @@ if (!isset($title)) {
 $type = ucfirst($type);
 $uid = uniqid();
 
+$url = array(
+	'action' => 'upload',
+	'controller' => Inflector::tableize($model.$type),
+	'model' => $model,
+	$model => ${$model},
+	null, // force a create instead of update
+);
+if (isset($this->passedArgs['mstoken'])) {
+	$url['mstoken'] = $this->passedArgs['mstoken'];
+}
+
 echo $this->Form->create($model, array(
 	'type' => 'file',
-	'url' => array(
-		'action' => 'upload',
-		'controller' => Inflector::tableize($model.$type),
-		'model' => $model,
-		$model => ${$model},
-		null, // force a create instead of update
-	),
+	'url' => $url,
 	'id' => 'Upload'.$model.'Form'.$uid
 ));
 echo $this->Form->hidden($type.'.foreign_key', array('value' => ${$model}));

@@ -81,9 +81,10 @@ class MultiSelectComponent extends Object {
 			}
 		}
 
-		if (!isset($this->controller->params['named']['mstoken'])) {
+		if (!isset($this->controller->passedArgs['mstoken'])) {
 			$this->_token = String::uuid();
 			$this->controller->params['named']['mstoken'] = $this->_token;
+			$this->controller->passedArgs['mstoken'] = $this->_token;
 			$success = $this->Session->write('MultiSelect.'.$this->_token, array(
 				'selected' => array(),
 				'search' => array(),
@@ -91,7 +92,7 @@ class MultiSelectComponent extends Object {
 				'created' => time()
 			));
 		} else {
-			$this->_token = $this->controller->params['named']['mstoken'];
+			$this->_token = $this->controller->passedArgs['mstoken'];
 		}
 	}
 
