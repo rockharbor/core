@@ -117,7 +117,7 @@ class MultiSelectHelper extends AppHelper {
 		$this->Js->buffer('$(".multi-select-box[value=all]").bind("click", function() {
 			selected = new Array();
 			
-			$(".multi-select-box").attr("checked", this.checked);
+			$(".multi-select-box").attr("checked", this.checked).change();
 			
 			url = "'.Router::url(array(
 				'controller' => 'selects',

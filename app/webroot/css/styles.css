@@ -335,7 +335,7 @@ input, textarea {
 	font-family: 'Lucida Sans',Helvetica,Arial,sans-serif;
 	margin-right:0px;
 }
-input[type=text], textarea {
+input[type=text], input[type=password], textarea {
 	padding: 3px;
 	background: #f1f1f1;
 }
@@ -346,6 +346,21 @@ select {
 	background: #f1f1f1;
 	font-family: 'Lucida Sans',Helvetica,Arial,sans-serif;
 	font-size: 11px;
+}
+.core-checkbox {
+	background: #f1f1f1;
+	border: 1px solid #838383;
+	height: 11px;
+	width: 11px;
+	float:left;
+	margin-right: 3px;
+}
+.core-checkbox:hover {
+	background: #d0f4e4;
+}
+.core-checkbox.selected {
+	background-image: url(images/ui-icons_454545_256x240.png);
+	background-position: -66px -147px; /* slightly different than it should be because checkbox is smaller than 16x16 */
 }
 
 /*
