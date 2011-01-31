@@ -39,6 +39,16 @@ class InvolvementLeadersController extends LeadersController {
 		parent::beforeFilter();
 		$this->modelId = isset($this->passedArgs[$this->model]) ? $this->passedArgs[$this->model] : null;
 	}
+
+/**
+ * Shows a leader dashboard
+ *
+ * @see LeadersController::dashboard()
+ */
+	function dashboard() {
+		$this->viewPath = 'involvement_leaders';
+		parent::dashboard();
+	}
 	
 }
 ?>

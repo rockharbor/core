@@ -78,16 +78,19 @@
 											echo '<br />'.$activeUser['ActiveAddress']['address_line_2'];
 										}
 										echo '<br />'.$activeUser['ActiveAddress']['city'].', '.$activeUser['ActiveAddress']['state'].' '.$activeUser['ActiveAddress']['zip'];
-										echo '<div>'.$this->Html->link('Change', array('controller' => 'profiles', 'action' => 'view', 'User' => $activeUser['User']['id']));
+										echo '<div>';
 										echo '</div>';
 										echo '</div>';
 									?>
 								</div>
 								<div style="clear:both" />
 							</li>
-							<li class="hover-row"><?php echo $this->Html->link('My Involvement', array('controller' => 'rosters', 'action' => 'involvement', 'User' => $activeUser['User']['id'])); ?></li>
-							<li class="hover-row"><?php echo $this->Html->link('My Household', array('controller' => 'households', 'User' => $activeUser['User']['id'])); ?></li>
-							<li class="hover-row"><?php echo $this->Html->link('My Payments', array('controller' => 'payments', 'User' => $activeUser['User']['id'])); ?></li>
+							<li class="hover-row"><?php echo $this->Html->link('My Profile', array('controller' => 'profiles', 'action' => 'view', 'User' => $activeUser['User']['id'])); ?></li>
+							<?php
+							if ($activeUser['Profile']['leading'] > 0):
+							?>
+							<li class="hover-row"><?php echo $this->Html->link('Leader Dashboard', array('controller' => 'involvement_leaders', 'action' => 'dashboard', 'User' => $activeUser['User']['id'])); ?></li>
+							<?php endif; ?>
 						</ul>
 					</li>
 					<li id="nav-notifications">

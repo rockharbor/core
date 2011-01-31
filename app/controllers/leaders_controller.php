@@ -28,7 +28,14 @@ class LeadersController extends AppController {
  *
  * @var array
  */
-	var $helpers = array('Formatting');
+	var $helpers = array('Formatting', 'MultiSelect.MultiSelect');
+
+/**
+ * Extra components for this controller
+ *
+ * @var array
+ */
+	var $components = array('MultiSelect.MultiSelect');
 	
 /**
  * Model::beforeFilter() callback
@@ -39,6 +46,7 @@ class LeadersController extends AppController {
  */ 
 	function beforeFilter() {
 		parent::beforeFilter();
+		$this->_editSelf('dashboard');
 	}
 	
 /**
@@ -54,6 +62,26 @@ class LeadersController extends AppController {
 		
 		$this->set('model', $this->model);
 		$this->set('modelId', $this->modelId);
+	}
+
+/**
+ * A list of Involvements, Ministries or Campuses a user is a leader for
+ *
+ * ### Passed Args:
+ * - `User` The user id
+ */
+	function dashboard() {
+		$this->paginate = array(
+			'conditions' => array(
+				'Leader.model' => $this->model,
+				'Leader.user_id' => $this->passedArgs['User']
+			),
+			'contain' => array(
+				$this->model
+			)
+		);
+		$this->set('leaders', $this->paginate());
+		$this->set('model', $this->model);
 	}
 	
 /**

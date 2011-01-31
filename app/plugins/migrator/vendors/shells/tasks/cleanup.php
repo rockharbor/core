@@ -21,6 +21,9 @@ class CleanupTask extends MigratorShell {
 				'Profile' => array(
 					'fields' => array('id', 'user_id', 'created_by')
 				)
+			),
+			'conditions' => array(
+				'Profile.created_by <>' => 0
 			)
 		));
 		foreach($data as $user) {

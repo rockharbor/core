@@ -2,33 +2,65 @@
 /* Leaders Test cases generated on: 2010-07-14 12:07:47 : 1279136267 */
 App::import('Lib', 'CoreTestCase');
 App::import('Component', array('QueueEmail.QueueEmail', 'Notifier'));
-App::import('Controller', 'InvolvementLeaders');
+App::import('Controller', array('InvolvementLeaders', 'MinistryLeaders', 'CampusLeaders'));
 
 Mock::generatePartial('QueueEmailComponent', 'MockQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('NotifierComponent', 'MockNotifierComponent', array('_render'));
-Mock::generatePartial('InvolvementLeadersController', 'TestLeadersController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
+Mock::generatePartial('InvolvementLeadersController', 'MockInvolvementLeadersController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
+Mock::generatePartial('MinistryLeadersController', 'MockMinistryLeadersController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
+Mock::generatePartial('CampusLeadersController', 'MockCampusLeadersController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
 
 class LeadersControllerTestCase extends CoreTestCase {
 
+	function _setLeaderController($name = 'Involvement') {
+		if (class_exists('Mock'.$name.'LeadersController')) {
+			$className = 'Mock'.$name.'LeadersController';
+			$this->Leaders =& new $className;
+			$this->Leaders->__construct();
+			$this->Leaders->constructClasses();
+			$this->Leaders->Component->initialize($this->Leaders);
+			$this->Leaders->Notifier = new MockNotifierComponent();
+			$this->Leaders->Notifier->initialize($this->Leaders);
+			$this->Leaders->Notifier->setReturnValue('_render', 'Notification body text');
+			$this->Leaders->Notifier->QueueEmail = new MockQueueEmailComponent();
+			$this->Leaders->Notifier->QueueEmail->setReturnValue('_smtp', true);
+			$this->Leaders->Notifier->QueueEmail->setReturnValue('_mail', true);
+			$this->testController = $this->Leaders;
+		}
+	}
+
 	function startTest() {
-		$this->Leaders =& new TestLeadersController();
-		$this->Leaders->__construct();
-		$this->Leaders->constructClasses();
-		// necessary fixtures
-		$this->loadFixtures('Leader', 'User', 'Profile', 'Involvement', 'Notification', 'Group');
-		$this->Leaders->Component->initialize($this->Leaders);
-		$this->Leaders->Notifier = new MockNotifierComponent();
-		$this->Leaders->Notifier->initialize($this->Ministries);
-		$this->Leaders->Notifier->setReturnValue('_render', 'Notification body text');
-		$this->Leaders->Notifier->QueueEmail = new MockQueueEmailComponent();
-		$this->Leaders->Notifier->QueueEmail->setReturnValue('_smtp', true);
-		$this->Leaders->Notifier->QueueEmail->setReturnValue('_mail', true);
-		$this->testController = $this->Leaders;
+		$this->loadFixtures('Leader', 'User', 'Profile', 'Involvement', 'Notification', 'Group', 'Ministry', 'Campus');
+		$this->_setLeaderController();
 	}
 
 	function endTest() {
-		unset($this->Leaders);		
+		unset($this->Leaders);
 		ClassRegistry::flush();
+	}
+
+	function testDashboard() {
+		$vars = $this->testAction('involvement_leaders/dashboard/User:1');
+		$results = Set::extract('/Leader/id', $vars['leaders']);
+		sort($results);
+		$this->assertEqual($results, array(2, 5));
+
+		$vars = $this->testAction('involvement_leaders/dashboard/User:100');
+		$results = Set::extract('/Leader/id', $vars['leaders']);
+		sort($results);
+		$this->assertEqual($results, array());
+
+		$this->_setLeaderController('Ministry');
+		$vars = $this->testAction('ministry_leaders/dashboard/User:2');
+		$results = Set::extract('/Leader/id', $vars['leaders']);
+		sort($results);
+		$this->assertEqual($results, array(4));
+
+		$this->_setLeaderController('Campus');
+		$vars = $this->testAction('campus_leaders/dashboard/User:1');
+		$results = Set::extract('/Leader/id', $vars['leaders']);
+		sort($results);
+		$this->assertEqual($results, array(3));
 	}
 
 	function testIndex() {
