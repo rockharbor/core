@@ -47,6 +47,10 @@ class Document extends MediaAppModel {
 			'createDirectory' => true,
 			'alternativeFile' => 100
 		),
+		'Media.Polymorphic',
+		'Media.Coupler' => array(
+			'baseDirectory' => MEDIA_TRANSFER
+		),
 		'Logable',
 	);
 

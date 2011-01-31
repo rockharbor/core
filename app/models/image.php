@@ -48,6 +48,9 @@ class Image extends AppModel {
 			'createDirectory' => true,
 		),
 		'Media.Polymorphic',
+		'Media.Coupler' => array(
+			'baseDirectory' => MEDIA_TRANSFER
+		),
 		'Logable',
 	);
 
