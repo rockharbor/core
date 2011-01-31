@@ -132,7 +132,7 @@ class SysEmailsController extends AppController {
 	function compose($uid = null) {
 		$User = ClassRegistry::init('User');
 
-		$modelIds = $this->MultiSelect->getSelected();
+		$modelIds = $this->MultiSelect->getSelected($uid);
 		$toUsers = $modelIds;
 		if (isset($this->passedArgs['model'])) {
 			if (isset($this->passedArgs[$this->passedArgs['model']])) {
