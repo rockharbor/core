@@ -31,6 +31,20 @@ class AddressesControllerTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 
+	function testToggleActivity() {
+		$this->testAction('/user_addresses/toggle_activity/0/Address:3');
+		$this->assertEqual($this->Addresses->Session->read('Message.flash.element'), 'flash'.DS.'failure');
+
+		$this->testAction('/user_addresses/toggle_activity/0/Address:1');
+		$this->assertEqual($this->Addresses->Session->read('Message.flash.element'), 'flash'.DS.'success');
+
+		$this->testAction('/user_addresses/toggle_activity/0/Address:2');
+		$this->assertEqual($this->Addresses->Session->read('Message.flash.element'), 'flash'.DS.'failure');
+
+		$this->testAction('/user_addresses/toggle_activity/1/Address:1');
+		$this->assertEqual($this->Addresses->Session->read('Message.flash.element'), 'flash'.DS.'success');
+	}
+
 	function testPrimary() {
 		$this->testAction('/user_addresses/primary/Address:1');
 		$address = $this->Addresses->Address->read(null, 1);

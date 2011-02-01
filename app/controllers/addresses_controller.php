@@ -210,6 +210,26 @@ class AddressesController extends AppController {
 	}
 
 /**
+ * Toggles the `active` field for an Address. You can not mark a primary Address
+ * as inactive.
+ *
+ * @param boolean $active What to mark the `active` field
+ */
+	function toggle_activity($active = true) {
+		if (!$this->passedArgs['Address']) {
+			$this->Session->setFlash('Invalid id for address', 'flash'.DS.'failure');
+			$this->redirect(array('action'=>'index'));
+		}
+		if ($this->Address->toggleActivity($this->passedArgs['Address'])) {
+			$this->Session->setFlash('Deactivated the address', 'flash'.DS.'success');
+			$this->redirect(array('action'=>'index'));
+		} else {
+			$this->Session->setFlash('Could not deactivate this address', 'flash'.DS.'failure');
+			$this->redirect(array('action'=>'index'));
+		}
+	}
+
+/**
  * Deletes an address
  *
  * @param integer $id The address id
