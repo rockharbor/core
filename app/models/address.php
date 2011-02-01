@@ -77,7 +77,10 @@ class Address extends AppModel {
  * @return string SQL string
  * @access public
  */ 
-	function distance($lat, $lng) {
+	function distance($lat = null, $lng = null) {
+		if (!$lat || !$lng) {
+			return null;
+		}
 		return "(
 			(ACOS(SIN($lat * PI() / 180) 
 			* SIN(Address.lat * PI() / 180) 
@@ -86,6 +89,28 @@ class Address extends AppModel {
 			* COS(($lng - Address.lng) * PI() / 180)) 
 			* 180 / PI()) * 60 * 1.1515
 		)"; 
-	}	
+	}
+
+/**
+ * Gets a list of Address ids that have the same model and foreign key as this
+ * address
+ *
+ * @param integer $id The id of the Address
+ * @return array List of ids
+ */
+	function related($id = null) {
+		$address = $this->read(null, $id);
+		if (!$address) {
+			return false;
+		}
+		$addresses = $this->find('list', array(
+			'conditions' => array(
+				'Address.foreign_key' => $address['Address']['foreign_key'],
+				'Address.model' => $address['Address']['model'],
+				'Address.id <>' => $id
+			)
+		));
+		return array_keys($addresses);
+	}
 }
 ?>
