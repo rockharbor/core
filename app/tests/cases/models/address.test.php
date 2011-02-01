@@ -28,5 +28,18 @@ class GroupTestCase extends CoreTestCase {
 		$this->assertFalse($results);
 	}
 
+	function testToggleActivity() {
+		$result = $this->Address->toggleActivity(3, false);
+		$this->assertFalse($result);
+		$result = $this->Address->toggleActivity(1, false);
+		$this->assertTrue($result);
+		$result = $this->Address->toggleActivity(2, false);
+		$this->assertFalse($result);
+		$result = $this->Address->toggleActivity(4, false);
+		$this->assertTrue($result);
+		$result = $this->Address->toggleActivity(1, true);
+		$this->assertTrue($result);
+	}
+
 }
 ?>

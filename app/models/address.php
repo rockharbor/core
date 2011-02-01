@@ -112,5 +112,21 @@ class Address extends AppModel {
 		));
 		return array_keys($addresses);
 	}
+
+/**
+ * Toggles Address active field. Only toggles if the address exists and you are
+ * not trying to deactivate the primary address.
+ *
+ * @param integer $id The address id
+ * @param boolean $active Whether to activate or deactivate
+ * @return boolean Success
+ */
+	function toggleActivity($id = null, $active = false) {
+		$address = $this->read(null, $id);
+		if ($address && !(!$active && $address['Address']['primary'])) {
+			return parent::toggleActivity($id, $active, false);
+		}
+		return false;
+	}
 }
 ?>

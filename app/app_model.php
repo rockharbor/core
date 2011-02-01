@@ -292,9 +292,9 @@ class AppModel extends Model {
 		}
 			
 		if ($this->hasField('active')) {
-			return $this->saveField('active', $active);
+			return $this->saveField('active', $active) ? true : false;
 		} else {
-			return true;
+			return false;
 		}
 	}
 	
