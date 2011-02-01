@@ -68,7 +68,7 @@ class PermissionHelperTestCase extends CakeTestCase {
 		));
 		$this->Permission->AppController = new MockAppController();
 		$this->Permission->AppController->setReturnValue('isAuthorized', true);
-		$this->assertTrue($this->Permission->check('/a/path'));
+		$this->assertTrue($this->Permission->check(array('controller' => 'a', 'action' => 'path')));
 	}
 
 }

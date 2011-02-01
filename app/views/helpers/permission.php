@@ -35,13 +35,6 @@ class PermissionHelper extends AppHelper {
 	var $activeUser = array();
 
 /**
- * The parameters to use in PermissionHelper::check()
- *
- * @var array
- */
-	var $params = array();
-
-/**
  * Additional helpers needed by this helper
  *
  * @var array
@@ -106,10 +99,13 @@ class PermissionHelper extends AppHelper {
  * @return string The link
  */
 	function link($title, $url = null, $options = array(), $confirmMessage = false) {
+		if (is_string($url)) {
+			$url = Router::parse($url);
+		}
 		if (!isset($url['action'])) {
 			$url['action'] = 'index';
 		}
-		if ($this->check($url['controller'].'/'.$url['action'])) {
+		if ($this->check($url)) {
 			$helper = 'Html';
 			$hasJs = array_intersect(array('update', 'success', 'complete', 'beforeSend', 'error'), array_keys($options));
 			if (!empty($hasJs)) {
@@ -123,8 +119,7 @@ class PermissionHelper extends AppHelper {
 /**
  * Checks if the logged in user has access to a controller/action path
  *
- * @param string $path The controller/action path
- * @param array $params Params to use when checking
+ * @param array $path The url to check
  * @param array $user The user to check
  * @return boolean
  * @see AppController::isAuthorized()
@@ -133,7 +128,9 @@ class PermissionHelper extends AppHelper {
 		if (empty($path)) {
 			return false;
 		}
+		$params = array();
 		if (is_array($path)) {
+			$params = array_diff_key($path, array('plugin' => null, 'controller' => null, 'action' => null));
 			$path = Router::url($path);
 		}
 		$view =& ClassRegistry::getObject('view');
@@ -143,6 +140,6 @@ class PermissionHelper extends AppHelper {
 			$this->AppController->constructClasses();
 		}
 		$this->AppController->activeUser = $view->viewVars['activeUser'];
-		return $this->AppController->isAuthorized($path, $this->params, $this->activeUser);
+		return $this->AppController->isAuthorized($path, $params, $this->activeUser);
 	}
 }
