@@ -66,9 +66,9 @@ Global Classes
 */
 div.content-box,
 .shadow {
-	box-shadow:0 0 0pt, 0 2px 8px #D7D7D7, 0 0 8px #ABABAB, 0 0 1px #D7D7D7;
-	-moz-box-shadow:0 0 0pt, 0 2px 8px #D7D7D7, 0 0 8px #ABABAB, 0 0 1px #D7D7D7;
-	-webkit-box-shadow:0 0 0pt, 0 2px 8px #D7D7D7, 0 0 8px #ABABAB, 0 0 1px #D7D7D7;
+	box-shadow:0 0 15px #999999;
+	-moz-box-shadow:0 0 15px #999999;
+	-webkit-box-shadow:0 0 15px #999999;
 }
 
 p {
