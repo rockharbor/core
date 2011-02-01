@@ -51,8 +51,9 @@ class AddressesController extends AppController {
  *
  * @access private
  */ 
-	function beforeFilter() {
+	function beforeFilter() {		
 		parent::beforeFilter();
+		$this->_editSelf('index', 'add', 'edit', 'delete');
 	}
 
 /**
@@ -69,10 +70,14 @@ class AddressesController extends AppController {
  * Shows a list of addresses
  */
 	function index() {
-		$this->set('data', $this->paginate('Address', array(
-			'foreign_key' => $this->modelId,
-			'model' => $this->model
-		)));
+		$this->paginate = array(
+			'conditions' => array(
+				'foreign_key' => $this->modelId,
+				'model' => $this->model
+			),
+			'order' => 'modified DESC'
+		);
+		$this->set('addresses', $this->paginate());
 	}
 
 /**
@@ -177,6 +182,31 @@ class AddressesController extends AppController {
 		if (empty($this->data)) {
 			$this->data = $this->Address->read(null, $id);
 		}
+	}
+
+/**
+ * Marks an address as primary
+ *
+ * @param integer $id The address id
+ */
+	function primary() {
+		if (!$this->passedArgs['Address']) {
+			$this->Session->setFlash('Invalid id for address', 'flash'.DS.'failure');
+			$this->redirect(array('action'=>'index'));
+		}
+		$related = $this->Address->related($this->passedArgs['Address']);
+		$this->Address->updateAll(
+			array(
+				'Address.primary' => 0
+			),
+			array(
+				'Address.id' => $related
+			)
+		);
+		$this->Address->id = $this->passedArgs['Address'];
+		$this->Address->saveField('primary', true);
+		$this->Session->setFlash('Address set as primary', 'flash'.DS.'success');
+		$this->redirect(array('action'=>'index'));
 	}
 
 /**

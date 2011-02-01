@@ -31,53 +31,32 @@ class AddressesControllerTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 
+	function testPrimary() {
+		$this->testAction('/user_addresses/primary/Address:1');
+		$address = $this->Addresses->Address->read(null, 1);
+		$this->assertEqual($address['Address']['primary'], 1);
+		$address = $this->Addresses->Address->read(null, 2);
+		$this->assertEqual($address['Address']['primary'], 0);
+		$address = $this->Addresses->Address->read(null, 3);
+		$this->assertEqual($address['Address']['primary'], 1);
+
+		$this->testAction('/user_addresses/primary/Address:2');
+		$address = $this->Addresses->Address->read(null, 1);
+		$this->assertEqual($address['Address']['primary'], 0);
+		$address = $this->Addresses->Address->read(null, 2);
+		$this->assertEqual($address['Address']['primary'], 1);
+		$address = $this->Addresses->Address->read(null, 3);
+		$this->assertEqual($address['Address']['primary'], 1);
+	}
+
 	function testIndex() {
 		$vars = $this->testAction('/user_addresses/index/User:1');
-		$results = $vars['data'];
-		$expected = array(
-			array(
-				'Address' => array(
-					'id' => 1,
-					'name' => 'Work',
-					'address_line_1' => '3080 Airway',
-					'address_line_2' => '',
-					'city' => 'Costa Mesa',
-					'state' => 'CA',
-					'zip' => 92886,
-					'lat' => 33.6732979,
-					'lng' => -117.8743896,
-					'created' => '2010-02-24 09:55:30',
-					'modified' => '2010-04-05 10:25:58',
-					'foreign_key' => 1,
-					'model' => 'User',
-					'primary' => 0,
-					'active' => 0
-				)
-			),
-			array(
-				'Address' => array(
-					'id' => 2,
-					'name' => 'Home',
-					'address_line_1' => '445 S. Pixley St.',
-					'address_line_2' => '',
-					'city' => 'Orange',
-					'state' => 'CA',
-					'zip' => 92868,
-					'lat' => 33.7815781,
-					'lng' => -117.8585281,
-					'created' => '2010-02-24 10:52:16',
-					'modified' => '2010-06-07 08:34:48',
-					'foreign_key' => 1,
-					'model' => 'User',
-					'primary' => 1,
-					'active' => 1
-				)
-			)
-		);
-		$this->assertEqual($results, $expected);
+		$results = Set::extract('/Address/id', $vars['addresses']);
+		sort($results);
+		$this->assertEqual($results, array(1, 2));
 
 		$vars = $this->testAction('/user_addresses/index/User:2');
-		$result = $vars['data'];
+		$result = $vars['addresses'];
 		$this->assertEqual($result, array());
 	}
 
