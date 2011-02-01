@@ -2,6 +2,14 @@
 App::import('Lib', 'CoreTestCase');
 App::import('Model', 'User');
 
+class UserProxy extends User {
+	public $name = 'User';
+	public $alias = 'User';
+	function afterFind($results, $primary) {
+		return $results;
+	}
+}
+
 class VirtualFieldModel extends AppModel {
 
 	var $useTable = false;
@@ -18,7 +26,7 @@ class AppModelTestCase extends CoreTestCase {
 
 	function startTest() {
 		$this->loadFixtures('User', 'Group', 'Profile');
-		$this->User =& ClassRegistry::init('User');
+		$this->User =& ClassRegistry::init('UserProxy');
 	}
 
 	function endTest() {
@@ -29,7 +37,8 @@ class AppModelTestCase extends CoreTestCase {
 	function testDefaultImage() {
 		$this->loadFixtures('Attachment');
 		$this->loadSettings();
-
+		$this->User->Image->Behaviors->detach('Media.Coupler');
+		
 		$find = $this->User->read(null, 1);
 		$this->assertFalse(isset($find['Image']));
 		$this->assertFalse(isset($find['ImageIcon']));
