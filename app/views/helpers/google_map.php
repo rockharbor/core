@@ -164,6 +164,9 @@ class GoogleMapHelper extends AppHelper {
  * @access public
  */
 	function addAddresses($addresses = array()) {
+		if (!array_key_exists(0, $addresses)) {
+			$addresses = array($addresses);
+		}
 		foreach ($addresses as $address) {
 			if ($address['lat'] != 0 && $address['lng'] != 0) {
 				$this->_buffer[] = $this->_createMarker($address);
@@ -182,18 +185,13 @@ class GoogleMapHelper extends AppHelper {
 		if (empty($this->_addresses)) {
 			return null;
 		}
-		if (!$this->center) {
-			// set center to average points
-			$this->center = array(
-				Set::apply('/lat', $this->_addresses, 'array_sum')/count($this->_addresses),
-				Set::apply('/lng', $this->_addresses, 'array_sum')/count($this->_addresses)
-			);
-		}
+
+		$center = $this->_center();
 		$out = '';
 		$mapName = $this->_mapName;
 		$zoom = $this->zoom;
-		$centerLat = $this->center[0];
-		$centerLng = $this->center[1];
+		$centerLat = $center[0];
+		$centerLng = $center[1];
 		$mapType = $this->_mapTypesMap[$this->mapType];
 		
 		array_unshift($this->_buffer, "var $mapName = new google.maps.Map(document.getElementById('$mapName'), {
@@ -224,17 +222,60 @@ class GoogleMapHelper extends AppHelper {
 	}
 
 /**
+ * Creates a static map
+ *
+ * @param integer $width The width of the map
+ * @param integer $height The height of the map
+ * @return string Html image code
+ * @link http://code.google.com/apis/maps/documentation/staticmaps/
+ */
+	function image($width = 200, $height = 200) {
+		$center = $this->_center();
+
+		$markers = array();
+		foreach ($this->_addresses as $address) {
+			$markers[] = $address['lat'].','.$address['lng'];
+		}
+
+		$query = http_build_query(array(
+			'center' => $center[0].','.$center[1],
+			'zoom' => $this->zoom,
+			'size' => $width.'x'.$height,
+			'maptype' => $this->mapType,
+			'sensor' => 'false',
+			'markers' => implode('|', $markers)
+		));
+
+		return $this->Html->image('http://maps.google.com/maps/api/staticmap?'.$query, array('alt' => 'Google Map'));
+	}
+
+/**
+ * Resets the GoogleMapHelper back to its original state
+ */
+	function reset() {
+		$this->center = null;
+		$this->_addresses = array();
+		$this->_buffer = array();
+		$this->_markerCount = 0;
+		$this->_mapName = null;
+		$this->_createDiv = true;
+		$this->zoom = 4;
+		$this->mapType = 'road';
+		$this->infoWindowElement = 'google_map_info';
+	}
+
+/**
  * Creates the JavaScript for adding a marker to this map
  *
  * @param array $data The address data
  * @return string The JavaScript to buffer
  * @access protected
- */ 
+ */
 	function _createMarker($data = array()) {
 		if (empty($data)) {
 			return false;
 		}
-		
+
 		$default = array(
 			'lat' => null,
 			'lng' => null,
@@ -246,14 +287,14 @@ class GoogleMapHelper extends AppHelper {
 			'state' => null,
 			'zip' => null
 		);
-		
+
 		$data = array_merge($default, $data);
-		
+
 		$count = $this->_markerCount++;
 		$mapName = $this->_mapName;
-		
+
 		extract($data);
-		
+
 		if (!$lat || !$lng) {
 			$message = "GoogleMapHelper::_createMarker - ";
 			$message .= "You must at least provide the keys 'lat' and 'lng' in your address.";
@@ -266,7 +307,7 @@ class GoogleMapHelper extends AppHelper {
 			$marker .= "icon: '$icon',";
 		}
 		$marker .= "position: point$count, map: $mapName});";
-		
+
 		if ($image || $name || $city || $state || $zip) {
 			$View = ClassRegistry::getObject('view');
 			// trick debug_kit into not rendering the comments before and after the element
@@ -277,8 +318,25 @@ class GoogleMapHelper extends AppHelper {
 				infowindow.open($mapName, marker$count);
 			});";
 		}
-		
+
 		return $marker;
+	}
+
+/**
+ * Returns a numerically indexed array of the latitude and longitude, based on
+ * user-defined center or the average of the buffered addresses
+ *
+ * @return array
+ */
+	function _center() {
+		if (!$this->center) {
+			// set center to average points
+			$this->center = array(
+				Set::apply('/lat', $this->_addresses, 'array_sum')/count($this->_addresses),
+				Set::apply('/lng', $this->_addresses, 'array_sum')/count($this->_addresses)
+			);
+		}
+		return $this->center;
 	}
 }
 
