@@ -231,12 +231,17 @@ class AppController extends Controller {
 
 		// main group
 		$mainAccess = $this->Acl->check(compact('model', 'foreign_key'), $action);
+		$userId = $user['User']['id'];
+		$message = "User $userId of group $foreign_key allowed to access $action? [$mainAccess]";
+		CakeLog::write('auth', $message);
 		
 		$condAccess = false;
 		// check for conditional group
 		if (!empty($user['ConditionalGroup'])) {
 			$foreign_key = $user['ConditionalGroup']['id'];
 			$condAccess = $this->Acl->check(compact('model', 'foreign_key'), $action);
+			$message = "User $userId of group $foreign_key allowed to access $action? [$condAccess]";
+			CakeLog::write('auth', $message);
 		}
 
 		return $mainAccess || $condAccess;
