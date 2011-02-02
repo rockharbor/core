@@ -393,6 +393,7 @@ class InstallShell extends Shell {
 			'controllers/CoreDebugPanels',
 			'controllers/MultiSelect',
 			'controllers/Reports/export',
+			'controllers/Reports/map',
 			'controllers/InvolvementLeaders/dashboard',
 		),
 		'Campus Manager' => array(
@@ -437,6 +438,8 @@ class InstallShell extends Shell {
 			'controllers/InvolvementAddresses/add',
 			'controllers/InvolvementAddresses/delete',
 			'controllers/InvolvementAddresses/edit',
+			'controllers/InvolvementAddresses/primary',
+			'controllers/InvolvementAddresses/toggle_activity',
 			'controllers/PaymentOptions/add',
 			'controllers/PaymentOptions/delete',
 			'controllers/PaymentOptions/edit',
@@ -477,6 +480,8 @@ class InstallShell extends Shell {
 			'controllers/UserAddresses/delete',
 			'controllers/UserAddresses/edit',
 			'controllers/UserAddresses/index',
+			'controllers/UserAddresses/primary',
+			'controllers/UserAddresses/toggle_activity',
 			'controllers/Publications/subscriptions',
 			'controllers/Publications/toggle_subscribe',
 			'controllers/Profiles/edit'

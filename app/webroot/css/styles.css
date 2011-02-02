@@ -138,6 +138,19 @@ div.content-box .content-box {
 	-moz-box-shadow:none;
 	-webkit-box-shadow:none;
 }
+.core-iconable {
+	position:relative;
+}
+.core-iconable .core-icon-container {
+	position: absolute;
+	top: 0;
+	right:0;
+	display:none;
+}
+.core-iconable:hover .core-icon-container {
+	display:block;
+}
+
 /** special containers, perhaps place somewhere else **/
 #details-toggle {
 	background: #f1f1f1;
@@ -202,6 +215,24 @@ div.comment .comment-body {
 }
 div.comment .comment-title {
 	margin-bottom:5px;
+}
+div.mapset {
+	float:left;
+	margin-right: 10px;
+}
+div.mapset .map {
+	padding: 3px;
+	border: 1px solid #acacac;
+}
+div.mapset.history {
+	opacity: .5;
+}
+div.mapset.primary .map {
+	border: 1px solid #45da88;
+	background: #d0f4e4;
+}
+div.mapset .address {
+	margin-top: 5px;
 }
 
 /*

@@ -246,7 +246,8 @@ class GoogleMapHelper extends AppHelper {
 			'markers' => implode('|', $markers)
 		));
 
-		return $this->Html->image('http://maps.google.com/maps/api/staticmap?'.$query, array('alt' => 'Google Map'));
+		$alt = 'Google Map';
+		return $this->Html->image('http://maps.google.com/maps/api/staticmap?'.$query, compact('alt', 'width', 'height'));
 	}
 
 /**

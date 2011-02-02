@@ -1,4 +1,4 @@
-<h2>Add Address</h2>
+<h1>Add Address</h1>
 
 <div class="addresses">
 <?php if (!empty($addresses)): ?>
@@ -9,7 +9,6 @@
 		echo $this->Form->input('address_id');
 	?>
 <?php
-$defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals:true})';
 echo $this->Js->submit('Choose', $defaultSubmitOptions);
 echo $this->Form->end();
 ?>
@@ -33,7 +32,6 @@ echo $this->Form->end();
 	?>
 	</fieldset>
 <?php
-$defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals:true})'; 
 echo $this->Js->submit('Add', $defaultSubmitOptions);
 echo $this->Form->end();
 ?>

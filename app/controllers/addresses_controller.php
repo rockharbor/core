@@ -28,7 +28,7 @@ class AddressesController extends AppController {
  *
  * @var array
  */
-	var $helpers = array('SelectOptions');
+	var $helpers = array('SelectOptions', 'GoogleMap');
 
 /**
  * The name of the model this Address belongs to. Used for Acl
@@ -53,7 +53,7 @@ class AddressesController extends AppController {
  */ 
 	function beforeFilter() {		
 		parent::beforeFilter();
-		$this->_editSelf('index', 'add', 'edit', 'delete');
+		$this->_editSelf('index', 'add', 'edit', 'toggle_activity', 'primary');
 	}
 
 /**
@@ -75,7 +75,12 @@ class AddressesController extends AppController {
 				'foreign_key' => $this->modelId,
 				'model' => $this->model
 			),
-			'order' => 'modified DESC'
+			'order' => array(
+				'primary DESC',
+				'active DESC',
+				'modified DESC'
+			),
+			'recursive' => -1
 		);
 		$this->set('addresses', $this->paginate());
 	}
@@ -127,6 +132,7 @@ class AddressesController extends AppController {
 				);
 				$this->Address->id = $lastId;
 				$this->Session->setFlash('The address was saved!', 'flash'.DS.'success');
+				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash('Boo! The address could not be saved.', 'flash'.DS.'failure');
 			}
@@ -159,21 +165,8 @@ class AddressesController extends AppController {
 
 		if (!empty($this->data)) {
 			if ($this->Address->save($this->data)) {
-				if ($this->data['Address']['primary']) {
-					// mark all others as not primary
-					$this->Address->updateAll(
-						array(
-							'Address.primary' => 0
-						),
-						array(
-							'Address.foreign_key' => $this->data['Address']['foreign_key'],
-							'Address.model' => $this->data['Address']['model'],
-							'Address.id <>' => $id
-						)
-					);
-				}
-				$this->Address->id = $id;
 				$this->Session->setFlash('The address was saved!', 'flash'.DS.'success');
+				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash('Boo! The address could not be saved.', 'flash'.DS.'failure');
 			}
@@ -205,6 +198,7 @@ class AddressesController extends AppController {
 		);
 		$this->Address->id = $this->passedArgs['Address'];
 		$this->Address->saveField('primary', true);
+		$this->Address->saveField('active', true);
 		$this->Session->setFlash('Address set as primary', 'flash'.DS.'success');
 		$this->redirect(array('action'=>'index'));
 	}
@@ -220,7 +214,7 @@ class AddressesController extends AppController {
 			$this->Session->setFlash('Invalid id for address', 'flash'.DS.'failure');
 			$this->redirect(array('action'=>'index'));
 		}
-		if ($this->Address->toggleActivity($this->passedArgs['Address'])) {
+		if ($this->Address->toggleActivity($this->passedArgs['Address'], $active)) {
 			$this->Session->setFlash('Deactivated the address', 'flash'.DS.'success');
 			$this->redirect(array('action'=>'index'));
 		} else {

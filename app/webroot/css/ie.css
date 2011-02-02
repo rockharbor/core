@@ -8,3 +8,6 @@ div.content-box,
 	filter:
 		progid:DXImageTransform.Microsoft.Shadow(color=#999999direction=90,strength=8)
 }
+div.mapset.history {
+	filter:Alpha(Opacity=0);
+}

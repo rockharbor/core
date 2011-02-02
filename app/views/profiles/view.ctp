@@ -49,10 +49,15 @@
 					?>
 					</dl>
 					<hr>
-					<p>
+					<p class="core-iconable">
 					<?php
 					echo $this->Formatting->address($profile['ActiveAddress'], $profile['User']['id']);
 					?>
+						<span class="core-icon-container">
+						<?php
+						echo $this->Permission->link('Edit', array('controller' => 'user_addresses', 'action' => 'index', 'User' => $profile['User']['id']), array('class' => 'core-icon icon-edit', 'rel' => 'modal-content', 'title' => 'View Addresses'));
+						?>
+						</span>
 					</p>
 					<hr>
 					<p>
