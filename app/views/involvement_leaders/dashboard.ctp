@@ -76,7 +76,11 @@
 			<?php endforeach; ?>
 		</tbody>
 		<tfoot>
-			<?php echo $this->element('pagination', array('colCount' => 2)); ?>
+			<tr>
+				<td colspan="2">
+					<?php echo $this->element('pagination'); ?>
+				</td>
+			</tr>
 		</tfoot>
 	</table>
 </div>

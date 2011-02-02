@@ -221,9 +221,11 @@ $this->Paginator->options('#roster-tab');
 <?php endforeach; ?>
 	</tbody>
 		<tfoot>
-			<?php
-			echo $this->element('pagination', array('colCount' => $colCount));
-			?>
+			<tr>
+				<td colspan="<?php echo $colCount; ?>">
+					<?php echo $this->element('pagination'); ?>
+				</td>
+			</tr>
 		</tfoot>
 	</table>	
 <?php

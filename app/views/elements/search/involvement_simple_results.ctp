@@ -27,8 +27,10 @@ $this->Paginator->options(array(
 		<?php endforeach; ?>
 	</tbody>
 	<tfoot>
-		<?php
-		$this->element('pagination', array('colCount' => 2));
-		?>
+		<tr>
+			<td colspan="2">
+				<?php $this->element('pagination'); ?>
+			</td>
+		</tr>
 	</tfoot>
 </table>

@@ -44,11 +44,7 @@ $this->Paginator->options(array(
 	</div>
 	<?php endforeach; ?>
 </div>
-<table style="width:100%">
-	<tfoot>
-		<?php echo $this->element('pagination'); ?>
-	</tfoot>
-</table>
+<?php echo $this->element('pagination'); ?>
 <?php
 
 echo $this->Js->link('Add comment', 

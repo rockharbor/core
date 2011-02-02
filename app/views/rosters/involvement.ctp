@@ -73,7 +73,11 @@ $this->Paginator->options(array(
 				<?php endforeach; ?>
 			</tbody>
 			<tfoot>
-				<?php echo $this->element('pagination', array('colCount' => 3)); ?>
+				<tr>
+					<td colspan="3">
+						<?php echo $this->element('pagination'); ?>
+					</td>
+				</tr>
 			</tfoot>
 		</table>
 	</div>

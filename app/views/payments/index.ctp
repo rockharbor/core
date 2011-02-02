@@ -76,11 +76,7 @@ $this->Paginator->options(array(
 	<?php endforeach; ?>
 	</div>
 	<br clear="all" />
-	<table>
-		<tfoot>
-			<?php echo $this->element('pagination'); ?>
-		</tfoot>
-	</table>
+	<?php echo $this->element('pagination'); ?>
 	<ul class="core-admin-tabs">
 		<li>
 		<?php
