@@ -44,7 +44,7 @@ CORE.update = function(updateable, url) {
 	if (CORE.updateables[updateable] == undefined && !(updateable == 'none' || updateable == '')) {
 		updateable = 'content';
 	}
-	
+
 	if (updateable != 'none' && updateable != '') {
 		// check to see if it's an "updateable"
 		for (div in CORE.updateables[updateable]) {
@@ -145,11 +145,23 @@ CORE.unregister = function(alias) {
 }
 
 /**
+ * Registers the alias with the `content` updateable's data, so if there's a
+ * call to an undefined alias it will load it in content's div instead. Useful
+ * for pages that may or may not be loaded in ajax windows.
+ *
+ * @param alias string The alias to check for
+ * @return void;
+ */
+CORE.fallbackRegister = function(alias) {
+	if (CORE.updateables[alias] == undefined) {
+		CORE.updateables[alias] = CORE.updateables['content'];
+	}
+}
+
+/**
  * Inits CORE js
  */
-CORE.init = function() {
-	// finally, register content as a global "updateable"
-	CORE.register('content', 'content', location.href);
+CORE.init = function() {	
 	// init ui elements
 	CORE.initUI();
 	// init navigation
@@ -173,3 +185,5 @@ CORE.initUI = function() {
 	// tooltips
 	CORE.attachTooltipBehavior();
 }
+
+CORE.register('content', 'content', location.href);

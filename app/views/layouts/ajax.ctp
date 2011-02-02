@@ -25,7 +25,7 @@ echo $this->Session->flash();
 
 echo $content_for_layout;
 
-$this->Js->buffer('CORE.initUI();', true);
+$this->Js->buffer('CORE.initUI();');
 echo $this->Js->writeBuffer();
 
 //echo $this->element('sql_dump');

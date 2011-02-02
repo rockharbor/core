@@ -46,7 +46,7 @@
 		echo $this->Html->script('navigation');
 		
 		// setup
-		$this->Js->buffer('CORE.init()', true);
+		$this->Js->buffer('CORE.init();');
 		$this->Js->buffer('CORE.register("notifications", "nav-notifications", "/notifications/quick")');
 		echo $this->Js->writeBuffer();
 		echo $scripts_for_layout;
