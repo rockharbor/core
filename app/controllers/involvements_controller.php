@@ -56,21 +56,52 @@ class InvolvementsController extends AppController {
 /**
  * Shows a list of involvement opportunities
  */	
-	function index() {
-		$this->paginate = array(
-			'contain' => array(
-				'InvolvementType',
-				'Date',
-				'Ministry'
-			)
-		);
+	function index($viewStyle = 'column') {
+		$private = $this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id']);
+		$inactive = $private;
 
-		if (!$this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id'])) {
-			$this->paginate['conditions']['Involvement.private'] = false;
-			$this->paginate['conditions']['Ministry.private'] = false;
+		$conditions = array('Involvement.ministry_id' => $this->passedArgs['Ministry']);
+		if (empty($this->data)) {
+			$this->data = array(
+				'Involvement' => array(
+					'passed' => 0,
+					'inactive' => $inactive,
+					'private' => $private
+				)
+			);
+		}
+		if (!$this->data['Involvement']['inactive']) {
+			$conditions['Involvement.active'] = true;
+			$db = $this->Involvement->getDataSource();
+			$conditions[] = $db->expression('('.$this->Involvement->getVirtualField('passed').') = false');
+		}
+		if (!$this->data['Involvement']['private']) {
+			$conditions['Involvement.private'] = false;
 		}
 
-		$this->set('involvements', $this->paginate());
+		$this->paginate = array(
+			'contain' => array(
+				'Ministry' => array(
+					'fields' => array('id', 'name'),
+					'Campus' => array(
+						'fields' => array('id', 'name')
+					),
+					'ParentMinistry' => array(
+						'fields' => array('id', 'name')
+					)
+				)
+			),
+			'conditions' => $conditions,
+			'limit' => $viewStyle == 'column' ? 6 : 20
+		);
+
+		$involvements = $this->paginate();
+
+		foreach ($involvements as &$involvement) {
+			$involvement['dates'] = $this->Involvement->Date->generateDates($involvement['Involvement']['id'], array('limit' => 1));
+		}
+
+		$this->set(compact('viewStyle', 'involvements', 'private', 'inactive'));
 	}
 	
 /**

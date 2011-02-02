@@ -138,6 +138,11 @@ div.content-box .content-box {
 	-moz-box-shadow:none;
 	-webkit-box-shadow:none;
 }
+.ajax-clean .content-box {
+	padding:0 !important;
+	border:none !important;
+	background:transparent !important;
+}
 .core-iconable {
 	position:relative;
 }
@@ -233,6 +238,32 @@ div.mapset.primary .map {
 }
 div.mapset .address {
 	margin-top: 5px;
+}
+div.involvement-column {
+	margin-bottom: 10px;
+	height: 130px;
+}
+div.involvement-column .involvement-header {
+	background: #f1f1f1;
+	font-weight: bold;
+	line-height: 20px;
+	padding: 3px;
+	margin-bottom: 5px;
+}
+div.involvement-column .involvement-details {
+	width: 280px;
+	margin-right: 10px;
+	float:left;
+}
+div.involvement-column .involvement-date {
+	width: 90px;
+	float:left;
+}
+div.involvement-column .involvement-date div {
+	font-family: LeagueGothicRegular,'Lucida Sans',Helvetica,Arial,sans-serif;
+	font-size: 24px;
+	color: #444445;
+	line-height: 30px;
 }
 
 /*

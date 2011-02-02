@@ -1,71 +1,115 @@
-<div class="involvements index">
-	<h2><?php __('Involvements');?></h2>
-	<table cellpadding="0" cellspacing="0">
-	<tr>
-			<th><?php echo $this->Paginator->sort('id');?></th>
-			<th><?php echo $this->Paginator->sort('Ministry', 'Ministry.name');?></th>
-			<th><?php echo $this->Paginator->sort('Type', 'InvolvementType.name');?></th>
-			<th><?php echo $this->Paginator->sort('name');?></th>
-			<th><?php echo $this->Paginator->sort('description');?></th>
-			<th><?php echo $this->Paginator->sort('roster_limit');?></th>
-			<th><?php echo $this->Paginator->sort('roster_visible');?></th>
-			<th><?php echo $this->Paginator->sort('group_id');?></th>
-			<th><?php echo $this->Paginator->sort('signup');?></th>
-			<th><?php echo $this->Paginator->sort('take_payment');?></th>
-			<th><?php echo $this->Paginator->sort('offer_childcare');?></th>
-			<th><?php echo $this->Paginator->sort('active');?></th>
-			<th><?php echo $this->Paginator->sort('created');?></th>
-			<th><?php echo $this->Paginator->sort('modified');?></th>
-			<th class="actions"><?php __('Actions');?></th>
-	</tr>
-	<?php
-	$i = 0;
-	foreach ($involvements as $involvement):
-		$class = null;
-		if ($i++ % 2 == 0) {
-			$class = ' class="altrow"';
-		}
-	?>
-	<tr<?php echo $class;?>>
-		<td><?php echo $involvement['Involvement']['id']; ?>&nbsp;</td>
-		<td><?php echo $involvement['Ministry']['name']; ?>&nbsp;</td>
-		<td><?php echo $involvement['InvolvementType']['name']; ?>&nbsp;</td>
-		<td><?php echo $involvement['Involvement']['name']; ?>&nbsp;</td>
-		<td><?php echo $involvement['Involvement']['description']; ?>&nbsp;</td>
-		<td><?php echo $involvement['Involvement']['roster_limit']; ?>&nbsp;</td>
-		<td><?php echo $involvement['Involvement']['roster_visible']; ?>&nbsp;</td>
-		<td><?php echo $involvement['Involvement']['group_id']; ?>&nbsp;</td>
-		<td><?php echo $involvement['Involvement']['signup']; ?>&nbsp;</td>
-		<td><?php echo $involvement['Involvement']['take_payment']; ?>&nbsp;</td>
-		<td><?php echo $involvement['Involvement']['offer_childcare']; ?>&nbsp;</td>
-		<td><?php echo $involvement['Involvement']['active']; ?>&nbsp;</td>
-		<td><?php echo $involvement['Involvement']['created']; ?>&nbsp;</td>
-		<td><?php echo $involvement['Involvement']['modified']; ?>&nbsp;</td>
-		<td class="actions">
-			<?php echo $this->Html->link(__('View', true), array('action' => 'view', 'Involvement' => $involvement['Involvement']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', 'Involvement' => $involvement['Involvement']['id'])); ?>
-			<?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $involvement['Involvement']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $involvement['Involvement']['id'])); ?>
-		</td>
-	</tr>
-<?php endforeach; ?>
-	</table>
-	<p>
-	<?php
-	echo $this->Paginator->counter(array(
-	'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
-	));
-	?>	</p>
+<?php
 
-	<div class="paging">
-		<?php echo $this->Paginator->prev('<< '.__('previous', true), array(), null, array('class'=>'disabled'));?>
-	 | 	<?php echo $this->Paginator->numbers();?>
- |
-		<?php echo $this->Paginator->next(__('next', true).' >>', array(), null, array('class' => 'disabled'));?>
+$this->Js->buffer('CORE.fallbackRegister("involvement");');
+$this->Paginator->options(array(
+	'update' => '#involvement'
+));
+?>
+<h1>Involvement Opportunities</h1>
+<div class="content-box clearfix">
+	<div class="grid_10 alpha omega">
+		<div class="grid_5 alpha">
+			<?php
+			echo $this->Form->create(null, array(
+				'class' => 'core-filter-form update-involvement',
+				'url' => $this->passedArgs,
+			));
+			echo $this->Form->input('inactive', array(
+				'type' => 'checkbox',
+				'class' => 'toggle',
+				'div' => false
+			));
+			if ($private) {
+				echo $this->Form->input('private', array(
+					'type' => 'checkbox',
+					'class' => 'toggle',
+					'div' => false
+				));
+			} else {
+				echo $this->Form->hidden('private', array('value' => 0));
+			}
+			echo $this->Js->submit('Filter');
+			echo $this->Form->end();
+			?>
+		</div>
+		<div class="grid_5 omega" style="text-align: right">
+			<?php
+			switch ($viewStyle) {
+				case 'column':
+					echo $this->Js->link('List View', array('action' => 'index', 'list', 'Ministry' => $this->passedArgs['Ministry']), array('update' => '#involvement'));
+				break;
+				case 'list':
+					echo $this->Js->link('Column View', array('action' => 'index', 'column', 'Ministry' => $this->passedArgs['Ministry']), array('update' => '#involvement'));
+				break;
+			}
+			?>
+		</div>
 	</div>
-</div>
-<div class="actions">
-	<h3><?php __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('Involvement', true)), array('action' => 'add')); ?></li>
-	</ul>
+	<div class="grid_10 alpha omega">
+		<?php
+		$i = 0;
+		if ($viewStyle == 'list') {
+			echo '<table><tbody>';
+		}
+		foreach ($involvements as $involvement):
+			$class = ($i % 2 == 0) ? 'alpha' : 'omega';
+			$i++;
+			switch ($viewStyle) {
+			case 'column':
+			?>
+		<div class="involvement-column grid_5 <?php echo $class; ?>">
+			<div class="involvement-header"><?php echo $this->Html->link($involvement['Involvement']['name'], array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvement['Involvement']['id'])).$this->Formatting->flags('Involvement', $involvement); ?></div>
+			<div class="involvement-details">
+				<?php
+				echo $this->Html->link($involvement['Ministry']['Campus']['name'], array('controller' => 'campuses', 'action' => 'view', 'Campus' => $involvement['Ministry']['Campus']['id']));
+				echo ' > ';
+				if (!empty($involvement['Ministry']['ParentMinistry'])) {
+					echo $this->Html->link($involvement['Ministry']['ParentMinistry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $involvement['Ministry']['ParentMinistry']['id']));
+					echo ' > ';
+				}
+				echo $this->Html->link($involvement['Ministry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $involvement['Ministry']['id']));
+				echo '<hr>';
+				echo $this->Text->truncate(html_entity_decode($involvement['Involvement']['description']), 250, array('html' => true));
+				?>
+			</div>
+			<div class="involvement-date">
+				<?php
+				if (!empty($involvement['dates'])) {
+					echo $this->Html->tag('div', date('m/d/y', strtotime($involvement['dates'][0]['Date']['start_date'])));
+					echo $this->Html->tag('div', date('g:i', strtotime($involvement['dates'][0]['Date']['start_time'])), array('class' => date('a', strtotime($involvement['dates'][0]['Date']['start_time']))));
+				}
+				echo $this->Html->tag('div', $this->Html->link('Get Involved', array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvement['Involvement']['id']), array('class' => 'button')));
+				?>
+			</div>
+		</div>
+			<?php
+			break;
+			case 'list':
+			default:
+			echo '<tr>';
+			$breadcrumb = '';
+			$breadcrumb .= $this->Html->link($involvement['Ministry']['Campus']['name'], array('controller' => 'campuses', 'action' => 'view', 'Campus' => $involvement['Ministry']['Campus']['id']));
+			$breadcrumb .= ' > ';
+			if (!empty($involvement['Ministry']['ParentMinistry'])) {
+				$breadcrumb .= $this->Html->link($involvement['Ministry']['ParentMinistry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $involvement['Ministry']['ParentMinistry']['id']));
+				$breadcrumb .= ' > ';
+			}
+			$breadcrumb .= $this->Html->link($involvement['Ministry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $involvement['Ministry']['id']));
+			echo $this->Html->tag('td', $breadcrumb);
+			echo $this->Html->tag('td', $this->Html->link($involvement['Involvement']['name'], array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvement['Involvement']['id'])).$this->Formatting->flags('Involvement', $involvement));
+			$date = '&nbsp;';
+			if (!empty($involvement['dates'])) {
+				$date = $this->Formatting->datetime($involvement['dates'][0]['Date']['start_date'].' '.$involvement['dates'][0]['Date']['start_time']);
+			}
+			echo $this->Html->tag('td', $date);
+			echo '</tr>';
+			break;
+			}
+		endforeach;
+		if ($viewStyle == 'list') {
+			echo '</tbody></table>';
+		}
+		?>
+	</div>
+	<div><?php echo $this->element('pagination'); ?></div>
 </div>
