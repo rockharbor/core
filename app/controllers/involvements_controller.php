@@ -65,8 +65,8 @@ class InvolvementsController extends AppController {
 			$this->data = array(
 				'Involvement' => array(
 					'passed' => 0,
-					'inactive' => $inactive,
-					'private' => $private
+					'inactive' => 0,
+					'private' => 1
 				)
 			);
 		}
