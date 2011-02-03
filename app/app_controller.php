@@ -188,7 +188,7 @@ class AppController extends Controller {
 		}
 
 		// use custom authentication (password encrypt/decrypt)
-		$this->Auth->authenticate = $User;
+		$this->Auth->authenticate = new User();
 
 		// cache permissions
 		$this->Acl->Aro->Permission->Behaviors->attach('Cacher.cache', array('auto' => true));
