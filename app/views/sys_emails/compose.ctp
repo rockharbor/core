@@ -40,13 +40,22 @@ $this->MultiSelect->create();
 		be removed from the server
 		*/
 		if ($showAttachments) {
-			$this->Js->buffer('CORE.register("DocumentAttachments", "document_attachments", "'.Router::url(array(
-				'controller' => 'sys_email_documents',
-				'SysEmail' => $this->MultiSelect->token,
-				'mstoken' => $this->MultiSelect->token
-			)).'");');
+			$url = '';
+			$this->Js->buffer('CORE.register(
+				"DocumentAttachments",
+				"document_attachments",
+				"/sys_email_documents/index/SysEmail:'.$this->MultiSelect->token.'/mstoken:'.$this->MultiSelect->token.'"
+			);');
 
-			$this->Js->buffer('CORE.update("DocumentAttachments");');
+			echo $this->requestAction('/sys_email_documents/index', array(
+				'return',
+				'bare' => false,
+				'renderAs' => 'ajax',
+				'named' => array(
+					'SysEmail' => $this->MultiSelect->token,
+					'mstoken' => $this->MultiSelect->token
+				)
+			));
 		}
 		?>
 	</div>

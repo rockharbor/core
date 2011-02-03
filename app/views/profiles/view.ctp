@@ -188,27 +188,34 @@
 				<div class="grid_7 alpha">
 					<div id="involvement">
 						<?php
-						$url = Router::url(array(
-							'controller' => 'rosters',
-							'action' => 'involvement',
-							'User' => $profile['User']['id']
-						));
-						$this->Js->buffer('CORE.register("involvement", "involvement", "'.$url.'")');
-						$this->Js->buffer('CORE.update("involvement")');
+						$this->Js->buffer('CORE.register("involvement", "involvement", "/rosters/involvement/User:'.$profile['User']['id'].'")');
+						echo $this->requestAction('/rosters/involvement', array(
+							'renderAs' => 'ajax',
+							'bare' => false,
+							'return',
+							'named' => array(
+								'User' => $profile['User']['id']
+							),
+							'data' => null,
+							'form' => array('data' => null)
+							));
 						?>
 					</div>
 				</div>
 				<div class="grid_3 omega">
 					<div id="calendar">
 						<?php
-						$url = Router::url(array(
-							'controller' => 'dates',
-							'action' => 'calendar',
-							'model' => 'User',
-							'User' => $profile['User']['id']
+						$this->Js->buffer('CORE.register("calendar", "calendar", "/dates/calendar/model:User/User:'.$profile['User']['id'].'")');
+						echo $this->requestAction('/dates/calendar', array(
+							'renderAs' => 'ajax',
+							'bare' => false,
+							'return',
+							'named' => array(
+								'model' => 'User',
+								'User' => $profile['User']['id']
+							),
+							'data' => null
 						));
-						$this->Js->buffer('CORE.register("calendar", "calendar", "'.$url.'")');
-						$this->Js->buffer('CORE.update("calendar")');
 						?>
 					</div>
 				</div>
