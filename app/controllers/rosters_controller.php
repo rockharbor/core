@@ -133,7 +133,7 @@ class RostersController extends AppController {
 		));
 		$statuses = $this->Roster->statuses;
 
-		$this->set('rosters', $this->paginate());
+		$this->set('rosters', $this->FilterPagination->paginate());
 		$this->set(compact('involvement', 'rosterIds', 'householdIds', 'statuses', 'counts', 'roles'));
 	}
 
@@ -221,7 +221,7 @@ class RostersController extends AppController {
 				)
 			)
 		);
-		$rosters = $this->paginate('Involvement');
+		$rosters = $this->FilterPagination->paginate('Involvement');
 		foreach ($rosters as &$roster) {
 			$roster['Involvement']['dates'] = $this->Roster->Involvement->Date->generateDates($roster['Involvement']['id'], array('limit' => 1));
 		}

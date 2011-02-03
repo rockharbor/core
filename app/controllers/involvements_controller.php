@@ -35,7 +35,11 @@ class InvolvementsController extends AppController {
  *
  * @var array
  */
-	var $components = array('FilterPagination');
+	var $components = array(
+		'FilterPagination' => array(
+			'startEmpty' => false
+		)
+	);
 	
 /**
  * Model::beforeFilter() callback
@@ -61,21 +65,12 @@ class InvolvementsController extends AppController {
 		$inactive = $private;
 
 		$conditions = array('Involvement.ministry_id' => $this->passedArgs['Ministry']);
-		if (empty($this->data)) {
-			$this->data = array(
-				'Involvement' => array(
-					'passed' => 0,
-					'inactive' => 0,
-					'private' => 1
-				)
-			);
-		}
-		if (!$this->data['Involvement']['inactive']) {
+		if (empty($this->data) || !$this->data['Involvement']['inactive']) {
 			$conditions['Involvement.active'] = true;
 			$db = $this->Involvement->getDataSource();
 			$conditions[] = $db->expression('('.$this->Involvement->getVirtualField('passed').') = false');
 		}
-		if (!$this->data['Involvement']['private']) {
+		if (empty($this->data) || !$this->data['Involvement']['private']) {
 			$conditions['Involvement.private'] = false;
 		}
 
@@ -95,7 +90,7 @@ class InvolvementsController extends AppController {
 			'limit' => $viewStyle == 'column' ? 6 : 20
 		);
 
-		$involvements = $this->paginate();
+		$involvements = $this->FilterPagination->paginate();
 
 		foreach ($involvements as &$involvement) {
 			$involvement['dates'] = $this->Involvement->Date->generateDates($involvement['Involvement']['id'], array('limit' => 1));
