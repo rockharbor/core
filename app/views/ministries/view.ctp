@@ -1,84 +1,87 @@
-<div class="ministries view">
-<h2><?php  __('Ministry');?></h2>
-	<dl><?php $i = 0; $class = ' class="altrow"';?>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Id'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $ministry['Ministry']['id']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Name'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $ministry['Ministry']['name']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Description'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $ministry['Ministry']['description']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Parent Id'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $ministry['Ministry']['parent_id']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Lft'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $ministry['Ministry']['lft']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Rght'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $ministry['Ministry']['rght']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Campus Id'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $ministry['Campus']['name']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Group'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $ministry['Group']['name']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Created'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $ministry['Ministry']['created']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Modified'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $ministry['Ministry']['modified']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Active'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $ministry['Ministry']['active']; ?>
-			&nbsp;
-		</dd>
-	</dl>
-
-
-	<div class="involvements">
-	<h3>Involvement opportunities</h3>
-		<ul>
-			<?php foreach ($ministry['Involvement'] as $involvement): ?>
-			<li><?php echo $involvement['InvolvementType']['name'].': '.$this->Html->link($involvement['name'], array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvement['id'])); ?></li>
-			<?php endforeach; ?>
-		</ul>
+<span class="breadcrumb"><?php
+echo $this->Html->link($ministry['Campus']['name'], array('controller' => 'campuses', 'action' => 'view', 'Campus' => $ministry['Campus']['id']), array('escape' => false));
+if (!empty($ministry['ParentMinistry']['id'])) {
+	echo ' > ';
+	echo $this->Html->link($ministry['ParentMinistry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $ministry['ParentMinistry']['id']), array('escape' => false));
+}
+?></span>
+<h1><?php echo $ministry['Ministry']['name']; ?></h1>
+<div class="content-box clearfix">
+	<div class="grid_10 alpha omega">
+		<h2>Description</h2>
+		<p>
+			<?php 
+			echo html_entity_decode($ministry['Ministry']['description']);
+			if (!empty($ministry['Image'])) {
+				$this->Media->embed($ministry['Image']['file'], array('align' => 'right'));
+			}
+			?>
+		</p>
 	</div>
-
+	<?php if (!empty($ministry['ChildMinistry'])): ?>
+	<br />
+	<div class="grid_10 alpha omega">
+		<h2>Sub Ministries</h2>
+		<div class="subministries">
+			<?php
+			foreach ($ministry['ChildMinistry'] as $subministry):
+			?>
+			<div class="subministry">
+				<?php
+				echo $this->Html->link($subministry['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $subministry['id']), array('class' => 'subministry-title'));
+				echo '<hr>';
+				echo $this->Text->truncate(html_entity_decode($subministry['description']), 120, array('html' => true));
+				?>
+			</div>
+			<?php 
+			endforeach;
+			if (count($ministry['ChildMinistry']) > 5) {
+				$this->Html->script('misc/ministry', array('inline' => false, 'once' => true));
+				$this->Js->buffer('CORE_ministry.setup();');
+			}
+			?>
+		</div>
+		<div class="pagination" style="display:none; text-align: center;">
+			<?php
+			echo $this->Html->link('Prev', 'javascript:;', array('class' => 'prev-button'));
+			echo $this->Html->link('Next', 'javascript:;', array('class' => 'next-button'));
+			?>
+		</div>
+	</div>
+	<?php endif; ?>
+	<br />
+	<div class="grid_10 alpha omega">
+		<h2>Get Involved!</h2>
+	</div>
+	<div class="grid_10 alpha omega">
+		<div id="involvement" class="ajax-clean">
+		<?php
+			$url = Router::url(array(
+				'controller' => 'involvements',
+				'action' => 'index',
+				'column',
+				'Ministry' => $ministry['Ministry']['id']
+			));
+			$this->Js->buffer('CORE.register("involvement", "involvement", "'.$url.'")');
+			echo $this->requestAction($url, array('renderAs' => 'ajax', 'return', 'bare' => false));
+		?>
+		</div>
+	</div>
+	<ul class="core-admin-tabs">
+	<?php
+	$link = $this->Permission->link('Edit', array('action' => 'edit', 'Ministry' => $ministry['Ministry']['id']));
+	if ($link) {
+		echo $this->Html->tag('li', $link);
+	}
+	$link = $this->Permission->link('Add Involvement Opportunity', array('controller' => 'involvements', 'action' => 'add', 'Ministry' => $ministry['Ministry']['id']));
+	if ($link) {
+		echo $this->Html->tag('li', $link);
+	}
+	$link = $this->Permission->link('Delete', array('action' => 'delete', $ministry['Ministry']['id']), array('id' => 'delete_btn'));
+	if ($link) {
+		$this->Js->buffer('CORE.confirmation("delete_btn", "Are you sure you want to PERMANENTLY delete this ministry and all it\'s related content?", {update:"content"});');
+		echo $this->Html->tag('li', $link);
+	}
+	?>
+</ul>
 </div>
-
-<div class="actions">
-	<h3><?php __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link('Add Involvement Opportunity', array('controller' => 'involvements', 'action' => 'add', 'Ministry' => $ministry['Ministry']['id'])); ?> </li>
-		<li><?php echo $this->Html->link('Edit Ministry', array('action' => 'edit', 'Ministry' => $ministry['Ministry']['id']), array('rel' => 'modal-content')); ?> </li>
-		<li><?php echo $this->Html->link('Delete Ministry', array('action' => 'delete', $ministry['Ministry']['id']), array('id' => 'delete_btn')); ?> </li>
-	</ul>
-</div>
-
-<?php
-$this->Js->buffer('CORE.confirmation("delete_btn", "Are you sure you want to delete this ministry and all it\'s related content?", {update:"content"});');
-?>

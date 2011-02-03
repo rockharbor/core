@@ -50,7 +50,10 @@ class MinistriesController extends AppController {
 		$this->paginate = array(
 			'contain' => array(
 				'Involvement',
-				'DisplayInvolvement'
+				'DisplayInvolvement',
+				'ChildMinistry',
+				'ParentMinistry',
+				'Campus'
 			)
 		);
 
@@ -84,14 +87,19 @@ class MinistriesController extends AppController {
 				'Ministry.id' => $id
 			),
 			'contain' => array(
-				'Involvement' => array(
-					'InvolvementType'
+				'Campus' => array(
+					'fields' => array('id', 'name')
 				),
-				'Campus'
+				'ChildMinistry' => array(
+					'fields' => array('id', 'name', 'description')
+				),
+				'ParentMinistry' => array(
+					'fields' => array('id', 'name')
+				)
 			)
 		));
 
-		if ($involvement['Ministry']['private'] && !$this->Ministry->Leader->User->Group->canSeePrivate($this->activeUser['Group']['id'])) {
+		if ($ministry['Ministry']['private'] && !$this->Ministry->Leader->User->Group->canSeePrivate($this->activeUser['Group']['id'])) {
 			$this->Session->setFlash('That Ministry is private', 'flash'.DS.'failure');
 			$this->redirect(array('action' => 'index'));
 		}
