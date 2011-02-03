@@ -149,6 +149,9 @@ class AppController extends Controller {
  * @see Controller::beforeFilter()
  */
 	function beforeFilter() {
+		if (isset($this->params['renderAs'])) {
+			$this->RequestHandler->renderAs($this, $this->params['renderAs']);
+		}
 		// add extra mappings
 		// WORKAROUND: Firefox tries to open json instead of reading it, so use different headers
 		$this->RequestHandler->setContent('json', 'text/plain');
@@ -254,7 +257,7 @@ class AppController extends Controller {
  *
  * @see Controller::beforeRender()
  */	
-	function beforeRender() {	
+	function beforeRender() {
 		$this->set('activeUser', $this->activeUser);	
 		$this->set('defaultSubmitOptions', $this->defaultSubmitOptions);
 
