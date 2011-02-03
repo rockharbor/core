@@ -41,13 +41,24 @@ class FilterPaginationComponent extends Object {
 	var $components = array('Session');
 
 /**
+ * If true, an empty array will be returned if no pagination data is present.
+ * This is useful for searches, since you don't want to display ALL results the
+ * first time the user reaches the page. Set to false to display the paginated
+ * data either way.
+ *
+ * @var boolean
+ */
+	var $startEmpty = true;
+
+/**
  * Start FilterPaginationComponent for use in the controller
  *
  * @param object $controller A reference to the controller
  * @access public
  */
-	function initialize(&$controller) {
+	function initialize(&$controller, $settings) {
 		$this->controller =& $controller;
+		$this->_set($settings);
 	}
 	
 /**
@@ -85,7 +96,7 @@ class FilterPaginationComponent extends Object {
 		}
 		
 		// return empty array by default so we don't perform a search without filtering first
-		if (!empty($this->controller->data) || isset($this->controller->params['named']['page'])) {
+		if (!empty($this->controller->data) || isset($this->controller->params['named']['page']) || !$this->startEmpty) {
 			return $this->controller->paginate($model);
 		} else {
 			return array();

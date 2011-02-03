@@ -59,6 +59,17 @@ class FilterPaginationTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 
+	function testStartEmpty() {
+		$this->Controller->FilterPagination->startEmpty = false;
+		$vars = $this->testAction('/paginate_tests/');
+		$results = Set::extract('/PaginateTest/name', $vars['results']);
+		$expected = array(
+			'A Paginated Thing'
+		);
+		$this->assertTrue($this->Controller->Session->check('FilterPagination'));
+		$this->assertEqual($results, $expected);
+	}
+
 	function testFilterPaginate() {
 		$vars = $this->testAction('/paginate_tests/');
 		$this->assertEqual($vars['results'], array());
