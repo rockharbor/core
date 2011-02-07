@@ -12,10 +12,12 @@ $this->Js->buffer('CORE.initLogin()');
 	<div id="login-form" class="clearfix">
 		<?php
 		echo $this->Form->input('username', array(
-			'size' => 31
+			'size' => 31,
+			'div' => 'input text showhide'
 		));
 		echo $this->Form->input('password', array(
-			'size' => 31
+			'size' => 31,
+			'div' => 'input password showhide'
 		));
 		?>
 	</div>

@@ -24,10 +24,6 @@ body {
 	float:right;
 }
 #login-form div.input label {
-	position:absolute;
-	top: 5px;
-	left: 5px;
-	cursor: text;
 	color:#707070;
 }
 #login-info div.submit {
