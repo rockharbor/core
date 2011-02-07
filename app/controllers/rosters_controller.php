@@ -28,7 +28,12 @@ class RostersController extends AppController {
  *
  * @var array
  */
-	var $components = array('FilterPagination', 'AuthorizeDotNet', 'MultiSelect.MultiSelect');
+	var $components = array(
+		'FilterPagination' => array(
+			'startEmpty' => false
+		),
+		'AuthorizeDotNet',
+		'MultiSelect.MultiSelect');
 
 /**
  * Extra helpers for this controller
@@ -180,6 +185,10 @@ class RostersController extends AppController {
 			'Involvement.id' => array_values($memberOf)	
 		);
 		$private = array_key_exists($this->activeUser['Group']['id'], $this->Roster->User->Group->findGroups(Core::read('general.private_group'), 'list', '>'));
+
+		if ($this->Session->check('FilterPagination.data') && empty($this->data)) {
+			$this->data = $this->Session->read('FilterPagination.data');
+		}
 		if (empty($this->data)) {
 			$this->data = array(
 				'Roster' => array(
