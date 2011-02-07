@@ -71,28 +71,38 @@ class FilterPaginationComponent extends Object {
  * @see Controller::paginate()
  */	
 	function paginate($model = null) {
-		if (!$model) {
-			$model = $this->controller->modelClass;
+		if (!$model || $model == $this->controller->{$this->controller->modelClass}->alias) {
+			$model = $this->controller->{$this->controller->modelClass};
+		} elseif ($model !=  $this->controller->modelClass) {
+			$model = $this->controller->{$this->controller->modelClass}->{$model};
+		} else {
+			$model = ClassRegistry::init($model);
 		}
 		
 		// new search, remove saved filter
-		if (!empty($this->controller->data) || !isset($this->controller->params['named']['page'])) {
-			$this->Session->delete('FilterPagination');
-		}
+		if ($this->startEmpty) {
+			if (!empty($this->controller->data) || !isset($this->controller->params['named']['page'])) {
+				$this->Session->delete('FilterPagination');
+			}
+		} else {
+			if (!empty($this->controller->data) && $this->controller->data != $this->Session->read('FilterPagination.data')) {
+				$this->Session->delete('FilterPagination');
+			}
+		}	
 		
 		if (!$this->Session->check('FilterPagination')) {
 			// save data in session if it's not there
 			$this->Session->write('FilterPagination.paginate', $this->controller->paginate);
 			$this->Session->write('FilterPagination.data', $this->controller->data);
 			// conserve any after-the-fact model bindings
-			$this->Session->write('FilterPagination.'.$model.'.hasOne', $this->controller->{$model}->hasOne);
-			$this->Session->write('FilterPagination.'.$model.'.belongsTo', $this->controller->{$model}->belongsTo);
-		} elseif (isset($this->controller->params['named']['page'])) {
+			$this->Session->write('FilterPagination.'.$model->alias.'.hasOne', $model->hasOne);
+			$this->Session->write('FilterPagination.'.$model->alias.'.belongsTo', $model->belongsTo);
+		} elseif (isset($this->controller->params['named']['page']) || !$this->startEmpty) {
 			// otherwise use it for pagination and data
 			$this->controller->paginate = $this->Session->read('FilterPagination.paginate');
 			$this->controller->data = $this->Session->read('FilterPagination.data');
-			$this->controller->{$model}->hasOne = $this->Session->read('FilterPagination.'.$model.'.hasOne');
-			$this->controller->{$model}->belongsTo = $this->Session->read('FilterPagination.'.$model.'.belongsTo');
+			$model->hasOne = $this->Session->read('FilterPagination.'.$model->alias.'.hasOne');
+			$model->belongsTo = $this->Session->read('FilterPagination.'.$model->alias.'.belongsTo');
 		}
 		
 		// return empty array by default so we don't perform a search without filtering first
