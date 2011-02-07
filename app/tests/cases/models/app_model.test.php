@@ -34,6 +34,30 @@ class AppModelTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 
+	function testScopeConditions() {
+		$data = array(
+			'active' => false,
+			'private' => true
+		);
+		$result = $this->User->scopeConditions($data);
+		$expected = array(
+			'User.active' => false
+		);
+		$this->assertEqual($result, $expected);
+
+		$data = array(
+			'active' => false,
+			'private' => true,
+			'Ministry.private' => false
+		);
+		$result = $this->User->scopeConditions($data);
+		$expected = array(
+			'User.active' => false,
+			'Ministry.private' => false
+		);
+		$this->assertEqual($result, $expected);
+	}
+
 	function testDefaultImage() {
 		$this->loadFixtures('Attachment');
 		$this->loadSettings();

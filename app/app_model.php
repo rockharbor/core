@@ -64,6 +64,39 @@ class AppModel extends Model {
 	}
 
 /**
+ * Takes a set of generic conditions and scopes them according to this model. If
+ * a model is defined in the condition, it will keep that model's scope. Only
+ * creates conditions if the model has the field.
+ *
+ * {{{
+ * // assuming we're on the user model
+ * array('active' => false, 'Ministry.active' => true, 'nonexistentfield' => 'val');
+ * // becomes
+ * array('User.active' => false, 'Ministry.active' => true);
+ * }}}
+ *
+ * @param array $conditions Generic conditions
+ */
+	function scopeConditions($conditions = array()) {
+		$scoped = array();
+		foreach ($conditions as $field => $value) {
+			$exp = explode('.', $field);
+			$model = $exp[0];
+			if (!isset($exp[1])) {
+				$field = $model;
+				$model = $this->alias;
+			} else {
+				$field = $exp[1];
+			}
+			if ($model == $this->alias && !$this->hasField($field)) {
+				continue;
+			}
+			$scoped[$model.'.'.$field] = $value;
+		}
+		return $scoped;
+	}
+
+/**
  * Sets the default image based on the results of a find. Only sets the default
  * image if:
  * - An image was included in the find conditions (or contained)
