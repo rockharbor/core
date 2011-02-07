@@ -37,6 +37,9 @@ class FormattingHelper extends AppHelper {
  * @param integer $id The user's id, if any
  */
 	function email($email, $id = null) {
+		if (empty($email)) {
+			return null;
+		}
 		$url = array('controller' => 'sys_emails', 'action' => 'compose', 'model' => 'User', 'User' => $id);
 		$icon = $this->Html->tag('span', 'Email', array('class' => 'core-icon icon-email'));
 		if ($id !== null) {

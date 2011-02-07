@@ -25,6 +25,12 @@ class FormattingHelperTestCase extends CoreTestCase {
 	}
 
 	function testEmail() {
+		$result = $this->Formatting->email(null);
+		$this->assertNull($result);
+
+		$result = $this->Formatting->email('');
+		$this->assertNull($result);
+
 		$result = $this->Formatting->email('jeremy@42pixels.com');
 		$this->assertTags($result, array(
 			'span' => array(),
