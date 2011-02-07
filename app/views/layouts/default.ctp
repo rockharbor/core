@@ -135,7 +135,7 @@
 							));
 							echo $this->Form->input('Search.query', array(
 								'label' => false,
-								'value' => 'Search CORE',
+								'value' => 'Search '.Core::read('general.site_name_tagless'),
 								'size' => 30,
 								'class' => 'search-out'
 							));
