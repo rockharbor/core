@@ -290,6 +290,10 @@ div.subministry {
 }
 div.subministry .subministry-title {
 	font-weight: bold;
+	color: #ffffff;
+}
+div.subministry hr {
+	background: #ffffff;
 }
 div.subministry a {
 	color: #acacac;
