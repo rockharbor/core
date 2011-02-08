@@ -36,7 +36,8 @@ class Ministry extends AppModel {
 		'Cacher.Cache' => array(
 			'auto' => false
 		),
-		'Search.Searchable'
+		'Search.Searchable',
+		'Linkable.AdvancedLinkable'
 	);
 
 /**

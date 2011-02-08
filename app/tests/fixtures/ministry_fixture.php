@@ -72,6 +72,34 @@ class MinistryFixture extends CakeTestFixture {
 			'modified' => '2010-03-31 08:46:15',
 			'active' => 0
 		),
+		array(
+			'id' => 5,
+			'name' => 'Downtown Reach',
+			'description' => 'Connecting with the Fullerton peeps',
+			'parent_id' => null,
+			'lft' => 8,
+			'rght' => 9,
+			'campus_id' => 2,
+			'private' => 1,
+			'created' => '2010-03-31 08:46:15',
+			'modified' => '2010-03-31 08:46:15',
+			'active' => 0
+		)
 	);
+
+/**
+ * Recovers tree after insterting data. This way we only need to properly define
+ * the parent_id's for each records
+ *
+ * @param object $db Instance of DB
+ * @return boolean Success
+ */
+	function insert(&$db) {
+		$success = parent::insert($db);
+		if ($success) {
+			ClassRegistry::init('Ministry')->recover();
+		}
+		return $success;
+	}
 }
 ?>

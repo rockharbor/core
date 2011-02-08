@@ -81,7 +81,8 @@ class Involvement extends AppModel {
 			'validate' => 'after',
 			'decodeHtml' => true
 		),
-		'Search.Searchable'
+		'Search.Searchable',
+		'Linkable.AdvancedLinkable'
 	);
 
 /**

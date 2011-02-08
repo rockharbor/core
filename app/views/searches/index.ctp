@@ -1,76 +1,180 @@
-<h1>Results</h1>
-<?php if (!empty($users)) { ?>
-<h2>Users&nbsp;<small><?php echo $this->Html->link('[Advanced Search]', array('action'=>'user'));?></small></h2>
-<ul>
+<?php
+if (!empty($this->data['Search']['query'])) {
+	echo $this->Html->tag('span', 'Results for "'.$this->data['Search']['query'].'"', array('class' => 'breadcrumb'));
+}
+?>
+<h1>Search</h1>
+<div class="content-box clearfix">
+<?php if (!empty($users) || !empty($ministries) || !empty($involvements)): ?>
+	<div>
 	<?php
-// just print out for now
-	foreach ($users as $user):
-	?>
-	<li><?php echo $this->Formatting->flags('User', $user).$this->Text->highlight($user['User']['username'], $query);
-		echo '&nbsp;&nbsp;&nbsp;';
-		echo $this->Html->link(
-			$this->Text->highlight($user['Profile']['name'], $query),
-			array('controller' => 'profiles', 'action' => 'view', 'User' => $user['User']['id']),
-			array('escape' => false)
+		echo $this->Form->create('Search', array(
+			'class' => 'core-filter-form update-content',
+			'url' => $this->passedArgs,
+			'id' => 'SearchFilterForm'
+		));
+
+		echo $this->Html->tag('div',
+			$this->Form->input('Search.Campus.id', array(
+				'multiple' => 'checkbox',
+				'label' => false,
+				'options' => $campuses,
+				'div' => false,
+				'id' => 'SearchFilterCampusId'
+			)),
+			array('class' => 'toggle')
 		);
-	?></li>
+		if ($inactive) {
+			echo $this->Form->input('active', array(
+				'type' => 'checkbox',
+				'class' => 'toggle',
+				'div' => false,
+				'id' => 'SearchFilterActive'
+			));
+			echo $this->Form->input('passed', array(
+				'type' => 'checkbox',
+				'class' => 'toggle',
+				'div' => false,
+				'id' => 'SearchFilterPassed',
+				'label' => 'Include Past'
+			));
+		}
+		if ($private) {
+			echo $this->Form->input('private', array(
+				'type' => 'checkbox',
+				'class' => 'toggle',
+				'div' => false,
+				'id' => 'SearchFilterPrivate'
+			));
+		}
+		echo $this->Form->hidden('query', array(
+			'id' => 'SearchFilterQuery'
+		));
+		echo $this->Js->submit('Filter');
+		echo $this->Form->end();
+	?>
+	</div>
+<?php endif; ?>
+<?php if (!empty($users)) { ?>
+<div class="hr">
+	<span class="legend">People</span>
+	<?php
+	$i = 0;
+	foreach ($users as $user):
+		$class = '';
+		if (($i+3)%3 == 0) {
+			$class = ' alpha';
+		} elseif (($i+4)%3 == 0) {
+			$class = ' omega';
+		}
+		if ($class == ' alpha') {
+			echo '<div class="clearfix" style="padding-bottom: 10px;">';
+		}
+		$i++;
+	?>
+	<div class="grid_third<?php echo $class; ?>">
+		<div class="offset-background">
+		<?php
+			echo $this->Formatting->flags('User', $user).$this->Html->link($user['Profile']['name'], array(
+				'controller' => 'profiles',
+				'action' => 'view',
+				'User' => $user['User']['id']
+			));
+			echo '<hr>';
+			echo $this->Formatting->email($user['Profile']['primary_email'], $user['User']['id']);
+			echo '<br />';
+			echo $this->Formatting->phone($user['Profile']['cell_phone']);
+			if ($class == ' omega') {
+				echo '</div>';
+			}
+		?>
+		</div>
+	</div>
 
 	<?php
 	endforeach;
+	if ($class != ' omega') {
+		echo '</div>';
+	}
 	?>
-	</ul>
+</div>
 <?php }
 
 if (!empty($ministries)) { ?>
-<h2>Ministries&nbsp;<small><?php echo $this->Html->link('[Advanced Search]', array('action'=>'ministry'));?></small></h2>
-<ul>
+<div class="hr">
+	<span class="legend">Ministries</span>
 <?php
-// just print out for now
 foreach ($ministries as $ministry):
 ?>
-<li><?php 
+	<p>
+<?php 
 	echo $this->Formatting->flags('Ministry', $ministry);
-	echo $this->Html->link(
-		$this->Text->highlight($ministry['Ministry']['name'], $query), 
+	$link = $this->Html->link(html_entity_decode($ministry['Ministry']['name']),
 		array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $ministry['Ministry']['id']),
 		array('escape' => false)
 	);
-	echo '<br />';
-	echo $this->Text->highlight($this->Text->excerpt($ministry['Ministry']['description'], $query, 20), $query);
-?></li>
+	echo $this->Html->tag('strong', $link);
+	echo ':&nbsp;';
+	echo $this->Text->excerpt(html_entity_decode($ministry['Ministry']['description']), $this->data['Search']['query'], 100);
+?></p>
 
 <?php	
 endforeach;
 ?>
-</ul>
+</div>
 <?php }
 
 if (!empty($involvements)) { ?>
-<h2>Involvement Opportunities&nbsp;<small><?php echo $this->Html->link('[Advanced Search]', array('action'=>'involvement'));?></small></h2>
-<ul>
-<?php
-// just print out for now
-foreach ($involvements as $involvement):
-
-?>
-<li><?php echo $this->Formatting->flags('Involvement', $involvement);
-	echo $this->Html->link(
-		$this->Text->highlight($involvement['Involvement']['name'], $query), 
-		array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvement['Involvement']['id']),
-		array('escape' => false)
-	);
-	echo '<br />';
-	echo $this->Text->highlight($this->Text->excerpt($involvement['Involvement']['description'], $query, 20), $query);
-?></li>
-
+<div class="hr">
+	<span class="legend">Involvement Opportunities</span>
+	<div class="grid_10 alpha omega">
+	<?php
+	$i = 0;
+	foreach ($involvements as $involvement):
+		$class = ($i % 2 == 0) ? 'alpha' : 'omega';
+				$i++;
+	?>
+		<div class="involvement-column grid_5 <?php echo $class; ?>">
+			<div class="involvement-header"><?php echo $this->Html->link(html_entity_decode($involvement['Involvement']['name']), array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvement['Involvement']['id'])).$this->Formatting->flags('Involvement', $involvement); ?></div>
+			<div class="involvement-details">
+				<?php
+				echo $this->Html->link(html_entity_decode($involvement['Campus']['name']), array('controller' => 'campuses', 'action' => 'view', 'Campus' => $involvement['Campus']['id']));
+				echo ' > ';
+				if (!empty($involvement['ParentMinistry']['id'])) {
+					echo $this->Html->link(html_entity_decode($involvement['ParentMinistry']['name']), array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $involvement['ParentMinistry']['id']));
+					echo ' > ';
+				}
+				echo $this->Html->link(html_entity_decode($involvement['Ministry']['name']), array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $involvement['Ministry']['id']));
+				echo '<hr>';
+				echo $this->Text->truncate(html_entity_decode($involvement['Involvement']['description']), 250, array('html' => true));
+				?>
+			</div>
+			<div class="involvement-date">
+				<?php
+				if (!empty($involvement['dates'])) {
+					echo $this->Html->tag('div', date('m/d/y', strtotime($involvement['dates'][0]['Date']['start_date'])));
+					echo $this->Html->tag('div', date('g:i', strtotime($involvement['dates'][0]['Date']['start_time'])), array('class' => date('a', strtotime($involvement['dates'][0]['Date']['start_time']))));
+				}
+				echo $this->Html->tag('div', $this->Html->link('Get Involved', array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvement['Involvement']['id']), array('class' => 'button')));
+				?>
+			</div>
+		</div>
 <?php	
 endforeach;
 ?>
-</ul>
+	</div>
+</div>
 <?php }
 
 if (empty($users) && empty($ministries) && empty($involvements)) { ?>
 
-<p>Whoops, no results for <?php echo $this->Text->highlight($query, $query); ?>. This ain't <span style="color: blue;">G</span><span style="color: red;">o</span><span style="color: yellow;">o</span><span style="color: blue;">g</span><span style="color: green;">l</span><span style="color: red;">e</span>&reg;, so try again with something less specific. Remember, the search algorithm right now isn't very strong. Wait for beta ;)</p>
+<p>Whoops, no results. This ain't <span style="color: blue;">G</span><span style="color: red;">o</span><span style="color: yellow;">o</span><span style="color: blue;">g</span><span style="color: green;">l</span><span style="color: red;">e</span>&trade;, so try again with something less specific.</p>
 
-<?php } ?>
+<?php
+
+echo $this->Form->create('Search', array('id' => 'SearchFilterForm'));
+echo $this->Form->input('query', array('id' => 'SearchFilterQuery'));
+echo $this->Form->end('Search');
+
+} ?>
+</div>

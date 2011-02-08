@@ -108,7 +108,24 @@ class InvolvementFixture extends CakeTestFixture {
 			'created' => '2010-04-23 13:07:08',
 			'modified' => '2010-04-23 13:07:21',
 			'force_payment' => 0
-		)
+		),
+		array(
+			'id' => 6,
+			'ministry_id' => 5,
+			'involvement_type_id' => 2,
+			'name' => 'Fullerton meetup',
+			'description' => 'Do it. Do it now!',
+			'roster_limit' => 12,
+			'roster_visible' => 0,
+			'private' => 0,
+			'signup' => 1,
+			'take_payment' => 0,
+			'offer_childcare' => 0,
+			'active' => 1,
+			'created' => '2010-04-23 13:07:08',
+			'modified' => '2010-04-23 13:07:21',
+			'force_payment' => 0
+		),
 	);
 }
 ?>

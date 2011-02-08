@@ -10,19 +10,22 @@ Mock::generatePartial('SearchesController', 'MockSearchesController', array('isA
 class SearchesControllerTestCase extends CoreTestCase {
 
 	function startTest() {
-		$this->loadFixtures('User', 'Ministry', 'Involvement', 'Profile', 'InvolvementType');
+		$this->loadFixtures('User', 'Ministry', 'Involvement', 'Profile', 'InvolvementType', 'Group', 'Campus');
 		$this->Searches =& new MockSearchesController();
 		$this->Searches->__construct();
 		$this->Searches->constructClasses();
 		$this->Searches->FilterPagination->initialize($this->Searches);
 		$this->Searches->Notifier->QueueEmail = new MockQueueEmailComponent();
+		$this->Searches->Notifier->QueueEmail->enabled = true;
 		$this->Searches->Notifier->QueueEmail->setReturnValue('_smtp', true);
 		$this->Searches->Notifier->QueueEmail->setReturnValue('_mail', true);
 		$this->Searches->setReturnValue('isAuthorized', true);
 		$this->testController = $this->Searches;
+		$this->loadSettings();
 	}
 
 	function endTest() {
+		$this->unloadSettings();
 		$this->Searches->Session->destroy();
 		unset($this->Searches);
 		ClassRegistry::flush();
@@ -70,10 +73,59 @@ class SearchesControllerTestCase extends CoreTestCase {
 			'rickyrockharborjr'
 		);
 		$this->assertEqual($results, $expected);
-
-		$this->assertEqual($vars['ministries'], array());
-		
+		$this->assertEqual($vars['ministries'], array());		
 		$this->assertEqual($vars['involvements'], array());
+		
+		$vars = $this->testAction('/searches/index/', array(
+			'data' => array(
+				'Search' => array(
+					'query' => 'downtown fullerton builder church',
+					'Campus' => array(
+						'id' => 2
+					)
+				)
+			)
+		));
+		$results = Set::extract('/Ministry/name', $vars['ministries']);
+		$expected = array(
+			'Downtown Reach'
+		);
+		$this->assertEqual($results, $expected);
+		$results = Set::extract('/Involvement/name', $vars['involvements']);
+		$expected = array(
+			'Fullerton meetup'
+		);
+		$this->assertEqual($results, $expected);
+		$results = Set::extract('/User/username', $vars['users']);
+		$expected = array(
+			'bob'
+		);
+		$this->assertEqual($results, $expected);
+
+		$vars = $this->testAction('/searches/index/', array(
+			'data' => array(
+				'Search' => array(
+					'query' => 'downtown fullerton builder church',
+					'Campus' => array(
+						'id' => 2
+					),
+					'active' => 1,
+					'private' => 0
+				)
+			)
+		));
+		$results = Set::extract('/Ministry/name', $vars['ministries']);
+		$this->assertEqual($results, array());
+		$results = Set::extract('/Involvement/name', $vars['involvements']);
+		$expected = array(
+			'Fullerton meetup'
+		);
+		$this->assertEqual($results, $expected);
+		$results = Set::extract('/User/username', $vars['users']);
+		$expected = array(
+			'bob'
+		);
+		$this->assertEqual($results, $expected);
 	}
 
 	function testInvolvement() {
