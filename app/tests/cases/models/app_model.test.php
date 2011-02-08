@@ -20,6 +20,14 @@ class VirtualFieldModel extends AppModel {
 		'name' => 'CONCAT(:ALIAS:.first_name, " ", :ALIAS:.last_name)',
 	);
 
+	var $_schema = array(
+		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
+		'first_name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 32),
+		'last_name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 32),
+		'flagged' => array('type' => 'boolean', 'null' => false, 'default' => NULL),
+		'active' => array('type' => 'boolean', 'null' => true, 'default' => '1'),
+	);
+
 }
 
 class AppModelTestCase extends CoreTestCase {
@@ -54,6 +62,21 @@ class AppModelTestCase extends CoreTestCase {
 		$expected = array(
 			'User.active' => false,
 			'Ministry.private' => false
+		);
+		$this->assertEqual($result, $expected);
+
+		$data = array(
+			'private' => 'no',
+			'first_name' => 'jeremy',
+			'name' => 'jeremy harris'
+		);
+		$result = ClassRegistry::init('VirtualFieldModel')->scopeConditions($data);
+		$cls = new stdClass();
+		$cls->type = 'expression';
+		$cls->value = 'CONCAT(VirtualFieldModel.first_name, " ", VirtualFieldModel.last_name)';
+		$expected = array(
+			'VirtualFieldModel.first_name' => 'jeremy',
+			'VirtualFieldModel.name' => 'jeremy harris'
 		);
 		$this->assertEqual($result, $expected);
 	}

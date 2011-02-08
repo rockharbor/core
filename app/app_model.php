@@ -88,7 +88,7 @@ class AppModel extends Model {
 			} else {
 				$field = $exp[1];
 			}
-			if ($model == $this->alias && !$this->hasField($field)) {
+			if ($model == $this->alias && !$this->hasField($field, true)) {
 				continue;
 			}
 			$scoped[$model.'.'.$field] = $value;
