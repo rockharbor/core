@@ -71,9 +71,12 @@ class FilterPaginationComponent extends Object {
  * @see Controller::paginate()
  */	
 	function paginate($model = null) {
-		if (!$model || $model == $this->controller->{$this->controller->modelClass}->alias) {
-			$model = $this->controller->{$this->controller->modelClass};
-		} elseif ($model !=  $this->controller->modelClass) {
+		if (!$model) {
+			$model = $this->controller->modelClass;
+		}
+		if (isset($this->controller->{$model})) {
+			$model = $this->controller->{$model};
+		} elseif (isset($this->controller->{$this->controller->modelClass}->{$model})) {
 			$model = $this->controller->{$this->controller->modelClass}->{$model};
 		} else {
 			$model = ClassRegistry::init($model);

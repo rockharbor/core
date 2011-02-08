@@ -3,6 +3,14 @@
 App::import('Lib', 'CoreTestCase');
 App::import('Model', 'App');
 
+class CompletelyUnrelatedModel extends AppModel {
+	var $useTable = false;
+}
+
+class UnrelatedModel extends AppModel {
+	var $useTable = false;
+}
+
 class EmptyModel extends AppModel {
 	var $useTable = false;
 }
@@ -20,6 +28,8 @@ class PaginateTest extends AppModel {
 class PaginateTestsController extends Controller {
 
 	var $name = 'PaginateTests';
+
+	var $uses = array('PaginateTest', 'UnrelatedModel');
 
 	var $components = array('FilterPagination', 'Session');
 
@@ -39,8 +49,8 @@ class PaginateTestsController extends Controller {
 		$this->set(compact('results'));
 	}
 
-	function paginate_other_model() {
-		$results = $this->FilterPagination->paginate('EmptyModel');
+	function paginate_other_model($model = 'EmptyModel') {
+		$results = $this->FilterPagination->paginate($model);
 		$this->set(compact('results'));
 	}
 }
@@ -67,6 +77,16 @@ class FilterPaginationTestCase extends CoreTestCase {
 	function testIndirectlyAssociatedModel() {
 		$this->assertNoErrors();
 		$vars = $this->testAction('/paginate_tests/paginate_other_model');
+		$results = $vars['results'];
+		$this->assertEqual($results, array());
+
+		$this->assertNoErrors();
+		$vars = $this->testAction('/paginate_tests/paginate_other_model/UnrelatedModel');
+		$results = $vars['results'];
+		$this->assertEqual($results, array());
+
+		$this->assertNoErrors();
+		$vars = $this->testAction('/paginate_tests/paginate_other_model/CompletelyUnrelatedModel');
 		$results = $vars['results'];
 		$this->assertEqual($results, array());
 	}
