@@ -135,6 +135,8 @@ class GeoCoordinateBehavior extends ModelBehavior {
 				$q .= $query['address_line_2'];
 			}
 			$q .= ', '.$query['city'].', '.$query['state'].' '.$query['zip'];
+		} else {
+			$q = $query;
 		}
 	
 		$data = array();
