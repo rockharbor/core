@@ -56,7 +56,7 @@ class FilterPaginationComponent extends Object {
  * @param object $controller A reference to the controller
  * @access public
  */
-	function initialize(&$controller, $settings) {
+	function initialize(&$controller, $settings = array()) {
 		$this->controller =& $controller;
 		$this->_set($settings);
 	}
