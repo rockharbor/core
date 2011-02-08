@@ -90,8 +90,10 @@ class FilterPaginationComponent extends Object {
 		} else {
 			if (!empty($this->controller->data) && $this->controller->data != $this->Session->read('FilterPagination.data')) {
 				$this->Session->delete('FilterPagination');
+			} elseif (!isset($this->controller->params['named']['page'])) {
+				$this->Session->delete('FilterPagination');
 			}
-		}	
+		}
 		
 		if (!$this->Session->check('FilterPagination')) {
 			// save data in session if it's not there

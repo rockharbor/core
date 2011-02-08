@@ -25,6 +25,27 @@ class PaginateTest extends AppModel {
 	);
 }
 
+class PaginateTests2Controller extends Controller {
+
+	var $uses = array('PaginateTest');
+
+	var $components = array(
+		'FilterPagination' => array(
+			'startEmpty' => false
+		),
+		'Session'
+	);
+
+	function filter() {
+		$conditions = $this->postConditions($this->data, 'LIKE', 'OR');
+		$limit = 3;
+		$this->paginate = compact('conditions', 'limit');
+		$results = $this->FilterPagination->paginate();
+		$this->set(compact('results'));
+	}
+
+}
+
 class PaginateTestsController extends Controller {
 
 	var $name = 'PaginateTests';
@@ -147,6 +168,22 @@ class FilterPaginationTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($this->Controller->Session->read('FilterPagination.data'), $newData);
 		$this->assertEqual($results, $expected);
+
+		// change page
+		$this->_componentsInitialized = false;
+		$Controller = new PaginateTests2Controller();
+		$Controller->__construct();
+		$Controller->constructClasses();
+		$Controller->Component->initialize($Controller);
+		$this->testController = $Controller;
+		$vars = $this->testAction('/paginate_tests_2/filter/');
+		$result = Set::extract('/PaginateTest/name', $vars['results']);
+		$expected = array(
+			'A Paginated Thing',
+			'The CORE Awesomeness',
+			'Back to the Future'
+		);
+		$this->assertEqual($result, $expected);
 	}
 
 	function testFilterPaginate() {
