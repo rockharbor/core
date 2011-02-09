@@ -85,22 +85,17 @@ class DatesController extends AppController {
 		if (!isset($this->params['url']['ext']) || $this->params['url']['ext'] != 'json') {
 			return;
 		}
-		
+				
 		// check for filtering and add extra conditions
 		$filter = array();
-		$fcontain = array();
+		$link = array();
 		if (isset($this->passedArgs['model']) && isset($this->passedArgs[$this->passedArgs['model']])) {
 			switch ($this->passedArgs['model']) {
 				case 'User':
-					$this->Date->Involvement->bindModel(array('hasOne' => array(
-						'Roster' => array(
-							'conditions' => array('Roster.user_id' => $this->passedArgs[$this->passedArgs['model']])
-						)
-					)));
 					$filter = array(
 						'Roster.user_id' => $this->passedArgs[$this->passedArgs['model']]
 					);
-					$fcontain = array('Roster' => array());
+					$link = array('Roster' => array());
 				break;
 				case 'Involvement':
 					$filter = array(
@@ -119,28 +114,17 @@ class DatesController extends AppController {
 		// events, then pair them with their dates
 		$events = array();
 		
-		$contain = array(
-			'Date' => array(
-				'conditions' => array(
-					'Date.start_date <=' => $range['end']
-				) 
-			)
-		);
-		
 		$conditions = $filter;
+		$conditions['Involvement.has_dates'] = true;
 		
 		// get all involvements and their dates within the range
 		$involvements = $this->Date->Involvement->find('all', array(
 			'fields' => array('id', 'name'),
-			'contain' => Set::merge($contain, $fcontain),
+			'link' => $link,
 			'conditions' => $conditions
 		));
 
 		foreach ($involvements as $involvement) {
-			if (count($involvement['Date']) == 0) {
-				continue;
-			}
-			
 			$involvement_dates = $this->Date->generateDates($involvement['Involvement']['id'], $range);
 
 			if (!empty($involvement_dates)) {
