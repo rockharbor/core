@@ -42,11 +42,12 @@
 /**
  * Custom routes
  */
+	Router::connectNamed(array('User', 'Ministry', 'Involvement', 'Campus', 'model'), array('defaults' => true));
 	Router::connect('/:controller/:action/*',
 	   array(),
 		array(
 			'routeClass' => 'SluggableRoute',
-			'models' => array('User', 'Ministry', 'Involvement')
+			'models' => array('User', 'Ministry', 'Involvement', 'Campus')
 		)
 	);
 	Router::connect('/pages/phrase/*', array('controller' => 'pages', 'action' => 'phrase'));
