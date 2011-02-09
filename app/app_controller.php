@@ -192,8 +192,6 @@ class AppController extends Controller {
 		// use custom authentication (password encrypt/decrypt)
 		$this->Auth->authenticate = new User();
 
-		// cache permissions
-		$this->Acl->Aro->Permission->Behaviors->attach('Cacher.cache', array('auto' => true));
 		
 		// set to log using this user (see LogBehavior)
 		if (!$this->params['plugin'] && sizeof($this->uses) && $this->{$this->modelClass}->Behaviors->attached('Logable')) { 
@@ -235,7 +233,13 @@ class AppController extends Controller {
 		$foreign_key = $user['Group']['id'];
 
 		// main group
-		$mainAccess = $this->Acl->check(compact('model', 'foreign_key'), $action);
+		$key = md5(serialize(compact('model', 'foreign_key', 'action')));
+		if (Cache::read($key, 'acl') !== false) {
+			$mainAccess = Cache::read($key, 'acl');
+		} else {
+			$mainAccess = $this->Acl->check(compact('model', 'foreign_key'), $action);
+			Cache::write($key, $mainAccess, 'acl');
+		}
 		$userId = $user['User']['id'];
 		$message = "User $userId of group $foreign_key allowed to access $action? [$mainAccess]";
 		CakeLog::write('auth', $message);
@@ -244,7 +248,13 @@ class AppController extends Controller {
 		// check for conditional group
 		if (!empty($user['ConditionalGroup'])) {
 			$foreign_key = $user['ConditionalGroup']['id'];
-			$condAccess = $this->Acl->check(compact('model', 'foreign_key'), $action);
+			$key = md5(serialize(compact('model', 'foreign_key', 'action')));
+			if (Cache::read($key, 'acl') !== false) {
+				$condAccess = Cache::read($key, 'acl');
+			} else {
+				$condAccess = $this->Acl->check(compact('model', 'foreign_key'), $action);
+				Cache::write($key, $condAccess, 'acl');
+			}
 			$message = "User $userId of group $foreign_key allowed to access $action? [$condAccess]";
 			CakeLog::write('auth', $message);
 		}
