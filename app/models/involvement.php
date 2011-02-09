@@ -40,7 +40,8 @@ class Involvement extends AppModel {
 				AND (CAST(CONCAT(NotPassed.end_date, " ", NotPassed.end_time) AS DATETIME) > NOW()
 				OR NotPassed.permanent = 1)
 				AND NotPassed.exemption = 0
-		) AND EXISTS (SELECT 1 FROM dates as ExistingDates WHERE ExistingDates.involvement_id = :ALIAS:.id)'
+		) AND EXISTS (SELECT 1 FROM dates as ExistingDates WHERE ExistingDates.involvement_id = :ALIAS:.id)',
+		'has_dates' => 'EXISTS (SELECT 1 FROM dates as HasDates WHERE HasDates.involvement_id = :ALIAS:.id)'
 	);
 
 /**
