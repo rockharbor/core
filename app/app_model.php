@@ -33,7 +33,8 @@ class AppModel extends Model {
 	var $actsAs = array(
 		'Sanitizer.Sanitize' => array(
 			'decodeHtml' => true
-		)
+		),
+		'Cacher.Cache'
 	);
 
 /**

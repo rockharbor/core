@@ -101,7 +101,10 @@
 					<li id="nav-ministries">
 						<?php
 						echo $this->Html->link('Ministries', array('controller' => 'ministries'));
-						echo $this->element('menu'.DS.'campus', array('campuses' => $campusesMenu), true);
+						echo $this->element('menu'.DS.'campus', array(
+							'campuses' => $campusesMenu,
+							'cache' => '+1 day'
+						), true);
 						?>
 					</li>
 					<li id="nav-calendar"><?php echo $this->Html->link('Calendar', array('controller' => 'dates', 'action' => 'calendar', 'full')); ?>
