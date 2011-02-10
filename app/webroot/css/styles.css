@@ -396,7 +396,7 @@ Tooltip
 }
 .qtip a:hover {
 	color: #343434 !important;
-	background:url("images/ui-bg_highlight-soft_75_16b96d_1x100.png") repeat-x scroll 50% 50% #16B96D !important;
+	background:url('../assets/images/ui-bg_highlight-soft_75_16b96d_1x100.png') repeat-x scroll 50% 50% #16B96D !important;
 }
 
 /*
@@ -468,7 +468,7 @@ select {
 	background: #d0f4e4;
 }
 .core-checkbox.selected {
-	background-image: url(images/ui-icons_454545_256x240.png);
+	background-image: url('../assets/images/ui-icons_454545_256x240.png');
 	background-position: -66px -147px; /* slightly different than it should be because checkbox is smaller than 16x16 */
 }
 
@@ -505,44 +505,44 @@ Custom Icons
 	padding-left: 18px;
 }
 .icon-email {
-	background-image: url(images/ui-icons_454545_256x240.png);
+	background-image: url('../assets/images/ui-icons_454545_256x240.png');
 	background-position: -80px -96px;
 }
 .icon-delete {
-	background-image: url(images/ui-icons_454545_256x240.png);
+	background-image: url('../assets/images/ui-icons_454545_256x240.png');
 	background-position: -80px -128px;	
 }
 .icon-delete:hover {
-	background-image: url(images/ui-icons_cd0a0a_256x240.png);
+	background-image: url('../assets/images/ui-icons_cd0a0a_256x240.png');
 }
 .icon-edit {
-	background-image: url(images/ui-icons_454545_256x240.png);
+	background-image: url('../assets/images/ui-icons_454545_256x240.png');
 	background-position: -64px -112px;
 }
 .icon-edit:hover {
-	background-image: url(images/ui-icons_cd0a0a_256x240.png);
+	background-image: url('../assets/images/ui-icons_cd0a0a_256x240.png');
 }
 .icon-address {
-	background-image: url(images/ui-icons_454545_256x240.png);
+	background-image: url('../assets/images/ui-icons_454545_256x240.png');
 	background-position: -144px -144px;
 }
 .icon-print {
-	background-image: url(images/ui-icons_454545_256x240.png);
+	background-image: url('../assets/images/ui-icons_454545_256x240.png');
 	background-position: -160px -96px;
 }
 .icon-download {
-	background-image: url(images/ui-icons_454545_256x240.png);
+	background-image: url('../assets/images/ui-icons_454545_256x240.png');
 	background-position: -224px -48px;
 }
 .flagged {
-	background-image: url(images/ui-icons_cd0a0a_256x240.png);
+	background-image: url('../assets/images/ui-icons_cd0a0a_256x240.png');
 	background-position: 0px -128px;
 }
 .inactive {
-	background-image: url(images/ui-icons_454545_256x240.png);
+	background-image: url('../assets/images/ui-icons_454545_256x240.png');
 	background-position: 0px -144px;
 }
 .private {
-	background-image: url(images/ui-icons_454545_256x240.png);
+	background-image: url('../assets/images/ui-icons_454545_256x240.png');
 	background-position: -192px -96px;
 }

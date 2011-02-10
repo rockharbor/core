@@ -94,7 +94,8 @@ class AppController extends Controller {
 		'Text',
 		'Media.Media',
 		'Tree',
-		'Permission'
+		'Permission',
+		'AssetCompress.AssetCompress'
 	);
 
 /**

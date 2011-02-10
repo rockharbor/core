@@ -51,6 +51,12 @@
 		)
 	);
 	Router::connect('/pages/phrase/*', array('controller' => 'pages', 'action' => 'phrase'));
+
+/*
+ * Asset Compress
+ */
+	Router::connect('/css_cache/*', array('plugin' => 'asset_compress', 'controller' => 'css_files', 'action' => 'get'));
+	Router::connect('/js_cache/*', array('plugin' => 'asset_compress', 'controller' => 'js_files', 'action' => 'get'));
  
 /**
  * ...and connect the rest of 'Pages' controller's urls.

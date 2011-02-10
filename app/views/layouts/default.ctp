@@ -9,21 +9,21 @@
 		echo $this->Html->meta('icon');
 
 		// vendor css
-		echo $this->Html->css('jquery.wysiwyg');
-		echo $this->Html->css('fullcalendar');
+		$this->AssetCompress->css('jquery.wysiwyg');
+		$this->AssetCompress->css('fullcalendar');
 
 		// CORE css
-		echo $this->Html->css('reset');
-		echo $this->Html->css('960');
+		$this->AssetCompress->css('reset');
+		$this->AssetCompress->css('960');
 		echo $this->Html->css('font-face');
-		echo $this->Html->css('menu');		
-		echo $this->Html->css('jquery-ui');
-		echo $this->Html->css('styles');
-		echo $this->Html->css('tables');
+		$this->AssetCompress->css('menu');
+		$this->AssetCompress->css('jquery-ui');
+		$this->AssetCompress->css('styles');
+		$this->AssetCompress->css('tables');
 		if(preg_match('/MSIE/i', $_SERVER['HTTP_USER_AGENT'])) {
-			echo $this->Html->css('ie');
+			$this->AssetCompress->css('ie');
 		}		
-		echo $this->Html->css('calendar');
+		$this->AssetCompress->css('calendar');
 
 		// google cdn scripts
 		echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js');
@@ -31,24 +31,25 @@
 		echo $this->Html->script('http://maps.google.com/maps/api/js?sensor=false');
 		
 		// vendor scripts
-		echo $this->Html->script('jquery.plugins/jquery.form');
-		echo $this->Html->script('jquery.plugins/jquery.qtip');
-		echo $this->Html->script('jquery.plugins/jquery.cookie');
-		echo $this->Html->script('jquery.plugins/jquery.wysiwyg');
-		echo $this->Html->script('jquery.plugins/jquery.equalheights');
-		echo $this->Html->script('jquery.plugins/jquery.fullcalendar');
+		$this->AssetCompress->script('jquery.plugins/jquery.form');
+		$this->AssetCompress->script('jquery.plugins/jquery.qtip');
+		$this->AssetCompress->script('jquery.plugins/jquery.cookie');
+		$this->AssetCompress->script('jquery.plugins/jquery.wysiwyg');
+		$this->AssetCompress->script('jquery.plugins/jquery.equalheights');
+		$this->AssetCompress->script('jquery.plugins/jquery.fullcalendar');
 		
 		// CORE scripts
-		echo $this->Html->script('functions');
-		echo $this->Html->script('global');
-		echo $this->Html->script('ui');
-		echo $this->Html->script('form');
-		echo $this->Html->script('navigation');
+		$this->AssetCompress->script('functions');
+		$this->AssetCompress->script('global');
+		$this->AssetCompress->script('ui');
+		$this->AssetCompress->script('form');
+		$this->AssetCompress->script('navigation');
 		
 		// setup
 		$this->Js->buffer('CORE.init();');
 		$this->Js->buffer('CORE.register("notifications", "nav-notifications", "/notifications/quick")');
 		echo $this->Js->writeBuffer();
+		echo $this->AssetCompress->includeAssets();
 		echo $scripts_for_layout;
 	?>
 </head>
