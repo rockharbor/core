@@ -102,7 +102,7 @@
  * or in each action using $this->cacheAction = true.
  *
  */
-	//Configure::write('Cache.check', true);
+	Configure::write('Cache.check', true);
 
 /**
  * Defines the default error type when using the log() function. Used for
@@ -300,14 +300,11 @@
  *
  */
 	Cache::config('default', array('engine' => 'File'));
-	Cache::config('list', array(
+	Cache::config('acl', array(
 		'engine' => 'File',
-		'path' => CACHE.'lists',
-		'duration' => '+1 hours'
-	));
-	Cache::config('short', array(
-		'engine' => 'File',
-		'path' => CACHE.'short',
-		'duration' => '+1 hours'
+		'prefix' => 'core_acl_',
+		'path' => CACHE.'acl',
+		'duration' => 3600,
+		'serialize' => false
 	));
 ?>
