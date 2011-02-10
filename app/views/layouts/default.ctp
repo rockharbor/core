@@ -20,7 +20,9 @@
 		$this->AssetCompress->css('jquery-ui');
 		$this->AssetCompress->css('styles');
 		$this->AssetCompress->css('tables');
-		if(preg_match('/MSIE/i', $_SERVER['HTTP_USER_AGENT'])) {
+
+		$browser = get_browser($_SERVER['HTTP_USER_AGENT']);
+		if($browser->browser == 'IE' && $browser->majorver < 9) {
 			$this->AssetCompress->css('ie');
 		}		
 		$this->AssetCompress->css('calendar');
@@ -49,7 +51,8 @@
 		$this->Js->buffer('CORE.init();');
 		$this->Js->buffer('CORE.register("notifications", "nav-notifications", "/notifications/quick")');
 		echo $this->Js->writeBuffer();
-		echo $this->AssetCompress->includeAssets();
+		//echo $this->AssetCompress->includeAssets(Configure::read('debug') == 0);
+		echo $this->AssetCompress->includeAssets(false);
 		echo $scripts_for_layout;
 	?>
 </head>

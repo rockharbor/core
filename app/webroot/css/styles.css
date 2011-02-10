@@ -26,7 +26,7 @@ h1, h2, h3 {
 div .content-box h1, div.ui-dialog h1 { display:none; }
 h1 { font-size: 44px; margin:0 -10px; margin-bottom:10px; }
 h2 { font-size: 20px;}
-h3 { font-size: 16px; margin:0; text-transform: uppercase; }
+h3 { font-size: 16px; margin:0; text-transform: uppercase; line-height: 18px; }
 
 /*
 Highlight and flash classes
