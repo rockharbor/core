@@ -43,6 +43,11 @@ ul.core-admin-tabs li:hover {
 div.subministry {
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FF444445, endColorstr=#FF303030);
 }
+.core-checkbox-hidden {
+	filter:Alpha(Opacity=0);
+	margin: 0;
+	position: absolute;
+}
 
 /*
 jquery-ui.css

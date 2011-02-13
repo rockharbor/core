@@ -463,6 +463,12 @@ select {
 	width: 11px;
 	float:left;
 	margin-right: 3px;
+	position: relative;
+}
+.core-checkbox-hidden {
+	opacity: 0;
+	margin: 0;
+	position: absolute;
 }
 .core-checkbox:hover {
 	background: #d0f4e4;
