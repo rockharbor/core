@@ -266,6 +266,7 @@ class InstallShell extends Shell {
 			'controllers/Rosters/delete',
 			'controllers/Rosters/edit',
 			'controllers/Profiles/admin',
+			'controllers/MinistryLeaders/add',
 		),
 		'Communications Admin' => array(
 			'controllers/Alerts/add',

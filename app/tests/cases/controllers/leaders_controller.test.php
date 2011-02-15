@@ -83,17 +83,9 @@ class LeadersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testAdd() {
-		$data = array(
-			'Leader' => array(
-				'user_id' => 2,
-				'model' => 'Involvement',
-				'model_id' => 1
-			)
-		);
-		$vars = $this->testAction('/involvement_leaders/add/Involvement:1', array(
-			'return' => 'vars',
-			'data' => $data
+	function testAdd() {		
+		$vars = $this->testAction('/involvement_leaders/add/Involvement:1/model:Involvement/leader:2', array(
+			'return' => 'vars'
 		));
 		$this->assertEqual($vars['type'], 'leading');
 		$this->assertEqual($vars['itemType'], 'Involvement');

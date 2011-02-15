@@ -1,59 +1,63 @@
-<h2>Leaders</h2>
-<div class="leaders">
-	<table cellpadding="0" cellspacing="0">
-	<tr>
-			<th>User</th>
-			<th>Model</th>
-			<th>Model Id</th>
-			<th>Created</th>
-			<th>Modified</th>
-			<th class="actions">Actions</th>
-	</tr>
-	<?php
-	$i = 0;
-	foreach ($leaders as $leader):
-		$class = null;
-		if ($i++ % 2 == 0) {
-			$class = ' class="altrow"';
-		}
-	?>
-	<tr<?php echo $class;?>>
-		<td><?php echo $this->Formatting->flags('User', $leader['User']).$leader['User']['username']; ?>&nbsp;</td>
-		<td><?php echo $leader['Leader']['model']; ?>&nbsp;</td>
-		<td><?php echo $leader['Leader']['model_id']; ?>&nbsp;</td>
-		<td><?php echo $leader['Leader']['created']; ?>&nbsp;</td>
-		<td><?php echo $leader['Leader']['modified']; ?>&nbsp;</td>
-		<td class="actions">
-			<?php echo $this->Html->link('Remove Leader', array('action' => 'delete', 'User' => $leader['Leader']['user_id'], 'model' => $model, $model => $modelId), array(
-					'id'=>'delete_btn_'.$i
-			)); ?>
-		</td>
-	</tr>
-<?php endforeach; ?>
+<?php
+$this->Paginator->options(array(
+	'update' => '#leaders'
+));
+?>
+<h1>Leaders</h1>
+<div class="clearfix">
+	<table cellpadding="0" cellspacing="0" class="datatable">
+		<thead>
+			<tr>
+				<th>&nbsp;</th>
+				<th><?php echo $this->Paginator->sort('name'); ?></th>
+				<th><?php echo $this->Paginator->sort('created', 'Joined'); ?></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php
+			$i = 0;
+			foreach ($leaders as $leader):
+				$class = null;
+				if ($i++ % 2 == 0) {
+					$class = ' class="altrow"';
+				}
+			?>
+			<tr<?php echo $class;?>>
+				<td>
+					<?php echo $this->Html->link('Remove Leader', array('action' => 'delete', 'User' => $leader['Leader']['user_id'], 'model' => $model, $model => $modelId), array(
+							'id'=>'delete_btn_'.$i
+					)); ?>
+				</td>
+				<td><?php echo $this->Formatting->flags('User', $leader['User']).$leader['User']['Profile']['name']; ?>&nbsp;</td>
+				<td><?php echo $this->Formatting->datetime($leader['Leader']['created']); ?>&nbsp;</td>
+			</tr>
+			<?php endforeach; ?>
+		</tbody>
 	</table>
+	<?php
+	echo $this->element('pagination'); ?>
 </div>
 
 <div>
 <?php
 	$this->Js->buffer('function addLeader(userid) {
-		var data = {
-			"data[Leader][model]": "'.$model.'",
-			"data[Leader][model_id]": "'.$modelId.'",
-			"data[Leader][user_id]": userid
-		};
 		
 		CORE.request("'.Router::url(array(
-		'action' => 'add',
-		'model' => $model, 
-		$model => $modelId
-		)).'", [], data);
-	}');
+			'action' => 'add',
+			'model' => $model,
+			$model => $modelId,
+			'User' => $activeUser['User']['id']
+			)).'/leader:"+userid);
+		}');
 
-	echo $this->Html->link('Add Leader', array(
+	echo $this->Permission->link('Add Leader', array(
 		'controller' => 'searches',
 		'action' => 'simple',
-		'User','notLeaderOf',$model,$modelId,
-		'Add Leader' => 'addLeader',
+		'User',
+		'add_leader',
+		'notLeaderOf',
+		$model,
+		$modelId
 	), array (
 		'rel' => 'modal-leaders',
 		'class' => 'button'

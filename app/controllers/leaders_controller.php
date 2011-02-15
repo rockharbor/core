@@ -53,13 +53,18 @@ class LeadersController extends AppController {
  * A list of leaders
  */
 	function index() {	
-		$this->Leader->recursive = 1;
-		$this->set('leaders', $this->paginate(array(
-			'model' => $this->model,
-			'model_id' => $this->modelId
+		$this->paginate = array(
+			'conditions' => array(
+				'model' => $this->model,
+				'model_id' => $this->modelId
+			),
+			'contain' => array(
+				'User' => array(
+					'Profile'
+				)
 			)
-		));
-		
+		);
+		$this->set('leaders', $this->paginate());		
 		$this->set('model', $this->model);
 		$this->set('modelId', $this->modelId);
 	}
@@ -90,43 +95,49 @@ class LeadersController extends AppController {
  * @todo check if they already exists and if they're allowed to lead
  */
 	function add() {
-		if (!empty($this->data)) {
-			$this->Leader->create();
-			if ($this->Leader->save($this->data)) {				
-				$model = $this->data['Leader']['model'];
+		$data = array(
+			'Leader' => array(
+				'model' => $this->passedArgs['model'],
+				'model_id' => $this->passedArgs[$this->passedArgs['model']],
+				'user_id' => $this->passedArgs['leader'],
+			)
+		);
+		
+		$this->Leader->create();
+		if ($this->Leader->save($data)) {
+			$model = $data['Leader']['model'];
 
-				$this->Leader->User->contain(array('Profile'));
-				$leader = $this->Leader->User->read(null, $this->data['Leader']['user_id']);
-				$item = $this->Leader->{$model}->read(array('name'), $this->data['Leader']['model_id']);
+			$this->Leader->User->contain(array('Profile'));
+			$leader = $this->Leader->User->read(null, $data['Leader']['user_id']);
+			$item = $this->Leader->{$model}->read(array('name'), $data['Leader']['model_id']);
 
-				$itemType = $this->data['Leader']['model'];
-				$itemName = $item[$model]['name'];
-				$name = $leader['Profile']['name'];
-				$type = $model == 'Involvement' ? 'leading' : 'managing';
-				
-				$this->set(compact('itemType','itemName','name','type'));
-				
-				// notify this user
+			$itemType = $data['Leader']['model'];
+			$itemName = $item[$model]['name'];
+			$name = $leader['Profile']['name'];
+			$type = $model == 'Involvement' ? 'leading' : 'managing';
+
+			$this->set(compact('itemType','itemName','name','type'));
+
+			// notify this user
+			$this->Notifier->notify(array(
+				'to' => $leader['User']['id'],
+				'template' => 'leaders_add'
+			), 'notification');
+
+			// notify the managers as well
+			$managers = $this->Leader->getManagers($data['Leader']['model'], $data['Leader']['model_id']);
+
+			foreach ($managers as $manager) {
 				$this->Notifier->notify(array(
-					'to' => $leader['User']['id'],
+					'to' => $manager,
 					'template' => 'leaders_add'
 				), 'notification');
-				
-				// notify the managers as well
-				$managers = $this->Leader->getManagers($this->data['Leader']['model'], $this->data['Leader']['model_id']);
-				
-				foreach ($managers as $manager) {
-					$this->Notifier->notify(array(
-						'to' => $manager,
-						'template' => 'leaders_add'
-					), 'notification');
-				}
-				
-				$this->Session->setFlash('The leader has been added', 'flash'.DS.'success');
-				//$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash('The leader could not be added. Please, try again.', 'flash'.DS.'failure');
 			}
+
+			$this->Session->setFlash('The leader has been added', 'flash'.DS.'success');
+			//$this->redirect(array('action' => 'index'));
+		} else {
+			$this->Session->setFlash('The leader could not be added. Please, try again.', 'flash'.DS.'failure');
 		}
 		
 		$this->redirect(array(	
