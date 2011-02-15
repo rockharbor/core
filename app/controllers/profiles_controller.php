@@ -65,55 +65,33 @@ class ProfilesController extends AppController {
 	}
 
 	function edit() {
-		// get user id
-		if (isset($this->passedArgs['User'])) {
-			$id = $this->passedArgs['User'];
-		} else {
-			$id = $this->activeUser['User']['id'];
-		}
-
-		if (!$id && empty($this->data)) {
+		if (!$this->passedArgs['User'] && empty($this->data)) {
 			$this->Session->setFlash('Invalid user');
 			$this->redirect(array('action' => 'index'));
 		}
 		if (!empty($this->data)) {
-			if ($this->User->saveAll($this->data)) {
+			if ($this->Profile->saveAll($this->data)) {
 				$this->Session->setFlash('The user has been saved', 'flash'.DS.'success');
 			} else {
 				$this->Session->setFlash('The user could not be saved. Please, try again.', 'flash'.DS.'failure');
 			}
 		}
 		if (empty($this->data)) {
-			$this->User->contain(array(
-				'Profile',
-				'Group',
-				'Publication'
+			$this->data = $this->Profile->find('first', array(
+				'conditions' => array(
+					'Profile.user_id' => $this->passedArgs['User']
+				)
 			));
-			$this->data = $this->User->read(null, $id);
 		}
 
-		$user = $this->User->find('first', array(
-			'conditions' => array(
-				'id' => $id
-			),
-			'contain' => false
-		));
-
-		$this->set('user', $user);
-		$this->set('publications', $this->User->Publication->find('list'));
-		$this->set('groups', $this->User->Group->find('list', array(
-			'conditions' => array(
-				'Group.conditional' => false,
-				'Group.lft >' => $this->activeUser['Group']['lft']
-			)
-		)));
-		$this->set('campuses', $this->User->Profile->Campus->find('list'));
-		$this->set('jobCategories', $this->User->Profile->JobCategory->find('list'));
-		$this->set('elementarySchools', $this->User->Profile->ElementarySchool->find('list'));
-		$this->set('middleSchools', $this->User->Profile->MiddleSchool->find('list'));
-		$this->set('highSchools', $this->User->Profile->HighSchool->find('list'));
-		$this->set('colleges', $this->User->Profile->College->find('list'));
-		$this->set('classifications', $this->User->Profile->Classification->find('list'));
+		$this->set('publications', $this->Profile->User->Publication->find('list'));
+		$this->set('campuses', $this->Profile->Campus->find('list'));
+		$this->set('jobCategories', $this->Profile->JobCategory->find('list'));
+		$this->set('elementarySchools', $this->Profile->ElementarySchool->find('list'));
+		$this->set('middleSchools', $this->Profile->MiddleSchool->find('list'));
+		$this->set('highSchools', $this->Profile->HighSchool->find('list'));
+		$this->set('colleges', $this->Profile->College->find('list'));
+		$this->set('classifications', $this->Profile->Classification->find('list'));
 	}
 
 

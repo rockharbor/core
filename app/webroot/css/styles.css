@@ -24,7 +24,7 @@ h1, h2, h3 {
 	color: #444445;
 }
 div .content-box h1, div.ui-dialog h1 { display:none; }
-h1 { font-size: 44px; margin:0 -10px; margin-bottom:10px; }
+h1 { font-size: 44px; position: relative; left: -12px; margin-bottom: 10px; margin-top: 5px; }
 h2 { font-size: 20px;}
 h3 { font-size: 16px; margin:0; text-transform: uppercase; line-height: 18px; }
 
@@ -116,7 +116,13 @@ div.ui-dialog div#content {
 }
 span.breadcrumb {
 	font-size:10px;
-	margin:0 -12px;
+	position: relative;
+	left: -12px;
+}
+span.breadcrumb.editing {
+	background: #e03a14;
+	color: #ffffff;
+	padding: 2px;
 }
 #columns .column {
 	height:130px;

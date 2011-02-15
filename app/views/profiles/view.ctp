@@ -225,6 +225,7 @@
 				<li><a href="#admin">Administration</a></li>
 				<li><?php echo $this->Permission->link('Documents', array('controller' => 'user_documents', 'User' => $profile['User']['id']), array('rel' => 'modal-none')); ?></li>
 				<li><?php echo $this->Permission->link('Comments', array('controller' => 'comments', 'User' => $profile['User']['id']), array('rel' => 'modal-none')); ?></li>
+				<li><?php echo $this->Permission->link('Edit', array('controller' => 'profiles', 'action' => 'edit', 'User' => $profile['User']['id'])); ?></li>
 			</ul>
 
 		</div>
