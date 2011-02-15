@@ -63,7 +63,7 @@ CORE.readNotification = function(id, ele) {
 	});
 	var count = Number($('.notification-count').text()) - 1;
 	if (count == 0) {
-		$('.notification-count').fadeOut('fast');
+		$('.notification-counter').fadeOut('fast');
 	} else {
 		$('.notification-count').fadeOut('fast').text(count).fadeIn('fast');
 	}
