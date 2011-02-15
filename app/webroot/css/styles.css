@@ -159,6 +159,9 @@ div.content-box .content-box {
 	right:0;
 	display:none;
 }
+.core-iconable .core-icon-container .core-icon {
+	top: 0px;
+}
 .core-iconable:hover .core-icon-container {
 	display:block;
 }

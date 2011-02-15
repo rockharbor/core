@@ -42,11 +42,16 @@
 				</div>
 
 				<div class="grid_3">
-					<dl>
+					<dl class="core-iconable">
 					<?php
 					echo $this->Html->tag('dt', 'Username:');
 					echo $this->Html->tag('dd', $profile['User']['username'].$this->Formatting->flags('User', $profile));
 					?>
+					<span class="core-icon-container">
+					<?php
+					echo $this->Permission->link('Edit', array('controller' => 'users', 'action' => 'edit', 'User' => $profile['User']['id']), array('class' => 'core-icon icon-edit', 'rel' => 'modal-content', 'title' => 'Edit Username and Password'));
+					?>
+					</span>
 					</dl>
 					<hr>
 					<p class="core-iconable">
@@ -231,8 +236,34 @@
 		</div>
 
 		<div id="household">
+			<?php
+			$this->Js->buffer('CORE.register("household", "household", "/households/index/User:'.$profile['User']['id'].'")');
+			echo $this->requestAction('/households/index', array(
+				'renderAs' => 'ajax',
+				'bare' => false,
+				'return',
+				'named' => array(
+					'User' => $profile['User']['id']
+				),
+				'data' => null,
+				'form' => array('data' => null)
+				));
+			?>
 		</div>
 		<div id="payments">
+			<?php
+			$this->Js->buffer('CORE.register("payments", "payments", "/payments/index/User:'.$profile['User']['id'].'")');
+			echo $this->requestAction('/payments/index', array(
+				'renderAs' => 'ajax',
+				'bare' => false,
+				'return',
+				'named' => array(
+					'User' => $profile['User']['id']
+				),
+				'data' => null,
+				'form' => array('data' => null)
+				));
+			?>
 		</div>
 		
 
