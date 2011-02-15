@@ -14,7 +14,7 @@ echo $this->Form->create(array(
 		<li><a href="#personal-information">Personal</a></li>
 		<li><a href="#contact-information">Contact</a></li>
 		<li><a href="#child-information">Child and School</a></li>
-		<li><a href="#subscriptions">Subscriptions</a></li>
+		<li><?php echo $this->Html->link('Subscriptions', array('controller' => 'publications', 'action' => 'subscriptions', 'User' => $this->data['Profile']['user_id']), array('title' => 'subscriptions')); ?></li>
 	</ul>
 
 	<div class="content-box clearfix">
@@ -22,6 +22,7 @@ echo $this->Form->create(array(
 			<fieldset class="grid_5 alpha">
 				<legend>Personal Info</legend>
 				<?php
+				echo $this->Form->input('id');
 				echo $this->Form->input('first_name');
 				echo $this->Form->input('last_name');
 				echo $this->Form->input('gender', array(
@@ -60,7 +61,7 @@ echo $this->Form->create(array(
 				));
 				?>
 			</fieldset>
-			<div style="clear:both"><?php echo $this->Form->submit('Save'); ?></div>
+			<div style="clear:both"><?php echo $this->Js->submit('Save', $defaultSubmitOptions); ?></div>
 		</div>
 		<div id="contact-information">
 			<fieldset class="grid_5 alpha">
@@ -89,7 +90,7 @@ echo $this->Form->create(array(
 				echo $this->Form->input('Profile.alternate_email_2');
 				?>
 			</fieldset>
-			<div style="clear:both"><?php echo $this->Form->submit('Save'); ?></div>
+			<div style="clear:both"><?php echo $this->Js->submit('Save', $defaultSubmitOptions); ?></div>
 		</div>
 		<div id="child-information">
 			<fieldset class="grid_5 alpha">
@@ -132,21 +133,18 @@ echo $this->Form->create(array(
 				echo $this->Form->input('college_id');
 				?>
 			</fieldset>
-			<div style="clear:both"><?php echo $this->Form->submit('Save'); ?></div>
+			<div style="clear:both"><?php echo $this->Js->submit('Save', $defaultSubmitOptions); ?></div>
 		</div>
 		<div id="subscriptions">
-			<fieldset>
-				<legend>Subscriptions</legend>
-				<p>Select any publications you would like to subscribe to below.</p>
-				<?php
-				echo $this->Form->input('Publication', array(
-					'multiple' => 'checkbox',
-					'empty' => false,
-					'label' => false
-				));
-				?>
-			</fieldset>
-			<div style="clear:both"><?php echo $this->Form->submit('Save'); ?></div>
+			<?php
+			echo $this->requestAction('/publications/subscriptions', array(
+				'named' => array(
+					'User' => $this->data['Profile']['user_id']
+				),
+				'return',
+				'respondAs' => 'ajax'
+			));
+			?>
 		</div>
 	</div>
 <?php
