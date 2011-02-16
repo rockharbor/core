@@ -449,6 +449,9 @@ CORE.confirmation = function(id, message, options) {
  */
 CORE.wysiwyg = function(id) {
 	delayWysiwyg = function() {
+		if ($('#'+id).width() <= 0) {
+			$('#'+id)[0].width = 527;
+		}
 		$('#'+id).wysiwyg({
 			rmUnusedControls: true,
 			controls: {
@@ -467,7 +470,7 @@ CORE.wysiwyg = function(id) {
 		// fix some display issues
 		var width = $('div.wysiwyg').width();
 		$('div.wysiwyg ul.panel').css({width: (width-8)});
-		$('div.wysiwyg iframe').css({width: (width)});
+		$('div.wysiwyg iframe').css({width: '100% !important'});
 	}
 	
 	// delay applying the wysiwyg for a bit
