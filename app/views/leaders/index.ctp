@@ -40,15 +40,14 @@ $this->Paginator->options(array(
 
 <div>
 <?php
-	$this->Js->buffer('function addLeader(userid) {
-		
+	$this->Js->buffer('addLeader = function(userid) {
 		CORE.request("'.Router::url(array(
 			'action' => 'add',
 			'model' => $model,
 			$model => $modelId,
 			'User' => $activeUser['User']['id']
 			)).'/leader:"+userid);
-		}');
+		};');
 
 	echo $this->Permission->link('Add Leader', array(
 		'controller' => 'searches',
