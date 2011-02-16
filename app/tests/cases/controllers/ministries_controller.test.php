@@ -70,7 +70,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 			'return' => 'vars',
 			'data' => $data
 		));
-		$ministry = $this->Ministries->Ministry->read(null, 5);
+		$ministry = $this->Ministries->Ministry->read(null, $this->Ministries->Ministry->id);
 		$result = $ministry['Ministry']['name'];
 		$this->assertEqual($result, 'New Root Ministry');
 
@@ -78,7 +78,8 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$expected = array(
 			1 => 'Communications',
 			2 => 'Alpha',
-			3 => 'All Church'
+			3 => 'All Church',
+			5 => 'Downtown Reach'
 		);
 		$this->assertEqual($results, $expected);
 	}
@@ -95,7 +96,8 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$result = $vars['ministries'];
 		$expected = array(
 			2 => 'Alpha',
-			3 => 'All Church'
+			3 => 'All Church',
+			5 => 'Downtown Reach'
 		);
 		$this->assertEqual($result, $expected);
 

@@ -164,7 +164,9 @@ class Ministry extends AppModel {
 	);
 	
 /**
- * Checks if a user is a manager for a ministry
+ * Checks if a user is a manager for a ministry. If they are not, it checks if
+ * they manage the parent ministry, if any. If that fails, it checks if they are
+ * a campus manager.
  *
  * @param integer $userId The user id
  * @param integer $ministryId The ministry id
@@ -176,11 +178,17 @@ class Ministry extends AppModel {
 			return false;
 		}
 		
-		return $this->Leader->hasAny(array(
+		$managing = $this->Leader->hasAny(array(
 			'model' => 'Ministry',
 			'model_id' => $ministryId,
 			'user_id' => $userId
 		));
+		if (!$managing) {
+			$ministry = $this->read(array('parent_id', 'campus_id'), $ministryId);
+			return $this->isManager($userId, $ministry['Ministry']['parent_id'])
+				|| $this->Campus->isManager($userId, $ministry['Ministry']['campus_id']);
+		}
+		return true;
 	}
 
 /**

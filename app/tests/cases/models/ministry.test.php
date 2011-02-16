@@ -21,6 +21,10 @@ class MinistryTestCase extends CoreTestCase {
 		$this->assertFalse($this->Ministry->isManager(2));
 		$this->assertFalse($this->Ministry->isManager(2, 90));
 		$this->assertFalse($this->Ministry->isManager(90, 1));
+		// is a campus manager, but not a ministry manager
+		$this->assertTrue($this->Ministry->isManager(1, 1));
+		// is a parent ministry manager, but not a ministry manager or campus manager
+		$this->assertTrue($this->Ministry->isManager(2, 6));
 	}
 
 	function testGetInvolved() {

@@ -84,7 +84,20 @@ class MinistryFixture extends CakeTestFixture {
 			'created' => '2010-03-31 08:46:15',
 			'modified' => '2010-03-31 08:46:15',
 			'active' => 0
-		)
+		),
+		array(
+			'id' => 6,
+			'name' => 'Child Web',
+			'description' => 'child web things',
+			'parent_id' => 4,
+			'lft' => 10,
+			'rght' => 11,
+			'campus_id' => 1,
+			'private' => 0,
+			'created' => '2010-03-31 08:46:15',
+			'modified' => '2010-03-31 08:46:15',
+			'active' => 0
+		),
 	);
 
 /**
