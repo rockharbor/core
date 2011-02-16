@@ -450,41 +450,24 @@ CORE.confirmation = function(id, message, options) {
 CORE.wysiwyg = function(id) {
 	delayWysiwyg = function() {
 		$('#'+id).wysiwyg({
+			rmUnusedControls: true,
 			controls: {
-				html : { visible : true },
-				strikeThrough : { visible : true },
-				underline     : { visible : true },
-				separator00 : { visible : true },
-				justifyLeft   : { visible : false },
-				justifyCenter : { visible : false },
-				justifyRight  : { visible : false },
-				justifyFull   : { visible : false },
-				separator01 : { visible : false },
-				indent  : { visible : false },
-				outdent : { visible : false },
-				separator02 : { visible : true },
-				subscript   : { visible : true },
-				superscript : { visible : true },
-				separator03 : { visible : true },
-				undo : { visible : true },
-				redo : { visible : true },
-				separator04 : { visible : true },
-				insertOrderedList    : { visible : true },
-				insertUnorderedList  : { visible : true },
-				insertHorizontalRule : { visible : true },
-				createLink: { visible:false},
-				insertImage: { visible:false},
-				separator05 : { visible : true },
-				separator06 : { visible : false },
-				separator07 : { visible : false },
-				header1 : { visible : false },
-				h2 : { visible : false },
-				h3 : { visible : false },
-				cut   : { visible : false },
-				copy  : { visible : false },
-				paste : { visible : false }
-			}		
+				html: { visible : true, groupIndex: 0 },
+				strikeThrough: { visible : true, groupIndex: 1 },
+				underline: { visible : true, groupIndex: 1 },
+				bold: { visible : true, groupIndex: 1 },
+				italic: { visible : true, groupIndex: 1 },
+				undo: { visible : true, groupIndex: 2 },
+				redo: { visible : true, groupIndex: 2 },
+				insertOrderedList: { visible : true, groupIndex: 3 },
+				insertUnorderedList: { visible : true, groupIndex: 3 }
+			},
+			css: '/css/jquery.wysiwyg.iframe.css'
 		});
+		// fix some display issues
+		var width = $('div.wysiwyg').width();
+		$('div.wysiwyg ul.panel').css({width: (width-8)});
+		$('div.wysiwyg iframe').css({width: (width)});
 	}
 	
 	// delay applying the wysiwyg for a bit
