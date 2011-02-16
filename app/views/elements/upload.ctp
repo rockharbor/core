@@ -2,7 +2,7 @@
 if (!isset($model) || !isset(${$model}) || !isset($type)) {
 	return;
 }
-echo $this->Html->script('jquery.plugins/jquery.form', array('inline' => false));
+echo $this->Html->script('jquery.plugins/jquery.form', array('inline' => false, 'once' => true));
 
 if (!isset($update)) {
 	$update = $type.'Attachments';
