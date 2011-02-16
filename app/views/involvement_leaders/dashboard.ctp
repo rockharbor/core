@@ -71,7 +71,7 @@
 			?>
 			<tr<?php echo $class;?>>
 				<td><?php echo $this->MultiSelect->checkbox($leader[$model]['id']); ?></td>
-				<td><?php echo $this->Html->link($leader[$model]['name'], array('controller' => Inflector::pluralize($model), 'action' => 'view', 'model' => $model, $model => $leader[$model]['id'])).$this->Formatting->flags('Involvement', $leader); ?></td>
+				<td><?php echo $this->Html->link($leader[$model]['name'], array('controller' => strtolower(Inflector::pluralize($model)), 'action' => 'view', 'model' => $model, $model => $leader[$model]['id'])).$this->Formatting->flags('Involvement', $leader); ?></td>
 			</tr>
 			<?php endforeach; ?>
 		</tbody>
