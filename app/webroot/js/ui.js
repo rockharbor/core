@@ -281,7 +281,14 @@ CORE.tabs = function(id, taboptions, options) {
 	$('.ui-tabs-nav li.admin').appendTo($('ul.admin'));
 	
 	// check to see if this is a "wizard"
-	if (options != undefined) {		
+	if (options != undefined) {
+		tabbed.children('ul').children('li').each(function() {
+			$(this).prepend('<span class="start-separator" />');
+			$(this).append('<span class="end-separator" />');
+		});
+		tabbed.children('ul').children('li:last').each(function() {
+			$(this).children('.end-separator').addClass('last');
+		});
 		if (options.next != undefined) {
 			// hide next button if it automatically was selected (cookie)
 			if (tabbed.tabs('option', 'selected')+1 == tabbed.tabs('length')) {
@@ -320,7 +327,7 @@ CORE.tabs = function(id, taboptions, options) {
 				options.alwaysAllowSubmit = true;
 			}
 			
-			if (!options.alwaysAllowSubmit && tabbed.tabs('option', 'selected')+1 == tabbed.tabs('length')) {
+			if (!options.alwaysAllowSubmit && tabbed.tabs('option', 'selected')+1 != tabbed.tabs('length')) {
 				$('#'+options.submit).hide();
 			}
 		}
