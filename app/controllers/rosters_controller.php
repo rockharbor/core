@@ -189,16 +189,15 @@ class RostersController extends AppController {
 		if ($this->Session->check('FilterPagination.data') && empty($this->data)) {
 			$this->data = $this->Session->read('FilterPagination.data');
 		}
-		if (empty($this->data)) {
-			$this->data = array(
-				'Roster' => array(
-					'passed' => 0,
-					'leading' => 1,
-					'inactive' => 0,
-					'private' => $private
-				)
-			);
-		}
+		$_default = array(
+			'Roster' => array(
+				'passed' => 0,
+				'leading' => 1,
+				'inactive' => 0,
+				'private' => $private
+			)
+		);
+		$this->data = $search = Set::merge($_default, $this->data);
 		
 		if ($this->data['Roster']['leading']) {
 			$conditions['Involvement.id'] = array_merge(array_values($leaderOf), array_values($memberOf));
@@ -258,7 +257,7 @@ class RostersController extends AppController {
 		}
 
 		// get needed information about the user and this involvement
-		$this->Roster->Involvement->contain(array('InvolvementType'));
+		$this->Roster->Involvement->contain(array('InvolvementType', 'Question'));
 		$involvement = $this->Roster->Involvement->read(null, $involvementId);
 
 		// can't sign up for inactive involvements
@@ -281,8 +280,19 @@ class RostersController extends AppController {
 			),
 			'contain' => false
 		));
-		
-		$this->Roster->User->contain(array('Profile'));
+		///HouseholdMember/Household/HouseholdMember/User/Profile
+		$this->Roster->User->contain(array(
+			'Profile',
+			'HouseholdMember' => array(
+				'Household' => array(
+					'HouseholdMember' => array(
+						'User' => array(
+							'Profile'
+						)
+					)
+				)
+			)
+		));
 		$user = $this->Roster->User->read(null, $userId);
 
 		$members = $this->Roster->User->HouseholdMember->Household->getMemberIds($userId, true);

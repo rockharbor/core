@@ -648,88 +648,118 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 .ui-tabs .ui-tabs-hide { display: none !important; }
 
 /*
-Wizard tabs
+Sub tabs within dialog
 */
-.core-tabs-wizard .ui-tabs-nav {
+.ui-dialog .ui-tabs-nav {
+	font-family: 'Lucida Sans',Helvetica,Arial,sans-serif;
+	font-size: 11px;
+	text-transform: none;
+	color: #838383;
+}
+.ui-dialog .ui-tabs-nav {
 	margin: 0;
 }
-.core-tabs-wizard .ui-tabs-nav .ui-state-default, .core-tabs-wizard .ui-tabs-nav .ui-widget-content .ui-state-default, .core-tabs-wizard .ui-tabs-nav .ui-widget-header .ui-state-default {
-	background: #f1f1f1;
-	background-image: none;
-	color: #838383;
+.ui-dialog .ui-tabs-nav {
+	padding: 0px;
+}
+.ui-dialog .ui-tabs-nav .ui-state-default, .ui-dialog .ui-tabs-nav .ui-widget-content .ui-state-default, .ui-dialog .ui-tabs-nav .ui-widget-header .ui-state-default {
+	background: none;
 	text-transform: none;
-}
-.core-tabs-wizard .ui-tabs-nav .ui-state-default a, .core-tabs-wizard .ui-tabs-nav .ui-state-default a:link, .core-tabs-wizard .ui-tabs-nav .ui-state-default a:visited {
 	color: #838383;
 }
-.core-tabs-wizard .ui-tabs-nav .ui-state-hover, .core-tabs-wizard .ui-tabs-nav .ui-widget-content .ui-state-hover, .core-tabs-wizard .ui-tabs-nav .ui-widget-header .ui-state-hover, .core-tabs-wizard .ui-tabs-nav .ui-state-focus, .core-tabs-wizard .ui-widget-content .ui-state-focus, .core-tabs-wizard .ui-widget-header .ui-state-focus {
+.ui-dialog .ui-tabs-nav .ui-state-default a, .ui-dialog .ui-tabs-nav .ui-state-default a:link, .ui-dialog .ui-tabs-nav .ui-state-default a:visited {
+	color: #838383;
+}
+.ui-dialog .ui-tabs-nav .ui-state-hover, .ui-dialog .ui-tabs-nav .ui-tabs-selected, .ui-dialog .ui-tabs-nav .ui-widget-content .ui-state-hover, .ui-dialog .ui-tabs-nav .ui-widget-header .ui-state-hover, .ui-dialog .ui-tabs-nav .ui-state-focus, .ui-dialog .ui-widget-content .ui-state-focus, .ui-dialog .ui-widget-header .ui-state-focus {
+	background: #f1f1f1;
+}
+.ui-dialog .ui-tabs-panel {
+	background: #f1f1f1;
+	padding: 5px;
+}
+
+/*
+Wizard tabs
+*/
+.core-tabs-wizard > .ui-tabs-nav {
+	padding-bottom: 10px !important;
+}
+.core-tabs-wizard > .ui-tabs-panel {
+	padding: 0px !important;
+	background: none !important;
+}
+.core-tabs-wizard > .ui-tabs-nav .ui-state-default, .core-tabs-wizard > .ui-tabs-nav .ui-widget-content .ui-state-default, .core-tabs-wizard > .ui-tabs-nav .ui-widget-header .ui-state-default {
+	background: #f1f1f1;
+	background-image: none;
+}
+.core-tabs-wizard > .ui-tabs-nav .ui-state-default a, .core-tabs-wizard > .ui-tabs-nav .ui-state-default a:link, .core-tabs-wizard > .ui-tabs-nav .ui-state-default a:visited {
+	color: #838383;
+}
+.core-tabs-wizard > .ui-tabs-nav .ui-state-hover, .core-tabs-wizard > .ui-tabs-nav .ui-widget-content .ui-state-hover, .core-tabs-wizard > .ui-tabs-nav .ui-widget-header .ui-state-hover, .core-tabs-wizard > .ui-tabs-nav .ui-state-focus, .core-tabs-wizard .ui-widget-content .ui-state-focus, .core-tabs-wizard .ui-widget-header .ui-state-focus {
 	background: #f1f1f1;
 	background-image: none;
 	color: #838383;
 }
-.core-tabs-wizard .ui-tabs-nav .ui-state-active a {
+.core-tabs-wizard > .ui-tabs-nav .ui-state-active a {
 	color: #ffffff !important;
 }
-.core-tabs-wizard .ui-tabs-nav li {
+.core-tabs-wizard > .ui-tabs-nav li {
 	margin-right: 18px;
 	padding-right: 0;
 	height: 26px;
 }
-.core-tabs-wizard .ui-tabs-nav .ui-state-active, .core-tabs-wizard .ui-tabs-nav .ui-widget-content .ui-state-active, .core-tabs-wizard .ui-tabs-nav .ui-widget-header .ui-state-active {
+.core-tabs-wizard > .ui-tabs-nav .ui-state-active, .core-tabs-wizard > .ui-tabs-nav .ui-widget-content .ui-state-active, .core-tabs-wizard > .ui-tabs-nav .ui-widget-header .ui-state-active {
 	background: #838383;
 	background-image: none;
 	color: #ffffff;
 	height: 26px;	
 }
-.core-tabs-wizard .ui-tabs-nav li a {
+.core-tabs-wizard > .ui-tabs-nav li a {
 	padding: 5px 10px;
 	line-height: 15px;
 }
-.core-tabs-wizard .ui-tabs-nav ui-state-hover a, .core-tabs-wizard .ui-tabs-nav ui-state-hover a:hover {
+.core-tabs-wizard > .ui-tabs-nav ui-state-hover a, .core-tabs-wizard > .ui-tabs-nav ui-state-hover a:hover {
 	color: #838383;
 }
-.core-tabs-wizard .ui-tabs-nav {
-	font-family: 'Lucida Sans',Helvetica,Arial,sans-serif;
-	font-size: 11px;	
-	text-transform: none;
-	color: #838383;
-}
-.core-tabs-wizard .ui-tabs-nav li span.end-separator {
+.core-tabs-wizard > .ui-tabs-nav li span.end-separator {
 	width: 18px;
 	height: 26px;
 	position: absolute;
 	z-index: 0;
 }
-.core-tabs-wizard .ui-tabs-nav li span.start-separator {
+.core-tabs-wizard > .ui-tabs-nav li span.start-separator {
 	width: 18px;
 	height: 26px;
 	left: -18px;
 	position: absolute;
 	z-index: 0;
 }
-.core-tabs-wizard .ui-tabs-nav li.ui-state-default span.end-separator {
+.core-tabs-wizard > .ui-tabs-nav li.ui-state-default span.end-separator {
 	background: url(../assets/images/wizard-out-out.png) no-repeat;
 }
-.core-tabs-wizard .ui-tabs-nav li.ui-state-active span.end-separator {
+.core-tabs-wizard > .ui-tabs-nav li.ui-state-active span.end-separator {
 	background: url(../assets/images/wizard-over-out.png) no-repeat;
 	z-index: 1;
 }
-.core-tabs-wizard .ui-tabs-nav li.ui-state-default span.end-separator.last {
+.core-tabs-wizard > .ui-tabs-nav li.ui-state-default span.end-separator.last {
 	background: url(../assets/images/wizard-out.png) no-repeat;
 }
-.core-tabs-wizard .ui-tabs-nav li.ui-state-active span.end-separator.last {
+.core-tabs-wizard > .ui-tabs-nav li.ui-state-active span.end-separator.last {
 	background: url(../assets/images/wizard-over.png) no-repeat;
 	z-index: 1;
 }
-.core-tabs-wizard .ui-tabs-nav li:first-child span.start-separator {
+.core-tabs-wizard > .ui-tabs-nav li:first-child span.start-separator {
 	width: 0;
 }
-.core-tabs-wizard .ui-tabs-nav li.ui-state-default span.start-separator {
+.core-tabs-wizard > .ui-tabs-nav li.ui-state-default span.start-separator {
 	background: url(../assets/images/wizard-out-out.png) no-repeat;
 }
-.core-tabs-wizard .ui-tabs-nav li.ui-state-active span.start-separator {
+.core-tabs-wizard > .ui-tabs-nav li.ui-state-active span.start-separator {
 	background: url(../assets/images/wizard-out-over.png) no-repeat;
 	z-index: 1;
+}
+.core-tabs-wizard > .ui-tabs-nav .ui-tabs-panel {
+	background: none;
 }
 
 /*

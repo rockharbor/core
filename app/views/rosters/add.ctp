@@ -1,5 +1,4 @@
-<h2>Signup</h2>
-
+<h1>Signup</h1>
 <?php
 // get kids in their households
 $children = Set::extract('/HouseholdMember/Household/HouseholdMember/User/Profile[child=1]', $user);
@@ -40,16 +39,20 @@ echo $this->Form->create('Roster', array(
 
 ?>
 
-<div class="rosters" id="roster_tabs">
+<div class="rosters core-tabs-wizard" id="roster_tabs">
 
 <ul class="tabs">
 	<li class="tab"><a href="#members">Choose Members</a></li> 
-	<?php if (!empty($involvement['Question'])): ?><li class="tab" id="questions_tab"><a href="#questions">Answer Questions</a></li><?php endif; ?>
-	<?php if ($involvement['Involvement']['take_payment']): ?><li class="tab" id="payment_tab"><a href="#payment">Make A Payment</a></li><?php endif; ?>
-	<li class="tab"><a href="#options">Signup Options</a></li>
+	<?php if (!empty($involvement['Question'])): ?>
+	<li class="tab" id="questions_tab"><a href="#questions">Answer Questions</a></li>
+	<?php endif; ?>
+	<?php if ($involvement['Involvement']['take_payment']): ?>
+	<li class="tab" id="payment_tab"><a href="#payment">Make A Payment</a></li>
+	<li class="tab"><a href="#billing">Billing Info</a></li>
+	<?php endif; ?>
 </ul>
 
-	<fieldset id="members">
+	<div id="members">
 		<p>Choose everyone you wish to sign up</p>
 <?php
 		
@@ -88,8 +91,6 @@ echo $this->Form->create('Roster', array(
 					'hiddenField' => false
 				));
 				
-				$this->Js->buffer('$("#Child'.$c.'RosterUserId").bind("change", updateAmount);');
-				
 				$c++;
 			}
 	?>
@@ -97,15 +98,16 @@ echo $this->Form->create('Roster', array(
 <?php
 	}		
 ?>
-	</fieldset>
+	</div>
 	<?php if (!empty($involvement['Question'])) {
 	?>
-	<fieldset id="questions">
-		<div id="question_tabs">	
-			<ul class="tabs">
+	<div id="questions">
+		<p>Please answer the questions on behalf of all members you are signing up.</p>
+		<div id="question_tabs" class="core-tabs">
+			<ul>
 			<?php
 				foreach ($householdMembers as $householdMember) {
-					echo '<li class="tab"><a href="#answers_'.$householdMember['User']['id'].'">'.$householdMember['User']['Profile']['name'].'</a></li> ';
+					echo '<li><a href="#answers_'.$householdMember['User']['id'].'">'.$householdMember['User']['Profile']['name'].'</a></li> ';
 				}
 			?>			
 			</ul>
@@ -128,155 +130,123 @@ echo $this->Form->create('Roster', array(
 			}
 		?>
 		</div>
-	</fieldset>
-	<?php } ?>
-	<?php if ($involvement['Involvement']['take_payment']) {
-	?>
-	<fieldset id="payment">
-	<?php
-		if ($involvement['Involvement']['force_payment']) {
-			echo '<p>This '.$involvement['InvolvementType']['name'].' requires a payment before signing up.</p>'; 
-		} else {
-			echo '<p>This '.$involvement['InvolvementType']['name'].' requires a payment to sign up. You can choose to pay later if you wish. The payment option you select can be changed later.</p>';
-			echo $this->Form->input('Default.pay_later', array(
-				'type' => 'checkbox',
-				'label' => 'I want to pay later'
-			));
-			$this->Js->buffer('$("#DefaultPayLater").bind("change", function() {
-				if (this.checked) {
-					$("#sh_payment").hide();
-					$("#billing_info input, #billing_info select").attr("disabled", "disabled");
-					$("#credit_card_info input, #credit_card_info select").attr("disabled", "disabled");
-				} else {
-					$("#sh_payment").show();
-					$("#billing_info input, #billing_info select").removeAttr("disabled");
-					$("#credit_card_info input, #credit_card_info select").removeAttr("disabled");
-					updateAmount();
-				}
-			});');
-		}  
-
-		echo $this->Form->input('Default.payment_option_id');
-		
-	?>
-	
-	<div id="sh_payment">
-	<div id="payment_info"></div>
-	<div id="tax_deductible">This <?php echo $involvement['InvolvementType']['name']; ?> is tax deductible! Isn't that great?</div>
-	Your credit card will be charged: <span id="amount"></span>.
-	<?php
-		echo $this->Form->input('PaymentOption.pay_deposit_amount', array(
-			'type' => 'checkbox',
-			'div' => array(
-				'id' => 'deposit'
-			)
-		));
-	?>
-	
-	<?php 
-	echo $this->element('payment_type'.DS.'credit_card', array(
-		'addresses' => $userAddresses
-	));
-	?>
 	</div>
-	</fieldset>
 	<?php } ?>
-	<fieldset id="options">
-	<?php		
-		echo $this->Form->input('Default.role_id', array(
-			'empty' => 'Member'
-		));		
-	?>
-	</fieldset>
+	<?php if ($involvement['Involvement']['take_payment']) { ?>
+	<div id="payment" class="clearfix">
+		<h3>Make a Payment</h3>
+		<p>This <?php echo $involvement['InvolvementType']['name']; ?> requires a payment to sign up.
+		<?php
+			if (!$involvement['Involvement']['force_payment']) {
+				echo 'You can choose to pay later if you wish. The payment option you select can be changed later.';
+			}
+		?>
+		</p>
+		<div>
+			<div class="payment-options">
+			<?php
+
+			$options = array();
+			foreach ($involvementPaymentOptions as $option) {
+				$amounts = array();
+				$options[$option['PaymentOption']['id']] = $this->Html->tag('span', $option['PaymentOption']['name'], array('class' => 'emphasized'));
+				$amounts[] = $this->Formatting->money($option['PaymentOption']['total']).' per person';
+				if ($option['PaymentOption']['childcare'] > 0) {
+					$amounts[] = $this->Formatting->money($option['PaymentOption']['childcare']).' per child';
+				}
+				if ($option['PaymentOption']['deposit'] > 0) {
+					$amounts[] = $this->Formatting->money($option['PaymentOption']['deposit']).' deposit';
+				}
+				$options[$option['PaymentOption']['id']] .= $this->Html->tag('span', ' | '.implode(', ', $amounts), array('class' => 'deemphasized'));
+			}
+			echo $this->Form->input('Default.payment_option_id', array(
+				'type' => 'radio',
+				'div' => 'input radio payment-option',
+				'options' => $options,
+				'value' => key($options),
+				'legend' => false,
+				'separator' => '</div><div class="input radio payment-option">'
+			));
+			?>
+			</div>
+			<div id="payment-details">
+				<div id="payment-totals">
+					<div id="payment-info" class="clearfix">
+						<div class="info-left deemphasized">People x <span id="people-number"></span></div>
+						<div class="info-right emphasized">$<span id="people-total"></span></div>
+						<?php if ($involvement['Involvement']['offer_childcare']): ?>
+						<div class="info-left deemphasized">Children x <span id="children-number"></span></div>
+						<div class="info-right emphasized">$<span id="children-total"></span></div>
+						<?php endif; ?>
+						<div class="info-left deemphasized">Total Due:</div>
+						<div class="info-right emphasized">$<span id="total-total"></span></div>
+					</div>
+					<div id="pay-deposit" class="clearfix">
+						<?php
+						echo $this->Form->input('PaymentOption.pay_deposit_amount', array(
+							'type' => 'checkbox',
+							'div' => array(
+								'id' => 'deposit'
+							)
+						));
+						?>
+					</div>
+					<div id="todays-payment" class="clearfix">
+						<div class="info-left">Today's<br />Payment</div>
+						<div class="info-right big">$<span id="amount"></span></div>
+					</div>
+					<div id="remaining-balance" class="clearfix">
+						Remaining Balance <span class="balance">$<span id="balance"></span></span>
+					</div>
+					
+				</div>
+				<div id="pay-later">
+					<?php
+					if (!$involvement['Involvement']['force_payment']) {
+						echo $this->Form->input('Default.pay_later', array(
+							'type' => 'checkbox',
+							'label' => 'I want to pay later'
+						));
+					}
+					?>
+				</div>
+			</div>
+		</div>
+		<div id="tax-deductible" style="display:none">This <?php echo $involvement['InvolvementType']['name']; ?> is tax deductible! Isn't that great?</div>
+	</div>
+	<div id="billing" class="clearfix">
+		<?php
+		echo $this->element('payment_type'.DS.'credit_card', array(
+			'addresses' => $userAddresses
+		));
+		?>
+	</div>
+	<?php } ?>
 	
 <?php
+$defaultSubmitOptions['id'] = 'submit_button';
 $defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals:true})';
+echo $this->Form->button('Previous', array('id' => 'previous_button', 'class' => 'button'));
+echo $this->Form->button('Next', array('id' => 'next_button', 'class' => 'button'));
 echo $this->Js->submit('Sign up', $defaultSubmitOptions);
 echo $this->Form->end();
 ?>
 </div>
 
 <?php
-$this->Js->buffer('addresses = '.$this->Js->object(Set::combine($userAddresses, '/Address/id', '/Address')));
-$this->Js->buffer('payments = '.$this->Js->object(Set::combine($involvementPaymentOptions, '/PaymentOption/id', '/PaymentOption')));
-$this->Js->buffer('$("#DefaultAddressId").bind("change", function() {
-	if ($(this).val() == 0) {
-		$("#AddressAddressLine1").val("");
-		$("#AddressAddressLine2").val("");
-		$("#AddressCity").val("");
-		$("#AddressState").val("");
-		$("#AddressZip").val("");
-	} else {
-		selected = addresses[$(this).val()].Address;
-		$("#AddressAddressLine1").val(selected.address_line_1);
-		$("#AddressAddressLine2").val(selected.address_line_2);
-		$("#AddressCity").val(selected.city);
-		$("#AddressState").val(selected.state);
-		$("#AddressZip").val(selected.zip); 
+echo $this->Html->script('misc/roster');
+$this->Js->buffer('CORE_roster.addresses = '.$this->Js->object(Set::combine($userAddresses, '/Address/id', '/Address')));
+$this->Js->buffer('CORE_roster.payments = '.$this->Js->object(Set::combine($involvementPaymentOptions, '/PaymentOption/id', '/PaymentOption')));
+$this->Js->buffer('CORE.tabs("roster_tabs",
+	{
+		cookie:false
+	},
+	{
+		next: "next_button",
+		previous: "previous_button",
+		submit: "submit_button",
+		alwaysAllowSubmit: false
 	}
-});');
-
-$this->Js->buffer('function updateAmount() {	
-	if (payments[$("#DefaultPaymentOptionId").val()] == undefined) {
-		return;
-	}
-	
-	amount = 0;
-	text = "";
-
-	selected = payments[$("#DefaultPaymentOptionId").val()].PaymentOption;
-	
-	selected.deposit > 0 ? $("#deposit").show() : $("#deposit").hide();
-	selected.tax_deductible == 1 ? $("#tax_deductible").show() : $("#tax_deductible").hide();
-	
-	if (selected.deposit > 0 && $("#PaymentOptionPayDepositAmount").attr("checked")) {
-		amount = Number(selected.deposit)*$("input[id^=Roster]:checked").length;
-	} else {
-		amount = Number(selected.total)*$("input[id^=Roster]:checked").length;
-	}
-	
-	if (selected.childcare > 0) {
-		// get number of children checked
-		childcare = $("input[id^=Child]:checked").length;
-		amount += childcare*Number(selected.childcare);
-	}
-	
-	text += "$"+selected.total+" per signup";
-	if (selected.deposit > 0) {
-		text += " / $"+selected.deposit+" deposit";
-	}
-	if (selected.childcare > 0) {
-		text += " / $"+selected.childcare+" per childcare signup";
-	}
-	
-	$("#payment_info").text(text);
-	
-	$("#amount").text("$"+amount);
-}');
-
-
-$this->Js->buffer('CORE.noDuplicateCheckboxes("members");');
-$this->Js->buffer('$("#members input[id^=Roster][type=checkbox]").bind("change", function() {
-	// only show the answer tabs for members that are checked
-	if (this.checked) {
-		$("a[href=#answers_"+$(this).val()+"]").parent().show();
-	} else {
-		$("a[href=#answers_"+$(this).val()+"]").parent().hide();
-	}
-	$("#members input[id^=Roster]:checked").length > 0 ? $("#questions_tab").show() : $("#questions_tab").hide();
-	updateAmount();
-});');
-$this->Js->buffer('$("#members input[type=checkbox]").change();');
-$this->Js->buffer('$("#PaymentOptionPayDepositAmount").bind("change", updateAmount);');
-$this->Js->buffer('$("#DefaultPaymentOptionId").change();');
-$this->Js->buffer('$("#RosterAddressId").change();');
-
-$this->Js->buffer('CORE.tabs("roster_tabs", {cookie:false});');
-$this->Js->buffer('CORE.tabs("payment_tabs", {cookie:false});');
-$this->Js->buffer('CORE.tabs("question_tabs", {cookie:false});');
-
-// by default, click the first available tab under answers
-$this->Js->buffer('$("#questions_tab a").bind("click", function() {
-	$("#questions ul.tabs li:visible:first a").click()
-});');
+);');
+$this->Js->buffer('CORE_roster.init()');
 ?>

@@ -1,9 +1,6 @@
-<div id="payment_tabs" class="ui-tabs">	
-	<ul class="tabs">
-		<li class="tab"><a href="#billing_info">Billing Info</a></li> 
-		<li class="tab"><a href="#credit_card_info">Credit Card Info</a></li>
-	</ul>
-	<fieldset id="billing_info">
+<div class="clearfix">
+	<fieldset class="grid_5">
+		<legend>Billing Address</legend>
 	<?php
 		if (isset($addresses)) {
 			echo $this->Form->input('Default.address_id', array(
@@ -16,9 +13,10 @@
 		echo $this->Form->input('CreditCard.city');
 		echo $this->Form->input('CreditCard.state');
 		echo $this->Form->input('CreditCard.zip');
-	?>		
+	?>
 	</fieldset>
-	<fieldset id="credit_card_info">
+	<fieldset style="float:left">
+		<legend>Credit Card</legend>
 	<?php
 		echo $this->Form->input('CreditCard.first_name');
 		echo $this->Form->input('CreditCard.last_name');
@@ -30,7 +28,7 @@
 			'minYear' => date('Y')
 		));
 	?>
-		</fieldset>
+	</fieldset>
 </div>
 
 <?php
@@ -57,6 +55,4 @@ if (isset($addresses)) {
 
 	$this->Js->buffer('$("#DefaultAddressId").change();');
 }
-
-$this->Js->buffer('CORE.tabs("payment_tabs", {cookie:false});');
 ?>

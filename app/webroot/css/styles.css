@@ -83,6 +83,15 @@ hr {
 	margin:5px 0;
 	padding:0;
 }
+.deemphasized {
+	color: #acacac;
+}
+.emphasized {
+	color: #838383;
+}
+.balance {
+	color: #e03a14;
+}
 
 /*
 Links
@@ -98,7 +107,7 @@ a:hover {
 /*
 Containers
 */
-div.content-box{	
+div.content-box {
 	background:#ffffff;
 	padding: 10px;
 	margin:0 -12px;
@@ -108,7 +117,7 @@ div#content-container {
 	background:#ffffff;
 	padding-bottom:30px;
 }
-div#content {
+div#content, div#content-reserved {
 	padding-top:30px;
 }
 div.ui-dialog div#content {
@@ -316,6 +325,83 @@ div.offset-background {
 	margin: 0 10px;
 	float:left;
 }
+div#payment-details {
+	float:left;
+	z-index: 1;
+	margin-left: 2px;
+}
+div.payment-options {
+	float:left;
+	clear:both;
+	position:relative;
+	z-index: 1;
+}
+div.payment-option {
+	float:left;
+	clear:both;
+	width: 100%;
+	border: 1px solid #444445;
+	border-top: none;
+	border-right: none;
+	z-index: 1;
+}
+div.payment-option:first-child {
+	border-top: 1px solid #444445;
+}
+div.payment-option.selected {
+	background: #f1f1f1;
+	border-right: 1px solid #f1f1f1;
+	z-index: 2;
+}
+div.payment-option .core-radio {
+	margin-left: 5px;
+}
+div.payment-option label {
+	padding-right: 5px;
+}
+div#payment-totals {
+	border: 1px solid #444445;
+	background: #f1f1f1;
+	z-index: 1;
+	margin-left: -1px;
+}
+#deposit {
+	text-align: center;
+}
+#todays-payment {
+	color: #ffffff;
+	background: #444445;
+	padding: 3px 0;
+	line-height: 14px;
+}
+#payment-details .big {
+	font-family: LeagueGothicRegular,'Lucida Sans',Helvetica,Arial,sans-serif;
+	font-weight:normal;
+	font-size: 30px;
+	line-height: 30px;
+}
+#payment-info, #pay-deposit, #remaining-balance {
+	padding: 5px;
+}
+#payment-details .info-left {
+	float:left;
+	width: 45%;
+	text-align: right;
+	margin: 5px 0;
+}
+#payment-details .info-right {
+	float:right;
+	width: 45%;
+	text-align:left;
+	margin: 5px 0;
+}
+#remaining-balance {
+	background: #ffffff;
+	text-align: center;
+}
+div#pay-later {
+	padding: 5px;
+}
 
 /*
 Small Tabs
@@ -421,7 +507,7 @@ form {
 div.input {
 	padding: 5px 0px;
 }
-div.toggle, div.checkbox, div.checkbox label {
+div.toggle, div.checkbox, div.checkbox label, div.radio, div.radio label {
 	display: inline-block;
 }
 label {
@@ -465,7 +551,7 @@ select {
 	font-family: 'Lucida Sans',Helvetica,Arial,sans-serif;
 	font-size: 11px;
 }
-.core-checkbox {
+.core-checkbox, .core-radio {
 	background: #f1f1f1;
 	border: 1px solid #838383;
 	height: 11px;
@@ -474,17 +560,33 @@ select {
 	margin-right: 3px;
 	position: relative;
 }
-.core-checkbox-hidden {
+.core-radio {
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+}
+.core-checkbox-hidden, .core-radio-hidden {
 	opacity: 0;
 	margin: 0;
 	position: absolute;
 }
-.core-checkbox:hover {
-	background: #d0f4e4;
+div.checkbox:hover .core-checkbox, div.radio:hover .core-radio {
+	background-color: #d0f4e4;
+}
+.core-radio.selected {
+	background-image: url('../assets/images/ui-icons_454545_256x240.png');
+	background-position: -82px -147px; /* slightly different than it should be because checkbox is smaller than 16x16 */
 }
 .core-checkbox.selected {
 	background-image: url('../assets/images/ui-icons_454545_256x240.png');
 	background-position: -66px -147px; /* slightly different than it should be because checkbox is smaller than 16x16 */
+}
+.core-checkbox.disabled, .core-radio.disabled {
+	border: 1px solid #f1f1f1;
+	background-color: #ffffff;
+}
+div.checkbox:hover .core-checkbox.disabled, div.radio:hover .core-radio.disabled {
+	background-color:#ffffff;
 }
 
 /*
