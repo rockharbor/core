@@ -18,7 +18,7 @@ if ($revision && !empty($changes)): ?>
 <?php endif; ?>
 	<ul>
 		<li><a href="#ministry-information">Details</a></li>
-		<li><?php echo $this->Html->link('Leaders', array('controller' => 'ministry_leaders', 'Ministry' => $this->data['Ministry']['id']), array('title' => 'leaders')); ?></li>
+		<li><a href="#ministry-leaders">Leaders</a></li>
 		<li><a href="#ministry-attachments">Attachments</a></li>
 	</ul>
 
@@ -57,9 +57,9 @@ if ($revision && !empty($changes)): ?>
 			<div style="clear:both"><?php echo $this->Js->submit('Save', $defaultSubmitOptions); ?></div>
 			<?php echo $this->Form->end(); ?>
 		</div>
-		<div id="leaders">
+		<div id="ministry-leaders">
 			<?php
-			$this->Js->buffer('CORE.register("leaders", "leaders", "/ministry_leaders/index/Ministry:'.$this->data['Ministry']['id'].'");');
+			$this->Js->buffer('CORE.register("leaders", "ministry-leaders", "/ministry_leaders/index/Ministry:'.$this->data['Ministry']['id'].'");');
 			echo $this->requestAction('/ministry_leaders/index', array(
 				'renderAs' => 'ajax',
 				'bare' => false,
