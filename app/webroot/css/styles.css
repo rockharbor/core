@@ -35,28 +35,31 @@ Highlight and flash classes
 	border-bottom: 1px dotted #000;
 }
 div.message {
-	clear: both;
-	font-size: 140%;
-	font-weight: bold;
-	margin: 0 0 1em 0;
-	padding: 5px;
+	bottom: -1px;
+	left: 50%;
+	margin-left: -250px;
+	padding: 10px;
+	position: fixed;
+	text-align: center;
+	width: 500px;
+	box-shadow:0 0 15px #999999;
+	-moz-box-shadow:0 0 15px #999999;
+	-webkit-box-shadow:0 0 15px #999999;
 }
-
-div.error {
-	color: #fff;
-	background: #c73e14;
+.message.error {
+	color: #e03a14;
+	background: #ffcbbf;
+	border: 1px solid #e03a14;
 }
-
-div.success {
-	background: green;
-	color: #fff;
+.message.success {
+	border: 1px solid #37ae6b;
+	background: #cfffe4;
+	color: #37ae6b;
 }
-
-div.change {
+.message.change {
 	background: purple;
 	color:#FFF;
 }
-
 div.message a {
 	color:#fff;
 }

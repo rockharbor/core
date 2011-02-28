@@ -177,7 +177,7 @@ CORE.initUI = function() {
 	CORE.initFormUI();
 	$('.equal-height:visible > div').equalHeights();
 	// hide flash message
-	$('div[id^=flash]').delay(5000).slideUp();
+	$('div[id^=flash]').hide().delay(100).slideDown().delay(5000).slideUp();
 	// attach tabbed behavior
 	CORE.attachTabbedBehavior();
 	// attach modal behavior

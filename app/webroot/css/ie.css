@@ -24,6 +24,13 @@ h1 {
 	margin: 0 -13px;
 	margin-bottom:10px;
 }
+.message {
+	filter:
+		progid:DXImageTransform.Microsoft.Shadow(color=#999999,direction=0,strength=3)
+		progid:DXImageTransform.Microsoft.Shadow(color=#999999,direction=90,strength=3)
+		progid:DXImageTransform.Microsoft.Shadow(color=#999999,direction=180,strength=3)
+		progid:DXImageTransform.Microsoft.Shadow(color=#999999,direction=270,strength=3);
+}
 span.breadcrumb {
 	margin: 0 -13px;
 }
