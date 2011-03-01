@@ -191,7 +191,7 @@ class RostersControllerTestCase extends CoreTestCase {
 				'pay_later' => false,
 				'pay_deposit_amount' => false,
 			),
-			'Roster' => array(
+			'Adult' => array(
 				array(
 					'Roster' => array(
 						'user_id' => 1
@@ -240,7 +240,7 @@ class RostersControllerTestCase extends CoreTestCase {
 				'pay_later' => false,
 				'pay_deposit_amount' => false,
 			),
-			'Roster' => array(
+			'Adult' => array(
 				array(
 					'Roster' => array(
 						'user_id' => 1

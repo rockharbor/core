@@ -315,7 +315,7 @@ class RostersController extends AppController {
 			$rValidates = true;
 			$this->Roster->_validationErrors = array();
 			
-			foreach ($this->data['Roster'] as $roster => &$values) {
+			foreach ($this->data['Adult'] as $roster => &$values) {
 				$values = $this->Roster->setDefaultData(array(
 					'roster' => $values,
 					'involvement' => $involvement,
@@ -343,7 +343,7 @@ class RostersController extends AppController {
 			// find the signed up parent for this child. by default, it's this user. then it's household contact.
 			$pValidates = true;
 			// get signed up users
-			$possibleParents = Set::extract('/Roster/Roster/user_id', $this->data);
+			$possibleParents = Set::extract('/Adult/Roster/user_id', $this->data);
 			// get household contacts found that are signed up
 			$contacts = array_intersect(Set::extract('/HouseholdMember/Household/contact_id'), $possibleParents);
 			if (in_array($user['User']['id'], $possibleParents)) {
@@ -391,7 +391,7 @@ class RostersController extends AppController {
 				),
 				'contain' => false
 			));
-			$rosterCount = count($this->data['Roster']);
+			$rosterCount = count($this->data['Adult']);
 			$childCount = isset($this->data['Child']) ? count($this->data['Child']) : 0;
 			if (!empty($involvement['Involvement']['roster_limit'])) {
 				$lValidates = $rosterCount + $childCount + $currentCount <= $involvement['Involvement']['roster_limit'];
@@ -408,7 +408,7 @@ class RostersController extends AppController {
 				// Now that we know that the data will save, let's run the credit card
 				// get all signed up users (for their name)
 				if ($involvement['Involvement']['take_payment'] && $this->data['Default']['payment_option_id'] > 0 && !$this->data['Default']['pay_later']) {
-					$signedUpIds = array_merge(Set::extract('/Roster/Roster/user_id', $this->data), Set::extract('/Child/Roster/user_id', $this->data));
+					$signedUpIds = array_merge(Set::extract('/Adult/Roster/user_id', $this->data), Set::extract('/Child/Roster/user_id', $this->data));
 					$signedupUsers = $this->Roster->User->Profile->find('all', array(
 						'conditions' => array(
 							'user_id' => $signedUpIds
@@ -418,7 +418,7 @@ class RostersController extends AppController {
 					$verb = count($signedupUsers) > 1 ? 'have' : 'has';
 					$description = implode(' and ', Set::extract('/Profile/name', $signedupUsers)).' '.$verb.' been signed up for '.$involvement['InvolvementType']['name'].' '.$involvement['Involvement']['name'];
 					// calculate amount	(use array_values to reset keys)
-					$amount = Set::apply('/Payment/amount', array_values($this->data['Roster']), 'array_sum');
+					$amount = Set::apply('/Payment/amount', array_values($this->data['Adult']), 'array_sum');
 					if (isset($this->data['Child'])) {
 						$amount += Set::apply('/Payment/amount', array_values($this->data['Child']), 'array_sum');
 					}
@@ -430,7 +430,7 @@ class RostersController extends AppController {
 					
 					if ($CreditCard->save($this->data['CreditCard'])) {
 						// save main rosters
-						foreach ($this->data['Roster'] as $signuproster) {
+						foreach ($this->data['Adult'] as $signuproster) {
 							$this->Roster->create();
 							// include transaction id
 							$signuproster['Payment'][0]['transaction_id'] = $CreditCard->transactionId;
@@ -470,7 +470,7 @@ class RostersController extends AppController {
 				} else {
 					// no credit card, just save as normal
 					// save main rosters
-					foreach ($this->data['Roster'] as $signuproster) {
+					foreach ($this->data['Adult'] as $signuproster) {
 						$this->Roster->create();
 						$this->Roster->saveAll($signuproster, array('validate' => false));
 						$this->Notifier->notify(array(
