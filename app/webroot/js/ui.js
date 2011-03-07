@@ -353,8 +353,6 @@ CORE.tabs = function(id, taboptions, options) {
 						previous.hide();
 					}
 				}
-				
-				$('html, body').animate({scrollTop:0}, 'slow');
 			});
 		}
 	}

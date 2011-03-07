@@ -60,16 +60,15 @@ echo $this->Form->create('Roster', array(
 	
 	// CORE.successForm(true, ...) relies on a validation error in the dom, so add one here if there's an issue
 	if (!empty($this->validationErrors)) {
-		echo '<div class="input" style="display:none"><div class="error-message"></div></div>';
+		echo '<div class="input error"><div class="error-message">Please choose at least one person to sign up.</div></div>';
 	}
 	
 	$i = 0;
 	foreach ($householdMembers as $householdMember) {
-		echo $this->Form->input('Roster.'.$i.'.Roster.user_id', array(
+		echo $this->Form->input('Adult.'.$i.'.Roster.user_id', array(
 			'type' => 'checkbox',
 			'value' => $householdMember['User']['Profile']['user_id'],
-			'label' => $householdMember['User']['Profile']['name'],
-			'hiddenField' => false
+			'label' => $householdMember['User']['Profile']['name']
 		));
 				
 		$i++;
@@ -117,10 +116,10 @@ echo $this->Form->create('Roster', array(
 				echo '<div id="answers_'.$householdMember['User']['id'].'">';
 				$q = 0;
 				foreach ($involvement['Question'] as $question) {
-					echo $this->Form->hidden('Roster.'.$r.'.Answer.'.$q.'.question_id', array(
+					echo $this->Form->hidden('Adult.'.$r.'.Answer.'.$q.'.question_id', array(
 						'value' => $question['id']
 					));
-					echo $this->Form->input('Roster.'.$r.'.Answer.'.$q.'.description', array(
+					echo $this->Form->input('Adult.'.$r.'.Answer.'.$q.'.description', array(
 						'label' => $question['description']
 					));
 					$q++;

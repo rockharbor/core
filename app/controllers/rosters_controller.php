@@ -50,8 +50,8 @@ class RostersController extends AppController {
  * @access private
  */ 
 	function beforeFilter() {
-		$this->Security->blackHoleCallback = '_forceSSL';
-		$this->Security->requireSecure('add');
+		/*$this->Security->blackHoleCallback = '_forceSSL';
+		$this->Security->requireSecure('add');*/
 		parent::beforeFilter();
 	}
 	
@@ -403,6 +403,11 @@ class RostersController extends AppController {
 
 			// combine roster validation errors
 			$this->Roster->validationErrors = $this->Roster->_validationErrors;
+			$Adult = new Model(array(
+				'table' => false,
+				'name' => 'Adult'
+			));
+			$Adult->validationErrors = $this->Roster->_validationErrors;
 			// check all validation before continuing with save
 			if ($lValidates && $rValidates && $cValidates && $pValidates) {
 				// Now that we know that the data will save, let's run the credit card

@@ -173,8 +173,6 @@ CORE.init = function() {
  * opens
  */
 CORE.initUI = function() {
-	// form elements
-	CORE.initFormUI();
 	$('.equal-height:visible > div').equalHeights();
 	// hide flash message
 	$('div[id^=flash]').hide().delay(100).slideDown().delay(5000).slideUp();
@@ -184,6 +182,8 @@ CORE.initUI = function() {
 	CORE.attachModalBehavior();
 	// tooltips
 	CORE.attachTooltipBehavior();
+	// form elements
+	CORE.initFormUI();
 }
 
 CORE.register('content', 'content', location.href);
