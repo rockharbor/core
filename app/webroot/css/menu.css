@@ -277,6 +277,8 @@ Dropdown menu CSS
 		position:absolute;
 		z-index:200;
 		max-width:550px;
+		padding-bottom: 0px;
+		background: transparent;
 		/*top:1em;
 		/*left:0;*/
 		}
