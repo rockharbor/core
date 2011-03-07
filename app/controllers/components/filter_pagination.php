@@ -74,13 +74,7 @@ class FilterPaginationComponent extends Object {
 		if (!$model) {
 			$model = $this->controller->modelClass;
 		}
-		if (isset($this->controller->{$model})) {
-			$model = $this->controller->{$model};
-		} elseif (isset($this->controller->{$this->controller->modelClass}->{$model})) {
-			$model = $this->controller->{$this->controller->modelClass}->{$model};
-		} else {
-			$model = ClassRegistry::init($model);
-		}
+		$model = ClassRegistry::init($model);
 		
 		// new search, remove saved filter
 		if ($this->startEmpty) {
