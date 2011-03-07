@@ -1,4 +1,6 @@
 /app/config/database.php
 /app/config/core.php
 /app/webroot/media
+/app/webroot/css_cache
+/app/webroot/js_cache
 /app/tmp
