@@ -15,7 +15,8 @@
 		// CORE css
 		$this->AssetCompress->css('reset');
 		$this->AssetCompress->css('960');
-		echo $this->Html->css('font-face');
+		$this->AssetCompress->css('960-modal');
+		$this->AssetCompress->css('font-face');
 		$this->AssetCompress->css('menu');
 		$this->AssetCompress->css('jquery-ui');
 		$this->AssetCompress->css('styles');

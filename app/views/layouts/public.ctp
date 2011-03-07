@@ -28,31 +28,34 @@
 		echo $this->Html->meta('icon');
 
 		// CORE css
-		echo $this->Html->css('reset');
-		echo $this->Html->css('960');
-		echo $this->Html->css('font-face');
-		echo $this->Html->css('jquery-ui');
-		echo $this->Html->css('styles');
-		echo $this->Html->css('public');
+		$this->AssetCompress->css('reset');
+		$this->AssetCompress->css('960');
+		$this->AssetCompress->css('960-modal');
+		$this->AssetCompress->css('font-face');
+		$this->AssetCompress->css('jquery-ui');
+		$this->AssetCompress->css('styles');
+		$this->AssetCompress->css('public');
 		if(preg_match('/MSIE/i', $_SERVER['HTTP_USER_AGENT'])) {
-			echo $this->Html->css('ie');
+			$this->AssetCompress->css('ie');
 		}
 
 		// google cdn scripts
-		echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js');
-		echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.js');
+		$this->AssetCompress->script('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js');
+		$this->AssetCompress->script('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.js');
 
 		// vendor scripts
-		echo $this->Html->script('jquery.plugins/jquery.qtip');
-		echo $this->Html->script('jquery.plugins/jquery.equalheights');
+		$this->AssetCompress->script('jquery.plugins/jquery.qtip');
+		$this->AssetCompress->script('jquery.plugins/jquery.cookie');
+		$this->AssetCompress->script('jquery.plugins/jquery.equalheights');
 
 		// CORE scripts
-		echo $this->Html->script('functions');
-		echo $this->Html->script('global');
-		echo $this->Html->script('ui');
-		echo $this->Html->script('form');
+		$this->AssetCompress->script('functions');
+		$this->AssetCompress->script('global');
+		$this->AssetCompress->script('ui');
+		$this->AssetCompress->script('form');
 
 		// setup
+		echo $this->AssetCompress->includeAssets(Configure::read('debug') == 0);
 		$this->Js->buffer('CORE.initUI()');
 		echo $this->Js->writeBuffer();
 		echo $scripts_for_layout;
