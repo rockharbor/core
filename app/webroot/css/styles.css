@@ -48,6 +48,7 @@ div.message {
 	box-shadow:0 0 15px #999999;
 	-moz-box-shadow:0 0 15px #999999;
 	-webkit-box-shadow:0 0 15px #999999;
+	z-index: 99999;
 }
 .message.error {
 	color: #e03a14;
