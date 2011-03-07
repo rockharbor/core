@@ -174,6 +174,9 @@
 			</div>
 		</div>
 		<div id="footer" class="container_12 clearfix">
+			<?php
+			echo $this->Html->image('logo-small.png');
+			?>
 		</div>
 	</div>
 	<?php

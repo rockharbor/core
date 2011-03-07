@@ -1,7 +1,9 @@
 <?php
 echo $this->Html->link('Notifications', array('controller' => 'notifications', 'action' => 'index'), array('rel' => 'modal-notifications'));
 if ($new > 0) {
-	echo $this->Html->tag('span', $this->Html->tag('span', $new, array('class' => 'notification-count')), array('class' => 'notification-counter'));
+	$count = $this->Html->tag('span', $new, array('class' => 'notification-count'));
+	$bottom = $this->Html->tag('span', $this->Html->image('../assets/images/notification-flag-bottom.png'), array('class' => 'notification-flag'));
+	echo $this->Html->tag('span', $count.$bottom, array('class' => 'notification-counter'));
 }
 ?>
 <ul>
