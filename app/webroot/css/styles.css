@@ -591,6 +591,14 @@ div.checkbox:hover .core-checkbox, div.radio:hover .core-radio {
 div.checkbox:hover .core-checkbox.disabled, div.radio:hover .core-radio.disabled {
 	background-color:#ffffff;
 }
+div.input.error input, div.input.error .core-checkbox, div.input.error .core-radio {
+	background: #ffcbbf;
+	border: 1px solid #e03a14;
+}
+div.input.error .error-message {
+	color: #e03a14;
+	margin-top: 3px;
+}
 
 /*
 Definition lists
@@ -617,12 +625,14 @@ Custom Icons
 	height: 16px;
 	width: 16px;
 	overflow: hidden;
-	display: inline-block;
+	float:left;
+	clear:both;
 	position: relative;
-	top: 3px;
+	background-image: url('../assets/images/icons.png');
+	background-position: 20px 20px; /* default none */
 }
-.core-text-icon {
-	padding-left: 18px;
+.icon-error {
+	background-position: -64px 0;
 }
 .icon-email {
 	background-image: url('../assets/images/ui-icons_454545_256x240.png');
