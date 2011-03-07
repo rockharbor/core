@@ -212,7 +212,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 		);
 		$result = $this->Formatting->flags('User', $user);
 		$this->assertTags($result, array(
-			'span' => array('class' => 'core-icon flagged', 'title' => 'Flagged User'),
+			'span' => array('class' => 'core-icon icon-flagged', 'title' => 'Flagged User'),
 			'/span'
 		));
 	}
@@ -230,9 +230,9 @@ class FormattingHelperTestCase extends CoreTestCase {
 		);
 		$result = $this->Formatting->flags('Involvement', $involvement);
 		$this->assertTags($result, array(
-			array('span' => array('class' => 'core-icon inactive', 'title' => 'Inactive Event')),
+			array('span' => array('class' => 'core-icon icon-inactive', 'title' => 'Inactive Event')),
 			'/span',
-			array('span' => array('class' => 'core-icon private', 'title' => 'Private Event')),
+			array('span' => array('class' => 'core-icon icon-private', 'title' => 'Private Event')),
 			'/span'
 		));
 
@@ -245,7 +245,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 		);
 		$result = $this->Formatting->flags('Involvement', $involvement);
 		$this->assertTags($result, array(
-			array('span' => array('class' => 'core-icon private', 'title' => 'Private Involvement')),
+			array('span' => array('class' => 'core-icon icon-private', 'title' => 'Private Involvement')),
 			'/span'
 		));
 
@@ -261,7 +261,9 @@ class FormattingHelperTestCase extends CoreTestCase {
 		);
 		$result = $this->Formatting->flags('Involvement', $involvement);
 		$this->assertTags($result, array(
-			array('span' => array('class' => 'core-icon inactive', 'title' => 'Past and Inactive Interest List')),
+			array('span' => array('class' => 'core-icon icon-passed', 'title' => 'Past Interest List')),
+			'/span',
+			array('span' => array('class' => 'core-icon icon-inactive', 'title' => 'Inactive Interest List')),
 			'/span'
 		));
 	}
@@ -275,7 +277,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 		);
 		$result = $this->Formatting->flags('Ministry', $ministry);
 		$this->assertTags($result, array(
-			array('span' => array('class' => 'core-icon private', 'title' => 'Private Ministry')),
+			array('span' => array('class' => 'core-icon icon-private', 'title' => 'Private Ministry')),
 			'/span'
 		));
 
@@ -287,9 +289,9 @@ class FormattingHelperTestCase extends CoreTestCase {
 		);
 		$result = $this->Formatting->flags('Ministry', $ministry);
 		$this->assertTags($result, array(
-			array('span' => array('class' => 'core-icon inactive', 'title' => 'Inactive Ministry')),
+			array('span' => array('class' => 'core-icon icon-inactive', 'title' => 'Inactive Ministry')),
 			'/span',
-			array('span' => array('class' => 'core-icon private', 'title' => 'Private Ministry')),
+			array('span' => array('class' => 'core-icon icon-private', 'title' => 'Private Ministry')),
 			'/span'
 		));
 	}

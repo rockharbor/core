@@ -36,7 +36,8 @@ echo $this->Form->file($type.'.file', array(
 	'id' => $type.'File'.$uid
 ));
 
-echo $this->Form->end($title);
+$icon = $this->Html->tag('span', '&nbsp;', array('class' => 'core-icon icon-upload'));
+echo $this->Form->end($icon.$title);
 
 $this->Js->buffer('CORE.ajaxUpload("Upload'.$model.'Form'.$uid.'", "'.$update.'");');
 ?>

@@ -626,53 +626,118 @@ Custom Icons
 	width: 16px;
 	overflow: hidden;
 	float:left;
-	clear:both;
 	position: relative;
 	background-image: url('../assets/images/icons.png');
 	background-position: 20px 20px; /* default none */
 }
 .icon-error {
-	background-position: -64px 0;
+	background-position: -64px 0px;
 }
 .icon-email {
-	background-image: url('../assets/images/ui-icons_454545_256x240.png');
-	background-position: -80px -96px;
+	background-position: 0px -16px;
 }
 .icon-delete {
-	background-image: url('../assets/images/ui-icons_454545_256x240.png');
-	background-position: -80px -128px;	
+	background-position: -96px 0px;
 }
 .icon-delete:hover {
-	background-image: url('../assets/images/ui-icons_cd0a0a_256x240.png');
+	background-position: -96px -16px;
 }
 .icon-edit {
-	background-image: url('../assets/images/ui-icons_454545_256x240.png');
-	background-position: -64px -112px;
+	background-position: -112px 0px;
 }
 .icon-edit:hover {
-	background-image: url('../assets/images/ui-icons_cd0a0a_256x240.png');
+	background-position: -112px -16px;
 }
 .icon-address {
-	background-image: url('../assets/images/ui-icons_454545_256x240.png');
-	background-position: -144px -144px;
+	background-position: -32px -16px;
 }
 .icon-print {
-	background-image: url('../assets/images/ui-icons_454545_256x240.png');
-	background-position: -160px -96px;
+	background-position: -64px -32px;
+}
+.icon-print:hover {
+	background-position: -64px -48px;
 }
 .icon-download {
-	background-image: url('../assets/images/ui-icons_454545_256x240.png');
-	background-position: -224px -48px;
+	background-position: -80px -32px;
 }
-.flagged {
-	background-image: url('../assets/images/ui-icons_cd0a0a_256x240.png');
-	background-position: 0px -128px;
+.icon-upload {
+	background-position: -80px -48px;
 }
-.inactive {
-	background-image: url('../assets/images/ui-icons_454545_256x240.png');
-	background-position: 0px -144px;
+.icon-flagged {
+	background-position: -80px 0px;
 }
-.private {
-	background-image: url('../assets/images/ui-icons_454545_256x240.png');
-	background-position: -192px -96px;
+.icon-passed {
+	background-position: -16px 0px;
+}
+.icon-inactive {
+	background-position: -32px 0px;
+}
+.icon-private {
+	background-position: -48px 0px;
+}
+.icon-search {
+	background-position: -64px -16px;
+}
+.icon-am {
+	background-position: -112px -32px;
+}
+.icon-am-on {
+	background-position: -112px -48px;
+}
+.icon-pm {
+	background-position: -96px -32px;
+}
+.icon-pm-on {
+	background-position: -96px -48px;
+}
+.icon-bullet {
+	background-position: -64px -64px;
+}
+.icon-bullet:hover {
+	background-position: -80px -64px;
+}
+.icon-arrow-e {
+	background-position: 0px -32px;
+}
+.icon-arrow-w {
+	background-position: -16px -32px;
+}
+.icon-arrow-n {
+	background-position: -32px -32px;
+}
+.icon-arrow-s {
+	background-position: -64px -32px;
+}
+.icon-arrow2-e {
+	background-position: 0px -48px;
+}
+.icon-arrow2-w {
+	background-position: -16px -48px;
+}
+.icon-arrow2-n {
+	background-position: -32px -48px;
+}
+.icon-arrow2-s {
+	background-position: -48px -48px;
+}
+.icon-arrow2-e:hover {
+	background-position: 0px -64px;
+}
+.icon-arrow2-w:hover {
+	background-position: -16px -64px;
+}
+.icon-arrow2-n:hover {
+	background-position: -32px -64px;
+}
+.icon-arrow2-s:hover {
+	background-position: -64px -64px;
+}
+.icon-star {
+	background-position: -16px -16px;
+}
+.icon-add {
+	background-position: 0px 0px;
+}
+.icon-core {
+	background-position: -48px -16px;
 }

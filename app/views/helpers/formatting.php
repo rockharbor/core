@@ -25,7 +25,6 @@ class FormattingHelper extends AppHelper {
  */
 	var $helpers = array(
 		'Html',
-		'Text',
 		'Time',
 		'Number'
 	);
@@ -395,14 +394,14 @@ class FormattingHelper extends AppHelper {
 		
 		if ($user['User']['flagged']) {
 			$output .= $this->Html->tag('span', '', array(
-				'class' => 'core-icon flagged',
+				'class' => 'core-icon icon-flagged',
 				'title' => 'Flagged User'
 			));
 		}
 		
 		if (!$user['User']['active']) {
 			$output .= $this->Html->tag('span', '', array(
-				'class' => 'core-icon inactive',
+				'class' => 'core-icon icon-inactive',
 				'title' => 'Inactive User'
 			));
 		}
@@ -441,25 +440,24 @@ class FormattingHelper extends AppHelper {
 		$involvement = Set::merge($_defaults, $involvement);
 		
 		$output = null;
-		
-		$titles = array();
+
 		if ($involvement['Involvement']['passed']) {
-			$titles[] = 'Past';
-		}
-		if (!$involvement['Involvement']['active']) {
-			$titles[] = 'Inactive';
-		}
-		
-		if (!$involvement['Involvement']['active'] || $involvement['Involvement']['passed']) {
 			$output .= $this->Html->tag('span', '', array(
-				'class' => 'core-icon inactive',
-				'title' => $this->Text->toList($titles).' '.$involvement['InvolvementType']['name']
+				'class' => 'core-icon icon-passed',
+				'title' => 'Past '.$involvement['InvolvementType']['name']
+			));
+		}
+
+		if (!$involvement['Involvement']['active']) {
+			$output .= $this->Html->tag('span', '', array(
+				'class' => 'core-icon icon-inactive',
+				'title' => 'Inactive '.$involvement['InvolvementType']['name']
 			));
 		}
 		
 		if ($involvement['Involvement']['private']) {
 			$output .= $this->Html->tag('span', '', array(
-				'class' => 'core-icon private',
+				'class' => 'core-icon icon-private',
 				'title' => 'Private '.$involvement['InvolvementType']['name']
 			));
 		}
@@ -502,14 +500,14 @@ class FormattingHelper extends AppHelper {
 		
 		if (!$ministry['Ministry']['active']) {
 			$output .= $this->Html->tag('span', '', array(
-				'class' => 'core-icon inactive',
+				'class' => 'core-icon icon-inactive',
 				'title' => 'Inactive Ministry'
 			));
 		}
 		
 		if ($ministry['Ministry']['private']) {
 			$output .= $this->Html->tag('span', '', array(
-				'class' => 'core-icon private',
+				'class' => 'core-icon icon-private',
 				'title' => 'Private Ministry'
 			));
 		}

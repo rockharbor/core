@@ -110,8 +110,8 @@ li#nav-notifications p a {
 	padding:0;
 }
 li#nav-notifications .delete {
-	background-image: url('../assets/images/ui-icons_454545_256x240.png');
-	background-position: -80px -128px;
+	background-image: url('../assets/images/icons.png');
+	background-position: -96px 0px;
 	padding:0;
 	height:16px;
 	width:16px;
@@ -123,7 +123,7 @@ li#nav-notifications .delete {
 	display: none;
 }
 li#nav-notifications .delete:hover {
-	background-image: url('../assets/images/ui-icons_cd0a0a_256x240.png');
+	background-position: -96px -16px;
 }
 .notification-read {
 	border-left:3px solid transparent;
