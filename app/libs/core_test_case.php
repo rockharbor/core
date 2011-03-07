@@ -85,15 +85,7 @@ class CoreTestCase extends CakeTestCase {
  * @var boolean
  */
 	var $autoFixtures = false;
-
-/**
- * Components are initialized once to avoid redirect loop issues
- * 
- * @var boolean
- * @access protected
- */
-	var $_componentsInitialized = false;
-
+	
 /**
  * The controller we're testing. Set to null to use the original
  * `CakeTestCase::testAction` function.
@@ -168,11 +160,8 @@ class CoreTestCase extends CakeTestCase {
 		$Controller->url = $urlParams;
 		$Controller->action = $urlParams['plugin'].'/'.$urlParams['controller'].'/'.$urlParams['action'];
 
-		// only initialize the components once
-		if ($this->_componentsInitialized === false) {
-			$this->_componentsInitialized = true;
-			$Controller->Component->initialize($Controller);
-		}
+		$this->_componentsInitialized = true;
+		$Controller->Component->initialize($Controller);
 
 		// configure auth
 		if (isset($Controller->Auth)) {
