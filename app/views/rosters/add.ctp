@@ -225,8 +225,8 @@ echo $this->Form->create('Roster', array(
 <?php
 $defaultSubmitOptions['id'] = 'submit_button';
 $defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals:true})';
-echo $this->Form->button('Previous', array('id' => 'previous_button', 'class' => 'button'));
-echo $this->Form->button('Next', array('id' => 'next_button', 'class' => 'button'));
+echo $this->Form->button('Previous', array('id' => 'previous_button', 'class' => 'button', 'type' => 'button'));
+echo $this->Form->button('Next', array('id' => 'next_button', 'class' => 'button', 'type' => 'button'));
 echo $this->Js->submit('Sign up', $defaultSubmitOptions);
 echo $this->Form->end();
 ?>
