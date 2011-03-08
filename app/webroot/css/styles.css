@@ -598,7 +598,7 @@ div.checkbox:hover .core-checkbox, div.radio:hover .core-radio {
 div.checkbox:hover .core-checkbox.disabled, div.radio:hover .core-radio.disabled {
 	background-color:#ffffff;
 }
-div.input.error input, div.input.error .core-checkbox, div.input.error .core-radio {
+div.input.error input, div.input.error .core-checkbox, div.input.error .core-radio, div.input.error textarea, div.input.error select {
 	background: #ffcbbf;
 	border: 1px solid #e03a14;
 }
