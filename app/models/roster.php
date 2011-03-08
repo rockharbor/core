@@ -201,10 +201,10 @@ class Roster extends AppModel {
 		);
 		$options['defaults'] = array_merge($_defaults, $options['defaults']);
 		
-		extract($options);
+		$paymentOption = $this->PaymentOption->read(null, $options['defaults']['payment_option_id']);
+		$paymentType = $this->Payment->PaymentType->read(null, $options['defaults']['payment_type_id']);
 
-		$paymentOption = $this->PaymentOption->read(null, $defaults['payment_option_id']);
-		$paymentType = $this->Payment->PaymentType->read(null, $defaults['payment_type_id']);
+		extract($options);
 
 		// set defaults
 		$roster['Roster']['involvement_id'] = $involvement['Involvement']['id'];
@@ -228,7 +228,7 @@ class Roster extends AppModel {
 					'payment_type_id' => $paymentType['PaymentType']['id'],
 					'number' => substr($creditCard['CreditCard']['credit_card_number'], -4),
 					'payment_placed_by' => $payer['User']['id'],
-					'payment_option_id' => $defaults['payment_option_id'],
+					'payment_option_id' => $paymentOption['PaymentOption']['id'],
 					'comment' => $creditCard['CreditCard']['first_name'].' '.$creditCard['CreditCard']['last_name'].'\'s card processed by '.$payer['Profile']['name'].'.'
 				)
 			);

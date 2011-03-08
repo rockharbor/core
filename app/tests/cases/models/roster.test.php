@@ -148,6 +148,52 @@ class RosterTestCase extends CoreTestCase {
 				'name' => 'Some guy'
 			)
 		);
+		$paymentOption = $this->Roster->PaymentOption->read(null, 2);
+
+		$newRoster = $this->Roster->setDefaultData(compact(
+			'roster', 'defaults', 'involvement', 'payer',
+			'creditCard', 'paymentOption'
+		));
+		unset($newRoster['Payment'][0]['comment']);
+
+		$result = $newRoster['Payment'][0];
+		$expected = array(
+			'user_id' => 1,
+			'amount' => 25,
+			'payment_type_id' => 1,
+			'number' => 1234,
+			'payment_placed_by' => 50,
+			'payment_option_id' => 2
+		);
+		$this->assertEqual($result, $expected);
+
+		$involvement = $this->Roster->Involvement->read(null, 1);
+		$defaults = array(
+			'payment_option_id' => 1,
+			'payment_type_id' => 1,
+			'pay_later' => false,
+			'pay_deposit_amount' => false
+		);
+		$roster = array(
+			'Roster' => array(
+				'user_id' => 1
+			)
+		);
+		$creditCard = array(
+			'CreditCard' => array(
+				'first_name' => 'Joe',
+				'last_name' => 'Schmoe',
+				'credit_card_number' => '1234567891001234'
+			)
+		);
+		$payer = array(
+			'User' => array(
+				'id' => 50
+			),
+			'Profile' => array(
+				'name' => 'Some guy'
+			)
+		);
 
 		$newRoster = $this->Roster->setDefaultData(compact(
 			'roster', 'defaults', 'involvement', 'payer',

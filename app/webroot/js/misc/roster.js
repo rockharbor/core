@@ -2,7 +2,7 @@
  * Namespaced object
  */
 var CORE_roster = {};
-
+console.log('asdfas');
 /*
  * Initializes the roster sign up page
  */
@@ -19,11 +19,9 @@ CORE_roster.init = function() {
 	$('input[id^=Child]').bind('change', CORE_roster.updateAmount);
 	$('#DefaultPayLater').bind('change', function() {
 		if (this.checked) {
-			$('#sh_payment').hide();
 			$('#billing_info input, #billing_info select').attr('disabled', 'disabled');
 			$('#credit_card_info input, #credit_card_info select').attr('disabled', 'disabled');
 		} else {
-			$('#sh_payment').show();
 			$('#billing_info input, #billing_info select').removeAttr('disabled');
 			$('#credit_card_info input, #credit_card_info select').removeAttr('disabled');
 		}
@@ -46,15 +44,15 @@ CORE_roster.init = function() {
 			$('#AddressZip').val(selected.zip);
 		}
 	});
-
-	$('#members input[id^=Roster]:checkbox').bind('change', function() {
+	$('#members input[id^=Adult]:checkbox').bind('change', function() {
+		console.log('change');
 		// only show the answer tabs for members that are checked
 		if (this.checked) {
 			$('a[href=#answers_'+$(this).val()+']').parent().show();
 		} else {
 			$('a[href=#answers_'+$(this).val()+']').parent().hide();
 		}
-		//$('#members input[id^=Roster]:checked').length > 0 ? $('#questions_tab').show() : $('#questions_tab').hide();
+		$('#members input[id^=Adult]:checked').length > 0 ? $('#questions_tab').show() : $('#questions_tab').hide();
 		CORE_roster.updateAmount();
 	});
 
@@ -66,7 +64,7 @@ CORE_roster.init = function() {
 		CORE_roster.updateAmount();
 	});
 
-	$('#members input[id^=Roster]:checkbox').change();
+	$('#members input[id^=Adult]:checkbox').change();
 	$('.payment-option input:radio:checked').change().parent().addClass('selected');
 }
 
@@ -78,7 +76,7 @@ CORE_roster.updateAmount = function() {
 		return;
 	}
 
-	var peopleAmount, totalDue, childcareAmount, numberChildcareSignedUp, payToday, deposit, childcare, numberSignedUp, balance, payLater = 0;
+	var peopleAmount, totalDue, childcareAmount, numberChildcareSignedUp, deposit, childcare, numberSignedUp, payLater = 0;
 	var selectedOption = CORE_roster.payments[$('.payment-options input:radio:checked').val()].PaymentOption;
 
 	deposit = selectedOption.deposit > 0;
@@ -88,7 +86,7 @@ CORE_roster.updateAmount = function() {
 	deposit > 0 ? $('#pay-deposit').show() : $('#pay-deposit').hide();
 	selectedOption.tax_deductible == 1 ? $('#tax-deductible').show() : $('#tax-deductible').hide();
 
-	numberSignedUp = $('input[id^=Roster]:checked').length;
+	numberSignedUp = $('input[id^=Adult]:checked').length;
 	peopleAmount = Number(selectedOption.total);
 	totalDue = peopleAmount*numberSignedUp;
 	if (deposit && $('#PaymentOptionPayDepositAmount').is(':checked')) {

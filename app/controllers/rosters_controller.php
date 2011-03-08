@@ -316,6 +316,10 @@ class RostersController extends AppController {
 			$this->Roster->_validationErrors = array();
 			
 			foreach ($this->data['Adult'] as $roster => &$values) {
+				if ($values['Roster']['user_id'] == 0) {
+					unset($this->data['Adult'][$roster]);
+					continue;
+				}
 				$values = $this->Roster->setDefaultData(array(
 					'roster' => $values,
 					'involvement' => $involvement,

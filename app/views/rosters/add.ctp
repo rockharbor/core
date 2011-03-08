@@ -59,7 +59,7 @@ echo $this->Form->create('Roster', array(
 	echo $this->Form->hidden('Default.involvement_id', array('value' => $involvement['Involvement']['id']));
 	
 	// CORE.successForm(true, ...) relies on a validation error in the dom, so add one here if there's an issue
-	if (!empty($this->validationErrors)) {
+	if (!empty($this->validationErrors) && isset($this->validationErrors['Roster']['validation'])) {
 		echo '<div class="input error"><div class="error-message">Please choose at least one person to sign up.</div></div>';
 	}
 	
