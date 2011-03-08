@@ -14,7 +14,7 @@ if (CORE == undefined) {
  */
 CORE.modal = function(id, options) {
 	if ($('#modal').length == 0) {
-		$('#wrapper').append('<div id="modal"></div>');
+		$('#wrapper').append('<div id="modal" class="container_12"></div>');
 	}
 
 	var _defaultOptions = {
@@ -346,7 +346,9 @@ CORE.tabs = function(id, taboptions, options) {
 					previous.show();
 				} else {				
 					next.show();
-					submit.hide();
+					if (!options.alwaysAllowSubmit) {
+						submit.hide();
+					}
 					previous.show();
 					
 					if (selected == 0) {
