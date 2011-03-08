@@ -36,7 +36,16 @@ class UsersController extends AppController {
  *
  * @var array
  */
-	var $components = array('FilterPagination', 'MultiSelect.MultiSelect', 'Cookie');
+	var $components = array(
+		'FilterPagination',
+		'MultiSelect.MultiSelect',
+		'Cookie',
+		'Security' => array(
+			'disabledFields' => array(
+				'HouseholdMember.Profile'
+			)
+		)
+	);
 
 /**
  * Model::beforeFilter() callback

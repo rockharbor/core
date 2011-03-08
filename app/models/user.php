@@ -312,7 +312,7 @@ class User extends AppModel {
  * @param array $creator The person creating the user. Empty for self.
  * @return boolean Success
  */
-	function createUser($data = array(), $householdId = null, $creator = array()) {
+	function createUser(&$data = array(), $householdId = null, $creator = array()) {
 		if (!isset($this->tmpAdded)) {
 			$this->tmpAdded = array();
 		}
@@ -337,8 +337,13 @@ class User extends AppModel {
 			}
 
 			// validate
-			if ($foundUser === false && empty($member['Profile']['primary_email']) || empty($member['Profile']['first_name']) || empty($member['Profile']['last_name'])) {
-				$this->HouseholdMember->invalidate($number.'.Profile.first_name', 'Please fill in all of the information for this user.');
+			if ($foundUser === false 
+				&& (empty($member['Profile']['primary_email']) || empty($member['Profile']['first_name']) || empty($member['Profile']['last_name']))
+				&& !(empty($member['Profile']['primary_email']) && empty($member['Profile']['first_name']) && empty($member['Profile']['last_name']))
+			) {
+				$this->HouseholdMember->validationErrors += array(
+					$number => array('Profile' => array('first_name' => 'Please fill in all of the information for this user.'))
+				);
 				return false;
 			}
 		}
@@ -410,6 +415,8 @@ class User extends AppModel {
 		} else {
 			// add household member info back in to fill in fields if it failed
 			$data['HouseholdMember'] = $householdMembers;
+			unset($data['User']['password']);
+			unset($data['User']['confirm_password']);
 
 			return false;
 		}

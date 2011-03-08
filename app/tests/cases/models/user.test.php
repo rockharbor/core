@@ -143,6 +143,40 @@ class UserTestCase extends CoreTestCase {
 		$this->User->tmpAdded = $this->User->tmpInvited = array();
 		$user = array(
 			'User' => array(
+				'username' => 'testme2',
+				'password' => 'password2'
+			),
+			'Address' => array(
+					0 => array(
+						'name' => 'Work',
+						'address_line_1' => '3080 Airway',
+						'address_line_2' => '',
+						'city' => 'Costa Mesa',
+						'state' => 'CA',
+						'zip' => 92886
+					)
+			),
+			'Profile' => array(
+				'first_name' => 'Yet Another',
+				'last_name' => 'User2',
+				'primary_email' => 'another2@example.com'
+			),
+			'HouseholdMember' => array(
+				0 => array(
+					'Profile' => array(
+						'first_name' => '',
+						'last_name' => '',
+						'primary_email' => ''
+					)
+				)
+			)
+		);
+		$this->assertTrue($this->User->createUser($user, null, $creator));
+		$this->assertEqual(count($this->User->tmpAdded), 1);
+
+		$this->User->tmpAdded = $this->User->tmpInvited = array();
+		$user = array(
+			'User' => array(
 				'username' => 'testme',
 				'password' => 'password'
 			),
