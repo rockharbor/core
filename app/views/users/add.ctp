@@ -1,19 +1,5 @@
-<h2>Add a User</h2>
-
-<div id="profile_tabs" class="profiles" class="ui-tabs">
-
-
-<ul class="tabs">
-	<li class="tab"><a href="#personal">Personal Information</a></li> 
-	<li class="tab"><a href="#contact">Contact Information</a></li> 
-	<li class="tab"><a href="#alerts">Child Alerts &amp; Needs</a></li> 
-	<li class="tab"><a href="#household">Household</a></li>
-	<li class="tab"><a href="#subscriptions">Subscriptions</a></li>
-</ul>
-
-
-
-<?php 
+<h1>Register</h1>
+<?php
 echo $this->Form->create('User', array(
 	'default'=> true,
 	'inputDefaults' => array(
@@ -23,11 +9,22 @@ echo $this->Form->create('User', array(
 	)
 ));
 ?>
-	<fieldset id="personal">
+<div id="profile_tabs" class="core-tabs-wizard">
+	<ul>
+		<li><a href="#personal">Personal Information</a></li>
+		<li><a href="#contact">Contact Information</a></li>
+		<li><a href="#alerts">Child Alerts &amp; Needs</a></li>
+		<li><a href="#household">Household</a></li>
+		<li><a href="#subscriptions">Subscriptions</a></li>
+	</ul>
+
+	<div id="personal" class="clearfix">
+		<fieldset class="grid_6">
+			<legend>User Info</legend>
 	<?php
 		if (!$activeUser) {
 			echo $this->Form->input('username', array(
-				'after' => 'Leave blank if you want '.Core::read('general.site_name').' to pick one for you.'
+				'after' => 'Leave blank if you want '.Core::read('general.site_name').' to pick one for you based on your name.'
 			));
 			echo $this->Form->input('password', array(
 				'after' => 'Leave blank if you want '.Core::read('general.site_name').' to pick one for you.'
@@ -36,9 +33,18 @@ echo $this->Form->create('User', array(
 				'type' => 'password',
 				'after' => 'Leave blank if you want '.Core::read('general.site_name').' to pick one for you.'
 			));
+		} else {
+			echo $this->Form->hidden('username');
+			echo $this->Form->hidden('password');
+			echo $this->Form->hidden('confirm_password');
 		}
 		echo $this->Form->input('Profile.first_name');
 		echo $this->Form->input('Profile.last_name');
+	?>
+		</fieldset>
+		<fieldset class="grid_6">
+			<legend>About Me</legend>
+	<?php
 		echo $this->Form->input('Profile.gender', array(
 			'type' => 'select',
 			'options' => $this->SelectOptions->genders
@@ -52,6 +58,13 @@ echo $this->Form->create('User', array(
 			'type' => 'select',
 			'options' => $this->SelectOptions->maritalStatuses
 		));
+		echo $this->Form->input('Profile.job_category_id');
+		echo $this->Form->input('Profile.occupation');
+	?>
+		</fieldset>
+		<fieldset class="grid_6">
+			<legend>School Stuff</legend>
+	<?php
 		echo $this->Form->input('Profile.grade', array(
 			'type' => 'select',
 			'options' => $this->SelectOptions->grades
@@ -67,8 +80,10 @@ echo $this->Form->create('User', array(
 		echo $this->Form->input('Profile.middle_school_id');
 		echo $this->Form->input('Profile.high_school_id');
 		echo $this->Form->input('Profile.college_id');
-		echo $this->Form->input('Profile.job_category_id');
-		echo $this->Form->input('Profile.occupation');
+	?>
+		</fieldset>
+		<fieldset class="grid_6">
+	<?php
 		echo $this->Form->input('Profile.accepted_christ');
 		echo $this->Form->input('Profile.accepted_christ_year', array(
 			'type' => 'select',
@@ -84,9 +99,10 @@ echo $this->Form->create('User', array(
 			'type' => 'date'
 		));
 	?>
-	</fieldset>
-	<fieldset id="contact">
-		<fieldset>
+		</fieldset>
+	</div>
+	<div id="contact" class="clearfix">
+		<fieldset class="grid_6">
 			<legend>Address</legend>
 	<?php
 		echo $this->Form->input('Address.0.address_line_1');
@@ -98,6 +114,8 @@ echo $this->Form->create('User', array(
 		echo $this->Form->input('Address.0.zip');
 	?>
 		</fieldset>
+		<fieldset class="grid_6">
+			<legend>Phone and Email</legend>
 	<?php
 		echo $this->Form->input('Profile.cell_phone', array(
 			'maxlength' => '30'
@@ -112,15 +130,16 @@ echo $this->Form->create('User', array(
 		echo $this->Form->input('Profile.alternate_email_1');
 		echo $this->Form->input('Profile.alternate_email_2');
 	?>
-	</fieldset>
-	<fieldset id="alerts">
+		</fieldset>
+	</div>
+	<div id="alerts">
 	<?php
 		echo $this->Form->input('Profile.allergies');
 		echo $this->Form->input('Profile.special_needs');
 		echo $this->Form->input('Profile.special_alert');
 	?>
-	</fieldset>	
-	<fieldset id="household">
+	</div>
+	<div id="household" class="clearfix">
 	<div id="members">
 	<?php
 	if (empty($this->data)) {
@@ -131,7 +150,7 @@ echo $this->Form->create('User', array(
 	foreach ($this->data['HouseholdMember'] as $householdMember):
 	?>
 	
-		<fieldset id="member<?php echo $hmcount; ?>" >
+		<fieldset class="grid_5" id="member<?php echo $hmcount; ?>">
 	<?php
 		if (isset($householdMember['Profile']['id'])) {
 			echo $householdMember['Profile']['first_name'].' already exists in '.Core::read('general.site_name').'. ';
@@ -163,9 +182,8 @@ echo $this->Form->create('User', array(
 		));
 			
 	?>
-	
-	</fieldset>
-	<fieldset id="subscriptions">
+	</div>
+	<div id="subscriptions">
 		<p>Select any publications you would like to subscribe to below.</p>
 		<fieldset>
 			<legend>Subscriptions</legend>
@@ -177,23 +195,28 @@ echo $this->Form->create('User', array(
 		));
 	?>
 		</fieldset>
-	</fieldset>	
-	
-<?php 
-echo $this->Form->submit('Save');
-echo $this->Form->end();
-?>
-	
-
+	</div>
 </div>
-
-
-
-
 <?php
+$defaultSubmitOptions['id'] = 'submit_button';
+$defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals:true})';
+echo $this->Form->button('Previous', array('id' => 'previous_button', 'class' => 'button', 'type' => 'button'));
+echo $this->Form->button('Next', array('id' => 'next_button', 'class' => 'button', 'type' => 'button'));
+echo $this->Js->submit('Sign up', $defaultSubmitOptions);
+echo $this->Form->end();
 
 /** tab js **/
-$this->Js->buffer('CORE.tabs(\'profile_tabs\', {cookie: {expires:0}});');
+$this->Js->buffer('CORE.tabs("profile_tabs",
+	{
+		cookie:false
+	},
+	{
+		next: "next_button",
+		previous: "previous_button",
+		submit: "submit_button",
+		alwaysAllowSubmit: true
+	}
+);');
 
 
 $this->Html->scriptStart();
@@ -201,7 +224,7 @@ echo 'var member = '.$hmcount.';';
 echo 'function addAdditionalMember() {
 	$("#members").append(\'<fieldset id="member\'+member+\'"><div class="input text"><label for="HouseholdMember\'+member+\'ProfileFirstName">First Name</label>	<input type="text" id="HouseholdMember\'+member+\'ProfileFirstName" name="data[HouseholdMember][\'+member+\'][Profile][first_name]">	</div>	<div class="input text">	<label for="HouseholdMember\'+member+\'ProfileLastName">Last Name</label>	<input type="text" id="HouseholdMember\'+member+\'ProfileLastName" name="data[HouseholdMember][\'+member+\'][Profile][last_name]">	</div><div class="input text">	<label for="HouseholdMember\'+member+\'ProfilePrimaryEmail">Primary Email</label>	<input type="text" id="HouseholdMember\'+member+\'ProfilePrimaryEmail" name="data[HouseholdMember][\'+member+\'][Profile][primary_email]">	</div>	</fieldset>\');
 	member++;
-	
+
 }';
 echo $this->Html->scriptEnd();
 

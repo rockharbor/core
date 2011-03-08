@@ -128,22 +128,6 @@ class UsersController extends AppController {
 	}
 
 /**
- * Shows user information
- */
-	function view() {
-		// get user id
-		$id = $this->passedArgs['User'];
-	
-		if (!$id) {
-			//$this->Session->setFlash(__('Invalid user', true));
-			//$this->redirect(array('action' => 'index'));
-		}
-		
-		$this->User->recursive = 2;
-		$this->set('user', $this->User->read(null, $id));
-	}
-
-/**
  * Creates a new password and sends it to the user, or offers them to reset
  */
 	function edit() {
@@ -412,6 +396,9 @@ class UsersController extends AppController {
 		$this->set('jobCategories', $this->User->Profile->JobCategory->find('list'));
 		$this->set('classifications', $this->User->Profile->Classification->find('list'));
 		$this->set('campuses', $this->User->Profile->Campus->find('list'));
+
+		$this->autoRender = false;
+		$this->render('add');
 	}
 
 /**
