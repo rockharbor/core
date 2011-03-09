@@ -479,7 +479,6 @@ class InstallShell extends Shell {
 			'controllers/Rosters/involvement',
 			'controllers/Profiles/view',
 			'controllers/UserAddresses/add',
-			'controllers/UserAddresses/delete',
 			'controllers/UserAddresses/edit',
 			'controllers/UserAddresses/index',
 			'controllers/UserAddresses/primary',
