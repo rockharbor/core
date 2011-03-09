@@ -65,7 +65,7 @@ CORE.modal = function(id, options) {
 		$('#modal').dialog('option', 'height', 'auto');
 		
 		// set options
-		modalOptions = $(this).data('modalOptions');
+		var modalOptions = $(this).data('modalOptions');
 		for (var o in modalOptions) {
 			$('#modal').dialog('option', modalOptions, modalOptions[o]);
 		}
@@ -690,7 +690,7 @@ CORE.closeModals = function(modalName) {
 	if (modalName != undefined) {
 		$('#'+modalName).dialog('close');
 	} else {
-		$('#content').dialog('close');
 		$('#modal').dialog('close');
+		$('#content').dialog('close');
 	}
 }
