@@ -161,7 +161,8 @@ class ReportsController extends AppController {
 		$contain = array(
 			'Address' => array(
 				'conditions' => array(
-					'Address.primary' => true
+					'Address.primary' => true,
+					'Address.model' => $model
 				)
 			)
 		);
@@ -177,7 +178,7 @@ class ReportsController extends AppController {
 			));
 			$results = $this->User->find('all', $search);
 		}
-		$this->set(compact('results'));
+		$this->set(compact('results', 'model'));
 	}
 }
 ?>

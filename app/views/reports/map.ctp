@@ -10,17 +10,29 @@ foreach ($results as $result) {
 		$imageUrl = null;
 	}
 
+	$name = null;
+	switch ($model) {
+		case 'User':
+			$name = $result['Profile']['name'];
+		break;
+	}
+
 	if (!empty($result['Address'])) {
-	$addresses[] = array(
-		'lat' => $result['Address'][0]['lat'],
-		'lng' => $result['Address'][0]['lng'],
-		'street' => $result['Address'][0]['address_line_1'].' '.$result['Address'][0]['address_line_2'],
-		'city' => $result['Address'][0]['city'],
-		'state' => $result['Address'][0]['state'],
-		'zip' => $result['Address'][0]['zip'],
-		'name' => $result['Profile']['name'],
-		'image' => $imageUrl
-	);
+		$address = $result['Address'];
+		if (!isset($address['city'])) {
+			$address = $address[0];
+		}
+
+		$addresses[] = array(
+			'lat' => $address['lat'],
+			'lng' => $address['lng'],
+			'street' => $address['address_line_1'].' '.$address['address_line_2'],
+			'city' => $address['city'],
+			'state' => $address['state'],
+			'zip' => $address['zip'],
+			'name' => !is_null($name) ? $name : $address['name'],
+			'image' => $imageUrl
+		);
 	}
 }
 
