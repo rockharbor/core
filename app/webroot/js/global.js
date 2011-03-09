@@ -106,7 +106,7 @@ CORE.register = function(alias, div, url) {
 	if (alias == undefined || div == undefined || url == undefined) {
 		return false;
 	}
-	
+
 	if (CORE.updateables[alias] == undefined) {
 		CORE.updateables[alias] = [];
 	}
@@ -164,7 +164,7 @@ CORE.init = function() {
 CORE.initUI = function() {
 	$('.equal-height:visible > div').equalHeights();
 	// hide flash message
-	$('div[id^=flash]').hide().delay(100).slideDown().delay(5000).slideUp();
+	$('div[id^=flash]').appendTo('#wrapper').hide().delay(100).slideDown().delay(5000).slideUp(function() { $(this).remove(); });
 	// attach tabbed behavior
 	CORE.attachTabbedBehavior();
 	// attach modal behavior
