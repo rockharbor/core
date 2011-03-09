@@ -1,5 +1,5 @@
-<h2>Edit Question</h2>
-<div class="questions">
+<h1>Edit Question</h1>
+<div class="questions grid_12">
 <?php echo $this->Form->create('Question', array('default' => false));?>
 	<fieldset>
  		<legend>Edit Question</legend>
@@ -9,6 +9,7 @@
 	?>
 	</fieldset>
 <?php
+$defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals:true})';
 echo $this->Js->submit('Save', $defaultSubmitOptions);
 echo $this->Form->end();
 ?>

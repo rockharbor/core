@@ -1,52 +1,65 @@
-<div class="questions">
-	<h2>Questions</h2>
-	<table cellpadding="0" cellspacing="0">
-	<tr>
-		<th>&nbsp;</th>
-		<th>Question</th>
-		<th class="actions"><?php __('Actions');?></th>
-	</tr>
-	<?php
-	$i = 0;
-	foreach ($questions as $question):
-		$class = null;
-		if ($i++ % 2 == 0) {
-			$class = ' class="altrow"';
-		}
-	?>
-	<tr<?php echo $class;?>>
-		<td><?php
-		if (count($questions) > 1) {
-			if ($question['Question']['order'] == 1) {
-				echo $this->Js->link($this->Html->image('down.icon.png', array('alt' => 'Move Down')), array('action' => 'move', $question['Question']['id'], 'down'), array(
-					'complete' => 'CORE.update("questions")',
-					'escape' => false				
-				));
-			} elseif ($question['Question']['order'] == count($questions)) {
-				echo $this->Js->link($this->Html->image('up.icon.png', array('alt' => 'Move Up')), array('action' => 'move', $question['Question']['id'], 'up'), array(
-					'complete' => 'CORE.update("questions")',
-					'escape' => false,
-					'alt' => 'Move Up'
-				));
-			} else {
-				echo $this->Js->link($this->Html->image('down.icon.png', array('alt' => 'Move Down')), array('action' => 'move', $question['Question']['id'], 'down'), array(
-					'complete' => 'CORE.update("questions")',
-					'escape' => false
-				));		
-				echo $this->Js->link($this->Html->image('up.icon.png', array('alt' => 'Move Up')), array('action' => 'move', $question['Question']['id'], 'up'), array(
-					'complete' => 'CORE.update("questions")',
-					'escape' => false
-				));
+<h1>Questions</h1>
+<div class="questions">	
+	<table cellpadding="0" cellspacing="0" class="datatable">
+		<tbody>
+		<?php
+		$i = 0;
+		foreach ($questions as $question):
+			$class = null;
+			if ($i++ % 2 == 0) {
+				$class = ' altrow';
 			}
-		}		
-		?></td>
-		<td><?php echo $question['Question']['description']; ?>&nbsp;</td>
-		<td class="actions">
-			<?php echo $this->Html->link('Edit', array('action' => 'edit', $question['Question']['id']), array('rel'=>'modal-questions')); ?>
-			<?php echo $this->Html->link('Delete', array('action' => 'delete', $question['Question']['id']), array('id' => 'delete_btn_'.$i)); ?>
-		</td>
-	</tr>
-<?php endforeach; ?>
+		?>
+		<tr class="<?php echo $class;?>">
+			<td>
+				<div class="core-iconable" style="padding: 0 50px;">
+					<div class="core-icon-container" style="left:0">
+					<?php
+					if (count($questions) > 1) {
+						if ($question['Question']['order'] == 1) {
+							$icon = $this->Html->tag('span', '&nbsp;', array('class' => 'core-icon icon-arrow2-s'));
+							echo $this->Js->link($icon, array('action' => 'move', $question['Question']['id'], 'down'), array(
+								'complete' => 'CORE.update("questions")',
+								'escape' => false
+							));
+						} elseif ($question['Question']['order'] == count($questions)) {
+							$icon = $this->Html->tag('span', '&nbsp;', array('class' => 'core-icon icon-arrow2-n'));
+							echo $this->Js->link($icon, array('action' => 'move', $question['Question']['id'], 'up'), array(
+								'complete' => 'CORE.update("questions")',
+								'escape' => false,
+								'alt' => 'Move Up'
+							));
+						} else {
+							$icon = $this->Html->tag('span', '&nbsp;', array('class' => 'core-icon icon-arrow2-s'));
+							echo $this->Js->link($icon, array('action' => 'move', $question['Question']['id'], 'down'), array(
+								'complete' => 'CORE.update("questions")',
+								'escape' => false
+							));
+							$icon = $this->Html->tag('span', '&nbsp;', array('class' => 'core-icon icon-arrow2-n'));
+							echo $this->Js->link($icon, array('action' => 'move', $question['Question']['id'], 'up'), array(
+								'complete' => 'CORE.update("questions")',
+								'escape' => false
+							));
+						}
+					}
+					?>
+					</div>
+
+				<?php echo $question['Question']['description']; ?>&nbsp;
+
+					<div class="core-icon-container">
+					<?php
+					$icon = $this->Html->tag('span', '&nbsp;', array('class' => 'core-icon icon-edit'));
+					echo $this->Html->link($icon, array('action' => 'edit', $question['Question']['id']), array('rel'=>'modal-questions', 'escape' => false));
+					$icon = $this->Html->tag('span', '&nbsp;', array('class' => 'core-icon icon-delete'));
+					echo $this->Html->link($icon, array('action' => 'delete', $question['Question']['id']), array('id' => 'delete_btn_'.$i, 'escape' => false));
+					?>
+					</div>
+				</div>
+			</td>
+		</tr>
+	<?php endforeach; ?>
+		</tbody>
 	</table>
 </div>
 <?php if (Core::read('involvements.question_limit') > $i): ?>

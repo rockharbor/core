@@ -1,5 +1,5 @@
-<h2>Add Question</h2>
-<div class="questions">
+<h1>Add Question</h1>
+<div class="questions grid_12">
 <?php echo $this->Form->create('Question', array('default' => false));?>
 	<fieldset>
  		<legend>Add Question</legend>

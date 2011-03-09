@@ -173,13 +173,13 @@ div.content-box .content-box {
 	position: absolute;
 	top: 0;
 	right:0;
-	display:none;
+	visibility:hidden;
 }
 .core-iconable .core-icon-container .core-icon {
 	top: 0px;
 }
 .core-iconable:hover .core-icon-container {
-	display:block;
+	visibility:visible;
 }
 
 /** special containers, perhaps place somewhere else **/
@@ -713,7 +713,7 @@ Custom Icons
 	background-position: -32px -32px;
 }
 .icon-arrow-s {
-	background-position: -64px -32px;
+	background-position: -48px -32px;
 }
 .icon-arrow2-e {
 	background-position: 0px -48px;
@@ -737,7 +737,7 @@ Custom Icons
 	background-position: -32px -64px;
 }
 .icon-arrow2-s:hover {
-	background-position: -64px -64px;
+	background-position: -48px -64px;
 }
 .icon-star {
 	background-position: -16px -16px;
