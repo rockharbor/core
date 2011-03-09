@@ -217,15 +217,30 @@ CORE.attachTabbedBehavior = function() {
  * @return boolean True
  */
 CORE.attachModalBehavior = function() {
-	$("[rel|=modal]").each(function() {
+	$('[rel|=modal]').each(function() {
+		if ($(this).attr('id') == '') {
+			$(this).attr('id', 'link-'+new Date().getTime());
+		}
+
+		// regular ajax call if it's already in a modal
+		if ($(this).parents('.ui-dialog').length > 0) {
+			$(this).bind('click', function () {
+				$.ajax({
+					dataType: 'html',
+					success: function (data) {
+						$('#content').html(data);
+					},
+					url: $(this).attr('href')
+				});
+				return false;
+			});
+			return;
+		}
+
 		if ($(this).data('hasModal') == undefined) {	
 			// get updateable, if any
 			var rel = $(this).attr("rel");
 			var update = rel.split("-");
-			
-			if ($(this).attr('id') == '') {
-				$(this).attr('id', 'link-'+new Date().getTime());
-			}
 
 			if (update[1] != undefined) {
 				CORE.modal($(this).attr('id'), {update:update[1]});
