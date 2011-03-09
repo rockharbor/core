@@ -102,6 +102,9 @@ class PermissionHelper extends AppHelper {
 		if (is_string($url)) {
 			$url = Router::parse($url);
 		}
+		if (empty($url['controller'])) {
+			$url['controller'] = $this->params['controller'];
+		}
 		if (!isset($url['action'])) {
 			$url['action'] = 'index';
 		}

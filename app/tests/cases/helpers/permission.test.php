@@ -40,6 +40,23 @@ class PermissionHelperTestCase extends CakeTestCase {
 		$result = $this->Permission->link('Allowed', array('controller' => 'users', 'action' => 'delete'), array('complete' => 'CORE.update()'));
 	}
 
+	function testLinkNoController() {
+		$View = new View(new Controller(), true);
+		$View->set('activeUser', array(
+			'Group' => array(
+				'id' => 1
+			)
+		));
+		$this->Permission->params['controller'] = 'awesome_users';
+		$this->Permission->AppController = new MockAppController();
+		$this->Permission->AppController->setReturnValue('isAuthorized', true);
+		
+		$this->Permission->Html = new HtmlHelper();
+		
+		$result = $this->Permission->link('Allowed', array('action' => 'delete'));
+		$this->assertPattern('/awesome_users\/delete/', $result);
+	}
+
 	function testNoView() {
 		$this->assertNoErrors();
 		$this->Permission->beforeRender();
