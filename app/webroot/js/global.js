@@ -1,15 +1,4 @@
 /**
- * Define console object so browsers without it won't generate errors
- *
- * @var object
- */
-if (console == undefined) {
-	var console = {
-		log: function() { }
-	};
-}
-
-/**
  * Define namespace
  *
  * @var object

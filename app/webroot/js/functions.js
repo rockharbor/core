@@ -31,3 +31,15 @@ function stripslashes (str) {
 function redirect(url) {
 	window.location.href = url;
 }
+
+/**
+ * Wrapper for writing to the console
+ *
+ * @param string msg The message
+ */
+function debug(msg) {
+	if (console == undefined) {
+		return;
+	}
+	console.log(msg);
+}
