@@ -80,3 +80,4 @@
 <?php
 echo $this->MultiSelect->end();
 ?>
+</div>

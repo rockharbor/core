@@ -93,6 +93,15 @@ li#nav-profile .profile-name {
 li#nav-notifications {
 	position:relative;
 }
+li#nav-notifications .alert p {
+	color: #e03a14;
+	background: #ffcbbf;
+	border: 1px solid #e03a14;
+	padding: 2px 5px;
+}
+li#nav-notifications .alert {
+	margin-right: 0 !important;
+}
 li#nav-notifications .notification p {
 	color:#807980;
 	margin:5px 0;
@@ -161,15 +170,15 @@ li#nav-notifications li.notification {
 	padding: 0 5px;
 	position:relative;
 }
-li#nav-notifications #notification-viewall li, li#nav-calendar #calendar-viewall li {
-	padding:0;
-}
-li#nav-notifications #notification-viewall a, li#nav-calendar #calendar-viewall a {
+li#nav-notifications li#notification-viewall, li#nav-calendar li#calendar-viewall {
+	padding:5px;
 	text-align: center;
-	background:#eaeaea;
-	border-top:1px solid #cccccc;
+	background: #eaeaea;
+	border-top: 1px solid #cccccc;
 }
-
+li#nav-notifications li#notification-viewall a, li#nav-calendar li#calendar-viewall a {
+	display:inline;
+}
 div#header div#secondary {
 	line-height: 30px;
 	text-transform: uppercase;

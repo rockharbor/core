@@ -53,6 +53,18 @@ class NotificationsController extends AppController {
  * Gets a list of notifications (specifically for the menu)
  */
 	function quick() {
+		// get alerts
+		$Alert = ClassRegistry::init('Alert');
+		$unread = $Alert->getUnreadAlerts($this->activeUser['User']['id'], $this->activeUser['Group']['id'], false);
+		$alerts = $Alert->find('all', array(
+			'conditions' => array(
+				'Alert.id' => $unread
+			),
+			'order' => 'Alert.created DESC',
+			'limit' => 5
+		));
+		$this->set('alerts', $alerts);
+
 		// get notifications
 		$this->set('new', $this->Notification->find('count', array(
 			'conditions' => array(
@@ -75,7 +87,7 @@ class NotificationsController extends AppController {
  *
  * @param string $typeFilter A quick filter for the NotificationType
  */
-	function index($typeFilter = '') {		
+	function index($typeFilter = '') {
 		$conditions['Notification.user_id'] = $this->Auth->user('id');
 		if (!empty($typeFilter) && in_array($typeFilter, array_keys($this->Notification->types))) {
 			$conditions['Notification.type'] = $typeFilter;

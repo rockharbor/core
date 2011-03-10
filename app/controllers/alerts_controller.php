@@ -62,21 +62,20 @@ class AlertsController extends AppController {
  * @param integer $id The id of the alert to read
  */ 	
 	function view($id = null) {
-		if (!$id) {
+		$groups = $this->Alert->Group->findGroups($this->activeUser['Group']['id']);
+		$alert = $this->Alert->find('first', array(
+			'conditions' => array(
+				'Alert.id' => $id,
+				'Alert.group_id' => array_keys($groups)
+			)
+		));
+
+		if (empty($alert)) {
 			$this->Session->setFlash('You cannot view that alert', 'flash'.DS.'failure');
 			$this->redirect(array('action'=>'history'));
 		}
 		
-		$alert = $this->Alert->find('first', array(
-			'conditions' => array(
-				'Alert.id' => $id,
-				'Alert.group_id' => $this->activeUser['Group']['id']
-			)
-		));
-
-		$referer = $this->referer();
-		
-		$this->set(compact('alert', 'referer')); 
+		$this->set(compact('alert')); 
 	}
 
 /**
@@ -86,13 +85,13 @@ class AlertsController extends AppController {
  */ 
 	function history($unread = '') {
 		$userId = $this->activeUser['User']['id'];
-		$userGroups = Set::extract('/Group/id', $this->activeUser);
+		$groups = $this->Alert->Group->findGroups($this->activeUser['Group']['id']);
 		
 		switch ($unread) {			
 			case 'unread':
 			$this->paginate = array(
 				'conditions' => array(
-					'Alert.id' => $this->Alert->getUnreadAlerts($userId, $userGroups)
+					'Alert.id' => $this->Alert->getUnreadAlerts($userId, array_keys($groups))
 				),
 				'order' => 'Alert.created DESC'
 			);
@@ -108,7 +107,7 @@ class AlertsController extends AppController {
 			default:
 			$this->paginate = array(
 				'conditions' => array(
-					'Alert.group_id' => $userGroups				
+					'Alert.group_id' => array_keys($groups)
 				),
 				'order' => 'Alert.created DESC'
 			);

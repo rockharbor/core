@@ -31,27 +31,22 @@ class AlertsControllerTestCase extends CoreTestCase {
 	}
 
 	function testView() {
-		$vars = $this->testAction('/alerts/view/1');
-		$this->assertEqual($vars['alert'], array());
-
+		$this->Alerts->Session->write('Auth', array('User' => array('id' => 1)));
 		$this->Alerts->Session->write('User', array('Group' => array('id' => 8)));
 		$vars = $this->testAction('/alerts/view/1');
-		$expected = array(
-			'id' => 1,
-			'name' => 'A User-level alert',
-			'description' => 'Alert description 1',
-			'created' => '2010-04-27 14:04:02',
-			'modified' => '2010-06-02 12:27:38',
-			'group_id' => 8,
-			'importance' => 'medium',
-			'expires' => NULL
-		);
-		$result = $vars['alert']['Alert'];
+		$result = Set::extract('/Alert/id', $vars['alert']);
+		$expected = array(1);
 		$this->assertEqual($result, $expected);
 
 		$this->Alerts->Session->write('User', array('Group' => array('id' => 8)));
 		$vars = $this->testAction('/alerts/view/4');
 		$this->assertEqual($vars['alert'], array());
+
+		$this->Alerts->Session->write('User', array('Group' => array('id' => 1)));
+		$vars = $this->testAction('/alerts/view/4');
+		$result = Set::extract('/Alert/id', $vars['alert']);
+		$expected = array(4);
+		$this->assertEqual($result, $expected);
 	}
 
 	function testHistory() {
@@ -160,6 +155,6 @@ class AlertsControllerTestCase extends CoreTestCase {
 		$this->testAction('/alerts/delete/1');
 		$this->assertFalse($this->Alerts->Alert->read(null, 1));
 	}
-
+	
 }
 ?>

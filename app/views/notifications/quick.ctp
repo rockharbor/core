@@ -8,6 +8,13 @@ if ($new > 0) {
 ?>
 <ul>
 	<?php
+		foreach ($alerts as $alert) {
+			$title = $this->Html->link($alert['Alert']['name'], array('controller' => 'alerts', 'action' => 'view', $alert['Alert']['id']), array('rel' => 'modal-notifications'));
+			$desc = $this->Text->truncate($alert['Alert']['description'], 50);
+			echo $this->Html->tag('li', $this->Html->tag('p', $title.' - '.$desc), array('class' => 'notification alert'));
+		}
+	?>
+	<?php
 		foreach ($notifications as $notification) {
 			$class = $notification['Notification']['read'] ? 'notification-read' : 'notification-unread';
 			echo '<li id="notification-'.$notification['Notification']['id'].'" class="notification"><p class="'.$class.'">';
@@ -24,6 +31,8 @@ if ($new > 0) {
 		}
 		echo '<li id="notification-viewall">';
 		echo $this->Html->link('View All Notifications', array('controller' => 'notifications', 'action' => 'index'), array('rel' => 'modal-notifications'));
+		echo ' / ';
+		echo $this->Html->link('Alerts', array('controller' => 'alerts', 'action' => 'history'), array('rel' => 'modal-notifications'));
 		echo '</li>';
 	?>
 </ul>
