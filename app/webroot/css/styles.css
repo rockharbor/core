@@ -175,6 +175,10 @@ div.content-box .content-box {
 	right:0;
 	visibility:hidden;
 }
+tr.core-iconable .core-icon-container {
+	position: relative;
+	top: 3px;
+}
 .core-iconable .core-icon-container .core-icon {
 	top: 0px;
 }
