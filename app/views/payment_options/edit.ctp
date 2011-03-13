@@ -1,17 +1,28 @@
-<h2>Edit Payment Option</h2>
+<h1>Edit Payment Option</h1>
 <div class="paymentOptions">
 <?php echo $this->Form->create('PaymentOption', array('default' => false));?>
-	<fieldset>
+	<fieldset class="grid_6">
  		<legend><?php printf(__('Edit %s', true), __('Payment Option', true)); ?></legend>
 	<?php
 		echo $this->Form->input('id');
 		echo $this->Form->input('name');
-		echo $this->Form->input('total');
-		echo $this->Form->input('deposit');
-		echo $this->Form->input('childcare');
 		echo $this->Form->input('account_code');
 		echo $this->Form->input('tax_deductible');
 	?>
+	</fieldset>
+	<fieldset class="grid_6">
+		<legend>Amounts</legend>
+		<?php
+		echo $this->Form->input('total', array(
+			'between' => '$ '
+		));
+		echo $this->Form->input('deposit', array(
+			'between' => '$ '
+		));
+		echo $this->Form->input('childcare', array(
+			'between' => '$ '
+		));
+		?>
 	</fieldset>
 <?php 
 $defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals:true})';

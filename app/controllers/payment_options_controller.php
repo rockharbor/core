@@ -60,10 +60,10 @@ class PaymentOptionsController extends AppController {
 		if (!empty($this->data)) {
 			$this->PaymentOption->create();
 			if ($this->PaymentOption->save($this->data)) {
-				$this->Session->setFlash(__('The payment option has been saved', true));
+				$this->Session->setFlash(__('The payment option has been saved', true), 'flash'.DS.'success');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The payment option could not be saved. Please, try again.', true));
+				$this->Session->setFlash(__('The payment option could not be saved. Please, try again.', true), 'flash'.DS.'failure');
 			}
 		}
 		
@@ -77,15 +77,15 @@ class PaymentOptionsController extends AppController {
  */ 
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
-			$this->Session->setFlash(__('Invalid payment option', true));
+			$this->Session->setFlash(__('Invalid payment option', true), 'flash'.DS.'failure');
 			$this->redirect(array('action' => 'index'));
 		}
 		if (!empty($this->data)) {
 			if ($this->PaymentOption->save($this->data)) {
-				$this->Session->setFlash(__('The payment option has been saved', true));
+				$this->Session->setFlash(__('The payment option has been saved', true), 'flash'.DS.'success');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The payment option could not be saved. Please, try again.', true));
+				$this->Session->setFlash(__('The payment option could not be saved. Please, try again.', true), 'flash'.DS.'failure');
 			}
 		}
 		if (empty($this->data)) {
@@ -100,14 +100,14 @@ class PaymentOptionsController extends AppController {
  */ 
 	function delete($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(__('Invalid id for payment option', true));
+			$this->Session->setFlash(__('Invalid id for payment option', true), 'flash'.DS.'failure');
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->PaymentOption->delete($id)) {
-			$this->Session->setFlash(__('Payment option deleted', true));
+			$this->Session->setFlash(__('Payment option deleted', true), 'flash'.DS.'success');
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash(__('Payment option was not deleted', true));
+		$this->Session->setFlash(__('Payment option was not deleted', true), 'flash'.DS.'failure');
 		$this->redirect(array('action' => 'index'));
 	}
 }
