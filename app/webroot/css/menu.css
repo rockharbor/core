@@ -59,7 +59,7 @@ div#header div#primary>ul>li>a {
 	line-height:30px;
 }
 div#header div#primary>ul>li>ul {
-	border:1px solid #000;
+	border: 1px solid #acacac;
 	border-top:none;
 	background: #FFF;
 }
