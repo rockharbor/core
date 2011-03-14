@@ -9,6 +9,7 @@
 		echo $this->Form->input('address_id');
 	?>
 <?php
+$defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals:true});';
 echo $this->Js->submit('Choose', $defaultSubmitOptions);
 echo $this->Form->end();
 ?>
@@ -20,6 +21,13 @@ echo $this->Form->end();
 	<?php
 		echo $this->Form->hidden('foreign_key', array('value'=>$modelId));
 		echo $this->Form->hidden('model', array('value'=>$model));
+		echo $this->Form->hidden('primary', array(
+			'value' => true
+		));
+		echo $this->Form->hidden('active', array(
+			'value' => true
+		));
+		echo $this->Form->input('name');
 		echo $this->Form->input('name');
 		echo $this->Form->input('address_line_1');
 		echo $this->Form->input('address_line_2');

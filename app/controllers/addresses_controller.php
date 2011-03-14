@@ -112,7 +112,6 @@ class AddressesController extends AppController {
 			$this->Address->create();
 			
 			// this address will be the new primary
-			$this->data['Address']['primary'] = 1;
 			$success= $this->Address->save($this->data);
 			
 			// don't overwrite that we just made it primary!
