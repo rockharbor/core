@@ -274,13 +274,13 @@ class InvolvementsController extends AppController {
 		if ($involvement['Involvement']['take_payment'] && $active) {
 			if (empty($involvement['PaymentOption'])) {
 				$this->Session->setFlash('Cannot activate until a payment option is defined', 'flash'.DS.'failure');
-				$this->redirect($this->emptyPage);
+				$this->redirect($this->referer());
 				return;
 			}
 		}
 		if (empty($involvement['Leader']) && $active) {
 			$this->Session->setFlash('Cannot activate until a leader is added', 'flash'.DS.'failure');
-			$this->redirect($this->emptyPage);
+			$this->redirect($this->referer());
 			return;
 		}
 		
