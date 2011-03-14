@@ -27,9 +27,9 @@ h1, h2, h3 {
 	color: #444445;
 }
 div .content-box h1, div.ui-dialog h1, div.ui-dialog .breadcrumb { display:none; }
-h1 { font-size: 44px; position: relative; left: -12px; margin-bottom: 10px; margin-top: 5px; }
+h1 { font-size: 44px; position: relative; left: -25px; margin-bottom: 10px; margin-top: 5px; }
 h2 { font-size: 20px;}
-h3 { font-size: 16px; margin:0; text-transform: uppercase; line-height: 18px; }
+h3 { font-size: 16px; margin:0; text-transform: uppercase; line-height: 18px; padding-bottom: 5px; }
 
 /*
 Highlight and flash classes
@@ -77,9 +77,8 @@ div.content-box,
 	-moz-box-shadow:0 0 15px #999999;
 	-webkit-box-shadow:0 0 15px #999999;
 }
-
 p {
-	line-height: 15px;
+	line-height: 14px;
 	margin-bottom: 10px;
 }
 hr {
@@ -110,19 +109,22 @@ a {
 a:hover {
 	text-decoration: underline;
 }
+a.no-hover:hover {
+	text-decoration: none;
+}
 
 /*
 Containers
 */
 div.content-box {
 	background:#ffffff;
-	padding: 10px;
-	margin:0 -12px;
+	padding: 20px;
+	margin:0 -25px;
 	position:relative;
 }
 div#content-container {
 	background:#ffffff;
-	padding-bottom:30px;
+	padding-bottom:55px;
 }
 div#content, div#content-reserved {
 	padding-top:30px;
@@ -133,7 +135,7 @@ div.ui-dialog div#content {
 span.breadcrumb {
 	font-size:10px;
 	position: relative;
-	left: -12px;
+	left: -25px;
 }
 span.breadcrumb.editing {
 	background: #e03a14;
@@ -515,14 +517,14 @@ input.search-out {
 	color: #acacac !important;
 	font-style: italic;
 }
-form {
-	padding-bottom:10px;
-}
 div.input {
 	padding: 5px 0px;
 }
-div.toggle, div.checkbox, div.checkbox label, div.radio, div.radio label {
-	display: inline-block;
+div.checkbox, div.checkbox label, div.radio, div.radio label {
+	display: block;
+}
+.toggle div.checkbox, .toggle div.radio {
+	display: inline-block !important;
 }
 label {
 	color: #acacac;
@@ -536,13 +538,14 @@ fieldset, div.hr {
 div.hr {
 	padding: 10px 0;
 	position:relative;
+	margin-top: 10px;
 }
-legend, span.legend {
+legend, div.legend {
 	background: #ffffff;
 	color: #838383;
 	padding-right: 5px;
 }
-span.legend {
+div.legend {
 	left: 0;
 	position: absolute;
 	top: -6px;
@@ -573,6 +576,7 @@ select {
 	float:left;
 	margin-right: 3px;
 	position: relative;
+	margin-top: -2px;
 }
 .core-radio {
 	-moz-border-radius: 6px;
@@ -633,13 +637,13 @@ Custom Icons
 */
 .core-icon {
 	text-indent: -99999px;
-	height: 16px;
-	width: 16px;
-	overflow: hidden;
-	float:left;
-	position: relative;
+	height: 14px;
+	width: 14px;
+	display: inline-block;
 	background-image: url('../assets/images/icons.png');
 	background-position: 20px 20px; /* default none */
+	margin-right: 2px;
+	vertical-align: middle;
 }
 .icon-error {
 	background-position: -64px 0px;

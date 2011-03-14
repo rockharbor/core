@@ -20,7 +20,6 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 				<?php
 				$first = ' alpha';
 				if (!empty($involvement['Ministry']['Image'])) { ?>
-				}
 				<div class="grid_4<?php echo $first; ?>">
 					<?php
 					$path = 'l'.DS.$involvement['Ministry']['Image'][0]['dirname'].DS.$involvement['Ministry']['Image'][0]['basename'];
@@ -59,18 +58,20 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 			<div class="grid_10 alpha omega">
 				<div class="grid_6 alpha">
 					<h3>Description</h3>
-					<p><?php echo $involvement['Involvement']['description']; ?></p>
+					<p><?php echo html_entity_decode($involvement['Involvement']['description']); ?></p>
 				</div>
 				<div class="grid_4 omega">
 					<?php if (!empty($involvement['Leader'])) { ?>
 					<h3>Leaders</h3>
+					<p>
 						<?php
 						foreach ($involvement['Leader'] as $leader) {
 							$icon = $this->Html->tag('span', 'Email', array('class' => 'core-icon icon-email'));
 							echo $icon.$this->Html->link($leader['User']['Profile']['name'], array('controller' => 'sys_emails', 'action' => 'compose', 'model' => 'User', 'User' => $leader['User']['id']), array('rel' => 'compose'));
 							echo '<br />';
 						}
-					} ?>
+					echo '</p>';
+					} ?>					
 					<?php if (!empty($involvement['Address'])) { ?>
 					<h3>Address</h3>
 						<?php
@@ -87,7 +88,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 			<div class="grid_10 alpha omega">
 				<?php 
 				if ($involvement['Involvement']['signup']) {
-					echo $this->Html->link('Sign up', array('controller' => 'rosters', 'action' => 'add', 'User' => $activeUser['User']['id'], 'Involvement' => $involvement['Involvement']['id']), array('rel' => 'modal-content')); 
+					echo $this->Html->link('Sign up', array('controller' => 'rosters', 'action' => 'add', 'User' => $activeUser['User']['id'], 'Involvement' => $involvement['Involvement']['id']), array('rel' => 'modal-content', 'class' => 'button'));
 				}		
 				?>
 			</div>
@@ -97,7 +98,16 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 		</div>
 		<?php if ($this->Permission->can('viewRoster')) { ?>
 		<div id="roster-tab">
-			<?php $this->Js->buffer('CORE.register("roster", "roster-tab", "/rosters/index/Involvement:'.$involvement['Involvement']['id'].'")'); ?>
+			<?php
+			echo $this->requestAction('/rosters/index', array(
+				'named' => array(
+					'Involvement' => $involvement['Involvement']['id']
+				),
+				'return',
+				'respondAs' => 'ajax'
+			));
+			$this->Js->buffer('CORE.register("roster", "roster-tab", "/rosters/index/Involvement:'.$involvement['Involvement']['id'].'")');
+			?>
 		</div>
 		<?php } ?>
 	</div>

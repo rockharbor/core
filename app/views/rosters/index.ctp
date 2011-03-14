@@ -210,7 +210,10 @@ $this->Paginator->options('#roster-tab');
 		<?php } ?>
 		<td><?php echo $this->Formatting->date($roster['Roster']['created']); ?>&nbsp;</td>
 		<td><?php
-		echo $this->Html->link(count($roster['Role']).' Roles', array('controller' => 'rosters', 'action' => 'roles', 'Involvement' => $involvement['Involvement']['id'], $roster['Roster']['id']), array('class' => 'icon-add', 'rel' => 'modal-roster'));
+		$link = array('controller' => 'rosters', 'action' => 'roles', 'Involvement' => $involvement['Involvement']['id'], $roster['Roster']['id']);
+		$icon = $this->element('icon', array('icon' => 'add'));
+		echo $this->Html->link($icon, $link, array('rel' => 'modal-roster', 'escape' => false, 'class' => 'no-hover'));
+		echo $this->Html->link(count($roster['Role']).' Roles', $link, array('rel' => 'modal-roster'));
 		if (!empty($roster['Role'])) {
 			echo '<div class="core-tooltip">';
 			echo $this->Text->toList(Set::extract('/name', $roster['Role']));

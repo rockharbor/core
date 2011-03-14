@@ -55,6 +55,11 @@ div.subministry {
 	margin: 0;
 	position: absolute;
 }
+.core-icon {
+	zoom:1;	
+	display: inline;
+	display: inline-block;
+}
 
 /*
 jquery-ui.css

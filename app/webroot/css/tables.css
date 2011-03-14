@@ -13,6 +13,9 @@ table.datatable tr {
 table.datatable .altrow {
 	background: #ededed;
 }
+table.datatable .core-checkbox {
+	margin-top: 2px;
+}
 table.datatable .multi-select th {
 	border-bottom: 1px solid #cccccc;
 	font-family: Lucida Sans,Helvetica,Arial,sans-serif;

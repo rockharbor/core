@@ -130,7 +130,7 @@ li#nav-notifications .delete {
 	text-indent:-99999px;
 	position:absolute;
 	top:0;
-	right:-12px;
+	right:-25px;
 	display: none;
 }
 li#nav-notifications .delete:hover {

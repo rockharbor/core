@@ -512,32 +512,32 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
  *
  * http://docs.jquery.com/UI/Dialog#theming
  */
-.ui-dialog { position: absolute; width: 300px; overflow: hidden; border: 1px solid #666666; }
+.ui-dialog { position: absolute; width: 300px; overflow: hidden; border: 1px solid #acacac; }
 .ui-dialog .ui-dialog-titlebar {
-	background: none repeat scroll 0 0 #F2F2F2;
-	color: #000000;
+	background: none repeat scroll 0 0 #f1f1f1;
+	color: #444445;
 	font-size: 16px;
 	padding: 5px;
 	position: relative;
 	text-transform: uppercase;
-	border-bottom: 1px solid #666666;
+	border-bottom: 1px solid #acacac;
 }
 .ui-dialog .ui-dialog-title { float: left; margin: .1em 16px .2em 0; }
 .ui-dialog .ui-dialog-titlebar-close { 
 	position: absolute; right: .3em; top: 50%; width: 19px; margin: -10px 0 0 0; padding: 1px; height: 18px;
 }
 .ui-dialog .ui-dialog-titlebar-close span {
-	background-image: url('../assets/images/ui-icons_454545_256x240.png');
-	background-position: -80px -128px;
+	background-image: url('../assets/images/icons.png');
+	background-position: -96px 0px;
 }
 .ui-dialog .ui-dialog-titlebar-close span:hover {
-	background-image: url('../assets/images/ui-icons_cd0a0a_256x240.png');
+	background-image: url('../assets/images/icons.png');
+	background-position: -96px -16px;
 }
 .ui-dialog .ui-dialog-titlebar .ui-state-hover {
 	background:transparent;
 }
 .ui-dialog .ui-dialog-titlebar-close span { display: block; margin: 1px; }
-.ui-dialog .ui-dialog-titlebar-close:hover, .ui-dialog .ui-dialog-titlebar-close:focus { padding: 0; }
 .ui-dialog .ui-dialog-content { position: relative; border: 0; padding: .5em 1em; background: none; overflow: auto; zoom: 1; }
 .ui-dialog .ui-dialog-buttonpane { text-align: left; border-width: 1px 0 0 0; background-image: none; margin: .5em 0 0 0; padding: .3em 1em .5em .4em; }
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset { float: right; }
@@ -638,7 +638,7 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 .ui-tabs-nav .ui-widget :active { outline: none; }
 
 .ui-tabs { position: relative; zoom: 1; } /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
-.ui-tabs .ui-tabs-nav { margin: 0 -12px; background:none;}
+.ui-tabs .ui-tabs-nav { margin: 0 -25px; background:none;}
 .ui-tabs .ui-tabs-nav li { list-style: none; float: left; position: relative; top: 1px; margin: 0 .2em 1px 0; border-bottom: 0 !important; padding: 0; white-space: nowrap; }
 .ui-tabs .ui-tabs-nav li a { float: left; padding: 5px 10px; text-decoration: none; }
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected { margin-bottom: 0; }

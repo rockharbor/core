@@ -57,7 +57,7 @@ if (!empty($this->data['Search']['query'])) {
 <?php endif; ?>
 <?php if (!empty($users)) { ?>
 <div class="hr">
-	<span class="legend">People</span>
+	<div class="legend">People</div>
 	<?php
 	$i = 0;
 	foreach ($users as $user):
@@ -102,7 +102,7 @@ if (!empty($this->data['Search']['query'])) {
 
 if (!empty($ministries)) { ?>
 <div class="hr">
-	<span class="legend">Ministries</span>
+	<div class="legend">Ministries</div>
 <?php
 foreach ($ministries as $ministry):
 ?>
@@ -126,7 +126,7 @@ endforeach;
 
 if (!empty($involvements)) { ?>
 <div class="hr">
-	<span class="legend">Involvement Opportunities</span>
+	<div class="legend">Involvement Opportunities</div>
 	<div class="grid_10 alpha omega">
 	<?php
 	$i = 0;

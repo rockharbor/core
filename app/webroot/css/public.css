@@ -33,3 +33,6 @@ body {
 #login-form .error-message {
 	display:none;
 }
+#login-info label, #login-info div.input {
+	display: inline;
+}
