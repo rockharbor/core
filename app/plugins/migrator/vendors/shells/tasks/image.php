@@ -39,7 +39,7 @@ class ImageTask extends MigratorTask {
 		$this->_migrate($oldData);
 
 		if (!empty($this->orphans)) {
-			CakeLog::write('migration', $this->_oldTable.' with orphan links: '.implode(',', $this->orphans));
+			CakeLog::write('migration', $this->_oldTable.' with '.count($this->orphans).' orphan links: '.implode(',', $this->orphans));
 		}
 	}
 

@@ -286,8 +286,14 @@ class UserTask extends MigratorTask {
  * @return string
  */
 	function _prepareUsername($old) {
-		if (preg_match('/[^a-z0-9_-]/i', $old) == 1 || strlen($old) < 5) {
-			CakeLog::write('migration', 'User did not validate: '.$old);
+		if (!$this->__userSomewhatActive()) {
+			CakeLog::write('migration', 'Possibly inactive user: '.$old);
+			$this->_editingRecord = false;
+			return false;
+		}
+
+		if (preg_match('/[^a-z0-9_\-]/i', $old) == 1 || strlen($old) < 5) {
+			CakeLog::write('migration', 'Username did not validate (a new username will be generated): '.$old);
 			$old = $this->User->generateUsername($this->_editingRecord['first_name'], $this->_editingRecord['last_name']);
 		}
 		return $old;
@@ -311,6 +317,34 @@ class UserTask extends MigratorTask {
 	}
 	function _prepareAlternateEmail2($old) {
 		return $this->_preparePrimaryEmail($old);
+	}
+
+/**
+ * Checks if a user has logged in. If they haven't, it checks if they are
+ * subscribed to the ebulletin. If not, it checks if they have involvement history.
+ *
+ * If all cases fail, they are not considered active and will not be migrated.
+ */
+	function __userSomewhatActive() {
+		if (!empty($this->_originalRecord['last_logged_in'])) {
+			return true;
+		}
+		$subscriptions = new Model(false, 'publication_subscriptions', $this->_oldDbConfig);
+		if ($subscriptions->hasAny(array(
+			'person_id' => $this->_originalRecord['person_id']
+		))) {
+			return true;
+		}
+		$tge = array('team_roster', 'group_roster', 'event_roster');
+		foreach ($tge as $involvement) {
+			$roster = new Model(false, $involvement, $this->_oldDbConfig);
+			if ($roster->hasAny(array(
+				'person_id' => $this->_originalRecord['person_id']
+			))) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

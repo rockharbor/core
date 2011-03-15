@@ -25,7 +25,8 @@ class PaymentTask extends MigratorTask {
 				'payment_placed_by' => $this->_editingRecord['payment_placed_by'],
 				'refunded' => 0,
 				'created' => $this->_editingRecord['created'],
-				'comment' => 'Automatically added during migration.'
+				'comment' => 'Automatically added during migration.',
+				'involvement_id' => $this->_editingRecord['event_id'],
 			)
 		);
 	}

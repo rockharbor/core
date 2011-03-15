@@ -58,13 +58,10 @@ class Address extends AppModel {
 			'allowEmpty' => true,
 			'message' => 'Alpha-numeric characters only.'
 		),
-		'address_line_1' => array('rule' => 'notEmpty'),
-		'city' => array('rule' => 'notEmpty'),
-		'state' => array('rule' => 'notEmpty'),
 		'zip' => array(
 			'rule' => array('postal', null, 'us'),
 			'message' => 'Please enter a valid zipcode.',
-			'allowEmpty' => false
+			'allowEmpty' => true
 		)
 	);
 

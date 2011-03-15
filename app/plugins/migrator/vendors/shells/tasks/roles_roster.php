@@ -18,6 +18,7 @@ class RolesRosterTask extends MigratorTask {
 			'person_id' => array('person' => 'User'),
 			'role_id' => array('role' => 'Role'),
 			'type_id' => array('teams' => 'Involvement'),
+			'ministry_id' => array('ministry' => 'Ministry')
 		);
 		$oldData = $this->findData($limit, 'TEAM');
 		$this->_migrate($oldData);
@@ -29,12 +30,13 @@ class RolesRosterTask extends MigratorTask {
 			'person_id' => array('person' => 'User'),
 			'role_id' => array('role' => 'Role'),
 			'type_id' => array('groups' => 'Involvement'),
+			'ministry_id' => array('ministry' => 'Ministry')
 		);
 		$oldData = $this->findData($limit, 'GROUP');
 		$this->_migrate($oldData);
 
 		if (!empty($this->orphans)) {
-			CakeLog::write('migration', $this->_oldTable.' with orphan links: '.implode(',', $this->orphans));
+			CakeLog::write('migration', $this->_oldTable.' with '.count($this->orphans).' orphan links: '.implode(',', $this->orphans));
 		}
 	}
 
@@ -56,16 +58,23 @@ class RolesRosterTask extends MigratorTask {
 
 	function mapData() {
 		// get roster id
-		$type = strtolower($this->_editingRecord['type']);
 		$roster = $this->Roster->find('first', array(
 			'conditions' => array(
 				'user_id' => $this->_editingRecord['person_id'],
 				'involvement_id' => $this->_editingRecord['type_id'],
+				'Involvement.ministry_id' =>  $this->_editingRecord['ministry_id'],
+			),
+			'contain' => array(
+				'Involvement' => array(
+					'fields' => array('id', 'ministry_id')
+				)
 			)
 		));
-		if ($roster === false || empty($roster)) {
+		if ($roster == false || empty($roster)) {
 			$msg = "Couldn't find roster for user ".$this->_editingRecord['person_id']." in involvement ".$this->_editingRecord['type_id'];
 			CakeLog::write('migration', $msg);
+			$this->_editingRecord = false;
+			return;
 		}
 
 		$this->_editingRecord = array(

@@ -65,7 +65,8 @@ class Payment extends AppModel {
 			'className' => 'User',
 			'foreignKey' => 'payment_placed_by'
 		),		
-		'PaymentType'
+		'PaymentType',
+		'Involvement'
 	);
 }
 ?>
