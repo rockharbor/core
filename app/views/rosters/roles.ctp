@@ -1,42 +1,44 @@
+<div class="grid_5 alpha">
 <?php
-
-echo $this->Form->create(null, array(
-	'default' => false,
-	'url' => $this->passedArgs,
-));
+if ($this->Permission->check(array(
+	'controller' => 'roles',
+	'action' => 'add',
+	'Ministry' => $ministry['Ministry']['id']
+))) {
+	echo $this->requestAction('/roles/add', array(
+		'return',
+		'respondAs' => 'ajax',
+		'named' => array(
+			'Ministry' => $ministry['Ministry']['id']
+		),
+		'data' => null,
+		'form' => array('data' => null)
+	));
+}
 ?>
-<fieldset>
-	<legend>Add a new role to <?php echo $ministry['Ministry']['name']; ?></legend>
-<?php
-echo $this->Form->hidden('Role.ministry_id', array('value' => $ministry['Ministry']['id']));
-echo $this->Form->input('Role.name');
-echo $this->Js->submit('Add', $defaultSubmitOptions);
-?>
-</fieldset>
-<?php
-echo $this->Form->end();
-?>
-<fieldset>
-	<legend>Add to roles</legend>
-<?php
-echo $this->Form->create('Roster', array(
-	'class' => 'core-filter-form',
-	'url' => $this->passedArgs,
-));
-echo $this->Form->hidden('id');
-echo $this->Form->hidden('roster_status');
-echo $this->Form->input('Role', array(
-	'div' => array(
-		'tag' => 'span',
-		'class' => 'toggle'
-	),
-	'multiple' => 'checkbox',
-	'label' => false
-));
-echo $this->Js->submit('Save');
-?>
-</fieldset>
-<?php
-echo $this->Form->end();
-
-?>
+</div>
+<div class="grid_5 omega">
+	<fieldset>
+		<legend>Add to roles</legend>
+	<?php
+	echo $this->Form->create('Roster', array(
+		'class' => 'core-filter-form',
+		'url' => $this->passedArgs,
+	));
+	echo $this->Form->hidden('id');
+	echo $this->Form->hidden('roster_status');
+	echo $this->Form->input('Role', array(
+		'div' => array(
+			'tag' => 'span',
+			'class' => 'toggle'
+		),
+		'multiple' => 'checkbox',
+		'label' => false
+	));
+	echo $this->Js->submit('Save');
+	?>
+	</fieldset>
+	<?php
+	echo $this->Form->end();
+	?>
+</div>

@@ -313,6 +313,7 @@ class InstallShell extends Shell {
 			'controllers/UserImages/index',
 			'controllers/UserImages/upload',
 			'controllers/UserImages/approve',
+			'controllers/Roles'
 		),
 		'Intern' => array(
 			'controllers/Comments/index',
@@ -323,7 +324,6 @@ class InstallShell extends Shell {
 			'controllers/Rosters/involvement',
 			'controllers/Users/add',
 			'controllers/Users/edit',
-			'controllers/Users/view',
 			'controllers/UserDocuments/delete',
 			'controllers/UserDocuments/download',
 			'controllers/UserDocuments/index',
@@ -413,7 +413,8 @@ class InstallShell extends Shell {
 			'controllers/Ministries/edit',
 			'controllers/Ministries/history',
 			'controllers/MinistryLeaders/add',
-			'controllers/MinistryLeaders/delete'
+			'controllers/MinistryLeaders/delete',
+			'controllers/Roles'
 		),
 		'Involvement Leader' => array(
 			'controllers/Involvements/invite',
@@ -422,7 +423,6 @@ class InstallShell extends Shell {
 			'controllers/Rosters/delete',
 			'controllers/Rosters/edit',
 			'controllers/Rosters/index',
-			'controllers/Users/view',
 			'controllers/InvolvementLeaders/add',
 			'controllers/InvolvementLeaders/delete',
 			'controllers/Involvements/edit',

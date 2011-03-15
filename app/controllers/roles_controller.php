@@ -18,9 +18,8 @@ App::import('Controller', 'SimpleCruds');
  *
  * @package       core
  * @subpackage    core.app.controllers
- * @todo Remove from SimpleCruds and restrict to ministry manager, campus manager
  */
-class RolesController extends SimpleCrudsController {
+class RolesController extends AppController {
 
 /**
  * The name of the controller
@@ -38,6 +37,21 @@ class RolesController extends SimpleCrudsController {
  */ 
 	function beforeFilter() {
 		parent::beforeFilter();
+	}
+
+/**
+ * Adds a role to a ministry
+ */
+	function add() {
+		if (!empty($this->data)) {
+			$this->Role->create();
+			if ($this->Role->save($this->data)) {
+				$this->Session->setFlash('The Role has been added', 'flash'.DS.'success');
+			} else {
+				$this->Session->setFlash('The Role could not be added. Please, try again.', 'flash'.DS.'failure');
+			}
+		}
+		$this->set('ministry', $this->Role->Ministry->read(null, $this->passedArgs['Ministry']));
 	}
 
 }
