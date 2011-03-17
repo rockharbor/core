@@ -45,5 +45,19 @@ class Role extends AppModel {
 			'foreignKey' => 'ministry_id'
 		)
 	);
+
+/**
+ * HasAndBelongsToMany association link
+ *
+ * @var array
+ */
+	var $hasAndBelongsToMany = array(
+		'Roster' => array(
+			'className' => 'Roster',
+			'foreignKey' => 'role_id',
+			'associationForeignKey' => 'roster_id',
+			'dependent' => true,
+		),
+	);
 }
 ?>

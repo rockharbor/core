@@ -648,20 +648,15 @@ class RostersController extends AppController {
 	}
 
 /**
- * Saves roles to a roster id OR
- * Saves a new role to the ministry
+ * Saves roles to a roster id
  *
  * ### Passed Args:
  * - `Involvement` the involvement id
  */
 	function roles($roster_id) {
 		if (!empty($this->data)) {
-			if (isset($this->data['Role']['ministry_id'])) {
-				$this->Roster->Role->save($this->data);
-			} else {
-				$this->Roster->saveAll($this->data);
-				$this->Roster->clearCache();
-			}			
+			$this->Roster->saveAll($this->data);
+			$this->Roster->clearCache();		
 		}
 		$this->Roster->contain(array(
 			'Role'

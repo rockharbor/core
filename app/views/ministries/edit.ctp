@@ -19,6 +19,7 @@ if ($revision && !empty($changes)): ?>
 	<ul>
 		<li><a href="#ministry-information">Details</a></li>
 		<li><a href="#ministry-leaders">Leaders</a></li>
+		<li><a href="#ministry-roles">Roles</a></li>
 		<li><a href="#ministry-attachments">Attachments</a></li>
 	</ul>
 
@@ -72,6 +73,21 @@ if ($revision && !empty($changes)): ?>
 				'form' => array('data' => null)
 			));
 			?>
+		</div>
+		<div id="ministry-roles">
+			<?php
+				echo $this->Js->buffer('CORE.register("roles", "ministry-roles", "/roles/index/Ministry:'.$this->data['Ministry']['id'].'/User:'.$activeUser['User']['id'].'");');
+				echo $this->requestAction('/roles/index', array(
+					'renderAs' => 'ajax',
+					'return',
+					'named' => array(
+						'Ministry' => $this->data['Ministry']['id'],
+						'User' => $activeUser['User']['id']
+					),
+					'data' => null,
+					'form' => array('data' => null)
+				));
+				?>
 		</div>
 		<div id="ministry-attachments">
 			<div id="ministry-images">
