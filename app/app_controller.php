@@ -211,6 +211,9 @@ class AppController extends Controller {
 			$action = Set::filter(array(Inflector::camelize($parsed['plugin']), Inflector::camelize($parsed['controller']), $parsed['action']));
 			$action = implode('/', $action);
 		}
+		if (stripos($action, $this->Auth->actionPath) === false) {
+			$action = $this->Auth->actionPath.$action;
+		}
 
 		if (empty($user)) {
 			$user =& $this->activeUser;
