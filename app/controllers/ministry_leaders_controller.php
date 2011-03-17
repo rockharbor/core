@@ -39,6 +39,16 @@ class MinistryLeadersController extends LeadersController {
 		parent::beforeFilter();
 		$this->modelId = isset($this->passedArgs[$this->model]) ? $this->passedArgs[$this->model] : null;
 	}
+
+/**
+ * Shows a manager dashboard
+ *
+ * @see LeadersController::dashboard()
+ */
+	function dashboard() {
+		$this->viewPath = 'ministry_leaders';
+		parent::dashboard();
+	}
 	
 }
 ?>

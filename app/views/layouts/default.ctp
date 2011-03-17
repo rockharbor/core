@@ -95,6 +95,11 @@
 							if ($activeUser['Profile']['leading'] > 0):
 							?>
 							<li class="hover-row"><?php echo $this->Html->link('Leader Dashboard', array('controller' => 'involvement_leaders', 'action' => 'dashboard', 'User' => $activeUser['User']['id'])); ?></li>
+							<?php 
+							endif;
+							if ($activeUser['Profile']['managing'] > 0):
+							?>
+							<li class="hover-row"><?php echo $this->Html->link('Manager Dashboard', array('controller' => 'ministry_leaders', 'action' => 'dashboard', 'User' => $activeUser['User']['id'])); ?></li>
 							<?php endif; ?>
 						</ul>
 					</li>

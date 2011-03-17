@@ -398,6 +398,7 @@ class InstallShell extends Shell {
 			'controllers/Reports/export',
 			'controllers/Reports/map',
 			'controllers/InvolvementLeaders/dashboard',
+			'controllers/MinistryLeaders/dashboard',
 		),
 		'Campus Manager' => array(
 			'controllers/Ministries/add',
