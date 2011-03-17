@@ -1,4 +1,4 @@
-<div class="grid_5 alpha">
+<div id="addroles" class="grid_5 alpha">
 <?php
 if ($this->Permission->check(array(
 	'controller' => 'roles',
@@ -7,7 +7,7 @@ if ($this->Permission->check(array(
 ))) {
 	echo $this->requestAction('/roles/add', array(
 		'return',
-		'respondAs' => 'ajax',
+		'renderAs' => 'ajax',
 		'named' => array(
 			'Ministry' => $ministry['Ministry']['id']
 		),
@@ -18,13 +18,15 @@ if ($this->Permission->check(array(
 ?>
 </div>
 <div class="grid_5 omega">
+<?php
+echo $this->Form->create('Roster', array(
+	'class' => 'core-filter-form',
+	'url' => $this->passedArgs,
+));
+?>
 	<fieldset>
 		<legend>Add to roles</legend>
 	<?php
-	echo $this->Form->create('Roster', array(
-		'class' => 'core-filter-form',
-		'url' => $this->passedArgs,
-	));
 	echo $this->Form->hidden('id');
 	echo $this->Form->hidden('roster_status');
 	echo $this->Form->input('Role', array(
@@ -38,7 +40,7 @@ if ($this->Permission->check(array(
 	echo $this->Js->submit('Save');
 	?>
 	</fieldset>
-	<?php
-	echo $this->Form->end();
-	?>
+<?php
+echo $this->Form->end();
+?>
 </div>

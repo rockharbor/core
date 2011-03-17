@@ -153,6 +153,7 @@ class AppController extends Controller {
  */
 	function beforeFilter() {
 		if (isset($this->params['renderAs'])) {
+			$this->autoLayout = true;
 			$this->RequestHandler->renderAs($this, $this->params['renderAs']);
 		}
 		// add extra mappings
