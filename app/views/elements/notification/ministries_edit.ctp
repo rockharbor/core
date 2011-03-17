@@ -1,1 +1,1 @@
-A ministry has either been created or edited, and requires approval.
+The <?php echo $ministry['Ministry']['name'] ?> ministry has either been created or edited, and requires approval.

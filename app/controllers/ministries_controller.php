@@ -31,6 +31,13 @@ class MinistriesController extends AppController {
 	var $helpers = array('Formatting', 'Tree');
 
 /**
+ * Extra components for this controller
+ *
+ * @var array
+ */
+	var $components = array('MultiSelect.MultiSelect');
+
+/**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
@@ -133,6 +140,50 @@ class MinistriesController extends AppController {
 	}
 
 /**
+ * Bulk edits ministries
+ *
+ * @param string $mstoken
+ */
+	function bulk_edit($mstoken) {
+		if (!empty($this->data) && $this->MultiSelect->check($mstoken)) {
+			$selected = $this->MultiSelect->getSelected($mstoken);
+			$this->Ministry->Behaviors->disable('Confirm');
+			$count = 0;
+			if (!$this->data['Ministry']['move_ministry']) {
+				unset($this->data['Ministry']['parent_id']);
+			}
+			if (!$this->data['Ministry']['move_campus']) {
+				unset($this->data['Ministry']['campus_id']);
+			}
+			foreach ($selected as $id) {
+				if (!$this->isAuthorized('ministries/edit', array('Ministry' => $id))) {
+					continue;
+				}
+				$this->Ministry->create();
+				$this->Ministry->id = $id;
+				$this->Ministry->data = $this->data;
+				if ($this->Ministry->save()) {
+					$this->set('ministry', $this->Ministry->read());
+					$this->Notifier->notify(array(
+						'to' => Core::read('notifications.ministry_content'),
+						'template' => 'ministries_edit',
+						'subject' => 'Ministry content change',
+					));
+					$count++;
+				}
+			}
+			$this->Ministry->clearCache();
+			$this->Session->setFlash($count.'/'.count($selected).' Ministries have been bulk edited.', 'flash'.DS.'success');
+		}
+		$this->set('campuses', $this->Ministry->Campus->find('list'));
+		$this->set('parents', $this->Ministry->find('list', array(
+			'conditions' => array(
+				'Ministry.parent_id' => null
+			)
+		)));
+	}
+
+/**
  * Edits a ministry
  */ 
 	function edit() {
@@ -155,7 +206,8 @@ class MinistriesController extends AppController {
 			if (!$revision) {
 				if ($this->Ministry->save($this->data)) {
 					$this->Session->setFlash('The changes to this ministry are pending.', 'flash'.DS.'success');
-					
+
+					$this->set('ministry', $this->Ministry->read(null, $id));
 					$this->Notifier->notify(array(
 						'to' => Core::read('notifications.ministry_content'),
 						'template' => 'ministries_edit',
@@ -181,7 +233,7 @@ class MinistriesController extends AppController {
 					'Ministry.id' => $id
 				)
 			)
-		)));		
+		)));
 		
 		$this->set('revision', $revision);
 	}

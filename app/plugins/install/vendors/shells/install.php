@@ -303,6 +303,7 @@ class InstallShell extends Shell {
 			'controllers/Ministries/edit',
 			'controllers/Ministries/history',
 			'controllers/Ministries/revise',
+			'controllers/Ministry/bulk_edit',
 			'controllers/MinistryImages/delete',
 			'controllers/MinistryImages/index',
 			'controllers/MinistryImages/approve',
@@ -414,6 +415,7 @@ class InstallShell extends Shell {
 			'controllers/Ministries/history',
 			'controllers/MinistryLeaders/add',
 			'controllers/MinistryLeaders/delete',
+			'controllers/Ministry/bulk_edit',
 			'controllers/Roles'
 		),
 		'Involvement Leader' => array(

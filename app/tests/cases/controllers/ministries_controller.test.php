@@ -34,6 +34,56 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 
+	function testBulkEdit() {
+		$this->Ministries->Session->write('MultiSelect.test', array(
+			'selected' => array(1,4,5),
+			'search' => array()
+		));
+		$vars = $this->testAction('/ministries/bulk_edit/test', array(
+			'data' => array(
+				'Ministry' => array(
+					'active' => 1,
+					'campus_id' => 1,
+					'parent_id' => 10,
+					'move_campus' => 0,
+					'move_ministry' => 0,
+				)
+			)
+		));
+		$ministries = $this->Ministries->Ministry->find('all', array(
+			'conditions' => array(
+				'Ministry.id' => array(1,4,5)
+			)
+		));
+		$results = Set::extract('/Ministry/active', $ministries);
+		$expected = array(1,1,1);
+		$this->assertEqual($results, $expected);
+
+		$results = Set::extract('/Ministry/campus_id', $ministries);
+		$expected = array(1,1,2);
+		$this->assertEqual($results, $expected);
+
+		$vars = $this->testAction('/ministries/bulk_edit/test', array(
+			'data' => array(
+				'Ministry' => array(
+					'active' => 1,
+					'campus_id' => 1,
+					'parent_id' => 10,
+					'move_campus' => 1,
+					'move_ministry' => 0,
+				)
+			)
+		));
+		$ministries = $this->Ministries->Ministry->find('all', array(
+			'conditions' => array(
+				'Ministry.id' => array(1,4,5)
+			)
+		));
+		$results = Set::extract('/Ministry/campus_id', $ministries);
+		$expected = array(1,1,1);
+		$this->assertEqual($results, $expected);
+	}
+
 	function testIndex() {
 		Core::read('notifications.ministry_content');
 		$this->loadFixtures('Involvement', 'InvolvementsMinistry');
