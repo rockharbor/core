@@ -20,7 +20,7 @@ $this->Paginator->options(array(
 			foreach ($roles as $role):
 				$class = null;
 				if ($i++ % 2 == 0) {
-					$class = ' class="altrow"';
+					$class = ' altrow';
 				}
 			?>
 			<tr class="core-iconable<?php echo $class;?>">

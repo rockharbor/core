@@ -1,5 +1,6 @@
 table {
 	width: 100%;
+	border-collapse: separate;
 }
 table tr {
 	line-height: 22px;
@@ -10,7 +11,7 @@ table.datatable tbody {
 table.datatable tr {
 	line-height: 20px;
 }
-table.datatable .altrow {
+table.datatable .altrow td {
 	background: #ededed;
 }
 table.datatable .core-checkbox {
@@ -68,6 +69,6 @@ table.datatable td {
 	padding: 2px 7px;
 	border-right: 1px solid #cccccc
 }
-table.datatable tbody tr:hover, .hover-row:hover {
+table.datatable tbody tr:hover td, .hover-row:hover {
 	background:#d0f4e4;
 }
