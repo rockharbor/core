@@ -314,7 +314,8 @@ class InstallShell extends Shell {
 			'controllers/UserImages/index',
 			'controllers/UserImages/upload',
 			'controllers/UserImages/approve',
-			'controllers/Roles'
+			'controllers/Roles',
+			'controllers/Users/dashboard'
 		),
 		'Intern' => array(
 			'controllers/Comments/index',

@@ -402,6 +402,13 @@ class UsersController extends AppController {
 	}
 
 /**
+ * Admin dashboard
+ */
+	function dashboard() {
+		
+	}
+
+/**
  * Deletes a user
  *
  * @param integer $id The id of the User to delete

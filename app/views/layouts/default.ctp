@@ -101,6 +101,10 @@
 							?>
 							<li class="hover-row"><?php echo $this->Html->link('Manager Dashboard', array('controller' => 'ministry_leaders', 'action' => 'dashboard', 'User' => $activeUser['User']['id'])); ?></li>
 							<?php endif; ?>
+							<?php
+							$link = $this->Permission->link('Admin Dashboard', array('controller' => 'users', 'action' => 'dashboard'));
+							echo $link ? $this->Html->tag('li', $link, array('class' => 'hover-row')) : null;
+							?>
 						</ul>
 					</li>
 					<li id="nav-notifications">
