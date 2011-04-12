@@ -109,8 +109,7 @@ li#nav-notifications .notification p {
 	padding:0 5px;
 	clear:both;
 	position: relative;
-	max-width: 400px;
-	min-width:350px;
+	width:350px;
 }
 li#nav-notifications .notification {
 	margin:0;
@@ -130,7 +129,7 @@ li#nav-notifications .delete {
 	text-indent:-99999px;
 	position:absolute;
 	top:0;
-	right:-25px;
+	right:-18px;
 	display: none;
 }
 li#nav-notifications .delete:hover {

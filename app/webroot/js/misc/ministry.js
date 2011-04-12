@@ -23,9 +23,9 @@ CORE_ministry.setup = function() {
 	
 	CORE_ministry.maxScroll = $('.subministries .scroll').width() - $('.subministries').width() - 10;
 	CORE_ministry.prevButton = $('.subministries').siblings('.pagination').children('.prev-button');
-	CORE_ministry.prevButton.button({icons: {primary: "ui-icon-triangle-1-w"}, text:false}).click(CORE_ministry.prev);
+	CORE_ministry.prevButton.html('<span class="core-icon icon-arrow-w"></span>').button().click(CORE_ministry.prev);
 	CORE_ministry.nextButton = $('.subministries').siblings('.pagination').children('.next-button');
-	CORE_ministry.nextButton.button({icons: {primary: "ui-icon-triangle-1-e"}, text:false}).click(CORE_ministry.next);
+	CORE_ministry.nextButton.html('<span class="core-icon icon-arrow-e"></span>').button().click(CORE_ministry.next);
 	CORE_ministry.prevButton.button('disable');
 }
 

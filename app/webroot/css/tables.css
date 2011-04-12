@@ -14,7 +14,7 @@ table.datatable .altrow {
 	background: #ededed;
 }
 table.datatable .core-checkbox {
-	margin-top: 2px;
+	top: 2px;
 }
 table.datatable .multi-select th {
 	border-bottom: 1px solid #cccccc;
@@ -23,8 +23,11 @@ table.datatable .multi-select th {
 	text-transform: none;
 	padding:0;
 }
+table.datatable .multi-select .core-checkbox {
+	top: 0;
+}
 table.datatable .multi-select th:first-child {
-	padding-left:5px;
+	padding-left:7px;
 	background: #ededed;
 	width: 20px;
 	height:20px;

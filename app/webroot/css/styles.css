@@ -471,6 +471,11 @@ ul.core-admin-tabs a:hover {
 	color:#212121;
 	text-decoration: none;
 }
+.ui-dialog ul.core-admin-tabs {
+	bottom:0px;
+	position:relative;
+	right:0px;
+}
 
 /*
 Tooltip
@@ -507,7 +512,19 @@ Tooltip
 }
 .qtip a:hover {
 	color: #343434 !important;
-	background:url('../assets/images/ui-bg_highlight-soft_75_16b96d_1x100.png') repeat-x scroll 50% 50% #16B96D !important;
+	background: rgb(55,174,107);
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, rgb(55,174,107)),
+		color-stop(0.61, rgb(69,218,136))
+	);
+	background-image: -moz-linear-gradient(
+		center bottom,
+		rgb(55,174,107) 0%,
+		rgb(69,218,136) 61%
+	);
 }
 
 /*
@@ -530,6 +547,9 @@ label {
 	color: #acacac;
 	display: block;
 	margin-bottom: 3px;
+}
+div.radio label {
+	min-height: 14px;
 }
 fieldset, div.hr {
 	border-top: 1px solid #acacac;
@@ -571,12 +591,12 @@ select {
 .core-checkbox, .core-radio {
 	background: #f1f1f1;
 	border: 1px solid #838383;
-	height: 11px;
-	width: 11px;
+	height: 12px;
+	width: 12px;
 	float:left;
 	margin-right: 3px;
 	position: relative;
-	margin-top: -2px;
+	top: -2px;
 }
 .core-radio {
 	-moz-border-radius: 6px;
@@ -588,16 +608,16 @@ select {
 	margin: 0;
 	position: absolute;
 }
-div.checkbox:hover .core-checkbox, div.radio:hover .core-radio {
+.core-checkbox:hover, .core-radio:hover {
 	background-color: #d0f4e4;
 }
 .core-radio.selected {
-	background-image: url('../assets/images/ui-icons_454545_256x240.png');
-	background-position: -82px -147px; /* slightly different than it should be because checkbox is smaller than 16x16 */
+	background-image: url('../assets/images/icons.png');
+	background-position: -67px -66px;; /* slightly different than it should be because checkbox is smaller than 16x16 */
 }
 .core-checkbox.selected {
-	background-image: url('../assets/images/ui-icons_454545_256x240.png');
-	background-position: -66px -147px; /* slightly different than it should be because checkbox is smaller than 16x16 */
+	background-image: url('../assets/images/icons.png');
+	background-position: -99px -2px; /* slightly different than it should be because checkbox is smaller than 16x16 */
 }
 .core-checkbox.disabled, .core-radio.disabled {
 	border: 1px solid #f1f1f1;
@@ -642,7 +662,7 @@ Custom Icons
 	display: inline-block;
 	background-image: url('../assets/images/icons.png');
 	background-position: 20px 20px; /* default none */
-	margin-right: 2px;
+	padding-right: 2px;
 	vertical-align: middle;
 }
 .icon-error {
