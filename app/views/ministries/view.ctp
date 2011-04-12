@@ -5,7 +5,7 @@ if (!empty($ministry['ParentMinistry']['id'])) {
 	echo $this->Html->link($ministry['ParentMinistry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $ministry['ParentMinistry']['id']), array('escape' => false));
 }
 ?></span>
-<h1><?php echo $ministry['Ministry']['name']; ?></h1>
+<h1><?php echo $ministry['Ministry']['name'].$this->Formatting->flags('Ministry', $ministry); ?></h1>
 <div class="content-box clearfix">
 	<div class="grid_10 alpha omega">
 		<h2>Description</h2>

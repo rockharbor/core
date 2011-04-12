@@ -5,7 +5,7 @@ echo $this->Html->link($involvement['Ministry']['Campus']['name'], array('contro
 echo ' > ';
 echo $this->Html->link($involvement['Ministry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $involvement['Ministry']['id']), array('escape' => false));
 ?></span>
-<h1><?php echo $involvement['Involvement']['name']; ?></h1>
+<h1><?php echo $involvement['Involvement']['name'].$this->Formatting->flags('Involvement', $involvement); ?></h1>
 <div class="involvements view core-tabs">
 	<ul>
 		<li><a href="#details-tab">Details</a></li>

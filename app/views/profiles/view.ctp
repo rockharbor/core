@@ -1,4 +1,4 @@
-<h1><?php echo $profile['Profile']['name']; ?></h1>
+<h1><?php echo $profile['Profile']['name'].$this->Formatting->flags('User', $profile); ?></h1>
 
 <div class="profiles core-tabs">
 

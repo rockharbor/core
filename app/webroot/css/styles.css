@@ -776,3 +776,23 @@ Custom Icons
 .icon-core {
 	background-position: -48px -16px;
 }
+
+/* large "icons" */
+h1 .core-icon {
+	height: 28px;
+	width: 28px;
+	margin: 2px 5px;
+	vertical-align: middle;
+}
+h1 .icon-private {
+	background: url('../img/private.png') no-repeat;
+}
+h1 .icon-inactive {
+	background: url('../img/inactive.png') no-repeat;
+}
+h1 .icon-passed {
+	background: url('../img/past.png') no-repeat;
+}
+h1 .icon-flagged {
+	background: url('../img/flag.png') no-repeat;
+}
