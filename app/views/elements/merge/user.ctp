@@ -1,68 +1,20 @@
-<h3>Original User</h3>
-<div id="merge_original">
-	<dl><?php $i = 0; $class = ' class="altrow"';?>
-		<dt<?php if ($i % 2 == 0) echo $class;?>>Username</dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $result['Source']['username']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>>Name</dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $result['Source']['Profile']['name']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>>Birth Date</dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $this->Formatting->date($result['Source']['Profile']['birth_date']); ?>
-			&nbsp;
-		</dd>
-		<?php foreach ($result['Source']['Address'] as $address): ?>
-		<dt<?php if ($i % 2 == 0) echo $class;?>>Address</dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $address['address_line_1']; ?>
-			<?php
-			if (!empty($address['address_line_2'])) {
-				echo '<br />'.$address['address_line_2'];
-			}
-			?><br />
-			<?php echo $address['city']; ?>, <?php echo $address['state']; ?> <?php echo $address['zip']; ?>
-			&nbsp;
-		</dd>
-		<?php endforeach; ?>
-	</dl>
-</div>
-
-<h3>New Details</h3>
-<p>The old information will be merged with these details, with this information taking precedence.</p>
-<div id="merge_original">
-	<dl><?php $i = 0; $class = ' class="altrow"';?>
-		<dt<?php if ($i % 2 == 0) echo $class;?>>Username</dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $result['Target']['username']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>>Name</dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $result['Target']['Profile']['name']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>>Birth Date</dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $this->Formatting->date($result['Target']['Profile']['birth_date']); ?>
-			&nbsp;
-		</dd>
-		<?php foreach ($result['Target']['Address'] as $address): ?>
-		<dt<?php if ($i % 2 == 0) echo $class;?>>Address</dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $address['address_line_1']; ?>
-			<?php
-			if (!empty($address['address_line_2'])) {
-				echo '<br />'.$address['address_line_2'];
-			}
-			?><br />
-			<?php echo $address['city']; ?>, <?php echo $address['state']; ?> <?php echo $address['zip']; ?>
-			&nbsp;
-		</dd>
-		<?php endforeach; ?>
-	</dl>
-</div>
+<dl>
+	<?php
+	echo $this->Html->tag('dd', $user['Profile']['name']);
+	echo $this->Html->tag('dt', 'Username:');
+	echo $this->Html->tag('dd', $user['username']);
+	echo $this->Html->tag('dt', 'Birthday:');
+	echo $this->Html->tag('dd', $this->Formatting->date($user['Profile']['birth_date']));
+	echo '<hr />';
+	foreach ($user['Address'] as $address) {
+		$addr = $address['address_line_1'];
+		if (!empty($address['address_line_2'])) {
+			$addr .= '<br />'.$address['address_line_2'];
+		}
+		$addr .= '<br />';
+		$addr .= $address['city'].', '.$address['state'].' '.$address['zip'];
+		$icon = $this->element('icon', array('icon' => 'address'));
+		echo $this->Html->tag('div', $icon.$addr);
+	}
+	?>
+</dl>

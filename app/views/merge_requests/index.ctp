@@ -4,59 +4,34 @@ $this->Paginator->options(array(
     'evalScripts' => true
 ));
 ?>
-
+<h1>Merge Requests</h1>
 <div class="merge_requests">
-	<h2><?php echo $model; ?> Merge Requests</h2>
-	<table cellpadding="0" cellspacing="0">
-	<tr>
-			<th><?php echo $this->Paginator->sort('id');?></th>
-			<th><?php echo $this->Paginator->sort($model, 'model_id');?></th>
-			<th><?php echo $this->Paginator->sort('Merge record', 'merge_id');?></th>
-			<th><?php echo $this->Paginator->sort('Requester', 'Requester.username');?></th>
-			<th><?php echo $this->Paginator->sort('created');?></th>
-			<th>Actions</th>
-	</tr>
-	<?php
-	$i = 0;
-	foreach ($requests as $request):
-		$class = null;
-		if ($i++ % 2 == 0) {
-			$class = ' class="altrow"';
-		}
-	?>
-	<tr<?php echo $class;?>>
-		<td><?php echo $request['MergeRequest']['id']; ?>&nbsp;</td>
-		<td><?php echo $request['Source'][$displayField]; ?>&nbsp;</td>
-		<td><?php echo $request['Target'][$displayField]; ?>&nbsp;</td>
-		<td><?php echo $this->Formatting->flags('User', $request['Requester']).$request['Requester']['username']; ?>&nbsp;</td>
-		<td><?php echo $request['MergeRequest']['created']; ?>&nbsp;</td>
-		<td class="actions">
-		<?php echo $this->Html->link('View', array('action' => 'view', $request['MergeRequest']['id']), array('rel'=>'modal-content')); ?>
-		<?php echo $this->Html->link('Delete', array('action' => 'delete', $request['MergeRequest']['id']), array('id'=>'delete_btn_'.$i)); ?>
-		</td>
-	</tr>
-<?php endforeach; ?>
-	</table>
-	<p>
-	<?php
-	echo $this->Paginator->counter(array(
-	'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
-	));
-	?>	</p>
-
-	<div class="paging">
-		<?php echo $this->Paginator->prev('<< '.__('previous', true), array(), null, array('class'=>'disabled'));?>
-	 | 	<?php echo $this->Paginator->numbers();?>
- |
-		<?php echo $this->Paginator->next(__('next', true).' >>', array(), null, array('class' => 'disabled'));?>
+	<?php foreach ($requests as $request): ?>
+	<div class="clearfix">
+		<div class="grid_4 alpha"><h3>Current Information</h3></div>
+		<div class="grid_2">&nbsp;</div>
+		<div class="grid_4 omega"><h3>New Information</h3></div>
+		<div class="grid_4 alpha">
+			<div class="box">
+				<?php echo $this->element('merge'.DS.'user', array('user' => $request['Source'])); ?>
+			</div>
+		</div>
+		<div class="grid_2">
+			<?php
+			$link = $this->Html->link('Merge', array('controller' => 'merge_requests', 'action' => 'merge', $request['MergeRequest']['id']), array('class' => 'flat-button green', 'id' => 'merge_btn_'.$request['MergeRequest']['id']));
+			echo $this->Html->tag('div', $link);
+			$this->Js->buffer('CORE.confirmation("merge_btn_'.$request['MergeRequest']['id'].'", "Are you sure you want to permanently merge these records?", {update:"content"})');
+			$link = $this->Html->link('Delete', array('controller' => 'merge_requests', 'action' => 'delete', $request['MergeRequest']['id']), array('class' => 'flat-button red', 'id' => 'delete_btn_'.$request['MergeRequest']['id']));
+			echo $this->Html->tag('div', $link);
+			$this->Js->buffer('CORE.confirmation("delete_btn_'.$request['MergeRequest']['id'].'", "Are you sure you want to delete this merge request?", {update:"content"})');
+			?>
+		</div>
+		<div class="grid_4 omega">
+			<div class="box">
+				<?php echo $this->element('merge'.DS.'user', array('user' => $request['Target'])); ?>
+			</div>
+		</div>
 	</div>
+	<?php endforeach; ?>
+	<?php echo $this->element('pagination'); ?>
 </div>
-
-<?php
-
-while ($i > 0) {
-	$this->Js->buffer('CORE.confirmation(\'delete_btn_'.$i.'\',\'Are you sure you want to delete this Request? All merge data will also be removed.\', {update:\'content\'});');
-	$i--;
-}
-
-?>
