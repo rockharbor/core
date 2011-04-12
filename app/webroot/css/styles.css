@@ -98,6 +98,18 @@ hr {
 .balance {
 	color: #e03a14;
 }
+.box {
+	border: 1px solid #acacac;
+	background: #f1f1f1;
+	padding: 5px;
+}
+.box h3 {
+
+}
+.box.highlight {
+	border: 1px solid #45da88;
+	background: #d0f4e4;
+}
 
 /*
 Links

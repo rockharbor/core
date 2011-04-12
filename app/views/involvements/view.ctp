@@ -61,28 +61,41 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 					<p><?php echo html_entity_decode($involvement['Involvement']['description']); ?></p>
 				</div>
 				<div class="grid_4 omega">
-					<?php if (!empty($involvement['Leader'])) { ?>
+					<?php if (!empty($involvement['Leader'])): ?>
 					<h3>Leaders</h3>
-					<p>
+					<div class="box">
 						<?php
+						$leaders = array();
 						foreach ($involvement['Leader'] as $leader) {
 							$icon = $this->Html->tag('span', 'Email', array('class' => 'core-icon icon-email'));
-							echo $icon.$this->Html->link($leader['User']['Profile']['name'], array('controller' => 'sys_emails', 'action' => 'compose', 'model' => 'User', 'User' => $leader['User']['id']), array('rel' => 'compose'));
-							echo '<br />';
+							$leaders[] = $icon.$this->Html->link($leader['User']['Profile']['name'], array('controller' => 'sys_emails', 'action' => 'compose', 'model' => 'User', 'User' => $leader['User']['id']), array('rel' => 'modal-none'));
 						}
-					echo '</p>';
-					} ?>					
-					<?php if (!empty($involvement['Address'])) { ?>
+						echo implode('<br />', $leaders);
+						?>
+					</div>
+					<?php endif; ?>
+					<?php if (!empty($involvement['Address']) && !empty($involvement['Address']['id'])): ?>
 					<h3>Address</h3>
-						<?php
-						$address = $involvement['Address']['address_line_1'];
-						$address .= $involvement['Address']['address_line_2'];
-						$address .= '<br />';
-						$address .= $involvement['Address']['city'].', ';
-						$address .= $involvement['Address']['state'];
-						$address .= $involvement['Address']['zip'];
-						echo $this->Html->link($address, array('controller' => 'addresses', 'action' => 'view', $involvement['Address']['id']), array('rel' => 'modal-none', 'class' => 'icon-map'));
-					} ?>
+					<div class="box">
+							<?php
+							$address = $involvement['Address']['address_line_1'];
+							$address .= $involvement['Address']['address_line_2'];
+							$address .= '<br />';
+							$address .= $involvement['Address']['city'].', ';
+							$address .= $involvement['Address']['state'];
+							$address .= $involvement['Address']['zip'];
+							echo $this->Html->link($address, array('controller' => 'addresses', 'action' => 'view', $involvement['Address']['id']), array('rel' => 'modal-none', 'class' => 'icon-map'));
+							?>
+					</div>
+					<?php endif; ?>
+					<?php if (!empty($involvement['Roster'])): ?>
+					<h3>Signed Up</h3>
+					<div class="box highlight">
+						<?php	foreach ($involvement['Roster'] as $householdMember) {
+							echo $this->Html->link($householdMember['User']['Profile']['name'], array('controller' => 'profiles', 'action' => 'view', 'User' => $householdMember['User']['id']), array('style' => 'display:block'));
+						} ?>
+					</div>
+					<?php endif; ?>
 				</div>
 			</div>
 			<div class="grid_10 alpha omega">
