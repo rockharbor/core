@@ -35,6 +35,7 @@ class MergeRequest extends AppModel {
  * @var array
  */
 	var $actsAs = array(
+		'Containable',
 		'Logable'
 	);
 
