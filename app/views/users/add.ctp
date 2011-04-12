@@ -198,8 +198,7 @@ echo $this->Form->create('User', array(
 	</div>
 </div>
 <?php
-$defaultSubmitOptions['id'] = 'submit_button';
-$defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals:true})';
+$defaultSubmitOptions['id'] = uniqid('submit_button');
 echo $this->Form->button('Previous', array('id' => 'previous_button', 'class' => 'button', 'type' => 'button'));
 echo $this->Form->button('Next', array('id' => 'next_button', 'class' => 'button', 'type' => 'button'));
 echo $this->Js->submit('Sign up', $defaultSubmitOptions);
@@ -213,7 +212,7 @@ $this->Js->buffer('CORE.tabs("profile_tabs",
 	{
 		next: "next_button",
 		previous: "previous_button",
-		submit: "submit_button",
+		submit: "'.$defaultSubmitOptions['id'].'",
 		alwaysAllowSubmit: true
 	}
 );');
@@ -227,5 +226,4 @@ echo 'function addAdditionalMember() {
 
 }';
 echo $this->Html->scriptEnd();
-
 ?>
