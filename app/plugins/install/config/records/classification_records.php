@@ -38,6 +38,10 @@ class ClassificationRecords extends Records {
 		array(
 			'id' => 6,
 			'name' => 'I\'m A Friend But Don\'t Attend'
+		),
+		array(
+			'id' => 7,
+			'name' => 'Weekend Attender At Huntington Beach'
 		)
 	);
 
