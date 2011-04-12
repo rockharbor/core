@@ -109,6 +109,8 @@ class InvolvementsController extends AppController {
 			$this->Session->setFlash('Invalid involvement');
 			$this->redirect(array('action' => 'index'));
 		}
+		$householdMembers = $this->Involvement->Roster->User->HouseholdMember->Household->getMemberIds($this->activeUser['User']['id']);
+		$householdMembers[] = $this->activeUser['User']['id'];
 		$this->Involvement->contain(array(
 			'InvolvementType',
 			'Date',
@@ -120,6 +122,17 @@ class InvolvementsController extends AppController {
 				'User' => array(
 					'Profile' => array(
 						'fields' => array('name', 'primary_email')
+					)
+				)
+			),
+			'Address',
+			'Roster' => array(
+				'conditions' => array(
+					'Roster.user_id' => $householdMembers
+				),
+				'User' => array(
+					'Profile' => array(
+						'fields' => array('name', 'user_id', 'id'),
 					)
 				)
 			)
