@@ -33,7 +33,7 @@
 					)
 				)
 			);
-			$colCount = 2;
+			$colCount = 3;
 			echo $this->element('multiselect', array(
 				'colCount' => $colCount,
 				'checkAll' => true,
@@ -43,6 +43,7 @@
 			<tr>
 				<th>&nbsp;</th>
 				<th><?php echo $this->Paginator->sort('Name', $model.'.name');?></th>
+				<th>Roles</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -57,6 +58,15 @@
 			<tr<?php echo $class;?>>
 				<td><?php echo $this->MultiSelect->checkbox($leader[$model]['id']); ?></td>
 				<td><?php echo $this->Html->link($leader[$model]['name'], array('controller' => strtolower(Inflector::pluralize($model)), 'action' => 'view', $model => $leader[$model]['id'])).$this->Formatting->flags('Ministry', $leader); ?></td>
+				<td><?php
+				$link = array('controller' => 'roles', 'action' => 'index', 'Ministry' => $leader[$model]['id']);
+				$icon = $this->element('icon', array('icon' => 'add'));
+				echo $this->Html->link($icon, $link, array('rel' => 'modal', 'escape' => false, 'class' => 'no-hover'));
+				echo $this->Html->link(count($leader['Role']).' Roles', $link, array('rel' => 'modal'));
+				if (!empty($leader['Role'])) {
+					echo $this->Html->tag('div', $this->Text->toList(Set::extract('/name', $leader['Role'])), array('class' => 'core-tooltip'));
+				}
+				?></td>
 			</tr>
 			<?php endforeach; ?>
 		</tbody>

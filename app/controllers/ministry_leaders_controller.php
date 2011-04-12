@@ -48,6 +48,19 @@ class MinistryLeadersController extends LeadersController {
 	function dashboard() {
 		$this->viewPath = 'ministry_leaders';
 		parent::dashboard();
+		// we attach extra info in this way because of how the leader model is
+		// bound to other models can break contain queries
+		$leaders = $this->viewVars['leaders'];
+		foreach ($leaders as &$leader) {
+			$roles = $this->Leader->Ministry->Role->find('all', array(
+				'conditions' => array(
+					'Role.ministry_id' => $leader['Ministry']['id']
+				)
+			));
+			$roles = array('Role' => Set::extract('/Role/.', $roles));
+			$leader = Set::merge($leader, $roles);
+		}
+		$this->set(compact('leaders'));
 	}
 	
 }

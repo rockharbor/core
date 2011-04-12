@@ -61,6 +61,13 @@ class LeadersControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Leader/id', $vars['leaders']);
 		sort($results);
 		$this->assertEqual($results, array(3));
+
+		$this->loadFixtures('Role');
+		$this->_setLeaderController('Ministry');
+		$vars = $this->testAction('ministry_leaders/dashboard/User:1');
+		$results = Set::extract('/Role/id', $vars['leaders']);
+		sort($results);
+		$this->assertEqual($results, array(1,2));
 	}
 
 	function testIndex() {
