@@ -35,7 +35,12 @@ class ReportsController extends AppController {
  *
  * @var array
  */
-	var $helpers = array('GoogleMap', 'Media.Media', 'Report');
+	var $helpers = array(
+		'GoogleMap',
+		'Media.Media',
+		'Report',
+		'Charts.Charts' => array('Charts.GoogleStatic')
+	);
 
 /**
  * Extra components for this controller
@@ -58,38 +63,93 @@ class ReportsController extends AppController {
 /**
  * Reports home page
  */
-	function index() {	
-	}
-
-/**
- * Display statistics about ministries and their involvement opportunities
- */ 
-	function ministry() {
-		$contain = array(
-			'Involvement' => array(
-				'Leader'
-			),
-			'Leader'
-		);
-		
-		if (!empty($this->data)) {
-			$conditions = $this->postConditions($this->data);
+	function index() {
+		$conditions = $this->postConditions($this->data);
+		if (!empty($conditions)) {
 			$conditions = Set::filter($conditions);
-			$ministries = $this->Ministry->find('all', array(
-				'conditions' => $conditions,
-				'contain' => $contain
-			));
-		} else {
-			$ministries = $this->Ministry->find('all', array(
-				'contain' => $contain
-			));
 		}
-		
-		$campuses = $this->Campus->find('list');
-		$ministryList = $this->Ministry->generatetreelist();
+
+		$ministryContain = array(
+			'Campus'
+		);
+
+		$ministryCounts = array();
+		$ministryCounts['total'] = $this->Ministry->find('count', array(
+			'conditions' => $conditions,
+			'contain' => $ministryContain
+		));
+		$ministryCounts['active'] = $this->Ministry->find('count', array(
+			'conditions' => array_merge($conditions, array('Ministry.active' => true)),
+			'contain' => $ministryContain
+		));
+		$ministryCounts['private'] = $this->Ministry->find('count', array(
+			'conditions' => array_merge($conditions, array('Ministry.private' => true)),
+			'contain' => $ministryContain
+		));
+
+		$userCounts = array();
+		$userCounts['total'] = $this->User->find('count');
+		$activeUsers = $this->User->find('list', array(
+			'conditions' => array(
+				'User.active' => true
+			)
+		));
+		$userCounts['active'] = count($activeUsers);
+		$involvedUsers = $this->Involvement->Roster->find('all', array(
+			'fields' => array(
+				'Roster.id'
+			),
+			'group' => 'Roster.user_id'
+		));
+		$userCounts['involved'] = count($involvedUsers);
+		$userCounts['logged_in'] = $this->User->find('count', array(
+			'conditions' => array(
+				'User.last_logged_in >' => date('Y-m-d 00:00:00', strtotime('now'))
+			),
+		));
+
 		$involvementTypes = $this->Involvement->InvolvementType->find('list');
+		$involvementCounts = array();
+		foreach ($involvementTypes as $id => $type) {
+			$involvementCounts[$type]['total'] = $this->Involvement->find('count', array(
+				'conditions' => array(
+					'Involvement.involvement_type_id' => $id
+				)
+			));
+			$involvementCounts[$type]['active'] = $this->Involvement->find('count', array(
+				'conditions' => array(
+					'Involvement.active' => true,
+					'Involvement.involvement_type_id' => $id
+				)
+			));
+			$involvementCounts[$type]['leaders'] = $this->Involvement->Leader->find('count', array(
+				'conditions' => array(
+					'Involvement.active' => true,
+					'Involvement.involvement_type_id' => $id
+				),
+				'contain' => array(
+					'Involvement'
+				)
+			));
+			$involved = $this->Roster->find('all', array(
+				'fields' => array(
+					'Roster.id'
+				),
+				'conditions' => array(
+					'Involvement.involvement_type_id' => $id
+				),
+				'group' => 'Roster.user_id',
+				'contain' => array(
+					'Involvement'
+				)
+			));
+			$involvementCounts[$type]['involved'] = count($involved);
+		}
+
+		$campuses = $this->Campus->find('list');
+		$ministries = $this->Ministry->generatetreelist();
 		
-		$this->set(compact('ministries', 'campuses', 'ministryList', 'involvementTypes'));
+		$this->set(compact('campuses', 'ministries', 'involvementTypes', 'userCounts', 'ministryCounts', 'involvementCounts'));
 	}
 	
 	

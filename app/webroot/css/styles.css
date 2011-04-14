@@ -98,6 +98,9 @@ hr {
 .balance {
 	color: #e03a14;
 }
+.green {
+	color: #45da88;
+}
 .box {
 	border: 1px solid #acacac;
 	background: #f1f1f1;
@@ -118,6 +121,11 @@ hr {
 .flat-button.red {
 	background: #ffcbbf;
 	border: 1px solid #e03a14;
+}
+.font-large {
+	font-size: 52px;
+	font-family: LeagueGothicRegular,'Lucida Sans',Helvetica,Arial,sans-serif;
+	color: #444445;
 }
 
 /*
@@ -165,11 +173,6 @@ span.breadcrumb.editing {
 }
 #columns .column {
 	height:130px;
-}
-.font-large {
-	font-size: 52px;
-	font-family: LeagueGothicRegular,'Lucida Sans',Helvetica,Arial,sans-serif;
-	color: #444445;
 }
 .border-right {
 	border-right: 1px solid #acacac;
@@ -438,6 +441,19 @@ div#payment-totals {
 }
 div#pay-later {
 	padding: 5px;
+}
+div.reports .chart {
+	float: left;
+}
+div.reports .report {
+	clear: both;
+	margin-bottom: 10px;
+	text-align:left;
+}
+div.reports .data {
+	float: left;
+	margin-left: 20px;
+	margin-top: 20px;
 }
 
 /*
