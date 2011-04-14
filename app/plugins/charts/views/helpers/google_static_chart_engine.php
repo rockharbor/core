@@ -38,6 +38,19 @@
 
 			return $this->_buildChart($data);
 		}
+
+		/**
+		 * Pie chart
+		 *
+		 * @param array $data Data array
+		 * @return string Image code
+		 * @link http://code.google.com/apis/chart/docs/gallery/pie_charts.html
+		 */
+		public function pie($data) {
+			$this->_chartType = 'pie';
+
+			return $this->_buildChart($data);
+		}
 		
 		/**
 		 * @brief an array of helpers that will be used within this class
@@ -170,6 +183,36 @@
 				'labels',
 				'data',
 				'line_marker'
+			),
+			'pie' => array(
+				'_indicator' => 'cht=p',
+				'legend',
+				'size',
+				'color',
+				'labels',
+				'data',
+				'spacing',
+				'scale'
+			),
+			'pie_3d' => array(
+				'_indicator' => 'cht=p3',
+				'legend',
+				'size',
+				'color',
+				'labels',
+				'data',
+				'spacing',
+				'scale'
+			),
+			'pie_concentric' => array(
+				'_indicator' => 'cht=p3',
+				'legend',
+				'size',
+				'color',
+				'labels',
+				'data',
+				'spacing',
+				'scale'
 			)
 		);
 
@@ -270,6 +313,18 @@
 			),
 			'line_xy' => array(
 				'series'
+			),
+			'pie' => array(
+				'series',
+				'background'
+			),
+			'pie_concentric' => array(
+				'series',
+				'background'
+			),
+			'pie_3d' => array(
+				'series',
+				'background'
 			)
 		);
 
@@ -286,6 +341,10 @@
 		protected $_colorFormats = array(
 			'series' => array(
 				'key' => 'chco=',
+				'separator' => ','
+			),
+			'background' => array(
+				'key' => 'chf=',
 				'separator' => ','
 			)
 		);
@@ -522,6 +581,13 @@
 					}
 
 					$v = $colors;
+				}
+
+				switch ($k) {
+					case 'background':
+						array_unshift($v, 's');
+						array_unshift($v, 'bg');
+					break;
 				}
 
 				$return[] = $this->_colorFormats[$k]['key'] . implode($this->_colorFormats[$k]['separator'], $v);
