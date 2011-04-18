@@ -39,5 +39,19 @@ class UserImagesController extends ImagesController {
 		parent::beforeFilter();
 		$this->modelId = isset($this->passedArgs[$this->model]) ? $this->passedArgs[$this->model] : null;
 	}
+
+/**
+ * All un-approved images
+ */
+	function index() {
+		$this->viewPath = 'user_images';
+		$this->set('images', $this->Image->find('all', array(
+			'conditions' => array(
+				'group' => 'Image',
+				'model' => 'User',
+				'approved' => false
+			)
+		)));
+	}
 	
 }
