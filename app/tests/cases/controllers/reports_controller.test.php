@@ -13,7 +13,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 
 	function startTest() {
 		// necessary fixtures
-		$this->loadFixtures('User', 'Roster', 'Ministry', 'Involvement', 'Campus');
+		$this->loadFixtures('User', 'Roster', 'Ministry', 'Involvement', 'Campus', 'InvolvementType');
 		$this->Reports = new TestReportsController();
 		$this->Reports->__construct();
 		$this->Reports->constructClasses();
@@ -34,25 +34,32 @@ class ReportsControllerTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 
-	function testMinistry() {
-		$vars = $this->testAction('/reports/ministry');
-		$results = count($vars['ministries']);
+	function testIndex() {
+		$vars = $this->testAction('/reports/index');
+		$results = $vars['userCounts']['involved'];
 		$this->assertEqual($results, 4);
+		$results = $vars['ministryCounts']['active'];
+		$this->assertEqual($results, 2);
+		$results = $vars['involvementCounts']['Event']['involved'];
+		$this->assertEqual($results, 3);
+		$results = $vars['involvementCounts']['Group']['total'];
+		$this->assertEqual($results, 2);
 
-		$vars = $this->testAction('/reports/ministry', array(
+		$vars = $this->testAction('/reports/index', array(
 			'data' => array(
 				'Ministry' => array(
 					'id' => 2
 				)
 			)
 		));
-		$results = Set::extract('/Ministry/name', $vars['ministries']);
-		$expected = array(
-			'Alpha'
-		);
-		$this->assertEqual($results, $expected);
+		$results = $vars['userCounts']['involved'];
+		$this->assertEqual($results, 0);
+		$results = $vars['involvementCounts']['Group']['total'];
+		$this->assertEqual($results, 0);
+		$results = $vars['ministryCounts']['active'];
+		$this->assertEqual($results, 1);
 	}
-
+	
 	function testMap() {
 		$this->loadFixtures('Profile');
 		
@@ -103,14 +110,14 @@ class ReportsControllerTestCase extends CoreTestCase {
 			)
 		);
 		
-		$this->Reports->RequestHandler->expectAt(0, '_header', array('Content-Disposition: attachment; filename="ministry-search-export.csv"'));
-		$this->Reports->RequestHandler->expectAt(1, '_header', array('Content-Type: application/vnd.ms-excel; charset=UTF-8'));	
+		$this->Reports->RequestHandler->expectAt(0, '_header', array('Content-Type: application/vnd.ms-excel; charset=UTF-8'));
+		$this->Reports->RequestHandler->expectAt(1, '_header', array('Content-Disposition: attachment; filename="ministry-search-export.csv"'));
 		$vars = $this->testAction('/reports/export/Ministry/testExportCsvWithSearch.csv', array(
 			'data' => $data
 		));
 		
 		$results = Set::extract('/Ministry/name', $vars['results']);
-		$expected = array('Communications', 'Alpha', 'All Church');
+		$expected = array('Communications', 'Alpha', 'All Church', 'Downtown Reach');
 		$this->assertEqual($results, $expected);
 	}
 
