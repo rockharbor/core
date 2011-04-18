@@ -199,29 +199,35 @@ class Ministry extends AppModel {
  * @return array The user ids
  */
 	function getInvolved($ministryId, $recursive = false) {
-		$options = array(
-			'conditions' => array(
-				'Ministry.id' => $ministryId
-			),
-			'contain' => array(
-				'Roster' => array(
-					'fields' => array('user_id')
-				),
-				'Ministry' => array(
-					'fields' => array('id')
-				)
-			),
-			'fields' => array('id', 'ministry_id')
-		);
 		if ($recursive) {
-			$options['conditions'] = array(
-				'or' => array(
-					'Ministry.id' => $ministryId,
-					'Ministry.parent_id' => $ministryId
-				)
-			);
+			$conditions['or']['Ministry.id'] = $ministryId;
+			$conditions['or']['Ministry.parent_id'] = $ministryId;
+		} else {
+			$conditions['Ministry.id'] = $ministryId;
 		}
-		$results = $this->Involvement->find('all', $options);
+		$involvements = $this->Involvement->find('all', array(
+			'fields' => array(
+				'id'
+			),
+			'conditions' => $conditions,
+			'contain' => array(
+				'Ministry' => array(
+					'fields' => array(
+						'id', 'parent_id'
+					)
+				)
+			)
+		));
+		$options = array(
+			'fields' => array(
+				'Roster.user_id'
+			),
+			'conditions' => array(
+				'Roster.involvement_id' => Set::extract('/Involvement/id', $involvements)
+			),
+			'group' => 'Roster.user_id'
+		);
+		$results = $this->Involvement->Roster->find('all', $options);
 		return array_unique(Set::extract('/Roster/user_id', $results));
 	}
 
