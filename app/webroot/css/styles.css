@@ -455,6 +455,10 @@ div.reports .data {
 	margin-left: 20px;
 	margin-top: 20px;
 }
+div#report-form div.input, div#report-form div.submit {
+	float: left;
+	margin-right: 10px;
+}
 
 /*
 Small Tabs

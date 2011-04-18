@@ -1,4 +1,30 @@
 <h1>Ministry Report</h1>
+<div id="report-form" class="clearfix">
+	<?php
+	echo $this->Form->create('Ministry', array(
+		'default' => false,
+		'inputDefaults' => array(
+			'empty' => true
+		)
+	));
+	?>
+	<fieldset>
+		<legend>Filter by</legend>
+		<?php
+		echo $this->Form->input('campus_id', array(
+			'after' => ' OR '
+		));
+		echo $this->Form->input('id', array(
+			'label' => 'Ministry',
+			'options' => $ministries
+		));
+		?>
+	</fieldset>
+	<?php
+	echo $this->Js->submit('Get Report', $defaultSubmitOptions);
+	echo $this->Form->end();
+	?>
+</div>
 <hr />
 <div id="ministry-reports" class="reports clearfix">
 	<h3>Ministries</h3>
@@ -48,6 +74,7 @@
 			</div>
 		</div>
 	</div>
+	<?php if (empty($this->data)): ?>
 	<div class="grid_5 omega">
 		<div class="report clearfix">
 			<div class="chart">
@@ -72,14 +99,17 @@
 			</div>
 		</div>
 	</div>
-	<div class="grid_3 omega border-right">
+	<?php endif; ?>
+	<div class="grid_3 omega<?php if (empty($this->data)) { echo " border-right"; } ?>">
 		<span class="font-large"><?php echo number_format($userCounts['involved']); ?></span>
 		<p>Unique Users Involved</p>
 	</div>
+	<?php if (empty($this->data)): ?>
 	<div class="grid_2 omega">
 		<span class="font-large"><?php echo number_format($userCounts['logged_in']); ?></span>
 		<p>Users Logged In Today</p>
 	</div>
+	<?php endif; ?>
 </div>
 <hr />
 <div class="reports clearfix">
@@ -149,44 +179,4 @@
 		</div>
 	</div>
 	<?php endforeach; ?>
-</div>
-<div id="report-form" class="clearfix">
-	<?php
-	echo $this->Form->create('Ministry', array(
-		'default' => false,
-		'inputDefaults' => array(
-			'empty' => true
-		)
-	));
-	?>
-	<fieldset class="grid_5 alpha">
-		<legend>Filter by</legend>
-		<?php
-		echo $this->Form->input('campus_id');
-		echo $this->Form->input('id', array(
-			'label' => 'Ministry',
-			'options' => $ministries
-		));
-		?>
-	</fieldset>
-	<fieldset class="grid_5 omega">
-		<legend>Activity</legend>
-		<?php
-		// `both` needs to be last for it to be the default, since `0` is considered empty as well
-		echo $this->Form->input('active', array(
-			'type' => 'radio',
-			'options' => array(
-				'0' => 'Inactive',
-				'1' => 'Active',
-				'' => 'Both'
-			),
-			'value' => empty($this->data) ? '' : $this->data['Ministry']['active'],
-			'legend' => false
-		));
-		?>
-	</fieldset>
-	<?php
-	echo $this->Js->submit('Get Report', $defaultSubmitOptions);
-	echo $this->Form->end();
-	?>
 </div>
