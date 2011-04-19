@@ -1,4 +1,4 @@
-<div class="pagination">
+<div class="pagination clearfix">
 	<span style="float:left">
 	<?php
 	echo $this->Paginator->prev('Prev', array('class' => 'button'), null, array('class' => 'button disabled'));
