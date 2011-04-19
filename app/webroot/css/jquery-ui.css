@@ -648,32 +648,43 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 .ui-tabs .ui-tabs-hide { display: none !important; }
 
 /*
-Sub tabs within dialog
+Sub tabs (automatic within dialog)
 */
-.ui-dialog .ui-tabs-nav {
+.ui-dialog .ui-tabs-nav, .sub-tabs .ui-tabs-nav {
 	font-family: 'Lucida Sans',Helvetica,Arial,sans-serif;
 	font-size: 11px;
 	text-transform: none;
 	color: #838383;
 }
-.ui-dialog .ui-tabs-nav {
+.ui-dialog .ui-tabs-nav, .sub-tabs .ui-tabs-nav {
 	margin: 0;
-}
-.ui-dialog .ui-tabs-nav {
 	padding: 0px;
 }
-.ui-dialog .ui-tabs-nav .ui-state-default,.ui-dialog .ui-tabs-nav .ui-widget-header .ui-state-default {
+.ui-dialog .ui-tabs-nav .ui-state-default,
+.ui-dialog .ui-tabs-nav .ui-widget-header .ui-state-default,
+.sub-tabs .ui-tabs-nav .ui-state-default,
+.sub-tabs .ui-tabs-nav .ui-widget-header .ui-state-default {
 	background: none;
 	text-transform: none;
 	color: #838383;
 }
-.ui-dialog .ui-tabs-nav .ui-state-default a, .ui-dialog .ui-tabs-nav .ui-state-default a:link, .ui-dialog .ui-tabs-nav .ui-state-default a:visited {
+.ui-dialog .ui-tabs-nav .ui-state-default a,
+.ui-dialog .ui-tabs-nav .ui-state-default a:link,
+.ui-dialog .ui-tabs-nav .ui-state-default a:visited,
+.sub-tabs .ui-tabs-nav .ui-state-default a,
+.sub-tabs .ui-tabs-nav .ui-state-default a:link,
+.sub-tabs .ui-tabs-nav .ui-state-default a:visited {
 	color: #838383;
 }
-.ui-dialog .ui-tabs-nav .ui-state-hover, .ui-dialog .ui-tabs-nav .ui-tabs-selected, .ui-dialog .ui-tabs-nav .ui-state-focus {
+.ui-dialog .ui-tabs-nav .ui-state-hover,
+.ui-dialog .ui-tabs-nav .ui-tabs-selected,
+.ui-dialog .ui-tabs-nav .ui-state-focus,
+.sub-tabs .ui-tabs-nav .ui-state-hover,
+.sub-tabs .ui-tabs-nav .ui-tabs-selected,
+.sub-tabs .ui-tabs-nav .ui-state-focus {
 	background: #f1f1f1;
 }
-.ui-dialog .ui-tabs-panel {
+.ui-dialog .ui-tabs-panel, .sub-tabs .ui-tabs-panel {
 	background: #f1f1f1;
 	padding: 5px;
 }
