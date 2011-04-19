@@ -1,5 +1,5 @@
 <div class="simple_lists">
-<h2>Add <?php echo Inflector::humanize($modelKey); ?></h2>
+<h1>Add <?php echo Inflector::humanize($modelKey); ?></h1>
 <?php echo $this->Form->create($model, array('default'=>false));?>
 	<fieldset>
  		<legend>Add <?php echo Inflector::humanize($modelKey); ?></legend>
@@ -17,3 +17,4 @@ $defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {c
 echo $this->Js->submit('Add', $defaultSubmitOptions);
 echo $this->Form->end();
 ?>
+</div>

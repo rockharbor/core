@@ -1,5 +1,5 @@
 <div class="simple_lists">
-<h2>Edit <?php echo Inflector::humanize($modelKey); ?></h2>
+<h1>Edit <?php echo Inflector::humanize($modelKey); ?></h1>
 <?php echo $this->Form->create($model, array('default'=>false));?>
 	<fieldset>
  		<legend>Edit <?php echo Inflector::humanize($modelKey); ?></legend>
