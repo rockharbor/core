@@ -39,7 +39,8 @@ class ReportsController extends AppController {
 		'GoogleMap',
 		'Media.Media',
 		'Report',
-		'Charts.Charts' => array('Charts.GoogleStatic')
+		'Charts.Charts' => array('Charts.GoogleStatic'),
+		'Formatting'
 	);
 
 /**
@@ -47,7 +48,10 @@ class ReportsController extends AppController {
  *
  * @var array
  */
-	var $components = array('MultiSelect.MultiSelect');
+	var $components = array(
+		'MultiSelect.MultiSelect',
+		'FilterPagination'
+	);
 	
 /**
  * Model::beforeFilter() callback
@@ -169,8 +173,109 @@ class ReportsController extends AppController {
 
 		$this->set(compact('campuses', 'ministries', 'involvementTypes', 'userCounts', 'ministryCounts', 'involvementCounts'));
 	}
-	
-	
+
+/**
+ * Payments report
+ */
+	function payments() {
+		$campuses = $this->Campus->find('list');
+		$ministries = $this->Ministry->generatetreelist();
+		$paymentTypes = $this->Payment->PaymentType->find('list');
+
+		$rosterConditions = array();
+		$conditions = array(
+			'contain' => array(
+				'PaymentType' => array(
+					'fields' => array('id', 'name')
+				),
+				'Payer' => array(
+					'Profile' => array(
+						'fields' => array('id', 'name', 'user_id')
+					)
+				),
+				'User' => array(
+					'Profile' => array(
+						'fields' => array('id', 'name', 'user_id')
+					)
+				),
+				'Roster' => array(
+					'fields' => array(
+						'id', 'involvement_id', 'payment_option_id'
+					),
+					'Involvement' => array(
+						'fields' => array('id', 'name')
+					),
+					'PaymentOption' => array(
+						'fields' => array('id', 'account_code')
+					)
+				)
+			)
+		);
+		if (!empty($this->data)) {
+			$involvements = array();
+			if (!empty($this->data['Involvement']['name'])) {
+				// campus takes precedence
+				$involvements = $this->Involvement->find('list', array(
+					'conditions' => array(
+						'Involvement.name LIKE' => '%'.$this->data['Involvement']['name'].'%'
+					)
+				));
+			} else if (!empty($this->data['Ministry']['id'])) {
+				$involvements = $this->Involvement->find('list', array(
+					'conditions' => array(
+						'Involvement.ministry_id' => $this->data['Ministry']['id']
+					)
+				));
+				$this->data['Campus']['id'] = null;
+				$this->data['Involvement']['name'] = null;
+			} else if (!empty($this->data['Campus']['id'])) {
+				$involvements = $this->Involvement->find('list', array(
+					'conditions' => array(
+						'Ministry.campus_id' => $this->data['Campus']['id']
+					),
+					'contain' => array(
+						'Ministry'
+					)
+				));
+				$this->data['Ministry']['id'] = null;
+				$this->data['Involvement']['name'] = null;
+			}
+
+			if (!empty($involvements)) {
+				$rosterConditions['conditions'] = array(
+					'Roster.involvement_id' => array_keys($involvements)
+				);
+			}
+
+			if (!empty($this->data['Payment']['payment_type_id'])) {
+				$conditions['conditions']['Payment.payment_type_id'] = $this->data['Payment']['payment_type_id'];
+			}
+			if (!empty($this->data['Payment']['start_date']) && !empty($this->data['Payment']['end_date'])) {
+				$conditions['conditions']['Payment.created BETWEEN ? AND ?'] = array(
+					date('Y-m-d', strtotime($this->data['Payment']['start_date'])),
+					date('Y-m-d', strtotime($this->data['Payment']['end_date']))
+				);
+			}
+			if (!empty($this->data['PaymentOption']['account_code'])) {
+				$rosterConditions['conditions']['PaymentOption.account_code LIKE'] = '%'.$this->data['PaymentOption']['account_code'].'%';
+				$rosterConditions['link'] = array(
+					'PaymentOption'
+				);
+			}
+		}
+
+		$rosters = $this->Roster->find('list', $rosterConditions);
+
+		$this->paginate = array_merge_recursive($conditions, array(
+			'conditions' => array(
+					'Payment.roster_id' => array_keys($rosters)
+			))
+		);
+		$this->FilterPagination->startEmpty = false;
+		$payments = $this->FilterPagination->paginate('Payment');
+
+		$this->set(compact('ministries', 'campuses', 'paymentTypes', 'payments'));
+	}
 	
 /**
  * Exports a saved search (from MultiSelectComponent) as a report

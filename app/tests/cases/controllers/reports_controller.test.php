@@ -59,6 +59,91 @@ class ReportsControllerTestCase extends CoreTestCase {
 		$results = $vars['ministryCounts']['active'];
 		$this->assertEqual($results, 1);
 	}
+
+	function testPayments() {
+		$this->loadFixtures('Payment', 'PaymentOption');
+
+		$vars = $this->testAction('/reports/payments');
+		$this->assertNotEqual(count($vars['payments']), 0);
+
+		$vars = $this->testAction('/reports/payments', array(
+			'data' => array(
+				'Involvement' => array(
+					'name' => 'testing'
+				)
+			)
+		));
+		$this->assertEqual(count($vars['payments']), 0);
+
+		$vars = $this->testAction('/reports/payments', array(
+			'data' => array(
+				'Involvement' => array(
+					'name' => 'CORE'
+				)
+			)
+		));
+		$results = Set::extract('/Payment/id', $vars['payments']);
+		$expected = array(1, 2, 3);
+		$this->assertEqual($results, $expected);
+
+		$vars = $this->testAction('/reports/payments', array(
+			'data' => array(
+				'PaymentOption' => array(
+					'account_code' => '456'
+				)
+			)
+		));
+		$results = Set::extract('/Payment/id', $vars['payments']);
+		$expected = array(1, 2, 3, 6);
+		$this->assertEqual($results, $expected);
+
+		$vars = $this->testAction('/reports/payments', array(
+			'data' => array(
+				'PaymentOption' => array(
+					'account_code' => '456'
+				),
+				'Payment' => array(
+					'payment_type_id' => 2
+				)
+			)
+		));
+		$results = Set::extract('/Payment/id', $vars['payments']);
+		$expected = array(3, 6);
+		$this->assertEqual($results, $expected);
+
+		$vars = $this->testAction('/reports/payments', array(
+			'data' => array(
+				'PaymentOption' => array(
+					'account_code' => '456'
+				),
+				'Payment' => array(
+					'payment_type_id' => 2,
+					'start_date' => '5/6/2010',
+					'end_date' => '5/7/2010'
+				)
+			)
+		));
+		$results = Set::extract('/Payment/id', $vars['payments']);
+		$expected = array(3);
+		$this->assertEqual($results, $expected);
+
+		$vars = $this->testAction('/reports/payments', array(
+			'data' => array(
+				'Ministry' => array(
+					'id' => 4
+				),
+				'PaymentOption' => array(
+					'account_code' => '456'
+				),
+				'Payment' => array(
+					'payment_type_id' => 2
+				)
+			)
+		));
+		$results = Set::extract('/Payment/id', $vars['payments']);
+		$expected = array(3);
+		$this->assertEqual($results, $expected);
+	}
 	
 	function testMap() {
 		$this->loadFixtures('Profile');

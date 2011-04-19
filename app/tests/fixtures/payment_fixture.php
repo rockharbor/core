@@ -59,8 +59,8 @@ class PaymentFixture extends CakeTestFixture {
 			'transaction_id' => NULL,
 			'payment_placed_by' => 2,
 			'refunded' => 0,
-			'created' => '2010-05-04 07:33:03',
-			'modified' => '2010-05-04 07:33:03',
+			'created' => '2010-05-06 07:33:03',
+			'modified' => '2010-05-06 07:33:03',
 			'comment' => 'Ricky made a cash payment to pay his balance.'
 		),
 		array(
@@ -73,8 +73,8 @@ class PaymentFixture extends CakeTestFixture {
 			'transaction_id' => NULL,
 			'payment_placed_by' => 5,
 			'refunded' => 0,
-			'created' => '2010-05-04 07:33:03',
-			'modified' => '2010-05-04 07:33:03',
+			'created' => '2010-05-08 07:33:03',
+			'modified' => '2010-05-08 07:33:03',
 			'comment' => 'Invisible user made a payment'
 		),
 	);

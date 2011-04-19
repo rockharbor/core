@@ -314,8 +314,7 @@ class InstallShell extends Shell {
 			'controllers/UserImages/index',
 			'controllers/UserImages/upload',
 			'controllers/UserImages/approve',
-			'controllers/Roles',
-			'controllers/Users/dashboard'
+			'controllers/Roles'
 		),
 		'Intern' => array(
 			'controllers/Comments/index',
@@ -347,7 +346,7 @@ class InstallShell extends Shell {
 			'controllers/Searches/user',
 			'controllers/Reports/map',
 			'controllers/Reports/index',
-			'controllers/Reports/ministry',
+			'controllers/Reports/payments',
 			'controllers/SysEmails/compose',
 			'controllers/SysEmailDocuments',
 			'controllers/Involvements/invite',
@@ -357,7 +356,8 @@ class InstallShell extends Shell {
 			'controllers/InvolvementImages/upload',
 			'controllers/Profiles/view',
 			'controllers/Profiles/edit',
-			'controllers/Payments/view'
+			'controllers/Payments/view',
+			'controllers/Users/dashboard'
 		),
 		'Developer' => array(
 			'controllers/ApiGenerator/ApiClasses/index',

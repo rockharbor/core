@@ -8,7 +8,9 @@
 		echo $link ? $this->Html->tag('li', $link) : null;
 		$link = $this->Permission->link('Image Approval', array('controller' => 'user_images'), array('title' => 'images'));
 		echo $link ? $this->Html->tag('li', $link) : null;
-		$link = $this->Permission->link('Reports', array('controller' => 'reports'), array('title' => 'reports'));
+		$link = $this->Permission->link('Ministry Report', array('controller' => 'reports'), array('title' => 'reports'));
+		echo $link ? $this->Html->tag('li', $link) : null;
+		$link = $this->Permission->link('Payments Report', array('controller' => 'reports', 'action' => 'payments'), array('title' => 'payment-reports'));
 		echo $link ? $this->Html->tag('li', $link) : null;
 		?>
 	</ul>
@@ -38,6 +40,16 @@
 		<div id="reports">
 			<?php
 			echo $this->requestAction('/reports/index', array(
+				'renderAs' => 'ajax',
+				'return'
+			));
+			?>
+		</div>
+		<?php endif; ?>
+		<?php if ($this->Permission->check(array('controller' => 'reports', 'action' => 'payments'))): ?>
+		<div id="payment-reports">
+			<?php
+			echo $this->requestAction('/reports/payments', array(
 				'renderAs' => 'ajax',
 				'return'
 			));
