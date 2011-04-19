@@ -43,3 +43,15 @@ function debug(msg) {
 	}
 	console.log(msg);
 }
+
+/**
+ * Generates a unique number, useful for dom ids
+ *
+ * @param string prefix An optional prefix
+ */
+function unique(prefix) {
+	if (prefix == undefined) {
+		prefix = '';
+	}
+	return prefix+Math.floor(new Date().getTime()/Math.random());
+}

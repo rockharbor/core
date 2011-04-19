@@ -198,7 +198,7 @@ CORE.attachTabbedBehavior = function() {
 				options.cookie = $(this).data('cookie');
 			}
 			if ($(this).attr('id') == '') {
-				$(this).attr('id', 'link-'+new Date().getTime());
+				$(this).attr('id', unique('link-'));
 			}
 			CORE.tabs($(this).attr('id'), options);
 			$(this).data('hasTabs', true);
@@ -219,7 +219,7 @@ CORE.attachTabbedBehavior = function() {
 CORE.attachModalBehavior = function() {
 	$('[rel|=modal]').each(function() {
 		if ($(this).attr('id') == '') {
-			$(this).attr('id', 'link-'+new Date().getTime());
+			$(this).attr('id', unique('link-'));
 		}
 
 		// regular ajax call if it's already in a modal
