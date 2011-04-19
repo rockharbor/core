@@ -12,6 +12,8 @@
 		echo $link ? $this->Html->tag('li', $link) : null;
 		$link = $this->Permission->link('Payments Report', array('controller' => 'reports', 'action' => 'payments'), array('title' => 'payment-reports'));
 		echo $link ? $this->Html->tag('li', $link) : null;
+		$link = $this->Permission->link('Alerts', array('controller' => 'alerts', 'action' => 'index'), array('title' => 'alerts'));
+		echo $link ? $this->Html->tag('li', $link) : null;
 		?>
 	</ul>
 
@@ -50,6 +52,16 @@
 		<div id="payment-reports">
 			<?php
 			echo $this->requestAction('/reports/payments', array(
+				'renderAs' => 'ajax',
+				'return'
+			));
+			?>
+		</div>
+		<?php endif; ?>
+		<?php if ($this->Permission->check(array('controller' => 'alerts'))): ?>
+		<div id="alerts">
+			<?php
+			echo $this->requestAction('/alerts/index', array(
 				'renderAs' => 'ajax',
 				'return'
 			));

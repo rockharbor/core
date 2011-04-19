@@ -30,6 +30,12 @@ class AlertsControllerTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 
+	function testIndex() {
+		$vars = $this->testAction('/alerts/index');
+		$results = Set::extract('/Alert/read_by_users', $vars['alerts']);
+		$this->assertEqual($results, array(1, 0, 0, 0));
+	}
+
 	function testView() {
 		$this->Alerts->Session->write('Auth', array('User' => array('id' => 1)));
 		$this->Alerts->Session->write('User', array('Group' => array('id' => 8)));

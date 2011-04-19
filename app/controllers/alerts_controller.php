@@ -53,7 +53,16 @@ class AlertsController extends AppController {
  */
 	function index() {
 		$this->Alert->recursive = 0;
-		$this->set('alerts', $this->paginate());
+		$alerts = $this->paginate();
+		foreach ($alerts as &$alert) {
+			$count = $this->Alert->AlertsUser->find('count', array(
+				'conditions' => array(
+					'alert_id' => $alert['Alert']['id']
+				)
+			));
+			$alert['Alert']['read_by_users'] = $count;
+		}
+		$this->set(compact('alerts'));
 	}
 	
 /**
