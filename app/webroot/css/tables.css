@@ -69,6 +69,9 @@ table.datatable td {
 	padding: 2px 7px;
 	border-right: 1px solid #cccccc
 }
+.ui-dialog .ui-tabs-panel table.datatable .altrow td, .sub-tabs .ui-tabs-panel table.datatable .altrow td {
+	background: #ffffff;
+}
 table.datatable tbody tr:hover td, .hover-row:hover {
-	background:#d0f4e4;
+	background:#d0f4e4 !important;
 }
