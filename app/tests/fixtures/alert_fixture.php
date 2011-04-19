@@ -10,7 +10,6 @@ class AlertFixture extends CakeTestFixture {
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
 		'group_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
-		'importance' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 12),
 		'expires' => array('type' => 'date', 'null' => true, 'default' => NULL),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'group_key' => array('column' => 'group_id', 'unique' => 0)),
 		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
@@ -24,7 +23,6 @@ class AlertFixture extends CakeTestFixture {
 			'created' => '2010-04-27 14:04:02',
 			'modified' => '2010-06-02 12:27:38',
 			'group_id' => 8,
-			'importance' => 'medium',
 			'expires' => NULL
 		),
 		array(
@@ -34,7 +32,6 @@ class AlertFixture extends CakeTestFixture {
 			'created' => '2010-04-27 14:04:02',
 			'modified' => '2010-06-02 12:27:38',
 			'group_id' => 8,
-			'importance' => 'medium',
 			'expires' => NULL
 		),
 		array(
@@ -44,7 +41,6 @@ class AlertFixture extends CakeTestFixture {
 			'created' => '2010-04-27 14:04:02',
 			'modified' => '2010-06-02 12:27:38',
 			'group_id' => 8,
-			'importance' => 'medium',
 			'expires' => NULL
 		),
 		array(
@@ -54,7 +50,6 @@ class AlertFixture extends CakeTestFixture {
 			'created' => '2010-04-27 14:04:02',
 			'modified' => '2010-06-02 12:27:38',
 			'group_id' => 5,
-			'importance' => 'medium',
 			'expires' => NULL
 		)
 	);

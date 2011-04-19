@@ -57,11 +57,6 @@ class Alert extends AppModel {
 			'rule' => 'numeric',
 			'allowEmpty' => false
 		),
-		'importance' => array(
-			'inlist' => array(
-				'rule' => array('inlist', array('low', 'medium', 'high'))
-			)
-		),
 		'expires' => array(
 			'date' => array(
 				'rule' => 'date',

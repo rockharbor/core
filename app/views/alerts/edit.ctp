@@ -11,14 +11,6 @@
 		echo $this->Form->input('group_id', array(
 			'label' => 'Visible for:'
 		));
-		echo $this->Form->input('importance', array(
-			'type' => 'select',
-			'options' => array(
-				'low' => 'Regular',
-				'medium' => 'Medium',
-				'high' => 'High'
-			)
-		));
 		echo $this->Form->input('expires', array(
 			'empty' => true
 		));

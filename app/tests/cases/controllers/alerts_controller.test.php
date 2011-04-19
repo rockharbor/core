@@ -64,7 +64,6 @@ class AlertsControllerTestCase extends CoreTestCase {
 					'created' => '2010-04-27 14:04:02',
 					'modified' => '2010-06-02 12:27:38',
 					'group_id' => 8,
-					'importance' => 'medium',
 					'expires' => NULL
 				)
 			),
@@ -76,7 +75,6 @@ class AlertsControllerTestCase extends CoreTestCase {
 					'created' => '2010-04-27 14:04:02',
 					'modified' => '2010-06-02 12:27:38',
 					'group_id' => 8,
-					'importance' => 'medium',
 					'expires' => NULL
 				)
 			),
@@ -88,7 +86,6 @@ class AlertsControllerTestCase extends CoreTestCase {
 					'created' => '2010-04-27 14:04:02',
 					'modified' => '2010-06-02 12:27:38',
 					'group_id' => 8,
-					'importance' => 'medium',
 					'expires' => NULL
 				)
 			)
@@ -127,7 +124,6 @@ class AlertsControllerTestCase extends CoreTestCase {
 			'name' => 'Super Admin alert',
 			'description' => 'Average Joes can\'t read it',
 			'group_id' => 1,
-			'importance' => 'medium',
 			'expires' => null
 		);
 		$vars = $this->testAction('/alerts/add', array(
@@ -141,7 +137,6 @@ class AlertsControllerTestCase extends CoreTestCase {
 		$data = array(
 			'id' => 1,
 			'group_id' => 4,
-			'importance' => 'medium'
 		);
 		$this->testAction('/alerts/edit/1', array(
 			'data' => $data
