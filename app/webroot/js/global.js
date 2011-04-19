@@ -88,6 +88,34 @@ CORE.request = function(url, options, data) {
 }
 
 /**
+ * Removes CakePHP pagination and replaces it with a request that replaces the
+ * updateable, or the closest updateable parent
+ *
+ * @param string id The pagination container's id
+ * @see CORE.getUpdateableParent
+ */
+CORE.updateablePagination = function(id, updateable) {
+	if (updateable == undefined) {
+		updateable = 'parent';
+	}
+	$('#'+id).find('a')
+		.unbind('click')
+		.bind('click', function() {
+			if (updateable == 'parent') {
+				var parent = CORE.getUpdateableParent(id);
+				updateable = parent.updateable;
+			}
+			for (var div in CORE.updateables[updateable]) {
+				CORE.request($(this).attr('href'), {
+					updateHtml: div
+				});
+			}
+			return false;
+		});
+
+}
+
+/**
  * Gets the closet tab and returns the url and id. If no tab is found, returns
  * content and the content's updateable url. Useful for modals that want to
  * update a tab it may or may not be in. Also creates a unique updateable for
