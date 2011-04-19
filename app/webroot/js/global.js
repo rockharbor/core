@@ -88,6 +88,34 @@ CORE.request = function(url, options, data) {
 }
 
 /**
+ * Gets the closet tab and returns the url and id. If no tab is found, returns
+ * content and the content's updateable url. Useful for modals that want to
+ * update a tab it may or may not be in. Also creates a unique updateable for
+ * this pair.
+ *
+ * @param string id The element id
+ * @return hash Hash containing `updateable`, `url` and `id` keys
+ */
+CORE.getUpdateableParent = function(id) {
+	var parent = $('#'+id).closest('.ui-tabs-panel');
+	if (parent.length == 0) {
+		return {
+			url: CORE.updateables['content']['content'],
+			id: 'content',
+			updateable: 'content'
+		};
+	}
+	var tab = parent.closest('.ui-tabs').find('a[href="#'+parent.attr('id')+'"]');
+	var alias = unique('parent-');
+	CORE.register(alias, parent.attr('id'), tab.data('load.tabs'));
+	return {
+		url: tab.data('load.tabs'),
+		id: parent.attr('id'),
+		updateable: alias
+	};
+}
+
+/**
  * Registers a div as an "updateable"
  *
  * By registering a div as an updateable and linking it to a url,

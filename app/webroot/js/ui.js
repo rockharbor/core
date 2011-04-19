@@ -83,6 +83,10 @@ CORE.modal = function(id, options) {
 	});
 	
 	$('#'+id).data('modalOptions', useOptions);
+	if (useOptions.update == 'parent') {
+		var parent = CORE.getUpdateableParent(id);
+		useOptions.update =  parent.updateable;
+	}
 	$('#'+id).data('update', useOptions.update);
 	$('#modal').dialog({autoOpen:false});
 }
@@ -425,6 +429,11 @@ CORE.confirmation = function(id, message, options) {
 		useOptions = $.extend(_defaultOptions, options);
 	} else {
 		useOptions = _defaultOptions;
+	}
+
+	if (useOptions.update == 'parent') {
+		var parent = CORE.getUpdateableParent(id);
+		useOptions.update = parent.updateable;
 	}
 
 	if (useOptions.update != '') {
