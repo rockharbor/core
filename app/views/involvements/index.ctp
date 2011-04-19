@@ -2,7 +2,7 @@
 
 $this->Js->buffer('CORE.fallbackRegister("involvement");');
 $this->Paginator->options(array(
-	'update' => '#involvement'
+    'updateable' => 'parent'
 ));
 ?>
 <h1>Involvement Opportunities</h1>

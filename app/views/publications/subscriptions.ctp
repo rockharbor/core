@@ -1,8 +1,8 @@
 <?php
 $this->Js->buffer('CORE.fallbackRegister("subscriptions");');
 $this->Paginator->options(array(
-	'update' => '#subscriptions'
-))
+    'updateable' => 'parent'
+));
 ?>
 <h1>Publications</h1>
 <div>	

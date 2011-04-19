@@ -1,7 +1,6 @@
 <?php
 $this->Paginator->options(array(
-    'update' => '#content',
-    'evalScripts' => true
+    'updateable' => 'parent'
 ));
 ?>
 

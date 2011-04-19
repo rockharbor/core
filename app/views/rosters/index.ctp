@@ -1,5 +1,7 @@
 <?php
-$this->Paginator->options('#roster-tab');
+$this->Paginator->options(array(
+    'updateable' => 'parent'
+));
 ?>
 <div id="roster-index">
 <h1><?php echo $involvement['Involvement']['name']; ?> Roster</h1>

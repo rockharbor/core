@@ -1,7 +1,7 @@
 <h1>Payments</h1>
 <?php
 $this->Paginator->options(array(
-	'update' => '#payments'
+    'updateable' => 'parent'
 ));
 ?>
 <div class="payments">

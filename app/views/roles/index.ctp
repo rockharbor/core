@@ -1,6 +1,6 @@
 <?php
 $this->Paginator->options(array(
-	'update' => '#ministry-roles'
+    'updateable' => 'parent'
 ));
 ?>
 <h1>Leaders</h1>

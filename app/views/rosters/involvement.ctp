@@ -1,7 +1,6 @@
 <?php
 $this->Paginator->options(array(
-    'update' => '#involvement',
-    'evalScripts' => true
+    'updateable' => 'parent'
 ));
 ?>
 <div id="roster-involvement">

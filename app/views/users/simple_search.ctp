@@ -27,8 +27,7 @@ echo $this->Form->end();
 if (!empty($results)) {
 
 $this->Paginator->options(array(
-    'update' => '#content',
-    'evalScripts' => true
+    'updateable' => 'parent'
 ));
 ?>
 <h3>Results</h3>

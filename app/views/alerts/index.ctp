@@ -1,6 +1,6 @@
 <?php
 $this->Paginator->options(array(
-	'update' => '#content'
+    'updateable' => 'parent'
 ));
 ?>
 <h1>Alerts</h1>

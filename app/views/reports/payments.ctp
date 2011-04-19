@@ -1,6 +1,6 @@
 <?php
 $this->Paginator->options(array(
-	'update' => '#report'
+    'updateable' => 'parent'
 ));
 if (empty($this->data)):
 ?>

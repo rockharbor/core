@@ -1,7 +1,6 @@
 <?php
 $this->Paginator->options(array(
-    'update' => '#payment_options', 
-    'evalScripts' => true
+    'updateable' => 'parent'
 ));
 ?>
 <h1><?php __('Payment Options');?></h1>
