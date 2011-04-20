@@ -14,6 +14,8 @@
 		echo $link ? $this->Html->tag('li', $link) : null;
 		$link = $this->Permission->link('Alerts', array('controller' => 'alerts', 'action' => 'index'), array('title' => 'alerts'));
 		echo $link ? $this->Html->tag('li', $link) : null;
+		$link = $this->Permission->link('Publications', array('controller' => 'publications', 'action' => 'index'), array('title' => 'publications'));
+		echo $link ? $this->Html->tag('li', $link) : null;
 		?>
 		<li><a href="#lists">Lists</a></li>
 	</ul>
@@ -63,6 +65,16 @@
 		<div id="alerts">
 			<?php
 			echo $this->requestAction('/alerts/index', array(
+				'renderAs' => 'ajax',
+				'return'
+			));
+			?>
+		</div>
+		<?php endif; ?>
+		<?php if ($this->Permission->check(array('controller' => 'publications'))): ?>
+		<div id="publications">
+			<?php
+			echo $this->requestAction('/publications/index', array(
 				'renderAs' => 'ajax',
 				'return'
 			));
