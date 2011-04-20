@@ -27,6 +27,15 @@ class SchoolsController extends SimpleCrudsController {
  * @var string
  */
 	var $name = 'Schools';
+
+/**
+ * Components
+ *
+ * @var array
+ */
+	var $components = array(
+		'FilterPagination'
+	);
 	
 /**
  * Model::beforeFilter() callback
@@ -39,5 +48,18 @@ class SchoolsController extends SimpleCrudsController {
 		parent::beforeFilter();
 	}
 
+	function index() {
+		$this->viewPath = 'schools';
+		$this->set('types', $this->School->types);
+		$this->FilterPagination->startEmpty = false;
+		if (!empty($this->data)) {
+			$this->paginate = array(
+				'conditions' => array(
+					'School.type' => $this->data['School']['type']
+				)
+			);
+		}
+		$this->set('schools', $this->FilterPagination->paginate());
+	}
 }
 ?>
