@@ -15,6 +15,7 @@
 		$link = $this->Permission->link('Alerts', array('controller' => 'alerts', 'action' => 'index'), array('title' => 'alerts'));
 		echo $link ? $this->Html->tag('li', $link) : null;
 		?>
+		<li><a href="#lists">Lists</a></li>
 	</ul>
 
 	<div class="content-box clearfix">
@@ -68,5 +69,17 @@
 			?>
 		</div>
 		<?php endif; ?>
+		<div id="lists">
+			<div class="sub-tabs core-tabs">
+				<ul>
+				<?php	foreach ($controllers as $controller): ?>
+					<li><?php echo $this->Html->link(Inflector::humanize($controller), array('controller' => $controller), array('title' => Inflector::slug(Inflector::humanize($controller), '-'))); ?></li>
+				<?php endforeach; ?>
+				</ul>
+				<?php	foreach ($controllers as $controller): ?>
+				<div id="<?php echo Inflector::slug(Inflector::humanize($controller), '-'); ?>"></div>
+				<?php endforeach; ?>
+			</div>
+		</div>
 	</div>
 </div>

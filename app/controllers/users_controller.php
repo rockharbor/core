@@ -405,7 +405,8 @@ class UsersController extends AppController {
  * Admin dashboard
  */
 	function dashboard() {
-		
+		$controllers = array('job_categories', 'schools', 'regions', 'classifications', 'payment_types', 'involvement_types');
+		$this->set(compact('controllers'));
 	}
 
 /**
