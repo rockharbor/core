@@ -107,21 +107,22 @@ CORE.successForm = function(event, data, textStatus, options) {
 	$('#temp').remove();
 
 	// update the content
+	var parent = CORE.getUpdateableParent($(event.currentTarget).closest('form').attr('id'));
 	switch (options.autoUpdate) {
 		case 'failure':		
 			if (!validates) {
-				$('#content').html(data);
+				$('#'+parent.id).html(data);
 				CORE.showValidationErrors($(event.currentTarget).closest('form').attr('id'));
 			}
 		break;
 		case 'success':
 			if (validates) {
-				$('#content').html(data);
+				$('#'+parent.id).html(data);
 				CORE.showValidationErrors($(event.currentTarget).closest('form').attr('id'));
 			}
 		break;
 		default:
-			$('#content').html(data);
+			$('#'+parent.id).html(data);
 			CORE.showValidationErrors($(event.currentTarget).closest('form').attr('id'));
 		break;
 	} 
