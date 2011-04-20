@@ -45,12 +45,12 @@ class SchoolsController extends SimpleCrudsController {
  * @access private
  */ 
 	function beforeFilter() {
+		$this->set('types', $this->School->types);
 		parent::beforeFilter();
 	}
 
 	function index() {
 		$this->viewPath = 'schools';
-		$this->set('types', $this->School->types);
 		$this->FilterPagination->startEmpty = false;
 		if (!empty($this->data)) {
 			$this->paginate = array(
