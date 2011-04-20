@@ -3,71 +3,59 @@ $this->Paginator->options(array(
     'updateable' => 'parent'
 ));
 ?>
-<div class="regions index">
-	<h2><?php __('Profiles');?></h2>
-	<table cellpadding="0" cellspacing="0">
-	<tr>
-			<th><?php echo $this->Paginator->sort('id');?></th>
+<h1>Regions</h1>
+<div id="regions-index" class="regions index">
+	<table class="datatable">
+	<thead>
+		<tr>
 			<th><?php echo $this->Paginator->sort('name');?></th>
-			<th><?php echo $this->Paginator->sort('created');?></th>
-			<th><?php echo $this->Paginator->sort('modified');?></th>
-			<th>Actions</th>		
-	</tr>
+			<th>Zipcodes</th>
+			<th>&nbsp;</th>
+		</tr>
+	</thead>
 	<?php
 	$i = 0;
 	foreach ($regions as $region):
 		$class = null;
 		if ($i++ % 2 == 0) {
-			$class = ' class="altrow"';
+			$class = ' altrow';
 		}
 	?>
-	<tr<?php echo $class;?>>
-		<td><?php echo $region['Region']['id']; ?>&nbsp;</td>
-		<td><?php echo $region['Region']['name']; ?>
-		<ul>
-			<?php foreach ($region['Zipcode'] as $zipcode) {
-				echo '<li>'.$zipcode['zip'].'&nbsp;'.$this->Js->link(
-					$this->Html->image('icons'.DS.'delete.png'),
+	<tr class="<?php echo $class;?>">
+		<td width="100"><?php echo $region['Region']['name']; ?></td>
+		<td><?php
+			foreach ($region['Zipcode'] as $zipcode) {
+				echo '<div class="core-iconable" style="float:left;padding-right: 10px;margin-right:5px;height: 20px">'.$zipcode['zip'].'&nbsp;';
+				$icon = $this->element('icon', array('icon' => 'delete'));
+				echo '<div class="core-icon-container">';
+				echo $this->Js->link(
+					$icon,
 					array('controller' => 'zipcodes', 'action' => 'delete', $zipcode['id']),
-					array('complete' => 'CORE.update("content")', 'escape' => false)
-				).'</li>';
+					array('complete' => 'CORE.update(CORE.getUpdateableParent("regions-index").updateable)', 'escape' => false, 'class' => 'no-hover')
+				);
+				echo '</div>';
+				echo '</div>';
 			}
-			?>
-		</ul>
-		</td>
-		<td><?php echo $region['Region']['created']; ?>&nbsp;</td>
-		<td><?php echo $region['Region']['modified']; ?>&nbsp;</td>
-		<td class="actions">
-			<?php echo $this->Html->link('Add Zipcode', array('controller' => 'zipcodes', 'action' => 'add', 'Region' => $region['Region']['id']), array('rel' => 'modal-content')); ?>
-			<?php echo $this->Html->link('Edit', array('action' => 'edit', $region['Region']['id'])); ?>
-			<?php echo $this->Html->link('Delete', array('action' => 'delete', $region['Region']['id']), array('id' => 'delete_btn_'.$i));?>
+			echo '<br clear="all" />';
+			echo '<div>';
+			$icon = $this->element('icon', array('icon' => 'add'));
+			echo $icon.$this->Html->link(' Add zipcode', array('controller' => 'zipcodes', 'action' => 'add', 'Region' => $region['Region']['id']), array('rel' => 'modal-parent'));
+			echo '</div>';
+			?></td>
+		<td>
+			<span class="core-icon-container">
+				<?php
+				$icon = $this->element('icon', array('icon' => 'edit'));
+				echo $this->Html->link($icon, array('action' => 'edit', $region['Region']['id']), array('rel' => 'modal-parent', 'title' => 'Edit Region', 'escape' => false, 'class' => 'no-hover'));
+				$icon = $this->element('icon', array('icon' => 'delete'));
+				echo $this->Html->link($icon, array('action' => 'delete', $region['Region']['id']), array('title' => 'Delete Region', 'id' => 'delete-region-'.$region['Region']['id'], 'escape' => false, 'class' => 'no-hover'));
+				$this->Js->buffer('CORE.confirmation("delete-region-'.$region['Region']['id'].'", "Are you sure you want to delete this region and all its zipcodes?", {update:"parent"})');
+				?>
+			</span>
 		</td>
 	</tr>
 <?php endforeach; ?>
 	</table>
-	<p>
-	<?php
-	echo $this->Paginator->counter(array(
-	'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
-	));
-	?>	</p>
-
-	<div class="paging">
-		<?php echo $this->Paginator->prev('<< '.__('previous', true), array(), null, array('class'=>'disabled'));?>
-	 | 	<?php echo $this->Paginator->numbers();?>
- |
-		<?php echo $this->Paginator->next(__('next', true).' >>', array(), null, array('class' => 'disabled'));?>
-	</div>
+	<?php echo $this->element('pagination'); ?>
 </div>
-<div class="actions">
-	<h3><?php __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link('New Region', array('action' => 'add'), array('rel' => 'modal-content')); ?></li>
-	</ul>
-</div>
-<?php
-while ($i > 0) {
-	$this->Js->buffer('CORE.confirmation("delete_btn_'.$i.'","Are you sure you want to delete this Region and all its Zip Codes?", {update:"content"});');
-	$i--;
-}
-?>
+<?php echo $this->Html->link('New Region', array('action' => 'add'), array('rel' => 'modal-parent', 'class' => 'button')); ?>

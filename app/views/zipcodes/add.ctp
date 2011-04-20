@@ -1,5 +1,5 @@
+<h1>Zipcodes</h1>
 <div class="zipcodes">
-	<h2>Zipcodes</h2>
 	<?php
 		echo $this->Form->create('Zipcode', array(
 			'default' => false
