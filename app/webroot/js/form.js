@@ -233,6 +233,9 @@ CORE.initFormUI = function() {
 
 	// set up filter forms
 	$('.core-filter-form').each(function() {
+		if ($(this).attr('id') == '') {
+			$(this).attr('id') = unique('form-');
+		}
 		if ($(this).data('configured') == true) {
 			return;
 		}
@@ -253,6 +256,10 @@ CORE.initFormUI = function() {
 			for (var div in CORE.updateables[updateable]) {
 				options = {updateHtml: div};
 			}
+		}
+		if (updateable == 'parent') {
+			var parent = CORE.getUpdateableParent($(this).attr('id'));
+			options = {updateHtml: parent.id};
 		}
 		var form = $(this);
 		$('input', form).click(function() {
