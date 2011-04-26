@@ -87,7 +87,7 @@ class UserTask extends MigratorTask {
 			$oldData['work_phone_ext'] = null;
 		}
 		if (!isset($oldData['non_migratable'])) {
-			$oldData['non_migratable'] = null;
+			$oldData['non_migratable'] = array();
 		}
 		$userData = array(
 			'User' => array(
@@ -97,7 +97,6 @@ class UserTask extends MigratorTask {
 				'created' => $oldData['created'],
 				'last_logged_in' => $oldData['last_logged_in'],
 				'flagged' => 0,
-				'reset_password' => $oldData['reset_password'],
 				'group_id' => $group
 			),
 			'Profile' => array(
@@ -160,11 +159,11 @@ class UserTask extends MigratorTask {
  * @return string
  */
 	function _prepareBaptismDate($old) {
-		$this->_editingRecord['non_migratable']['baptism_date'] = $old;
 		if (date('Y-m-d', strtotime($old)) !== '1969-12-31') {
 			list($year, $month, $day) = explode('-', date('Y-m-d', strtotime($old)));
 			$old = compact('year', 'month', 'day');
 		} else {
+			$this->_editingRecord['non_migratable']['baptism_date'] = $old;
 			$old = '';
 		}
 		return $old;
@@ -177,11 +176,11 @@ class UserTask extends MigratorTask {
  * @return string
  */
 	function _prepareBabyDedicationDate($old) {
-		$this->_editingRecord['non_migratable']['baby_dedication_date'] = $old;
 		if (date('Y-m-d', strtotime($old)) !== '1969-12-31') {
 			list($year, $month, $day) = explode('-', date('Y-m-d', strtotime($old)));
 			$old = compact('year', 'month', 'day');
 		} else {
+			$this->_editingRecord['non_migratable']['baby_dedication_date'] = $old;
 			$old = '';
 		}
 		return $old;
@@ -194,11 +193,11 @@ class UserTask extends MigratorTask {
  * @return string
  */
 	function _prepareBackgroundCheckDate($old) {
-		$this->_editingRecord['non_migratable']['background_check_date'] = $old;
 		if (date('Y-m-d', strtotime($old)) !== '1969-12-31') {
 			list($year, $month, $day) = explode('-', date('Y-m-d', strtotime($old)));
 			$old = compact('year', 'month', 'day');
 		} else {
+			$this->_editingRecord['non_migratable']['background_check_date'] = $old;
 			$old = '';
 		}
 		return $old;
@@ -213,12 +212,10 @@ class UserTask extends MigratorTask {
  */
 	function _preparePassword($old) {
 		$decrypted = $this->User->decrypt($old);
-		$this->_editingRecord['reset_password'] = false;
 		$clean = preg_replace('/[^(\x20-\x7F)]*/','', $decrypted);
 		if ($clean != $decrypted || strlen($decrypted) < 6) {
 			CakeLog::write('migration', 'Invalid password, resetting: '.$decrypted);
 			$decrypted = $this->User->generatePassword();
-			$this->_editingRecord['reset_password'] = true;
 		}
 		return $decrypted;
 	}
@@ -328,7 +325,13 @@ class UserTask extends MigratorTask {
  * If all cases fail, they are not considered active and will not be migrated.
  */
 	function __userSomewhatActive() {
+		if ($this->_originalRecord['active'] == 'F') {
+			return false;
+		}
 		if (!empty($this->_originalRecord['last_logged_in'])) {
+			return true;
+		}
+		if (!empty($this->_originalRecord['roles'])) {
 			return true;
 		}
 		$subscriptions = new Model(false, 'publication_subscriptions', $this->_oldDbConfig);

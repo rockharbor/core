@@ -51,7 +51,7 @@ class TeamRosterTask extends MigratorTask {
 					'involvement_id' => $this->_editingRecord['team_id'],
 					'payment_option_id' => null,
 					'parent_id' => null,
-					'roster_status' => $this->_editingRecord['confirmed'],
+					'roster_status' => $this->_editingRecord['confirmed'] ? 1 : 0,
 					'created' => $this->_editingRecord['date_joined_team']
 				),
 				'Answer' => $answers
@@ -63,7 +63,7 @@ class TeamRosterTask extends MigratorTask {
 					'involvement_id' => $this->_editingRecord['team_id'],
 					'payment_option_id' => null,
 					'parent_id' => null,
-					'roster_status' => $this->_editingRecord['confirmed'],
+					'roster_status' => $this->_editingRecord['confirmed'] ? 1 : 0,
 					'created' => $this->_editingRecord['date_joined_team']
 				),
 			);

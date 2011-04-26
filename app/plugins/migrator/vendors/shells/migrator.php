@@ -52,7 +52,7 @@ class MigratorShell extends Shell {
 		ini_set('memory_limit', '256M');
 
 		$this->_createLinkageTable();
-		unlink(TMP.'logs'.DS.'migration.log');
+		@unlink(TMP.'logs'.DS.'migration.log');
 		$start = microtime(true);
 		if (!empty($this->args[0]) && isset($this->{$this->args[0]})) {
 			$limit = null;
@@ -62,9 +62,28 @@ class MigratorShell extends Shell {
 			$this->{$this->args[0]}->IdLinkage = ClassRegistry::init('IdLinkage');
 			$this->{$this->args[0]}->migrate($limit);
 		} elseif (empty($this->args[0])) {
+			$this->out('Migrating entire database. Grab a sandwich, this could take a while...');
+			$skippedUsers = array();
 			foreach ($this->tasks as $task) {
 				$this->{$task}->IdLinkage = ClassRegistry::init('IdLinkage');
+				// migrate!
+				$this->{$task}->_migrationCount = 0;
+				$this->{$task}->skippedUsers = $skippedUsers;
+				if ($task != 'Cleanup') {
+					$this->out('Migrating '.$this->{$task}->_oldTable.' to '.$this->{$task}->_newModel.'...');
+				}
+				$timestart = microtime(true);
 				$this->{$task}->migrate();
+				if (!empty($this->{$task}->orphans)) {
+					CakeLog::write('migration', $this->{$task}->_oldTable.' with '.count($this->{$task}->orphans).' orphan links: '.implode(',', $this->{$task}->orphans));
+				}
+				$timetook = (microtime(true)-$timestart);
+				if ($task != 'Cleanup') {
+					$this->out('Migrated '.$this->{$task}->_migrationCount.' records in '.$timetook.' sec');
+				} else {
+					$this->out('Cleanup took '.$timetook.' sec');
+				}
+				$skippedUsers = $this->{$task}->skippedUsers;
 			}
 		} else {
 			$this->out($this->args[0].' task isn\'t attached.');

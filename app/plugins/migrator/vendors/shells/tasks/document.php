@@ -59,10 +59,6 @@ class DocumentTask extends MigratorTask {
 		$this->{$this->_newModel}->model = 'Involvement';
 		$oldData = $this->findData($limit, 'GROUP');
 		$this->_migrate($oldData);
-
-		if (!empty($this->orphans)) {
-			CakeLog::write('migration', $this->_oldTable.' with '.count($this->orphans).' orphan links: '.implode(',', $this->orphans));
-		}
 	}
 
 	function findData($limit = null, $type = null) {

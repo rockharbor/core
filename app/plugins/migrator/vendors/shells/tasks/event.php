@@ -35,6 +35,16 @@ class EventTask extends MigratorTask {
 	}
 
 	function _prepareDescription($old) {
+		// check to see if it's valid
+		$roster = new Model(false, 'event_roster', $this->_oldDbConfig);
+		if ($this->_editingRecord['description'] == '' &&
+			$this->_editingRecord['event_name'] == '' &&
+			!$roster->hasAny(array('event_id' => $this->_editingRecord['event_id']))
+		) {
+			$this->_editingRecord = false;
+			return false;
+		}
+		
 		$old = Sanitize::html($old, array(
 			'remove' => true,
 		));

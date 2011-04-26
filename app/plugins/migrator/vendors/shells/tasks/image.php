@@ -37,10 +37,6 @@ class ImageTask extends MigratorTask {
 		$this->{$this->_newModel}->model = 'Ministry';
 		$oldData = $this->findData($limit, 'ministry');
 		$this->_migrate($oldData);
-
-		if (!empty($this->orphans)) {
-			CakeLog::write('migration', $this->_oldTable.' with '.count($this->orphans).' orphan links: '.implode(',', $this->orphans));
-		}
 	}
 
 	function findData($limit = null, $type = null) {

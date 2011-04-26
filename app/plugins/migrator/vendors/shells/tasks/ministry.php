@@ -46,6 +46,23 @@ class MinistryTask extends MigratorTask {
 	}
 
 	function _prepareMinistryDescription($old) {
+		// check to see if it's valid
+		if ($this->_editingRecord['ministry_name'] == '' && $this->_editingRecord['ministry_description'] == '') {
+			$tge = array('teams', 'groups', 'events');
+			foreach ($tge as $involvement) {
+				$roster = new Model(false, $involvement, $this->_oldDbConfig);
+				if (!$roster->hasAny(array(
+					'or' => array(
+						'ministry_id' => $this->_originalRecord['ministry_id'],
+						'subministry_id' => $this->_originalRecord['ministry_id']
+					)
+				))) {
+					$this->_editingRecord = false;
+					return false;
+				}
+			}
+		}
+		
 		$old = Sanitize::html($old, array(
 			'remove' => true,
 		));
