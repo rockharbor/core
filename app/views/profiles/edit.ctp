@@ -1,7 +1,7 @@
 <span class="breadcrumb editing"><?php
 $icon = $this->element('icon', array('icon' => 'delete'));
 echo $this->Html->link($icon, array('action' => 'view'), array('escape' => false, 'class' => 'no-hover'));
-?>Editing</span>
+?>Editing<?php echo $this->Html->image('../assets/images/edit-flag-right.png'); ?></span>
 <h1><?php echo $this->data['Profile']['first_name'].' '.$this->data['Profile']['last_name']; ?></h1>
 
 <div class="profiles core-tabs">

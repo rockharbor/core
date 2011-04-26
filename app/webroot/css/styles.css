@@ -183,10 +183,28 @@ span.breadcrumb {
 	position: relative;
 	left: -25px;
 }
+.ui-dialog span.breadcrumb {
+	left: 0;
+}
 span.breadcrumb.editing {
 	background: #e03a14;
 	color: #ffffff;
 	padding: 2px;
+	padding-right: 13px;
+	position: relative;
+	height: 14px;
+	display: inline-block;
+	line-height: 14px;
+	margin-bottom: 5px;
+}
+span.breadcrumb.editing a span {
+	top: -2px;
+	position: relative;
+}
+span.breadcrumb.editing img {
+	position: absolute;
+	right: -8px;
+	top: 0;
 }
 #columns .column {
 	height:130px;

@@ -1,4 +1,7 @@
-<span class="breadcrumb editing">Editing</span>
+<span class="breadcrumb editing"><?php
+$icon = $this->element('icon', array('icon' => 'delete'));
+echo $this->Html->link($icon, array('action' => 'view', 'Ministry' => $this->passedArgs['Ministry']), array('escape' => false, 'class' => 'no-hover'));
+?>Editing<?php echo $this->Html->image('../assets/images/edit-flag-right.png'); ?></span>
 <h1><?php echo $this->data['Ministry']['name']; ?></h1>
 
 <div class="ministries core-tabs">
