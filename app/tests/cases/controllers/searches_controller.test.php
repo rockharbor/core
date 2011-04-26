@@ -32,6 +32,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 	}
 
 	function testIndex() {
+		$this->loadFixtures('Roster');
 		$vars = $this->testAction('/searches/index', array(
 			'data' => array(
 				'Search' => array(
@@ -126,6 +127,30 @@ class SearchesControllerTestCase extends CoreTestCase {
 			'bob'
 		);
 		$this->assertEqual($results, $expected);
+		
+		$vars = $this->testAction('/searches/index/', array(
+			'data' => array(
+				'Search' => array(
+					'query' => 'core meetup stuff ricky child',
+					'Ministry' => array(
+						'id' => 4
+					)
+				)
+			)
+		));
+		$results = Set::extract('/Ministry/name', $vars['ministries']);
+		$expected = array(
+			 'Web'
+		);
+		$this->assertEqual($results, $expected);
+		$results = Set::extract('/Involvement/name', $vars['involvements']);
+		$expected = array(
+			 'CORE 2.0 testing', 'Team CORE'
+		);
+		$this->assertEqual($results, $expected);
+		$results = Set::extract('/User/username', $vars['users']);
+		$expected = array('rickyrockharbor', 'rickyrockharborjr');
+		$this->assertEqual($results, $expected);
 	}
 
 	function testInvolvement() {
@@ -181,7 +206,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 		));
 		$results = Set::extract('/Ministry/name', $vars['results']);
 		$expected = array(
-			'Web'
+			'Web', 'Child Web'
 		);
 		$this->assertEqual($results, $expected);
 	}

@@ -89,6 +89,10 @@ class SearchesController extends AppController {
 			$search['Campus.id'] = $search['Campus']['id'];
 			unset($search['Campus']);
 		}
+		if (!empty($search['Ministry'])) {
+			$search['Ministry.id'] = $search['Ministry']['id'];
+			unset($search['Ministry']);
+		}
 
 		if (isset($this->passedArgs['model'])) {
 			$restrictModel = $this->passedArgs['model'];
@@ -130,12 +134,18 @@ class SearchesController extends AppController {
 							'Campus' => array(
 								'fields' => array('id', 'name')
 							)
+						),
+						'Roster' => array(
+							 'Involvement' => array(
+								  'Ministry'
+							 )
 						)
 					),
 					'contain' => array(
 						'Image'						
 					),
-					'limit' => 9
+					'limit' => 9,
+					'group' => 'User.id'
 				));
 			}
 			if ((!$restrictModel || $restrictModel == 'Involvement') && $this->isAuthorized('searches/involvement')) {
@@ -177,6 +187,9 @@ class SearchesController extends AppController {
 					'link' => array(
 						'Image',
 						'Campus' => array(
+							'fields' => array('id', 'name')
+						),
+						'ParentMinistry' => array(
 							'fields' => array('id', 'name')
 						)
 					),
