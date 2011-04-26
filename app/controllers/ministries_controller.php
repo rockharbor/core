@@ -130,11 +130,14 @@ class MinistriesController extends AppController {
 				$this->Session->setFlash(__('The ministry could not be saved. Please, try again.', true));
 			}
 		}
+		$this->data['Ministry']['campus_id'] = $this->passedArgs['Campus'];
 		
 		$this->set('campuses', $this->Ministry->Campus->find('list'));
 		$this->set('ministries', $this->Ministry->find('list', array(
 			'conditions' => array(
-				'Ministry.parent_id' => null
+				'Ministry.active' => true,
+				'Ministry.parent_id' => null,
+				'Ministry.campus_id' => $this->passedArgs['Campus']
 			)
 		)));
 	}

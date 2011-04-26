@@ -10,4 +10,10 @@
 		 'term' => $campus['Campus']['name']
 	));
 	?>
+	<ul class="core-admin-tabs">
+		<?php
+		$link = $this->Permission->link('Add Ministry', array('controller' => 'ministries', 'action' => 'add', 'Campus' => $campus['Campus']['id']), array('rel' => 'modal-none'));
+		echo !empty($link) ? $this->Html->tag('li', $link) : null;
+		?>
+	</ul>
 </div>
