@@ -196,12 +196,10 @@ Search
 	border-right:none !important;
 }
 #nav-search button {
-	height:19px;
-	float:left;
+	height: 19px;
 	-moz-border-radius: 0 4px 4px 0;
 	-webkit-border-radius: 0 4px 4px 0;
 	border-radius: 0 4px 4px 0;
-	margin-left:-2px;
 	background-image: -webkit-gradient(
 		linear,
 		left bottom,
@@ -214,12 +212,9 @@ Search
 		rgb(55,174,107) 0%,
 		rgb(69,218,136) 61%
 	);
-	margin-top:0;
 }
 #nav-search input[type=text] {
-	font-size:9px;
-	float:left;
-	border:none;
+	border: none;
 	-moz-border-radius: 4px 0 0 4px;
 	-webkit-border-radius: 4px 0 0 4px;
 }

@@ -146,6 +146,20 @@ a.no-hover:hover {
 }
 
 /*
+Search
+*/
+.search-form button {
+	height:21px;
+	float:left;
+	margin-left:-2px;
+	margin-top:0;
+}
+.search-form input[type=text] {
+	font-size:9px;
+	float:left;
+}
+
+/*
 Containers
 */
 div.content-box {

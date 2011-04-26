@@ -141,28 +141,9 @@
 					<?php endif; ?>
 					<li id="nav-search">
 						<?php
-							echo $this->Form->create('Search', array(
-								'url' => array(
-									'controller' => 'searches',
-									'action' => 'index'
-								),
-								'inputDefaults' => array(
-									'div' => false
-								)
-							));
-							echo $this->Form->input('Search.query', array(
-								'label' => false,
-								'value' => 'Search '.Core::read('general.site_name_tagless'),
-								'size' => 30,
-								'class' => 'search-out'
-							));
-							echo $this->Form->button(
-								$this->Html->tag('span', '&nbsp;', array('class' => 'core-icon icon-search')),
-								array(
-									'escape' => false
-								)
-							);
-							echo $this->Form->end();
+						echo $this->element('search', array(
+							 'term' => Core::read('general.site_name_tagless')
+						));
 						?>
 					</li>
 				</ul>

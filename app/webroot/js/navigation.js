@@ -5,20 +5,6 @@
  */
 
 CORE.initNavigation = function() {
-	// attach auto complete
-	CORE.autoComplete("SearchQuery", $('#nav-search form').attr('action')+'.json', function(item) {
-		redirect(item.action);
-	});
-	CORE.defaultSearchText = $("#SearchQuery").val();
-	$("#SearchQuery").focus(function() {if ($(this).val() == CORE.defaultSearchText) {
-		$(this).val("");
-		$(this).attr('class', 'search-over');
-	}});
-	$("#SearchQuery").blur(function() {if ($(this).val() == "") {
-		$(this).val(CORE.defaultSearchText);
-		$(this).attr('class', 'search-out');
-	}});
-
 	$('#nav-ministries .campuses input:radio').change(function() {
 		$('#nav-ministries li[id^=campus]').hide();
 		$('#nav-ministries li#campus-'+$(this).val()).show();

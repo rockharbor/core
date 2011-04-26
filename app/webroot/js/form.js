@@ -269,4 +269,28 @@ CORE.initFormUI = function() {
 	});
 
 	$('.form-error').one('focus', function() { $(this).removeClass('.form-error'); });
+	
+	// search forms
+	$('.search-form input[type="text"]').each(function() {
+		var id = $(this).attr('id');
+		CORE.autoComplete(id, $(this).closest('form').attr('action')+'.json', function(item) {
+			redirect(item.action);
+		});
+		$(this)
+			.data('defaultSearchText', $(this).val())
+			.focus(function() {
+				var self = $(this);
+				if (self.val() == self.data('defaultSearchText')) {
+					self.val('');
+					self.attr('class', 'search-over');
+				}
+			})
+			.blur(function() {
+				var self = $(this);
+				if (self.val() == '') {
+					self.val(self.data('defaultSearchText'));
+					self.attr('class', 'search-out');
+				}
+			});
+	});
 }
