@@ -480,7 +480,7 @@ CORE.confirmation = function(id, message, options) {
  */
 CORE.wysiwyg = function(id) {
 	delayWysiwyg = function() {
-		if ($('#'+id).width() <= 0) {
+		if ($('#'+id).width() <= 300) {
 			$('#'+id)[0].width = 527;
 		}
 		$('#'+id).wysiwyg({
@@ -496,6 +496,7 @@ CORE.wysiwyg = function(id) {
 				insertOrderedList: { visible : true, groupIndex: 3 },
 				insertUnorderedList: { visible : true, groupIndex: 3 }
 			},
+			initialContent: '',
 			css: '/css/jquery.wysiwyg.iframe.css'
 		});
 		// fix some display issues

@@ -1,9 +1,9 @@
-div.wysiwyg { border: 1px solid #cccccc; padding: 0px; background-color: #ffffff; }
+div.wysiwyg { border: 1px solid #cccccc; padding: 0px; background-color: #f1f1f1; }
 div.wysiwyg * { margin: 0; padding: 0; }
 
 div.wysiwyg ul.panel li.jwysiwyg-custom-command { overflow: hidden; }
 
-div.wysiwyg ul.panel { border-bottom: 1px solid #ccc; float: left; width: 100%; padding: 4px; }
+div.wysiwyg ul.panel { border-bottom: 1px solid #ccc; float: left; width: 100%; padding: 4px; background: #ffffff; }
 div.wysiwyg ul.panel li { list-style: none; float: left; margin: 1px 2px 3px 0;  background: rgb(240, 240, 240); -moz-user-select: none; -webkit-user-select: none; user-select: none;}
 div.wysiwyg ul.panel li.separator { width: 1px; height: 16px; margin: 0 4px; border-left: 1px solid #ccc; }
 div.wysiwyg ul.panel li { text-indent: -5000px; opacity: 0.85; filter: alpha(opacity=85); display: block; width: 16px; height: 16px; background: url('../assets/jquery.wysiwyg.gif') no-repeat -64px -80px; border: 1px dotted #ffffff; cursor: pointer; margin: 0px; }
