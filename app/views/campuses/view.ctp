@@ -1,35 +1,13 @@
-<div class="campuses">
-<h2><?php  __('Campus');?></h2>
-	<dl><?php $i = 0; $class = ' class="altrow"';?>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Id'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $campus['Campus']['id']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Name'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $campus['Campus']['name']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Description'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $campus['Campus']['description']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Active'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $campus['Campus']['active']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Created'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $campus['Campus']['created']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Modified'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $campus['Campus']['modified']; ?>
-			&nbsp;
-		</dd>
-	</dl>
+<h1><?php echo $campus['Campus']['name']; ?></h1>
+<div class="campuses index content-box">
+	<h2>Description</h2>
+	<p><?php echo html_entity_decode($campus['Campus']['description']); ?></p>
+	<h2>Search</h2>
+	<?php
+	echo $this->element('search', array(
+		 'model' => 'Campus',
+		 'model_id' => $campus['Campus']['id'],
+		 'term' => $campus['Campus']['name']
+	));
+	?>
 </div>
