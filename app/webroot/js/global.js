@@ -94,15 +94,18 @@ CORE.request = function(url, options, data) {
  * @param string id The pagination container's id
  * @see CORE.getUpdateableParent
  */
-CORE.updateablePagination = function(id, updateable) {
+CORE.updateablePagination = function(updateable) {
 	if (updateable == undefined) {
 		updateable = 'parent';
 	}
-	$('#'+id).find('a')
+	$('a[href*="page:"]')
 		.unbind('click')
 		.bind('click', function() {
+			if ($(this).attr('id') == '') {
+				$(this).attr('id', unique('pagination-link-'));
+			}
 			if (updateable == 'parent') {
-				var parent = CORE.getUpdateableParent(id);
+				var parent = CORE.getUpdateableParent($(this).attr('id'));
 				updateable = parent.updateable;
 			}
 			for (var div in CORE.updateables[updateable]) {
