@@ -212,12 +212,16 @@ class AppModel extends Model {
  * Use in conjunction with Controller::postConditions() to make search forms super-quick!
  *
  * @param array $data The Cake post data
+ * @param array $associated Associated models (used during recursion)
  * @return array The contain array
  * @access public
  */
-	function postContains($data) {
-		// get assoociated models
-		$associated = $this->getAssociated();
+	function postContains($data, $Model = null) {
+		// get associated models
+		if (!$Model) {
+			$Model = $this;
+		}
+		$associated = $Model->getAssociated();
 
 		// clear out all post conditions
 		foreach ($data as $model => $field) {
@@ -230,7 +234,7 @@ class AppModel extends Model {
 					$field = array();
 				}
 				// recusively check for more models to contain
-				$data[$model] = $this->postContains($field);
+				$data[$model] = $this->postContains($field, $Model->{$model});
 			}
 		}
 		

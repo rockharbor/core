@@ -154,6 +154,8 @@ class AppModelTestCase extends CoreTestCase {
 	}
 
 	function testPostContains() {
+		$this->loadFixtures('Campus');
+		
 		$data = array(
 			'User' => array(
 				'username' => 'jharris'
@@ -221,6 +223,21 @@ class AppModelTestCase extends CoreTestCase {
 		$expected = array(
 			'Profile' => array(),
 			'Publication' => array()
+		);
+		$results = $this->User->postContains($data);
+		$this->assertEqual($results, $expected);
+		
+		$data = array(
+			 'Profile' => array(
+				  'Campus' => array(
+						'name' => 'Some campus'
+				  )
+			 )
+		);
+		$expected = array(
+			 'Profile' => array(
+				  'Campus' => array()
+			 )
 		);
 		$results = $this->User->postContains($data);
 		$this->assertEqual($results, $expected);
