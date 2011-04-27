@@ -136,7 +136,7 @@ if (!empty($involvements)) { ?>
 	foreach ($involvements as $involvement):
 		$class = ($i % 2 == 0) ? 'alpha' : 'omega';
 		$i++;
-		echo $this->element('involvement-column', compact('involvement', 'class'));
+		echo $this->element('involvement_column', compact('involvement', 'class'));
 endforeach;
 ?>
 	</div>

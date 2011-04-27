@@ -56,7 +56,7 @@ $this->Paginator->options(array(
 			$i++;
 			switch ($viewStyle) {
 			case 'column':
-				echo $this->element('involvement-column', array('involvement' => $involvement, 'class' => $class));
+				echo $this->element('involvement_column', array('involvement' => $involvement, 'class' => $class));
 			break;
 			case 'list':
 			default:
