@@ -212,8 +212,8 @@ span.breadcrumb.editing img {
 .border-right {
 	border-right: 1px solid #acacac;
 }
-/* Ajax content boxes */
-div.content-box .content-box {
+/* Ajax and popup content boxes */
+div.content-box .content-box, .ui-dialog .content-box {
 	padding:10px;
 	margin:0;
 	border: 1px solid #acacac;
@@ -222,7 +222,7 @@ div.content-box .content-box {
 	-moz-box-shadow:none;
 	-webkit-box-shadow:none;
 }
-.ajax-clean .content-box {
+.ajax-clean .content-box, .ui-dialog .content-box {
 	padding:0 !important;
 	border:none !important;
 	background:transparent !important;
