@@ -138,8 +138,11 @@ endforeach;
 ?>
 	</div>
 </div>
+<div class="grid_10 alpha omega" style="text-align: right">
+	<?php echo $this->Permission->link('Advanced Search', array('action' => 'involvement')); ?>
+</div>
 <?php }
-
+	
 if (empty($users) && empty($ministries) && empty($involvements)) { ?>
 
 <p>Whoops, no results. This ain't <span style="color: blue;">G</span><span style="color: red;">o</span><span style="color: yellow;">o</span><span style="color: blue;">g</span><span style="color: green;">l</span><span style="color: red;">e</span>&trade;, so try again with something less specific.</p>

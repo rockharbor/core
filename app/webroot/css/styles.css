@@ -667,6 +667,9 @@ select {
 	font-family: 'Lucida Sans',Helvetica,Arial,sans-serif;
 	font-size: 11px;
 }
+div.select .checkbox {
+	margin: 5px 0;
+}
 .core-checkbox, .core-radio {
 	background: #f1f1f1;
 	border: 1px solid #838383;

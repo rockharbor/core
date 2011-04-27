@@ -273,8 +273,13 @@ class SearchesController extends AppController {
 		$results = array();
 
 		// at the very least, we want:
-		$contain = array('Ministry', 'InvolvementType');
-		$this->paginate = compact('contain');
+		$link = array(
+			'Ministry' => array(
+				'Campus'
+			), 
+			'InvolvementType'
+		);
+		$this->paginate = compact('link');
 
 		if (!empty($this->data)) {
 			$operator = $this->data['Search']['operator'];
@@ -283,12 +288,12 @@ class SearchesController extends AppController {
 			// remove blanks
 			$this->data = array_map('Set::filter', $this->data);
 
-			$contain = array_merge($contain, $this->Involvement->postContains($this->data));
+			$link = array_merge_recursive($link, $this->Involvement->postContains($this->data));
 			$conditions = $this->postConditions($this->data, 'LIKE', $operator);
 
 			$this->data['Search']['operator'] = $operator;
 
-			$this->paginate = compact('conditions', 'contain', 'limit');
+			$this->paginate = compact('conditions', 'link', 'limit');
 		}
 
 		$results = $this->FilterPagination->paginate('Involvement');
