@@ -1,6 +1,5 @@
-<h2>Search</h2>
-
-<div class="ministries">
+<h1>Search Ministries</h1>
+<div class="ministries content-box">
 <?php echo $this->Form->create('Search', array(
 	'action' => 'ministry',
 	'default' => false
@@ -26,8 +25,9 @@
 $defaultSubmitOptions['update'] = '#ministry-results';
 echo $this->Js->submit('Search!', $defaultSubmitOptions);
 echo $this->Form->end();
+$url = $this->here; // doesn't matter, as the updateable is only needed for the div (pagination)
+$this->Js->buffer('CORE.register("results", "ministry-results", "'.$url.'");');
 ?>
-</div>
-
-<div id="ministry-results">
+	<div id="ministry-results">
+	</div>
 </div>

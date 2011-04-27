@@ -122,6 +122,9 @@ foreach ($ministries as $ministry):
 endforeach;
 ?>
 </div>
+<div class="grid_10 alpha omega" style="text-align: right">
+	<?php echo $this->Permission->link('Advanced Search', array('action' => 'ministry')); ?>
+</div>
 <?php }
 
 if (!empty($involvements)) { ?>
