@@ -279,6 +279,33 @@ class UserTestCase extends CoreTestCase {
 			)
 		);
 		$this->assertEqual($results, $expected);
+		
+		$search = array(
+			'Search' => array(
+				'operator' => 'OR'
+			),
+			'User' => array(
+				'username' => null,
+				'active' => 1,
+				'flagged' => null
+			),
+			'Profile' => array(
+				'Birthday' => array(),
+				'email' => array()
+			),
+			'Distance' => array()
+		);
+		$results = $this->User->prepareSearch($this->Controller, $search);
+		$expected = array(
+			'link' => array(),
+			'group' => 'User.id',
+			'conditions' => array(
+				'OR' => array(
+					'User.active' => true
+				)
+			)
+		);
+		$this->assertEqual($results, $expected);
 	}
 
 	function testGenerateUsername() {

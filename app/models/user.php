@@ -503,13 +503,14 @@ class User extends AppModel {
 		unset($data['Profile']['email']);
 
 		// remove blank
-		$callback = function($item) use (&$callback) {
-			 if (is_array($item)) {
-				  return array_filter($item, $callback);
-			 }
-			 if (!empty($item)) {
-				  return $item;
-			 }
+		$callback = function(&$item) use (&$callback) {
+			if (is_array($item)) {
+				$item = array_filter($item, $callback);
+				return !empty($item);
+			}
+			if (!empty($item)) {
+				return $item;
+			}
 		};
 		$data = array_filter($data, $callback);
 		$link = $this->postContains($data);
