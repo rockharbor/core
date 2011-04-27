@@ -148,10 +148,6 @@ if (empty($users) && empty($ministries) && empty($involvements)) { ?>
 <p>Whoops, no results. This ain't <span style="color: blue;">G</span><span style="color: red;">o</span><span style="color: yellow;">o</span><span style="color: blue;">g</span><span style="color: green;">l</span><span style="color: red;">e</span>&trade;, so try again with something less specific.</p>
 
 <?php
-
-echo $this->Form->create('Search', array('id' => 'SearchFilterForm'));
-echo $this->Form->input('query', array('id' => 'SearchFilterQuery'));
-echo $this->Form->end('Search');
-
+echo $this->element('search');
 } ?>
 </div>
