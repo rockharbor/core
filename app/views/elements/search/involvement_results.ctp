@@ -14,7 +14,7 @@ if (!empty($results)) {
 	$i = 0;
 	foreach ($results as $result):
 		$class = ($i % 2 == 0) ? 'alpha' : 'omega';
-		echo $this->element('involvement-column', array('involvement' => $result, 'class' => $class));
+		echo $this->element('involvement_column', array('involvement' => $result, 'class' => $class));
 	endforeach;
 ?>
 	</div>

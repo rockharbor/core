@@ -3,7 +3,7 @@ $this->Paginator->options(array(
     'updateable' => 'parent'
 ));
 ?>
-<table cellpadding="0" cellspacing="0">
+<table cellpadding="0" cellspacing="0" class="datatable">
 	<thead>
 		<tr>
 			<th><?php echo $this->Paginator->sort('name'); ?></th>
@@ -20,16 +20,10 @@ $this->Paginator->options(array(
 			}
 		?>
 			<tr<?php echo $class;?>>
-				<td><?php echo $this->Formatting->flags('Involvement', $result).$result['Involvement']['name']; ?></td>
+				<td><?php echo $result['Involvement']['name'].$this->Formatting->flags('Involvement', $result); ?></td>
 				<td><?php echo $this->element('search'.DS.'actions'.DS.$element, compact('result')); ?></td>
 			</tr>
 		<?php endforeach; ?>
 	</tbody>
-	<tfoot>
-		<tr>
-			<td colspan="2">
-				<?php $this->element('pagination'); ?>
-			</td>
-		</tr>
-	</tfoot>
 </table>
+<?php $this->element('pagination'); ?>

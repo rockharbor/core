@@ -4,7 +4,7 @@ $this->Paginator->options(array(
 ));
 ?>
 
-<table cellpadding="0" cellspacing="0">
+<table cellpadding="0" cellspacing="0" class="datatable">
 	<thead>
 		<tr>
 			<th><?php echo $this->Paginator->sort('username'); ?></th>
@@ -23,18 +23,12 @@ $this->Paginator->options(array(
 			}
 		?>
 			<tr<?php echo $class;?>>
-				<td><?php echo $this->Formatting->flags('User', $result).$result['User']['username']; ?></td>
+				<td><?php echo $result['User']['username'].$this->Formatting->flags('User', $result); ?></td>
 				<td><?php echo $result['Profile']['first_name']; ?></td>
 				<td><?php echo $result['Profile']['last_name']; ?></td>
 				<td><?php echo $this->element('search'.DS.'actions'.DS.$element, compact('result')); ?></td>
 			</tr>
 		<?php endforeach; ?>
 	</tbody>
-	<tfoot>
-		<tr>
-			<td colspan="4">
-				<?php echo $this->element('pagination'); ?>
-			</td>
-		</tr>
-	</tfoot>
 </table>
+<?php echo $this->element('pagination'); ?>
