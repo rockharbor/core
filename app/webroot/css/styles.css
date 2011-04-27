@@ -348,6 +348,8 @@ div.involvement-column .involvement-details {
 	width: 280px;
 	margin-right: 10px;
 	float:left;
+	max-height: 100px;
+   overflow: hidden;
 }
 div.involvement-column .involvement-date {
 	width: 90px;
@@ -640,6 +642,7 @@ legend, div.legend {
 	background: #ffffff;
 	color: #838383;
 	padding-right: 5px;
+	min-height: 11px;
 }
 div.legend {
 	left: 0;

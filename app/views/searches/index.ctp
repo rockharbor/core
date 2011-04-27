@@ -132,34 +132,8 @@ if (!empty($involvements)) { ?>
 	$i = 0;
 	foreach ($involvements as $involvement):
 		$class = ($i % 2 == 0) ? 'alpha' : 'omega';
-				$i++;
-	?>
-		<div class="involvement-column grid_5 <?php echo $class; ?>">
-			<div class="involvement-header"><?php echo $this->Html->link(html_entity_decode($involvement['Involvement']['name']), array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvement['Involvement']['id'])).$this->Formatting->flags('Involvement', $involvement); ?></div>
-			<div class="involvement-details">
-				<?php
-				echo $this->Html->link(html_entity_decode($involvement['Campus']['name']), array('controller' => 'campuses', 'action' => 'view', 'Campus' => $involvement['Campus']['id']));
-				echo ' > ';
-				if (!empty($involvement['ParentMinistry']['id'])) {
-					echo $this->Html->link(html_entity_decode($involvement['ParentMinistry']['name']), array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $involvement['ParentMinistry']['id']));
-					echo ' > ';
-				}
-				echo $this->Html->link(html_entity_decode($involvement['Ministry']['name']), array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $involvement['Ministry']['id']));
-				echo '<hr>';
-				echo $this->Text->truncate(html_entity_decode($involvement['Involvement']['description']), 250, array('html' => true));
-				?>
-			</div>
-			<div class="involvement-date">
-				<?php
-				if (!empty($involvement['dates'])) {
-					echo $this->Html->tag('div', date('m/d/y', strtotime($involvement['dates'][0]['Date']['start_date'])));
-					echo $this->Html->tag('div', date('g:i', strtotime($involvement['dates'][0]['Date']['start_time'])), array('class' => date('a', strtotime($involvement['dates'][0]['Date']['start_time']))));
-				}
-				echo $this->Html->tag('div', $this->Html->link('Get Involved', array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvement['Involvement']['id']), array('class' => 'button')));
-				?>
-			</div>
-		</div>
-<?php	
+		$i++;
+		echo $this->element('involvement-column', compact('involvement', 'class'));
 endforeach;
 ?>
 	</div>
