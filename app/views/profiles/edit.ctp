@@ -16,7 +16,9 @@ echo $this->Form->create(array(
 	<ul>
 		<li><a href="#personal-information">Personal</a></li>
 		<li><a href="#contact-information">Contact</a></li>
+		<?php if ($this->data['Profile']['child']): ?>
 		<li><a href="#child-information">Child and School</a></li>
+		<?php endif; ?>
 		<li><?php echo $this->Html->link('Subscriptions', array('controller' => 'publications', 'action' => 'subscriptions', 'User' => $this->data['Profile']['user_id']), array('title' => 'subscriptions')); ?></li>
 	</ul>
 
@@ -95,6 +97,7 @@ echo $this->Form->create(array(
 			</fieldset>
 			<div style="clear:both"><?php echo $this->Js->submit('Save', $defaultSubmitOptions); ?></div>
 		</div>
+		<?php if ($this->data['Profile']['child']): ?>
 		<div id="child-information">
 			<fieldset class="grid_5 alpha">
 				<legend>Child Information</legend>
@@ -138,6 +141,7 @@ echo $this->Form->create(array(
 			</fieldset>
 			<div style="clear:both"><?php echo $this->Js->submit('Save', $defaultSubmitOptions); ?></div>
 		</div>
+		<?php endif; ?>
 		<div id="subscriptions">
 			<?php
 			echo $this->requestAction('/publications/subscriptions', array(
