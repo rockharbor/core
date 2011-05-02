@@ -223,9 +223,9 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/User/username', $vars['results']);
 		$expected = array(
 			'jharris',
+			'joe',
 			'rickyrockharbor',
-			'rickyrockharborjr',
-			'joe'
+			'rickyrockharborjr'
 		);
 		$this->assertEqual($results, $expected);
 

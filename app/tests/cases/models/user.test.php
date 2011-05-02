@@ -306,6 +306,49 @@ class UserTestCase extends CoreTestCase {
 			)
 		);
 		$this->assertEqual($results, $expected);
+		
+		$search = array(
+			'Search' => array(
+				'operator' => 'AND'
+			),
+			'User' => array(
+				 'username' => 'j'
+			),
+			'Profile' => array(
+				'age' => array(
+					 '0-99'
+				),
+				'gender' => 'm'
+			),
+			'Roster' => array(
+				'Involvement' => array(
+					'name' => 'Core'
+				)
+			)
+		);
+		$results = $this->User->prepareSearch($this->Controller, $search);
+		$expected = array(
+			'link' => array(
+				'Profile' => array(),
+				'Roster' => array(
+					'Involvement' => array()
+				)
+			),
+			'group' => 'User.id',
+			'conditions' => array(
+				'Profile.gender LIKE' => '%m%',
+				'User.username LIKE' => '%j%',
+				'Involvement.name LIKE' => '%Core%',
+				array(
+					'or' => array(
+						 array(
+							  $this->User->Profile->getVirtualField('age').' BETWEEN ? AND ?' => array(0, 99)
+						 )
+					)
+				)
+			)
+		);
+		$this->assertEqual($results, $expected);
 	}
 
 	function testGenerateUsername() {

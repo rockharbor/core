@@ -98,6 +98,9 @@ if (!empty($this->data['Search']['query'])) {
 	}
 	?>
 </div>
+<div class="grid_10 alpha omega" style="text-align: right">
+	<?php echo $this->Permission->link('Advanced Search', array('action' => 'user')); ?>
+</div>
 <?php }
 
 if (!empty($ministries)) { ?>

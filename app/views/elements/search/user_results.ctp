@@ -2,50 +2,64 @@
 if (!empty($results)) {
 
 $this->Paginator->options(array(
-    'updateable' => 'parent'
+    'updateable' => 'results'
 ));
 echo $this->MultiSelect->create();
 ?>
 <h3>Results</h3>
-	<table cellpadding="0" cellspacing="0">
-	<tr class="multi-select">
-		<th colspan="6">
-		<?php			
-			echo $this->Html->link('Email', array(
-				'controller' => 'sys_emails',
-				'action' => 'compose',
-				$this->MultiSelect->token
-			), array(
-				'rel' => 'modal-none'
-			));
-			
-			echo $this->Html->link('Export List', array(
-				'controller' => 'reports',
-				'action' => 'export',
-				'User',
-				$this->MultiSelect->token
-			), array(
-				'rel' => 'modal-none'
-			));
-			
-			echo $this->Html->link('View Map', array(
-				'controller' => 'reports',
-				'action' => 'map',
-				$this->MultiSelect->token
-			), array(
-				'rel' => 'modal-none'
-			));
-		?>
-		</th>
-	</tr>
-	<tr>
-		<th width="20px;"><?php echo $this->MultiSelect->checkbox('all'); ?></th>
-		<th width="40px;"></th>
-		<th><?php echo $this->Paginator->sort('username'); ?></th>
-		<th><?php echo $this->Paginator->sort('First Name', 'Profile.first_name'); ?></th>
-		<th><?php echo $this->Paginator->sort('Last Name', 'Profile.last_name'); ?></th>
-		<th class="actions">Actions</th>
-	</tr>
+	<table cellpadding="0" cellspacing="0" class="datatable">
+		<thead>
+			<?php 
+			$links = array(
+				 array(
+					'title' => 'Email',
+					'url' => array(
+						'controller' => 'sys_emails',
+						'action' => 'compose',
+						$this->MultiSelect->token
+					),
+					'options' => array(
+						'rel' => 'modal-none'
+					)
+				 ),
+				 array(
+					'title' => 'Export List',
+					'url' => array(
+						'controller' => 'reports',
+						'action' => 'export',
+						'User',
+						$this->MultiSelect->token
+					),
+					'options' => array(
+						'rel' => 'modal-none'
+					)
+				),
+				array(
+					'title' => 'Map Results',
+					'url' => array(
+						'controller' => 'reports',
+						'action' => 'map',
+						$this->MultiSelect->token
+					),
+					'options' => array(
+						'rel' => 'modal-none'
+					)
+				)
+			);
+			$colCount = 6;
+			$checkAll = true;
+			echo $this->element('multiselect', compact('links', 'colCount', 'checkAll')); 
+			?>
+			<tr>
+				<th width="20px;"></th>
+				<th>&nbsp;</th>
+				<th><?php echo $this->Paginator->sort('First Name', 'Profile.first_name').' / '.$this->Paginator->sort('Last Name', 'Profile.last_name'); ?></th>
+				<th>Address</th>
+				<th>Contact Info</th>
+				<th>Household Contact</th>
+			</tr>
+		</thead>
+		<body>
 <?php	
 	$i = 0;
 	foreach ($results as $result):
@@ -57,36 +71,61 @@ echo $this->MultiSelect->create();
 		<tr<?php echo $class;?>>
 			<td><?php echo $this->MultiSelect->checkbox($result['User']['id']); ?></td>
 			<td><?php 
-			if (!empty($result['Image'])) {
-				$path = 'xs'.DS.$result['Image'][0]['dirname'].DS.$result['Image'][0]['basename'];
-				echo $this->Media->embed($path, array('restrict' => 'image'));
-			}			
+			
 			?></td>
-			<td><?php echo $this->Formatting->flags('User', $result).$this->Html->link($result['User']['username'], array('controller' => 'profiles', 'action' => 'view', 'User' => $result['User']['id'])); ?></td>
-			<td><?php echo $result['Profile']['first_name']; ?></td>
-			<td><?php echo $result['Profile']['last_name']; ?></td>
-			<td class="actions">&nbsp;</td>
+			<td><?php 
+			echo $this->Html->link($result['Profile']['name'], array('controller' => 'profiles', 'action' => 'view', 'User' => $result['User']['id'])); 
+			echo '<br />';
+			if (!empty($result['Image'])) {
+				$path = 's'.DS.$result['Image'][0]['dirname'].DS.$result['Image'][0]['basename'];
+				echo $this->Media->embed($path, array('restrict' => 'image'));
+			} else {
+				$default = Core::read('user.default_image');
+				if ($default) {
+					$path = 's'.DS.$default['Image']['dirname'].DS.$default['Image']['basename'];
+				}
+			}
+			?></td>
+			<td><?php echo $this->Formatting->address($result['ActiveAddress'], $result['User']['id']); ?></td>
+			<td><?php 
+			$emails = array();
+			$emails[] = $result['Profile']['primary_email'];
+			$emails[] = $result['Profile']['alternate_email_1'];
+			$emails[] = $result['Profile']['alternate_email_2'];
+			$emails = array_filter($emails);
+			foreach ($emails as &$email) {
+				$email = $this->Formatting->email($email, $result['User']['id']);
+			}
+			echo implode('<br />', $emails);
+			?><br />
+			<?php
+			$phones = array(
+				'Cell:' => 'cell_phone',
+				'Home:' => 'home_phone',
+				'Office:' => 'work_phone'
+			);
+			foreach ($phones as $title => $phone) {
+				if (!empty($result['Profile'][$phone])) {
+					echo $this->Html->tag('dt', $title);
+					$ext = isset($result['Profile'][$phone.'_ext']) ? $result['Profile'][$phone.'_ext'] : null;
+					echo $this->Html->tag('dd', $this->Formatting->phone($result['Profile'][$phone], $ext));
+				}
+			}
+			?></td>
+			<td><?php
+			$contact = $result['HouseholdMember'][0]['Household']['HouseholdContact'];
+			echo $this->Html->link($contact['Profile']['name'], array('controller' => 'profiles', 'action' => 'view', 'User' => $contact['Profile']['user_id']));
+			echo '<br />';
+			echo $this->Formatting->address($contact['ActiveAddress'], $contact['Profile']['user_id']);
+			?></td>
 		</tr>
 <?php	
 	endforeach;
 ?>
+		</body>
 	</table>
-	
-	<p>
-	<?php
-	echo $this->Paginator->counter(array(
-	'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
-	));
-	?>	</p>
-
-	<div class="paging">
-		<?php echo $this->Paginator->prev('<< '.__('previous', true), array(), null, array('class'=>'disabled'));?>
-	 | 	<?php echo $this->Paginator->numbers();?>
- |
-		<?php echo $this->Paginator->next(__('next', true).' >>', array(), null, array('class' => 'disabled'));?>
-	</div>
 <?php
-
+echo $this->element('pagination');
 echo $this->MultiSelect->end();
 
 } else {

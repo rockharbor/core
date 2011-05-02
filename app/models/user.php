@@ -538,7 +538,7 @@ class User extends AppModel {
 			$ages = array();
 			foreach ($data['Profile']['age'] as $ageGroup) {			
 				$ageRange = explode('-', $ageGroup);
-				$ages[$operator][] = array($this->Profile->getVirtualField('age').' BETWEEN ? AND ?' => array((int)$ageRange[0], (int)$ageRange[1]));
+				$ages['or'][] = array($this->Profile->getVirtualField('age').' BETWEEN ? AND ?' => array((int)$ageRange[0], (int)$ageRange[1]));
 			}
 			$conditions[$operator][] = $ages;
 			unset($conditions['Profile.age']);
@@ -588,8 +588,12 @@ class User extends AppModel {
 		// check for ministry
 		if (!empty($data['Roster']['Involvement']['Ministry']['name'])) {
 			$conditions[$operator]['Ministry.name LIKE'] = '%'.$data['Roster']['Involvement']['Ministry']['name'].'%';
-			//$link['Address']['Zipcode'] = array();
 			unset($conditions['Roster.Involvement.Ministry']);
+		}
+		
+		if (strtolower($operator) == 'and' && isset($conditions[$operator])) {
+			$conditions = array_merge($conditions, $conditions[$operator]);
+			unset($conditions[$operator]);
 		}
 		
 		$group = 'User.id';

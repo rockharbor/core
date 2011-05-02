@@ -356,11 +356,14 @@ class SearchesController extends AppController {
 		// at the very least, we want:
 		$contain = array(
 			'Group',
-			'Address',
+			'ActiveAddress',
 			'Profile',
 			'HouseholdMember' => array(
 				'Household' => array(
-					'HouseholdContact'
+					'HouseholdContact' => array(
+						'Profile',
+						'ActiveAddress'
+					)
 				)
 			),
 			'Image'
@@ -368,17 +371,18 @@ class SearchesController extends AppController {
 
 		if (!empty($this->data)) {
 			$options = $this->User->prepareSearch($this, $this->data);
-
-			// merge contains with defaults and just get ids (since this is just the filter stage)
-			foreach ($options['link'] as &$linkedModel) {
-				$linkedModel['fields'] = array('id');
-			}
-			$this->paginate = $options;
+			
+			// cache the find all query, since it will remain the same during pagination
+			$options['cache'] = '+5 minutes';
 
 			// first, search based on the linked parameters (which will filter)
-			$filteredUsers = $this->paginate();
+			$filteredUsers = $this->User->find('all', $options);
 			// reset pagination
-			$this->paginate = array('contain' => $contain, 'conditions' => array('User.id' => Set::extract('/User/id', $filteredUsers)));
+			$this->paginate = array(
+				'contain' => $contain, 
+				'conditions' => array('User.id' => Set::extract('/User/id', $filteredUsers)),
+				'order' => 'Profile.first_name ASC, Profile.last_name ASC'
+			);
 
 			$this->MultiSelect->saveSearch($this->paginate);
 		}
