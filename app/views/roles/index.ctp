@@ -3,7 +3,7 @@ $this->Paginator->options(array(
     'updateable' => 'parent'
 ));
 ?>
-<h1>Leaders</h1>
+<h1>Roles</h1>
 <div class="clearfix">
 	<table cellpadding="0" cellspacing="0" class="datatable">
 		<thead>
@@ -46,7 +46,7 @@ $this->Paginator->options(array(
 
 <ul class="core-admin-tabs">
 <?php
-	$link = $this->Permission->link('Add Role', array('action' => 'add', 'Ministry' => $role['Role']['ministry_id']), array ('rel' => 'modal-roles'));
+	$link = $this->Permission->link('Add Role', array('action' => 'add', 'Ministry' => $ministry_id), array ('rel' => 'modal-roles'));
 	if ($link) {
 		echo $this->Html->tag('li', $link);
 	}

@@ -59,6 +59,7 @@ class RolesController extends AppController {
 			)
 		);
 		$this->set('roles', $this->paginate());
+		$this->set('ministry_id', $this->passedArgs['Ministry']);
 	}
 
 /**
