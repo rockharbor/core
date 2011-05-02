@@ -303,7 +303,7 @@ class InstallShell extends Shell {
 			'controllers/Ministries/edit',
 			'controllers/Ministries/history',
 			'controllers/Ministries/revise',
-			'controllers/Ministry/bulk_edit',
+			'controllers/Ministries/bulk_edit',
 			'controllers/MinistryImages/delete',
 			'controllers/MinistryImages/index',
 			'controllers/MinistryImages/approve',
