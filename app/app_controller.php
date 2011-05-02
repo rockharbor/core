@@ -429,6 +429,12 @@ class AppController extends Controller {
 			$Involvement = ClassRegistry::init('Involvement');
 			if ($Involvement->isLeader($user['User']['id'], $params['Involvement'])) {
 				$groups = reset($Group->findByName('Involvement Leader'));
+			} else {
+				$Ministry = ClassRegistry::init('Ministry');
+				$ministry_id = $Involvement->read(array('ministry_id'), $params['Involvement']);
+				if ($Ministry->isManager($user['User']['id'], $ministry_id['Involvement']['ministry_id'])) {
+					$groups = reset($Group->findByName('Ministry Manager'));
+				}
 			}
 		}
 		

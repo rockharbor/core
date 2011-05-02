@@ -102,6 +102,15 @@ class AppControllerTestCase extends CoreTestCase {
 			'rght' => 12
 		);
 		$this->assertEqual($results, $expected);
+		
+		$this->App->activeUser['User']['id'] = 2;
+		$this->App->passedArgs = array('Involvement' => 1);
+		$results = $this->App->_setConditionalGroups($this->App->passedArgs, $this->App->activeUser);
+		$results = Set::extract('/name', $results);
+		$expected = array(
+			'Ministry Manager'
+		);
+		$this->assertEqual($results, $expected);
 	}
 
 	function testIsAuthorized() {
