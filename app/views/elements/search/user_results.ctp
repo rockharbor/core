@@ -52,7 +52,6 @@ echo $this->MultiSelect->create();
 			?>
 			<tr>
 				<th width="20px;"></th>
-				<th>&nbsp;</th>
 				<th><?php echo $this->Paginator->sort('First Name', 'Profile.first_name').' / '.$this->Paginator->sort('Last Name', 'Profile.last_name'); ?></th>
 				<th>Address</th>
 				<th>Contact Info</th>
@@ -70,9 +69,6 @@ echo $this->MultiSelect->create();
 ?>
 		<tr<?php echo $class;?>>
 			<td><?php echo $this->MultiSelect->checkbox($result['User']['id']); ?></td>
-			<td><?php 
-			
-			?></td>
 			<td><?php 
 			echo $this->Html->link($result['Profile']['name'], array('controller' => 'profiles', 'action' => 'view', 'User' => $result['User']['id'])); 
 			echo '<br />';
