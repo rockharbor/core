@@ -192,7 +192,7 @@ $this->Paginator->options(array(
 		?></td>
 		<td><?php 
 		$name = $roster['Profile']['name'];
-		echo $this->Html->link($name, array('controller' => 'users', 'action' => 'view', 'User' => $roster['User']['id']), array('escape' => false));
+		echo $this->Html->link($name, array('controller' => 'profiles', 'action' => 'view', 'User' => $roster['User']['id']), array('escape' => false));
 		?>&nbsp;
 		<div class="core-tooltip"><?php
 			if (isset($roster['ImageIcon'])) {
@@ -200,7 +200,7 @@ $this->Paginator->options(array(
 				echo $this->Media->embed($path, array('restrict' => 'image'));
 			}
 			echo $this->Html->link('Edit Info', array('controller' => 'rosters', 'action' => 'edit', $roster['Roster']['id']), array('rel' => 'modal-roster'));
-			echo $this->Html->link('View Profile', array('controller' => 'users', 'action' => 'view', 'User' => $roster['User']['id']));
+			echo $this->Html->link('View Profile', array('controller' => 'profiles', 'action' => 'view', 'User' => $roster['User']['id']));
 			echo $this->Html->link('View Payments', array('controller' => 'payments', 'action' => 'index', 'User' => $roster['User']['id'], 'Involvement' => $involvement['Involvement']['id']), array('rel' => 'modal-none'));
 		?></div>
 		<?php echo $this->Formatting->flags('User', $roster); ?>
