@@ -260,8 +260,8 @@ class RostersController extends AppController {
 		$this->Roster->Involvement->contain(array('InvolvementType', 'Question'));
 		$involvement = $this->Roster->Involvement->read(null, $involvementId);
 
-		// can't sign up for inactive involvements
-		if (!$involvement['Involvement']['active']) {
+		// can't sign up for inactive or past involvements
+		if (!$involvement['Involvement']['active'] && !$involvement['Involvement']['passed']) {
 			$this->Session->setFlash('You cannot sign up for an inactive event.', 'flash'.DS.'failure');
 			$this->redirect($this->emptyPage);
 		}

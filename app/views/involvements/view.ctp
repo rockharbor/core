@@ -100,7 +100,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 			</div>
 			<div class="grid_10 alpha omega">
 				<?php 
-				if ($involvement['Involvement']['signup']) {
+				if ($involvement['Involvement']['signup'] && $involvement['Involvement']['active'] && !$involvement['Involvement']['passed']) {
 					echo $this->Html->link('Sign up', array('controller' => 'rosters', 'action' => 'add', 'User' => $activeUser['User']['id'], 'Involvement' => $involvement['Involvement']['id']), array('rel' => 'modal-content', 'class' => 'button'));
 				}		
 				?>
