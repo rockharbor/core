@@ -34,11 +34,11 @@ class MigratorTask extends MigratorShell {
  */
 	function _migrate($data) {
 		$this->_migrationCount = 0;
-		foreach ($data as $oldRecord) {			
+		foreach ($data as $oldRecord) {
+			$this->_originalRecord = $oldRecord;
 			$oldRecord = $oldRecord['Model'];
 			$oldPk = $oldRecord[$this->_oldPk];
 			$this->_editingRecord = $oldRecord;
-			$this->_originalRecord = $oldRecord;
 			$this->_prepareData();
 
 			if ($this->_editingRecord == false) {

@@ -325,18 +325,18 @@ class UserTask extends MigratorTask {
  * If all cases fail, they are not considered active and will not be migrated.
  */
 	function __userSomewhatActive() {
-		if ($this->_originalRecord['active'] == 'F') {
+		if ($this->_originalRecord['Model']['active'] == 'F') {
 			return false;
 		}
-		if (!empty($this->_originalRecord['last_logged_in'])) {
+		if (!empty($this->_originalRecord['Model']['last_logged_in'])) {
 			return true;
 		}
-		if (!empty($this->_originalRecord['roles'])) {
+		if (!empty($this->_originalRecord['Model']['roles'])) {
 			return true;
 		}
 		$subscriptions = new Model(false, 'publication_subscriptions', $this->_oldDbConfig);
 		if ($subscriptions->hasAny(array(
-			'person_id' => $this->_originalRecord['person_id']
+			'person_id' => $this->_originalRecord['Model']['person_id']
 		))) {
 			return true;
 		}
@@ -344,7 +344,7 @@ class UserTask extends MigratorTask {
 		foreach ($tge as $involvement) {
 			$roster = new Model(false, $involvement, $this->_oldDbConfig);
 			if ($roster->hasAny(array(
-				'person_id' => $this->_originalRecord['person_id']
+				'person_id' => $this->_originalRecord['Model']['person_id']
 			))) {
 				return true;
 			}

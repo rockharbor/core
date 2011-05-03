@@ -53,8 +53,8 @@ class MinistryTask extends MigratorTask {
 				$roster = new Model(false, $involvement, $this->_oldDbConfig);
 				if (!$roster->hasAny(array(
 					'or' => array(
-						'ministry_id' => $this->_originalRecord['ministry_id'],
-						'subministry_id' => $this->_originalRecord['ministry_id']
+						'ministry_id' => $this->_originalRecord['Model']['ministry_id'],
+						'subministry_id' => $this->_originalRecord['Model']['ministry_id']
 					)
 				))) {
 					$this->_editingRecord = false;
