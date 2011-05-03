@@ -84,9 +84,14 @@
 		<div id="lists">
 			<div class="sub-tabs core-tabs">
 				<ul>
-				<?php	foreach ($controllers as $controller): ?>
-					<li><?php echo $this->Html->link(Inflector::humanize($controller), array('controller' => $controller), array('title' => Inflector::slug(Inflector::humanize($controller), '-'))); ?></li>
-				<?php endforeach; ?>
+				<?php	
+				foreach ($controllers as $controller) {
+					$link = $this->Permission->link(Inflector::humanize($controller), array('controller' => $controller), array('title' => Inflector::slug(Inflector::humanize($controller), '-')));
+					if ($link) {
+						echo $this->Html->tag('li', $link);
+					}
+				}
+				?>
 				</ul>
 				<?php	foreach ($controllers as $controller): ?>
 				<div id="<?php echo Inflector::slug(Inflector::humanize($controller), '-'); ?>"></div>
