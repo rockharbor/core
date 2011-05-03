@@ -180,13 +180,14 @@ class ReportsController extends AppController {
 	function payments() {
 		$campuses = $this->Campus->find('list');
 		$ministries = $this->Ministry->generatetreelist();
-		$paymentTypes = $this->Payment->PaymentType->find('list');
+		$paymentTypes = $this->Payment->PaymentType->find('all');
+		$paymentTypeTypes = $this->Payment->PaymentType->types;
 
 		$rosterConditions = array();
 		$conditions = array(
 			'contain' => array(
 				'PaymentType' => array(
-					'fields' => array('id', 'name')
+					'fields' => array('id', 'name', 'type')
 				),
 				'Payer' => array(
 					'Profile' => array(
@@ -247,8 +248,11 @@ class ReportsController extends AppController {
 				);
 			}
 
-			if (!empty($this->data['Payment']['payment_type_id'])) {
-				$conditions['conditions']['Payment.payment_type_id'] = $this->data['Payment']['payment_type_id'];
+			if (!empty($this->data['PaymentType']['id'])) {
+				$conditions['conditions']['PaymentType.id'] = $this->data['PaymentType']['id'];
+			}
+			if (!empty($this->data['PaymentType']['type'])) {
+				$conditions['conditions']['PaymentType.type'] = $this->data['PaymentType']['type'];
 			}
 			if (!empty($this->data['Payment']['start_date']) && !empty($this->data['Payment']['end_date'])) {
 				$conditions['conditions']['Payment.created BETWEEN ? AND ?'] = array(
@@ -274,7 +278,7 @@ class ReportsController extends AppController {
 		$this->FilterPagination->startEmpty = false;
 		$payments = $this->FilterPagination->paginate('Payment');
 
-		$this->set(compact('ministries', 'campuses', 'paymentTypes', 'payments'));
+		$this->set(compact('ministries', 'campuses', 'paymentTypes', 'paymentTypeTypes', 'payments'));
 	}
 	
 /**

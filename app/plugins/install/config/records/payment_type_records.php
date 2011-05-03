@@ -17,15 +17,28 @@ class PaymentTypeRecords extends Records {
 	var $records = array(
 		array(
 			'id' => 1,
-			'name' => 'Credit Card',
+			'name' => 'Visa',
+			'type' => 0
 		),
 		array(
 			'id' => 2,
-			'name' => 'Cash',
+			'name' => 'Mastercard',
+			'type' => 0
 		),
 		array(
 			'id' => 3,
+			'name' => 'American Express',
+			'type' => 0
+		),
+		array(
+			'id' => 4,
+			'name' => 'Cash',
+			'type' => 1
+		),
+		array(
+			'id' => 5,
 			'name' => 'Check',
+			'type' => 2
 		),
 	);
 

@@ -30,7 +30,12 @@ if (empty($this->data)):
 	<fieldset class="grid_5 omega">
 		<legend>Search on each of these</legend>
 		<?php
-		echo $this->Form->input('payment_type_id');
+		echo $this->Form->input('PaymentType.id', array(
+			'options' => Set::combine($paymentTypes, '/PaymentType/id', '/PaymentType/name')
+		));
+		echo $this->Form->input('PaymentType.type', array(
+			'options' => $paymentTypeTypes
+		));
 		echo $this->Form->input('PaymentOption.account_code');
 		echo $this->Form->input('start_date');
 		echo $this->Form->input('end_date');
@@ -72,11 +77,11 @@ if (empty($this->data)):
 			<td><?php echo empty($payment['Payer']['id']) ? 'System' : $this->Html->link($payment['Payer']['Profile']['name'], array('controller' => 'profiles', 'action' => 'view', 'User' => $payment['Payer']['id'])); ?></td>
 			<td><?php echo $payment['PaymentType']['name']; ?></td>
 			<td><?php
-			switch ($payment['PaymentType']['name']) {
-				case 'Check':
+			switch ($payment['PaymentType']['type']) {
+				case 2:
 					echo '#'.$payment['Payment']['number'];
 				break;
-				case 'Credit Card':
+				case 0:
 					echo 'xxxxxxxxxxxx'.$payment['Payment']['number'];
 				break;
 			}

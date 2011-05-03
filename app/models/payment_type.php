@@ -32,5 +32,17 @@ class PaymentType extends AppModel {
 		'Payment'
 	);
 
+/**
+ * Hardcoded payment types. The PaymentType model is used for defining types
+ * within these types, i.e., Visa would have type=0
+ * 
+ * @var array
+ */
+	var $types = array(
+		0 => 'Credit Card',
+		1 => 'Cash',
+		2 => 'Check'
+	);
+
 }
 ?>

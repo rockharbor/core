@@ -61,7 +61,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 	}
 
 	function testPayments() {
-		$this->loadFixtures('Payment', 'PaymentOption');
+		$this->loadFixtures('Payment', 'PaymentOption', 'PaymentType');
 
 		$vars = $this->testAction('/reports/payments');
 		$this->assertNotEqual(count($vars['payments']), 0);
@@ -102,8 +102,8 @@ class ReportsControllerTestCase extends CoreTestCase {
 				'PaymentOption' => array(
 					'account_code' => '456'
 				),
-				'Payment' => array(
-					'payment_type_id' => 2
+				'PaymentType' => array(
+					'id' => 2
 				)
 			)
 		));
@@ -117,9 +117,11 @@ class ReportsControllerTestCase extends CoreTestCase {
 					'account_code' => '456'
 				),
 				'Payment' => array(
-					'payment_type_id' => 2,
 					'start_date' => '5/6/2010',
 					'end_date' => '5/7/2010'
+				),
+				'PaymentType' => array(
+					'id' => 2
 				)
 			)
 		));
@@ -135,13 +137,24 @@ class ReportsControllerTestCase extends CoreTestCase {
 				'PaymentOption' => array(
 					'account_code' => '456'
 				),
-				'Payment' => array(
-					'payment_type_id' => 2
+				'PaymentType' => array(
+					'id' => 2
 				)
 			)
 		));
 		$results = Set::extract('/Payment/id', $vars['payments']);
 		$expected = array(3);
+		$this->assertEqual($results, $expected);
+		
+		$vars = $this->testAction('/reports/payments', array(
+			'data' => array(
+				'PaymentType' => array(
+					'type' => 1
+				)
+			)
+		));
+		$results = Set::extract('/Payment/id', $vars['payments']);
+		$expected = array(3, 6);
 		$this->assertEqual($results, $expected);
 	}
 	

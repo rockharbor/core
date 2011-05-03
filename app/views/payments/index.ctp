@@ -51,11 +51,11 @@ $this->Paginator->options(array(
 					<div style="float:left;width:55%">
 						<?php
 						echo $this->Html->tag('dd', $payment['PaymentType']['name']);
-						switch ($payment['PaymentType']['name']) {
-							case 'Check':
+						switch ($payment['PaymentType']['type']) {
+							case 2:
 								echo $this->Html->tag('dd', '#'.$payment['Payment']['number']);
 							break;
-							case 'Credit Card':
+							case 0:
 								echo $this->Html->tag('dd', 'xxxxxxxxxxxx'.$payment['Payment']['number']);
 							break;
 						}

@@ -37,6 +37,7 @@ class PaymentTypesController extends SimpleCrudsController {
  */ 
 	function beforeFilter() {
 		parent::beforeFilter();
+		$this->set('types', $this->PaymentType->types);
 	}
 
 }
