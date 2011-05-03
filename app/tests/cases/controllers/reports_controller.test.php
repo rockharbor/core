@@ -156,6 +156,17 @@ class ReportsControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Payment/id', $vars['payments']);
 		$expected = array(3, 6);
 		$this->assertEqual($results, $expected);
+		
+		$vars = $this->testAction('/reports/payments', array(
+			'data' => array(
+				'PaymentType' => array(
+					'type' => 0
+				)
+			)
+		));
+		$results = Set::extract('/Payment/id', $vars['payments']);
+		$expected = array(1, 2);
+		$this->assertEqual($results, $expected);
 	}
 	
 	function testMap() {

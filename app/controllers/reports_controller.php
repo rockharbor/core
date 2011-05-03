@@ -251,8 +251,8 @@ class ReportsController extends AppController {
 			if (!empty($this->data['PaymentType']['id'])) {
 				$conditions['conditions']['PaymentType.id'] = $this->data['PaymentType']['id'];
 			}
-			if (!empty($this->data['PaymentType']['type'])) {
-				$conditions['conditions']['PaymentType.type'] = $this->data['PaymentType']['type'];
+			if (isset($this->data['PaymentType']) && isset($this->data['PaymentType']['type']) && $this->data['PaymentType']['type'] !== '') {
+				$conditions['conditions']['PaymentType.type'] = (string)$this->data['PaymentType']['type'];
 			}
 			if (!empty($this->data['Payment']['start_date']) && !empty($this->data['Payment']['end_date'])) {
 				$conditions['conditions']['Payment.created BETWEEN ? AND ?'] = array(
