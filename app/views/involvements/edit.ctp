@@ -55,7 +55,9 @@ echo $this->Html->link($icon, array('action' => 'view', 'Involvement' => $this->
 					echo $this->Form->input('DisplayMinistry');
 					echo $this->Form->input('involvement_type_id');
 					echo $this->Form->input('name');
-					echo $this->Form->input('description');
+					echo $this->Form->input('description', array(
+						'type' => 'textarea'
+					));
 				?>
 				</fieldset>
 				<fieldset class="grid_5 omega">

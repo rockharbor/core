@@ -258,7 +258,12 @@ class InvolvementsController extends AppController {
 			$this->data = $this->Involvement->read(null, $id);			
 		}
 		
-		$this->set('ministries', $this->Involvement->Ministry->find('list'));
+		$this->set('ministries', $this->Involvement->Ministry->find('list', array(
+			'conditions' => array(
+				'Ministry.active' => true,
+			),
+			'order' => 'Ministry.name'
+		)));
 		$this->set('displayMinistries', array($this->Involvement->Ministry->find('list')));
 		$this->set('involvementTypes', $this->Involvement->InvolvementType->find('list'));
 	}

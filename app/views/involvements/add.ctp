@@ -1,5 +1,5 @@
-<h2>Create Involvement Opportunity</h2>
-<div id="involvement_tabs" class="involvements">
+<h1>Create Involvement Opportunity</h1>
+<div id="involvement_tabs" class="involvements content-box">
 
 <p>Create a new involvement opportunity! You will be able to add dates, a location, and media after you've created the involvement opportunity. The involvement opportunity will remain inactive until you activate it.</p>
 
@@ -14,7 +14,9 @@
 		}
 		echo $this->Form->input('involvement_type_id');
 		echo $this->Form->input('name');
-		echo $this->Form->input('description');
+		echo $this->Form->input('description', array(
+			'type' => 'textarea'
+		));
 	?>
 		<fieldset>
 			<legend>Roster</legend>
