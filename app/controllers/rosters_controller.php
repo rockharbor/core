@@ -308,7 +308,7 @@ class RostersController extends AppController {
 			$paymentType = array();
 			if ($involvement['Involvement']['take_payment']) {
 				$paymentOption = $this->Roster->PaymentOption->read(null, $this->data['Default']['payment_option_id']);
-				$paymentType = $this->Roster->Payment->PaymentType->findByName('Credit Card');
+				$paymentType = $this->Roster->Payment->PaymentType->findByType(0);
 			}
 			
 			// extract info to check/save for roster
