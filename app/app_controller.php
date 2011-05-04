@@ -227,7 +227,7 @@ class AppController extends Controller {
 		$foreign_key = $user['Group']['id'];
 
 		// main group
-		$key = md5(serialize(compact('model', 'foreign_key', 'action')));
+		$key = md5(serialize(compact('model', 'foreign_key', 'action')).'main');
 		if (Cache::read($key, 'acl') !== false) {
 			$mainAccess = Cache::read($key, 'acl');
 		} else {
@@ -242,7 +242,7 @@ class AppController extends Controller {
 		// check for conditional group
 		if (!empty($user['ConditionalGroup'])) {
 			$foreign_key = $user['ConditionalGroup']['id'];
-			$key = md5(serialize(compact('model', 'foreign_key', 'action')));
+			$key = md5(serialize(compact('model', 'foreign_key', 'action')).'conditional');
 			if (Cache::read($key, 'acl') !== false) {
 				$condAccess = Cache::read($key, 'acl');
 			} else {
