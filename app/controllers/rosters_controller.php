@@ -234,7 +234,7 @@ class RostersController extends AppController {
 			$roster['Involvement']['dates'] = $this->Roster->Involvement->Date->generateDates($roster['Involvement']['id'], array('limit' => 1));
 		}
 
-		$this->set(compact('userId', 'leaderOf', 'rosters', 'private'));
+		$this->set(compact('userId', 'leaderOf', 'rosters', 'private', 'memberOf'));
 	}
 
 /**

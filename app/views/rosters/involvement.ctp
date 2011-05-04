@@ -43,15 +43,15 @@ $this->Paginator->options(array(
 				<?php foreach ($rosters as $roster): ?>
 				<tr>
 					<td colspan="3"><?php
-					$roles = Set::extract('/Role/name', $roster);
-					if (empty($roles)) {
+					$roles = Set::extract('/Roster/Role/name', $roster);
+					if (empty($roles) && in_array($roster['Involvement']['id'], array_values($memberOf))) {
 						$roles[] = 'Member';
 					}
 					if (in_array($roster['Involvement']['id'], array_values($leaderOf))) {
 						array_unshift($roles, 'Leader');
 					}
 					$inv = $this->Text->toList($roles);
-					$inv .= (count($roles) > 1) ? ' for ' : ' of ';
+					$inv .= (count($roles) > 1 && !in_array('Member', $roles)) ? ' for ' : ' of ';
 					$inv .= $this->Html->link($roster['Involvement']['name'], array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $roster['Involvement']['id']));
 					$inv_flags = array(
 						'Involvement' => $roster['Involvement'],
@@ -60,10 +60,10 @@ $this->Paginator->options(array(
 					);
 					$inv .= $this->Formatting->flags('Involvement', $inv_flags);
 					if (!empty($roster['Roster']) && $roster['Roster'][0]['amount_due'] > 0) {
-						$inv .= ' | '.$this->Html->tag('span', $roster['Roster'][0]['amount_due'], array('class' => 'balance'));
+						$inv .= ' | '.$this->Html->tag('span', $this->Formatting->money($roster['Roster'][0]['amount_due']), array('class' => 'balance'));
 					}
 					if (!empty($roster['Involvement']['dates'])) {
-						$inv .= ' | '.$this->Formatting->datetime($roster['Involvement']['dates'][0]['start_date'].' '.$roster['Involvement']['dates'][0]['start_time']);
+						$inv .= ' | '.$this->Formatting->datetime($roster['Involvement']['dates'][0]['Date']['start_date'].' '.$roster['Involvement']['dates'][0]['Date']['start_time']);
 					}
 					echo $inv;
 					?>
