@@ -319,7 +319,7 @@ class InvolvementsController extends AppController {
 			);
 		}
 		$this->data = array();
-		$this->redirect($this->emptyPage);
+		$this->redirect($this->referer());
 	}
 	
 /**
