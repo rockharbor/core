@@ -113,7 +113,6 @@ class InvolvementsController extends AppController {
 		$householdMembers[] = $this->activeUser['User']['id'];
 		$this->Involvement->contain(array(
 			'InvolvementType',
-			'Date',
 			'Ministry' => array(
 				'Campus',
 				'Image'

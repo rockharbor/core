@@ -1,4 +1,7 @@
-<?php echo $this->Html->script('super_date', array('inline' => false)); ?>
+<?php 
+echo $this->Html->script('super_date', array('inline' => false));
+echo $this->Html->script('misc/involvement', array('inline' => false));
+?>
 
 <span class="breadcrumb"><?php
 echo $this->Html->link($involvement['Ministry']['Campus']['name'], array('controller' => 'campuses', 'action' => 'view', 'Campus' => $involvement['Ministry']['Campus']['id']), array('escape' => false));
@@ -16,7 +19,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 
 	<div class="content-box clearfix">
 		<div id="details-tab">
-			<div id="columns" class="grid_10 alpha omega">
+			<div id="columns" class="grid_10 alpha omega clearfix">
 				<?php
 				$first = ' alpha';
 				if (!empty($involvement['Ministry']['Image'])) { ?>
@@ -30,26 +33,46 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 				$first = '';
 				} ?>
 				<?php if (!empty($involvement['Date'])) { ?>
-				<div class="grid_2 column border-right<?php echo $first; ?>" id="date">
-					<span class="font-large">
-					<?php
-						echo strtoupper(date('M. j', strtotime($involvement['Date'][0]['Date']['start_date'])));
-						echo '<br />';
-						echo date('Y', strtotime($involvement['Date'][0]['Date']['start_date']));
-					?>
-					</span>
-				</div>
-				<div class="grid_2 column border-right" id="time">
-					<span class="font-large">
-					<?php
-						echo date('h:i', strtotime($involvement['Date'][0]['Date']['start_time']));
-					?>
-					</span>
-				</div>
-				<div class="grid_2 column omega" id="readable-date">
-					<?php
-						echo $this->Formatting->readableDate($involvement['Date'][0]);
-					?>
+				<div id="involvement-dates">
+					<?php foreach($involvement['Date'] as $date): ?>
+					<div class="date clearfix">
+						<div class="grid_2 column border-right<?php echo $first; ?>">
+							<span class="font-large">
+							<?php
+								echo strtoupper(date('M. j', strtotime($date['Date']['start_date'])));
+								echo '<br />';
+								echo date('Y', strtotime($date['Date']['start_date']));
+							?>
+							</span>
+						</div>
+						<div class="grid_2 column border-right">
+							<span class="font-large">
+							<?php
+								echo date('h:i', strtotime($date['Date']['start_time']));
+							?>
+							</span>
+						</div>
+						<div class="grid_2 column omega">
+							<?php
+								echo $this->Formatting->readableDate($date);
+							?>
+						</div>
+					</div>
+					<?php endforeach; ?>
+					<div class="grid_2 clearfix alpha" style="text-align:center">
+						<div class="pagination">
+							<?php 
+							for ($i=0; $i<count($involvement['Date']); $i++) {
+								$icon = $this->element('icon', array('icon' => 'bullet'));
+								echo $this->Html->link($icon, array('controller' => 'dates', 'Involvement' => $involvement['Involvement']['id']), array('escape' => false, 'class' => 'no-hover', 'target' => $i));
+							}
+							?>
+						</div>
+						<?php
+						$link = $this->Html->link('See all dates', array('controller' => 'dates', 'Involvement' => $involvement['Involvement']['id']), array('rel' => 'modal-none'));
+						echo $this->Html->tag('small', $link);
+						?>
+					</div>
 				</div>
 				<?php 
 				$first = '';
@@ -127,7 +150,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 </div>
 
 <?php
-
+$this->Js->buffer('CORE_involvement.setup()');
 echo $this->Html->scriptBlock('
 function inviteUser(userid) {
 	CORE.request("'.Router::url(array('controller' => 'involvements', 'action' => 'invite')).'/"+userid+"/Involvement:'.$involvement['Involvement']['id'].'");

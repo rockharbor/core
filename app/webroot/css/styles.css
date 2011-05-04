@@ -361,6 +361,12 @@ div.involvement-column .involvement-date div {
 	color: #444445;
 	line-height: 30px;
 }
+div#involvement-dates .date {
+	display: none;
+}
+div#involvement-dates .date:first-child {
+	display: block; 
+}
 div.subministry {
 	background: rgb(48,48,48);
 	background-image: -webkit-gradient(
@@ -810,8 +816,8 @@ Custom Icons
 .icon-bullet {
 	background-position: -64px -64px;
 }
-.icon-bullet:hover {
-	background-position: -80px -64px;
+.icon-bullet:hover, .icon-bullet.selected {
+	background-position: -64px -80px;
 }
 .icon-arrow-e {
 	background-position: 0px -32px;
