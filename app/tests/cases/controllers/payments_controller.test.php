@@ -37,81 +37,15 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/payments/index/User:1', array(
 			'return' => 'vars'
 		));
-		$results = Set::extract('/Payment', $vars['payments']);
-		$expected = array(
-			array(
-				'Payment' => array(
-					'id' => 1,
-					'user_id' => 1,
-					'roster_id' => 4,
-					'amount' => 25,
-					'payment_type_id' => 1,
-					'number' => '0027',
-					'transaction_id' => '1234',
-					'payment_placed_by' => 1,
-					'refunded' => 0,
-					'created' => '2010-05-04 07:33:03',
-					'modified' => '2010-05-04 07:33:03',
-					'comment' => 'Jeremy Harris\'s card processed by Jeremy Harris.'
-				)
-			),
-			array(
-				'Payment' => array(
-					'id' => 2,
-					'user_id' => 2,
-					'roster_id' => 4,
-					'amount' => 2.50,
-					'payment_type_id' => 1,
-					'number' => '0027',
-					'transaction_id' => '1234',
-					'payment_placed_by' => 1,
-					'refunded' => 0,
-					'created' => '2010-05-04 07:33:03',
-					'modified' => '2010-05-04 07:33:03',
-					'comment' => 'Jeremy Harris\'s card processed by Jeremy Harris.'
-				)
-			)
-		);
+		$results = Set::extract('/Payment/id', $vars['payments']);
+		$expected = array(1, 2);
 		$this->assertEqual($results, $expected);
 
 		$vars = $this->testAction('/payments/index/User:2', array(
 			'return' => 'vars'
 		));
-		$results = Set::extract('/Payment', $vars['payments']);
-		$expected = array(
-			array(
-				'Payment' => array(
-					'id' => 2,
-					'user_id' => 2,
-					'roster_id' => 4,
-					'amount' => 2.50,
-					'payment_type_id' => 1,
-					'number' => '0027',
-					'transaction_id' => '1234',
-					'payment_placed_by' => 1,
-					'refunded' => 0,
-					'created' => '2010-05-04 07:33:03',
-					'modified' => '2010-05-04 07:33:03',
-					'comment' => 'Jeremy Harris\'s card processed by Jeremy Harris.'
-				)
-			),
-			array(
-				'Payment' => array(
-					'id' => 3,
-					'user_id' => 2,
-					'roster_id' => 4,
-					'amount' => 2.50,
-					'payment_type_id' => 2,
-					'number' => NULL,
-					'transaction_id' => NULL,
-					'payment_placed_by' => 2,
-					'refunded' => 0,
-					'created' => '2010-05-04 07:33:03',
-					'modified' => '2010-05-04 07:33:03',
-					'comment' => 'Ricky made a cash payment to pay his balance.'
-				)
-			)
-		);
+		$results = Set::extract('/Payment/id', $vars['payments']);
+		$expected = array(2, 3);
 		$this->assertEqual($results, $expected);
 	}
 
