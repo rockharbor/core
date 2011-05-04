@@ -9,7 +9,7 @@
 			'action' => 'index'
 		)
 	));
-	if (isset($model)) {
+	if (isset($model) && isset($model_id)) {
 		echo $this->Form->hidden('Search.'.$model.'.id', array(
 			 'value' => $model_id
 		));
