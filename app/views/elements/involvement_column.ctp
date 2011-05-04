@@ -4,20 +4,20 @@ if (!isset($class)) {
 }
 ?>
 <div class="involvement-column grid_5 <?php echo $class; ?>">
-	<div class="involvement-header"><?php echo $this->Html->link(html_entity_decode($involvement['Involvement']['name']), array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvement['Involvement']['id'])).$this->Formatting->flags('Involvement', $involvement); ?></div>
+	<div class="involvement-header"><?php echo $this->Html->link($involvement['Involvement']['name'], array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvement['Involvement']['id'])).$this->Formatting->flags('Involvement', $involvement); ?></div>
 	<div class="involvement-details">
 		<?php
 		// determine where the associated info lies (linkable puts it in the same level, containable puts it within the key)
 		$parent = isset($involvement['Ministry']['Campus']) ? $involvement['Ministry'] : $involvement;
-		echo $this->Html->link(html_entity_decode($parent['Campus']['name']), array('controller' => 'campuses', 'action' => 'view', 'Campus' => $parent['Campus']['id']));
+		echo $this->Html->link($parent['Campus']['name'], array('controller' => 'campuses', 'action' => 'view', 'Campus' => $parent['Campus']['id']));
 		echo ' > ';
 		if (!empty($parent['ParentMinistry'])) {
-			echo $this->Html->link(html_entity_decode($parent['ParentMinistry']['name']), array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $parent['ParentMinistry']['id']));
+			echo $this->Html->link($parent['ParentMinistry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $parent['ParentMinistry']['id']));
 			echo ' > ';
 		}
-		echo $this->Html->link(html_entity_decode($involvement['Ministry']['name']), array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $involvement['Ministry']['id']));
+		echo $this->Html->link($involvement['Ministry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $involvement['Ministry']['id']));
 		echo '<hr>';
-		echo $this->Text->truncate(html_entity_decode($involvement['Involvement']['description']), 250, array('html' => true));
+		echo $this->Text->truncate($involvement['Involvement']['description'], 250, array('html' => true));
 		?>
 	</div>
 	<div class="involvement-date">

@@ -112,13 +112,13 @@ foreach ($ministries as $ministry):
 	<p>
 <?php 
 	echo $this->Formatting->flags('Ministry', $ministry);
-	$link = $this->Html->link(html_entity_decode($ministry['Ministry']['name']),
+	$link = $this->Html->link($ministry['Ministry']['name'],
 		array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $ministry['Ministry']['id']),
 		array('escape' => false)
 	);
 	echo $this->Html->tag('strong', $link);
 	echo ':&nbsp;';
-	echo $this->Text->excerpt(html_entity_decode($ministry['Ministry']['description']), $this->data['Search']['query'], 100);
+	echo $this->Text->excerpt($ministry['Ministry']['description'], $this->data['Search']['query'], 100);
 ?></p>
 
 <?php	

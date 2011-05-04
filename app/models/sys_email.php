@@ -68,7 +68,7 @@ class SysEmail extends AppModel {
  * @see Sanitizer.SanitizeBehavior
  */
 	var $sanitize = array(
-		'body' => 'html'
+		'body' => 'stripScripts'
 	);
 	
 /**

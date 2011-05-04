@@ -23,9 +23,9 @@ if (!empty($results)) {
 		}
 ?>
 		<tr<?php echo $class;?>>
-			<td><?php echo $this->Html->link(html_entity_decode($result['Ministry']['name']), array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $result['Ministry']['id'])).$this->Formatting->flags('Ministry', $result); ?></td>
-			<td><?php echo html_entity_decode($this->Text->truncate($result['Ministry']['description'], 250)); ?></td>
-			<td><?php echo html_entity_decode($result['Campus']['name']); ?></td>
+			<td><?php echo $this->Html->link($result['Ministry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $result['Ministry']['id'])).$this->Formatting->flags('Ministry', $result); ?></td>
+			<td><?php echo $this->Text->truncate($result['Ministry']['description'], 250); ?></td>
+			<td><?php echo $result['Campus']['name']; ?></td>
 		</tr>
 <?php	
 	endforeach;

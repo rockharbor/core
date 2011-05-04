@@ -11,7 +11,7 @@ if (!empty($ministry['ParentMinistry']['id'])) {
 		<h2>Description</h2>
 		<p>
 			<?php 
-			echo html_entity_decode($ministry['Ministry']['description']);
+			echo $ministry['Ministry']['description'];
 			if (!empty($ministry['Image'])) {
 				$this->Media->embed($ministry['Image']['file'], array('align' => 'right'));
 			}
@@ -30,7 +30,7 @@ if (!empty($ministry['ParentMinistry']['id'])) {
 				<?php
 				echo $this->Html->link($subministry['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $subministry['id']), array('class' => 'subministry-title'));
 				echo '<hr>';
-				echo $this->Text->truncate(html_entity_decode($subministry['description']), 120, array('html' => true));
+				echo $this->Text->truncate($subministry['description'], 120, array('html' => true));
 				?>
 			</div>
 			<?php 

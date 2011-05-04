@@ -58,7 +58,7 @@ class Campus extends AppModel {
  * @see Sanitizer.SanitizeBehavior
  */
 	var $sanitize = array(
-		'description' => 'html'
+		'description' => 'stripScripts'
 	);
 
 /**

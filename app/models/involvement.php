@@ -51,7 +51,7 @@ class Involvement extends AppModel {
  * @see Sanitizer.SanitizeBehavior
  */
 	var $sanitize = array(
-		'description' => 'html'
+		'description' => 'stripScripts'
 	);
 
 /**
@@ -78,10 +78,7 @@ class Involvement extends AppModel {
 	var $actsAs = array(
 		'Containable',
 		'Logable',
-		'Sanitizer.Sanitize' => array(
-			'validate' => 'after',
-			'decodeHtml' => true
-		),
+		'Sanitizer.Sanitize',
 		'Search.Searchable',
 		'Linkable.AdvancedLinkable'
 	);

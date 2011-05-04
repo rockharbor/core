@@ -66,14 +66,7 @@ class TeamTask extends MigratorTask {
 	}
 
 	function _preparePurpose($old) {
-		$old = Sanitize::html($old, array(
-			'remove' => true,
-		));
-		return Sanitize::html(nl2br($old));
-	}
-
-	function _prepareTeamName($old) {
-		return Sanitize::html($old);
+		return nl2br($old);
 	}
 
 }

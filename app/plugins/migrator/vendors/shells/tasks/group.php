@@ -66,14 +66,6 @@ class GroupTask extends MigratorTask {
 	}
 
 	function _preparePurpose($old) {
-		$old = Sanitize::html($old, array(
-			'remove' => true,
-		));
-		return Sanitize::html(nl2br($old));
+		return nl2br($old);
 	}
-
-	function _prepareGroupName($old) {
-		return Sanitize::html($old);
-	}
-
 }

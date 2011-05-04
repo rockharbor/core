@@ -76,10 +76,7 @@ class PaymentRosterTask extends MigratorTask {
  * @return string
  */
 	function _preparePaymentComments($old) {
-		$old = Sanitize::html($old, array(
-			'remove' => true,
-		));
-		return Sanitize::html(nl2br($old));
+		return nl2br($old);
 	}
 
 	function mapData() {

@@ -45,14 +45,6 @@ class EventTask extends MigratorTask {
 			return false;
 		}
 		
-		$old = Sanitize::html($old, array(
-			'remove' => true,
-		));
-		return Sanitize::html(nl2br($old));
+		return nl2br($old);
 	}
-
-	function _prepareEventName($old) {
-		return Sanitize::html($old);
-	}
-
 }

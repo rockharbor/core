@@ -58,7 +58,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 			<div class="grid_10 alpha omega">
 				<div class="grid_6 alpha">
 					<h3>Description</h3>
-					<p><?php echo html_entity_decode($involvement['Involvement']['description']); ?></p>
+					<p><?php echo $involvement['Involvement']['description']; ?></p>
 				</div>
 				<div class="grid_4 omega">
 					<?php if (!empty($involvement['Leader'])): ?>
