@@ -31,9 +31,7 @@ class AppModel extends Model {
  * @var array
  */
 	var $actsAs = array(
-		'Sanitizer.Sanitize' => array(
-			'decodeHtml' => true
-		),
+		'Sanitizer.Sanitize',
 		'Cacher.Cache'
 	);
 
