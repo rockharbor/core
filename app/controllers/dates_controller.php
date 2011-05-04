@@ -146,19 +146,6 @@ class DatesController extends AppController {
 	}
 
 /**
- * Date details
- *
- * @param integer $id The id of the date to view
- */ 
-	function view($id = null) {
-		if (!$id) {
-			$this->Session->setFlash(__('Invalid date', true));
-			$this->redirect(array('action' => 'index'));
-		}
-		$this->set('date', $this->Date->read(null, $id));		
-	}
-
-/**
  * Adds a date
  */ 
 	function add() {
