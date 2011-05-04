@@ -28,7 +28,7 @@ class DatesController extends AppController {
  *
  * @var array
  */
-	var $helpers = array('SelectOptions');
+	var $helpers = array('SelectOptions', 'Formatting');
 
 /**
  * Model::beforeFilter() callback
