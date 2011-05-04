@@ -212,20 +212,14 @@ span.breadcrumb.editing img {
 .border-right {
 	border-right: 1px solid #acacac;
 }
-/* Ajax and popup content boxes */
 div.content-box .content-box, .ui-dialog .content-box {
-	padding:10px;
-	margin:0;
-	border: 1px solid #acacac;
-	background: #f1f1f1;
+	padding:0;
+	margin: 0;
+	border:none;
+	background:transparent;
 	box-shadow:none;
 	-moz-box-shadow:none;
 	-webkit-box-shadow:none;
-}
-.ajax-clean .content-box, .ui-dialog .content-box {
-	padding:0 !important;
-	border:none !important;
-	background:transparent !important;
 }
 .core-iconable {
 	position:relative;

@@ -54,7 +54,7 @@ if (!empty($ministry['ParentMinistry']['id'])) {
 		<h2>Get Involved!</h2>
 	</div>
 	<div class="grid_10 alpha omega">
-		<div id="involvement" class="ajax-clean">
+		<div id="involvement">
 		<?php
 			$url = Router::url(array(
 				'controller' => 'involvements',

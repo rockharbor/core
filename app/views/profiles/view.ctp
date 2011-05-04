@@ -191,7 +191,7 @@
 			</div>
 			<div class="grid_10 alpha omega">
 				<div class="grid_7 alpha">
-					<div id="involvement">
+					<div id="involvement" class="box">
 						<?php
 						$this->Js->buffer('CORE.register("involvement", "involvement", "/rosters/involvement/User:'.$profile['User']['id'].'")');
 						echo $this->requestAction('/rosters/involvement', array(
@@ -208,7 +208,7 @@
 					</div>
 				</div>
 				<div class="grid_3 omega">
-					<div id="calendar">
+					<div id="calendar" class="box">
 						<?php
 						$this->Js->buffer('CORE.register("calendar", "calendar", "/dates/calendar/model:User/User:'.$profile['User']['id'].'")');
 						echo $this->requestAction('/dates/calendar', array(
