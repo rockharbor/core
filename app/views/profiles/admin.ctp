@@ -17,6 +17,7 @@ echo $this->Form->create(array(
 			<legend>Background</legend>
 			<?php
 			echo $this->Form->input('id');
+			echo $this->Form->input('User.flagged');
 			echo $this->Form->input('cpr_certified_date');
 			echo $this->Form->input('background_check_complete');
 			echo $this->Form->input('background_check_by');
