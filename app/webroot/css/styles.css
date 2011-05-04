@@ -629,6 +629,9 @@ label {
 div.radio label {
 	min-height: 14px;
 }
+fieldset {
+	margin-top: 5px;
+}
 fieldset, div.hr {
 	border-top: 1px solid #acacac;
 	padding: 5px 0;

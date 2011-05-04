@@ -1,8 +1,8 @@
-<h2>Add Date</h2>
+<h1>Add Date</h1>
 
 <div class="dates">
 
-<div id="humanized" style="padding:5px;font-weight:bold;font-size:140%; background:#FFBA01; color:#fff"></div>
+<div id="humanized" class="box highlight"></div>
 
 <?php 
 	echo $this->Form->create('Date', array('default' => false));	
