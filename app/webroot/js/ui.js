@@ -286,22 +286,10 @@ CORE.attachModalBehavior = function() {
  * @return object The tab ui object
  */
 CORE.tabs = function(id, taboptions, options) {
-	var _defaultOptions = {  
-		cookie: {
-			expires: 30
-		}
-	}
-	
 	// use user defined options if defined
-	var useOptions;
+	var useOptions = {};
 	if (taboptions != undefined) {
-		useOptions = $.extend(_defaultOptions, taboptions);
-	} else {
-		useOptions = _defaultOptions;
-	}
-	
-	if (useOptions.cookie == false) {
-		delete useOptions.cookie;
+		useOptions = $.extend(useOptions, taboptions);
 	}
 	
 	var tabbed = $('#'+id);

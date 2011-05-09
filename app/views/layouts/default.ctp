@@ -36,7 +36,6 @@
 		// vendor scripts
 		$this->AssetCompress->script('jquery.plugins/jquery.form');
 		$this->AssetCompress->script('jquery.plugins/jquery.qtip');
-		$this->AssetCompress->script('jquery.plugins/jquery.cookie');
 		$this->AssetCompress->script('jquery.plugins/jquery.wysiwyg');
 		$this->AssetCompress->script('jquery.plugins/jquery.equalheights');
 		$this->AssetCompress->script('jquery.plugins/jquery.fullcalendar');

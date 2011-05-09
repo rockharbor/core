@@ -45,7 +45,6 @@
 
 		// vendor scripts
 		$this->AssetCompress->script('jquery.plugins/jquery.qtip');
-		$this->AssetCompress->script('jquery.plugins/jquery.cookie');
 		$this->AssetCompress->script('jquery.plugins/jquery.equalheights');
 
 		// CORE scripts
