@@ -30,7 +30,7 @@ class GroupTestCase extends CoreTestCase {
 
 	function testToggleActivity() {
 		$result = $this->Address->toggleActivity(3, false);
-		$this->assertFalse($result);
+		$this->assertTrue($result);
 		$result = $this->Address->toggleActivity(1, false);
 		$this->assertTrue($result);
 		$result = $this->Address->toggleActivity(2, false);

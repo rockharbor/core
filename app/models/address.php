@@ -120,7 +120,7 @@ class Address extends AppModel {
  */
 	function toggleActivity($id = null, $active = false) {
 		$address = $this->read(null, $id);
-		if ($address && !(!$active && $address['Address']['primary'])) {
+		if ($address && !(!$active && $address['Address']['primary']) || $address['Address']['model'] != 'User') {
 			return parent::toggleActivity($id, $active, false);
 		}
 		return false;
