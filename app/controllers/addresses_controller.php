@@ -131,7 +131,7 @@ class AddressesController extends AppController {
 				);
 				$this->Address->id = $lastId;
 				$this->Session->setFlash('The address was saved!', 'flash'.DS.'success');
-				$this->redirect(array('action' => 'index'));
+				$this->redirect(array('action' => 'index', $this->model => $this->modelId));
 			} else {
 				$this->Session->setFlash('Boo! The address could not be saved.', 'flash'.DS.'failure');
 			}
@@ -159,13 +159,13 @@ class AddressesController extends AppController {
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {			
 			$this->Session->setFlash('Invalid address.', 'flash'.DS.'failure');
-			$this->redirect(array('action' => 'index'));
+			$this->redirect(array('action' => 'index', $this->model => $this->modelId));
 		}
 
 		if (!empty($this->data)) {
 			if ($this->Address->save($this->data)) {
 				$this->Session->setFlash('The address was saved!', 'flash'.DS.'success');
-				$this->redirect(array('action' => 'index'));
+				$this->redirect(array('action' => 'index', $this->model => $this->modelId));
 			} else {
 				$this->Session->setFlash('Boo! The address could not be saved.', 'flash'.DS.'failure');
 			}
@@ -184,7 +184,7 @@ class AddressesController extends AppController {
 	function primary() {
 		if (!$this->passedArgs['Address']) {
 			$this->Session->setFlash('Invalid id for address', 'flash'.DS.'failure');
-			$this->redirect(array('action'=>'index'));
+			$this->redirect(array('action'=>'index', $this->model => $this->modelId));
 		}
 		$related = $this->Address->related($this->passedArgs['Address']);
 		$this->Address->updateAll(
@@ -199,7 +199,7 @@ class AddressesController extends AppController {
 		$this->Address->saveField('primary', true);
 		$this->Address->saveField('active', true);
 		$this->Session->setFlash('Address set as primary', 'flash'.DS.'success');
-		$this->redirect(array('action'=>'index'));
+		$this->redirect(array('action'=>'index', $this->model => $this->modelId));
 	}
 
 /**
@@ -211,14 +211,14 @@ class AddressesController extends AppController {
 	function toggle_activity($active = true) {
 		if (!$this->passedArgs['Address']) {
 			$this->Session->setFlash('Invalid id for address', 'flash'.DS.'failure');
-			$this->redirect(array('action'=>'index'));
+			$this->redirect(array('action'=>'index', $this->model => $this->modelId));
 		}
 		if ($this->Address->toggleActivity($this->passedArgs['Address'], $active)) {
 			$this->Session->setFlash('Deactivated the address', 'flash'.DS.'success');
-			$this->redirect(array('action'=>'index'));
+			$this->redirect(array('action'=>'index', $this->model => $this->modelId));
 		} else {
 			$this->Session->setFlash('Could not deactivate this address', 'flash'.DS.'failure');
-			$this->redirect(array('action'=>'index'));
+			$this->redirect(array('action'=>'index', $this->model => $this->modelId));
 		}
 	}
 
@@ -230,14 +230,14 @@ class AddressesController extends AppController {
 	function delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash('Invalid id for address', 'flash'.DS.'failure');
-			$this->redirect(array('action'=>'index'));
+			$this->redirect(array('action'=>'index', $this->model => $this->modelId));
 		}
 		if ($this->Address->delete($id)) {
 			$this->Session->setFlash('Address deleted', 'flash'.DS.'success');
-			$this->redirect(array('action'=>'index'));
+			$this->redirect(array('action'=>'index', $this->model => $this->modelId));
 		}
 		$this->Session->setFlash('Address was not deleted', 'flash'.DS.'failure');
-		$this->redirect(array('action' => 'index'));
+		$this->redirect(array('action' => 'index', $this->model => $this->modelId));
 	}
 }
 ?>
