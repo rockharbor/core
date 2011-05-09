@@ -42,37 +42,35 @@ echo $this->Form->end('Submit');
 ?>
 </div>
 <?php
-echo $this->Html->script('jquery.plugins/jquery.wysiwyg');
-echo $this->Html->css('jquery.wysiwyg');
+echo $this->Html->script('jquery.plugins/jquery.wysiwyg', array('inline' => false, 'once' => true));
+echo $this->Html->css('jquery.wysiwyg', array('inline' => false, 'once' => true));
 $this->Js->buffer('CORE.wysiwyg("InvolvementDescription");');
 
 
 $this->Js->buffer('$("#InvolvementTakePayment").bind("change", function() {
-	if (this.checked) {
-		if ($(this).parent().css("display") != "none") {
-			$("#InvolvementForcePayment").parent().show();
+	if ($(this).is(":checked")) {
+		if ($(this).parent().parent().css("display") != "none") {
+			$("#InvolvementForcePayment").closest("div.checkbox").show();
 		} else {
-			$("#InvolvementForcePayment").parent().hide();
+			$("#InvolvementForcePayment").closest("div.checkbox").hide();
 		}
-		$("#payment_options_tab").show();
 	} else {
-		$("#InvolvementForcePayment").parent().hide();
-		$("#payment_options_tab").hide();
+		$("#InvolvementForcePayment").closest("div.checkbox").hide();
 	}
 });');
 $this->Js->buffer('$("#InvolvementTakePayment").change();');
 $this->Js->buffer('$("#InvolvementSignup").bind("change", function() {
-	if (this.checked) {
-		$("#InvolvementRosterVisible").parent().show();
-		$("#InvolvementTakePayment").parent().show();
-		$("#InvolvementRosterLimit").parent().show();
-		$("#InvolvementOfferChildcare").parent().show();
+	if ($(this).is(":checked")) {
+		$("#InvolvementRosterVisible").closest("div.checkbox").show();
+		$("#InvolvementTakePayment").closest("div.checkbox").show();
+		$("#InvolvementRosterLimit").closest("div.checkbox").show();
+		$("#InvolvementOfferChildcare").closest("div.checkbox").show();
 		$("#questions_tab").show();
 	} else {
-		$("#InvolvementRosterVisible").parent().hide();
-		$("#InvolvementTakePayment").parent().hide();
-		$("#InvolvementRosterLimit").parent().hide();
-		$("#InvolvementOfferChildcare").parent().hide();
+		$("#InvolvementRosterVisible").closest("div.checkbox").hide();
+		$("#InvolvementTakePayment").closest("div.checkbox").hide();
+		$("#InvolvementRosterLimit").closest("div.checkbox").hide();
+		$("#InvolvementOfferChildcare").closest("div.checkbox").hide();
 		$("#questions_tab").hide();
 	}
 	$("#InvolvementTakePayment").change();
