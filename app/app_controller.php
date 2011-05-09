@@ -241,16 +241,21 @@ class AppController extends Controller {
 		$condAccess = false;
 		// check for conditional group
 		if (!empty($user['ConditionalGroup'])) {
-			$foreign_key = $user['ConditionalGroup']['id'];
-			$key = md5(serialize(compact('model', 'foreign_key', 'action')).'conditional');
-			if (Cache::read($key, 'acl') !== false) {
-				$condAccess = Cache::read($key, 'acl');
-			} else {
-				$condAccess = $this->Acl->check(compact('model', 'foreign_key'), $action);
-				Cache::write($key, $condAccess, 'acl');
+			foreach ($user['ConditionalGroup'] as $group) {
+				$foreign_key = $group['Group']['id'];
+				$key = md5(serialize(compact('model', 'foreign_key', 'action')).'conditional');
+				if (Cache::read($key, 'acl') !== false) {
+					$condAccess = Cache::read($key, 'acl');
+				} else {
+					$condAccess = $this->Acl->check(compact('model', 'foreign_key'), $action);
+					Cache::write($key, $condAccess, 'acl');
+				}
+				$message = "User $userId of group $foreign_key allowed to access $action? [$condAccess]";
+				CakeLog::write('auth', $message);
+				if ($condAccess) {
+					break;
+				}
 			}
-			$message = "User $userId of group $foreign_key allowed to access $action? [$condAccess]";
-			CakeLog::write('auth', $message);
 		}
 
 		return $mainAccess || $condAccess;
@@ -415,12 +420,12 @@ class AppController extends Controller {
 
 			// check household contact
 			if ($User->HouseholdMember->Household->isContactFor($user['User']['id'], $params['User'])) {
-				$groups = reset($Group->findByName('Household Contact'));
+				$groups[] = $Group->findByName('Household Contact');
 			}
 		
 			// check owner
 			if ($User->ownedBy($user['User']['id'], $params['User'])) {
-				$groups = reset($Group->findByName('Owner'));
+				$groups[] = $Group->findByName('Owner');
 			}
 		}
 		
@@ -428,12 +433,12 @@ class AppController extends Controller {
 		if (isset($params['Involvement'])) {
 			$Involvement = ClassRegistry::init('Involvement');
 			if ($Involvement->isLeader($user['User']['id'], $params['Involvement'])) {
-				$groups = reset($Group->findByName('Involvement Leader'));
+				$groups[] = $Group->findByName('Involvement Leader');
 			} else {
 				$Ministry = ClassRegistry::init('Ministry');
 				$ministry_id = $Involvement->read(array('ministry_id'), $params['Involvement']);
 				if ($Ministry->isManager($user['User']['id'], $ministry_id['Involvement']['ministry_id'])) {
-					$groups = reset($Group->findByName('Ministry Manager'));
+					$groups[] = $Group->findByName('Ministry Manager');
 				}
 			}
 		}
@@ -442,7 +447,7 @@ class AppController extends Controller {
 		if (isset($params['Ministry'])) {
 			$Ministry = ClassRegistry::init('Ministry');
 			if ($Ministry->isManager($user['User']['id'], $params['Ministry'])) {
-				$groups = reset($Group->findByName('Ministry Manager'));
+				$groups[] = $Group->findByName('Ministry Manager');
 			}
 		}
 		
@@ -450,7 +455,7 @@ class AppController extends Controller {
 		if (isset($params['Campus'])) {
 			$Campus = ClassRegistry::init('Campus');
 			if ($Campus->isManager($user['User']['id'], $params['Campus'])) {
-				$groups = reset($Group->findByName('Campus Manager'));
+				$groups[] = $Group->findByName('Campus Manager');
 			}
 		}
 

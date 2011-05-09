@@ -23,34 +23,18 @@ class AppControllerTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 
-	function test_setConditionalGroups() {
+	function testSetConditionalGroups() {
 		$this->App->passedArgs = array('User' => 1);
 		$results = $this->App->_setConditionalGroups($this->App->passedArgs, $this->App->activeUser);
-		$expected = array(
-			'id' => 12,
-			'name' => 'Owner',
-			'conditional' => 1,
-			'created' => '2010-07-07 11:15:22',
-			'modified' => '2010-07-07 11:15:22',
-			'parent_id' => 8,
-			'lft' => 15,
-			'rght' => 18
-		);
+		$results = Set::extract('/Group/name', $results);
+		$expected = array('Household Contact', 'Owner');
 		$this->assertEqual($results, $expected);
 
 		$this->App->activeUser['User']['id'] = 2;
 		$this->App->passedArgs = array('User' => 3);
 		$results = $this->App->_setConditionalGroups($this->App->passedArgs, $this->App->activeUser);
-		$expected = array(
-			'id' => 13,
-			'name' => 'Household Contact',
-			'conditional' => 1,
-			'created' => '2010-07-07 11:15:22',
-			'modified' => '2010-07-07 11:15:22',
-			'parent_id' => 12,
-			'lft' => 16,
-			'rght' => 17
-		);
+		$results = Set::extract('/Group/name', $results);
+		$expected = array('Household Contact');
 		$this->assertEqual($results, $expected);
 
 		$this->App->activeUser['User']['id'] = 3;
@@ -61,55 +45,36 @@ class AppControllerTestCase extends CoreTestCase {
 		$this->App->activeUser['User']['id'] = 1;
 		$this->App->passedArgs = array('Campus' => 1);
 		$results = $this->App->_setConditionalGroups($this->App->passedArgs, $this->App->activeUser);
-		$expected = array(
-			'id' => 9,
-			'name' => 'Campus Manager',
-			'conditional' => 1,
-			'created' => '2010-07-07 11:15:22',
-			'modified' => '2010-07-07 11:15:22',
-			'parent_id' => 8,
-			'lft' => 9,
-			'rght' => 14
-		);
+		$results = Set::extract('/Group/name', $results);
+		$expected = array('Campus Manager');
 		$this->assertEqual($results, $expected);
 
 		$this->App->activeUser['User']['id'] = 1;
 		$this->App->passedArgs = array('Ministry' => 4);
 		$results = $this->App->_setConditionalGroups($this->App->passedArgs, $this->App->activeUser);
-		$expected = array(
-			'id' => 10,
-			'name' => 'Ministry Manager',
-			'conditional' => 1,
-			'created' => '2010-07-07 11:15:22',
-			'modified' => '2010-07-07 11:15:22',
-			'parent_id' => 9,
-			'lft' => 10,
-			'rght' => 13
-		);
+		$results = Set::extract('/Group/name', $results);
+		$expected = array('Ministry Manager');
 		$this->assertEqual($results, $expected);
 
 		$this->App->activeUser['User']['id'] = 1;
 		$this->App->passedArgs = array('Involvement' => 1);
 		$results = $this->App->_setConditionalGroups($this->App->passedArgs, $this->App->activeUser);
-		$expected = array(
-			'id' => 11,
-			'name' => 'Involvement Leader',
-			'conditional' => 1,
-			'created' => '2010-07-07 11:15:22',
-			'modified' => '2010-07-07 11:15:22',
-			'parent_id' => 10,
-			'lft' => 11,
-			'rght' => 12
-		);
+		$results = Set::extract('/Group/name', $results);
+		$expected = array('Involvement Leader');
 		$this->assertEqual($results, $expected);
 		
 		$this->App->activeUser['User']['id'] = 2;
 		$this->App->passedArgs = array('Involvement' => 1);
 		$results = $this->App->_setConditionalGroups($this->App->passedArgs, $this->App->activeUser);
-		$results = Set::extract('/name', $results);
-		$expected = array(
-			'Ministry Manager'
-		);
+		$results = $results = Set::extract('/Group/name', $results);
+		$expected = array('Ministry Manager');
+		$this->assertEqual($results, $expected);
+		
+		$this->App->activeUser['User']['id'] = 1;
+		$this->App->passedArgs = array('Involvement' => 1, 'Ministry' => 4);
+		$results = $this->App->_setConditionalGroups($this->App->passedArgs, $this->App->activeUser);
+		$results = $results = Set::extract('/Group/name', $results);
+		$expected = array('Involvement Leader', 'Ministry Manager');
 		$this->assertEqual($results, $expected);
 	}
 
