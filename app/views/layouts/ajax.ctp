@@ -18,7 +18,7 @@
  */
 ?>
 <?php
-$this->Js->buffer('$("#modal").dialog("option", "title", "'.$title_for_layout.'");');
+$this->Js->buffer('$("#content").dialog("option", "title", "'.$title_for_layout.'");');
 
 echo $this->Session->flash('auth');
 echo $this->Session->flash();

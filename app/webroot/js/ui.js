@@ -75,7 +75,20 @@ CORE.modal = function(id, options) {
 		
 		// load the link into the modal
 		$('#modal').dialog('open');
-		$('#content').load(this.href);
+		$('#content').dialog('option', 'title', 'Loading');
+		$('#content').empty();
+		$("#content").parent().position({
+			my: 'center',
+			at: 'center',
+			of: window
+		});
+		$('#content').load(this.href, function() {
+			$("#content").parent().position({
+				my: 'center',
+				at: 'center',
+				of: window
+			});
+		});
 		
 		// stop href
 		return false;
