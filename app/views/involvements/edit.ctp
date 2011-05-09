@@ -74,10 +74,10 @@ echo $this->Html->link($icon, array('action' => 'view', 'Involvement' => $this->
 						'data' => null,
 						'form' => array('data' => null)
 					));
-					$this->Js->buffer('CORE.register(\'addresses\', \'addresses\', \''.Router::url(array(
+					$this->Js->buffer('CORE.register("addresses", "addresses", "'.Router::url(array(
 					'controller' => 'involvement_addresses',
 					'Involvement' => $this->data['Involvement']['id']
-					)).'\')');
+					)).'")');
 					?>
 					</div>
 				</fieldset>
@@ -115,10 +115,10 @@ echo $this->Html->link($icon, array('action' => 'view', 'Involvement' => $this->
 				<?php
 				$type = $involvementTypes[$this->data['Involvement']['involvement_type_id']];
 				if ($this->data['Involvement']['active']) {
-					$link = $this->Html->link('Disable '.$type, array('action' => 'toggle_activity', 'Involvement' => $this->data['Involvement']['id'], 0, 1), array('id' => 'disable_btn'));
+					$link = $this->Html->link('Disable '.$type, array('controller' => 'involvements', 'action' => 'toggle_activity', 'Involvement' => $this->data['Involvement']['id'], 0, 1), array('id' => 'disable_btn'));
 					$this->Js->buffer('CORE.confirmation("disable_btn", "Are you sure you want to disable this '.$type.'?", {updateHtml:"content"});');
 				} else {
-					$link = $this->Html->link('Enable '.$type, array('action' => 'toggle_activity', 'Involvement' => $this->data['Involvement']['id'], 1, 1), array('id' => 'enable_btn'));
+					$link = $this->Html->link('Enable '.$type, array('controller' => 'involvements', 'action' => 'toggle_activity', 'Involvement' => $this->data['Involvement']['id'], 1, 1), array('id' => 'enable_btn'));
 					$this->Js->buffer('CORE.confirmation("enable_btn", "Are you sure you want to enable this '.$type.'?", {updateHtml:"content"});');
 				}
 				if ($link) {

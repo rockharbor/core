@@ -99,17 +99,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 					<?php endif; ?>
 					<?php if (!empty($involvement['Address']) && !empty($involvement['Address']['id'])): ?>
 					<h3>Address</h3>
-					<div class="box">
-							<?php
-							$address = $involvement['Address']['address_line_1'];
-							$address .= $involvement['Address']['address_line_2'];
-							$address .= '<br />';
-							$address .= $involvement['Address']['city'].', ';
-							$address .= $involvement['Address']['state'];
-							$address .= $involvement['Address']['zip'];
-							echo $this->Html->link($address, array('controller' => 'addresses', 'action' => 'view', $involvement['Address']['id']), array('rel' => 'modal-none', 'class' => 'icon-map'));
-							?>
-					</div>
+					<div class="box"><?php echo $this->Formatting->address($involvement['Address']); ?></div>
 					<?php endif; ?>
 					<?php if (!empty($involvement['Roster'])): ?>
 					<h3>Signed Up</h3>

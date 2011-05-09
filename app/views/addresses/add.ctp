@@ -9,7 +9,7 @@
 		echo $this->Form->input('address_id');
 	?>
 <?php
-$defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals:true});';
+$defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals:true, update:"addresses"});';
 echo $this->Js->submit('Choose', $defaultSubmitOptions);
 echo $this->Form->end();
 ?>
@@ -27,7 +27,6 @@ echo $this->Form->end();
 		echo $this->Form->hidden('active', array(
 			'value' => true
 		));
-		echo $this->Form->input('name');
 		echo $this->Form->input('name');
 		echo $this->Form->input('address_line_1');
 		echo $this->Form->input('address_line_2');
