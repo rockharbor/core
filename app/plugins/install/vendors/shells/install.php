@@ -294,6 +294,8 @@ class InstallShell extends Shell {
 			'controllers/InvolvementAddresses/add',
 			'controllers/InvolvementAddresses/delete',
 			'controllers/InvolvementAddresses/edit',
+			'controllers/InvolvementAddresses/primary',
+			'controllers/InvolvementAddresses/toggle_activity',
 			'controllers/InvolvementDocuments/delete',
 			'controllers/InvolvementImages/delete',
 			'controllers/InvolvementImages/index',
