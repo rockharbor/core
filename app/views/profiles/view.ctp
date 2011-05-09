@@ -56,7 +56,7 @@
 					<hr>
 					<p class="core-iconable">
 					<?php
-					echo $this->Formatting->address($profile['ActiveAddress'], $profile['User']['id']);
+					echo $this->Formatting->address($profile['ActiveAddress']);
 					?>
 						<span class="core-icon-container">
 						<?php

@@ -51,18 +51,18 @@ class FormattingHelper extends AppHelper {
  * Formats an address
  *
  * @param array $address The address model data
- * @param integer $id The user's id, if any
+ * @param integer $link Whether or not to make a link
  */
-	function address($data, $id = null) {
+	function address($data, $link = true) {
 		$address = $data['address_line_1'];
 		if (!empty($data['address_line_2'])) {
 			$address .= '<br />'.$data['address_line_2'];
 		}
 		$address .= '<br />'.$data['city'].', '.$data['state'].' '.$data['zip'];
 
-		$url = array('controller' => 'reports', 'action' => 'map', 'User', 'User' => $id);
+		$url = array('controller' => 'reports', 'action' => 'map', $data['model'], $data['model'] => $data['foreign_key']);
 		$icon = $this->Html->tag('span', 'Map', array('class' => 'core-icon icon-address'));
-		if ($id !== null) {
+		if ($link) {
 			return $icon.$this->Html->link($address, $url, array('rel' => 'modal-none', 'escape' => false));
 		}
 		return $this->Html->tag('span', $address);

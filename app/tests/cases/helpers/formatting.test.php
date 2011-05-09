@@ -56,8 +56,10 @@ class FormattingHelperTestCase extends CoreTestCase {
 			'city' => 'Somewhere',
 			'state' => 'CA',
 			'zip' => '',
+			'model' => 'User',
+			'foreign_key' => 1
 		);
-		$this->assertTags($this->Formatting->address($address), array(
+		$this->assertTags($this->Formatting->address($address, false), array(
 			'<span',
 			'123 Main',
 			'br' => array(),
@@ -65,7 +67,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 			'/span'
 		));
 
-		$this->assertTags($this->Formatting->address($address, 1), array(
+		$this->assertTags($this->Formatting->address($address), array(
 			'span' => array('class' => 'core-icon icon-address'),
 			'Map',
 			'/span',

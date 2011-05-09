@@ -82,7 +82,7 @@ echo $this->MultiSelect->create();
 				}
 			}
 			?></td>
-			<td><?php echo $this->Formatting->address($result['ActiveAddress'], $result['User']['id']); ?></td>
+			<td><?php echo $this->Formatting->address($result['ActiveAddress']); ?></td>
 			<td><?php 
 			$emails = array();
 			$emails[] = $result['Profile']['primary_email'];
@@ -112,7 +112,7 @@ echo $this->MultiSelect->create();
 			$contact = $result['HouseholdMember'][0]['Household']['HouseholdContact'];
 			echo $this->Html->link($contact['Profile']['name'], array('controller' => 'profiles', 'action' => 'view', 'User' => $contact['Profile']['user_id']));
 			echo '<br />';
-			echo $this->Formatting->address($contact['ActiveAddress'], $contact['Profile']['user_id']);
+			echo $this->Formatting->address($contact['ActiveAddress']);
 			?></td>
 		</tr>
 <?php	
