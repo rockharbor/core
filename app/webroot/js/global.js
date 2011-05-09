@@ -17,8 +17,10 @@ CORE.updateables = [];
 /**
  * Wraps Ajax update to use an "updateable" alias
  *
- * If updateable and url are defined, the function will call a regular $.ajax update.
- * Otherwise, it will look for and update a CORE.updateable
+ * If url is defined and the updateable doesn't exist, the function will call a 
+ * regular $.ajax update. If the url is defined and the updateable exists, it treats
+ * it as a regular html update using the updateable div(s). Otherwise, it will 
+ * look for and update a CORE.updateable
  *
  * @param string updateable Either the name of an updateable alias or a div to update.
  * @param string url The url to open if it's a div to update.
@@ -26,7 +28,13 @@ CORE.updateables = [];
  */
 CORE.update = function(updateable, url) {
 	if (updateable != undefined && url != undefined) {
-		$('#'+updateable).load(url);
+		if (CORE.updateables[updateable] == undefined) {
+			$('#'+updateable).load(url);
+		} else {
+			for (var div in CORE.updateables[updateable]) {
+				$('#'+div).html(url);
+			}
+		}
 		return;
 	}
 	
@@ -36,7 +44,7 @@ CORE.update = function(updateable, url) {
 
 	if (updateable != 'none' && updateable != '') {
 		// check to see if it's an "updateable"
-		for (div in CORE.updateables[updateable]) {
+		for (var div in CORE.updateables[updateable]) {
 			$('#'+div).load(CORE.updateables[updateable][div]);
 		}
 	}
