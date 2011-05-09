@@ -2,7 +2,7 @@
  * Namespaced object
  */
 var CORE_roster = {};
-console.log('asdfas');
+
 /*
  * Initializes the roster sign up page
  */
@@ -45,7 +45,6 @@ CORE_roster.init = function() {
 		}
 	});
 	$('#members input[id^=Adult]:checkbox').bind('change', function() {
-		console.log('change');
 		// only show the answer tabs for members that are checked
 		if (this.checked) {
 			$('a[href=#answers_'+$(this).val()+']').parent().show();
