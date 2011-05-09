@@ -474,14 +474,21 @@ CORE.confirmation = function(id, message, options) {
 
 /**
  * Attaches WYSIWYG behavior to text area
+ * 
+ * Makes the width 100% of it's parent minus 20px (for scrollbar) if the width
+ * isn't explicitly set
  *
  * @param string id The Id of the element to attach it to
  * @return boolean True
  */
 CORE.wysiwyg = function(id) {
 	delayWysiwyg = function() {
-		if ($('#'+id).width() <= 300) {
-			$('#'+id)[0].width = 527;
+		if ($('#'+id).css('width') != 'auto') {
+			var parent = $('#'+id).closest('fieldset');
+			if (parent.length == 0) {
+				parent = $('#'+id).closest('form');
+			}
+			$('#'+id).width(parent.width() - 20);
 		}
 		$('#'+id).wysiwyg({
 			rmUnusedControls: true,
