@@ -300,6 +300,8 @@ class InstallShell extends Shell {
 			'controllers/InvolvementImages/delete',
 			'controllers/InvolvementImages/index',
 			'controllers/InvolvementImages/approve',
+			'controllers/InvolvementLeaders/add',
+			'controllers/InvolvementLeaders/delete',
 			'controllers/PaymentOptions',
 			'controllers/Questions',
 			'controllers/MergeRequests',
