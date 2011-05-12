@@ -29,8 +29,9 @@
 		$this->AssetCompress->css('calendar');
 
 		// google cdn scripts
-		echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js');
-		echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.js');
+		$min = Configure::read('debug') == 0 ? '.min' : null;
+		echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery'.$min.'.js');
+		echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui'.$min.'.js');
 		echo $this->Html->script('http://maps.google.com/maps/api/js?sensor=false');
 		
 		// vendor scripts
