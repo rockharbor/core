@@ -144,7 +144,6 @@ echo $this->Form->create('Roster', array(
 		<div>
 			<div class="payment-options">
 			<?php
-
 			$options = array();
 			foreach ($involvementPaymentOptions as $option) {
 				$amounts = array();
@@ -156,7 +155,11 @@ echo $this->Form->create('Roster', array(
 				if ($option['PaymentOption']['deposit'] > 0) {
 					$amounts[] = $this->Formatting->money($option['PaymentOption']['deposit']).' deposit';
 				}
-				$options[$option['PaymentOption']['id']] .= $this->Html->tag('span', ' | '.implode(', ', $amounts), array('class' => 'deemphasized'));
+				$deductible = null;
+				if ($option['PaymentOption']['tax_deductible']) {
+					$deductible = ' | Tax deductible';
+				}
+				$options[$option['PaymentOption']['id']] .= $this->Html->tag('span', ' | '.implode(', ', $amounts).$deductible, array('class' => 'deemphasized'));
 			}
 			echo $this->Form->input('Default.payment_option_id', array(
 				'type' => 'radio',
@@ -211,7 +214,6 @@ echo $this->Form->create('Roster', array(
 				</div>
 			</div>
 		</div>
-		<div id="tax-deductible" style="display:none">This <?php echo $involvement['InvolvementType']['name']; ?> is tax deductible! Isn't that great?</div>
 	</div>
 	<div id="billing" class="clearfix">
 		<?php

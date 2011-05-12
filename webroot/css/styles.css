@@ -403,14 +403,13 @@ div.offset-background {
 	float:left;
 }
 div#payment-details {
-	float:left;
+	display: inline-block;
 	z-index: 1;
-	margin-left: 2px;
+	margin-left: -2px;
 }
 div.payment-options {
-	float:left;
-	clear:both;
-	position:relative;
+	display: inline-block;
+	vertical-align: top;
 	z-index: 1;
 }
 div.payment-option {
@@ -421,6 +420,7 @@ div.payment-option {
 	border-top: none;
 	border-right: none;
 	z-index: 1;
+	margin-right: 10px;
 }
 div.payment-option:first-child {
 	border-top: 1px solid #444445;
@@ -429,12 +429,14 @@ div.payment-option.selected {
 	background: #f1f1f1;
 	border-right: 1px solid #f1f1f1;
 	z-index: 2;
+	position: relative;
 }
 div.payment-option .core-radio {
 	margin-left: 5px;
 }
 div.payment-option label {
 	padding-right: 5px;
+	display: inline !important;
 }
 div#payment-totals {
 	border: 1px solid #444445;

@@ -57,14 +57,12 @@ CORE_roster.init = function() {
 
 	$('.payment-option input:radio').bind('change', function() {
 		$('.payment-option').removeClass('selected');
-		if ($(this).is(':checked')) {
-			$(this).parent().parent().addClass('selected');
-		}
+		$(this).closest('.payment-option').addClass('selected');
 		CORE_roster.updateAmount();
 	});
 
 	$('#members input[id^=Adult]:checkbox').change();
-	$('.payment-option input:radio:checked').change().parent().addClass('selected');
+	$('.payment-option input:radio:checked').change().closest('.payment-option').addClass('selected');
 }
 
 /**
@@ -75,15 +73,14 @@ CORE_roster.updateAmount = function() {
 		return;
 	}
 
-	var peopleAmount, totalDue, childcareAmount, numberChildcareSignedUp, deposit, childcare, numberSignedUp, payLater = 0;
+	var peopleAmount, totalDue, childcareAmount, numberChildcareSignedUp, deposit, childcare, numberSignedUp, payLater;
 	var selectedOption = CORE_roster.payments[$('.payment-options input:radio:checked').val()].PaymentOption;
 
-	deposit = selectedOption.deposit > 0;
-	childcare = selectedOption.deposit > 0;
+	deposit = Number(selectedOption.deposit) > 0;
+	childcare = Number(selectedOption.childcare) > 0;
 	payLater = $('#DefaultPayLater').is(':checked');
 
 	deposit > 0 ? $('#pay-deposit').show() : $('#pay-deposit').hide();
-	selectedOption.tax_deductible == 1 ? $('#tax-deductible').show() : $('#tax-deductible').hide();
 
 	numberSignedUp = $('input[id^=Adult]:checked').length;
 	peopleAmount = Number(selectedOption.total);
@@ -98,15 +95,17 @@ CORE_roster.updateAmount = function() {
 		// get number of children checked
 		numberChildcareSignedUp = $('input[id^=Child]:checked').length;
 		childcareAmount = Number(selectedOption.childcare);
-		$('#children-number').html(numberChildcareSignedUp);
-		$('#children-total').html(numberChildcareSignedUp*childcareAmount);
+		Number($('#children-number').html(numberChildcareSignedUp));
+		Number($('#children-total').html(numberChildcareSignedUp*childcareAmount));
 		totalDue += numberChildcareSignedUp*childcareAmount;
+	} else {
+		numberChildcareSignedUp = childcareAmount = 0;
 	}
 
 	if (payLater) {
 		totalDue = 0;
 	}
-	
+
 	$('#total-total').html(numberChildcareSignedUp*childcareAmount + peopleAmount*numberSignedUp);
 	$('#balance').html($('#total-total').html() - totalDue);
 	$('#amount').html(totalDue);
