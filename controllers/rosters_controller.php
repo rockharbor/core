@@ -296,7 +296,7 @@ class RostersController extends AppController {
 		$user = $this->Roster->User->read(null, $userId);
 
 		$members = $this->Roster->User->HouseholdMember->Household->getMemberIds($userId, true);
-				
+		
 		// they're submitting the form
 		if (!empty($this->data)) {
 			// first thing we'll do is validate all the data. if it all validates, we'll try to
@@ -305,10 +305,8 @@ class RostersController extends AppController {
 						
 			// get chosen payment option
 			$paymentOption = array();
-			$paymentType = array();
 			if ($involvement['Involvement']['take_payment']) {
 				$paymentOption = $this->Roster->PaymentOption->read(null, $this->data['Default']['payment_option_id']);
-				$paymentType = $this->Roster->Payment->PaymentType->findByType(0);
 			}
 			
 			// extract info to check/save for roster
@@ -326,8 +324,7 @@ class RostersController extends AppController {
 					'defaults' => $this->data['Default'],
 					'creditCard' => $this->data,
 					'payer' => $this->activeUser,
-					'paymentOption' => $paymentOption,
-					'paymentType' => $paymentType
+					'paymentOption' => $paymentOption
 				));
 
 				// save validate success only if we haven't failed yet (so not to overwrite a failure)
@@ -371,7 +368,6 @@ class RostersController extends AppController {
 						'creditCard' => $this->data,
 						'payer' => $this->activeUser,
 						'paymentOption' => $paymentOption,
-						'paymentType' => $paymentType,
 						'parent' => $parent
 					));
 
@@ -538,13 +534,14 @@ class RostersController extends AppController {
 		));
 		// format for select
 		$paymentOptions = Set::combine($involvementPaymentOptions, '/PaymentOption/id', '/PaymentOption/name');
+		$paymentTypes = $this->Roster->Payment->PaymentType->find('all');
 		
 		$this->set('roles', $this->Roster->Role->find('list', array(
 			'conditions' => array(
 				'ministry_id' => $involvement['Involvement']['ministry_id']
 			)
 		)));
-		$this->set(compact('involvement', 'user', 'addresses', 'userAddresses', 'paymentOptions', 'involvementPaymentOptions'));
+		$this->set(compact('involvement', 'user', 'addresses', 'userAddresses', 'paymentOptions', 'involvementPaymentOptions', 'paymentTypes'));
 		$this->set('roster', $involvementRoster);
 	}
 

@@ -217,6 +217,12 @@ echo $this->Form->create('Roster', array(
 	</div>
 	<div id="billing" class="clearfix">
 		<?php
+		$ptypes = Set::combine(Set::extract('/PaymentType[type=0]', $paymentTypes), '{n}.PaymentType.id', '{n}.PaymentType.name');
+		if (count($ptypes) > 1) {
+			echo $this->Form->input('Default.payment_type_id', array('options' => $ptypes));
+		} else {
+			echo $this->Form->hidden('Default.payment_type_id', array('value' => current($ptypes)));
+		}
 		echo $this->element('payment_type'.DS.'credit_card', array(
 			'addresses' => $userAddresses
 		));

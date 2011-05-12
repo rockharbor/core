@@ -45,8 +45,8 @@ class PaymentsController extends AppController {
  * @access private
  */ 
 	function beforeFilter() {
-		$this->Security->blackHoleCallback = '_forceSSL';
-		$this->Security->requireSecure('add');
+		/*$this->Security->blackHoleCallback = '_forceSSL';
+		$this->Security->requireSecure('add');*/
 		parent::beforeFilter();
 	}
 
@@ -287,9 +287,10 @@ class PaymentsController extends AppController {
 		// format for select
 		$addresses = Set::combine($userAddresses, '/Address/id', '/Address/name');
 		
-		$paymentTypes = $this->Payment->PaymentType->find('list');
+		$types = $this->Payment->PaymentType->types;
+		$paymentTypes = $this->Payment->PaymentType->find('all');
 		
-		$this->set(compact('involvement', 'users', 'userAddresses', 'addresses', 'paymentTypes', 'mskey'));
+		$this->set(compact('involvement', 'users', 'userAddresses', 'addresses', 'paymentTypes', 'types', 'mskey'));
 		
 	}
 

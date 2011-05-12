@@ -1,4 +1,4 @@
-<h2>Submit Payment</h2>
+<h1>Submit Payment</h1>
 <div class="payments">
 <?php 
 $balance = Set::apply('/Roster/balance', $users, 'array_sum');
@@ -21,17 +21,17 @@ if (count($users) > 1) {
 	
 	<ul class="tabs">
 		<?php
-			foreach ($paymentTypes as $paymentTypeId => $paymentTypeName):
-				echo '<li class="tab"><a href="#payment_type_'.$paymentTypeId.'">'.$paymentTypeName.'</a></li>';
+			foreach ($types as $id => $name):
+				echo '<li class="tab"><a href="#payment_type_'.$id.'">'.$name.'</a></li>';
 			endforeach;
 		?>
 	</ul>
 
 <?php 
 
-foreach ($paymentTypes as $paymentTypeId => $paymentTypeName):
+foreach ($types as $id => $name):
 
-	echo '<div id="payment_type_'.$paymentTypeId.'">';
+	echo '<div id="payment_type_'.$id.'">';
 	
 	echo $this->Form->create('Payment', array(
 		'default' => false,
@@ -39,19 +39,22 @@ foreach ($paymentTypes as $paymentTypeId => $paymentTypeName):
 			$mskey
 		)
 	));
-	echo $this->Form->hidden('payment_type_id', array(
-		'value' => $paymentTypeId
-	));
 	echo $this->Form->input('amount', array(
 		'label' => 'I\'m going to pay:'
 	));
-	echo $this->element('payment_type'.DS.strtolower(str_replace(' ', '_', $paymentTypeName)), array(
+	$ptypes = Set::combine(Set::extract('/PaymentType[type='.$id.']', $paymentTypes), '{n}.PaymentType.id', '{n}.PaymentType.name');
+	if (count($ptypes) > 1) {
+		echo $this->Form->input('payment_type_id', array('options' => $ptypes));
+	} else {
+		echo $this->Form->hidden('payment_type_id', array('value' => current($ptypes)));
+	}
+	echo $this->element('payment_type'.DS.strtolower(str_replace(' ', '_', $name)), array(
 		'addresses' => $userAddresses
 	));
 	echo $this->Form->input('comment');
 	
 	$defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals:true})';	
-	echo $this->Js->submit('Submit '.$paymentTypeName.' Payment', $defaultSubmitOptions);
+	echo $this->Js->submit('Submit '.$name.' Payment', $defaultSubmitOptions);
 	echo $this->Form->end();
 	
 	echo '</div>';
