@@ -22,6 +22,13 @@ class Role extends AppModel {
  * @var string
  */
 	var $name = 'Role';
+	
+/**
+ * Default order
+ * 
+ * @var string
+ */
+	var $order = 'Role.name ASC';
 
 /**
  * Validation rules

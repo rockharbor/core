@@ -1,11 +1,13 @@
-<div id="addroles" class="grid_5 alpha">
 <?php
 if ($this->Permission->check(array(
 	'controller' => 'roles',
 	'action' => 'add',
 	'Ministry' => $ministry['Ministry']['id']
-))) {
-	echo $this->requestAction('/roles/add', array(
+))) :
+	?>
+<div id="addroles" class="grid_5 alpha">
+<?php
+	echo $this->requestAction('/roles/add/Ministry:'.$ministry['Ministry']['id'], array(
 		'return',
 		'renderAs' => 'ajax',
 		'named' => array(
@@ -14,9 +16,9 @@ if ($this->Permission->check(array(
 		'data' => null,
 		'form' => array('data' => null)
 	));
-}
 ?>
 </div>
+<?php endif; ?>
 <div class="grid_5 omega">
 <?php
 echo $this->Form->create('Roster', array(
