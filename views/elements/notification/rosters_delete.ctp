@@ -1,5 +1,5 @@
 <?php 
-if ($this->activeUser['User']['id'] == $user['User']['id']) {
+if ($activeUser['User']['id'] == $user['User']['id']) {
 	echo 'You have';
 } else {
 	echo $user['Profile']['name'].' has';
