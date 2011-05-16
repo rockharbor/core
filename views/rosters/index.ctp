@@ -126,7 +126,7 @@ $this->Paginator->options(array(
 						$this->MultiSelect->token
 					),
 					'options' => array(
-						'rel' => 'modal-involvement'
+						'rel' => 'modal-roster'
 					),
 					'permission' => $involvement['Involvement']['take_payment']
 				),
@@ -149,11 +149,11 @@ $this->Paginator->options(array(
 						$this->MultiSelect->token
 					),
 					'options' => array(
-						'rel' => 'modal-involvement'
+						'rel' => 'modal-roster'
 					)
 				)
 			);
-			$this->Js->buffer('CORE.confirmation("roster-remove", "Are you sure you want to remove the selected users?", {update:"involvement"})');
+			$this->Js->buffer('CORE.confirmation("roster-remove", "Are you sure you want to remove the selected users?", {update:"roster"})');
 			$colCount = 7;
 			if (!$involvement['Involvement']['take_payment']) {
 				$colCount--;
