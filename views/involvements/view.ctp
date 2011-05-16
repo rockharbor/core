@@ -119,7 +119,12 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 				?>
 			</div>
 			<ul class="core-admin-tabs">
-				<li><?php echo $this->Html->link('Edit Involvement', array('action' => 'edit', 'Involvement' => $involvement['Involvement']['id'])); ?> </li>
+				<?php
+				$link = $this->Permission->link('Edit', array('action' => 'edit', 'Involvement' => $involvement['Involvement']['id']));
+				if ($link) {
+					echo $this->Html->tag('li', $link);
+				}
+				?>
 			</ul>
 		</div>
 		<?php if ($this->Permission->can('viewRoster')) { ?>
