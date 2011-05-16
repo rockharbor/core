@@ -308,6 +308,7 @@ class Date extends AppModel {
 				unset($date['Date']['start']);
 				unset($date['Date']['end']);
 				$dates[] = $date;
+				$dates[count($dates)-1]['Date']['original'] = $masterDate;
 				$onLimit++;
 			}
 
