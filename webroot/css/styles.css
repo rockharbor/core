@@ -50,7 +50,7 @@ div.message {
 	-webkit-box-shadow:0 0 15px #999999;
 	z-index: 99999;
 }
-.message.error {
+#authMessage, .message.error {
 	color: #e03a14;
 	background: #ffcbbf;
 	border: 1px solid #e03a14;

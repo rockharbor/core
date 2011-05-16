@@ -231,7 +231,7 @@ CORE.init = function() {
 CORE.initUI = function() {
 	$('.equal-height:visible > div').equalHeights();
 	// hide flash message
-	$('div[id^=flash]').appendTo('#wrapper').hide().delay(100).slideDown().delay(5000).slideUp(function() { $(this).remove(); });
+	$('div[id^=flash], div#authMessage').appendTo('#wrapper').hide().delay(100).slideDown().delay(5000).slideUp(function() { $(this).remove(); });
 	// attach tabbed behavior
 	CORE.attachTabbedBehavior();
 	// attach modal behavior
