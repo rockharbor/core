@@ -124,7 +124,7 @@
 					<li id="nav-calendar"><?php echo $this->Html->link('Calendar', array('controller' => 'dates', 'action' => 'calendar', 'full')); ?>
 						<ul>
 							<li>
-								<?php echo $this->element('calendar'); ?>
+								<?php echo $this->element('calendar', array('size' => 'mini')); ?>
 							</li>
 							<li id="calendar-viewall">
 								<?php echo $this->Html->link('View Full Size Calendar', array('controller' => 'dates', 'action' => 'calendar', 'full')); ?>
