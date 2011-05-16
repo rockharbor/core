@@ -287,8 +287,13 @@ class PaymentsController extends AppController {
 		// format for select
 		$addresses = Set::combine($userAddresses, '/Address/id', '/Address/name');
 		
-		$types = $this->Payment->PaymentType->types;
-		$paymentTypes = $this->Payment->PaymentType->find('all');
+		$paymentTypes = $this->Payment->PaymentType->find('all', array(
+			'conditions' => array(
+				'group_id' => array_keys($this->Payment->PaymentType->Group->findGroups($this->activeUser['Group']['id']))
+			)
+		));
+		$types = array_unique(Set::extract('/PaymentType/type', $paymentTypes));
+		$types = array_intersect_key($this->Payment->PaymentType->types, array_flip($types));
 		
 		$this->set(compact('involvement', 'users', 'userAddresses', 'addresses', 'paymentTypes', 'types', 'mskey'));
 		

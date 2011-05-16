@@ -7,6 +7,7 @@ class PaymentTypeFixture extends CakeTestFixture {
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 45),
 		'type' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 2),
+		'group_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
@@ -18,12 +19,14 @@ class PaymentTypeFixture extends CakeTestFixture {
 			'id' => 1,
 			'name' => 'Visa',
 			'type' => 0,
+			'group_id' => 8,
 			'created' => '2010-03-17 09:07:40',
 			'modified' => '2010-03-17 09:07:40'
 		),
 		array(
 			'id' => 2,
 			'name' => 'Cash',
+			'group_id' => 5,
 			'type' => 1,
 			'created' => '2010-03-17 09:07:47',
 			'modified' => '2010-03-17 09:07:47'
@@ -31,6 +34,7 @@ class PaymentTypeFixture extends CakeTestFixture {
 		array(
 			'id' => 3,
 			'name' => 'Mastercard',
+			'group_id' => 8,
 			'type' => 0,
 			'created' => '2010-03-17 09:07:40',
 			'modified' => '2010-03-17 09:07:40'
@@ -38,6 +42,7 @@ class PaymentTypeFixture extends CakeTestFixture {
 		array(
 			'id' => 4,
 			'name' => 'Check',
+			'group_id' => 5,
 			'type' => 2,
 			'created' => '2010-03-17 09:07:53',
 			'modified' => '2010-03-17 09:07:53'
@@ -45,6 +50,7 @@ class PaymentTypeFixture extends CakeTestFixture {
 		array(
 			'id' => 5,
 			'name' => 'Scholarship',
+			'group_id' => 5,
 			'type' => 1,
 			'created' => '2010-03-17 09:08:00',
 			'modified' => '2010-03-17 09:08:00'

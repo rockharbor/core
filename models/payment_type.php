@@ -44,5 +44,14 @@ class PaymentType extends AppModel {
 		2 => 'Check'
 	);
 
+/**
+ * HasOne association link
+ * 
+ * @var array
+ */
+	var $belongsTo = array(
+		'Group'
+	);
+
 }
 ?>
