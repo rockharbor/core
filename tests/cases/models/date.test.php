@@ -270,18 +270,9 @@ class DateTestCase extends CoreTestCase {
 			'end' => date('Y-m-d H:i', mktime(0, 0, 0, 1, 1, 2011))
 		);
 		$results = $this->Date->_generateRecurringDates($date, $range);
+		$results = Set::extract('/Date/start_date', $results);
 		$expected = array(
-			0 => array(
-				'Date' => array(
-					'start_date' => '2010-04-05',
-					'end_date' => '2010-04-05',
-					'start_time' => '08:00:00',
-					'end_time' => '11:00:00',
-					'all_day' => 0,'permanent' => 0,	'recurring' => 1,
-					'recurrance_type' => 'y','frequency' => 1,'weekday' => 3,
-					'day' => 12,'exemption' => 0,'offset' => 1
-				)
-			)
+			'2010-04-05'
 		);
 		$this->assertEqual($results, $expected);
 
@@ -290,40 +281,11 @@ class DateTestCase extends CoreTestCase {
 			'end' => date('Y-m-d H:i', mktime(0, 0, 0, 5, 1, 2012))
 		);
 		$results = $this->Date->_generateRecurringDates($date, $range);
+		$results = Set::extract('/Date/start_date', $results);
 		$expected = array(
-			0 => array(
-				'Date' => array(
-					'start_date' => '2010-04-05',
-					'end_date' => '2010-04-05',
-					'start_time' => '08:00:00',
-					'end_time' => '11:00:00',
-					'all_day' => 0,'permanent' => 0,	'recurring' => 1,
-					'recurrance_type' => 'y','frequency' => 1,'weekday' => 3,
-					'day' => 12,'exemption' => 0,'offset' => 1
-				)
-			),
-			1 => array(
-				'Date' => array(
-					'start_date' => '2011-04-05',
-					'end_date' => '2011-04-05',
-					'start_time' => '08:00:00',
-					'end_time' => '11:00:00',
-					'all_day' => 0,'permanent' => 0,	'recurring' => 1,
-					'recurrance_type' => 'y','frequency' => 1,'weekday' => 3,
-					'day' => 12,'exemption' => 0,'offset' => 1
-				)
-			),
-			2 => array(
-				'Date' => array(
-					'start_date' => '2012-04-05',
-					'end_date' => '2012-04-05',
-					'start_time' => '08:00:00',
-					'end_time' => '11:00:00',
-					'all_day' => 0,'permanent' => 0,	'recurring' => 1,
-					'recurrance_type' => 'y','frequency' => 1,'weekday' => 3,
-					'day' => 12,'exemption' => 0,'offset' => 1
-				)
-			)
+			'2010-04-05',
+			'2011-04-05',
+			'2012-04-05'
 		);
 		$this->assertEqual($results, $expected);
 
@@ -333,18 +295,9 @@ class DateTestCase extends CoreTestCase {
 			'end' => date('Y-m-d H:i', mktime(0, 0, 0, 7, 1, 2012))
 		);
 		$results = $this->Date->_generateRecurringDates($date, $range);
+		$results = Set::extract('/Date/start_date', $results);
 		$expected = array(
-			0 => array(
-				'Date' => array(
-					'start_date' => '2012-04-05',
-					'end_date' => '2012-04-05',
-					'start_time' => '08:00:00',
-					'end_time' => '11:00:00',
-					'all_day' => 0,'permanent' => 0,	'recurring' => 1,
-					'recurrance_type' => 'y','frequency' => 2,'weekday' => 3,
-					'day' => 12,'exemption' => 0,'offset' => 1
-				)
-			)
+			'2012-04-05'
 		);
 		$this->assertEqual($results, $expected);
 	}
@@ -373,18 +326,9 @@ class DateTestCase extends CoreTestCase {
 			'end' => date('Y-m-d H:i', mktime(0, 0, 0, 4, 11, 2010))
 		);
 		$results = $this->Date->_generateRecurringDates($date, $range);
+		$results = Set::extract('/Date/start_date', $results);
 		$expected = array(
-			0 => array(
-				'Date' => array(
-					'start_date' => '2010-04-07',
-					'end_date' => '2010-04-07',
-					'start_time' => '08:00:00',
-					'end_time' => '11:00:00',
-					'all_day' => 0,'permanent' => 0,	'recurring' => 1,
-					'recurrance_type' => 'w','frequency' => 1,'weekday' => 3,
-					'day' => 12,'exemption' => 0,'offset' => 1
-				)
-			)
+			'2010-04-07'
 		);
 		$this->assertEqual($results, $expected);
 
@@ -393,29 +337,10 @@ class DateTestCase extends CoreTestCase {
 			'end' => date('Y-m-d H:i', mktime(0, 0, 0, 4, 20, 2010))
 		);
 		$results = $this->Date->_generateRecurringDates($date, $range);
+		$results = Set::extract('/Date/start_date', $results);
 		$expected = array(
-			0 => array(
-				'Date' => array(
-					'start_date' => '2010-04-07',
-					'end_date' => '2010-04-07',
-					'start_time' => '08:00:00',
-					'end_time' => '11:00:00',
-					'all_day' => 0,'permanent' => 0,	'recurring' => 1,
-					'recurrance_type' => 'w','frequency' => 1,'weekday' => 3,
-					'day' => 12,'exemption' => 0,'offset' => 1
-				)
-			),
-			1 => array(
-				'Date' => array(
-					'start_date' => '2010-04-14',
-					'end_date' => '2010-04-14',
-					'start_time' => '08:00:00',
-					'end_time' => '11:00:00',
-					'all_day' => 0,'permanent' => 0,	'recurring' => 1,
-					'recurrance_type' => 'w','frequency' => 1,'weekday' => 3,
-					'day' => 12,'exemption' => 0,'offset' => 1
-				)
-			)
+			'2010-04-07',
+			'2010-04-14'
 		);
 		$this->assertEqual($results, $expected);
 
@@ -425,18 +350,9 @@ class DateTestCase extends CoreTestCase {
 			'end' => date('Y-m-d H:i', mktime(0, 0, 0, 6, 10, 2010))
 		);
 		$results = $this->Date->_generateRecurringDates($date, $range);
+		$results = Set::extract('/Date/start_date', $results);
 		$expected = array(
-			0 => array(
-				'Date' => array(
-					'start_date' => '2010-06-09',
-					'end_date' => '2010-06-09',
-					'start_time' => '08:00:00',
-					'end_time' => '11:00:00',
-					'all_day' => 0,'permanent' => 0,	'recurring' => 1,
-					'recurrance_type' => 'w','frequency' => 3,'weekday' => 3,
-					'day' => 12,'exemption' => 0,'offset' => 1
-				)
-			)
+			'2010-06-09'
 		);
 		$this->assertEqual($results, $expected);
 	}
@@ -465,18 +381,9 @@ class DateTestCase extends CoreTestCase {
 			'end' => date('Y-m-d H:i', mktime(0, 0, 0, 4, 11, 2010))
 		);
 		$results = $this->Date->_generateRecurringDates($date, $range);
+		$results = Set::extract('/Date/start_date', $results);
 		$expected = array(
-			0 => array(
-				'Date' => array(
-					'start_date' => '2010-04-06',
-					'end_date' => '2010-04-06',
-					'start_time' => '08:00:00',
-					'end_time' => '11:00:00',
-					'all_day' => 0,'permanent' => 0,	'recurring' => 1,
-					'recurrance_type' => 'mw','frequency' => 1,'weekday' => 2,
-					'day' => 12,'exemption' => 0,'offset' => 1
-				)
-			)
+			'2010-04-06'
 		);
 		$this->assertEqual($results, $expected);
 
@@ -494,18 +401,9 @@ class DateTestCase extends CoreTestCase {
 			'end' => date('Y-m-d H:i', mktime(0, 0, 0, 6, 17, 2010))
 		);
 		$results = $this->Date->_generateRecurringDates($date, $range);
+		$results = Set::extract('/Date/start_date', $results);
 		$expected = array(
-			0 => array(
-				'Date' => array(
-					'start_date' => '2010-04-13',
-					'end_date' => '2010-04-13',
-					'start_time' => '08:00:00',
-					'end_time' => '11:00:00',
-					'all_day' => 0,'permanent' => 0,	'recurring' => 1,
-					'recurrance_type' => 'mw','frequency' => 2,'weekday' => 2,
-					'day' => 12,'exemption' => 0,'offset' => 2
-				)
-			)
+			'2010-04-13'
 		);
 		$this->assertEqual($results, $expected);
 
@@ -515,29 +413,10 @@ class DateTestCase extends CoreTestCase {
 			'end' => date('Y-m-d H:i', mktime(0, 0, 0, 6, 17, 2010))
 		);
 		$results = $this->Date->_generateRecurringDates($date, $range);
+		$results = Set::extract('/Date/start_date', $results);
 		$expected = array(
-			0 => array(
-				'Date' => array(
-					'start_date' => '2010-04-13',
-					'end_date' => '2010-04-13',
-					'start_time' => '08:00:00',
-					'end_time' => '11:00:00',
-					'all_day' => 0,'permanent' => 0,	'recurring' => 1,
-					'recurrance_type' => 'mw','frequency' => 2,'weekday' => 2,
-					'day' => 12,'exemption' => 0,'offset' => 2
-				)
-			),
-			1 => array(
-				'Date' => array(
-					'start_date' => '2010-06-08',
-					'end_date' => '2010-06-08',
-					'start_time' => '08:00:00',
-					'end_time' => '11:00:00',
-					'all_day' => 0,'permanent' => 0,	'recurring' => 1,
-					'recurrance_type' => 'mw','frequency' => 2,'weekday' => 2,
-					'day' => 12,'exemption' => 0,'offset' => 2
-				)
-			)
+			'2010-04-13',
+			'2010-06-08'
 		);
 		$this->assertEqual($results, $expected);
 	}
@@ -566,18 +445,9 @@ class DateTestCase extends CoreTestCase {
 			'end' => date('Y-m-d H:i', mktime(0, 0, 0, 5, 1, 2010))
 		);
 		$results = $this->Date->_generateRecurringDates($date, $range);
+		$results = Set::extract('/Date/start_date', $results);
 		$expected = array(
-			0 => array(
-				'Date' => array(
-					'start_date' => '2010-04-12',
-					'end_date' => '2010-04-12',
-					'start_time' => '08:00:00',
-					'end_time' => '11:00:00',
-					'all_day' => 0,'permanent' => 0,	'recurring' => 1,
-					'recurrance_type' => 'md','frequency' => 1,'weekday' => 2,
-					'day' => 12,'exemption' => 0,'offset' => 2
-				)
-			)			
+			'2010-04-12'
 		);
 		$this->assertEqual($results, $expected);
 
@@ -586,17 +456,8 @@ class DateTestCase extends CoreTestCase {
 			'end' => date('Y-m-d H:i', mktime(0, 0, 0, 6, 1, 2010))
 		);
 		$results = $this->Date->_generateRecurringDates($date, $range);
-		$expected[] = array(
-			'Date' => array(
-				'start_date' => '2010-05-12',
-				'end_date' => '2010-05-12',
-				'start_time' => '08:00:00',
-				'end_time' => '11:00:00',
-				'all_day' => 0,'permanent' => 0,	'recurring' => 1,
-				'recurrance_type' => 'md','frequency' => 1,'weekday' => 2,
-				'day' => 12,'exemption' => 0,'offset' => 2
-			)
-		);
+		$results = Set::extract('/Date/start_date', $results);
+		$expected[] = '2010-05-12';
 		$this->assertEqual($results, $expected);
 
 		$range = array(
@@ -604,18 +465,9 @@ class DateTestCase extends CoreTestCase {
 			'end' => date('Y-m-d H:i', mktime(0, 0, 0, 7, 1, 2010))
 		);
 		$results = $this->Date->_generateRecurringDates($date, $range);
+		$results = Set::extract('/Date/start_date', $results);
 		$expected = array(
-			0 => array(
-				'Date' => array(
-					'start_date' => '2010-05-12',
-					'end_date' => '2010-05-12',
-					'start_time' => '08:00:00',
-					'end_time' => '11:00:00',
-					'all_day' => 0,'permanent' => 0,	'recurring' => 1,
-					'recurrance_type' => 'md','frequency' => 1,'weekday' => 2,
-					'day' => 12,'exemption' => 0,'offset' => 2
-				)
-			)	
+			'2010-05-12'
 		);
 		$this->assertEqual($results, $expected);
 	}
@@ -679,29 +531,10 @@ class DateTestCase extends CoreTestCase {
 			'end' => date('Y-m-d H:i', mktime(0, 0, 0, 4, 7, 2010))
 		);
 		$results = $this->Date->_generateRecurringDates($date, $range);
+		$results = Set::extract('/Date/start_date', $results);
 		$expected = array(
-			0 => array(
-				'Date' => array(
-					'start_date' => '2010-04-05',
-					'end_date' => '2010-04-05',
-					'start_time' => '08:00:00',
-					'end_time' => '11:00:00',
-					'all_day' => 0,'permanent' => 0,	'recurring' => 1,
-					'recurrance_type' => 'd','frequency' => 1,'weekday' => 2,
-					'day' => 1,'exemption' => 0,'offset' => 2
-				)
-			),
-			1 => array(
-				'Date' => array(
-					'start_date' => '2010-04-06',
-					'end_date' => '2010-04-06',
-					'start_time' => '08:00:00',
-					'end_time' => '11:00:00',
-					'all_day' => 0,'permanent' => 0,	'recurring' => 1,
-					'recurrance_type' => 'd','frequency' => 1,'weekday' => 2,
-					'day' => 1,'exemption' => 0,'offset' => 2
-				)
-			)
+			'2010-04-05',
+			'2010-04-06'
 		);
 		$this->assertEqual($results, $expected);
 
@@ -710,17 +543,8 @@ class DateTestCase extends CoreTestCase {
 			'end' => date('Y-m-d H:i', mktime(12, 0, 0, 4, 7, 2010))
 		);
 		$results = $this->Date->_generateRecurringDates($date, $range);
-		$expected[] = array(
-			'Date' => array(
-				'start_date' => '2010-04-07',
-				'end_date' => '2010-04-07',
-				'start_time' => '08:00:00',
-				'end_time' => '11:00:00',
-				'all_day' => 0,'permanent' => 0,	'recurring' => 1,
-				'recurrance_type' => 'd','frequency' => 1,'weekday' => 2,
-				'day' => 1,'exemption' => 0,'offset' => 2
-			)
-		);
+		$results = Set::extract('/Date/start_date', $results);
+		$expected[] ='2010-04-07';
 		$this->assertEqual($results, $expected);
 	}
 
@@ -748,29 +572,10 @@ class DateTestCase extends CoreTestCase {
 			'end' => date('Y-m-d H:i', mktime(13, 0, 0, 4, 5, 2010))
 		);
 		$results = $this->Date->_generateRecurringDates($date, $range);
+		$results = Set::extract('/Date/start_time', $results);
 		$expected = array(
-			0 => array(
-				'Date' => array(
-					'start_date' => '2010-04-05',
-					'end_date' => '2010-04-05',
-					'start_time' => '08:00:00',
-					'end_time' => '08:00:00',
-					'all_day' => 0,'permanent' => 0,'recurring' => 1,
-					'recurrance_type' => 'h','frequency' => 4,'weekday' => 2,
-					'day' => 1,'exemption' => 0,'offset' => 2
-				)
-			),
-			1 => array(
-				'Date' => array(
-					'start_date' => '2010-04-05',
-					'end_date' => '2010-04-05',
-					'start_time' => '12:00:00',
-					'end_time' => '12:00:00',
-					'all_day' => 0,'permanent' => 0,'recurring' => 1,
-					'recurrance_type' => 'h','frequency' => 4,'weekday' => 2,
-					'day' => 1,'exemption' => 0,'offset' => 2
-				)
-			)
+			'08:00:00',
+			'12:00:00'
 		);
 		$this->assertEqual($results, $expected);
 
@@ -779,51 +584,12 @@ class DateTestCase extends CoreTestCase {
 			'end' => date('Y-m-d H:i', mktime(0, 0, 0, 4, 6, 2010))
 		);
 		$results = $this->Date->_generateRecurringDates($date, $range);
+		$results = Set::extract('/Date/start_time', $results);
 		$expected = array(
-			0 => array(
-				'Date' => array(
-					'start_date' => '2010-04-05',
-					'end_date' => '2010-04-05',
-					'start_time' => '08:00:00',
-					'end_time' => '08:00:00',
-					'all_day' => 0,'permanent' => 0,'recurring' => 1,
-					'recurrance_type' => 'h','frequency' => 4,'weekday' => 2,
-					'day' => 1,'exemption' => 0,'offset' => 2
-				)
-			),
-			1 => array(
-				'Date' => array(
-					'start_date' => '2010-04-05',
-					'end_date' => '2010-04-05',
-					'start_time' => '12:00:00',
-					'end_time' => '12:00:00',
-					'all_day' => 0,'permanent' => 0,'recurring' => 1,
-					'recurrance_type' => 'h','frequency' => 4,'weekday' => 2,
-					'day' => 1,'exemption' => 0,'offset' => 2
-				)
-			),
-			2 => array(
-				'Date' => array(
-					'start_date' => '2010-04-05',
-					'end_date' => '2010-04-05',
-					'start_time' => '16:00:00',
-					'end_time' => '16:00:00',
-					'all_day' => 0,'permanent' => 0,'recurring' => 1,
-					'recurrance_type' => 'h','frequency' => 4,'weekday' => 2,
-					'day' => 1,'exemption' => 0,'offset' => 2
-				)
-			),
-			3 => array(
-				'Date' => array(
-					'start_date' => '2010-04-05',
-					'end_date' => '2010-04-05',
-					'start_time' => '20:00:00',
-					'end_time' => '20:00:00',
-					'all_day' => 0,'permanent' => 0,'recurring' => 1,
-					'recurrance_type' => 'h','frequency' => 4,'weekday' => 2,
-					'day' => 1,'exemption' => 0,'offset' => 2
-				)
-			)
+			'08:00:00',
+			'12:00:00',
+			'16:00:00',
+			'20:00:00'
 		);
 		$this->assertEqual($results, $expected);
 	}
