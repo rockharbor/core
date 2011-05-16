@@ -111,6 +111,7 @@ class Date extends AppModel {
  * - date $start Start date
  * - date $end End date
  * - integer $limit The number of dates to pull
+ * - boolean $single Whether to just pull single dates, or dates that span multiple days
  *
  * @param integer $involvement_id Involvement id to pull dates for
  * @param array $options Options
@@ -143,11 +144,17 @@ class Date extends AppModel {
 			$range['start'] = $default['start'];
 		}
 		
+		$conditions =  array(
+			'Date.involvement_id' => $involvement_id
+		);
+		
+		if (isset($options['single'])) {
+			$conditions['DATEDIFF(Date.start_date, Date.end_date)'] = 0;
+		}
+		
 		$this->recursive = -1;
 		$dates = $this->find('all', array(
-			'conditions' => array(
-				'Date.involvement_id' => $involvement_id
-			)
+			'conditions' => $conditions
 		));
 
 		$recurringDates = array();

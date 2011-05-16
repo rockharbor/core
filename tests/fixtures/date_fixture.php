@@ -234,6 +234,44 @@ class DateFixture extends CakeTestFixture {
 			'modified' => '2010-06-24 19:30:02',
 			'exemption' => 1,
 			'offset' => 1
+		),
+		array(
+			'id' => 12,
+			'start_date' => '2010-07-18',
+			'end_date' => '2010-07-18',
+			'start_time' => '08:00:00',
+			'end_time' => '11:00:00',
+			'all_day' => 0,
+			'permanent' => 0,
+			'recurring' => 1,
+			'recurrance_type' => 'd',
+			'frequency' => 1,
+			'weekday' => 2,
+			'day' => 12,
+			'involvement_id' => 8,
+			'created' => '2010-06-24 19:30:02',
+			'modified' => '2010-06-24 19:30:02',
+			'exemption' => 0,
+			'offset' => 1
+		),
+		array(
+			'id' => 13,
+			'start_date' => '2010-07-18',
+			'end_date' => '2010-07-20',
+			'start_time' => '08:00:00',
+			'end_time' => '11:00:00',
+			'all_day' => 0,
+			'permanent' => 0,
+			'recurring' => 1,
+			'recurrance_type' => 'd',
+			'frequency' => 1,
+			'weekday' => 2,
+			'day' => 12,
+			'involvement_id' => 8,
+			'created' => '2010-06-24 19:30:02',
+			'modified' => '2010-06-24 19:30:02',
+			'exemption' => 0,
+			'offset' => 1
 		)
 	);
 }

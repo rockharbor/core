@@ -16,7 +16,8 @@ if (!isset($id)) {
 $url = array(
 	'controller' => 'dates',
 	'action' => 'calendar',
-	'ext' => 'json'
+	'ext' => 'json',
+	$size
 );
 foreach ($filters as $key => $value) {
 	$url[$key] = $value;

@@ -81,7 +81,7 @@ class DatesController extends AppController {
 		$this->set(compact('filters', 'size'));
 		
 		// if it's not the calendar calling, just leave. there's nothing 
-		// special to pass to the calendar view		
+		// special to pass to the calendar view
 		if (!isset($this->params['url']['ext']) || $this->params['url']['ext'] != 'json') {
 			return;
 		}
@@ -122,6 +122,11 @@ class DatesController extends AppController {
 		
 		$conditions = $filter;
 		$conditions['Involvement.has_dates'] = true;
+		$conditions['Involvement.active'] = true;
+		$conditions['Involvement.private'] = false;
+		if ($size == 'mini') {
+			$range['single'] = true;
+		}
 		
 		// get all involvements and their dates within the range
 		$involvements = $this->Date->Involvement->find('all', array(

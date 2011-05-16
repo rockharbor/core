@@ -33,20 +33,20 @@ class DatesControllerTestCase extends CoreTestCase {
 	}
 
 	function testCalendar() {
-		$vars = $this->testAction('/dates/calendar.json', array(
+		$vars = $this->testAction('/dates/calendar/full.json', array(
 			'return' => 'vars',
 			'method' => 'get',
 			'data' => array(
 				'start' => strtotime('5/1/2010'),
-				'end' => strtotime('5/30/2010')
+				'end' => strtotime('6/30/2010')
 			)
 		));
 		$results = Set::extract('/Involvement', $vars['events']);
 		$expected = array(
 			array(
 				'Involvement' => array(
-					'id' => 2,
-					'name' => 'Third Wednesday'
+					'id' => 4,
+					'name' => 'Rock Climbing'
 				)
 			)
 		);
@@ -84,7 +84,6 @@ class DatesControllerTestCase extends CoreTestCase {
 		$this->testAction('/dates/add/Involvement:2', array(
 			'data' => $data
 		));
-		$this->Dates->Date->id = 12;
 		$date = $this->Dates->Date->read();
 		$this->assertEqual($date['Date']['start_time'], '00:00:00');
 		$this->assertEqual($date['Date']['end_time'], '23:59:00');

@@ -31,6 +31,26 @@ class DateTestCase extends CoreTestCase {
 		$result = $date['Date']['passed'];
 		$this->assertFalse($result);
 	}
+	
+	function testSingleOnly() {
+		$this->loadFixtures('Date');
+		
+		$dates = $this->Date->generateDates(3, array(
+			'start' => mktime(0, 0, 0, 6, 1, 2000),
+			'end' => mktime(0, 0, 0, 6, 1, 2020),
+			'single' => true
+		));
+		$this->assertEqual($dates, array());
+		
+		$dates = $this->Date->generateDates(8, array(
+			'start' => mktime(0, 0, 0, 6, 1, 2000),
+			'end' => mktime(0, 0, 0, 6, 1, 2020),
+			'single' => true
+		));
+		$results = array_unique(Set::extract('/Date/id', $dates));
+		$expected = array(12);
+		$this->assertEqual($results, $expected);
+	}
 
 	function testStartFromOffset() {
 		$date = array(
