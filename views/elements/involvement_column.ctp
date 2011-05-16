@@ -24,7 +24,11 @@ if (!isset($class)) {
 		<?php
 		if (!empty($involvement['dates'])) {
 			echo $this->Html->tag('div', date('m/d/y', strtotime($involvement['dates'][0]['Date']['start_date'])));
-			echo $this->Html->tag('div', date('g:i', strtotime($involvement['dates'][0]['Date']['start_time'])), array('class' => date('a', strtotime($involvement['dates'][0]['Date']['start_time']))));
+			if (!$involvement['dates'][0]['Date']['all_day']) {
+				echo $this->Html->tag('div', date('g:i', strtotime($involvement['dates'][0]['Date']['start_time'])), array('class' => date('a', strtotime($involvement['dates'][0]['Date']['start_time']))));
+			} else {
+				echo $this->Html->tag('div', 'All Day');
+			}
 		}
 		echo $this->Html->tag('div', $this->Html->link('Get Involved', array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvement['Involvement']['id']), array('class' => 'button')));
 		?>

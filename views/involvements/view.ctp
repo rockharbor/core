@@ -48,13 +48,17 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 						<div class="grid_2 column border-right">
 							<span class="font-large">
 							<?php
+							if (!$date['Date']['all_day']) {
 								echo date('h:i', strtotime($date['Date']['start_time']));
+							} else {
+								echo 'All Day';
+							}
 							?>
 							</span>
 						</div>
 						<div class="grid_2 column omega">
 							<?php
-								echo $this->Formatting->readableDate($date);
+								echo $this->Formatting->readableDate($date['Date']['original']);
 							?>
 						</div>
 					</div>
