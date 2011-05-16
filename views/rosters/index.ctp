@@ -118,19 +118,6 @@ $this->Paginator->options(array(
 					)
 				),
 				array(
-					'title' => 'Add Payment',
-					'url' => array(
-						'controller' => 'payments',
-						'action' => 'add',
-						'Involvement' => $involvement['Involvement']['id'],
-						$this->MultiSelect->token
-					),
-					'options' => array(
-						'rel' => 'modal-roster'
-					),
-					'permission' => $involvement['Involvement']['take_payment']
-				),
-				array(
 					'title' => 'Remove',
 					'url' => array(
 						'controller' => 'rosters',
@@ -153,11 +140,24 @@ $this->Paginator->options(array(
 					)
 				)
 			);
-			$this->Js->buffer('CORE.confirmation("roster-remove", "Are you sure you want to remove the selected users?", {update:"roster"})');
-			$colCount = 7;
-			if (!$involvement['Involvement']['take_payment']) {
+			if ($involvement['Involvement']['take_payment']) {
+				$link[] = array(
+					'title' => 'Add Payment',
+					'url' => array(
+						'controller' => 'payments',
+						'action' => 'add',
+						'Involvement' => $involvement['Involvement']['id'],
+						$this->MultiSelect->token
+					),
+					'options' => array(
+						'rel' => 'modal-roster'
+					)
+				);
+			} else {
 				$colCount--;
 			}
+			$this->Js->buffer('CORE.confirmation("roster-remove", "Are you sure you want to remove the selected users?", {update:"roster"})');
+			$colCount = 7;
 			echo $this->element('multiselect', array(
 				'colCount' => $colCount,
 				'checkAll' => $canCheckAll,
