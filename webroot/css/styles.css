@@ -562,6 +562,7 @@ Tooltip
 */
 .qtip {
 	z-index: 900 !important;
+	position: fixed;
 }
 .qtip .qtip-contentWrapper {	
 	border: none !important;	
@@ -599,12 +600,12 @@ Tooltip
 		left top,
 		color-stop(0, rgb(55,174,107)),
 		color-stop(0.61, rgb(69,218,136))
-	);
+	) !important;
 	background-image: -moz-linear-gradient(
 		center bottom,
 		rgb(55,174,107) 0%,
 		rgb(69,218,136) 61%
-	);
+	) !important;
 }
 
 /*
