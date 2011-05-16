@@ -473,7 +473,8 @@ class InstallShell extends Shell {
 			'controllers/Profiles/view',
 			'controllers/Households/confirm',
 			'controllers/Profiles/edit',
-			'controllers/Payments/view'
+			'controllers/Payments/view',
+			'controllers/Payments/index'
 		),
 		'Household Contact' => array(
 			'controllers/UserImages/delete',
@@ -495,7 +496,9 @@ class InstallShell extends Shell {
 			'controllers/UserAddresses/toggle_activity',
 			'controllers/Publications/subscriptions',
 			'controllers/Publications/toggle_subscribe',
-			'controllers/Profiles/edit'
+			'controllers/Profiles/edit',
+			'controllers/Payments/view',
+			'controllers/Payments/index'
 		)
 	);
 	
