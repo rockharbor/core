@@ -46,7 +46,7 @@ foreach ($types as $id => $name):
 	if (count($ptypes) > 1) {
 		echo $this->Form->input('payment_type_id', array('options' => $ptypes));
 	} else {
-		echo $this->Form->hidden('payment_type_id', array('value' => current($ptypes)));
+		echo $this->Form->hidden('payment_type_id', array('value' => key($ptypes)));
 	}
 	echo $this->element('payment_type'.DS.strtolower(str_replace(' ', '_', $name)), array(
 		'addresses' => $userAddresses
