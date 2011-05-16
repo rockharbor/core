@@ -48,6 +48,11 @@ class SysEmailsController extends AppController {
 		parent::beforeFilter();
 		
 		$this->Auth->allow('bug_compose');
+		
+		// if the user is leading or managing, let them email people
+		if ($this->activeUser['Profile']['leading'] > 0 || $this->activeUser['Profile']['managing'] > 0) {
+			$this->Auth->allow('compose');
+		}
 	}
 
 /**

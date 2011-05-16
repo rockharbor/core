@@ -19,7 +19,8 @@
 					),
 					'options' => array(
 						'rel' => 'modal-none'
-					)
+					),
+					'permission' => true
 				),
 				array(
 					'title' => 'Bulk Edit',
@@ -30,7 +31,8 @@
 					),
 					'options' => array(
 						'rel' => 'modal-none'
-					)
+					),
+					'permission' => true
 				)
 			);
 			$colCount = 3;

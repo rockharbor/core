@@ -46,6 +46,11 @@ class MinistriesController extends AppController {
  */ 
 	function beforeFilter() {
 		parent::beforeFilter();
+		
+		// if user is leading or managing, let them bulk edit ministries
+		if ($this->activeUser['Profile']['leading'] > 0 || $this->activeUser['Profile']['managing'] > 0) {
+			$this->Auth->allow('bulk_edit');
+		}
 	}
 
 /**

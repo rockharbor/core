@@ -19,7 +19,8 @@
 					),
 					'options' => array(
 						'rel' => 'modal-none'
-					)
+					),
+					'permission' => true
 				),
 				array(
 					'title' => 'Email Leaders',
@@ -32,7 +33,8 @@
 					),
 					'options' => array(
 						'rel' => 'modal-none'
-					)
+					),
+					'permission' => true
 				),
 				array(
 					'title' => 'Email Managers',
@@ -45,7 +47,8 @@
 					),
 					'options' => array(
 						'rel' => 'modal-none'
-					)
+					),
+					'permission' => true
 				),
 			);
 			$colCount = 2;
