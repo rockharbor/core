@@ -40,7 +40,9 @@ if (!isset($links)) {
 			'options' => array()
 		);
 		$link = array_merge($_default, $link);
-		if ((!isset($link['permission']) || $link['permission'])) {
+		if (isset($link['permission']) && $link['permission']) {
+			echo $this->Html->link($link['title'], $link['url'], $link['options']);
+		} else {
 			echo $this->Permission->link($link['title'], $link['url'], $link['options']);
 		}
 	}
