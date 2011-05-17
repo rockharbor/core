@@ -65,15 +65,13 @@ $this->Paginator->options(array(
 			'class' => 'toggle'
 		)
 	));
-	array_unshift($rosterStatuses, 'All');
+	$rosterStatuses[0] = 'All';
+	if (empty($this->data['Filter']['roster_status_id'])) {
+		$this->data['Filter']['roster_status_id'] = 0;
+	}
 	echo $this->Form->input('Filter.roster_status_id', array(
-		'type' => 'radio',
 		'options' => $rosterStatuses,
-		'div' => array(
-			'tag' => 'span',
-			'class' => 'toggle'
-		),
-		'legend' => false
+		'selected' => $this->data['Filter']['roster_status_id']
 	));
 	echo $this->Form->end('Filter');
 	?>
@@ -212,7 +210,7 @@ $this->Paginator->options(array(
 		<?php echo $this->Formatting->flags('User', $roster); ?>
 		</td>
 		<td><?php echo $this->Formatting->phone($roster['Profile']['cell_phone']); ?>&nbsp;</td>
-		<td><?php echo $roster['RosterStatus']['name']; ?>&nbsp;</td>
+		<td><?php echo $this->Html->link($roster['RosterStatus']['name'], array('controller' => 'rosters', 'action' => 'edit', $roster['Roster']['id']), array('rel' => 'modal-roster')); ?>&nbsp;</td>
 		<?php if ($involvement['Involvement']['take_payment']) { ?>
 		<td><?php echo $this->Formatting->money($roster['Roster']['balance']); ?>&nbsp;</td>
 		<?php } ?>

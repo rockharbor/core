@@ -575,9 +575,6 @@ class RostersController extends AppController {
 		));
 		
 		if (!empty($this->data)) {
-			// append status to defaults
-			$this->data['Roster']['roster_status_id'] = 1;
-			
 			if (isset($this->data['Child'])) {
 				foreach ($this->data['Child'] as &$child) {
 					$child['roster_status_id'] = 1;
@@ -641,8 +638,9 @@ class RostersController extends AppController {
 				'involvement_id' => $involvement['Involvement']['id']
 			)
 		));
+		$rosterStatuses = $this->Roster->RosterStatus->find('list');
 		
-		$this->set(compact('involvement', 'user', 'roster', 'paymentOptions', 'householdMembers'));
+		$this->set(compact('involvement', 'user', 'roster', 'paymentOptions', 'householdMembers', 'rosterStatuses'));
 	}
 
 /**
