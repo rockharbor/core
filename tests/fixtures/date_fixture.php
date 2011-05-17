@@ -22,7 +22,7 @@ class DateFixture extends CakeTestFixture {
 		'exemption' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'offset' => array('type' => 'integer', 'null' => true, 'default' => '0', 'length' => 2),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'involvement_key' => array('column' => 'involvement_id', 'unique' => 0), 'passed_key' => array('column' => array('end_date', 'end_time', 'permanent', 'involvement_id', 'exemption'), 'unique' => 0)),
-		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
 	var $records = array(

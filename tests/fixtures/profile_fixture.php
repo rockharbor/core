@@ -49,7 +49,7 @@ class ProfileFixture extends CakeTestFixture {
 		'high_school_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),
 		'college_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'user_key' => array('column' => 'user_id', 'unique' => 0)),
-		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
 	var $records = array(

@@ -13,7 +13,7 @@ class ArosAcoFixture extends CakeTestFixture {
 		'_update' => array('type' => 'string', 'null' => false, 'default' => '0', 'length' => 2),
 		'_delete' => array('type' => 'string', 'null' => false, 'default' => '0', 'length' => 2),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'aro_aco_key' => array('column' => array('aro_id', 'aco_id'), 'unique' => 1)),
-		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
 }

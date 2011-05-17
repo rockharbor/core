@@ -12,7 +12,7 @@ class AppSettingFixture extends CakeTestFixture {
 		'value' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 1000),
 		'type' => array('type' => 'string', 'null' => false, 'default' => '0', 'length' => 45),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
-		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
 	var $records = array(
