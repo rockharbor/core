@@ -52,7 +52,7 @@ class EventRosterTask extends MigratorTask {
 					'involvement_id' => $this->_editingRecord['event_id'],
 					'payment_option_id' => $this->_editingRecord['payment_option_id'],
 					'parent_id' => null,
-					'roster_status' => 1
+					'roster_status_id' => 1
 				),
 				'Answer' => $answers
 			);
@@ -63,7 +63,7 @@ class EventRosterTask extends MigratorTask {
 					'involvement_id' => $this->_editingRecord['event_id'],
 					'payment_option_id' => $this->_editingRecord['payment_option_id'],
 					'parent_id' => null,
-					'roster_status' => 1
+					'roster_status_id' => 1
 				),
 			);
 		}

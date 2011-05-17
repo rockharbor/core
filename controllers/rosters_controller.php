@@ -86,8 +86,8 @@ class RostersController extends AppController {
 		}
 
 		if (!empty($this->data)) {
-			if ($this->data['Filter']['pending'] == 1) {
-				$conditions['Roster.roster_status'] = 0;
+			if (!empty($this->data['Filter']['roster_status_id'])) {
+				$conditions['Roster.roster_status_id'] = $this->data['Filter']['roster_status_id'];
 			}
 			$conditions += $this->Roster->parseCriteria(array('roles' => $this->data['Filter']['Role']));
 		} else {
@@ -109,6 +109,7 @@ class RostersController extends AppController {
 				),
 				'Image'
 			),
+			'RosterStatus'
 		);
 		$contain = array('Role');
 		
@@ -125,7 +126,7 @@ class RostersController extends AppController {
 
 		$childConditions = $countConditions = $pendingConditions = array('Roster.involvement_id' => $involvementId);
 		$childConditions['Roster.parent_id >'] = 0;
-		$pendingConditions['Roster.roster_status'] = 0;
+		$pendingConditions['Roster.roster_status_id'] = 2;
 		$counts['childcare'] = $this->Roster->find('count', array('conditions' => $childConditions));
 		$counts['pending'] = $this->Roster->find('count', array('conditions' => $pendingConditions));
 		$counts['leaders'] = count($involvement['Leader']);
@@ -136,10 +137,10 @@ class RostersController extends AppController {
 				'Role.ministry_id' => $involvement['Involvement']['ministry_id']
 			)
 		));
-		$statuses = $this->Roster->statuses;
+		$rosterStatuses = $this->Roster->RosterStatus->find('list');
 
 		$this->set('rosters', $this->FilterPagination->paginate());
-		$this->set(compact('involvement', 'rosterIds', 'householdIds', 'statuses', 'counts', 'roles'));
+		$this->set(compact('involvement', 'rosterIds', 'householdIds', 'rosterStatuses', 'counts', 'roles'));
 	}
 
 /**
@@ -575,11 +576,11 @@ class RostersController extends AppController {
 		
 		if (!empty($this->data)) {
 			// append status to defaults
-			$this->data['Roster']['roster_status'] = 1;
+			$this->data['Roster']['roster_status_id'] = 1;
 			
 			if (isset($this->data['Child'])) {
 				foreach ($this->data['Child'] as &$child) {
-					$child['roster_status'] = 1;
+					$child['roster_status_id'] = 1;
 					$child['parent_id'] = $this->data['Roster']['user_id'];
 					$child['involvement_id'] = $this->data['Roster']['involvement_id'];
 					$child['payment_option_id'] = $this->data['Roster']['payment_option_id'];
@@ -679,7 +680,7 @@ class RostersController extends AppController {
 	function confirm($uid = null) {
 		$selected = $this->MultiSelect->getSelected($uid);
 		$this->Roster->updateAll(
-			array('Roster.roster_status' => 1),
+			array('Roster.roster_status_id' => 1),
 			array('Roster.id' => $selected)
 		);
 		$this->Session->setFlash(__('Roster confirmed', true));

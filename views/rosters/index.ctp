@@ -65,10 +65,15 @@ $this->Paginator->options(array(
 			'class' => 'toggle'
 		)
 	));
-	echo $this->Form->input('Filter.pending', array(
-		'type' => 'checkbox',
-		'class' => 'toggle',
-		'div' => false,
+	array_unshift($rosterStatuses, 'All');
+	echo $this->Form->input('Filter.roster_status_id', array(
+		'type' => 'radio',
+		'options' => $rosterStatuses,
+		'div' => array(
+			'tag' => 'span',
+			'class' => 'toggle'
+		),
+		'legend' => false
 	));
 	echo $this->Form->end('Filter');
 	?>
@@ -140,6 +145,7 @@ $this->Paginator->options(array(
 					)
 				)
 			);
+			$colCount = 7;
 			if ($involvement['Involvement']['take_payment']) {
 				$link[] = array(
 					'title' => 'Add Payment',
@@ -157,7 +163,6 @@ $this->Paginator->options(array(
 				$colCount--;
 			}
 			$this->Js->buffer('CORE.confirmation("roster-remove", "Are you sure you want to remove the selected users?", {update:"roster"})');
-			$colCount = 7;
 			echo $this->element('multiselect', array(
 				'colCount' => $colCount,
 				'checkAll' => $canCheckAll,
@@ -168,7 +173,7 @@ $this->Paginator->options(array(
 				<th>&nbsp;</th>
 				<th><?php echo $this->Paginator->sort('Name', 'Profile.last_name');?></th>
 				<th><?php echo $this->Paginator->sort('Phone', 'Profile.cell_phone');?></th>
-				<th><?php echo $this->Paginator->sort('Status', 'Roster.roster_status');?></th>
+				<th><?php echo $this->Paginator->sort('Status', 'RosterStatus.name');?></th>
 				<?php if ($involvement['Involvement']['take_payment']) { ?>
 				<th><?php echo $this->Paginator->sort('balance');?></th>
 				<?php } ?>
@@ -207,7 +212,7 @@ $this->Paginator->options(array(
 		<?php echo $this->Formatting->flags('User', $roster); ?>
 		</td>
 		<td><?php echo $this->Formatting->phone($roster['Profile']['cell_phone']); ?>&nbsp;</td>
-		<td><?php echo $statuses[$roster['Roster']['roster_status']]; ?>&nbsp;</td>
+		<td><?php echo $roster['RosterStatus']['name']; ?>&nbsp;</td>
 		<?php if ($involvement['Involvement']['take_payment']) { ?>
 		<td><?php echo $this->Formatting->money($roster['Roster']['balance']); ?>&nbsp;</td>
 		<?php } ?>

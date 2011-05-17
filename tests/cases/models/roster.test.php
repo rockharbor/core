@@ -7,7 +7,7 @@ Mock::generatePartial('CreditCard', 'MockCreditCard', array('save'));
 
 class RosterTestCase extends CoreTestCase {
 	function startTest() {
-		$this->loadFixtures('Roster', 'Payment', 'PaymentOption', 'Involvement', 'PaymentType', 'Role', 'RolesRoster');
+		$this->loadFixtures('Roster', 'Payment', 'PaymentOption', 'Involvement', 'PaymentType', 'Role', 'RolesRoster', 'RosterStatus');
 		$CreditCard = new MockCreditCard();
 		$CreditCard->setReturnValue('save', true);
 		ClassRegistry::removeObject('CreditCard');
@@ -21,7 +21,7 @@ class RosterTestCase extends CoreTestCase {
 	}
 
 	function testRoles() {
-		$this->Roster->contain(array('Role'));
+		$this->Roster->contain(array('Role', 'RosterStatus'));
 		$results = $this->Roster->read(null, 5);
 		$results = Set::extract('/Role/id', $results);
 		$expected = array(1, 2);
@@ -88,7 +88,7 @@ class RosterTestCase extends CoreTestCase {
 		$expected = array(
 			'user_id' => 2,
 			'involvement_id' => 1,
-			'roster_status' => 1,
+			'roster_status_id' => 1,
 			'parent' => 1,
 			'payment_option_id' => 2,
 		);
@@ -112,7 +112,7 @@ class RosterTestCase extends CoreTestCase {
 			'Roster' => array(
 				'user_id' => 1,
 				'involvement_id' => 5,
-				'roster_status' => 1,
+				'roster_status_id' => 1,
 				'parent' => null,
 				'payment_option_id' => null,
 			)

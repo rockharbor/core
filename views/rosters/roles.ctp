@@ -30,7 +30,6 @@ echo $this->Form->create('Roster', array(
 		<legend>Add to roles</legend>
 	<?php
 	echo $this->Form->hidden('id');
-	echo $this->Form->hidden('roster_status');
 	echo $this->Form->input('Role', array(
 		'div' => array(
 			'tag' => 'span',

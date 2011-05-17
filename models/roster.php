@@ -22,30 +22,6 @@ class Roster extends AppModel {
  * @var string
  */
 	var $name = 'Roster';
-	
-/**
- * Roster statuses
- * 
- * @var array
- */
-	var $statuses = array(
-		0 => 'Pending',
-		1 => 'Confirmed'
-	);
-
-/**
- * Validation rules
- *
- * This validation rule is here to prevent empty roster saves
- *
- * @var array
- */
-	var $validate = array(
-		'roster_status' => array(
-			'rule' => 'notEmpty',
-			'required' => true
-		)
-	);
 
 /**
  * Extra behaviors for this model
@@ -92,7 +68,8 @@ class Roster extends AppModel {
 		'Parent' => array(
 			'className' => 'User',
 			'foreignKey' => 'parent_id'
-		)
+		),
+		'RosterStatus'
 	);
 
 /**
@@ -208,7 +185,7 @@ class Roster extends AppModel {
 
 		// set defaults
 		$roster['Roster']['involvement_id'] = $involvement['Involvement']['id'];
-		$roster['Roster']['roster_status'] = 1;
+		$roster['Roster']['roster_status_id'] = 1;
 		$roster['Roster']['parent'] = $parent;
 		$roster['Roster']['payment_option_id'] = $defaults['payment_option_id'];
 		

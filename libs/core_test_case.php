@@ -73,6 +73,7 @@ class CoreTestCase extends CakeTestCase {
 		'app.role',
 		'app.roles_roster',
 		'app.roster',
+		'app.roster_status',
 		'app.school',
 		'app.user',
 		'app.zipcode',
