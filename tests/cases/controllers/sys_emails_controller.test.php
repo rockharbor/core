@@ -42,6 +42,19 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		sort($results);
 		$this->assertEqual($results, array(1, 2, 3));
 	}
+	
+	function testComposeToRosters() {
+		$this->loadFixtures('Roster');
+		
+		$this->SysEmails->Session->write('MultiSelect.test', array(
+			'selected' => array(3,4,5),
+			'search' => array()
+		));
+		$vars = $this->testAction('/sys_emails/compose/test/model:Roster');
+		$results = Set::extract('/User/id', $vars['toUsers']);
+		sort($results);
+		$this->assertEqual($results, array(1, 2));
+	}
 
 	function testMassCompose() {
 		$this->loadFixtures('Campus', 'Ministry', 'Leader');

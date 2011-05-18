@@ -166,6 +166,14 @@ class SysEmailsController extends AppController {
 					case 'User':
 						$toUsers = $modelIds;
 					break;
+					case 'Roster':
+						$rosters = ClassRegistry::init('Roster')->find('all', array(
+							'conditions' => array(
+								'id' => $modelIds
+							)
+						));
+						$toUsers = Set::extract('/Roster/user_id', $rosters);
+					break;
 					default:
 						$toUsers = ClassRegistry::init($this->passedArgs['model'])->getInvolved($this->passedArgs[$this->passedArgs['model']]);
 					break;
