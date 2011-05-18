@@ -38,7 +38,8 @@ class InvolvementsController extends AppController {
 	var $components = array(
 		'FilterPagination' => array(
 			'startEmpty' => false
-		)
+		),
+		'MultiSelect.MultiSelect'
 	);
 	
 /**
@@ -153,10 +154,11 @@ class InvolvementsController extends AppController {
  * ### Passed args:
  * - integer `Involvement` The involvement id to get the roster from
  * 
- * @param integer $to The involvement to invite them to
+ * @param integer $mskey The multiselect key
+ * @param boolean $add Whether to add or invite
  * @todo Don't invite users who are already on the roster! (move to model?)
  */
-	function invite_roster($to = null) {
+	function invite_roster($mskey = null, $status = 3) {
 		$from = $this->passedArgs['Involvement'];
 
 		// get from roster
@@ -167,21 +169,46 @@ class InvolvementsController extends AppController {
 		$this->Involvement->Roster->User->contain(array('Profile'));
 		$this->set('notifier', $this->Involvement->Roster->User->read(null, $this->activeUser['User']['id']));
 
-		foreach ($userIds as $userId) {
-			$this->Involvement->contain(array('InvolvementType'));
-			$this->set('involvement', $this->Involvement->read(null, $to));
-			$this->Notifier->notify(
-				array(
-					'to' => $userId,
-					'type' => 'invitation',
-					'template' => 'involvements_invite',
-					'subject' => 'Invitation'
-				)
-			);
-			$this->Session->setFlash('The user was invited.', 'flash'.DS.'success');			
+		$toInvolvements = $this->MultiSelect->getSelected($mskey);
+		foreach ($toInvolvements as $to) {
+			$this->Involvement->contain(array('InvolvementType', 'PaymentOption'));
+			$involvement = $this->Involvement->read(null, $to);
+			if (count($involvement['PaymentOption']) > 0) {
+				$paymentOption = $involvement['PaymentOption'][0]['id'];
+			} else {
+				$paymentOption = null;
+			}
+			foreach ($userIds as $userId) {
+				$roster = $this->Involvement->Roster->setDefaultData(array(
+					'roster' => array(
+						'Roster' => array(
+							'user_id' => $userId
+						)
+					),
+					'involvement' => $involvement,
+					'defaults' => array(
+						'pay_later' => true
+					)
+				));
+				$roster['Roster']['roster_status_id'] = $status;
+				
+				$this->Involvement->Roster->create();
+				if ($this->Involvement->Roster->save($roster)) {
+					$this->set('involvement', $involvement);
+					$this->Notifier->notify(
+						array(
+							'to' => $userId,
+							'type' => 'invitation',
+							'template' => 'involvements_invite_'.$status,
+							'subject' => 'Invitation'
+						)
+					);
+				}
+			}
 		}
+		$this->Session->setFlash('The users of this involvement were '.($status == 1 ? 'added' : 'invited').' to the selected ones.', 'flash'.DS.'success');
 		
-		$this->redirect(array('action' => 'view', $to));
+		$this->redirect($this->referer());
 	}
 	
 /**
