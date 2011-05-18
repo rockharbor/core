@@ -36,6 +36,21 @@
 					),
 					'permission' => true
 				),
+				array(
+					'title' => 'Email Users &amp; Leaders',
+					'url' => array(
+						'controller' => 'sys_emails',
+						'action' => 'compose',
+						$this->MultiSelect->token,
+						'model' => $model,
+						'submodel' => 'Both'
+					),
+					'options' => array(
+						'rel' => 'modal-none',
+						'escape' => false
+					),
+					'permission' => true
+				),
 			);
 			$colCount = 2;
 			echo $this->element('multiselect', array(

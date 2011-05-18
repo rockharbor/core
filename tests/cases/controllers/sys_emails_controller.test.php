@@ -33,6 +33,15 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		unset($this->SysEmails);		
 		ClassRegistry::flush();
 	}
+	
+	function testComposeToUsersAndLeaders() {
+		$this->loadFixtures('Leader');
+		
+		$vars = $this->testAction('/sys_emails/compose/model:Involvement/Involvement:1/submodel:Both');
+		$results = Set::extract('/User/id', $vars['toUsers']);
+		sort($results);
+		$this->assertEqual($results, array(1, 2, 3));
+	}
 
 	function testMassCompose() {
 		$this->loadFixtures('Campus', 'Ministry', 'Leader');

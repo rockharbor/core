@@ -119,9 +119,9 @@ class SysEmailsController extends AppController {
  *
  * Additionally, you can pull the 'Leaders' or 'Managers' of specific models by
  * passing the `submodel` passed arg along with the `model` passed arg, where
- * `submodel` is Leader, Roster or Manager. Note: Managers are leaders who are
- * *above* the current model, i.e., Involvement managers are leaders of that
- * Involvement's Ministry.
+ * `submodel` is Leader, Roster, Both (Leaders and Rosters), or Manager. Note: 
+ * Managers are leaders who are *above* the current model, i.e., Involvement 
+ * managers are leaders of that Involvement's Ministry.
  *
  * If no passed args are sent but a multi-select id is, it's assumed that the
  * selections are Users.
@@ -145,6 +145,12 @@ class SysEmailsController extends AppController {
 			}			
 			if (isset($this->passedArgs['submodel'])) {
 				switch ($this->passedArgs['submodel']) {
+					case 'Both':
+						$Model = ClassRegistry::init($this->passedArgs['model']);
+						$invLeaders = $Model->getLeaders($modelIds);
+						$invUsers = $Model->getInvolved($modelIds);
+						$toUsers = array_merge($invLeaders, $invUsers);
+					break;
 					case 'Leader':
 						$toUsers = ClassRegistry::init($this->passedArgs['model'])->getLeaders($modelIds);
 					break;
@@ -193,6 +199,7 @@ class SysEmailsController extends AppController {
 			// send it!
 			if ($this->SysEmail->validates()) {
 				$e = 0;
+				$toUsers = array_unique($toUsers);
 				foreach ($toUsers as $toUser) {
 					if ($this->Notifier->notify(array(
 						'from' => $fromUser,
