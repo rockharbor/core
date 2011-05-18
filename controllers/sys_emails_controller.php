@@ -59,10 +59,11 @@ class SysEmailsController extends AppController {
  * Creates a new bug report email
  */ 
 	function bug_compose() {
+		$this->set('title_for_layout', 'Submit a bug report');
+		$User = ClassRegistry::init('User');
+		$User->contain(array('Profile'));
 		// hardcoded Jeremy Harris
-		$toUsers = 1;
-		
-		$fromUser = $this->activeUser['User']['id'];
+		$jeremy = $User->findByUsername('jharris');
 		
 		if (!empty($this->data)) {
 			// send email
@@ -72,8 +73,8 @@ class SysEmailsController extends AppController {
 			
 			// send it!
 			if ($this->SysEmail->validates() && $this->Notifier->notify(array(
-				'from' => $fromUser, 
-				'to' => $toUsers, 
+				'from' => $this->activeUser['User']['id'], 
+				'to' => $jeremy['User']['id'], 
 				'subject' => $this->data['SysEmail']['subject']
 			), 'email')) {
 				$this->Session->setFlash('Message sent!', 'flash'.DS.'success');
@@ -89,11 +90,23 @@ class SysEmailsController extends AppController {
 		
 		$this->set('errors', $errors);
 		$this->set('visitHistory', array_reverse($this->Session->read('CoreDebugPanels.visitHistory')));
-		$this->set('toUsers', array(ClassRegistry::init('User')->read(null, $toUsers)));
-		$this->set('fromUser', ClassRegistry::init('User')->read(null, $fromUser));
+		$this->set('toUsers', array($jeremy));
+		$this->set('fromUser', $this->activeUser);
 		$this->set('cacheuid', false);
 		$this->set('showAttachments', false);
-		$this->set('bodyElement', $bodyElement);
+		// needed for element
+		$this->set('activeUser', $this->activeUser);
+		
+		if (empty($this->data)) {
+			$this->data['SysEmail']['subject'] = 'Bug Report :: [enter short description here]';
+			
+			App::import('View', 'view');
+			$View = new View($this->Controller, false);
+			$View->webroot = WEBROOT_DIR;
+			$content = $View->element('email' . DS . 'bug_report', $this->viewVars, true);
+			
+			$this->data['SysEmail']['body'] = $content;
+		}
 		
 		$this->render('compose');
 	}
