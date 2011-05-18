@@ -63,8 +63,6 @@ class PaymentRosterTask extends MigratorTask {
 		if ($amt == 0) {
 			$this->_editingRecord = false;
 			return false;
-		} else {
-			$this->out('Creating a cash payment for $'.$amt);
 		}
 		return $amt;
 	}
