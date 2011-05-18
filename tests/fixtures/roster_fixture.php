@@ -11,9 +11,9 @@ class RosterFixture extends CakeTestFixture {
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
 		'parent_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),
-		'roster_status' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 2),
+		'roster_status_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 2),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'involvement_key' => array('column' => 'involvement_id', 'unique' => 0)),
-		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
 	var $records = array(
@@ -25,7 +25,7 @@ class RosterFixture extends CakeTestFixture {
 			'created' => '2010-05-04 07:33:03',
 			'modified' => '2010-05-04 07:33:03',
 			'parent_id' => 2,
-			'roster_status' => 1
+			'roster_status_id' => 1
 		),
 		array(
 			'id' => 2,
@@ -35,7 +35,7 @@ class RosterFixture extends CakeTestFixture {
 			'created' => '2010-04-19 09:55:07',
 			'modified' => '2010-04-19 11:09:11',
 			'parent_id' => NULL,
-			'roster_status' => 0
+			'roster_status_id' => 2
 		),
 		array(
 			'id' => 3,
@@ -45,7 +45,7 @@ class RosterFixture extends CakeTestFixture {
 			'created' => '2010-04-19 09:32:49',
 			'modified' => '2010-04-19 12:30:21',
 			'parent_id' => NULL,
-			'roster_status' => 0
+			'roster_status_id' => 2
 		),
 		array(
 			'id' => 4,
@@ -55,7 +55,7 @@ class RosterFixture extends CakeTestFixture {
 			'created' => '2010-04-19 09:32:49',
 			'modified' => '2010-04-19 12:30:21',
 			'parent_id' => NULL,
-			'roster_status' => 1
+			'roster_status_id' => 1
 		),
 		array(
 			'id' => 5,
@@ -65,7 +65,7 @@ class RosterFixture extends CakeTestFixture {
 			'created' => '2010-04-19 09:32:49',
 			'modified' => '2010-04-19 12:30:21',
 			'parent_id' => NULL,
-			'roster_status' => 1
+			'roster_status_id' => 1
 		),
 		array(
 			'id' => 6,
@@ -75,7 +75,7 @@ class RosterFixture extends CakeTestFixture {
 			'created' => '2010-04-19 09:32:49',
 			'modified' => '2010-04-19 12:30:21',
 			'parent_id' => NULL,
-			'roster_status' => 1
+			'roster_status_id' => 1
 		)
 	);
 }

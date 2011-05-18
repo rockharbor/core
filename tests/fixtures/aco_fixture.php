@@ -13,7 +13,7 @@ class AcoFixture extends CakeTestFixture {
 		'lft' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8, 'key' => 'index'),
 		'rght' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'acos_lft_rght' => array('column' => array('lft', 'rght'), 'unique' => 0), 'acos_alias' => array('column' => 'alias', 'unique' => 0), 'acos_modek_fk' => array('column' => array('foreign_key', 'model'), 'unique' => 0)),
-		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
 }

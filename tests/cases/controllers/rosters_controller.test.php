@@ -60,7 +60,6 @@ class RostersControllerTestCase extends CoreTestCase {
 		$data = array(
 			'Roster' => array(
 				'id' => 5,
-				'roster_status' => 1
 			),
 			'Role' => array('Role' => array(2))
 		);
@@ -78,25 +77,37 @@ class RostersControllerTestCase extends CoreTestCase {
 	}
 
 	function testFilterIndex() {
-		$data = array(
-			'Filter' => array(
-				'pending' => 0,
-				'Role' => array(
-					2
-				)
-			)
-		);
 		$vars = $this->testAction('/rosters/index/Involvement:3');
 		$results = Set::extract('/Roster/id', $vars['rosters']);
 		sort($results);
 		$expected = array(4, 5);
 		$this->assertEqual($results, $expected);
 
+		$data = array(
+			'Filter' => array(
+				'roster_status_id' => '',
+				'Role' => array(
+					2
+				)
+			)
+		);
 		$vars = $this->testAction('/rosters/index/Involvement:3', array(
 			'data' => $data
 		));
 		$results = Set::extract('/Roster/id', $vars['rosters']);
 		$expected = array(5);
+		$this->assertEqual($results, $expected);
+
+		$data = array(
+			'Filter' => array(
+				'roster_status_id' => 1
+			)
+		);
+		$vars = $this->testAction('/rosters/index/Involvement:1', array(
+			'data' => $data
+		));
+		$results = Set::extract('/Roster/id', $vars['rosters']);
+		$expected = array(1);
 		$this->assertEqual($results, $expected);
 	}
 
@@ -339,7 +350,7 @@ class RostersControllerTestCase extends CoreTestCase {
 				'Roster.id' => array(2, 4)
 			)
 		));
-		$results = Set::extract('/Roster/roster_status', $rosters);
+		$results = Set::extract('/Roster/roster_status_id', $rosters);
 		$this->assertEqual($results, array(1,1));
 	}
 

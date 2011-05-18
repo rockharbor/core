@@ -263,7 +263,7 @@ CORE.initFormUI = function() {
 			options = {updateHtml: parent.id};
 		}
 		var form = $(this);
-		$('input', form).click(function() {
+		$('input, select', form).change(function() {
 			CORE.request(form.attr('action'), options, form.serialize());
 		});
 	});

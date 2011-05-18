@@ -17,7 +17,7 @@ class PaymentFixture extends CakeTestFixture {
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'comment' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 2500),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'belongsto_key' => array('column' => array('user_id', 'roster_id', 'payment_type_id', 'payment_placed_by'), 'unique' => 0)),
-		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'MyISAM')
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
 	var $records = array(

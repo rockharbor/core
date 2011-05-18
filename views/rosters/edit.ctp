@@ -1,4 +1,4 @@
-<h2>Signup</h2>
+<h1>Signup</h1>
 
 <div class="rosters">
 <?php
@@ -80,9 +80,7 @@ if (!empty($involvement['Question'])) {
 	<fieldset>
  		<legend>Signup Options</legend>
 	<?php		
-		echo $this->Form->input('Roster.role_id', array(
-			'empty' => 'Member'
-		));
+		echo $this->Form->input('Roster.roster_status_id');
 		
 		if ($involvement['Involvement']['take_payment']) {
 			echo $this->Form->input('Roster.payment_option_id');
@@ -91,7 +89,7 @@ if (!empty($involvement['Question'])) {
 	</fieldset>
 	
 <?php 
-	echo $this->Js->submit('Sign up', $defaultSubmitOptions);
+	echo $this->Js->submit('Save', $defaultSubmitOptions);
 	echo $this->Form->end();
 ?>
 </div>
