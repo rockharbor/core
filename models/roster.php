@@ -154,7 +154,8 @@ class Roster extends AppModel {
  * - `parent` The parent (if childcare)
  *
  * ### Defaults:
- * - `payment_option_id` The PaymentOption id
+ * - `payment_option_id` The PaymentOption id. If none is supplied, the first one
+ *   will be chosen automatically
  * - `payment_type_id` The PaymentType id
  * - `pay_later` Whether they chose to pay now or later
  * - `pay_deposit_amount` If they chose the payment deposit amount instead of total
@@ -178,11 +179,17 @@ class Roster extends AppModel {
 		);
 		$options['defaults'] = array_merge($_defaults, $options['defaults']);
 		
-		$paymentOption = $this->PaymentOption->read(null, $options['defaults']['payment_option_id']);
-		$paymentType = $this->Payment->PaymentType->read(null, $options['defaults']['payment_type_id']);
-
 		extract($options);
-
+		
+		if (empty($defaults['payment_option_id']) && $involvement['Involvement']['take_payment']) {
+			$firstPaymentOption = $this->PaymentOption->find('first', array(
+				'conditions' => array(
+					'involvement_id' => $involvement['Involvement']['id']
+				)
+			));
+			$defaults['payment_option_id'] = $firstPaymentOption['PaymentOption']['id'];
+		}
+		
 		// set defaults
 		$roster['Roster']['involvement_id'] = $involvement['Involvement']['id'];
 		$roster['Roster']['roster_status_id'] = 1;
@@ -191,6 +198,18 @@ class Roster extends AppModel {
 		
 		// only add a payment if we're taking one
 		if ($involvement['Involvement']['take_payment'] && $defaults['payment_option_id'] > 0 && !$defaults['pay_later']) {
+			if (empty($defaults['payment_option_id'])) {
+				$paymentOption = $this->PaymentOption->find('first', array(
+					'conditions' => array(
+						'involvement_id' => $involvement['Involvement']['id']
+					)
+				));
+			} else {
+				$paymentOption = $this->PaymentOption->read(null, $defaults['payment_option_id']);
+			}
+			
+			$paymentType = $this->Payment->PaymentType->read(null, $defaults['payment_type_id']);
+			
 			if (is_null($parent)) {
 				$amount = $defaults['pay_deposit_amount'] ? $paymentOption['PaymentOption']['deposit'] : $paymentOption['PaymentOption']['total'];
 			} else {

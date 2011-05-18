@@ -304,12 +304,6 @@ class RostersController extends AppController {
 			// process the credit card. if the credit card goes through, we'll add everyone to the 
 			// roster (including childcare) and save the payment info
 						
-			// get chosen payment option
-			$paymentOption = array();
-			if ($involvement['Involvement']['take_payment']) {
-				$paymentOption = $this->Roster->PaymentOption->read(null, $this->data['Default']['payment_option_id']);
-			}
-			
 			// extract info to check/save for roster
 			$rValidates = true;
 			$this->Roster->_validationErrors = array();
@@ -324,8 +318,7 @@ class RostersController extends AppController {
 					'involvement' => $involvement,
 					'defaults' => $this->data['Default'],
 					'creditCard' => $this->data,
-					'payer' => $this->activeUser,
-					'paymentOption' => $paymentOption
+					'payer' => $this->activeUser
 				));
 
 				// save validate success only if we haven't failed yet (so not to overwrite a failure)
@@ -368,7 +361,6 @@ class RostersController extends AppController {
 						'defaults' => $this->data['Default'],
 						'creditCard' => $this->data,
 						'payer' => $this->activeUser,
-						'paymentOption' => $paymentOption,
 						'parent' => $parent
 					));
 
@@ -428,7 +420,8 @@ class RostersController extends AppController {
 					if (isset($this->data['Child'])) {
 						$amount += Set::apply('/Payment/amount', array_values($this->data['Child']), 'array_sum');
 					}
-
+					
+					$paymentOption = $this->Roster->PaymentOption->read(null, $this->data['Default']['payment_option_id']);
 					$this->data['CreditCard']['invoice_number'] = $paymentOption['PaymentOption']['account_code'];
 					$this->data['CreditCard']['description'] = $description;
 					$this->data['CreditCard']['email'] = $user['Profile']['primary_email'];			

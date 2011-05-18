@@ -148,11 +148,9 @@ class RosterTestCase extends CoreTestCase {
 				'name' => 'Some guy'
 			)
 		);
-		$paymentOption = $this->Roster->PaymentOption->read(null, 2);
-
 		$newRoster = $this->Roster->setDefaultData(compact(
 			'roster', 'defaults', 'involvement', 'payer',
-			'creditCard', 'paymentOption'
+			'creditCard'
 		));
 		unset($newRoster['Payment'][0]['comment']);
 
@@ -163,7 +161,7 @@ class RosterTestCase extends CoreTestCase {
 			'payment_type_id' => 1,
 			'number' => 1234,
 			'payment_placed_by' => 50,
-			'payment_option_id' => 2
+			'payment_option_id' => 1
 		);
 		$this->assertEqual($result, $expected);
 
@@ -211,6 +209,23 @@ class RosterTestCase extends CoreTestCase {
 			'payment_option_id' => 1
 		);
 		$this->assertEqual($result, $expected);
+		
+		$result = $this->Roster->setDefaultData(array(
+			'defaults' => array(
+				'pay_later' => true
+			),
+			'involvement' => $this->Roster->Involvement->read(null, 1)
+		));
+		$expected = array(
+			'Roster' => array(
+				'involvement_id' => 1,
+				'roster_status_id' => 1,
+				'parent' => null,
+				'payment_option_id' => 1
+			)
+		);
+		$this->assertEqual($result, $expected);
+		$this->assertTrue($this->Roster->save($expected));
 	}
 
 	function testVirtualFields() {
