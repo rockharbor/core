@@ -82,13 +82,6 @@ class SysEmailsController extends AppController {
 			}
 		}
 		
-		if (empty($this->data)) {
-			$bodyElement = 'email'.DS.'bug_report';
-			$this->data['SysEmail']['subject'] = 'Bug Report :: [enter short description here]';
-		} else {
-			$bodyElement = '';
-		}
-		
 		$errors = ClassRegistry::init('Referee.Error')->find('all', array(
 			'limit' => 10,
 			'order' => 'Error.created DESC'
@@ -244,7 +237,6 @@ class SysEmailsController extends AppController {
 				)
 			)
 		));
-		$this->set('bodyElement', false);
 		$this->set('toUsers', $User->find('all', array('conditions'=>array('User.id'=>$toUsers))));
 		$User->contain(array(
 			'Profile' => array(

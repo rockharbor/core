@@ -70,9 +70,6 @@ $this->MultiSelect->create();
 			'between' => Core::read('notifications.email_subject_prefix').' ',
 			'style' => 'width:300px'
 		));
-		if ($bodyElement && empty($this->data)) {
-			$this->data['SysEmail']['body'] = $this->element($bodyElement, $this->viewVars);
-		}
 		echo $this->Form->input('SysEmail.body');
 	?>
 	</fieldset>
