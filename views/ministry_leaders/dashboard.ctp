@@ -9,13 +9,13 @@
 			<?php
 			$links = array(
 				array(
-					'title' => 'Email Managers',
+					'title' => 'Email Ministry Managers',
 					'url' => array(
 						'controller' => 'sys_emails',
 						'action' => 'compose',
 						$this->MultiSelect->token,
 						'model' => $model,
-						'submodel' => 'Manager'
+						'submodel' => 'Leader'
 					),
 					'options' => array(
 						'rel' => 'modal-none'
