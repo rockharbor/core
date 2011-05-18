@@ -23,7 +23,7 @@ $this->MultiSelect->create();
 		);
 		echo $this->Html->tag(
 			'div', 
-			$this->Form->label('to').$this->Html->tag('div', implode(', ',$toEmails), array('escape' => true)),
+			$this->Form->label('to', 'To '.count($toEmails).' Users').$this->Html->tag('div', $this->Text->truncate(implode(', ',$toEmails), 500), array('escape' => true)),
 			array(
 				'id' => 'SysEmailTo',
 				'class' => 'input',
