@@ -85,7 +85,11 @@ class LeadersController extends AppController {
 				$this->model
 			)
 		);
-		$this->set('leaders', $this->paginate());
+		$leaders = $this->paginate();
+		$ministries = Set::extract('/'.$this->model.'/id', $leaders);
+		$search = array('conditions' => array($this->model.'.id' => $ministries));
+		$this->MultiSelect->saveSearch($search);
+		$this->set('leaders', $leaders);
 		$this->set('model', $this->model);
 	}
 	

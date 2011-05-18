@@ -138,6 +138,12 @@ class SysEmailsController extends AppController {
 		$User = ClassRegistry::init('User');
 
 		$modelIds = $this->MultiSelect->getSelected($uid);
+		if (empty($modelIds)) {
+			// if nothing was selected, find all
+			$search = $this->MultiSelect->getSearch($uid);
+			$results = ClassRegistry::init($this->passedArgs['model'])->find('all', $search);
+			$modelIds = Set::extract('/'.$this->passedArgs['model'].'/id', $results);
+		}
 		$toUsers = $modelIds;
 		if (isset($this->passedArgs['model'])) {
 			if (isset($this->passedArgs[$this->passedArgs['model']])) {
