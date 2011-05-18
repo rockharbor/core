@@ -36,20 +36,6 @@
 					),
 					'permission' => true
 				),
-				array(
-					'title' => 'Email Managers',
-					'url' => array(
-						'controller' => 'sys_emails',
-						'action' => 'compose',
-						$this->MultiSelect->token,
-						'model' => $model,
-						'submodel' => 'Manager'
-					),
-					'options' => array(
-						'rel' => 'modal-none'
-					),
-					'permission' => true
-				),
 			);
 			$colCount = 2;
 			echo $this->element('multiselect', array(
