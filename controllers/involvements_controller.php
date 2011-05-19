@@ -221,27 +221,47 @@ class InvolvementsController extends AppController {
  * ### Passed args:
  * - `Involvement` The involvement id to invite the user to
  *
- * @param integer $userId The user to invite
+ * @param integer $mskey The multiselect key
+ * @param boolean $add Whether to add or invite
  * @todo Don't invite users who are already on the roster! (move to model?)
  */ 
-	function invite($userId = null) {
-		$involvementId = $this->passedArgs['Involvement'];
-
-		// create notification from template
+	function invite($mskey = null, $status = 3) {
 		$this->Involvement->Roster->User->contain(array('Profile'));
 		$this->Involvement->contain(array('InvolvementType'));
+		
+		$involvement = $this->Involvement->read(null, $this->passedArgs['Involvement']);
 		$this->set('notifier', $this->Involvement->Roster->User->read(null, $this->activeUser['User']['id']));
-		$this->set('involvement', $this->Involvement->read(null, $involvementId));
+		
+		$userIds = $this->MultiSelect->getSelected($mskey);
+		foreach ($userIds as $userId) {
+			$roster = $this->Involvement->Roster->setDefaultData(array(
+				'roster' => array(
+					'Roster' => array(
+						'user_id' => $userId
+					)
+				),
+				'involvement' => $involvement,
+				'defaults' => array(
+					'pay_later' => true
+				)
+			));
+			$roster['Roster']['roster_status_id'] = $status;
 
-		$this->Notifier->notify(
-			array(
-				'to' => $userId,
-				'type' => 'invitation',
-				'template' => 'involvements_invite',
-				'subject' => 'Invitation'
-			)
-		);
-		$this->redirect(array('action' => 'view', $involvementId));
+			$this->Involvement->Roster->create();
+			if ($this->Involvement->Roster->save($roster)) {
+				$this->set('involvement', $involvement);
+				$this->Notifier->notify(
+					array(
+						'to' => $userId,
+						'type' => 'invitation',
+						'template' => 'involvements_invite_'.$status,
+						'subject' => 'Invitation'
+					)
+				);
+			}
+		}
+
+		$this->redirect($this->referer());
 	}
 	
 /**

@@ -55,13 +55,25 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 	}
 
 	function testInviteUser() {
-		$vars = $this->testAction('/involvements/invite/1/Involvement:2');
+		$this->loadFixtures('PaymentOption');
+		
+		$this->Involvements->Session->write('MultiSelect.test', array(
+			'selected' => array(1, 2),
+			'search' => array()
+		));
+		$countBefore = $this->Involvements->Involvement->Roster->find('count');
+		$vars = $this->testAction('/involvements/invite/test/3/Involvement:1');
 		$invites = $this->Involvements->Involvement->Roster->User->Notification->find('all', array(
 			'conditions' => array(
 				'Notification.type' => 'invitation'
 			)
 		));
-		$this->assertEqual(count($invites), 1);
+		$this->assertEqual(count($invites), 2);
+		$countNow = $this->Involvements->Involvement->Roster->find('count');
+		$this->assertEqual($countBefore+2, $countNow);
+		
+		$newest = $this->Involvements->Involvement->Roster->read();
+		$this->assertEqual($newest['Roster']['payment_option_id'], 1);
 	}
 
 	function testAdd() {
