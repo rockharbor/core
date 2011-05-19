@@ -96,54 +96,58 @@ class LeadersController extends AppController {
 /**
  * Adds a leader
  *
+ * @param string $mskey The MultiSelect token
  * @todo check if they already exists and if they're allowed to lead
  */
-	function add() {
-		$data = array(
-			'Leader' => array(
-				'model' => $this->passedArgs['model'],
-				'model_id' => $this->passedArgs[$this->passedArgs['model']],
-				'user_id' => $this->passedArgs['leader'],
-			)
-		);
+	function add($mskey) {
+		$userIds = $this->MultiSelect->getSelected($mskey);
 		
-		$this->Leader->create();
-		if ($this->Leader->save($data)) {
-			$model = $data['Leader']['model'];
+		$model = $this->passedArgs['model'];
+		$model_id = $this->passedArgs[$this->passedArgs['model']];
+		$managers = $this->Leader->getManagers($model, $model_id);
+		$item = $this->Leader->{$model}->read(array('name'), $model_id);
+				
+		foreach ($userIds as $userId) {
+			$data = array(
+				'Leader' => array(
+					'model' => $model,
+					'model_id' => $model_id,
+					'user_id' => $userId,
+				)
+			);
+			
+			$this->Leader->create();
+			if ($this->Leader->save($data)) {
+				$this->Leader->User->contain(array('Profile'));
+				$leader = $this->Leader->User->read(null, $data['Leader']['user_id']);
 
-			$this->Leader->User->contain(array('Profile'));
-			$leader = $this->Leader->User->read(null, $data['Leader']['user_id']);
-			$item = $this->Leader->{$model}->read(array('name'), $data['Leader']['model_id']);
+				$itemType = $model;
+				$itemName = $item[$model]['name'];
+				$name = $leader['Profile']['name'];
+				$type = $model == 'Involvement' ? 'leading' : 'managing';
 
-			$itemType = $data['Leader']['model'];
-			$itemName = $item[$model]['name'];
-			$name = $leader['Profile']['name'];
-			$type = $model == 'Involvement' ? 'leading' : 'managing';
+				$this->set(compact('itemType','itemName','name','type'));
 
-			$this->set(compact('itemType','itemName','name','type'));
-
-			// notify this user
-			$this->Notifier->notify(array(
-				'to' => $leader['User']['id'],
-				'template' => 'leaders_add'
-			), 'notification');
-
-			// notify the managers as well
-			$managers = $this->Leader->getManagers($data['Leader']['model'], $data['Leader']['model_id']);
-
-			foreach ($managers as $manager) {
+				// notify this user
 				$this->Notifier->notify(array(
-					'to' => $manager,
+					'to' => $leader['User']['id'],
 					'template' => 'leaders_add'
 				), 'notification');
-			}
 
-			$this->Session->setFlash('The leader has been added', 'flash'.DS.'success');
-			//$this->redirect(array('action' => 'index'));
-		} else {
-			$this->Session->setFlash('The leader could not be added. Please, try again.', 'flash'.DS.'failure');
+				// notify the managers as well
+				foreach ($managers as $manager) {
+					$this->Notifier->notify(array(
+						'to' => $manager,
+						'template' => 'leaders_add'
+					), 'notification');
+				}
+
+				$this->Session->setFlash('The leader has been added', 'flash'.DS.'success');
+				//$this->redirect(array('action' => 'index'));
+			} else {
+				$this->Session->setFlash('The leader could not be added. Please, try again.', 'flash'.DS.'failure');
+			}
 		}
-		
 		$this->redirect(array(	
 			'action' => 'index')
 		);

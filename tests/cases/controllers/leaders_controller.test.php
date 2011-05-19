@@ -90,17 +90,31 @@ class LeadersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testAdd() {		
-		$vars = $this->testAction('/involvement_leaders/add/Involvement:1/model:Involvement/leader:2', array(
+	function testAdd() {
+		$this->Leaders->Session->write('MultiSelect.test', array(
+			'selected' => array(1, 2),
+			'search' => array()
+		));
+		
+		$notificationsBefore =  $this->Leaders->Leader->User->Notification->find('count');
+		$vars = $this->testAction('/involvement_leaders/add/test/Involvement:1/model:Involvement', array(
 			'return' => 'vars'
 		));
-		$this->assertEqual($vars['type'], 'leading');
-		$this->assertEqual($vars['itemType'], 'Involvement');
-		$this->assertEqual($vars['itemName'], 'CORE 2.0 testing');
-		$this->assertEqual($vars['name'], 'ricky rockharbor');
 
-		$results = $this->Leaders->Leader->User->Notification->find('count');
-		$this->assertEqual($results, 7);
+		$notificationsAfter = $this->Leaders->Leader->User->Notification->find('count');
+		// 6 notifications - 2 for the users, 2x2 notifying managers
+		$this->assertEqual($notificationsAfter-$notificationsBefore, 6);
+		
+		$this->assertTrue($this->Leaders->Leader->hasAny(array(
+			'user_id' => 1,
+			'model' => 'Involvement',
+			'model_id' => 1
+		)));
+		$this->assertTrue($this->Leaders->Leader->hasAny(array(
+			'user_id' => 2,
+			'model' => 'Involvement',
+			'model_id' => 1
+		)));
 	}
 
 	function testDelete() {
