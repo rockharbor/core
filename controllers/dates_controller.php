@@ -88,7 +88,7 @@ class DatesController extends AppController {
 				
 		// check for filtering and add extra conditions
 		$filter = array();
-		$link = array();
+		$link = array('Date');
 		if (isset($this->passedArgs['model']) && isset($this->passedArgs[$this->passedArgs['model']])) {
 			switch ($this->passedArgs['model']) {
 				case 'User':
@@ -121,9 +121,11 @@ class DatesController extends AppController {
 		$events = array();
 		
 		$conditions = $filter;
-		$conditions['Involvement.has_dates'] = true;
 		$conditions['Involvement.active'] = true;
 		$conditions['Involvement.private'] = false;
+		$conditions[] = array(
+			'Date.start_date >' => $range['start']
+		);
 		if ($size == 'mini') {
 			$range['single'] = true;
 		}
