@@ -1,6 +1,6 @@
 <span class="breadcrumb editing"><?php
 $icon = $this->element('icon', array('icon' => 'delete'));
-echo $this->Html->link($icon, array('action' => 'view'), array('escape' => false, 'class' => 'no-hover'));
+echo $this->Html->link($icon, array('action' => 'view', 'User' => $this->data['Profile']['user_id']), array('escape' => false, 'class' => 'no-hover'));
 ?>Editing<?php echo $this->Html->image('../assets/images/edit-flag-right.png'); ?></span>
 <h1><?php echo $this->data['Profile']['first_name'].' '.$this->data['Profile']['last_name']; ?></h1>
 
