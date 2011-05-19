@@ -260,6 +260,7 @@ class InvolvementsController extends AppController {
 				);
 			}
 		}
+		$this->Session->setFlash('The users of this involvement were '.($status == 1 ? 'added' : 'invited').' to the selected ones.', 'flash'.DS.'success');
 
 		$this->redirect($this->referer());
 	}
