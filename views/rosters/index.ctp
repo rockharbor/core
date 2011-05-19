@@ -252,6 +252,7 @@ $this->Paginator->options(array(
 			'add_invite_user',
 			'notSignedUp',
 			$involvement['Involvement']['id'],
+			'Involvement' => $involvement['Involvement']['id'],
 		),
 		array(
 			'rel' => 'modal-roster'
@@ -261,14 +262,15 @@ $this->Paginator->options(array(
 	</li>
 	<li>
 	<?php
-	echo $this->Html->link('Invite this roster to',
+	echo $this->Html->link('Invite This Roster To',
 		array(
-			'controller' => 'involvements',
-			'action' => 'invite_roster',
-			'User',
+			'controller' => 'searches',
+			'action' => 'simple',
+			'Involvement',
 			'add_invite_roster',
 			'notInvolvement',
 			$involvement['Involvement']['id'],
+			'Involvement' => $involvement['Involvement']['id'],
 		),
 		array(
 			'rel' => 'modal-roster'

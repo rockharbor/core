@@ -228,6 +228,10 @@ class SearchesController extends AppController {
 		$searchRan = false;
 
 		if (!empty($this->data)) {
+			// reset multiselect
+			unset($this->passedArgs['mstoken']);
+			$this->MultiSelect->startup();
+			
 			// create conditions and contain
 			$options = array(
 				'conditions' => $this->postConditions($this->data, 'LIKE'),
@@ -262,8 +266,8 @@ class SearchesController extends AppController {
 
 		$results = $this->FilterPagination->paginate($model);
 
-		// remove pagination info from action list
-		$this->set(compact('results', 'searchRan', 'model', 'element'));
+		$named = $this->passedArgs;
+		$this->set(compact('results', 'searchRan', 'model', 'element', 'named'));
 	}
 
 /**

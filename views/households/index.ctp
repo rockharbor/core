@@ -130,6 +130,8 @@
 				'add_invite_user_household',
 				'notInHousehold',
 				$household['Household']['id'],
+				'User' => $activeUser['User']['id'],
+				'Household' => $household['Household']['id']
 			),
 			array(
 				'rel' => 'modal-households'

@@ -2,12 +2,17 @@
 $this->Paginator->options(array(
     'updateable' => 'parent'
 ));
+$this->MultiSelect->create();
 ?>
 <table cellpadding="0" cellspacing="0" class="datatable">
 	<thead>
+		<?php 
+		$colCount = 2;
+		echo $this->element('search'.DS.'actions'.DS.$element, compact('result', 'id', 'colCount'));
+		?>
 		<tr>
-			<th><?php echo $this->Paginator->sort('name'); ?></th>
 			<th>&nbsp;</th>
+			<th><?php echo $this->Paginator->sort('name'); ?></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -20,10 +25,13 @@ $this->Paginator->options(array(
 			}
 		?>
 			<tr<?php echo $class;?>>
+				<td><?php echo $this->MultiSelect->checkbox($result['Involvement']['id']); ?></td>
 				<td><?php echo $result['Involvement']['name'].$this->Formatting->flags('Involvement', $result); ?></td>
-				<td><?php echo $this->element('search'.DS.'actions'.DS.$element, compact('result')); ?></td>
 			</tr>
 		<?php endforeach; ?>
 	</tbody>
 </table>
-<?php $this->element('pagination'); ?>
+<?php 
+echo $this->element('pagination');
+echo $this->MultiSelect->end();
+?>

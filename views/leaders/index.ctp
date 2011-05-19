@@ -56,7 +56,10 @@ $this->Paginator->options(array(
 		'add_leader',
 		'notLeaderOf',
 		$model,
-		$modelId
+		$modelId,
+		'leader_controller' => $this->params['controller'],
+		'leader_model' => $model,
+		'leader_model_id' => $modelId
 	), array (
 		'rel' => 'modal-leaders',
 		'class' => 'button'
