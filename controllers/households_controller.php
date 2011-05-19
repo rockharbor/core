@@ -34,6 +34,15 @@ class HouseholdsController extends AppController {
 	);
 	
 /**
+ * Extra components for this controller
+ * 
+ * @var array
+ */
+	var $components = array(
+		'MultiSelect.MultiSelect'
+	);
+	
+/**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
@@ -86,91 +95,94 @@ class HouseholdsController extends AppController {
  * Checks to see if the user is already in the household. If they are,
  * it removes them. If not, it will add them.
  *
- * @param integer $user The id of the user who is leaving
+ * @param integer $mskey Multiselect token
  * @param integer $household The id of the household the user is leaving
  */ 
-	function shift_households($user, $household) {
+	function shift_households($mskey, $household) {
 		$viewUser = $this->passedArgs['User'];
 		
-		// check to see if they are in this household
-		$householdMember = $this->Household->HouseholdMember->find('first', array(
-			'conditions' => array(
-				'household_id' => $household,
-				'user_id' => $user
-			)
-		));
+		$users = $this->MultiSelect->getSelected($mskey);
+		foreach ($users as $user) {
+			// check to see if they are in this household
+			$householdMember = $this->Household->HouseholdMember->find('first', array(
+				'conditions' => array(
+					'household_id' => $household,
+					'user_id' => $user
+				)
+			));
 				
-		if (empty($householdMember)) {			
-			// add them to the household if it exists
-			$this->Household->id = $household;
-			if ($this->Household->exists($household)) {
-				$addUser = $this->Household->HouseholdMember->User->find('first', array(
-					'conditions' => array(	
-						'User.id' => $user
-					),
-					'contain' => 'Profile'
-				));
-				$this->Household->HouseholdContact->contain(array('Profile'));
-				$this->set('notifier', $this->Household->HouseholdContact->read(null, $this->activeUser['User']['id']));
-				$this->Household->contain(array('HouseholdContact' => array('Profile')));
-				$contact = $this->Household->read(null, $household);
-				$this->set('contact', $contact['HouseholdContact']);
-				
-				$success = $this->Household->join(
-					$household,
-					$user,
-					$this->activeUser['User']['id'],
-					$addUser['Profile']['child']
-				);
-				
-				if ($addUser['Profile']['child'] && $success) {
-					$this->Notifier->notify(
-						array(
-							'to' => $user,
-							'template' => 'households_join'
+			if (empty($householdMember)) {			
+				// add them to the household if it exists
+				$this->Household->id = $household;
+				if ($this->Household->exists($household)) {
+					$addUser = $this->Household->HouseholdMember->User->find('first', array(
+						'conditions' => array(	
+							'User.id' => $user
 						),
-						'notification'
+						'contain' => 'Profile'
+					));
+					$this->Household->HouseholdContact->contain(array('Profile'));
+					$this->set('notifier', $this->Household->HouseholdContact->read(null, $this->activeUser['User']['id']));
+					$this->Household->contain(array('HouseholdContact' => array('Profile')));
+					$contact = $this->Household->read(null, $household);
+					$this->set('contact', $contact['HouseholdContact']);
+
+					$success = $this->Household->join(
+						$household,
+						$user,
+						$this->activeUser['User']['id'],
+						$addUser['Profile']['child']
 					);
-					$this->Session->setFlash('Added that dude.', 'flash'.DS.'success');
-				} elseif (!$addUser['Profile']['child'] && $success) {
+
+					if ($addUser['Profile']['child'] && $success) {
+						$this->Notifier->notify(
+							array(
+								'to' => $user,
+								'template' => 'households_join'
+							),
+							'notification'
+						);
+						$this->Session->setFlash('Added that dude.', 'flash'.DS.'success');
+					} elseif (!$addUser['Profile']['child'] && $success) {
+						$this->Notifier->notify(
+							array(
+								'to' => $user,
+								'template' => 'households_invite',
+								'type' => 'invitation'
+							),
+							'notification'
+						);
+						$this->Session->setFlash('Invited that dude.', 'flash'.DS.'success');
+					} else {
+						$this->Session->setFlash('Error joining household!', 'flash'.DS.'failure');
+					}
+				} else {
+					$this->Session->setFlash('Invalid Id.');
+				}
+			} else {		
+				// remove household member record
+				$dSuccess = $this->Household->HouseholdMember->delete($householdMember['HouseholdMember']['id']);
+
+				// add user to a household (function will check if they have one or not)
+				$cSuccess = $this->Household->createHousehold($user);
+
+				if ($dSuccess && $cSuccess) {
+					$this->Household->contain(array('HouseholdContact' => array('Profile')));
+					$contact = $this->Household->read(null, $household);
+					$this->set('contact', $contact['HouseholdContact']);
 					$this->Notifier->notify(
 						array(
 							'to' => $user,
-							'template' => 'households_invite',
+							'template' => 'households_remove',
 							'type' => 'invitation'
 						),
 						'notification'
 					);
-					$this->Session->setFlash('Invited that dude.', 'flash'.DS.'success');
-				} else {
-					$this->Session->setFlash('Error joining household!', 'flash'.DS.'failure');
-				}
-			} else {
-				$this->Session->setFlash('Invalid Id.');
-			}
-		} else {		
-			// remove household member record
-			$dSuccess = $this->Household->HouseholdMember->delete($householdMember['HouseholdMember']['id']);
-			
-			// add user to a household (function will check if they have one or not)
-			$cSuccess = $this->Household->createHousehold($user);
-			
-			if ($dSuccess && $cSuccess) {
-				$this->Household->contain(array('HouseholdContact' => array('Profile')));
-				$contact = $this->Household->read(null, $household);
-				$this->set('contact', $contact['HouseholdContact']);
-				$this->Notifier->notify(
-					array(
-						'to' => $user,
-						'template' => 'households_remove',
-						'type' => 'invitation'
-					),
-					'notification'
-				);
 
-				$this->Session->setFlash('He left in a hurry.', 'flash'.DS.'success');
-			} else {
-				$this->Session->setFlash('Something broke. FIX IT!', 'flash'.DS.'failure');				
+					$this->Session->setFlash('He left in a hurry.', 'flash'.DS.'success');
+				} else {
+					$this->Session->setFlash('Something broke. FIX IT!', 'flash'.DS.'failure');				
+				}
 			}
 		}
 		

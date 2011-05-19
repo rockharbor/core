@@ -37,27 +37,21 @@ class HouseholdsControllerTestCase extends CoreTestCase {
 	}
 
 	function testShiftHousehold() {
-		$this->testAction('/households/shift_households/1/1/User:1');
-		$householdMember = $this->Households->Household->HouseholdMember->find('all', array(
-			'conditions' => array(
-				'HouseholdMember.user_id' => 1
-			)
+		$this->Households->Session->write('MultiSelect.test', array(
+			'selected' => array(1, 3, 5),
+			'search' => array()
 		));
-		$results = $this->Households->Household->getHouseholdIds(1);
-		sort($results);
-		$expected = array(1);
-		$this->assertEqual($results, $expected);
+		
+		$this->assertTrue($this->Households->Household->isMember(1, 1));
+		$this->testAction('/households/shift_households/test/1/User:1');
+		// since household 1 doesn't get deleted, user 1 is just re-added to it
+		$this->assertTrue($this->Households->Household->isMember(1, 1));
+		$this->assertFalse($this->Households->Household->isMember(3, 1));
 
-		$this->testAction('/households/shift_households/1/2/User:1');
-		$householdMember = $this->Households->Household->HouseholdMember->find('all', array(
-			'conditions' => array(
-				'HouseholdMember.user_id' => 1
-			)
-		));
-		$results = $this->Households->Household->getHouseholdIds(1);
-		sort($results);
-		$expected = array(1, 2);
-		$this->assertEqual($results, $expected);
+		$this->testAction('/households/shift_households/test/2/User:1');
+		$this->assertTrue($this->Households->Household->isMember(1, 2));
+		$this->assertTrue($this->Households->Household->isMember(5, 2));
+		$this->assertFalse($this->Households->Household->isMember(3, 2));
 	}
 
 	function testMakeHouseholdContact() {
