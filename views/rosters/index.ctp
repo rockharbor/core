@@ -280,14 +280,3 @@ $this->Paginator->options(array(
 	</li>
 </ul>
 </div>
-<?php
-
-$this->Js->buffer('function addToRoster(userid) {
-	redirect("'.Router::url(array(
-		'controller' => 'rosters',
-		'action' => 'add',
-		'Involvement' => $involvement['Involvement']['id']
-	)).'/User:"+userid);
-}');
-
-?>

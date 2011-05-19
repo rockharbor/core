@@ -150,14 +150,4 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 
 <?php
 $this->Js->buffer('CORE_involvement.setup()');
-echo $this->Html->scriptBlock('
-function inviteUser(userid) {
-	CORE.request("'.Router::url(array('controller' => 'involvements', 'action' => 'invite')).'/"+userid+"/Involvement:'.$involvement['Involvement']['id'].'");
-}
-function inviteRoster(involvementid) {
-	CORE.request("'.Router::url(array('controller' => 'involvements', 'action' => 'invite_roster')).'/"+involvementid+"/Involvement:'.$involvement['Involvement']['id'].'");
-}
-
-');
-
 ?>

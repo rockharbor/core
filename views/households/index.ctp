@@ -142,14 +142,6 @@
 	</ul>
 
 <?php
-echo $this->Html->scriptBlock(
-'function addToHH(userid) {
-	CORE.request("'.Router::url(array(
-		'controller' => 'households',
-		'action' => 'shift_households'
-	)).'/"+userid+"/'.$household['Household']['id'].'");
-}');
-
 endforeach;
 ?>
 </div>
