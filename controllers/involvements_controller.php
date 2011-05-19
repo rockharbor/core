@@ -159,11 +159,15 @@ class InvolvementsController extends AppController {
  * @todo Don't invite users who are already on the roster! (move to model?)
  */
 	function invite_roster($mskey = null, $status = 3) {
-		$from = $this->passedArgs['Involvement'];
-
-		// get from roster
-		$this->Involvement->contain(array('Roster'));
-		$roster = $this->Involvement->read(null, $from);
+		// get users from roster
+		$roster = $this->Involvement->Roster->find('all', array(
+			'fields' => array(
+				'user_id'
+			),
+			'conditions' => array(
+				'involvement_id' => $this->passedArgs['Involvement']
+			)
+		));
 		$userIds = Set::extract('/Roster/user_id', $roster);
 		
 		$this->Involvement->Roster->User->contain(array('Profile'));
