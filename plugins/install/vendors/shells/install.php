@@ -290,6 +290,8 @@ class InstallShell extends Shell {
 			'controllers/Involvements/add',
 			'controllers/Involvements/edit',
 			'controllers/Involvements/toggle_activity',
+			'controllers/Involvements/invite',
+			'controllers/Involvements/invite_roster',
 			'controllers/InvolvementAddresses/add',
 			'controllers/InvolvementAddresses/delete',
 			'controllers/InvolvementAddresses/edit',
