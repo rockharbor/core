@@ -17,6 +17,22 @@ $links = array(
 	)
 );
 
+if ($named['leader_model'] == 'Involvement') {
+	$links[] = array(
+		'title' => 'Add to roster',
+		'url' => array(
+			'controller' => 'involvements',
+			'action' => 'invite',
+			$this->MultiSelect->token,
+			1, // status = confirmed
+			'Involvement' => $named['leader_model_id']
+		),
+		'options' => array(
+			'success' => 'CORE.showFlash(data);'
+		)
+	);
+}
+
 echo $this->element('multiselect', compact('links', 'colCount'));
 
 ?>
