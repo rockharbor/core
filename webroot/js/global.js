@@ -201,6 +201,17 @@ CORE.unregister = function(alias) {
 }
 
 /**
+ * Extracts the flash message from a response and displays it
+ * 
+ * @param data string The html response
+ * @return void
+ */
+CORE.showFlash = function(data) {
+	var msg = $('div[id^=flash], div#authMessage', '<div>'+data+'</div>');
+	$(msg).appendTo('#wrapper').hide().delay(100).slideDown().delay(5000).slideUp(function() { $(this).remove(); });
+}
+
+/**
  * Registers the alias with the `content` updateable's data, so if there's a
  * call to an undefined alias it will load it in content's div instead. Useful
  * for pages that may or may not be loaded in ajax windows.
