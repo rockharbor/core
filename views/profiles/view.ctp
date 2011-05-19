@@ -208,10 +208,10 @@
 					</div>
 				</div>
 				<div class="grid_3 omega">
-					<div id="calendar" class="box">
+					<div id="user_calendar" class="box">
 						<?php
-						$this->Js->buffer('CORE.register("calendar", "calendar", "/dates/calendar/model:User/User:'.$profile['User']['id'].'")');
-						echo $this->requestAction('/dates/calendar', array(
+						$this->Js->buffer('CORE.register("user_calendar", "user_calendar", "/dates/calendar/model:User/User:'.$profile['User']['id'].'")');
+						echo $this->requestAction('/dates/calendar/model:User/User:'.$profile['User']['id'], array(
 							'renderAs' => 'ajax',
 							'bare' => false,
 							'return',
