@@ -99,9 +99,11 @@ class HouseholdsController extends AppController {
  * @param integer $household The id of the household the user is leaving
  */ 
 	function shift_households($mskey, $household) {
-		$viewUser = $this->passedArgs['User'];
-		
 		$users = $this->MultiSelect->getSelected($mskey);
+		if (empty($users)) {
+			// allow for a single user to be passed
+			$users = array($mskey);
+		}
 		foreach ($users as $user) {
 			// check to see if they are in this household
 			$householdMember = $this->Household->HouseholdMember->find('first', array(
@@ -186,10 +188,7 @@ class HouseholdsController extends AppController {
 			}
 		}
 		
-		$this->redirect(array(
-			'action' => 'index',
-			'User' => $viewUser
-		));
+		$this->redirect($this->referer());
 	}
 
 /**
