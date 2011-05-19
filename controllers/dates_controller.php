@@ -98,10 +98,8 @@ class DatesController extends AppController {
 							'Leader.user_id' => $this->passedArgs[$this->passedArgs['model']]
 						)
 					);
-					$link = array(
-						'Roster' => array(),
-						'Leader' => array()
-					);
+					$link[] = 'Roster';
+					$link[] = 'Leader';
 				break;
 				case 'Involvement':
 					$filter = array(
