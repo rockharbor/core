@@ -92,14 +92,28 @@ class DatesController extends AppController {
 		if (isset($this->passedArgs['model']) && isset($this->passedArgs[$this->passedArgs['model']])) {
 			switch ($this->passedArgs['model']) {
 				case 'User':
-					$filter = array(
-						'or' => array(
-							'Roster.user_id' => $this->passedArgs[$this->passedArgs['model']],
+					$leaderOf = $this->Date->Involvement->Roster->Involvement->Leader->find('all', array(
+						'fields' => array(
+							'Leader.id',
+							'Leader.model_id'				
+						),
+						'conditions' => array(
+							'Leader.model' => 'Involvement',
 							'Leader.user_id' => $this->passedArgs[$this->passedArgs['model']]
 						)
-					);
-					$link[] = 'Roster';
-					$link[] = 'Leader';
+					));
+					$leaderIds = Set::extract('/Leader/model_id', $leaderOf);
+					$memberOf = $this->Date->Involvement->Roster->find('all', array(
+						'fields' => array(
+							'Roster.id',
+							'Roster.involvement_id'
+						),
+						'conditions' => array(
+							'Roster.user_id' => $this->passedArgs[$this->passedArgs['model']]
+						)
+					));
+					$memberIds = Set::extract('/Roster/involvement_id', $memberOf);
+					$filter['Involvement.id'] = array_merge($leaderIds, $memberIds);
 				break;
 				case 'Involvement':
 					$filter = array(
@@ -122,7 +136,7 @@ class DatesController extends AppController {
 		$conditions['Involvement.active'] = true;
 		$conditions['Involvement.private'] = false;
 		$conditions[] = array(
-			'Date.start_date <' => $range['start']
+			'Date.start_date <>' => null
 		);
 		if ($size == 'mini') {
 			$range['single'] = true;
