@@ -122,7 +122,7 @@ class DatesController extends AppController {
 		$conditions['Involvement.active'] = true;
 		$conditions['Involvement.private'] = false;
 		$conditions[] = array(
-			'Date.start_date >' => $range['start']
+			'Date.start_date <' => $range['start']
 		);
 		if ($size == 'mini') {
 			$range['single'] = true;
@@ -150,8 +150,10 @@ class DatesController extends AppController {
  */ 
 	function index() {		
 		$this->Date->recursive = 0;
-		$this->set('dates', $this->paginate(array(
-			'involvement_id' => $this->passedArgs['Involvement']
+		$this->set('dates', $this->Date->find('all', array(
+			'conditions' => array(
+				'involvement_id' => $this->passedArgs['Involvement']
+			)
 		)));
 		$this->set('involvementId', $this->passedArgs['Involvement']);
 	}

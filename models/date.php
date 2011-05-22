@@ -149,7 +149,10 @@ class Date extends AppModel {
 		);
 		
 		if (isset($options['single'])) {
-			$conditions['DATEDIFF(Date.start_date, Date.end_date)'] = 0;
+			$conditions['or'] = array(
+				'DATEDIFF(Date.start_date, Date.end_date)' => 0,
+				'exemption' => true
+			);
 		}
 		
 		$this->recursive = -1;
