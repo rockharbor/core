@@ -106,9 +106,9 @@ class AppController extends Controller {
  */	
 	var $defaultSubmitOptions = array(
 		'before' => 'CORE.beforeForm(event, XMLHttpRequest);',
-		'complete' => 'CORE.completeForm(event, XMLHttpRequest, textStatus)',
-		'success' => 'CORE.successForm(event, data, textStatus)',
-		'error' => 'CORE.errorForm(event, XMLHttpRequest, textStatus, errorThrown)',
+		'complete' => 'CORE.completeForm(event, XMLHttpRequest, textStatus);',
+		'success' => 'CORE.successForm(event, data, textStatus);',
+		'error' => 'CORE.errorForm(event, XMLHttpRequest, textStatus, errorThrown);',
 		'evalScripts' =>  true
 	);
 	

@@ -165,7 +165,7 @@
 		</div>
 	</div>
 <?php
-$submitOptions['update'] = '#user-results';
+$submitOptions['update'] = '$("#user-results").html(data);';
 echo $this->Js->submit('Search!', $submitOptions);
 echo $this->Form->end();
 $url = $this->here; // doesn't matter, as the updateable is only needed for the div (pagination)

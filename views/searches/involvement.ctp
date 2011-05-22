@@ -35,7 +35,7 @@
 		</fieldset>
 	</div>
 <?php
-$defaultSubmitOptions['update'] = '#involvement-results';
+$defaultSubmitOptions['success'] = '$("#involvement-results").html(data);';
 echo $this->Js->submit('Search!', $defaultSubmitOptions);
 echo $this->Form->end();
 $url = $this->here; // doesn't matter, as the updateable is only needed for the div (pagination)
