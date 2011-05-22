@@ -246,11 +246,7 @@ class Date extends AppModel {
 			$masterDate['Date']['end_time'] = '23:59:00';
 		}
 
-		if ($range['start'] > $masterDate['Date']['start']) {
-			$onDate = $this->_getStartOffset($masterDate, $range['start']);
-		} else {
-			$onDate = $masterDate['Date']['start'];
-		}
+		$onDate = $masterDate['Date']['start'];
 		$onLimit = 0;
 
 		$limitEnd = false;
@@ -326,22 +322,6 @@ class Date extends AppModel {
 		}
 
 		return $dates;
-	}
-
-/**
- *	Gets a start time from a Date based on its recurrance offset
- *
- * @param array $date The date array
- * @param integer $start The time we want to start on
- * @return integer
- */
-	function _getStartOffset($date, $start) {
-		$onDate = $date['Date']['start'];
-		while ($onDate < $start) {
-			$onDate = strtotime('+'.$date['Date']['frequency'].' '.$this->_frequency[$date['Date']['recurrance_type']], $onDate);
-		}
-
-		return $onDate;
 	}
 }
 ?>
