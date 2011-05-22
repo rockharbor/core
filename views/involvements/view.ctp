@@ -49,7 +49,14 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 							<span class="font-large">
 							<?php
 							if (!$date['Date']['all_day']) {
+								$icons = array();
+								$meridian = date('a', strtotime($date['Date']['start_time']));
+								$icons[] = $this->element('icon', array('icon' => $meridian.'-on'));
+								$meridian = $meridian == 'am' ? 'pm' : 'am';
+								$icons[] = $this->element('icon', array('icon' => $meridian));
+								sort($icons);
 								echo date('h:i', strtotime($date['Date']['start_time']));
+								echo $this->Html->tag('span', implode('<br />', $icons), array('style' => 'display:inline-block;'));
 							} else {
 								echo 'All Day';
 							}

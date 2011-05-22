@@ -25,7 +25,9 @@ if (!isset($class)) {
 		if (!empty($involvement['dates'])) {
 			echo $this->Html->tag('div', date('m/d/y', strtotime($involvement['dates'][0]['Date']['start_date'])));
 			if (!$involvement['dates'][0]['Date']['all_day']) {
-				echo $this->Html->tag('div', date('g:i', strtotime($involvement['dates'][0]['Date']['start_time'])), array('class' => date('a', strtotime($involvement['dates'][0]['Date']['start_time']))));
+				$meridian = date('a', strtotime($involvement['dates'][0]['Date']['start_time']));
+				$icon = $this->element('icon', array('icon' => $meridian.'-on'));
+				echo $this->Html->tag('div', date('g:i', strtotime($involvement['dates'][0]['Date']['start_time'])).$icon);
 			} else {
 				echo $this->Html->tag('div', 'All Day');
 			}
