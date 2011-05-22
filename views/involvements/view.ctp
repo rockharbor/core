@@ -65,11 +65,18 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 						</div>
 						<div class="grid_2 column omega">
 							<?php
+							if (isset($date['Date']['original'])) {
+								// recurring
 								echo $this->Formatting->readableDate($date['Date']['original']);
+							} else {
+								// non-recurring
+								echo $this->Formatting->readableDate($date);
+							}
 							?>
 						</div>
 					</div>
 					<?php endforeach; ?>
+					<?php if (count($involvement['Date']) > 1): ?>
 					<div class="grid_2 clearfix alpha" style="text-align:center">
 						<div class="pagination">
 							<?php 
@@ -84,6 +91,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 						echo $this->Html->tag('small', $link);
 						?>
 					</div>
+					<?php endif; ?>
 				</div>
 				<?php 
 				$first = '';
