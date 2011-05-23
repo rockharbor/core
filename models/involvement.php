@@ -146,16 +146,16 @@ class Involvement extends AppModel {
 			'conditions' => array('Leader.model' => 'Involvement')
 		),
 		'Document' => array(
-			'className' => 'Media.Attachment',
+			'className' => 'Document',
 			'foreignKey' => 'foreign_key',
 			'dependent' => true,
-			'conditions' => array('Document.model' => 'Involvement')
+			'conditions' => array('Document.model' => 'Involvement', 'Document.group' => 'Document')
 		),
 		'Image' => array(
-			'className' => 'Media.Attachment',
+			'className' => 'Image',
 			'foreignKey' => 'foreign_key',
 			'dependent' => true,
-			'conditions' => array('Image.model' => 'Involvement')
+			'conditions' => array('Image.model' => 'Involvement', 'Image.group' => 'Image')
 		)
 	);
 

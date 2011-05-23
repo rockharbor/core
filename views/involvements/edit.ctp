@@ -129,7 +129,7 @@ echo $this->Html->link($icon, array('action' => 'view', 'Involvement' => $this->
 		</div>
 
 		<div id="media">
-			<div id="image"></div>
+			<h3>Images</h3>
 			<div id="image_upload">
 			<?php
 				echo $this->requestAction('/involvement_images/index', array(
@@ -148,6 +148,7 @@ echo $this->Html->link($icon, array('action' => 'view', 'Involvement' => $this->
 					'Involvement' => $this->data['Involvement']['id']
 				)).'\')');
 			?></div>
+			<h3>Documents</h3>
 			<div id="documents_upload">
 			<?php
 				echo $this->requestAction('/involvement_documents/index', array(
