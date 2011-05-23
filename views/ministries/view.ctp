@@ -9,11 +9,12 @@ if (!empty($ministry['ParentMinistry']['id'])) {
 <div class="content-box clearfix">
 	<div class="grid_10 alpha omega">
 		<h2>Description</h2>
-		<p>
+		<p class="ministry-description">
 			<?php 
 			echo $ministry['Ministry']['description'];
 			if (!empty($ministry['Image'])) {
-				$this->Media->embed($ministry['Image']['file'], array('align' => 'right'));
+				$path = 'm'.DS.$ministry['Image'][0]['dirname'].DS.$ministry['Image'][0]['basename'];
+				echo $this->Media->embed($path, array('restrict' => 'image'));
 			}
 			?>
 		</p>

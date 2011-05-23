@@ -114,10 +114,10 @@ class Ministry extends AppModel {
 			'conditions' => array('Leader.model' => 'Ministry')
 		),
 		'Image' => array(
-			'className' => 'Attachment',
+			'className' => 'Image',
 			'foreignKey' => 'foreign_key',
 			'dependent' => true,
-			'conditions' => array('Image.model' => 'Ministry')
+			'conditions' => array('Image.model' => 'Ministry', 'Image.group' => 'Image')
 		)
 	);
 

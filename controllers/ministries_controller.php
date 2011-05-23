@@ -107,7 +107,8 @@ class MinistriesController extends AppController {
 				),
 				'ParentMinistry' => array(
 					'fields' => array('id', 'name')
-				)
+				),
+				'Image'
 			)
 		));
 
