@@ -684,6 +684,18 @@ CORE.ajaxUpload = function(id, updateable) {
 
 	form.ajaxForm({
 		//iframe: true,
+		complete: function(data) {
+			if (data.error !== undefined) {
+				form.before('<div class="error-message" id="'+id+'_error"></div>');
+				CORE.confirmation(id+'_error', 'An unknown error occurred during upload.', {
+					yesTitle: false,
+					noTitle: 'Try Again',
+					title: 'Whoops',
+					onNo: 'CORE.closeModals("confirmation-modal");$("#'+id+'_error").remove();'
+				});
+				$('#'+id+'_error').click();
+			}
+		},
 		success: function(response) {
 			form.before('<div class="error-message" id="'+id+'_error"></div>');
 			var e = $('#'+id+'_error');
