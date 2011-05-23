@@ -21,22 +21,19 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 		<div id="details-tab">
 			<div id="columns" class="grid_10 alpha omega clearfix">
 				<?php
-				$first = ' alpha';
-				if (!empty($involvement['Ministry']['Image'])) { ?>
-				<div class="grid_4<?php echo $first; ?>">
+				if (!empty($involvement['Image'])): ?>
+				<div class="grid_4 alpha">
 					<?php
-					$path = 'l'.DS.$involvement['Ministry']['Image'][0]['dirname'].DS.$involvement['Ministry']['Image'][0]['basename'];
+					$path = 'm'.DS.$involvement['Image'][0]['dirname'].DS.$involvement['Image'][0]['basename'];
 					echo $this->Media->embed($path, array('restrict' => 'image'));
 					?>
 				</div>
-				<?php 
-				$first = '';
-				} ?>
-				<?php if (!empty($involvement['Date'])) { ?>
+				<?php endif; ?>
+				<?php if (!empty($involvement['Date'])): ?>
 				<div id="involvement-dates">
 					<?php foreach($involvement['Date'] as $date): ?>
 					<div class="date clearfix">
-						<div class="grid_2 column border-right<?php echo $first; ?>">
+						<div class="grid_2 column border-right alpha">
 							<span class="font-large">
 							<?php
 								echo strtoupper(date('M. j', strtotime($date['Date']['start_date'])));
@@ -76,8 +73,13 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 						</div>
 					</div>
 					<?php endforeach; ?>
-					<?php if (count($involvement['Date']) > 1): ?>
-					<div class="grid_2 clearfix alpha" style="text-align:center">
+					<?php if (count($involvement['Date']) > 1):
+					$prefix = null;
+					if (!empty($involvement['Image'])) {
+						$prefix = ' prefix_4';
+					}
+					?>
+					<div class="more-dates grid_2 clearfix <?php echo $prefix; ?>" style="text-align:center">
 						<div class="pagination">
 							<?php 
 							for ($i=0; $i<count($involvement['Date']); $i++) {
@@ -93,9 +95,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 					</div>
 					<?php endif; ?>
 				</div>
-				<?php 
-				$first = '';
-				} ?>
+				<?php endif; ?>
 			</div>
 			<div class="grid_10 alpha omega">
 				<div class="grid_6 alpha">
@@ -126,6 +126,19 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 						<?php	foreach ($involvement['Roster'] as $householdMember) {
 							echo $this->Html->link($householdMember['User']['Profile']['name'], array('controller' => 'profiles', 'action' => 'view', 'User' => $householdMember['User']['id']), array('style' => 'display:block'));
 						} ?>
+					</div>
+					<?php endif; ?>
+					<?php if (!empty($involvement['Document'])): ?>
+					<h3>Documents</h3>
+					<div class="box">
+						<?php
+						$documents = array();
+						foreach ($involvement['Document'] as $document) {
+							$icon = $this->Html->tag('span', 'Download', array('class' => 'core-icon icon-download'));
+							$documents[] = $icon.$this->Html->link($document['alternative'], array('controller' => 'involvement_documents', 'action' => 'download', $document['id']));
+						}
+						echo implode('<br />', $documents);
+						?>
 					</div>
 					<?php endif; ?>
 				</div>

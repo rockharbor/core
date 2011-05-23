@@ -209,6 +209,10 @@ span.breadcrumb.editing img {
 #columns .column {
 	height:130px;
 }
+#columns .more-dates {
+	text-align: center;
+	margin-left: -10px;
+}
 .border-right {
 	border-right: 1px solid #acacac;
 }

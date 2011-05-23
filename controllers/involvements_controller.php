@@ -115,8 +115,7 @@ class InvolvementsController extends AppController {
 		$this->Involvement->contain(array(
 			'InvolvementType',
 			'Ministry' => array(
-				'Campus',
-				'Image'
+				'Campus'
 			),
 			'Leader' => array(
 				'User' => array(
@@ -135,7 +134,9 @@ class InvolvementsController extends AppController {
 						'fields' => array('name', 'user_id', 'id'),
 					)
 				)
-			)
+			),
+			'Image',
+			'Document'
 		));
 		$involvement = $this->Involvement->read(null, $id);
 		$involvement['Date'] = $this->Involvement->Date->generateDates($id, array('limit' => 5));
