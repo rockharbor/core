@@ -109,8 +109,8 @@ class AttachmentsController extends AppController {
 			'name' => $attachment[$this->modelClass]['alternative'],
 			'download' => true,
 			'extension' => $ext,
-			'mimeType' => array($ext => $attachment[$this->modelClass]['mime_type']),
-			'path' => MEDIA.$attachment[$this->modelClass]['dirname'].DS
+			'mimeType' => array($ext => Mime_Type::guessType(MEDIA.$attachment[$this->modelClass]['dirname'].DS.$attachment[$this->modelClass]['basename'])),
+			'path' => MEDIA_TRANSFER.$attachment[$this->modelClass]['dirname'].DS
 		);
 
 		$this->set($params);
