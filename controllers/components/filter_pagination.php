@@ -104,6 +104,11 @@ class FilterPaginationComponent extends Object {
 			$model->belongsTo = $this->Session->read('FilterPagination.'.$model->alias.'.belongsTo');
 		}
 		
+		// check for 'link' key
+		if (isset($this->controller->paginate) && isset($this->controller->paginate['link'])) {
+			$this->_attachLinkedModels($model, $this->controller->paginate['link']);
+		}
+		
 		// return empty array by default so we don't perform a search without filtering first
 		if (!empty($this->controller->data) || isset($this->controller->params['named']['page']) || !$this->startEmpty) {
 			return $this->controller->paginate($model);
@@ -111,6 +116,31 @@ class FilterPaginationComponent extends Object {
 			return array();
 		}
 	}
-	
+
+/**
+ * Iterates through an array and attaches those models to $Model
+ * 
+ * This function is here solely to trick `Controller::paginate()` into thinking
+ * that the models in $linked are directly and should only be used if the 'link'
+ * key is present
+ * 
+ * @param Model $Model
+ * @param array $linked 
+ * @see LinkableBehavior
+ */
+	function _attachLinkedModels(&$Model, $linked) {
+		$keys = ClassRegistry::keys();
+		$linked = Set::normalize($linked);
+		foreach ($linked as $_model => $attrs) {
+			if (in_array(Inflector::underscore($_model), $keys)) {
+				$Model->{$_model} = ClassRegistry::init($_model);
+			}
+			if (!is_array($attrs) && in_array(Inflector::underscore($attrs), $keys)) {
+				$Model->{$attrs} = ClassRegistry::init($attrs);
+			} elseif (is_array($attrs)) {
+				$this->_attachLinkedModels($Model, $attrs);
+			}
+		}
+	}
 	
 }

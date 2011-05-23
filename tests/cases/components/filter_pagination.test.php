@@ -94,6 +94,31 @@ class FilterPaginationTestCase extends CoreTestCase {
 		unset($this->Controller);
 		ClassRegistry::flush();
 	}
+	
+	function testAttachLinkedModel() {
+		ClassRegistry::addObject('CompletelyUnrelatedModel', new CompletelyUnrelatedModel());
+		ClassRegistry::addObject('EmptyModel', new EmptyModel());
+		ClassRegistry::addObject('UnrelatedModel', new UnrelatedModel());
+		
+		$link = array(
+			'CompletelyUnrelatedModel'
+		);
+		$this->Controller->FilterPagination->_attachLinkedModels($this->Controller->PaginateTest, $link);
+		$this->assertIsA($this->Controller->PaginateTest->CompletelyUnrelatedModel, 'CompletelyUnrelatedModel');
+		
+		$link = array(
+			'CompletelyUnrelatedModel' => array(
+				'EmptyModel' => array(
+					'fields' => array('id'),
+					'UnrelatedModel'
+				)
+			)
+		);
+		$this->Controller->FilterPagination->_attachLinkedModels($this->Controller->PaginateTest, $link);
+		$this->assertIsA($this->Controller->PaginateTest->CompletelyUnrelatedModel, 'CompletelyUnrelatedModel');
+		$this->assertIsA($this->Controller->PaginateTest->EmptyModel, 'EmptyModel');
+		$this->assertIsA($this->Controller->PaginateTest->UnrelatedModel, 'UnrelatedModel');
+	}
 
 	function testIndirectlyAssociatedModel() {
 		$this->assertNoErrors();
