@@ -163,7 +163,7 @@ class AppController extends Controller {
 		
 		$User = ClassRegistry::init('User');
 
-		if ($this->Auth->user()) {
+		if ($this->Auth->user() && $this->action !== 'logout') {
 			// keep user available
 			$this->activeUser = array_merge($this->Auth->user(), $this->Session->read('User'));
 
@@ -176,6 +176,9 @@ class AppController extends Controller {
 				$this->Session->setFlash('Your last password was automatically generated. Please reset it.');
 				$this->redirect(array('controller' => 'users', 'action' => 'edit', 'User' => $this->Auth->user('id')));
 			}
+			
+			// don't cache - when a user leaves and reopens after the session expires, they still saw a page instead of being redirected
+			$this->disableCache();
 		} else {
 			$this->layout = 'public';
 		}
