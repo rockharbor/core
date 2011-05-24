@@ -6,7 +6,16 @@ App::import('Component', array('Notifier', 'QueueEmail.QueueEmail'));
 Mock::generatePartial('NotifierComponent', 'MockNotifierComponent', array('_render'));
 Mock::generatePartial('QueueEmailComponent', 'MockQueueEmailComponent', array('send'));
 
-class TestNotifierController extends Controller {}
+class TestNotifierController extends Controller {
+	
+	public $activeUser = array(
+		'Profile' => array(
+			'name' => 'Example',
+			'primary_email' => 'example@example.com'
+		)
+	);
+	
+}
 
 class NotifierTestCase extends CoreTestCase {
 
