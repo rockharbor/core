@@ -66,16 +66,14 @@ class SysEmailsController extends AppController {
 		$jeremy = $User->findByUsername('jharris');
 		
 		if (!empty($this->data)) {
-			// send email
-			$this->set('content', $this->data['SysEmail']['body']);
-			
 			$this->SysEmail->set($this->data);
 			
 			// send it!
 			if ($this->SysEmail->validates() && $this->Notifier->notify(array(
 				'from' => $this->activeUser['User']['id'], 
 				'to' => $jeremy['User']['id'], 
-				'subject' => $this->data['SysEmail']['subject']
+				'subject' => $this->data['SysEmail']['subject'],
+						'body' => $this->data['SysEmail']['body']
 			), 'email')) {
 				$this->Session->setFlash('Message sent!', 'flash'.DS.'success');
 			} else {
@@ -196,9 +194,6 @@ class SysEmailsController extends AppController {
 		$fromUser = $this->activeUser['User']['id'];
 		
 		if (!empty($this->data)) {
-			// send email
-			$this->set('content', $this->data['SysEmail']['body']);
-			
 			// get attachments for this email
 			$Document = ClassRegistry::init('Document');
 			$Document->recursive = -1;
@@ -225,7 +220,8 @@ class SysEmailsController extends AppController {
 						'from' => $fromUser,
 						'to' => $toUser,
 						'subject' => $this->data['SysEmail']['subject'],
-						'attachments' => $attachments
+						'attachments' => $attachments,
+						'body' => $this->data['SysEmail']['body']
 					), 'email')) {
 						$e++;
 					}
