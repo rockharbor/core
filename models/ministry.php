@@ -22,6 +22,13 @@ class Ministry extends AppModel {
  * @var string
  */
 	var $name = 'Ministry';
+	
+/**
+ * Default model order
+ * 
+ * @var string
+ */
+	var $order = 'Ministry.name ASC';
 
 /**
  * Extra behaviors for this model
@@ -100,7 +107,8 @@ class Ministry extends AppModel {
 		'ChildMinistry' => array(
 			'className' => 'Ministry',
 			'foreignKey' => 'parent_id',
-			'dependent' => true
+			'dependent' => true,
+			'order' => 'ChildMinistry.name ASC'
 		),
 		'Role' => array(
 			'className' => 'Role',
