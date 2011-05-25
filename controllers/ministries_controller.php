@@ -184,7 +184,7 @@ class MinistriesController extends AppController {
 			$this->Session->setFlash($count.'/'.count($selected).' Ministries have been bulk edited.', 'flash'.DS.'success');
 		}
 		$this->set('campuses', $this->Ministry->Campus->find('list'));
-		$this->set('parents', $this->Ministry->find('list', array(
+		$this->set('parents', $this->Ministry->active('list', array(
 			'conditions' => array(
 				'Ministry.parent_id' => null
 			)
@@ -234,7 +234,7 @@ class MinistriesController extends AppController {
 		$this->data = $this->Ministry->read(null, $id);		
 		
 		$this->set('campuses', $this->Ministry->Campus->find('list'));
-		$this->set('ministries', $this->Ministry->find('list', array(
+		$this->set('ministries', $this->Ministry->active('list', array(
 			'conditions' => array(
 				'Ministry.parent_id' => null,
 				'not' => array(

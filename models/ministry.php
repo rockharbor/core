@@ -44,7 +44,14 @@ class Ministry extends AppModel {
 			'auto' => false
 		),
 		'Search.Searchable',
-		'Linkable.AdvancedLinkable'
+		'Linkable.AdvancedLinkable',
+		'NamedScope.NamedScope' => array(
+			'active' => array(
+				'conditions' => array(
+					'active' => true
+				)
+			)
+		)
 	);
 
 /**
