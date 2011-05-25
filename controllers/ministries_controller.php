@@ -118,7 +118,6 @@ class MinistriesController extends AppController {
 		}
 
 		$this->set(compact('ministry'));
-		$this->set('ministryMenu', $this->Ministry->find('all', array('order' => 'Ministry.lft ASC')));
 	}
 
 /**
