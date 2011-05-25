@@ -65,7 +65,11 @@ class InvolvementsController extends AppController {
 		$private = $this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id']);
 		$inactive = $private;
 
-		$conditions = array('Involvement.ministry_id' => $this->passedArgs['Ministry']);
+		$subministries = $this->Involvement->Ministry->children($this->passedArgs['Ministry']);
+		$ids = Set::extract('/Ministry/id', $subministries);
+		array_unshift($ids, $this->passedArgs['Ministry']);
+		
+		$conditions = array('Involvement.ministry_id' => $ids);
 		if (empty($this->data) || !$this->data['Involvement']['inactive']) {
 			$conditions['Involvement.active'] = true;
 			$db = $this->Involvement->getDataSource();
@@ -88,7 +92,8 @@ class InvolvementsController extends AppController {
 				)
 			),
 			'conditions' => $conditions,
-			'limit' => $viewStyle == 'column' ? 6 : 20
+			'limit' => $viewStyle == 'column' ? 6 : 20,
+			'order' => 'Ministry.name ASC, Involvement.name ASC'
 		);
 
 		$involvements = $this->FilterPagination->paginate();
