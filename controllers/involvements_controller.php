@@ -69,7 +69,7 @@ class InvolvementsController extends AppController {
 		$ids = Set::extract('/Ministry/id', $subministries);
 		array_unshift($ids, $this->passedArgs['Ministry']);
 		
-		$conditions = array('Involvement.ministry_id' => $ids);
+		$conditions['or']['Involvement.ministry_id'] = $ids;
 		if (empty($this->data) || !$this->data['Involvement']['inactive']) {
 			$conditions['Involvement.active'] = true;
 			$db = $this->Involvement->getDataSource();
@@ -78,6 +78,20 @@ class InvolvementsController extends AppController {
 		if (empty($this->data) || !$this->data['Involvement']['private']) {
 			$conditions['Involvement.private'] = false;
 		}
+		
+		$displayInvolvements = $this->Involvement->Ministry->find('all', array(
+			'fields' => array('id'),
+			'conditions' => array(
+				'id' => $ids
+			),
+			'contain' => array(
+				'DisplayInvolvement' => array(
+					'fields' => array('id')
+				)
+			)
+		));
+		$ids = Set::extract('/DisplayInvolvement/id', $displayInvolvements);
+		$conditions['or']['Involvement.id'] = $ids;
 
 		$this->paginate = array(
 			'contain' => array(

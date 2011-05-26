@@ -31,6 +31,39 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		unset($this->Involvements);
 		ClassRegistry::flush();
 	}
+	
+	function testIndex() {
+		$this->loadSettings();
+		$this->loadFixtures('InvolvementsMinistry');
+		
+		$vars = $this->testAction('/involvements/index/Ministry:1', array(
+			'data' => array(
+				'Involvement' => array(
+					'inactive' => 1,
+					'private' => 0
+				)
+			)
+		));
+		$results = Set::extract('/Involvement/id', $vars['involvements']);
+		sort($results);
+		$expected = array(1, 2, 4, 5);
+		$this->assertEqual($results, $expected);
+		
+		$vars = $this->testAction('/involvements/index/Ministry:1', array(
+			'data' => array(
+				'Involvement' => array(
+					'inactive' => 1,
+					'private' => 1
+				)
+			)
+		));
+		$results = Set::extract('/Involvement/id', $vars['involvements']);
+		sort($results);
+		$expected = array(1, 2, 3, 4, 5);
+		$this->assertEqual($results, $expected);
+		
+		$this->unloadSettings();
+	}
 
 	function testInviteRoster() {
 		$this->loadFixtures('PaymentOption');

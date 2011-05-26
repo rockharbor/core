@@ -14,7 +14,7 @@ class InvolvementsMinistryFixture extends CakeTestFixture {
 	var $records = array(
 		array(
 			'id' => 1,
-			'involvement_id' => 4,
+			'involvement_id' => 2,
 			'ministry_id' => 4
 		),
 		array(
