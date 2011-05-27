@@ -2,6 +2,9 @@
 
 App::import('Lib', array('CoreTestCase'));
 App::import('Model', 'AppSetting');
+App::import('Component', 'Acl');
+
+Mock::generatePartial('AclComponent', 'CoreConfigureMockAclComponent', array('check'));
 
 class CoreConfigureTestCase extends CoreTestCase {
 
@@ -15,7 +18,27 @@ class CoreConfigureTestCase extends CoreTestCase {
 		$this->unloadSettings();
 		unset($this->AppSetting);
 	}
-
+	
+	function testAcl() {
+		$_oldCache = Configure::read('Cache.disable');
+		Configure::write('Cache.disable', false);
+		
+		$core = Core::getInstance();
+		$core->Acl = new CoreConfigureMockAclComponent();
+		
+		$core->Acl->setReturnValueAt(0, 'check', true);
+		$this->assertTrue(Core::acl(8, '/some/path'));
+		
+		// cached
+		$core->Acl->setReturnValueAt(1, 'check', false);
+		$this->assertTrue(Core::acl(8, '/some/path'));
+		
+		$core->Acl->setReturnValueAt(2, 'check', false);
+		$this->assertFalse(Core::acl(1, '/some/path'));
+		
+		Configure::write('Cache.disable', $_oldCache);
+	}
+	
 	function testReadImageSetting() {
 		$result = Core::read('users.default_image');
 		$expected = 'Default profile photo';

@@ -34,6 +34,13 @@ class Core {
  * @var array
  */
 	var $settings = array();
+	
+/**
+ * The Acl Component
+ * 
+ * @var AclComponent
+ */
+	var $Acl = null;
 
 /**
  * Loads settings into config and stores them in cache
@@ -60,6 +67,7 @@ class Core {
 		if (!$instance) {
 			$instance[0] =& new Core();
 			$instance[0]->loadSettings();
+			$instance[0]->_initAcl();
 		}
 		return $instance[0];	
 	}
@@ -160,6 +168,45 @@ class Core {
 		$appSettings = Set::combine($appSettings, '{n}.AppSetting.name', '{n}.AppSetting.value');
 
 		return $appSettings;
+	}
+
+/**
+ * Initializes the AclComponent
+ */
+	function _initAcl() {
+		$self =& Core::getInstance();
+		if (!$self->Acl) {
+			App::import('Component', 'Acl');
+			$self->Acl = new AclComponent();
+		}
+	}
+	
+/**
+ * Checks acl for a certain group and action. It will cache the result so checking
+ * again should have less of a hit
+ * 
+ * @param int $foreign_key The group id
+ * @param string $action The Acl action to check
+ * @param string $type This key is only here to differentiate between main and 
+ *		conditional access. It acts as a way of namespacing the cache so checking
+ *		the same action for main access vs conditional access will return proper
+ *		results
+ */
+	function acl($foreign_key = 8, $action = '/', $type = 'main') {
+		$self =& Core::getInstance();
+		$model = 'Group';
+		$key = md5(serialize(compact('model', 'foreign_key', 'action')).$type);
+		if (Cache::read($key, 'acl') !== false) {
+			$access = Cache::read($key, 'acl');
+		} else {
+			$access = $self->Acl->check(compact('model', 'foreign_key'), $action);
+			Cache::write($key, $access, 'acl');
+		}
+		if (!$access) {
+			$message = "User of group $foreign_key trying to access $action without permission.";
+			CakeLog::write('auth', $message);
+		}
+		return $access;
 	}
 
 }

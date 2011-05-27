@@ -214,9 +214,6 @@ class AppController extends Controller {
 			$action = Set::filter(array(Inflector::camelize($parsed['plugin']), Inflector::camelize($parsed['controller']), $parsed['action']));
 			$action = implode('/', $action);
 		}
-		if (stripos($action, $this->Auth->actionPath) === false) {
-			$action = $this->Auth->actionPath.$action;
-		}
 
 		if (empty($user)) {
 			$user =& $this->activeUser;
@@ -226,35 +223,15 @@ class AppController extends Controller {
 		}
 		unset($user['ConditionalGroup']);
 		$user['ConditionalGroup'] = $this->_setConditionalGroups($params, $user);
-		$model = 'Group';
-		$foreign_key = $user['Group']['id'];
 
 		// main group
-		$key = md5(serialize(compact('model', 'foreign_key', 'action')).'main');
-		if (Cache::read($key, 'acl') !== false) {
-			$mainAccess = Cache::read($key, 'acl');
-		} else {
-			$mainAccess = $this->Acl->check(compact('model', 'foreign_key'), $action);
-			Cache::write($key, $mainAccess, 'acl');
-		}
-		$userId = $user['User']['id'];
-		$message = "User $userId of group $foreign_key allowed to access $action? [$mainAccess]";
-		CakeLog::write('auth', $message);
+		$mainAccess = Core::acl($user['Group']['id'], $action);
 		
 		$condAccess = false;
 		// check for conditional group
 		if (!empty($user['ConditionalGroup'])) {
 			foreach ($user['ConditionalGroup'] as $group) {
-				$foreign_key = $group['Group']['id'];
-				$key = md5(serialize(compact('model', 'foreign_key', 'action')).'conditional');
-				if (Cache::read($key, 'acl') !== false) {
-					$condAccess = Cache::read($key, 'acl');
-				} else {
-					$condAccess = $this->Acl->check(compact('model', 'foreign_key'), $action);
-					Cache::write($key, $condAccess, 'acl');
-				}
-				$message = "User $userId of group $foreign_key allowed to access $action? [$condAccess]";
-				CakeLog::write('auth', $message);
+				$condAccess = Core::acl($group['Group']['id'], $action, 'conditional');
 				if ($condAccess) {
 					break;
 				}
