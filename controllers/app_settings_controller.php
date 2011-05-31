@@ -52,7 +52,7 @@ class AppSettingsController extends AppController {
  * @var array
  */
 	var $_reservedTypes = array(
-		'list', 'string', 'html', 'integer', 'image'
+		'list', 'string', 'html', 'integer', 'image', 'plugin'
 	);
 
 /**
@@ -73,7 +73,11 @@ class AppSettingsController extends AppController {
 		$this->paginate = array(
 			'order' => 'name ASC'
 		);
-		$appSettings = $this->AppSetting->find('all');
+		$appSettings = $this->AppSetting->find('all', array(
+			'conditions' => array(
+				'type <>' => 'plugin'
+			)
+		));
 		
 		foreach ($appSettings as &$appSetting) {
 			if (!in_array($appSetting['AppSetting']['type'], $this->_reservedTypes)) {

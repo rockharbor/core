@@ -158,6 +158,115 @@ class InstallShell extends Shell {
 		$this->out('Complete!');
 	}
 
+/**
+ * Installs or uninstalls a CORE plugin
+ * 
+ * ### Args:
+ * - 0: the name of the plugin
+ * 
+ * ### Params:
+ * - `-uninstall` To uninstall the plugin
+ * 
+ * @return void
+ */
+	function plugin() {
+		$plugin = $this->args[0];
+		
+		if (isset($this->params['uninstall'])) {
+			$this->_uninstallPlugin($plugin);
+			return;
+		}
+		
+		$response = $this->in('Install '.Inflector::humanize($plugin).' plugin?', array('y', 'n'), 'n');
+		if (strtolower($response) !== 'y') {
+			$this->_stop();
+		}
+		
+		// insert tables & records
+		if (file_exists(APP.'plugins'.DS.$plugin.DS.'config'.DS.'schema'.DS.$plugin.'.php')) {
+			// table schema
+			$this->SchemaShell->params['name'] = Inflector::camelize($plugin);
+			$this->SchemaShell->params['plugin'] = $plugin;
+			$this->SchemaShell->startup();
+			$this->SchemaShell->create();
+
+			// insert all records
+			$Folder = new Folder(APP.'plugins'.DS.$plugin.DS.'config'.DS.'records');
+			$files = $Folder->find();
+			foreach ($files as $file) {
+				if (preg_match('/[A-Za-z]_records.php/', $file)) {
+					require_once APP.'plugins'.DS.$plugin.DS.'config'.DS.'records'.DS.$file;
+					$className = str_replace('.php', '', Inflector::camelize($file));
+					$records = new $className;
+					$records->insert();
+					$this->out('Records added for '.str_replace('Records', '', $className));
+				}
+			}
+		}
+		
+		// add the app setting
+		$this->out(__('Registering plugin', true));
+		$AppSetting = ClassRegistry::init('AppSetting');
+		$AppSetting->save(array(
+			'name' => 'plugin.'.$plugin,
+			'description' => Inflector::humanize($plugin).' Plugin',
+			'type' => 'plugin'
+		));
+		
+		// run the plugin's install file
+		$class = Inflector::camelize($plugin).'Install';
+		if (App::import('Plugin', $class)) {
+			$this->out(__('Running plugin\'s install routine', true));
+			$installer = new $class;
+			$installer->install();
+		}
+	}
+	
+/**
+ * Uninstalls a plugin, removing it's tables and setting
+ * 
+ * @param string $plugin 
+ */
+	function _uninstallPlugin($plugin) {
+		$response = $this->in('Uninstall '.Inflector::humanize($plugin).' plugin? All tables associated with this plugin will be dropped!', array('y', 'n'), 'n');
+		if (strtolower($response) !== 'y') {
+			$this->_stop();
+		}
+		
+		if (file_exists(APP.'plugins'.DS.$plugin.DS.'config'.DS.'schema'.DS.$plugin.'.php')) {
+			$this->SchemaShell->params['name'] = Inflector::camelize($plugin);
+			$this->SchemaShell->params['plugin'] = $plugin;
+			$this->SchemaShell->startup();
+			
+			list($Schema, $table) = $this->SchemaShell->_loadSchema();
+			$db =& ConnectionManager::getDataSource($this->SchemaShell->Schema->connection);
+			
+			$drop = array();
+			foreach ($Schema->tables as $table => $fields) {
+				$drop[$table] = $db->dropSchema($Schema, $table);
+			}
+			
+			if ($this->in(__('Are you sure you want to drop the table(s)?', true), array('y', 'n'), 'n') == 'y') {
+				$this->out(__('Dropping table(s).', true));
+				$this->SchemaShell->__run($drop, 'drop', $Schema);
+			}
+		}
+		
+		// remove from app settings
+		$this->out(__('Unregistering plugin', true));
+		$AppSetting = ClassRegistry::init('AppSetting');
+		$result = $AppSetting->findByName('plugin.'.$plugin);
+		$AppSetting->delete($result['AppSetting']['id']);
+		
+		// run the plugin's uninstall file
+		$class = Inflector::camelize($plugin).'Install';
+		if (App::import('Plugin', $class)) {
+			$this->out(__('Running plugin\'s uninstall routine', true));
+			$installer = new $class;
+			$installer->uninstall();
+		}
+	}
+
 	function _createAcl() {
 		$Group = ClassRegistry::init('Group');
 
