@@ -258,6 +258,10 @@ class InstallShell extends Shell {
 		$result = $AppSetting->findByName('plugin.'.$plugin);
 		$AppSetting->delete($result['AppSetting']['id']);
 		
+		// remove acos for this plugin
+		$this->out(__('Removing ACOs', true));
+		Core::removeAco(Inflector::humanize($plugin));
+		
 		// run the plugin's uninstall file
 		$class = Inflector::camelize($plugin).'Install';
 		if (App::import('Plugin', $class)) {

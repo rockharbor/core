@@ -2,7 +2,6 @@
 /* Aro Fixture generated on: 2010-07-13 13:07:19 : 1279053199 */
 class AroFixture extends CakeTestFixture {
 	var $name = 'Aro';
-	var $import = array('records' => true);
 
 	var $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
@@ -14,6 +13,18 @@ class AroFixture extends CakeTestFixture {
 		'rght' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 10, 'key' => 'index'),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'aros_lft_rght' => array('column' => array('rght', 'lft'), 'unique' => 0), 'aros_model_fk' => array('column' => array('foreign_key', 'model'), 'unique' => 0)),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
+	);
+	
+	var $records = array(
+		array(
+			'id' => 1,
+			'parent_id' => null,
+			'model' => 'Group',
+			'foreign_key' => 8,
+			'alias' => 'User',
+			'lft' => 1,
+			'rght' => 2
+		)
 	);
 
 }

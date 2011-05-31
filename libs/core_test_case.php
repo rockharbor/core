@@ -35,11 +35,14 @@ class CoreTestCase extends CakeTestCase {
  * @var array
  */
 	var $fixtures = array(
+		'app.aco',
 		'app.address',
 		'app.alert',
 		'app.alerts_user',
 		'app.answer',
 		'app.app_setting',
+		'app.aro',
+		'app.aros_aco',
 		'app.attachment',
 		'app.campus',
 		'app.campuses_rev',

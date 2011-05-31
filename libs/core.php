@@ -180,6 +180,66 @@ class Core {
 			$self->Acl = new AclComponent();
 		}
 	}
+
+/**
+ * Adds an ACO to allow a group access to an action
+ * 
+ * @param string $action The action to allow
+ * @param int $foreign_key The group id. Default is 8 (User)
+ * @return boolean Success 
+ */
+	function addAco($action = null, $foreign_key = 8) {
+		if (!$action) {
+			return false;
+		}
+		$self =& Core::getInstance();
+		$model = 'Group';
+		if (stripos($action, 'controllers/') === false) {
+			$action = 'controllers/'.ltrim($action, '/');
+		}
+		
+		// iterate through the path and add missing acos
+		$nodes = explode('/', $action);
+		$parentId = null;
+		$path = '';
+		foreach ($nodes as $node) {
+			$path .= $node;
+			$acoNode = $self->Acl->Aco->node($path);
+			if (!$acoNode) {
+				$self->Acl->Aco->create(array('parent_id' => $parentId, 'model' => null, 'alias' => $node));
+				$acoNode = $self->Acl->Aco->save();
+				$parentId = $self->Acl->Aco->id;
+			} else {
+				$parentId = $acoNode[0]['Aco']['id'];
+			}
+			$path .= '/';
+		}
+		
+		// save the permission
+		return $self->Acl->allow(compact('model', 'foreign_key'), $action);
+	}
+
+/**
+ * Removes an ACO record
+ * 
+ * @param string $action
+ * @param type $foreign_key The group id. Default is 8 (User)
+ * @return boolean Success
+ */
+	function removeAco($action = null, $foreign_key = 8) {
+		$self =& Core::getInstance();
+		$model = 'Group';
+		if (stripos($action, 'controllers/') === false) {
+			$action = 'controllers/'.ltrim($action, '/');
+		}
+		$key = md5(serialize(compact('model', 'foreign_key', 'action')).'main');
+		Cache::delete($key, 'acl');
+		
+		$acoNode = $self->Acl->Aco->node($action);
+        if (isset($acoNode['0']['Aco']['id'])) {
+           return  $self->Acl->Aco->delete($acoNode[0]['Aco']['id']);
+        }
+	}
 	
 /**
  * Checks acl for a certain group and action. It will cache the result so checking
@@ -195,6 +255,9 @@ class Core {
 	function acl($foreign_key = 8, $action = '/', $type = 'main') {
 		$self =& Core::getInstance();
 		$model = 'Group';
+		if (stripos($action, 'controllers/') === false) {
+			$action = 'controllers/'.ltrim($action, '/');
+		}
 		$key = md5(serialize(compact('model', 'foreign_key', 'action')).$type);
 		if (Cache::read($key, 'acl') !== false) {
 			$access = Cache::read($key, 'acl');
