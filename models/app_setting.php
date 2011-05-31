@@ -32,7 +32,8 @@ class AppSetting extends AppModel {
 		'Cacher.Cache' => array(
 			'duration' => '+1 year',
 			'clearOnSave' => true,
-			'clearOnDelete' => true
+			'clearOnDelete' => true,
+			'auto' => true
 		),
 		'Logable'
 	);

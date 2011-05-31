@@ -136,7 +136,7 @@ class AppSettingRecords extends Records {
 		),
 		array(
 			'id' => 18,
-			'name' => 'users.default_image',
+			'name' => 'users.default_icon',
 			'description' => 'The default icon for a user, if different than the default image.',
 			'value' => null,
 			'type' => 'image'
