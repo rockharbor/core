@@ -272,6 +272,66 @@ class Core {
 		return $access;
 	}
 
+/**
+ * Hooks into CORE to allow adding links to your plugin. Links are only shown if 
+ * the user has permission to see them
+ * 
+ * #### Options:
+ * - string $title The link title
+ * - string $element The element to use instead of a link
+ * - array $options Options for the link
+ * 
+ * @param mixed $url String or array url
+ * @param string $area Dot-string representing the area of the app we want to hook
+ *   into. To hook into the top-level nav, use `root`
+ * @param array $options Hook options
+ * @return void
+ */
+	function hook($url = array(), $area = null, $options = array()) {
+		if (empty($url)) {
+			return;
+		}
+		if (is_array($url)) {
+			if (!isset($url['action'])) {
+				$last = $url['controller'];
+			} else {
+				$last = $url['action'];
+			}
+		} else {
+			$last = explode('/', $url);
+			$last = array_pop($last);
+		}
+		$_defaults = array(
+			'title' => Inflector::humanize($last),
+			'element' => null,
+			'options' => array()
+		);
+		$options = array_merge($_defaults, $options);
+		extract($options);
+		
+		$area = trim($area, '.');
+		$self =& Core::getInstance();
+		$existing = $self->getHooks($area);
+		if (!$existing) {
+			$area .= '.options';
+		}
+		$existing = compact('url', 'group', 'operator', 'title', 'element', 'options');
+		$self->_write('hooks.'.$area, $existing);
+	}
+	
+/**
+ * Gets hooks for an area
+ * 
+ * @param string $area 
+ * @param array $exclude Sub items to exclude
+ * @return array The area's hooks
+ */
+	function getHooks($area = null, $exclude = array()) {
+		$area = trim($area, '.');
+		$self =& Core::getInstance();
+		$hooks = (array)$self->read('hooks.'.$area);
+		return array_diff_key($hooks, Set::normalize($exclude));
+	}
 }
 
 ?>

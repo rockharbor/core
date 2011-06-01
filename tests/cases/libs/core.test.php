@@ -101,6 +101,136 @@ class CoreConfigureTestCase extends CoreTestCase {
 		
 		Configure::write('Cache.disable', $_oldCache);
 	}
+
+	function testHook() {
+		// remove existing hooks
+		$core = Core::getInstance();
+		$oldHooks = isset($core->settings['hooks']) ? $core->settings['hooks'] : null;
+		unset($core->settings['hooks']);
+		
+		Core::hook();
+		$this->assertEqual(Core::read('hooks'), array());
+		
+		Core::hook('/plugin/controller/action', 'root.new-nav', array(
+			'title' => 'My Nav Item'
+		));
+		$results = Core::read('hooks');
+		$expected = array(
+			'root' => array(
+				'new-nav' => array(
+					'options' => array(
+						'url' => '/plugin/controller/action',
+						'title' => 'My Nav Item',
+						'element' => null
+					)
+				)
+			)
+		);
+		$this->assertEqual($results, $expected);
+		
+		Core::hook('/plugin/controller/new_action', 'root.new-nav.sub-item-1');
+		$results = Core::read('hooks');
+		$expected = array(
+			'root' => array(
+				'new-nav' => array(
+					'options' => array(
+						'url' => '/plugin/controller/action',
+						'title' => 'My Nav Item',
+						'element' => null
+					),					
+					'sub-item-1' => array(
+						'options' => array(
+							'url' => '/plugin/controller/new_action',
+							'title' => 'New Action',
+							'element' => null
+						)
+					)
+				)
+			)
+		);
+		$this->assertEqual($results, $expected);
+		
+		Core::hook('/plugin/controller/sub_action', 'root.new-nav.sub-item-2');
+		$results = Core::read('hooks');
+		$expected = array(
+			'root' => array(
+				'new-nav' => array(
+					'options' => array(
+						'url' => '/plugin/controller/action',
+						'title' => 'My Nav Item',
+						'element' => null
+					),					
+					'sub-item-1' => array(
+						'options' => array(
+							'url' => '/plugin/controller/new_action',
+							'title' => 'New Action',
+							'element' => null
+						)
+					),
+					'sub-item-2' => array(
+						'options' => array(
+							'url' => '/plugin/controller/sub_action',
+							'title' => 'Sub Action',
+							'element' => null
+						)
+					)
+				)
+			)
+		);
+		$this->assertEqual($results, $expected);
+		
+		$core->settings['hooks'] = $oldHooks;
+	}
+	
+	function testGetHooks() {
+		// remove existing hooks
+		$core = Core::getInstance();
+		$oldHooks = isset($core->settings['hooks']) ? $core->settings['hooks'] : null;
+		unset($core->settings['hooks']);
+				
+		Core::hook('/plugin/controller/action', 'root.new-nav');
+		$results = Core::getHooks('root');
+		$expected = array(
+			'new-nav' => array(
+				'options' => array(
+					'url' => '/plugin/controller/action',
+					'title' => 'Action',
+					'element' => null
+				)
+			)
+		);
+		$this->assertEqual($results, $expected);
+		
+		Core::hook('/plugin/controller/sub_action', 'root.new-nav.sub');
+		$results = Core::getHooks('root.new-nav');
+		$expected = array(
+			'options' => array(
+				'url' => '/plugin/controller/action',
+				'title' => 'Action',
+				'element' => null
+			),
+			'sub' => array(
+				'options' => array(
+					'url' => '/plugin/controller/sub_action',
+					'title' => 'Sub Action',
+					'element' => null
+				)
+			)
+		);
+		$this->assertEqual($results, $expected);
+		
+		$results = Core::getHooks('root.new-nav', array('sub'));
+		$expected = array(
+			'options' => array(
+				'url' => '/plugin/controller/action',
+				'title' => 'Action',
+				'element' => null
+			)
+		);
+		$this->assertEqual($results, $expected);
+		
+		$core->settings['hooks'] = $oldHooks;
+	}
 	
 	function testReadImageSetting() {
 		$result = Core::read('users.default_image');
