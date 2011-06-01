@@ -4,6 +4,8 @@
 		<?php
 		$settings = Core::read();
 		ksort($settings);
+		unset($settings['hooks']);
+		unset($settings['plugin']);
 		foreach ($settings as $category => $setting):
 		?>
 		<li><a href="#<?php echo Inflector::camelize($category); ?>"><?php echo Inflector::humanize($category); ?></a></li>
