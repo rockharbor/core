@@ -213,6 +213,11 @@ class InstallShell extends Shell {
 			}
 		}
 		
+		// sync acos
+		$this->AclExtras = new AclExtrasShell($this->Dispatch);
+		$this->AclExtras->startup();
+		$this->AclExtras->aco_sync();
+		
 		// add the app setting
 		$this->out(__('Registering plugin', true));
 		$AppSetting = ClassRegistry::init('AppSetting');
