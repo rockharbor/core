@@ -5,9 +5,14 @@
  		<legend>Add <?php echo Inflector::humanize($modelKey); ?></legend>
 	<?php
 		foreach ($schema as $field => $attrs) {
+			// change options for certain fields
+			$options = array();
+			if ($attrs['length'] > 200) {
+				$options['type'] = 'textarea';
+			}
 			// ignore certain fields
 			if (!in_array($field, array('id', 'created', 'modified'))) {
-				echo $this->Form->input($field);
+				echo $this->Form->input($field, $options);
 			}
 		}
 	?>
