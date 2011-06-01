@@ -227,7 +227,8 @@ class NotifierComponent extends Object {
 	function _render($template) {	
 		$View = new View($this->Controller, false);		
 		$View->layout = 'notification';
-		$content = $View->element('notification' . DS . $template, array(), true);
+		list($plugin, $template) = pluginSplit($template);
+		$content = $View->element('notification' . DS . $template, compact('plugin'), true);
 		$content = $View->renderLayout($content);		
 		return $content;
 	}
