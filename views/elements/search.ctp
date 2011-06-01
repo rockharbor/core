@@ -5,6 +5,7 @@
 			'div' => false
 		),
 		'url' => array(
+			'plugin' => false, 
 			'controller' => 'searches',
 			'action' => 'index'
 		)

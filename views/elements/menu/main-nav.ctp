@@ -1,6 +1,6 @@
 <ul>
-	<li id="nav-home"><?php echo $this->Html->link('☻', array('controller' => 'pages', 'action' => 'display', 'home')); ?></li>
-	<li id="nav-profile"><?php echo $this->Html->link('Profile', array('controller' => 'profiles', 'action' => 'view', 'User' => $activeUser['User']['id'])); ?>
+	<li id="nav-home"><?php echo $this->Html->link('☻', array('plugin' => false, 'controller' => 'pages', 'action' => 'display', 'home')); ?></li>
+	<li id="nav-profile"><?php echo $this->Html->link('Profile', array('plugin' => false, 'controller' => 'profiles', 'action' => 'view', 'User' => $activeUser['User']['id'])); ?>
 		<ul>
 			<li>
 				<?php
@@ -27,19 +27,19 @@
 				</div>
 				<div style="clear:both" />
 			</li>
-			<li class="hover-row"><?php echo $this->Html->link('My Profile', array('controller' => 'profiles', 'action' => 'view', 'User' => $activeUser['User']['id'])); ?></li>
+			<li class="hover-row"><?php echo $this->Html->link('My Profile', array('plugin' => false, 'controller' => 'profiles', 'action' => 'view', 'User' => $activeUser['User']['id'])); ?></li>
 			<?php
 			if ($activeUser['Profile']['leading'] > 0):
 			?>
-			<li class="hover-row"><?php echo $this->Html->link('Leader Dashboard', array('controller' => 'involvement_leaders', 'action' => 'dashboard', 'User' => $activeUser['User']['id'])); ?></li>
+			<li class="hover-row"><?php echo $this->Html->link('Leader Dashboard', array('plugin' => false, 'controller' => 'involvement_leaders', 'action' => 'dashboard', 'User' => $activeUser['User']['id'])); ?></li>
 			<?php 
 			endif;
 			if ($activeUser['Profile']['managing'] > 0):
 			?>
-			<li class="hover-row"><?php echo $this->Html->link('Manager Dashboard', array('controller' => 'ministry_leaders', 'action' => 'dashboard', 'User' => $activeUser['User']['id'])); ?></li>
+			<li class="hover-row"><?php echo $this->Html->link('Manager Dashboard', array('plugin' => false, 'controller' => 'ministry_leaders', 'action' => 'dashboard', 'User' => $activeUser['User']['id'])); ?></li>
 			<?php endif; ?>
 			<?php
-			$link = $this->Permission->link('Admin Dashboard', array('controller' => 'users', 'action' => 'dashboard'));
+			$link = $this->Permission->link('Admin Dashboard', array('plugin' => false, 'controller' => 'users', 'action' => 'dashboard'));
 			echo $link ? $this->Html->tag('li', $link, array('class' => 'hover-row')) : null;
 			?>
 			<?php
@@ -59,7 +59,7 @@
 	</li>
 	<li id="nav-ministries">
 		<?php
-		echo $this->Html->link('Ministries', array('controller' => 'ministries'));
+		echo $this->Html->link('Ministries', array('plugin' => false, 'controller' => 'ministries'));
 		echo $this->element('menu'.DS.'campus', array(
 			'campuses' => $campusesMenu,
 			'cache' => '+1 day'
@@ -69,13 +69,13 @@
 		));
 		?>
 	</li>
-	<li id="nav-calendar"><?php echo $this->Html->link('Calendar', array('controller' => 'dates', 'action' => 'calendar', 'full')); ?>
+	<li id="nav-calendar"><?php echo $this->Html->link('Calendar', array('plugin' => false, 'controller' => 'dates', 'action' => 'calendar', 'full')); ?>
 		<ul>
 			<li>
 				<?php echo $this->element('calendar', array('size' => 'mini')); ?>
 			</li>
 			<li id="calendar-viewall">
-				<?php echo $this->Html->link('View Full Size Calendar', array('controller' => 'dates', 'action' => 'calendar', 'full')); ?>
+				<?php echo $this->Html->link('View Full Size Calendar', array('plugin' => false, 'controller' => 'dates', 'action' => 'calendar', 'full')); ?>
 			</li>
 		</ul>
 	</li>
@@ -86,10 +86,10 @@
 	));
 	?>
 	<?php if (Configure::read()): ?>
-	<li><?php echo $this->Html->link('Debugging', array('controller' => 'reports', 'action' => 'index')); ?>
+	<li><?php echo $this->Html->link('Debugging', array('plugin' => false, 'controller' => 'reports', 'action' => 'index')); ?>
 		<ul><li><?php
-	echo $this->Html->link('Report a bug on this page', array('controller' => 'sys_emails', 'action' => 'bug_compose'), array('rel' => 'modal-none'));
-	echo $this->Html->link('View activity logs', array('controller' => 'logs', 'action' => 'index'), array('rel' => 'modal-none'));
+	echo $this->Html->link('Report a bug on this page', array('plugin' => false, 'controller' => 'sys_emails', 'action' => 'bug_compose'), array('rel' => 'modal-none'));
+	echo $this->Html->link('View activity logs', array('plugin' => false, 'controller' => 'logs', 'action' => 'index'), array('rel' => 'modal-none'));
 	?></li></ul>
 	</li>
 	<?php endif; ?>

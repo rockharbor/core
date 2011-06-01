@@ -67,7 +67,7 @@
 				<?php
 				echo $this->Html->link('View API', array('controller' => 'api_classes', 'plugin' => 'api_generator'));
 				echo ' / ';
-				echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout'));
+				echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout', 'plugin' => false));
 				?>
 			</div>
 		</div>

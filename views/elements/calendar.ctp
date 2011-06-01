@@ -14,6 +14,7 @@ if (!isset($id)) {
 	$id = uniqid();
 }
 $url = array(
+	'plugin' => false, 
 	'controller' => 'dates',
 	'action' => 'calendar',
 	'ext' => 'json',

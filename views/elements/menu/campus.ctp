@@ -21,13 +21,13 @@ foreach ($campuses as $campus) {
 		echo '<ul class="ministry-column">';
 		for($h; $h<($half*($i+1)) && $h < count($campus['Ministry']); $h++) {
 			echo '<li class="ministry">';
-			echo $this->Html->link($campus['Ministry'][$h]['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $campus['Ministry'][$h]['id']), array('class' => 'parent-ministry', 'escape' => true));
+			echo $this->Html->link($campus['Ministry'][$h]['name'], array('plugin' => false, 'controller' => 'ministries', 'action' => 'view', 'Ministry' => $campus['Ministry'][$h]['id']), array('class' => 'parent-ministry', 'escape' => true));
 			$childrenLinks = array();
 			foreach ($campus['Ministry'][$h]['ChildMinistry'] as $childMinistry) {
-				$childrenLinks[] = $this->Html->link($childMinistry['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $childMinistry['id']), array('class' => 'child-ministry', 'escape' => true));
+				$childrenLinks[] = $this->Html->link($childMinistry['name'], array('plugin' => false, 'controller' => 'ministries', 'action' => 'view', 'Ministry' => $childMinistry['id']), array('class' => 'child-ministry', 'escape' => true));
 			}
 			if (count($childrenLinks) > 4) {
-				$childrenLinks[] = $this->Html->link('more...', array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $campus['Ministry'][$h]['id']), array('class' => 'child-ministry', 'escape' => true));
+				$childrenLinks[] = $this->Html->link('more...', array('plugin' => false, 'controller' => 'ministries', 'action' => 'view', 'Ministry' => $campus['Ministry'][$h]['id']), array('class' => 'child-ministry', 'escape' => true));
 			}
 			if (count($childrenLinks) > 0) {
 				echo $this->Text->toList($childrenLinks);
