@@ -9,6 +9,11 @@
  */
 
 /**
+ * Imports
+ */
+App::import('Core', 'Router');
+
+/**
  * Core class
  *
  * Similar to the Configuration class.
