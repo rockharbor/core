@@ -14,7 +14,8 @@ echo $this->Form->end();
 	if (!empty($results)) {
 	?>
 	<?php
-	echo $this->element('search'.DS.strtolower($model).'_simple_results', compact('element', 'results', 'named'));
+	list($plugin, $element) = pluginSplit($element);
+	echo $this->element('search'.DS.strtolower($model).'_simple_results', compact('element', 'results', 'named', 'plugin'));
 	} elseif ($searchRan) {
 	?>
 	<p>No results</p>
