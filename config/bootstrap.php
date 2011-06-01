@@ -85,4 +85,14 @@ Configure::write('Core.mediafilters.default', array(
  */
 define('LISTENER_PATH', APP . 'libs' . DS . 'listeners');
 
+/**
+ * Load CORE plugin bootstraps
+ */
+$plugins = Core::read('plugin');
+if (!empty($plugins)) {
+	$plugins = array_keys($plugins);
+	foreach ($plugins as $plugin) {
+		App::import('Plugin', Inflector::camelize($plugin). 'Bootstrap');
+	}
+}
 ?>
