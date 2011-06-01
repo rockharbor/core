@@ -170,6 +170,15 @@ class InstallShell extends Shell {
  * @return void
  */
 	function plugin() {
+		if (isset($this->params['uninstall'])) {
+			$plugin = $this->params['uninstall'];
+			$this->_uninstallPlugin($plugin);
+			return;
+		}
+		if (!isset($this->args[0])) {
+			$this->out(__('Please specify a plugin to uninstall (lowercase_underscored)', true));
+			$this->_stop();
+		}
 		$plugin = $this->args[0];
 		
 		if (isset($this->params['uninstall'])) {
