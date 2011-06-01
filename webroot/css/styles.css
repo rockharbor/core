@@ -641,9 +641,16 @@ div.radio label {
 	min-height: 14px;
 }
 fieldset {
+	border-top: 1px solid #acacac;
 	margin-top: 5px;
+	padding: 10px 0;
+	position: relative;
 }
-fieldset, div.hr {
+legend {
+	position: absolute;
+	top: -16px;
+}
+div.hr {
 	border-top: 1px solid #acacac;
 	padding: 5px 0;
 }
