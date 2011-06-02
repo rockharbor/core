@@ -129,16 +129,16 @@ class RequestsController extends CommunicationsRequestsAppController {
 			if (empty($selected)) {
 				$selected = array($mskey);
 			}
+			$this->Request->contain(array(
+				'User',
+				'RequestType',
+				'RequestStatus'
+			));
 			foreach ($selected as $requestId) {
-				$this->Request->contain(array(
-					'User',
-					'RequestType',
-					'RequestStatus'
-				));
-				$request = $this->Request->read(null, $requestId);
-				$request = Set::merge($request, $this->data);
-				
+				$this->Request->create();
+				$this->Request->id = $requestId;
 				if ($this->Request->save($this->data['Request'])) {
+					$request = $this->Request->read(null, $requestId);
 					$this->set('type', $request['RequestType']['name']);
 					$this->set('status', $request['RequestStatus']['name']);
 					$this->Notifier->notify(array(
