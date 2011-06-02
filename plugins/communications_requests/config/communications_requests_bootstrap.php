@@ -5,7 +5,7 @@ Core::hook(array(
 	'controller' => 'requests',
 	'action' => 'history'
 ), 'root.communications-requests', array(
-	'title' => 'Communications Requests',
+	'title' => 'Communications',
 	'options' => array(
 		'rel' => 'modal-none'
 	)
