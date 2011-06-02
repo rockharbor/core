@@ -41,7 +41,7 @@ class CommunicationsRequestsSchema extends CakeSchema {
 	var $requests = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'request_type_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8),
-		'description' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 255),
+		'description' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 1000),
 		'budget' => array('type' => 'float', 'null' => true, 'default' => NULL, 'length' => '7,2'),
 		'ministry_name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 64),
 		'request_status_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8),

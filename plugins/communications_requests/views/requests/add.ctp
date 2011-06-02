@@ -7,10 +7,18 @@
 	
 	?>
 	<div class="clearfix">
+		<fieldset>
+			<legend>Request Type</legend>
+			<?php
+			echo $this->Form->input('request_type_id');
+			?>
+			<p id="type-description"></p>
+		</fieldset>
+	</div>
+	<div class="clearfix">
 		<fieldset class="grid_6 alpha">
 			<legend>Request</legend>
 			<?php
-			echo $this->Form->input('request_type_id');
 			echo $this->Form->input('ministry_name');
 			echo $this->Form->input('budget', array(
 				'between' => '$'
@@ -21,6 +29,7 @@
 			?>
 		</fieldset>
 		<fieldset class="grid_6 omega">
+			<p>Please include event name, dates and overview.</p>
 			<?php
 			echo $this->Form->input('description', array(
 				'type' => 'textarea'
@@ -34,3 +43,10 @@
 	echo $this->Form->end();
 	?>
 </div>
+<?php
+$this->Js->buffer('var requestTypeDescriptions = '.$this->Js->object($requestTypeDescriptions));
+$this->Js->buffer('$("#RequestRequestTypeId").change(function() {
+	$("#type-description").html(requestTypeDescriptions[$("#RequestRequestTypeId").val()]);
+});');
+$this->Js->buffer('$("#RequestRequestTypeId").change();');
+?>

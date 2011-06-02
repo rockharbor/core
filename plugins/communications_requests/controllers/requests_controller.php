@@ -113,7 +113,9 @@ class RequestsController extends CommunicationsRequestsAppController {
 				$this->Session->setFlash(__('Your request could not be submitted. Please try again.', true), 'flash'.DS.'failure');
 			}
 		}
-		$this->set('requestTypes', $this->Request->RequestType->find('list'));
+		$requestTypes = $this->Request->RequestType->find('all');
+		$this->set('requestTypeDescriptions', Set::combine($requestTypes, '{n}.RequestType.id', '{n}.RequestType.description'));
+		$this->set('requestTypes', Set::combine($requestTypes, '{n}.RequestType.id', '{n}.RequestType.name'));
 	}
 
 /**
