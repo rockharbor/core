@@ -1,0 +1,1 @@
+A new <?php echo $type; ?> request has been made.

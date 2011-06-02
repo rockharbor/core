@@ -1,0 +1,1 @@
+You have been added to be notified if there is a new <?php echo $name; ?> request.
