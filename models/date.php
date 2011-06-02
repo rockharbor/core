@@ -222,7 +222,6 @@ class Date extends AppModel {
 		$masterDate['Date']['end'] = strtotime($masterDate['Date']['end_date'].' '.$masterDate['Date']['end_time']);
 
 		// if it's not recurring, check to see if it falls in range
-		$neverEnding = !isset($range['end']);
 		$recurring = $masterDate['Date']['recurring'];
 		$permanent = $masterDate['Date']['permanent'];
 		if (isset($range['end'])) {
@@ -298,11 +297,12 @@ class Date extends AppModel {
 			$date['Date']['end'] = strtotime($date['Date']['end_date'].' '.$date['Date']['end_time']);
 
 			// add if it's not past the end range
-			if ($neverEnding) {
+			if (!isset($range['end'])) {
 				$withinRange = true;
 			} else {
 				$withinRange = $date['Date']['start'] <= $range['end'] && $date['Date']['start'] >= $range['start'];
 			}
+			$withinRange = $withinRange && $date['Date']['start'] >= $range['start'];
 			if ($withinRange && !in_array($date['Date']['start_date'], $exemptions)) {
 				unset($date['Date']['start']);
 				unset($date['Date']['end']);
@@ -315,7 +315,7 @@ class Date extends AppModel {
 			$onDate = strtotime('+'.$masterDate['Date']['frequency'].' '.$this->_frequency[$masterDate['Date']['recurrance_type']], $onDate);
 
 			// should we keep looping based on the limit and end range?
-			if ($limit > 0 && !$neverEnding) {
+			if ($limit > 0 && isset($range['end'])) {
 				$limitEnd = !($onDate < $range['end']) || $onLimit == $limit;
 			} else if (isset($range['end'])) {
 				$limitEnd = !($onDate < $range['end']);
