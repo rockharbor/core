@@ -30,16 +30,16 @@ $this->Paginator->options(array(
 				<fieldset class="grid_5 alpha">
 					<legend>Filter</legend>
 					<?php
-					echo $this->Form->input('ministry_name');
-					echo $this->Form->input('description');
+					echo $this->Form->input('Filter.ministry_name');
+					echo $this->Form->input('Filter.description');
 					?>
 				</fieldset>
 				<fieldset class="grid_5 alpha">
 					<?php
-					echo $this->Form->input('request_status_id', array(
+					echo $this->Form->input('Filter.request_status_id', array(
 						'empty' => true
 					));
-					echo $this->Form->input('request_type_id', array(
+					echo $this->Form->input('Filter.request_type_id', array(
 						'empty' => true
 					));
 					?>

@@ -61,7 +61,8 @@ class RequestsController extends CommunicationsRequestsAppController {
 		
 		if (!empty($this->data)) {
 			$this->data = Set::filter($this->data);
-			$this->paginate['conditions'] = $this->postConditions($this->data, 'LIKE');
+			$filter = array('Request' => $this->data['Filter']);
+			$this->paginate['conditions'] = $this->postConditions($filter, 'LIKE');
 		}
 		
 		$this->set('requestStatuses', $this->Request->RequestStatus->find('list'));
