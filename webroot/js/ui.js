@@ -43,6 +43,8 @@ CORE.modal = function(id, options) {
 		if ($('#modal').dialog('option', 'update') != undefined) {
 			CORE.update($('#modal').dialog('option', 'update'));
 		}
+		$('#modal').dialog('destroy');
+		$('#modal').remove();
 	};
 	
 	useOptions.open = function(event, ui) {
