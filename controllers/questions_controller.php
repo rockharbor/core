@@ -105,8 +105,8 @@ class QuestionsController extends AppController {
 			$this->redirect(array('action' => 'index'));
 		}
 		
-		$this->Question->{'move'.$direction}();
-		
+		$this->Question->{'move'.$direction}($id);
+
 		$this->redirect(array('action' => 'index'));
 	}
 	
