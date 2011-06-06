@@ -193,7 +193,10 @@ class User extends AppModel {
 				AND household_members.user_id = User.id)'
 			),
 			'link' => array(
-				'Profile'
+				'Profile',
+				'ActiveAddress' => array(
+					'fields' => array('city')
+				)
 			)
 		),
 		'notLeaderOf' => array(
@@ -203,7 +206,10 @@ class User extends AppModel {
 				AND leaders.model_id = :1: AND leaders.user_id = User.id)'
 			),
 			'link' => array(
-				'Profile'
+				'Profile',
+				'ActiveAddress' => array(
+					'fields' => array('city')
+				)
 			)
 		),
 		'notSignedUp' => array(
@@ -212,7 +218,10 @@ class User extends AppModel {
 				AND rosters.user_id = User.id)'
 			),
 			'link' => array(
-				'Profile'
+				'Profile',
+				'ActiveAddress' => array(
+					'fields' => array('city')
+				)
 			)
 		)
 	);
