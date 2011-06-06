@@ -19,6 +19,11 @@ $this->Paginator->options(array(
 				'class' => 'toggle',
 				'div' => false
 			));
+			echo $this->Form->input('passed', array(
+				'type' => 'checkbox',
+				'class' => 'toggle',
+				'div' => false
+			));
 			if ($private) {
 				echo $this->Form->input('private', array(
 					'type' => 'checkbox',

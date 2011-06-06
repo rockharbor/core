@@ -72,11 +72,13 @@ class InvolvementsController extends AppController {
 		$conditions['or']['Involvement.ministry_id'] = $ids;
 		if (empty($this->data) || !$this->data['Involvement']['inactive']) {
 			$conditions['Involvement.active'] = true;
-			$db = $this->Involvement->getDataSource();
-			$conditions[] = $db->expression('('.$this->Involvement->getVirtualField('passed').') = false');
 		}
 		if (empty($this->data) || !$this->data['Involvement']['private']) {
 			$conditions['Involvement.private'] = false;
+		}
+		if (empty($this->data) || !$this->data['Involvement']['passed']) {
+			$db = $this->Involvement->getDataSource();
+			$conditions[] = $db->expression('('.$this->Involvement->getVirtualField('passed').') = false');
 		}
 		
 		$displayInvolvements = $this->Involvement->Ministry->find('all', array(
