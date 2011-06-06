@@ -264,6 +264,8 @@ Dropdown menu CSS
 	padding-bottom: 7px;
 	}
 	.main-nav-menu li{
+		list-style:none;
+		margin: 0;
 		float:left;		
 		height:100%;
 		}
