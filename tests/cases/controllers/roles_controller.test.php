@@ -30,10 +30,13 @@ class RostersControllerTestCase extends CoreTestCase {
 	}
 	
 	function testAdd() {
+		$this->loadFixtures('Ministry');
+		
 		$countBefore = $this->Roles->Role->find('count');
 		$this->testAction('/roles/add/Ministry:3', array(
 			'data' => array(
 				'Role' => array(
+					'copy' => 0,
 					'ministry_id' => 3,
 					'name' => 'My New Role'
 				)
@@ -41,6 +44,33 @@ class RostersControllerTestCase extends CoreTestCase {
 		));
 		$countAfter = $this->Roles->Role->find('count');
 		$this->assertEqual($countBefore, $countAfter-1);
+		
+		$countBefore = $this->Roles->Role->find('count');
+		$this->testAction('/roles/add/Ministry:1', array(
+			'data' => array(
+				'Role' => array(
+					'copy' => 1,
+					'ministry_id' => 1,
+					'name' => 'Copied role'
+				)
+			)
+		));
+		$countAfter = $this->Roles->Role->find('count');
+		$this->assertEqual($countBefore, $countAfter-2);
+		
+		$results = $this->Roles->Role->find('all', array(
+			'conditions' => array(
+				'ministry_id' => 1
+			)
+		));
+		$this->assertEqual(count($results), 1);
+		
+		$results = $this->Roles->Role->find('all', array(
+			'conditions' => array(
+				'ministry_id' => 4
+			)
+		));
+		$this->assertEqual(count($results), 3);
 	}
 	
 	function testEdit() {
