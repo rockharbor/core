@@ -13,7 +13,6 @@ echo $this->Form->create('User', array(
 	<ul>
 		<li><a href="#personal">Personal Information</a></li>
 		<li><a href="#contact">Contact Information</a></li>
-		<li><a href="#alerts">Child Alerts &amp; Needs</a></li>
 		<li><a href="#household">Household</a></li>
 		<li><a href="#subscriptions">Subscriptions</a></li>
 	</ul>
@@ -131,13 +130,6 @@ echo $this->Form->create('User', array(
 		echo $this->Form->input('Profile.alternate_email_2');
 	?>
 		</fieldset>
-	</div>
-	<div id="alerts">
-	<?php
-		echo $this->Form->input('Profile.allergies');
-		echo $this->Form->input('Profile.special_needs');
-		echo $this->Form->input('Profile.special_alert');
-	?>
 	</div>
 	<div id="household" class="clearfix">
 	<div id="members">
