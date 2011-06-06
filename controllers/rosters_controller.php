@@ -554,19 +554,6 @@ class RostersController extends AppController {
 		// get roster ids for comparison (to see if they're signed up)
 		$thisRoster = $this->Roster->read(null, $id);
 		
-		// get roster ids for comparison (to see if they're signed up)
-		$roster = $this->Roster->find('list', array(
-			'conditions' => array(
-				'Roster.id',
-				'Roster.involvement_id' => $thisRoster['Roster']['involvement_id']
-			),
-			'fields' => array(
-				'Roster.id',
-				'Roster.user_id'
-			),
-			'contain' => false
-		));
-		
 		if (!empty($this->data)) {
 			if (isset($this->data['Child'])) {
 				foreach ($this->data['Child'] as &$child) {
@@ -604,6 +591,7 @@ class RostersController extends AppController {
 		}
 		
 		// get needed information about the user and this involvement
+		$this->Roster->Involvement->contain(array('Question'));
 		$involvement = $this->Roster->Involvement->read(null, $thisRoster['Roster']['involvement_id']);
 		// get user info and all household info where they are the contact
 		$householdMemberIds = $this->Roster->User->HouseholdMember->Household->getMemberIds($thisRoster['Roster']['user_id'], true);
@@ -623,6 +611,7 @@ class RostersController extends AppController {
 		$user = $this->Roster->User->read(null, $thisRoster['Roster']['user_id']);
 		
 		if (empty($this->data)) {
+			$this->Roster->contain(array('Answer'));
 			$this->data = $this->Roster->read(null, $id);
 		}
 		

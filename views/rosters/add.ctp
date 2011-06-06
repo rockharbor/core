@@ -120,7 +120,8 @@ echo $this->Form->create('Roster', array(
 						'value' => $question['id']
 					));
 					echo $this->Form->input('Adult.'.$r.'.Answer.'.$q.'.description', array(
-						'label' => $question['description']
+						'label' => $question['description'],
+						'type' => 'textarea'
 					));
 					$q++;
 				}
