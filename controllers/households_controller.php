@@ -63,25 +63,24 @@ class HouseholdsController extends AppController {
 	function confirm($user, $household) {
 		$viewUser = $this->passedArgs['User'];
 		
-		$householdMember = $this->Household->HouseholdMember->find('first', array(
-			'conditions' => array(
-				'household_id' => $household,
-				'user_id' => $user
-			)
-		));
-		$this->Household->HouseholdMember->id = $householdMember['HouseholdMember']['id'];
-		$this->Household->HouseholdMember->saveField('confirmed', true);
-
-		$this->Household->contain(array('HouseholdContact' => array('Profile')));
-		$contact = $this->Household->read(null, $household);
-		$this->set('contact', $contact['HouseholdContact']);
-		$this->Notifier->notify(
-			array(
-				'to' => $user,
-				'template' => 'households_join'
-			),
-			'notification'
-		);
+		if ($this->Household->join($household, $user, true)) {
+			$this->Household->contain(array('HouseholdContact' => array('Profile')));
+			$contact = $this->Household->read(null, $household);
+			$this->Household->HouseholdMember->User->contain(array('Profile'));
+			$joined = $this->Household->HouseholdMember->User->read(null, $user);
+			$this->set('contact', $contact['HouseholdContact']);
+			$this->Notifier->notify(
+				array(
+					'to' => $user,
+					'template' => 'households_join'
+				),
+				'notification'
+			);
+			
+			$this->Session->setFlash($joined['Profile']['name'].' joined '.$contact['Profile']['name'].'\'s household.', 'flash'.DS.'success');
+		} else {
+			$this->Session->setFlash('Unable to process request. Please try again.', 'flash'.DS.'failure');
+		}
 
 		$this->redirect(array(
 			'action' => 'index',

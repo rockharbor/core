@@ -393,7 +393,7 @@ class User extends AppModel {
 
 					$this->create();
 					if ($this->saveAll($householdMember)) {
-						$this->HouseholdMember->Household->join($householdId, $this->id, $creator);
+						$this->HouseholdMember->Household->join($householdId, $this->id);
 						$this->tmpAdded[] = array(
 							'id' => $this->id,
 							'username' => $householdMember['User']['username'],
@@ -401,7 +401,7 @@ class User extends AppModel {
 						);
 					}
 				} else {
-					$this->HouseholdMember->Household->join($householdId, $householdMember['User']['id'], $creator);
+					$this->HouseholdMember->Household->join($householdId, $householdMember['User']['id']);
 					$this->contain(array('Profile'));
 					$oldUser = $this->read(null, $householdMember['User']['id']);
 					if ($oldUser['Profile']['child']) {
