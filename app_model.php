@@ -60,6 +60,15 @@ class AppModel extends Model {
 				)
 			);
 		}
+		$this->order = String::insert(
+				$this->order,
+				array(
+					'ALIAS' => $this->alias,
+				),
+				array(
+					'after' => ':'
+				)
+			);
 	}
 
 /**

@@ -37,7 +37,7 @@ class Group extends AppModel {
  *
  * @var string
  */
-	var $order = 'Group.parent_id ASC';
+	var $order = ':ALIAS:.parent_id ASC';
 
 /**
  * Extra behaviors for this model

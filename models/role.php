@@ -28,7 +28,7 @@ class Role extends AppModel {
  * 
  * @var string
  */
-	var $order = 'Role.name ASC';
+	var $order = ':ALIAS:.name ASC';
 
 /**
  * Validation rules

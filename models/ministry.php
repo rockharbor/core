@@ -28,7 +28,7 @@ class Ministry extends AppModel {
  * 
  * @var string
  */
-	var $order = 'Ministry.name ASC';
+	var $order = ':ALIAS:.name ASC';
 
 /**
  * Extra behaviors for this model

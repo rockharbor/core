@@ -35,7 +35,7 @@ class Log extends AppModel {
  *
  * @var string
  */
-	var $order = 'Log.created DESC';
+	var $order = ':ALIAS:.created DESC';
 
 /**
  * BelongsTo association link

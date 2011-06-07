@@ -28,7 +28,7 @@ class RosterStatus extends AppModel {
  *
  * @var string
  */
-	var $order = 'RosterStatus.name ASC';
+	var $order = ':ALIAS:.name ASC';
 
 /**
  * HasMany relationship
