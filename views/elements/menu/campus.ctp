@@ -37,6 +37,9 @@ foreach ($campuses as $campus) {
 		echo '</ul>';
 		$i++;
 	}
+	echo $this->Html->tag('span', '&nbsp;', array('class' => 'clearfix'));
+	$link = $this->Html->link('View '.$campus['Campus']['name'].' campus page', array('plugin' => false, 'controller' => 'campuses', 'action' => 'view', 'Campus' => $campus['Campus']['id']));
+	echo $this->Html->tag('div', $link, array('class' => 'bottom-link'));
 	echo '</li>';
 }
 ?>
