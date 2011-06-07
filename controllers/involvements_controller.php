@@ -50,6 +50,7 @@ class InvolvementsController extends AppController {
  * @access private
  */
 	function beforeFilter() {
+		$this->_editSelf('index');
 		parent::beforeFilter();
 		$this->set('_canViewRoster', $this->isAuthorized('rosters/index'));
 		$this->set('_canEmail', $this->isAuthorized('sys_emails/compose'));
@@ -63,7 +64,6 @@ class InvolvementsController extends AppController {
  */	
 	function index($viewStyle = 'column') {
 		$private = $this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id']);
-		$inactive = $private;
 
 		$subministries = $this->Involvement->Ministry->children($this->passedArgs['Ministry']);
 		$ids = Set::extract('/Ministry/id', $subministries);
@@ -75,6 +75,19 @@ class InvolvementsController extends AppController {
 		}
 		if (empty($this->data) || !$this->data['Involvement']['private']) {
 			$conditions['Involvement.private'] = false;
+		} elseif (!$private) {
+			$signedUp = array();
+			if (isset($this->passedArgs['User'])) {
+				$signedUp = $this->Involvement->Roster->find('all', array(
+					'conditions' => array(
+						'user_id' => $this->passedArgs['User']
+					)
+				));
+			}
+			$conditions[]['or'] = array(
+				'Involvement.private' => false,
+				'Involvement.id' => Set::extract('/Roster/involvement_id', $signedUp)
+			);
 		}
 		if (empty($this->data) || !$this->data['Involvement']['passed']) {
 			$db = $this->Involvement->getDataSource();
@@ -118,7 +131,7 @@ class InvolvementsController extends AppController {
 			$involvement['dates'] = $this->Involvement->Date->generateDates($involvement['Involvement']['id'], array('limit' => 1));
 		}
 
-		$this->set(compact('viewStyle', 'involvements', 'private', 'inactive'));
+		$this->set(compact('viewStyle', 'involvements'));
 	}
 	
 /**
