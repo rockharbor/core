@@ -264,6 +264,13 @@ class RostersControllerTestCase extends CoreTestCase {
 					)
 				)
 			),
+			'Child' => array(
+				array(
+					'Roster' => array(
+						'user_id' => 0
+					)
+				)
+			),
 			'CreditCard' => array(
 				'first_name' => 'Joe',
 				'last_name' => 'Schmoe',
@@ -307,6 +314,9 @@ class RostersControllerTestCase extends CoreTestCase {
 		$data['Child'] = array(
 			array(
 				'user_id' => 2
+			),
+			array(
+				'user_id' => 0
 			)
 		);
 		$vars = $this->testAction('/rosters/edit/5', array(
@@ -316,6 +326,17 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, 'flash'.DS.'success');
 
 		$this->assertEqual($this->Rosters->Roster->field('parent_id'), 1);
+		
+		$data['Child'] = array(
+			array(
+				'user_id' => 0
+			)
+		);
+		$vars = $this->testAction('/rosters/edit/5', array(
+			'data' => $data
+		));
+		$result = $this->Rosters->Session->read('Message.flash.element');
+		$this->assertEqual($result, 'flash'.DS.'success');
 	}
 
 	function testDelete() {

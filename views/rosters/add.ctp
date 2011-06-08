@@ -86,8 +86,7 @@ echo $this->Form->create('Roster', array(
 				echo $this->Form->input('Child.'.$c.'.Roster.user_id', array(
 					'type' => 'checkbox',
 					'value' => $child['Profile']['user_id'],
-					'label' => $child['Profile']['name'],
-					'hiddenField' => false
+					'label' => $child['Profile']['name']
 				));
 				
 				$c++;

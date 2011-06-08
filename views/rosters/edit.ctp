@@ -43,15 +43,13 @@ echo $this->Form->hidden('Roster.involvement_id');
 					'value' => $child['Profile']['user_id'],
 					'label' => $child['Profile']['name'],
 					'checked' => 'checked',
-					'disabled' => 'disabled',
-					'hiddenField' => false
+					'disabled' => 'disabled'
 				));
 			} else {
 				echo $this->Form->input('Child.'.$c.'.user_id', array(
 					'type' => 'checkbox',
 					'value' => $child['Profile']['user_id'],
-					'label' => $child['Profile']['name'],
-					'hiddenField' => false
+					'label' => $child['Profile']['name']
 				));
 			}
 			$c++;

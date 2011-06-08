@@ -355,6 +355,11 @@ class RostersController extends AppController {
 			$cValidates = true;
 			if (isset($this->data['Child']) && $pValidates) {
 				foreach ($this->data['Child'] as $roster => &$child) {
+					if ($child['Roster']['user_id'] == 0) {
+						unset($this->data['Child'][$roster]);
+						continue;
+					}
+
 					$child = $this->Roster->setDefaultData(array(
 						'roster' => $child,
 						'involvement' => $involvement,
@@ -556,7 +561,11 @@ class RostersController extends AppController {
 		
 		if (!empty($this->data)) {
 			if (isset($this->data['Child'])) {
-				foreach ($this->data['Child'] as &$child) {
+				foreach ($this->data['Child'] as $key => &$child) {
+					if ($child['user_id'] == 0) {
+						unset($this->data['Child'][$key]);
+						continue;
+					}
 					$child['roster_status_id'] = 1;
 					$child['parent_id'] = $this->data['Roster']['user_id'];
 					$child['involvement_id'] = $this->data['Roster']['involvement_id'];
@@ -566,7 +575,11 @@ class RostersController extends AppController {
 				$children = $this->data['Child'];
 				unset($this->data['Child']);
 				
-				$cValidates = $this->Roster->saveAll($children, array('validate' => 'only'));
+				if (count($children) > 0) {
+					$cValidates = $this->Roster->saveAll($children, array('validate' => 'only'));
+				} else {
+					$cValidates = true;
+				}
 			} else {
 				$cValidates = true;
 			}
@@ -576,7 +589,7 @@ class RostersController extends AppController {
 			if ($rValidates && $cValidates) {
 				$this->Roster->saveAll($this->data, array('validate' => false));
 				
-				if (isset($children)) {
+				if (isset($children) && count($children) > 0) {
 					$this->Roster->saveAll($children, array('validate' => false));
 				}
 				
