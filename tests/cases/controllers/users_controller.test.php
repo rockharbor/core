@@ -291,7 +291,7 @@ class UsersControllerTestCase extends CoreTestCase {
 			'data' => $data
 		));
 
-		$result = $vars['foundId'];
+		$result = $vars['foundId'][0];
 		$this->assertEqual($result, 1);
 
 		$data['User']['username'] = 'newusername';

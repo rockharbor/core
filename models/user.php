@@ -270,11 +270,11 @@ class User extends AppModel {
 
 /**
  * Gets a user id using an arbitrary amount of data by searching a set of
- * distinguishable fields (username, email fields, name, etc.). If more than
- * one match is found it fails.
+ * distinguishable fields (username, email fields, name, etc.). Returns a list
+ * of matching user ids.
  * 
  * @param array $data An array of search possibilities. Can be emails, username, names
- * @return mixed False on no matches, the id on a match
+ * @return array The matching ids or an empty array
  */
 	function findUser($data = array()) {
 		if (!is_array($data)) {
@@ -284,10 +284,10 @@ class User extends AppModel {
 		$data = Set::filter($data);
 
 		if (empty($data)) {
-			return false;
+			return array();
 		}		
 		
-		$foundUser = $this->find('all', array(
+		$foundUsers = $this->find('all', array(
 			'fields' => 'User.id',
 			'conditions' => array(
 				'or' => array(
@@ -306,11 +306,7 @@ class User extends AppModel {
 			)
 		));
 		
-		if (count($foundUser) > 1 || empty($foundUser)) {
-			return false;
-		}
-		
-		return $foundUser[0]['User']['id'];
+		return Set::extract('/User/id', $foundUsers);
 	}
 
 /**
@@ -337,16 +333,16 @@ class User extends AppModel {
 			$findConditions = Set::filter($member['Profile']);
 			$foundUser = $this->findUser($findConditions);
 
-			if ($foundUser === false) {				
+			if (empty($foundUser)) {
 				$member = $this->_createUserData($member);
 			} else {
 				$this->contain(array('Profile'));
-				$found = $this->read(null, $foundUser);
+				$found = $this->read(null, $foundUser[0]);
 				$member = Set::merge($found, $member);
 			}
 
 			// validate
-			if ($foundUser === false 
+			if (empty($foundUser) 
 				&& (empty($member['Profile']['primary_email']) || empty($member['Profile']['first_name']) || empty($member['Profile']['last_name']))
 				&& !(empty($member['Profile']['primary_email']) && empty($member['Profile']['first_name']) && empty($member['Profile']['last_name']))
 			) {

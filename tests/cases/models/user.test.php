@@ -63,19 +63,20 @@ class UserTestCase extends CoreTestCase {
 		$this->loadFixtures('Profile');
 
 		$result = $this->User->findUser('jharris');
-		$expected = 1;
+		$expected = array(1);
 		$this->assertEqual($result, $expected);
 
 		$result = $this->User->findUser(array('jharris'));
-		$expected = 1;
+		$expected = array(1);
 		$this->assertEqual($result, $expected);
 
 		$result = $this->User->findUser(array('jeremy', 'harris'));
-		$expected = 1;
+		$expected = array(1);
 		$this->assertEqual($result, $expected);
 
 		$result = $this->User->findUser(array('jeremy@paxtechservices.com', 'rickyrockharbor'));
-		$this->assertFalse($result);
+		$expected = array(1, 2);
+		$this->assertEqual($result, $expected);
 	}
 
 	function testCreateUser() {

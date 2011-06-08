@@ -204,14 +204,10 @@ class UsersController extends AppController {
  */
 	function forgot_password() {		
 		if (!empty($this->data)) {
-			if (!empty($this->data['User']['forgotten'])) {			
-				$user = $this->User->findUser(explode(' ', $this->data['User']['forgotten']));
-			} else {
-				$user = false;
-			}
+			$user = $this->User->findUser(explode(' ', $this->data['User']['forgotten']));
 			
-			if ($user !== false) {
-				$this->User->id = $user;
+			if (!empty($user)) {
+				$this->User->id = $user[0];
 		
 				$newPassword = $this->User->generatePassword();
 		
@@ -220,7 +216,7 @@ class UsersController extends AppController {
 					$this->Session->setFlash('Your new password has been sent via email.', 'flash'.DS.'success');
 					$this->set('password', $newPassword);
 					$this->Notifier->notify(array(
-						'to' => $user,
+						'to' => $user[0],
 						'subject' => 'Password reset',
 						'template' => 'users_forgot_password'
 					));
@@ -288,7 +284,7 @@ class UsersController extends AppController {
 				$this->data['Profile']['last_name']
 			));
 
-			if ($foundUser !== false) {
+			if (!empty($foundUser)) {
 				$this->Session->setFlash('User already exists!', 'flash'.DS.'failure');
 				$this->redirect(array('action' => 'view', 'User' => 1));
 			}
@@ -349,7 +345,7 @@ class UsersController extends AppController {
 				$this->data['Profile']['last_name']
 			));
 
-			if ($foundUser !== false) {
+			if (!empty($foundUser)) {
 				// take to activation request (preserve data)
 				return $this->setAction('request_activation', $foundUser, true);
 			}
