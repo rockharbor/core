@@ -43,6 +43,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 			'data' => array(
 				'Ministry' => array(
 					'active' => 1,
+					'private' => '',
 					'campus_id' => 1,
 					'parent_id' => 10,
 					'move_campus' => 0,
@@ -59,6 +60,11 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		sort($results);
 		$expected = array(1,1,1);
 		$this->assertEqual($results, $expected);
+		
+		$results = Set::extract('/Ministry/private', $ministries);
+		sort($results);
+		$expected = array(0,0,1);
+		$this->assertEqual($results, $expected);
 
 		$results = Set::extract('/Ministry/campus_id', $ministries);
 		sort($results);
@@ -69,6 +75,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 			'data' => array(
 				'Ministry' => array(
 					'active' => 1,
+					'private' => '',
 					'campus_id' => 1,
 					'parent_id' => 10,
 					'move_campus' => 1,
