@@ -100,7 +100,8 @@ class RostersControllerTestCase extends CoreTestCase {
 
 		$data = array(
 			'Filter' => array(
-				'roster_status_id' => 1
+				'roster_status_id' => 1,
+				'Role' => array()
 			)
 		);
 		$vars = $this->testAction('/rosters/index/Involvement:1', array(
