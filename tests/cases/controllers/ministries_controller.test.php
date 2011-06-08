@@ -56,10 +56,12 @@ class MinistriesControllerTestCase extends CoreTestCase {
 			)
 		));
 		$results = Set::extract('/Ministry/active', $ministries);
+		sort($results);
 		$expected = array(1,1,1);
 		$this->assertEqual($results, $expected);
 
 		$results = Set::extract('/Ministry/campus_id', $ministries);
+		sort($results);
 		$expected = array(1,1,2);
 		$this->assertEqual($results, $expected);
 
@@ -80,6 +82,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 			)
 		));
 		$results = Set::extract('/Ministry/campus_id', $ministries);
+		sort($results);
 		$expected = array(1,1,1);
 		$this->assertEqual($results, $expected);
 	}
@@ -99,7 +102,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Ministry[id=4]/../DisplayInvolvement/name', $vars['ministries']);
 		sort($results);
 		$expected = array(
-			'Rock Climbing'
+			'Third Wednesday'
 		);
 		$this->assertEqual($results, $expected);
 	}
@@ -116,7 +119,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 			)
 		);
 
-		$vars = $this->testAction('/ministries/add', array(
+		$vars = $this->testAction('/ministries/add/Campus:1', array(
 			'return' => 'vars',
 			'data' => $data
 		));
@@ -125,11 +128,10 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, 'New Root Ministry');
 
 		$results = $vars['ministries'];
+		ksort($results);
 		$expected = array(
 			1 => 'Communications',
-			2 => 'Alpha',
-			3 => 'All Church',
-			5 => 'Downtown Reach'
+			2 => 'Alpha'
 		);
 		$this->assertEqual($results, $expected);
 	}
@@ -145,9 +147,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 
 		$result = $vars['ministries'];
 		$expected = array(
-			2 => 'Alpha',
-			3 => 'All Church',
-			5 => 'Downtown Reach'
+			2 => 'Alpha'
 		);
 		$this->assertEqual($result, $expected);
 
@@ -200,18 +200,18 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		);
 
 		$this->Ministries->Ministry->RevisionModel->save($data);
-		$this->Ministries->Ministry->id = 1;
 		$this->testAction('/ministries/revise/0/Ministry:1');
 		$result = $this->Ministries->Ministry->RevisionModel->find('all');
 		$this->assertFalse($result);
+		$this->Ministries->Ministry->id = 1;
 		$result = $this->Ministries->Ministry->field('name');
 		$this->assertEqual($result, 'Communications');
 
 		$this->Ministries->Ministry->RevisionModel->save($data);
-		$this->Ministries->Ministry->id = 1;
 		$this->testAction('/ministries/revise/1/Ministry:1');
 		$result = $this->Ministries->Ministry->RevisionModel->find('all');
 		$this->assertFalse($result);
+		$this->Ministries->Ministry->id = 1;
 		$result = $this->Ministries->Ministry->field('name');
 		$this->assertEqual($result, 'New name');
 	}
