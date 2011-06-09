@@ -1,3 +1,7 @@
+<?php
+echo $this->Html->script('misc/user');
+$this->Js->buffer('CORE_user.init("profile_tabs");');
+?>
 <h1>Register</h1>
 <?php
 echo $this->Form->create('User', array(
@@ -43,29 +47,3 @@ echo $this->Form->button('Previous', array('id' => 'previous_button', 'class' =>
 echo $this->Form->button('Next', array('id' => 'next_button', 'class' => 'button', 'type' => 'button'));
 echo $this->Js->submit('Sign up', $defaultSubmitOptions);
 echo $this->Form->end();
-
-/** tab js **/
-$this->Js->buffer('CORE.tabs("profile_tabs",
-	{
-		cookie:false
-	},
-	{
-		next: "next_button",
-		previous: "previous_button",
-		submit: "'.$defaultSubmitOptions['id'].'",
-		alwaysAllowSubmit: true
-	}
-);');
-
-$this->Js->set('member', $hmcount);
-$this->Js->set('element', $this->element('register'.DS.'household_member', array('count' => 'COUNT')));
-$this->Html->scriptStart();
-?>
-function addAdditionalMember() {
-	$("#members").append(window.core.element.replace(/COUNT/g, window.core.member));
-	window.core.member++;
-
-}
-<?php
-echo $this->Html->scriptEnd();
-?>
