@@ -31,29 +31,7 @@ echo $this->Form->create('User', array(
 		<?php echo $this->element('register'.DS.'phone_email'); ?>
 	</div>
 	<div id="household" class="clearfix">
-	<div id="members">
-	<?php
-	if (empty($this->data)) {
-		$this->data['HouseholdMember'] = array(array());
-	}
-	$hmcount = 0;
-	
-	foreach ($this->data['HouseholdMember'] as $householdMember):
-		echo $this->element('register'.DS.'household_member', array(
-			'householdMember' => $householdMember,
-			'count' => $hmcount
-		));
-		$hmcount++;
-	endforeach;
-	?>
-	</div>
-	<?php
-		echo $this->Html->link('Add additional member', 'javascript:;', array(
-			'onclick' => 'addAdditionalMember()',
-			'class' => 'button'
-		));
-			
-	?>
+	<?php echo $this->element('register'.DS.'household'); ?>
 	</div>
 	<div id="subscriptions">
 		<?php echo $this->element('register'.DS.'subscriptions'); ?>
