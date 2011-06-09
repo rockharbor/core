@@ -306,6 +306,21 @@ class UsersControllerTestCase extends CoreTestCase {
 		$result = $user['Profile']['name'];
 		$this->assertEqual($result, 'Test User');
 	}
+	
+	function testChooseUser() {
+		$this->Users->choose_user(array(1, 2), '/users/request_activation/:ID:/1');
+		$vars = $this->Users->viewVars;
+		$this->assertEqual(count($vars['users']), 2);
+		$this->assertEqual($vars['redirect'], '/users/request_activation/:ID:/1');
+		
+		$this->Users->choose_user(array(1, 2), array(
+			'controller' => 'some_controller',
+			'action' => 'action',
+			':ID:'
+		));
+		$vars = $this->Users->viewVars;
+		$this->assertEqual($vars['redirect'], '/some_controller/action/:ID:');
+	}
 
 }
 ?>

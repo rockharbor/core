@@ -58,7 +58,7 @@ class UsersController extends AppController {
 		parent::beforeFilter();
 		
 		// public actions
-		$this->Auth->allow('login', 'logout', 'forgot_password', 'register', 'request_activation');
+		$this->Auth->allow('login', 'logout', 'forgot_password', 'register', 'request_activation', 'choose_user');
 		
 		$this->_editSelf('edit');
 	}
@@ -202,12 +202,27 @@ class UsersController extends AppController {
 /**
  * Sends a user a new password
  */
-	function forgot_password() {		
-		if (!empty($this->data)) {
-			$user = $this->User->findUser(explode(' ', $this->data['User']['forgotten']));
+	function forgot_password($id = null) {		
+		if (!empty($this->data) || !is_null($id)) {
+			if (!$id) {
+				$user = $this->User->findUser(explode(' ', $this->data['User']['forgotten']));
+				if (count($user) == 0) {
+					$user = false;
+				} elseif (count($user) > 1) {
+					return $this->setAction('choose_user', $user, array(
+						'controller' => 'users',
+						'action' => 'forgot_password',
+						':ID:'
+					));
+				} else {
+					$user = $user[0];
+				}
+			} else{
+				$user = $id;
+			}
 			
-			if (!empty($user)) {
-				$this->User->id = $user[0];
+			if ($user) {
+				$this->User->id = $user;
 		
 				$newPassword = $this->User->generatePassword();
 		
@@ -216,7 +231,7 @@ class UsersController extends AppController {
 					$this->Session->setFlash('Your new password has been sent via email.', 'flash'.DS.'success');
 					$this->set('password', $newPassword);
 					$this->Notifier->notify(array(
-						'to' => $user[0],
+						'to' => $user,
 						'subject' => 'Password reset',
 						'template' => 'users_forgot_password'
 					));
@@ -227,6 +242,42 @@ class UsersController extends AppController {
 				$this->Session->setFlash('I couldn\'t find you. Try again.', 'flash'.DS.'failure');
 			}
 		}
+	}
+
+/**
+ * Allows a user to choose from a list of users found via `User::findUser()` and
+ * redirect them to another action. 
+ * 
+ * This action should only be called via `setAction` so arrays can be passed and 
+ * data is preserved. The redirect url can be an array or string, but _must_ 
+ * contain the special passed parameter `:ID:`. This will be replaced with the 
+ * id that the user chooses.
+ * 
+ * @param array $users The array of user ids returned by `User::findUser()`
+ * @param mixed $redirect The redirect string or Cake url array
+ */
+	function choose_user($users = array(), $redirect = '/users/request_activation/:ID:/1') {
+		if (empty($users)) {
+			$this->redirect($this->referer());
+		}
+		if (is_array($redirect)) {
+			$redirect['plugin'] = false;
+			$redirect = Router::url($redirect);
+		}
+		$users = $this->User->find('all', array(
+			'conditions' => array(
+				'User.id' => $users
+			),
+			'contain' => array(
+				'Profile' => array(
+					'fields' => array('first_name', 'last_name')
+				),
+				'ActiveAddress' => array(
+					'fields' => array('city')
+				)
+			)
+		));
+		$this->set(compact('redirect', 'users'));
 	}
 
 /**
@@ -347,7 +398,16 @@ class UsersController extends AppController {
 
 			if (!empty($foundUser)) {
 				// take to activation request (preserve data)
-				return $this->setAction('request_activation', $foundUser, true);
+				if (count($foundUser) == 1) {
+					return $this->setAction('request_activation', $foundUser, true);
+				} else {
+					return $this->setAction('choose_user', $foundUser, array(
+						'controller' => 'users',
+						'action' => 'request_activation',
+						':ID:',
+						true
+					));
+				}
 			}
 			
 			if ($this->User->createUser($this->data)) {
