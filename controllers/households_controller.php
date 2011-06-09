@@ -103,6 +103,13 @@ class HouseholdsController extends AppController {
 			// allow for a single user to be passed
 			$users = array($mskey);
 		}
+		
+		$this->Household->contain(array('HouseholdContact' => array('Profile')));
+		$contact = $this->Household->read(null, $household);
+		$this->set('contact', $contact['HouseholdContact']);
+		
+		$usersShifted = array();
+		
 		foreach ($users as $user) {
 			// check to see if they are in this household
 			$householdMember = $this->Household->HouseholdMember->find('first', array(
@@ -111,7 +118,10 @@ class HouseholdsController extends AppController {
 					'user_id' => $user
 				)
 			));
-				
+			
+			$this->Household->HouseholdContact->contain(array('Profile'));
+			$usersShifted[] = $this->Household->HouseholdContact->read(null, $user);
+			
 			if (empty($householdMember)) {			
 				// add them to the household if it exists
 				$this->Household->id = $household;
@@ -124,9 +134,6 @@ class HouseholdsController extends AppController {
 					));
 					$this->Household->HouseholdContact->contain(array('Profile'));
 					$this->set('notifier', $this->Household->HouseholdContact->read(null, $this->activeUser['User']['id']));
-					$this->Household->contain(array('HouseholdContact' => array('Profile')));
-					$contact = $this->Household->read(null, $household);
-					$this->set('contact', $contact['HouseholdContact']);
 
 					$success = $this->Household->join(
 						$household,
@@ -168,9 +175,6 @@ class HouseholdsController extends AppController {
 				$cSuccess = $this->Household->createHousehold($user);
 
 				if ($dSuccess && $cSuccess) {
-					$this->Household->contain(array('HouseholdContact' => array('Profile')));
-					$contact = $this->Household->read(null, $household);
-					$this->set('contact', $contact['HouseholdContact']);
 					$this->Notifier->notify(
 						array(
 							'to' => $user,
@@ -187,7 +191,7 @@ class HouseholdsController extends AppController {
 			}
 		}
 		
-		$this->redirect($this->referer());
+		$this->set('users', $usersShifted);
 	}
 
 /**
