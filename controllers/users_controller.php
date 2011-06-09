@@ -373,14 +373,7 @@ class UsersController extends AppController {
 			}
 		}
 		
-		$this->set('elementarySchools', $this->User->Profile->ElementarySchool->find('list'));
-		$this->set('middleSchools', $this->User->Profile->MiddleSchool->find('list'));
-		$this->set('highSchools', $this->User->Profile->HighSchool->find('list'));
-		$this->set('colleges', $this->User->Profile->College->find('list'));
-		$this->set('publications', $this->User->Publication->find('list')); 
-		$this->set('jobCategories', $this->User->Profile->JobCategory->find('list')); 
-		$this->set('classifications', $this->User->Profile->Classification->find('list'));
-		$this->set('campuses', $this->User->Profile->Campus->find('list'));
+		$this->_prepareAdd();
 	}
 
 /**
@@ -444,6 +437,13 @@ class UsersController extends AppController {
 			}
 		}
 
+		$this->_prepareAdd();
+	}
+	
+/**
+ * Common code used in `Users::household_add()`, `Users::add()` and `Users::register()`
+ */
+	function _prepareAdd() {
 		$this->set('elementarySchools', $this->User->Profile->ElementarySchool->find('list'));
 		$this->set('middleSchools', $this->User->Profile->MiddleSchool->find('list'));
 		$this->set('highSchools', $this->User->Profile->HighSchool->find('list'));
@@ -452,9 +452,6 @@ class UsersController extends AppController {
 		$this->set('jobCategories', $this->User->Profile->JobCategory->find('list'));
 		$this->set('classifications', $this->User->Profile->Classification->find('list'));
 		$this->set('campuses', $this->User->Profile->Campus->find('list'));
-
-		$this->autoRender = false;
-		$this->render('add');
 	}
 
 /**
