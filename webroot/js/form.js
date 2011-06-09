@@ -106,6 +106,9 @@ CORE.successForm = function(event, data, textStatus, options) {
 	var validates = CORE.showValidationErrors('temp');
 	$('#temp').remove();
 
+	if ($(event.currentTarget).closest('form').attr('id') == '') {
+		$(event.currentTarget).closest('form').attr('id', unique('form-'));
+	}
 	// update the content
 	var parent = CORE.getUpdateableParent($(event.currentTarget).closest('form').attr('id'));
 	switch (options.autoUpdate) {
