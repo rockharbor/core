@@ -43,8 +43,7 @@ CORE.modal = function(id, options) {
 		if ($('#modal').dialog('option', 'update') != undefined) {
 			CORE.update($('#modal').dialog('option', 'update'));
 		}
-		$('#modal').dialog('destroy');
-		$('#modal').remove();
+		$('#modal').empty();
 	};
 	
 	useOptions.open = function(event, ui) {
@@ -78,7 +77,6 @@ CORE.modal = function(id, options) {
 		// load the link into the modal
 		$('#modal').dialog('open');
 		$('#content').dialog('option', 'title', 'Loading');
-		$('#content').empty();
 		$("#content").parent().position({
 			my: 'center',
 			at: 'center',
