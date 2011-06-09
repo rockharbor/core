@@ -202,8 +202,8 @@ class UsersController extends AppController {
 /**
  * Sends a user a new password
  */
-	function forgot_password($id = null) {		
-		if (!empty($this->data) || !is_null($id)) {
+	function forgot_password($id = null) {
+		if ((!empty($this->data) || !is_null($id)) && !isset($this->passedArgs['skip_check'])) {
 			if (!$id) {
 				$user = $this->User->findUser(explode(' ', $this->data['User']['forgotten']));
 				if (count($user) == 0) {
@@ -213,7 +213,7 @@ class UsersController extends AppController {
 						'controller' => 'users',
 						'action' => 'forgot_password',
 						':ID:'
-					));
+					), array('action' => 'forgot_password'));
 				} else {
 					$user = $user[0];
 				}
@@ -242,6 +242,11 @@ class UsersController extends AppController {
 				$this->Session->setFlash('I couldn\'t find you. Try again.', 'flash'.DS.'failure');
 			}
 		}
+		
+		if (isset($this->passedArgs['skip_check'])) {
+			$this->Session->setFlash('Try searching on something more specific to you.', 'flash'.DS.'success');
+			$this->here = str_replace('skip_check', 'skipped', $this->here);
+		}
 	}
 
 /**
@@ -253,17 +258,25 @@ class UsersController extends AppController {
  * contain the special passed parameter `:ID:`. This will be replaced with the 
  * id that the user chooses.
  * 
+ * A named parameter `skip_check` will be appended to `$return`. It's the
+ * responsibility of the return action to act appropriately and skip the `User::findUser()`
+ * check that brought them here in the first place, otherwise they will be directed
+ * here again (since the data is persisted).
+ * 
  * @param array $users The array of user ids returned by `User::findUser()`
  * @param mixed $redirect The redirect string or Cake url array
+ * @param string $return The url to return to if the user decides there aren't any matches
  */
-	function choose_user($users = array(), $redirect = '/users/request_activation/:ID:/1') {
-		if (empty($users)) {
+	function choose_user($users = array(), $redirect = '/users/request_activation/:ID:/1', $return = null) {
+		if (empty($users) || !$return) {
 			$this->redirect($this->referer());
 		}
-		if (is_array($redirect)) {
-			$redirect['plugin'] = false;
-			$redirect = Router::url($redirect);
-		}
+		// need full path because FormHelper prepends the controller name to the url 
+		// (which already has one defined) 
+		$redirect = Router::url($redirect, true);
+		$return = Router::url($return, true);
+		$return = trim($return, '/').'/skip_check:1';
+
 		$users = $this->User->find('all', array(
 			'conditions' => array(
 				'User.id' => $users
@@ -277,7 +290,7 @@ class UsersController extends AppController {
 				)
 			)
 		));
-		$this->set(compact('redirect', 'users'));
+		$this->set(compact('redirect', 'users', 'return'));
 	}
 
 /**

@@ -249,6 +249,8 @@ class AppController extends Controller {
  * @see Controller::beforeRender()
  */	
 	function beforeRender() {
+		$this->defaultSubmitOptions['url'] = $this->here;
+		
 		$this->set('activeUser', $this->activeUser);	
 		$this->set('defaultSubmitOptions', $this->defaultSubmitOptions);
 

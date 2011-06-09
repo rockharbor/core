@@ -308,18 +308,19 @@ class UsersControllerTestCase extends CoreTestCase {
 	}
 	
 	function testChooseUser() {
-		$this->Users->choose_user(array(1, 2), '/users/request_activation/:ID:/1');
+		$this->Users->choose_user(array(1, 2), '/users/request_activation/:ID:/1', '/original/action');
 		$vars = $this->Users->viewVars;
 		$this->assertEqual(count($vars['users']), 2);
-		$this->assertEqual($vars['redirect'], '/users/request_activation/:ID:/1');
+		$this->assertEqual($vars['redirect'], FULL_BASE_URL.'/users/request_activation/:ID:/1');
+		$this->assertEqual($vars['return'], FULL_BASE_URL.'/original/action/skip_check:1');
 		
 		$this->Users->choose_user(array(1, 2), array(
 			'controller' => 'some_controller',
 			'action' => 'action',
 			':ID:'
-		));
+		), '/original/action');
 		$vars = $this->Users->viewVars;
-		$this->assertEqual($vars['redirect'], '/some_controller/action/:ID:');
+		$this->assertEqual($vars['redirect'], FULL_BASE_URL.'/some_controller/action/:ID:');
 	}
 
 }

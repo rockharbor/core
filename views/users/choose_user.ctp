@@ -53,3 +53,20 @@
 		<?php endforeach; ?>
 	</tbody>
 </table>
+<p><?php
+echo $this->Form->create(null, array(
+	'url' => $return,
+	'default'=> false
+));
+$data = Set::flatten($this->data);
+foreach ($data as $field => $value) {
+	// pass data along to the redirect url
+	if (strstr($field, '_Token') !== false) {
+		continue;
+	}
+	echo $this->Form->hidden($field, array('value' => $value));
+}
+$defaultSubmitOptions['url'] = $return;
+echo $this->Js->submit('None of these match', $defaultSubmitOptions);
+echo $this->Form->end();
+?></p>
