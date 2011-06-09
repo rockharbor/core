@@ -322,6 +322,66 @@ class UsersControllerTestCase extends CoreTestCase {
 		$vars = $this->Users->viewVars;
 		$this->assertEqual($vars['redirect'], FULL_BASE_URL.'/some_controller/action/:ID:');
 	}
+	
+	function testHouseholdAdd() {
+		$this->loadFixtures('MergeRequest', 'Address', 'Household', 'HouseholdMember', 'Notification');
+		$notificationsBefore = $this->Users->User->Notification->find('count');
+
+		$data = array(
+			'User' => array(
+				'username' => 'jharris'
+			),
+			'Address' => array(
+				0 => array(
+					'zip' => '12345'
+				)
+			),
+			'Profile' => array(
+				'first_name' => 'Test',
+				'last_name' => 'User',
+				'primary_email' => 'test@test.com'
+			),
+			'Household' => array(
+				'id' => 2
+			)
+		);
+		// will redirect to choose_user because a user is found
+		$vars = $this->testAction('/users/household_add/Household:2', array(
+			'data' => $data
+		));
+		$this->assertEqual($vars['redirect'], FULL_BASE_URL.'/households/shift_households/:ID:/2');
+		$this->assertEqual($this->testController->data['Household']['id'], 2);
+
+		// simulate coming from choose_user when no user is chosen
+		$data['User']['username'] = 'newusername';
+		$data['Household']['id'] = 2;
+		$vars = $this->testAction('/users/household_add/skip_check:1', array(
+			'data' => $data
+		));
+		$notificationsAfter = $this->Users->User->Notification->find('count');
+		$this->assertEqual($notificationsAfter-$notificationsBefore, 2);
+
+		$this->Users->User->contain(array(
+			'Profile', 
+			'HouseholdMember' => array(
+				'Household' => array(
+					'HouseholdContact'
+				)
+			)
+		));
+		$user = $this->Users->User->findByUsername('newusername');
+		$result = $user['Profile']['name'];
+		$this->assertEqual($result, 'Test User');
+		
+		// make sure they only have one household
+		$this->assertEqual(count($user['HouseholdMember']), 1);
+		
+		// make sure they belong to user 1's household
+		$result = $user['HouseholdMember'][0]['Household']['HouseholdContact']['id'];
+		$this->assertEqual($result, 2);
+		$result = $user['HouseholdMember'][0]['Household']['id'];
+		$this->assertEqual($result, 2);
+	}
 
 }
 ?>

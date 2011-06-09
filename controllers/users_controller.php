@@ -390,6 +390,70 @@ class UsersController extends AppController {
 	}
 
 /**
+ * Creates a user account and adds it to a household
+ */
+	function household_add() {
+		if (!empty($this->data)) {
+			// check if user exists
+			$foundUser = $this->User->findUser(array(
+				$this->data['User']['username'],
+				$this->data['Profile']['primary_email'],
+				$this->data['Profile']['first_name'],
+				$this->data['Profile']['last_name']
+			));
+			if (!empty($foundUser) && !isset($this->passedArgs['skip_check'])) {
+				// take to choose user
+				// - takes them to Households::shift_households() if a match is found
+				// - takes them back here, otherwise
+				return $this->setAction('choose_user', $foundUser, array(
+					'controller' => 'households',
+					'action' => 'shift_households',
+					':ID:',
+					$this->data['Household']['id']
+				), array('action' => 'household_add', 'Household' => $this->data['Household']['id']));
+			}
+
+			if ($this->User->createUser($this->data, $this->data['Household']['id'], $this->activeUser)) {
+				$name = $this->data['Profile']['first_name'].' '.$this->data['Profile']['last_name'];
+				$this->Session->setFlash('An account for '.$name.' has been created. '.$name.' has also been added to your household.', 'flash'.DS.'success');
+
+				$this->set('username', $this->data['User']['username']);
+				$this->set('password', $this->data['User']['password']);
+				$this->Notifier->notify(array(
+					'to' => $this->User->id,
+					'template' => 'users_register',
+					'subject' => 'Account registration'
+				));
+				
+				$this->set('contact', $this->activeUser);
+				$this->Notifier->notify(array(
+					'to' => $this->User->id,
+					'template' => 'households_join',
+					'type' => 'invitation',
+				), 'notification');
+
+				$this->redirect(array(
+					'controller' => 'users',
+					'action' => 'login',
+					$this->data['User']['username']
+				));
+			} else {
+				$this->Session->setFlash('Oops, validation errors...', 'flash'.DS.'failure');
+			}
+		}
+		
+		if (!isset($this->data['Household'])) {
+			$this->data['Household']['id'] = $this->passedArgs['Household'];
+		}
+		
+		if (isset($this->passedArgs['skip_check'])) {
+			$this->Session->setFlash('Finishing filling out the form to add a new user.', 'flash'.DS.'success');
+		}
+		
+		$this->_prepareAdd();
+	}
+	
+/**
  * Registers a user
  */
 	function register() {

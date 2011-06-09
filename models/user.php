@@ -380,6 +380,8 @@ class User extends AppModel {
 				$this->HouseholdMember->Household->createHousehold($this->id);
 				$householdId = $this->HouseholdMember->Household->id;
 				$creator = $data;
+			} elseif (!$this->HouseholdMember->Household->isMember($this->id, $householdId)) {
+				$this->HouseholdMember->Household->join($householdId, $this->id);
 			}
 
 			foreach ($householdMembers as $householdMember) {

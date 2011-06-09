@@ -126,13 +126,8 @@
 		<?php
 		echo $this->Html->link('Add someone',
 			array(
-				'controller' => 'searches',
-				'action' => 'simple',
-				'User',
-				'add_invite_user_household',
-				'notInHousehold',
-				$household['Household']['id'],
-				'User' => $activeUser['User']['id'],
+				'controller' => 'users',
+				'action' => 'household_add',
 				'Household' => $household['Household']['id']
 			),
 			array(

@@ -58,7 +58,7 @@ class HouseholdMemberFixture extends CakeTestFixture {
 		array(
 			'id' => 6,
 			'household_id' => 6,
-			'user_id' => 6,
+			'user_id' => 100,
 			'confirmed' => 0,
 			'created' => '2010-04-07 13:55:09',
 			'modified' => '2010-04-07 13:55:09'
