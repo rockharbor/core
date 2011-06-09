@@ -61,7 +61,7 @@ class Address extends AppModel {
 		'zip' => array(
 			'rule' => array('postal', null, 'us'),
 			'message' => 'Please enter a valid zipcode.',
-			'allowEmpty' => true
+			'allowEmpty' => false
 		)
 	);
 

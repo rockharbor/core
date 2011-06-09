@@ -53,7 +53,9 @@ class Profile extends AppModel {
  * @var array
  */
 	var $validate = array(
-		'first_name' => array('rule' => 'notempty'),
+		'first_name' => array(
+			'rule' => 'notempty'
+		),
 		'last_name' => array('rule' => 'notempty'),
 		'gender_name' => array(
 			'rule' => array('inList', array('m','f')),
@@ -93,8 +95,7 @@ class Profile extends AppModel {
 			'email' => array(
 				'rule' => 'email',
 				'message' => 'Must be a valid email address.',
-				'required' => false,
-				'allowEmpty' => true
+				'required' => false
 			),
 		),
 		'alternate_email_1' => array(

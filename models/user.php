@@ -52,25 +52,20 @@ class User extends AppModel {
 		'username' => array(
 			'isUnique' => array(
 				'rule' => 'isUnique',
-				'message' => 'That username is taken.'
-			),
-			'notempty' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Gotta have a username.'
+				'message' => 'That username is taken.',
+				'allowEmpty' => true
 			),
 			'characters' => array(
 				'rule' => '/^[a-z0-9\-_]{5,}$/i',
-				'message' => 'Username must be at least 5 characters long and can only contain letters, numbers, dashes and underscores.'
+				'message' => 'Username must be at least 5 characters long and can only contain letters, numbers, dashes and underscores.',
+				'allowEmpty' => true
 			)
 		),
 		'password' => array(			
 			'minLength' => array(
 				'rule' => array('minLength', 6),
-				'message' => 'Your password must be at least 6 characters.'
-			),
-			'notempty' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Gotta have a password.'
+				'message' => 'Your password must be at least 6 characters.',
+				'allowEmpty' => true
 			)
 		),
 		'confirm_password' => array(
