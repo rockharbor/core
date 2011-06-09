@@ -18,6 +18,7 @@ echo $this->Form->hidden('Household.id');
 	<ul>
 		<li><a href="#personal">Personal Information</a></li>
 		<li><a href="#about">About Me</a></li>
+		<li id="childinfo-tab"><a href="#childinfo">Child Information</a></li>
 		<li><a href="#contact">Contact Information</a></li>
 	</ul>
 
@@ -28,6 +29,9 @@ echo $this->Form->hidden('Household.id');
 		<?php echo $this->element('register'.DS.'about'); ?>
 		<?php echo $this->element('register'.DS.'school'); ?>
 		<?php echo $this->element('register'.DS.'christian'); ?>
+	</div>
+	<div id="childinfo">
+		<?php echo $this->element('register'.DS.'child_info'); ?>
 	</div>
 	<div id="contact" class="clearfix">
 		<?php echo $this->element('register'.DS.'address'); ?>

@@ -34,6 +34,25 @@ CORE_user.init = function(id) {
 		submit: submit.attr('id'),
 		alwaysAllowSubmit: true
 	});
+	
+	// only show child info tab and info if the person being added is actually a child
+	if ($('#ProfileBirthDateMonth').length > 0) {
+		$('#ProfileBirthDateMonth, #ProfileBirthDateDay, #ProfileBirthDateYear').change(function() {
+			$('#childinfo, #childinfo-tab').hide();
+			var month, day, year, birthdate, childdate;
+			month = Number($('#ProfileBirthDateMonth').val());
+			day = Number($('#ProfileBirthDateDay').val());
+			year = Number($('#ProfileBirthDateYear').val());
+			birthdate = new Date(year, month-1, day);
+			childdate = new Date();
+			childdate.setFullYear(childdate.getFullYear()-18);
+			if (birthdate > childdate) {
+				$('#childinfo, #childinfo-tab').show();
+			}
+		});
+		
+		$('#ProfileBirthDateMonth').change();
+	}
 }
 
 /**

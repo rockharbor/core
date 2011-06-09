@@ -17,6 +17,7 @@ echo $this->Form->create('User', array(
 	<ul>
 		<li><a href="#personal">Personal Information</a></li>
 		<li><a href="#about">About Me</a></li>
+		<li id="childinfo-tab"><a href="#childinfo">Child Information</a></li>
 		<li><a href="#contact">Contact Information</a></li>
 		<li><a href="#household">Household</a></li>
 		<li><a href="#subscriptions">Subscriptions</a></li>
@@ -29,6 +30,9 @@ echo $this->Form->create('User', array(
 		<?php echo $this->element('register'.DS.'about'); ?>
 		<?php echo $this->element('register'.DS.'school'); ?>
 		<?php echo $this->element('register'.DS.'christian'); ?>
+	</div>
+	<div id="childinfo">
+		<?php echo $this->element('register'.DS.'child_info'); ?>
 	</div>
 	<div id="contact" class="clearfix">
 		<?php echo $this->element('register'.DS.'address'); ?>
