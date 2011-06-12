@@ -573,6 +573,20 @@ class User extends AppModel {
 			$conditions['Profile.birth_date BETWEEN ? AND ?'] = array($start, $end);
 		}
 		
+		// check for birthdate
+		if (!empty($data['Profile']['birth_date'])) {
+			if (is_array($data['Profile']['birth_date'])) {
+				$birthdate = $data['Profile']['birth_date'];
+				$bday = $data['Profile']['birth_date']['year'].'-'.$data['Profile']['birth_date']['month'].'-'.$data['Profile']['birth_date']['day'];
+			} else {
+				$bday = date('Y-m-d', strtotime($data['Profile']['birth_date']));
+			}
+			// remove automatic conditions
+			unset($conditions['Profile.birth_date']);
+			unset($conditions['Profile.birth_date LIKE']);
+			$conditions['Profile.birth_date'] = $bday;
+		}
+		
 		// check for region
 		if (!empty($data['Address']['Zipcode']['region_id'])) {
 			$conditions[$operator]['Zipcode.region_id'] = $data['Address']['Zipcode']['region_id'];

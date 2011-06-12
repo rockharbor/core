@@ -105,6 +105,19 @@ class UserTestCase extends CoreTestCase {
 		$result = $this->User->findUser($data, 'OR');
 		$expected = array(1, 2, 3);
 		$this->assertEqual($result, $expected);
+		
+		$data = array(
+			'Profile' => array(
+				'birth_date' => array(
+					'year' => '1984',
+					'month' => '04',
+					'day' => '14'
+				)
+			)
+		);
+		$result = $this->User->findUser($data);
+		$expected = array(1);
+		$this->assertEqual($result, $expected);
 	}
 
 	function testCreateUser() {
@@ -375,6 +388,50 @@ class UserTestCase extends CoreTestCase {
 						 )
 					)
 				)
+			)
+		);
+		$this->assertEqual($results, $expected);
+		
+		$search = array(
+			'Search' => array(
+				'operator' => 'AND'
+			),
+			'Profile' => array(
+				'birth_date' => '4/14/1984'
+			)
+		);
+		$results = $this->User->prepareSearch($this->Controller, $search);
+		$expected = array(
+			'link' => array(
+				'Profile' => array()
+			),
+			'group' => 'User.id',
+			'conditions' => array(
+				'Profile.birth_date' => '1984-04-14',
+			)
+		);
+		$this->assertEqual($results, $expected);
+		
+		$search = array(
+			'Search' => array(
+				'operator' => 'AND'
+			),
+			'Profile' => array(
+				'birth_date' => array(
+					'month' => '04',
+					'day' => '14',
+					'year' => '1984'
+				)
+			)
+		);
+		$results = $this->User->prepareSearch($this->Controller, $search);
+		$expected = array(
+			'link' => array(
+				'Profile' => array()
+			),
+			'group' => 'User.id',
+			'conditions' => array(
+				'Profile.birth_date' => '1984-04-14',
 			)
 		);
 		$this->assertEqual($results, $expected);
