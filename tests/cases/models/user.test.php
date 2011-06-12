@@ -62,20 +62,48 @@ class UserTestCase extends CoreTestCase {
 	function testFindUser() {
 		$this->loadFixtures('Profile');
 
-		$result = $this->User->findUser('jharris');
+		$data = array(
+			'User' => array(
+				'username' => 'jharris'
+			)
+		);
+		$result = $this->User->findUser($data);
 		$expected = array(1);
 		$this->assertEqual($result, $expected);
 
-		$result = $this->User->findUser(array('jharris'));
+		$data = array(
+			'Profile' => array(
+				'first_name' => 'jeremy',
+				'last_name' => 'harris'
+			)
+		);
+		$result = $this->User->findUser($data);
+		$expected = array(1);
+		$this->assertEqual($result, $expected);
+		
+		$data = array(
+			'User' => array(
+				'Profile' => array(
+					'first_name' => 'jeremy',
+					'last_name' => 'harris'
+				)
+			)
+		);
+		$result = $this->User->findUser($data);
 		$expected = array(1);
 		$this->assertEqual($result, $expected);
 
-		$result = $this->User->findUser(array('jeremy', 'harris'));
-		$expected = array(1);
-		$this->assertEqual($result, $expected);
-
-		$result = $this->User->findUser(array('jeremy@paxtechservices.com', 'rickyrockharbor'));
-		$expected = array(1, 2);
+		$data = array(
+			'User' => array(
+				'username' => 'rickyrockharbor'
+			),
+			'Profile' => array(
+				'email' => 'jeremy@paxtechservices.com',
+				'last_name' => 'harris'
+			)
+		);
+		$result = $this->User->findUser($data, 'OR');
+		$expected = array(1, 2, 3);
 		$this->assertEqual($result, $expected);
 	}
 

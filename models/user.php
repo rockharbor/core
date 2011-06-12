@@ -264,14 +264,17 @@ class User extends AppModel {
 	}
 
 /**
- * Gets a user id using an arbitrary amount of data by searching a set of
- * distinguishable fields (username, email fields, name, etc.). Returns a list
- * of matching user ids.
+ * Gets a list of users that match the data provided, using distinguishable 
+ * fields (username, email fields, name, etc.). Returns a list of matching user 
+ * ids. Uses `User::prepareSearch()` to generate the search options from the 
+ * data.
  * 
- * @param array $data An array of search possibilities. Can be emails, username, names
+ * @param array $data Data to search
+ * @param string $operator The search operator
  * @return array The matching ids or an empty array
+ * @see User::prepareSearch()
  */
-	function findUser($data = array()) {
+	function findUser($data = array(), $operator = 'AND') {
 		if (!is_array($data)) {
 			$data = array($data);
 		}
@@ -280,26 +283,35 @@ class User extends AppModel {
 
 		if (empty($data)) {
 			return array();
-		}		
+		}
 		
-		$foundUsers = $this->find('all', array(
-			'fields' => 'User.id',
-			'conditions' => array(
-				'or' => array(
-					'and' => array(
-						'Profile.first_name' => $data,
-						'Profile.last_name' => $data
-					),
-					'Profile.primary_email' => $data,
-					'Profile.alternate_email_1' => $data,
-					'Profile.alternate_email_2' => $data,
-					'User.username' => $data
-				)
+		// normalize data
+		$user = $profile = array();
+		if (isset($data['User'])) {
+			$user = $data['User'];
+		}
+		if (isset($data['Profile'])) {
+			$profile = $data['Profile'];
+		} elseif (isset($user['Profile'])) {
+			$profile = $user['Profile'];
+		}
+		$data = array(
+			'Search' => array(
+				'operator' => $operator
 			),
-			'contain' => array(
-				'Profile'
-			)
-		));
+			'User' => $user,
+			'Profile' => $profile
+		);
+
+		$options = $this->prepareSearch(new AppController(), $data);
+		$options['fields'] = 'User.id';
+		
+		if (empty($options['conditions'])) {
+			// don't return all the users
+			return array();
+		}
+		
+		$foundUsers = $this->find('all', $options);
 		
 		return Set::extract('/User/id', $foundUsers);
 	}
@@ -325,8 +337,7 @@ class User extends AppModel {
 		
 		// validate new household members first
 		foreach ($data['HouseholdMember'] as $number => &$member) {
-			$findConditions = Set::filter($member['Profile']);
-			$foundUser = $this->findUser($findConditions);
+			$foundUser = $this->findUser($member);
 
 			if (empty($foundUser)) {
 				$member = $this->_createUserData($member);

@@ -158,7 +158,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$oldPassword = $this->Users->User->read('password', 1);
 		$data = array(
 			'User' => array(
-				'forgotten' => 'jeremy harris'
+				'forgotten' => 'jharris@rockharbor.org'
 			)
 		);
 		$vars = $this->testAction('/users/forgot_password', array(
@@ -291,9 +291,6 @@ class UsersControllerTestCase extends CoreTestCase {
 			'data' => $data
 		));
 
-		$result = $vars['foundId'][0];
-		$this->assertEqual($result, 1);
-
 		$data['User']['username'] = 'newusername';
 		$vars = $this->testAction('/users/register/1', array(
 			'data' => $data
@@ -337,8 +334,8 @@ class UsersControllerTestCase extends CoreTestCase {
 				)
 			),
 			'Profile' => array(
-				'first_name' => 'Test',
-				'last_name' => 'User',
+				'first_name' => 'Jeremy',
+				'last_name' => 'Harris',
 				'primary_email' => 'test@test.com'
 			),
 			'Household' => array(
@@ -371,7 +368,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		));
 		$user = $this->Users->User->findByUsername('newusername');
 		$result = $user['Profile']['name'];
-		$this->assertEqual($result, 'Test User');
+		$this->assertEqual($result, 'Jeremy Harris');
 		
 		// make sure they only have one household
 		$this->assertEqual(count($user['HouseholdMember']), 1);

@@ -205,7 +205,15 @@ class UsersController extends AppController {
 	function forgot_password($id = null) {
 		if ((!empty($this->data) || !is_null($id)) && !isset($this->passedArgs['skip_check'])) {
 			if (!$id) {
-				$user = $this->User->findUser(explode(' ', $this->data['User']['forgotten']));
+				$searchData = array(
+					'User' => array(
+						'username' => $this->data['User']['forgotten']
+					),
+					'Profile' => array(
+						'email' => $this->data['User']['forgotten']
+					)
+				);
+				$user = $this->User->findUser($searchData, 'OR');
 				if (count($user) == 0) {
 					$user = false;
 				} elseif (count($user) > 1) {
@@ -340,13 +348,10 @@ class UsersController extends AppController {
  */
 	function add() {
 		if (!empty($this->data)) {
-			// check if user exists
-			$foundUser = $this->User->findUser(array(
-				$this->data['User']['username'],
-				$this->data['Profile']['primary_email'],
-				$this->data['Profile']['first_name'],
-				$this->data['Profile']['last_name']
-			));
+			// check if user exists (only use profile info to search)
+			$searchData = array('Profile' => $this->data['Profile']);
+			$searchData['Profile']['email'] = $searchData['Profile']['primary_email'];
+			$foundUser = $this->User->findUser($searchData, 'OR');
 
 			if (!empty($foundUser)) {
 				$this->Session->setFlash('User already exists!', 'flash'.DS.'failure');
@@ -394,13 +399,10 @@ class UsersController extends AppController {
  */
 	function household_add() {
 		if (!empty($this->data)) {
-			// check if user exists
-			$foundUser = $this->User->findUser(array(
-				$this->data['User']['username'],
-				$this->data['Profile']['primary_email'],
-				$this->data['Profile']['first_name'],
-				$this->data['Profile']['last_name']
-			));
+			// check if user exists (only use profile info to search)
+			$searchData = array('Profile' => $this->data['Profile']);
+			$searchData['Profile']['email'] = $searchData['Profile']['primary_email'];
+			$foundUser = $this->User->findUser($searchData, 'OR');
 			if (!empty($foundUser) && !isset($this->passedArgs['skip_check'])) {
 				// take to choose user
 				// - takes them to Households::shift_households() if a match is found
@@ -467,13 +469,10 @@ class UsersController extends AppController {
  */
 	function register() {
 		if (!empty($this->data)) {
-			// check if user exists
-			$foundUser = $this->User->findUser(array(
-				$this->data['User']['username'],
-				$this->data['Profile']['primary_email'],
-				$this->data['Profile']['first_name'],
-				$this->data['Profile']['last_name']
-			));
+			// check if user exists (only use profile info to search)
+			$searchData = array('Profile' => $this->data['Profile']);
+			$searchData['Profile']['email'] = $searchData['Profile']['primary_email'];
+			$foundUser = $this->User->findUser($searchData, 'OR');
 
 			if (!empty($foundUser)) {
 				// take to activation request (preserve data)
