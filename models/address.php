@@ -66,6 +66,24 @@ class Address extends AppModel {
 	);
 
 /**
+ * `Model::beforeSave` callback to ensure a name is added, so when `$displayField`
+ * is used in calls such as `Model::find('list');` it is populated with at least
+ * something for the user to choose.
+ * 
+ * @return true Continue with the save
+ */
+	function beforeSave() {
+		if (empty($this->data[$this->alias]['name'])) {
+			if (!empty($this->data[$this->alias]['city'])) {
+				$this->data[$this->alias]['name'] = $this->data[$this->alias]['city'].' Address';
+			} elseif (!empty($this->data[$this->alias]['zip'])) {
+				$this->data[$this->alias]['name'] = $this->data[$this->alias]['zip'].' Address';
+			}
+		}
+		return true;
+	}
+
+/**
  * Returns a Cake virtual field SQL string for the distance 
  * from a latitude and longitude
  *
