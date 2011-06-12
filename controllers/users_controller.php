@@ -348,14 +348,26 @@ class UsersController extends AppController {
  */
 	function add() {
 		if (!empty($this->data)) {
-			// check if user exists (only use profile info to search)
-			$searchData = array('Profile' => $this->data['Profile']);
-			$searchData['Profile']['email'] = $searchData['Profile']['primary_email'];
-			$foundUser = $this->User->findUser($searchData, 'OR');
+			$foundUser = array();
+			if (!isset($this->passedArgs['skip_check'])) {
+				// check if user exists (only use profile info to search)
+				$searchData = array('Profile' => $this->data['Profile']);
+				$searchData['Profile']['email'] = $searchData['Profile']['primary_email'];
+				$foundUser = $this->User->findUser($searchData, 'OR');
+			}
 
 			if (!empty($foundUser)) {
-				$this->Session->setFlash('User already exists!', 'flash'.DS.'failure');
-				$this->redirect(array('action' => 'view', 'User' => 1));
+				// take to activation request (preserve data)
+				if (count($foundUser) == 1) {
+					return $this->setAction('request_activation', $foundUser, true);
+				} else {
+					return $this->setAction('choose_user', $foundUser, array(
+						'controller' => 'users',
+						'action' => 'request_activation',
+						':ID:',
+						true
+					), array('action' => 'add'));
+				}
 			}
 
 			if ($this->User->createUser($this->data, null, $this->activeUser)) {
@@ -469,10 +481,13 @@ class UsersController extends AppController {
  */
 	function register() {
 		if (!empty($this->data)) {
-			// check if user exists (only use profile info to search)
-			$searchData = array('Profile' => $this->data['Profile']);
-			$searchData['Profile']['email'] = $searchData['Profile']['primary_email'];
-			$foundUser = $this->User->findUser($searchData, 'OR');
+			$foundUser = array();
+			if (!isset($this->passedArgs['skip_check'])) {
+				// check if user exists (only use profile info to search)
+				$searchData = array('Profile' => $this->data['Profile']);
+				$searchData['Profile']['email'] = $searchData['Profile']['primary_email'];
+				$foundUser = $this->User->findUser($searchData, 'OR');
+			}
 
 			if (!empty($foundUser)) {
 				// take to activation request (preserve data)
@@ -484,7 +499,7 @@ class UsersController extends AppController {
 						'action' => 'request_activation',
 						':ID:',
 						true
-					));
+					), array('action' => 'register'));
 				}
 			}
 			
