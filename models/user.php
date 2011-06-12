@@ -514,6 +514,8 @@ class User extends AppModel {
 		unset($data['Profile']['Birthday']);
 		$email = $data['Profile']['email'];
 		unset($data['Profile']['email']);
+		unset($data['User']['password']);
+		unset($data['User']['confirm_password']);
 
 		// remove blank
 		$callback = function(&$item) use (&$callback) {
@@ -621,6 +623,10 @@ class User extends AppModel {
 		if (strtolower($operator) == 'and' && isset($conditions[$operator])) {
 			$conditions = array_merge($conditions, $conditions[$operator]);
 			unset($conditions[$operator]);
+		}
+		
+		if (strtolower($operator) == 'or' && empty($conditions[$operator])) {
+			$conditions = array();
 		}
 		
 		$group = 'User.id';
