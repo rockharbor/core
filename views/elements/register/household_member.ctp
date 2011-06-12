@@ -19,10 +19,14 @@ if (!empty($householdMember['Profile']['id'])) {
 	echo $this->Form->hidden('HouseholdMember.'.$count.'.Profile.first_name');
 	echo $this->Form->hidden('HouseholdMember.'.$count.'.Profile.last_name');
 	echo $this->Form->hidden('HouseholdMember.'.$count.'.Profile.primary_email');
+	echo $this->Form->hidden('HouseholdMember.'.$count.'.Profile.birth_date');
 } else {
 	echo $this->Form->input('HouseholdMember.'.$count.'.Profile.first_name');
 	echo $this->Form->input('HouseholdMember.'.$count.'.Profile.last_name');
 	echo $this->Form->input('HouseholdMember.'.$count.'.Profile.primary_email');
+	echo $this->Form->input('HouseholdMember.'.$count.'.Profile.birth_date', array(
+		'type' => 'date'
+	));
 }
 ?>
 </fieldset>
