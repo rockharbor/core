@@ -92,6 +92,30 @@ class UserTestCase extends CoreTestCase {
 		$result = $this->User->findUser($data);
 		$expected = array(1);
 		$this->assertEqual($result, $expected);
+		
+		$data = array(
+			'User' => array(
+				'Profile' => array(
+					'first_name' => 'jeremy',
+					'last_name' => 'not harris'
+				)
+			)
+		);
+		$result = $this->User->findUser($data, 'OR');
+		$expected = array();
+		$this->assertEqual($result, $expected);
+		
+		$data = array(
+			'User' => array(
+				'Profile' => array(
+					'first_name' => 'jeremy',
+					'last_name' => 'harris'
+				)
+			)
+		);
+		$result = $this->User->findUser($data, 'OR');
+		$expected = array(1);
+		$this->assertEqual($result, $expected);
 
 		$data = array(
 			'User' => array(

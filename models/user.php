@@ -294,6 +294,7 @@ class User extends AppModel {
 			$profile = $data['Profile'];
 		} elseif (isset($user['Profile'])) {
 			$profile = $user['Profile'];
+			unset($user['Profile']);
 		}
 		$data = array(
 			'Search' => array(
@@ -302,13 +303,26 @@ class User extends AppModel {
 			'User' => $user,
 			'Profile' => $profile
 		);
-
+		
 		$options = $this->prepareSearch(new AppController(), $data);
 		$options['fields'] = 'User.id';
-		
+
 		if (empty($options['conditions'])) {
 			// don't return all the users
 			return array();
+		}
+		
+		// special condition: since we don't want to search for "first_name" OR
+		// "last_name", make them an AND condition
+		if (strtolower($operator) == 'or') {
+			if (isset($options['conditions'][$operator]['Profile.first_name LIKE'])) {
+				$options['conditions'][$operator]['and']['Profile.first_name LIKE'] = $options['conditions'][$operator]['Profile.first_name LIKE'];
+				unset($options['conditions'][$operator]['Profile.first_name LIKE']);
+			}
+			if (isset($options['conditions'][$operator]['Profile.last_name LIKE'])) {
+				$options['conditions'][$operator]['and']['Profile.last_name LIKE'] = $options['conditions'][$operator]['Profile.last_name LIKE'];
+				unset($options['conditions'][$operator]['Profile.last_name LIKE']);
+			}
 		}
 		
 		$foundUsers = $this->find('all', $options);
