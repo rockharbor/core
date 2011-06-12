@@ -34,7 +34,7 @@ echo $this->Form->hidden('Household.id');
 		<?php echo $this->element('register'.DS.'child_info'); ?>
 	</div>
 	<div id="contact" class="clearfix">
-		<?php echo $this->element('register'.DS.'address'); ?>
+		<?php echo $this->element('register'.DS.'address', array('addresses' => $addresses)); ?>
 		<?php echo $this->element('register'.DS.'phone_email'); ?>
 	</div>
 </div>

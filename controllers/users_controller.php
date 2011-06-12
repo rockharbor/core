@@ -450,6 +450,15 @@ class UsersController extends AppController {
 			$this->Session->setFlash('Finishing filling out the form to add a new user.', 'flash'.DS.'success');
 		}
 		
+		// household contact's addresses
+		$this->User->HouseholdMember->Household->contain(array(
+			'HouseholdContact' => array(
+				'Address'
+			)
+		));
+		$householdContact = $this->User->HouseholdMember->Household->read(null, $this->data['Household']['id']);
+		$this->set('addresses', $householdContact['HouseholdContact']);
+		
 		$this->_prepareAdd();
 	}
 	
