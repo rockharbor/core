@@ -62,6 +62,15 @@ CORE_user.init = function(id) {
  * that this function can replace it with the current count
  */
 CORE_user.addAdditionalMember = function() {
-	$("#members").append(CORE_user.element.replace(/COUNT/g, CORE_user.member));
+	$("#members").append(CORE_user.element.toString().replace(/COUNT/g, CORE_user.member));
 	CORE_user.member++;
+}
+
+/**
+ * Cancels a household addition
+ * 
+ * @param int number The member number to cancel
+ */
+CORE_user.cancelAddMember = function(number) {
+	$('#member'+number).remove();
 }

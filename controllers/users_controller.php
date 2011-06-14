@@ -42,7 +42,7 @@ class UsersController extends AppController {
 		'Cookie',
 		'Security' => array(
 			'disabledFields' => array(
-				'HouseholdMember.Profile'
+				'HouseholdMember'
 			)
 		)
 	);

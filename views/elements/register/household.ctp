@@ -15,19 +15,18 @@ endforeach;
 ?>
 </div>
 <?php
-echo $this->Html->link('Add additional member', 'javascript:void();', array(
+echo $this->Html->link('Add additional member', 'javascript:;', array(
 	'onclick' => 'CORE_user.addAdditionalMember()',
 	'class' => 'button',
 	'id' => 'add-member'
 ));
 
-
 $this->Js->buffer('CORE_user.member = '.$hmcount);
-$this->Js->buffer('CORE_user.element = '.str_replace(array("\r\n", "\r", "\n"), ' ', addslashes($this->element('register'.DS.'household_member', array('count' => 'COUNT')))));
+$this->Js->buffer('CORE_user.element = "'.addslashes(str_replace(array("\r\n", "\r", "\n"), ' ', $this->element('register'.DS.'household_member', array('count' => 'COUNT')))).'"');
 ?>
 <noscript>
 <style type="text/css">
-	#add-member {
+	#add-member, .cancel-add {
 		display:none;
 	}
 </style>

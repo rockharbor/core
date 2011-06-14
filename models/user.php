@@ -350,27 +350,66 @@ class User extends AppModel {
 		$data = $this->_createUserData($data);
 		
 		// validate new household members first
+		$return = true;
 		foreach ($data['HouseholdMember'] as $number => &$member) {
-			$foundUser = $this->findUser($member);
-
-			if (empty($foundUser)) {
-				$member = $this->_createUserData($member);
+			$contain = array(
+				'Profile' => array(
+					'fields' => array(
+						'id',
+						'first_name',
+						'last_name'
+					)
+				),
+				'ActiveAddress' => array(
+					'fields' => array(
+						'city'
+					)
+				)
+			);
+			
+			if (!empty($member['User']['id'])) {
+				$this->contain($contain);
+				$member = $this->read(array('id'), $member['User']['id']);
 			} else {
-				$this->contain(array('Profile'));
-				$found = $this->read(null, $foundUser[0]);
-				$member = Set::merge($found, $member);
+				$foundUser = $this->findUser($member);
+				
+				if (count($foundUser) == 1) {
+					// don't need to make them pick
+					$this->contain($contain);
+					$member = $this->read(array('id'), $foundUser[0]);
+				} elseif (count($foundUser) > 0) {
+					// user will have to pick one
+					$this->contain($contain);
+					$member['found'] = $this->find('all', array(
+						'fields' => array(
+							'id'
+						),
+						'conditions' => array(
+							'User.id' => $foundUser
+						)
+					));
+					$return = false;
+				} else {
+					// create a new user
+					$allEmpty = Set::filter($member['Profile']);
+					if (!empty($allEmpty)) {
+						$member = $this->_createUserData($member);
+						$this->create();
+						if (!$this->saveAll($member, array('validate' => 'only'))) {
+							$this->HouseholdMember->validationErrors += array(
+								$number => $this->invalidFields()
+							);
+							$return = false;
+						}
+					}
+				}
 			}
-
-			// validate
-			if (empty($foundUser) 
-				&& (empty($member['Profile']['primary_email']) || empty($member['Profile']['first_name']) || empty($member['Profile']['last_name']))
-				&& !(empty($member['Profile']['primary_email']) && empty($member['Profile']['first_name']) && empty($member['Profile']['last_name']))
-			) {
-				$this->HouseholdMember->validationErrors += array(
-					$number => array('Profile' => array('first_name' => 'Please fill in all of the information for this user.'))
-				);
-				return false;
-			}
+		}
+		
+		if (!$return) {
+			unset($data['User']['password']);
+			unset($data['User']['confirm_password']);
+			return false;
 		}
 
 		// temporarily remove household member info - we have to do that separately

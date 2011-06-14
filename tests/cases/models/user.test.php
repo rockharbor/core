@@ -198,13 +198,16 @@ class UserTestCase extends CoreTestCase {
 				0 => array(
 					'Profile' => array(
 						'first_name' => 'child',
-						'last_name' => 'user'
+						'last_name' => ''
 					)
 				)
 			)
 		);		
 		$this->assertFalse($this->User->createUser($user, null, $creator));
 		$this->assertEqual(count($this->User->tmpAdded), 0);
+
+		$expected = array('last_name');
+		$this->assertEqual(array_keys($this->User->HouseholdMember->validationErrors[0]['Profile']), $expected);
 
 		$this->User->tmpAdded = $this->User->tmpInvited = array();
 		$user = array(
@@ -242,19 +245,10 @@ class UserTestCase extends CoreTestCase {
 
 		$this->User->tmpAdded = $this->User->tmpInvited = array();
 		$user = array(
-			'User' => array(
-				'username' => 'testme',
-				'password' => 'password'
-			),
 			'Address' => array(
-					0 => array(
-						'name' => 'Work',
-						'address_line_1' => '3080 Airway',
-						'address_line_2' => '',
-						'city' => 'Costa Mesa',
-						'state' => 'CA',
-						'zip' => 92886
-					)
+				0 => array(
+					'zip' => 92886
+				)
 			),
 			'Profile' => array(
 				'first_name' => 'Yet Another',
@@ -270,9 +264,8 @@ class UserTestCase extends CoreTestCase {
 					)
 				),
 				1 => array(
-					'Profile' => array(
-						'first_name' => 'jeremy',
-						'last_name' => 'harris'
+					'User' => array(
+						'id' => 1
 					)
 				)
 			)
@@ -284,6 +277,83 @@ class UserTestCase extends CoreTestCase {
 		$this->assertTrue($user['User']['reset_password']);
 		$user = $this->User->read('reset_password', $this->User->tmpAdded[1]['id']);
 		$this->assertTrue($user['User']['reset_password']);
+		
+		$this->User->tmpAdded = $this->User->tmpInvited = array();
+		$user = array(
+			'Address' => array(
+				0 => array(
+					'zip' => 92886
+				)
+			),
+			'Profile' => array(
+				'first_name' => 'Yet Another',
+				'last_name' => 'User',
+				'primary_email' => 'another3@example.com'
+			),
+			'HouseholdMember' => array(
+				0 => array(
+					'Profile' => array(
+						'last_name' => 'rockharbor'
+					)
+				),
+				1 => array(
+					'Profile' => array(
+						'last_name' => 'harris'
+					)
+				)
+			)
+		);
+		$this->assertFalse($this->User->createUser($user, null, $creator));
+		
+		$expected = array(
+			0 => array(
+				'found' => array( // multiple accounts found
+					array(
+						'User' => array(
+							'id' => 2
+						),	
+						'Profile' => array(
+							'id' => 2,
+							'first_name' => 'ricky',
+							'last_name' => 'rockharbor'
+						),
+						'ActiveAddress' => array(
+							'city' => null
+						)
+					),
+					array(
+						'User' => array(
+							'id' => 3
+						),	
+						'Profile' => array(
+							'id' => 3,
+							'first_name' => 'ricky jr.',
+							'last_name' => 'rockharbor'
+						),
+						'ActiveAddress' => array(
+							'city' => null
+						)
+					)
+				),
+				'Profile' => array(
+					'last_name' => 'rockharbor' // persisted data
+				)
+			),
+			1 => array( // single account found
+				'User' => array(
+					'id' => 1
+				),
+				'Profile' => array( 
+					'id' => 1,
+					'first_name' => 'Jeremy',
+					'last_name' => 'Harris'
+				),
+				'ActiveAddress' => array(
+					'city' => 'Orange'
+				)
+			)
+		);
+		$this->assertEqual($user['HouseholdMember'], $expected);
 	}
 
 	function testPrepareSearch() {
