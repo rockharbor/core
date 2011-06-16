@@ -684,12 +684,20 @@ class RostersController extends AppController {
  * Deletes a set of roster ids
  *
  * @param integer $uid The multi select id
- * @todo Restrict to proper permissions
  */
 	function delete($uid = null) {
 		$selected = $this->MultiSelect->getSelected($uid);
 
-		if (empty($selected)) {
+		if (empty($selected) && ($uid && isset($this->passedArgs['User']))) {
+			$roster = $this->Roster->read(null, $uid);
+			if ($this->passedArgs['User'] !== $roster['Roster']['user_id'] &&
+			!$this->Roster->User->HouseholdMember->Household->isContactFor($this->passedArgs['User'], $roster['Roster']['user_id'])
+			) {
+				$this->Session->setFlash(__('Roster was not deleted', true));
+				$this->redirect(array('action' => 'index'));
+			}
+			$selected = array($uid);
+		} else {
 			$this->Session->setFlash(__('Roster was not deleted', true));
 			$this->redirect(array('action' => 'index'));
 		}

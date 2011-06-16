@@ -359,6 +359,16 @@ class RostersControllerTestCase extends CoreTestCase {
 
 		$notificationsAfter = $this->Rosters->Roster->User->Notification->find('count');
 		$this->assertEqual($notificationsAfter-$notificationsBefore, 3);
+		
+		$rostersBefore = $this->Rosters->Roster->find('count');
+		$vars = $this->testAction('/rosters/delete/testDelete/3');
+		$rostersAfter = $this->Rosters->Roster->find('count');
+		$this->assertEqual($rostersAfter-$rostersBefore, 0);
+		
+		$rostersBefore = $this->Rosters->Roster->find('count');
+		$vars = $this->testAction('/rosters/delete/testDelete/3/User:1');
+		$rostersAfter = $this->Rosters->Roster->find('count');
+		$this->assertEqual($rostersAfter-$rostersBefore, 0);
 	}
 
 	function testConfirm() {
