@@ -12,7 +12,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 <div class="involvements view core-tabs">
 	<ul>
 		<li><a href="#details-tab">Details</a></li>
-		<?php if ($this->Permission->can('viewRoster')) { ?>
+		<?php if ($this->Permission->check(array('controller' => 'rosters', 'Involvement' => $involvement['Involvement']['id']))) { ?>
 		<li><?php echo $this->Html->link('Roster', array('controller' => 'rosters', 'Involvement' => $involvement['Involvement']['id']), array('title' => 'roster-tab')); ?></li>
 		<?php } ?>
 	</ul>
@@ -159,7 +159,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 				?>
 			</ul>
 		</div>
-		<?php if ($this->Permission->can('viewRoster')) { ?>
+		<?php if ($this->Permission->check(array('controller' => 'rosters', 'Involvement' => $involvement['Involvement']['id']))) { ?>
 		<div id="roster-tab">
 			<?php
 			echo $this->requestAction('/rosters/index', array(

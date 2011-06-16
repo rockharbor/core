@@ -45,33 +45,6 @@ class PermissionHelper extends AppHelper {
 	);
 
 /**
- * Grabs permissions set in the controller
- *
- * {{{
- * $this->set('_canSeeThisThing', true);
- * }}}
- *
- * Then you get the permission using
- *
- * {{{
- * $this->Permission->can("seeThisThing");
- * }}}
- *
- * Automatically denies permission for missing permissions
- *
- * @param string $name The name of the missing permission
- * @return false
- */
-	function can($name) {
-		$prop = '_can'.Inflector::camelize($name);
-		if (isset($this->{$prop})) {
-			return $this->{$prop};
-		}
-		CakeLog::write('Auth', 'Missing permission check for "'.$name.'"');
-		return false;
-	}
-
-/**
  * Takes all vars named _can{DoSomething} set on the view and saves them as a
  * permission and removes them from the view vars
  */

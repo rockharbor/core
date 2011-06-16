@@ -62,20 +62,6 @@ class PermissionHelperTestCase extends CakeTestCase {
 		$this->Permission->beforeRender();
 	}
 
-	function testGetNonExistentPermission() {
-		$this->assertFalse($this->Permission->can('seeSomething'));
-	}
-
-	function testGetPermission() {
-		$View = new View(new Controller(), true);
-		$View->set('_canPerformAction', true);
-		$View->set('_canPerformAnotherAction', false);
-		$this->Permission->beforeRender();
-
-		$this->assertTrue($this->Permission->can('performAction'));
-		$this->assertFalse($this->Permission->can('performAnotherAction'));
-	}
-
 	function testCheck() {
 		$View = new View(new Controller(), true);
 		$View->set('activeUser', array(

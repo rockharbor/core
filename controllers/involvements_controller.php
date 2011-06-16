@@ -52,11 +52,6 @@ class InvolvementsController extends AppController {
 	function beforeFilter() {
 		$this->_editSelf('index');
 		parent::beforeFilter();
-		$this->set('_canViewRoster', $this->isAuthorized('rosters/index'));
-		$this->set('_canEmail', $this->isAuthorized('sys_emails/compose'));
-		$this->set('_canViewMap', $this->isAuthorized('reports/map'));
-		$this->set('_canRemove', $this->isAuthorized('rosters/delete'));
-		$this->set('_canConfirm', $this->isAuthorized('rosters/confirm'));
 	}
 	
 /**
