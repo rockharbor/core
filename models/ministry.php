@@ -132,7 +132,7 @@ class Ministry extends AppModel {
 			'className' => 'Image',
 			'foreignKey' => 'foreign_key',
 			'dependent' => true,
-			'conditions' => array('Image.model' => 'Ministry', 'Image.group' => 'Image')
+			'conditions' => array('Image.model' => 'Ministry', 'Image.group' => 'Image', 'Image.approved' => true)
 		)
 	);
 
