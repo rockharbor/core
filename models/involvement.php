@@ -197,6 +197,15 @@ class Involvement extends AppModel {
 			'conditions' => array(
 				'Involvement.id <>' => ':0:'
 			)
+		),
+		'canBePromoted' => array(
+			'conditions' => array(
+				'Image.approved' => true,
+				'Image.promoted' => false
+			),
+			'link' => array(
+				'Image'
+			)
 		)
 	);
 

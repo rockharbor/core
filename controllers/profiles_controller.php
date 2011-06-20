@@ -58,6 +58,7 @@ class ProfilesController extends AppController {
 		$profile = $this->Profile->User->read(null, $id);
 
 		$this->set('profile', $profile);
+		$this->set('promoted', $this->Profile->User->Image->find('promoted'));
 		$this->set('campuses', $this->Profile->Campus->find('list'));
 		$this->set('jobCategories', $this->Profile->JobCategory->find('list'));
 		$this->set('elementarySchools', $this->Profile->ElementarySchool->find('list'));

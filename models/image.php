@@ -52,6 +52,17 @@ class Image extends AppModel {
 			'baseDirectory' => MEDIA_TRANSFER
 		),
 		'Logable',
+		'NamedScope.NamedScope' => array(
+			'promoted' => array(
+				'conditions' => array(
+					'promoted' => true,
+					'approved' => true,
+					'group' => 'Image',
+					'model' => array('Involvement', 'Ministry')
+				),
+				'limit' => 2
+			)
+		)
 	);
 
 /**

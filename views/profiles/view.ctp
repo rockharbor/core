@@ -3,14 +3,133 @@
 <div class="profiles core-tabs">
 
 	<ul>
+		<li><a href="#my-involvement">My Involvement</a></li>
 		<li><a href="#my-profile">My Profile</a></li>
 		<li><?php echo $this->Html->link('My Household', array('controller' => 'households', 'User' => $profile['User']['id']), array('title' => 'household')); ?></li>
 		<li><?php echo $this->Html->link('Payments', array('controller' => 'payments', 'User' => $profile['User']['id']), array('title' => 'payments')); ?></li>
 	</ul>
 
 	<div class="content-box clearfix">
-		<div id="my-profile">
+		<div id="my-involvement">
+			<div class="grid_10 alpha omega clearfix">
+			<?php
+			$allowed = $this->Permission->check(array(
+				'controller' => 'involvement_images',
+				'action' => 'promote'
+			)) || $this->Permission->check(array(
+				'controller' => 'ministry_images',
+				'action' => 'promote'
+			));
+			if (!empty($promoted) || $allowed):
+			?>
+				<div class="grid_2 alpha box" style="border:none">
+					<p><?php echo $this->Html->image('logo-small.png'); ?></p>
+					<p>Take a look at what&apos;s happening at <?php echo Core::read('general.church_name'); ?>.</p>
+				</div>
+				<?php foreach ($promoted as $image): ?>
+				<div class="grid_4 omega core-iconable">
+					<?php
+					$path = 'm'.DS.$image['Image']['dirname'].DS.$image['Image']['basename'];
+					$img = $this->Media->embed($path, array('restrict' => 'image'));
+					echo $this->Html->link($img, array('controller' => Inflector::tableize($image['Image']['model']), 'action' => 'view', $image['Image']['model'] => $image['Image']['foreign_key']), array('escape' => false));
+					$icon = $this->element('icon', array('icon' => 'delete'));
+					$link = $this->Permission->link($icon, array(
+						'controller' => strtolower(Inflector::underscore($image['Image']['model'].'Images')),
+						'action' => 'promote',
+						$image['Image']['foreign_key'],
+						0
+					), array(
+						'class' => 'no-hover', 
+						'id' => 'remove-promoted-'.$image['Image']['id'], 
+						'title' => 'Remove from promoted', 
+						'escape' => false
+					));
+					if ($link) {
+						echo $this->Html->tag('div', $link, array('class' => 'core-icon-container'));
+						$this->Js->buffer('CORE.confirmation("remove-promoted-'.$image['Image']['id'].'", "Are you sure you want to remove this from the promoted items?", {updateHtml:"content"});');
+					}
+					?>
+				</div>
+				<?php endforeach; ?>
+				<?php if ($allowed && count($promoted) < Core::read('general.promoted_item_limit')): ?>
+				<div class="grid_4 omega">
+					<?php
+					if ($this->Permission->check(array(
+						'controller' => 'involvement_images',
+						'action' => 'promote'
+					))) {
+						echo $this->Permission->link('Promote an Involvement Opportunity', array(
+							'controller' => 'searches',
+							'action' => 'simple',
+							'Involvement',
+							'promote_items',
+							'canBePromoted'
+						), array('rel' => 'modal', 'class' => 'button'));
+					}
+					if ($this->Permission->check(array(
+						'controller' => 'involvement_images',
+						'action' => 'promote'
+					))) {
+						echo $this->Permission->link('Promote a Ministry', array(
+							'controller' => 'searches',
+							'action' => 'simple',
+							'Ministry',
+							'promote_items',
+							'canBePromoted'
+						), array('rel' => 'modal', 'class' => 'button'));
+					}
+					?>
+				</div>
+				<?php endif; ?>
+			<?php endif; ?>
+			</div>
 			<div class="grid_10 alpha omega">
+				<div class="grid_7 alpha">
+					<h3>My Involvement</h3>
+				</div>
+				<div class="grid_3 omega">
+					<h3>Calendar</h3>
+				</div>
+			</div>
+			<div class="grid_10 alpha omega">
+				<div class="grid_7 alpha">
+					<div id="involvement" class="box">
+						<?php
+						$this->Js->buffer('CORE.register("involvement", "involvement", "/rosters/involvement/User:'.$profile['User']['id'].'")');
+						echo $this->requestAction('/rosters/involvement', array(
+							'renderAs' => 'ajax',
+							'bare' => false,
+							'return',
+							'named' => array(
+								'User' => $profile['User']['id']
+							),
+							'data' => null,
+							'form' => array('data' => null)
+							));
+						?>
+					</div>
+				</div>
+				<div class="grid_3 omega">
+					<div id="user_calendar" class="box">
+						<?php
+						$this->Js->buffer('CORE.register("user_calendar", "user_calendar", "/dates/calendar/model:User/User:'.$profile['User']['id'].'")');
+						echo $this->requestAction('/dates/calendar/model:User/User:'.$profile['User']['id'], array(
+							'renderAs' => 'ajax',
+							'bare' => false,
+							'return',
+							'named' => array(
+								'model' => 'User',
+								'User' => $profile['User']['id']
+							),
+							'data' => null
+						));
+						?>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="my-profile">
+			<div class="grid_10 alpha omega clearfix">
 				<div class="grid_2 alpha">
 				<?php
 					$path = null;
@@ -25,7 +144,7 @@
 						$upload = true;
 					}
 					echo '<div id='.$profile['User']['id'].'Image'.'>';
-					echo $this->Media->embed($path, array('restrict' => 'image'));					
+					echo $this->Media->embed($path, array('restrict' => 'image'));
 					if ($upload) {
 						echo $this->element('upload', array(
 							'type' => 'image',
@@ -113,10 +232,8 @@
 					</dl>
 				</div>
 			</div>
-			<div class="grid_10 alpha omega">
-				<?php echo $this->Html->link('More', 'javascript:;', array('style' => 'float:right', 'class' => 'button', 'id' => 'details-more')); ?>
-				<hr style="margin-bottom:0;">
-				<div id="details-toggle">
+			<div class="grid_10 alpha omega clearfix">
+				<div id="my-details" class="clearfix">
 					<div class="grid_5 alpha">
 						<dl>
 						<?php
@@ -165,63 +282,6 @@
 							echo $this->Html->tag('dd', $profile['Profile']['graduation_year']);
 						?>
 						</dl>
-					</div>
-				</div>
-				<br />
-				<?php
-				$this->Js->buffer('$("#details-toggle").hide()');
-				$this->Js->buffer('$("#details-more").click(function() {
-					$("#details-toggle").slideToggle("slow", function() {
-						if ($("#details-toggle").css("display") == "none") {
-							$("#details-more").button("option", "label", "More");
-						} else {
-							$("#details-more").button("option", "label", "Less");
-						}
-					});
-				})');
-				?>
-			</div>
-			<div class="grid_10 alpha omega">
-				<div class="grid_7 alpha">
-					<h3>My Involvement</h3>
-				</div>
-				<div class="grid_3 omega">
-					<h3>Calendar</h3>
-				</div>
-			</div>
-			<div class="grid_10 alpha omega">
-				<div class="grid_7 alpha">
-					<div id="involvement" class="box">
-						<?php
-						$this->Js->buffer('CORE.register("involvement", "involvement", "/rosters/involvement/User:'.$profile['User']['id'].'")');
-						echo $this->requestAction('/rosters/involvement', array(
-							'renderAs' => 'ajax',
-							'bare' => false,
-							'return',
-							'named' => array(
-								'User' => $profile['User']['id']
-							),
-							'data' => null,
-							'form' => array('data' => null)
-							));
-						?>
-					</div>
-				</div>
-				<div class="grid_3 omega">
-					<div id="user_calendar" class="box">
-						<?php
-						$this->Js->buffer('CORE.register("user_calendar", "user_calendar", "/dates/calendar/model:User/User:'.$profile['User']['id'].'")');
-						echo $this->requestAction('/dates/calendar/model:User/User:'.$profile['User']['id'], array(
-							'renderAs' => 'ajax',
-							'bare' => false,
-							'return',
-							'named' => array(
-								'model' => 'User',
-								'User' => $profile['User']['id']
-							),
-							'data' => null
-						));
-						?>
 					</div>
 				</div>
 			</div>

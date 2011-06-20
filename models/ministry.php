@@ -177,6 +177,29 @@ class Ministry extends AppModel {
 			)
 		)
 	);
+
+/**
+ * Array of search filters for SearchesController::simple().
+ *
+ * They are merged with any existing conditions and parameters sent to
+ * Controller::paginate(). Works in conjunction with
+ * SearchesController::simple() where arguments sent after the filter name are
+ * inserted in order within the filter. Make sure to include contains or links
+ * where related model data is needed.
+ *
+ * @var array
+ */	
+	var $searchFilter = array(
+		'canBePromoted' => array(
+			'conditions' => array(
+				'Image.approved' => true,
+				'Image.promoted' => false
+			),
+			'link' => array(
+				'Image'
+			)
+		)
+	);
 	
 /**
  * Checks if a user is a manager for a ministry. If they are not, it checks if

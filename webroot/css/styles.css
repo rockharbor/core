@@ -250,13 +250,14 @@ tr.core-iconable .core-icon-container {
 }
 
 /** special containers, perhaps place somewhere else **/
-#details-toggle {
+#my-details {
 	background: #f1f1f1;
 	padding: 10px 0;
+	border-top: 1px solid #acacac;
 	border-bottom: 1px solid #acacac;
-	height:120px; /* jQuery.slideToggle() needs a height to display the bg properly */
+	margin-top: 10px;
 }
-#details-toggle dl {
+#my-details dl {
 	margin-left:10px;
 }
 div.household-member, div.household-contact {
