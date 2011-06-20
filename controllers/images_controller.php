@@ -81,6 +81,17 @@ class ImagesController extends AttachmentsController {
 		
 		$this->set(compact('image', 'size'));
 	}
+	
+/**
+ * All un-approved images
+ */
+	function approval() {
+		$this->viewPath = 'images';
+		$this->set('images', $this->paginate(array(
+				'group' => 'Image',
+				'approved' => false
+		)));
+	}
 
 }
 ?>

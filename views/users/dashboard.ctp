@@ -6,7 +6,7 @@
 		<?php
 		$link = $this->Permission->link('Merge Requests', array('controller' => 'merge_requests', 'model' => 'User'), array('title' => 'merge-requests'));
 		echo $link ? $this->Html->tag('li', $link) : null;
-		$link = $this->Permission->link('Image Approval', array('controller' => 'user_images'), array('title' => 'images'));
+		$link = $this->Permission->link('Image Approval', array('controller' => 'images', 'action' => 'approval'), array('title' => 'images'));
 		echo $link ? $this->Html->tag('li', $link) : null;
 		$link = $this->Permission->link('Ministry Report', array('controller' => 'reports'), array('title' => 'reports'));
 		echo $link ? $this->Html->tag('li', $link) : null;
@@ -31,10 +31,11 @@
 			?>
 		</div>
 		<?php endif; ?>
-		<?php if ($this->Permission->check(array('controller' => 'user_images'))): ?>
+		<?php if ($this->Permission->check(array('controller' => 'images', 'action' => 'approval'))): ?>
 		<div id="images">
 			<?php
-			echo $this->requestAction('/user_images/index', array(
+			$this->Js->buffer('CORE.register("imageapproval", "images", "/images/approval");');
+			echo $this->requestAction('/images/approval', array(
 				'renderAs' => 'ajax',
 				'return'
 			));

@@ -167,10 +167,12 @@ class AttachmentsController extends AppController {
  * @param boolean $approve Whether or not to approve
  */
 	function approve($id = null, $approve = false) {
+		$this->{$this->modelClass}->Behaviors->detach('Media.Coupler'); // don't require 'file' key
 		if (!$id) {
 			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
 		} else {
 			if ($approve) {
+				$this->{$this->modelClass}->id = $id;
 				if ($this->{$this->modelClass}->saveField('approved', true)) {
 					$this->Session->setFlash(Inflector::humanize($this->modelKey).' approved', 'flash'.DS.'success');
 				} else {
@@ -182,7 +184,7 @@ class AttachmentsController extends AppController {
 		}
 
 		$this->redirect(array(
-			'action' => 'index',
+			'action' => 'approval',
 			$this->model => $this->modelId
 		));
 	}
