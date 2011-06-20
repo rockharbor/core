@@ -196,6 +196,7 @@ class AttachmentsController extends AppController {
  * @param int $level The promotion level
  */	
 	function promote($mskey = null, $level = 0) {
+		$this->{$this->modelClass}->Behaviors->detach('Media.Coupler'); // don't require 'file' key
 		if ($this->MultiSelect->check($mskey)) {
 			$ids = $this->MultiSelect->getSelected($mskey);
 		} else {
@@ -220,7 +221,13 @@ class AttachmentsController extends AppController {
 			}
 		}
 		
-		$this->Session->setFlash('The selected Involvement Opportunities have been promoted', 'flash'.DS.'success');
+		if ($level == 1) {
+			$msg = 'The selected Involvement Opportunities have been promoted.';
+		} else {
+			$msg = 'The selected Involvement Opportunities have been removed from the list of promoted items.';
+		}
+		
+		$this->Session->setFlash($msg, 'flash'.DS.'success');
 		$this->redirect($this->referer());
 	}
 	
