@@ -15,6 +15,7 @@ class AttachmentFixture extends CakeTestFixture {
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'approved' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
+		'promoted' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'model_key' => array('column' => array('model', 'foreign_key'), 'unique' => 0)),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
@@ -29,6 +30,7 @@ class AttachmentFixture extends CakeTestFixture {
 			'alternative' => 'Image',
 			'group' => 'Image',
 			'approved' => 1,
+			'promoted' => 0,
 			'created' => '2010-03-29 13:35:39',
 			'modified' => '2010-03-29 13:35:39'
 		),
@@ -41,6 +43,7 @@ class AttachmentFixture extends CakeTestFixture {
 			'alternative' => 'List of people to remove from CORE',
 			'group' => 'Document',
 			'approved' => 1,
+			'promoted' => 0,
 			'created' => '2010-03-26 13:35:16',
 			'modified' => '2010-03-26 13:35:16'
 		),
@@ -53,6 +56,7 @@ class AttachmentFixture extends CakeTestFixture {
 			'alternative' => 'List of people to add to CORE',
 			'group' => 'Document',
 			'approved' => 1,
+			'promoted' => 0,
 			'created' => '2010-03-26 13:35:16',
 			'modified' => '2010-03-26 13:35:16'
 		),
@@ -65,6 +69,7 @@ class AttachmentFixture extends CakeTestFixture {
 			'alternative' => 'Profile photo',
 			'group' => 'Image',
 			'approved' => 0,
+			'promoted' => 0,
 			'created' => '2010-03-26 13:35:16',
 			'modified' => '2010-03-26 13:35:16'
 		),
@@ -77,6 +82,59 @@ class AttachmentFixture extends CakeTestFixture {
 			'alternative' => 'Default profile photo',
 			'group' => 'Image',
 			'approved' => 0,
+			'promoted' => 0,
+			'created' => '2010-03-26 13:35:16',
+			'modified' => '2010-03-26 13:35:16'
+		),
+		array(
+			'id' => 6,
+			'model' => 'Involvement',
+			'foreign_key' => 1,
+			'dirname' => 'img',
+			'basename' => 'image.jpg',
+			'alternative' => 'An involvement image',
+			'group' => 'Image',
+			'approved' => 1,
+			'promoted' => 0,
+			'created' => '2010-03-26 13:35:16',
+			'modified' => '2010-03-26 13:35:16'
+		),
+		array(
+			'id' => 7,
+			'model' => 'Involvement',
+			'foreign_key' => 2,
+			'dirname' => 'img',
+			'basename' => 'image.jpg',
+			'alternative' => 'An involvement image',
+			'group' => 'Image',
+			'approved' => 0,
+			'promoted' => 0,
+			'created' => '2010-03-26 13:35:16',
+			'modified' => '2010-03-26 13:35:16'
+		),
+		array(
+			'id' => 8,
+			'model' => 'Ministry',
+			'foreign_key' => 1,
+			'dirname' => 'img',
+			'basename' => 'image.jpg',
+			'alternative' => 'An ministry image',
+			'group' => 'Image',
+			'approved' => 1,
+			'promoted' => 0,
+			'created' => '2010-03-26 13:35:16',
+			'modified' => '2010-03-26 13:35:16'
+		),
+		array(
+			'id' => 9,
+			'model' => 'Ministry',
+			'foreign_key' => 1,
+			'dirname' => 'img',
+			'basename' => 'image.jpg',
+			'alternative' => 'An ministry image',
+			'group' => 'Image',
+			'approved' => 1,
+			'promoted' => 0,
 			'created' => '2010-03-26 13:35:16',
 			'modified' => '2010-03-26 13:35:16'
 		)

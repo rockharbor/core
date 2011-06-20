@@ -37,6 +37,15 @@ class AttachmentsController extends AppController {
 	);
 	
 /**
+ * Extra components for this controller
+ * 
+ * @var array
+ */
+	var $components = array(
+		'MultiSelect.MultiSelect'
+	);
+	
+/**
  * The name of the model this Attachment belongs to. Used for Acl
  *
  * @var string
@@ -176,6 +185,41 @@ class AttachmentsController extends AppController {
 			'action' => 'index',
 			$this->model => $this->modelId
 		));
+	}
+	
+/**
+ * Promotes or demotes a model's first image
+ * 
+ * @param mixed $mskey A multiselect token or the model's id
+ * @param int $level The promotion level
+ */	
+	function promote($mskey = null, $level = 0) {
+		if ($this->MultiSelect->check($mskey)) {
+			$ids = $this->MultiSelect->getSelected($mskey);
+		} else {
+			$ids = array($mskey);
+		}
+		
+		foreach ($ids as $id) {
+			$attachment = $this->{$this->modelClass}->find('first', array(
+				'fields' => array(
+					'id'
+				),
+				'conditions' => array(
+					'model' => $this->model,
+					'group' => $this->modelClass,
+					'foreign_key' => $id,
+					'approved' => true
+				)
+			));
+			if (!empty($attachment)) {
+				$this->{$this->modelClass}->id = $attachment[$this->modelClass]['id'];
+				$this->{$this->modelClass}->saveField('promoted', $level);
+			}
+		}
+		
+		$this->Session->setFlash('The selected Involvement Opportunities have been promoted', 'flash'.DS.'success');
+		$this->redirect($this->referer());
 	}
 	
 /**

@@ -449,7 +449,9 @@ class InstallShell extends Shell {
 			'controllers/UserImages/upload',
 			'controllers/UserImages/approve',
 			'controllers/Roles',
-			'controllers/RosterStatuses'
+			'controllers/RosterStatuses',
+			'controllers/MinistryImages/promote',
+			'controllers/InvolvementImages/promote'
 		),
 		'Intern' => array(
 			'controllers/Comments/index',
