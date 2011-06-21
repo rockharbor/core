@@ -121,7 +121,8 @@ class CoreConfigureTestCase extends CoreTestCase {
 					'options' => array(
 						'url' => '/plugin/controller/action',
 						'title' => 'My Nav Item',
-						'element' => null
+						'element' => null,
+						'options' => array()
 					)
 				)
 			)
@@ -136,13 +137,15 @@ class CoreConfigureTestCase extends CoreTestCase {
 					'options' => array(
 						'url' => '/plugin/controller/action',
 						'title' => 'My Nav Item',
-						'element' => null
+						'element' => null,
+						'options' => array()
 					),					
 					'sub-item-1' => array(
 						'options' => array(
 							'url' => '/plugin/controller/new_action',
 							'title' => 'New Action',
-							'element' => null
+							'element' => null,
+							'options' => array()
 						)
 					)
 				)
@@ -158,20 +161,23 @@ class CoreConfigureTestCase extends CoreTestCase {
 					'options' => array(
 						'url' => '/plugin/controller/action',
 						'title' => 'My Nav Item',
-						'element' => null
+						'element' => null,
+						'options' => array()
 					),					
 					'sub-item-1' => array(
 						'options' => array(
 							'url' => '/plugin/controller/new_action',
 							'title' => 'New Action',
-							'element' => null
+							'element' => null,
+							'options' => array()
 						)
 					),
 					'sub-item-2' => array(
 						'options' => array(
 							'url' => '/plugin/controller/sub_action',
 							'title' => 'Sub Action',
-							'element' => null
+							'element' => null,
+							'options' => array()
 						)
 					)
 				)
@@ -195,7 +201,8 @@ class CoreConfigureTestCase extends CoreTestCase {
 				'options' => array(
 					'url' => '/plugin/controller/action',
 					'title' => 'Action',
-					'element' => null
+					'element' => null,
+					'options' => array()
 				)
 			)
 		);
@@ -207,13 +214,15 @@ class CoreConfigureTestCase extends CoreTestCase {
 			'options' => array(
 				'url' => '/plugin/controller/action',
 				'title' => 'Action',
-				'element' => null
+				'element' => null,
+				'options' => array()
 			),
 			'sub' => array(
 				'options' => array(
 					'url' => '/plugin/controller/sub_action',
 					'title' => 'Sub Action',
-					'element' => null
+					'element' => null,
+					'options' => array()
 				)
 			)
 		);
@@ -224,7 +233,8 @@ class CoreConfigureTestCase extends CoreTestCase {
 			'options' => array(
 				'url' => '/plugin/controller/action',
 				'title' => 'Action',
-				'element' => null
+				'element' => null,
+				'options' => array()
 			)
 		);
 		$this->assertEqual($results, $expected);
