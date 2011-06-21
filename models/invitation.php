@@ -44,7 +44,10 @@ class Invitation extends AppModel {
  * HasAndBelongsToMany association link
  */
 	var $hasAndBelongsToMany = array(
-		'User'
+		'CC' => array(
+			'className' => 'User',
+			'dependent' => true
+		)
 	);
 
 /**

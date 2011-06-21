@@ -61,6 +61,7 @@ class NotifierComponent extends Object {
 		$this->Controller =& $controller;
 		$this->User = ClassRegistry::init('User');
 		$this->Notification = ClassRegistry::init('Notification');
+		$this->Invitation = ClassRegistry::init('Invitation');
 		$this->_set($settings);
 	}
 
@@ -102,6 +103,59 @@ class NotifierComponent extends Object {
 			break;
 		}
 		return $notification && $email;
+	}
+
+/**
+ * Sends an invitation to one or more people
+ * 
+ * If sending to multiple people (`$cc`), a single invitation will be created but each
+ * of the users will be notified. Once any one of those users chooses an action,
+ * the invitation will no longer show up in any of the users' list of notifications.
+ * 
+ * ### Options:
+ * - mixed $to The user id to send to
+ * - array $cc Users to copy the invitation to
+ * - string $template The template (view element)
+ * - string $confirm The confirmation link
+ * - string $deny The denial link
+ * 
+ * @param array $options Array of options
+ * @return boolean Success
+ */
+	function invite($options = array()) {
+		$_defaults = array(
+			'to' => false,
+			'confirm' => false,
+			'deny' => false,
+			'template' => false
+		);
+		$options = array_merge($_defaults, $options);
+		if (!$this->enabled || !$options['to'] || !$options['confirm'] || !$options['deny']) {
+			return false;
+		}
+		$content = $this->_render($options['template']);
+		if ($content === false) {
+			return false;
+		}
+		$data = array(
+			'Invitation' => array(
+				'user_id' => $options['to'],
+				'body' => $content,
+				'confirm_action' => $options['confirm'],
+				'deny_action' => $options['deny']
+			)
+		);
+		if (isset($options['cc']) && !empty($options['cc'])) {
+			if (!is_array($options['cc'])) {
+				$options['cc'] = array($options['cc']);
+			}
+			$data['CC'] = array('CC' => array());
+			foreach ($options['cc'] as $cc) {
+				$data['CC']['CC'][] = $cc;
+			}
+		}
+		$this->Invitation->create();
+		return $this->Invitation->saveAll($data);
 	}
 
 /**
