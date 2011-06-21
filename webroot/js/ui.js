@@ -435,6 +435,10 @@ CORE.confirmation = function(id, message, options) {
 		var parent = CORE.getUpdateableParent(id);
 		useOptions.update = parent.updateable;
 	}
+	if (useOptions.updateHtml == 'parent') {
+		var parent = CORE.getUpdateableParent(id);
+		useOptions.updateHtml = parent.id;
+	}
 
 	if (useOptions.update != '') {
 		useOptions.onYes = 'CORE.request("'+href+'", {update:"'+useOptions.update+'"});CORE.closeModals("confirmation-modal");'+useOptions.onYes;
