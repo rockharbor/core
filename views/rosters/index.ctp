@@ -242,9 +242,10 @@ $this->Paginator->options(array(
 ?>
 </div>
 <ul class="core-admin-tabs">
+	<?php if ($this->Permission->check(array('controller' => 'involvements', 'action' => 'invite'))): ?>
 	<li>
 	<?php
-	echo $this->Html->link('Invite A User',
+	echo $this->Permission->link('Invite A User',
 		array(
 			'controller' => 'searches',
 			'action' => 'simple',
@@ -260,9 +261,11 @@ $this->Paginator->options(array(
 	);
 	?>
 	</li>
+	<?php endif; ?>
+	<?php if ($this->Permission->check(array('controller' => 'involvements', 'action' => 'invite_roster'))): ?>
 	<li>
 	<?php
-	echo $this->Html->link('Invite This Roster To',
+	echo $this->Permission->link('Invite This Roster To',
 		array(
 			'controller' => 'searches',
 			'action' => 'simple',
@@ -278,5 +281,6 @@ $this->Paginator->options(array(
 	);
 	?>
 	</li>
+	<?php endif; ?>
 </ul>
 </div>
