@@ -245,14 +245,23 @@ class CoreSchema extends CakeSchema {
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'contact_key' => array('column' => 'contact_id', 'unique' => 0)),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
-	var $id_linkages = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
-		'old_pk' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 100, 'key' => 'index'),
-		'old_table' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 100),
-		'new_model' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 100),
-		'new_pk' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 100),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'index_2' => array('column' => array('old_pk', 'old_table', 'new_model'), 'unique' => 0)),
-		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
+	var $invitations = array(
+		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
+		'user_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8),
+		'body' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 500),
+		'confirm_action' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 500),
+		'deny_action' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 500),
+		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
+		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
+		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
+	);
+	var $invitations_users = array(
+		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
+		'invitation_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
+		'user_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
+		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'join' => array('column' => array('invitation_id', 'user_id'), 'unique' => 1)),
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 	var $involvement_types = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
