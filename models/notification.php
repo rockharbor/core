@@ -39,17 +39,6 @@ class Notification extends AppModel {
 	);
 
 /**
- * Types of notifications
- *
- * @var array
- */
-	var $types = array(
-		'alert' => 'Alert',
-		'invitation' => 'Invitation',
-		'default' => 'Notification'
-	);
-
-/**
  * Sanitization rules
  *
  * @var array

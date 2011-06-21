@@ -84,17 +84,12 @@ class NotificationsController extends AppController {
 
 /**
  * Views a list of notifications
- *
- * @param string $typeFilter A quick filter for the NotificationType
  */
-	function index($typeFilter = '') {
-		$conditions['Notification.user_id'] = $this->Auth->user('id');
-		if (!empty($typeFilter) && in_array($typeFilter, array_keys($this->Notification->types))) {
-			$conditions['Notification.type'] = $typeFilter;
-		}
-		
+	function index() {
 		$this->paginate = array(
-			'conditions' => $conditions,
+			'conditions' => array(
+				'Notification.user_id' => $this->activeUser['User']['id']
+			),
 			'order' => array(
 				'Notification.created DESC'
 			)

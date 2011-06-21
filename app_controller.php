@@ -74,11 +74,7 @@ class AppController extends Controller {
 				)
 			)
 		),
-		'Notifier' => array(
-			'saveData' => array(
-				'type' => 'default'
-			)
-		),
+		'Notifier',
 		'QueueEmail.QueueEmail',
 		'Security'
 	);

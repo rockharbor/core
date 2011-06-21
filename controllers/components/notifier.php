@@ -72,7 +72,6 @@ class NotifierComponent extends Object {
  * - mixed $to The User id to send to
  * - string $subject The subject line
  * - string $template The template to load (view element for notification and email)
- * - string $type The notification type (invitation or default)
  *
  * @param array $options Array of options
  * @param string $type The type of notification to send (notification, email, both)
@@ -187,7 +186,6 @@ class NotifierComponent extends Object {
  * ### Options:
  * - integer $to The User id of the sender
  * - string $template The notification template
- * - string $type The body of the message. Usually the template takes care of this.
  *
  * @param array $user The user and profile information to notify
  * @param array $options Array of options
@@ -195,10 +193,6 @@ class NotifierComponent extends Object {
  * @access private
  */ 	
 	function _save($user, $options = array()) {
-		$defaults = array(
-			'type' => 'default'
-		);
-		$options = array_merge($defaults, $options);
 		extract($options);
 
 		$content = $this->_render($template);
@@ -209,7 +203,6 @@ class NotifierComponent extends Object {
 			'Notification' => array(
 				'user_id' => $user['User']['id'],
 				'body' => $content,
-				'type' => $type,
 				'read' => false,
 			)
 		);

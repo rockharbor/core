@@ -368,7 +368,6 @@ class CoreSchema extends CakeSchema {
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'read' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
-		'type' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 45),
 		'body' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 500),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'user_key' => array('column' => 'user_id', 'unique' => 0)),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
