@@ -724,11 +724,11 @@ div.select .checkbox {
 }
 .core-radio.selected {
 	background-image: url('../assets/images/icons.png');
-	background-position: -67px -66px;; /* slightly different than it should be because checkbox is smaller than 16x16 */
+	background-position: -67px -82px; /* slightly different than it should be because checkbox is smaller than 16x16 */
 }
 .core-checkbox.selected {
 	background-image: url('../assets/images/icons.png');
-	background-position: -99px -2px; /* slightly different than it should be because checkbox is smaller than 16x16 */
+	background-position: -115px -66px; /* slightly different than it should be because checkbox is smaller than 16x16 */
 }
 .core-checkbox.disabled, .core-radio.disabled {
 	border: 1px solid #f1f1f1;
