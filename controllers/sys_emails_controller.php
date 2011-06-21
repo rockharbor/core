@@ -75,9 +75,9 @@ class SysEmailsController extends AppController {
 				'subject' => $this->data['SysEmail']['subject'],
 						'body' => $this->data['SysEmail']['body']
 			), 'email')) {
-				$this->Session->setFlash('Message sent!', 'flash'.DS.'success');
+				$this->Session->setFlash('Your email has been sent.', 'flash'.DS.'success');
 			} else {
-				$this->Session->setFlash('Error sending message', 'flash'.DS.'failure');
+				$this->Session->setFlash('Unable to send email.', 'flash'.DS.'failure');
 			}
 		}
 		
@@ -227,12 +227,12 @@ class SysEmailsController extends AppController {
 					}
 				}
 
-				$this->Session->setFlash('Successfully sent '.$e.'/'.count($toUsers).' messages', 'flash'.DS.'success');
+				$this->Session->setFlash('Your emails have been sent.', 'flash'.DS.'success');
 				
 				// delete attachments related with this email
 				$this->SysEmail->gcAttachments($this->MultiSelect->_token);
 			} else {
-				$this->Session->setFlash('Error sending messages', 'flash'.DS.'failure');
+				$this->Session->setFlash('Unable to send your emails.', 'flash'.DS.'failure');
 			}			
 		} else {
 			// clear old attachments that people aren't using anymore

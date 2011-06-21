@@ -1,1 +1,1 @@
-A new <?php echo $type; ?> request has been made.
+A <?php echo $type; ?> request has been submitted for your approval

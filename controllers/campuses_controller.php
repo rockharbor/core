@@ -49,6 +49,7 @@ class CampusesController extends AppController {
 		$id = $this->passedArgs['Campus'];
 		
 		if (!$id) {
+			//404
 			$this->Session->setFlash(__('Invalid campus', true));
 			$this->redirect(array('action' => 'index'));
 		}
@@ -65,10 +66,10 @@ class CampusesController extends AppController {
 		if (!empty($this->data)) {
 			$this->Campus->create();
 			if ($this->Campus->save($this->data)) {
-				$this->Session->setFlash(__('The campus has been saved', true));
+				$this->Session->setFlash(__('This campus has been created.', true));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The campus could not be saved. Please, try again.', true));
+				$this->Session->setFlash(__('This campus could not be created. Please try again.', true));
 			}
 		}
 	}
@@ -80,6 +81,7 @@ class CampusesController extends AppController {
 		$id = $this->passedArgs['Campus'];
 	
 		if (!$id) {
+			//404
 			$this->Session->setFlash('Invalid campus');
 			$this->redirect(array('action' => 'index'));
 		}
@@ -90,25 +92,26 @@ class CampusesController extends AppController {
 		}
 
 		$this->Campus->id = $id;
+		$name = $this->Campus->field('name');
 		$revision = $this->Campus->revision($id);
 		
 		if (!empty($this->data)) {
 			if (!$revision) {
 				if ($this->Campus->save($this->data)) {
-					$this->Session->setFlash('The changes to this campus are pending.', 'flash'.DS.'success');
-					
+					$this->Session->setFlash('Your request has been received and is pending approval.', 'flash'.DS.'success');
+					$this->set('name', $name);
 					$this->Notifier->notify(array(
 						'to' => Core::read('notifications.campus_content'),
 						'template' => 'campuses_edit',
-						'subject' => 'Campus content change'
+						'subject' => 'The '.$name.' campus description has been edited'
 					));
 				} else {
-					$this->Campus->setFlash('There were problems saving the changes.', 'flash'.DS.'failure');
+					$this->Campus->setFlash('Unable to save campus. Please try again.', 'flash'.DS.'failure');
 				}
 				
 				$revision = $this->Campus->revision($id);
 			} else {
-				$this->Session->setFlash('There\'s already a pending revision for this campus.', 'flash'.DS.'failure');
+				$this->Session->setFlash('There\'s already an existing request pending approval.', 'flash'.DS.'failure');
 			}
 		}
 		
@@ -132,6 +135,7 @@ class CampusesController extends AppController {
 		$id = $this->passedArgs['Campus'];
 
 		if (!$id) {
+			//404
 			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
 			$this->redirect(array('action' => 'edit', $id));
 		}
@@ -140,7 +144,7 @@ class CampusesController extends AppController {
 		$this->Campus->contain(array('Leader'));
 		$campus = $this->Campus->read(null, $id);
 		if (empty($campus['Leader'])) {
-			$this->Session->setFlash('Cannot activate until a manager is added', 'flash'.DS.'failure');
+			$this->Session->setFlash('Campus cannot be activated until a manager has been assigned.', 'flash'.DS.'failure');
 			$this->redirect($this->emptyPage);
 			return;
 		}
@@ -152,15 +156,15 @@ class CampusesController extends AppController {
 		if ($success) {
 			$this->Session->setFlash(
 				'Successfully '.($active ? 'activated' : 'deactivated')
-				.' Campus '.$id.' '
-				.($recursive ? ' and all related items' : ''),
+				.' this campus'
+				.($recursive ? ' and all ministries.' : '.'),
 				'flash'.DS.'success'
 			);
 		} else {
 			$this->Session->setFlash(
-				'Failed to '.($active ? 'activate' : 'deactivate')
-				.' Campus '.$id.' '
-				.($recursive ? ' and all related items' : ''),
+				'Unable to '.($active ? 'activate' : 'deactivate')
+				.' this campus'
+				.($recursive ? ' and all ministries.' : '.'),
 				'flash'.DS.'failure'
 			);
 		}
@@ -177,6 +181,7 @@ class CampusesController extends AppController {
 		$id = $this->passedArgs['Campus'];
 
 		if (!$id) {
+			//404
 			$this->Session->setFlash(__('Invalid campus', true));
 			$this->redirect(array('action' => 'index'));
 		}
@@ -203,9 +208,12 @@ class CampusesController extends AppController {
 		}
 
 		if ($success) {
-			$this->Session->setFlash('Action taken');
+			$this->Session->setFlash(
+				'This campus request has been '.($confirm ? 'approved.' : 'denied.'),
+				'flash'.DS.'success'
+			);
 		} else {
-			$this->Session->setFlash('Error');
+			$this->Session->setFlash('Unable to '.($confirm ? 'approve' : 'deny').' campus request. Please try again.');
 		}
 
 		$this->redirect(array('action' => 'history', 'Campus' => $id));
@@ -218,14 +226,15 @@ class CampusesController extends AppController {
  */ 
 	function delete($id = null) {
 		if (!$id) {
+			//404
 			$this->Session->setFlash(__('Invalid id for campus', true));
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->Campus->delete($id)) {
-			$this->Session->setFlash(__('Campus deleted', true));
+			$this->Session->setFlash(__('This campus has been deleted.', true));
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash(__('Campus was not deleted', true));
+		$this->Session->setFlash(__('Unable to delete campus. Please try again.', true));
 		$this->redirect(array('action' => 'index'));
 	}
 

@@ -24,9 +24,12 @@ $this->Paginator->options(array(
 			?>
 			<tr<?php echo $class;?>>
 				<td>
-					<?php echo $this->Html->link('Remove Leader', array('action' => 'delete', 'User' => $leader['Leader']['user_id'], 'model' => $model, $model => $modelId), array(
-							'id'=>'delete_btn_'.$i
-					)); ?>
+					<?php
+					echo $this->Html->link('Remove Leader', array('action' => 'delete', 'User' => $leader['Leader']['user_id'], 'model' => $model, $model => $modelId), array(
+						'id'=>'delete_btn_'.$i
+					));
+					$this->Js->buffer('CORE.confirmation("delete_btn_'.$i.'","Are you sure you want to remove '.$leader['User']['Profile']['name'].'?", {update:"leaders"});');
+					?>
 				</td>
 				<td><?php echo $this->Formatting->flags('User', $leader['User']).$leader['User']['Profile']['name']; ?>&nbsp;</td>
 				<td><?php echo $this->Formatting->datetime($leader['Leader']['created']); ?>&nbsp;</td>
@@ -57,10 +60,3 @@ $this->Paginator->options(array(
 	));
 ?>
 </div>
-
-<?php
-while ($i > 0) {
-	$this->Js->buffer('CORE.confirmation("delete_btn_'.$i.'","Are you sure you want to remove this Leader?", {update:"leaders"});');
-	$i--;
-}
-?>

@@ -53,6 +53,7 @@ class RostersController extends AppController {
 		/*$this->Security->blackHoleCallback = '_forceSSL';
 		$this->Security->requireSecure('add');*/
 		parent::beforeFilter();
+		$this->_editSelf('involvement', 'add');
 	}
 	
 /**
@@ -150,13 +151,10 @@ class RostersController extends AppController {
  * - integer $User The id of the user
  */ 	
 	function involvement() {
-		if (isset($this->passedArgs['User'])) {
-			$userId = $this->passedArgs['User'];
-		} else {
-			$userId = $this->activeUser['User']['id'];
-		}
+		$userId = $this->passedArgs['User'];
 		
 		if (!$userId) {
+			//404
 			$this->Session->setFlash(__('Invalid user', true));
 			$this->redirect($this->referer());
 		}
@@ -253,6 +251,7 @@ class RostersController extends AppController {
 		$involvementId = $this->passedArgs['Involvement'];
 		
 		if (!$userId || !$involvementId) {
+			//404
 			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
 			$this->redirect(array('action'=>'index'));
 		}
@@ -263,7 +262,7 @@ class RostersController extends AppController {
 
 		// can't sign up for inactive or past involvements
 		if (!$involvement['Involvement']['active'] && !$involvement['Involvement']['passed']) {
-			$this->Session->setFlash('You cannot sign up for an inactive event.', 'flash'.DS.'failure');
+			$this->Session->setFlash('Cannot sign up for an inactive or past event.', 'flash'.DS.'failure');
 			$this->redirect($this->emptyPage);
 		}
 		
@@ -458,13 +457,13 @@ class RostersController extends AppController {
 						$this->Notifier->notify(array(
 							'to' => $this->activeUser['User']['id'],
 							'template' => 'payments_payment_made',
-							'subject' => 'Payment made for '.$involvement['InvolvementType']['name'],
+							'subject' => 'Your payment has been made for '.$involvement['InvolvementType']['name'],
 						));
-						$this->Session->setFlash('You\'ve been signed up!', 'flash'.DS.'success');
+						$this->Session->setFlash('Your payment has been received and you have signed up for '.$involvement['Involvement']['name'].'.', 'flash'.DS.'success');
 						$this->redirect(array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvementId));
 					} else {
 						$CreditCard->invalidate('credit_card_number', $CreditCard->creditCardError);
-						$this->Session->setFlash('Error processing credit card.', 'flash'.DS.'failure');
+						$this->Session->setFlash('Unable to process payment. '.$CreditCard->creditCardError, 'flash'.DS.'failure');
 					}
 				} else {
 					// no credit card, just save as normal
@@ -475,7 +474,7 @@ class RostersController extends AppController {
 						$this->Notifier->notify(array(
 							'to' => $signuproster['Roster']['user_id'],
 							'template' => 'involvements_signup',
-							'subject' => 'Signed up for '.$involvement['InvolvementType']['name'],
+							'subject' => 'You have signed up for '.$involvement['InvolvementType']['name'],
 						));
 					}
 					
@@ -491,7 +490,7 @@ class RostersController extends AppController {
 						}
 					}
 					
-					$this->Session->setFlash('You\'ve been signed up!', 'flash'.DS.'success');
+					$this->Session->setFlash('You have signed up for '.$involvement['Involvement']['name'].'.', 'flash'.DS.'success');
 					$this->redirect(array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvementId));
 				}		
 			} else {
@@ -501,11 +500,11 @@ class RostersController extends AppController {
 				}
 
 				if (!$pValidates && isset($this->data['Child'])) {
-					$this->Session->setFlash('Please select a parent to bring the children.', 'flash'.DS.'failure');
+					$this->Session->setFlash('Please assign a parent to this child.', 'flash'.DS.'failure');
 				} elseif (!$lValidates) {
-					$this->Session->setFlash('The roster limit has been reached. Please sign up less people or wait for room to become available.', 'flash'.DS.'failure');
+					$this->Session->setFlash('Cannot join '.$involvement['Involvement']['name'].'. The roster is full.', 'flash'.DS.'failure');
 				} else {
-					$this->Session->setFlash('You couldn\'t be signed up. Please, try again.', 'flash'.DS.'failure');
+					$this->Session->setFlash('Cannot join '.$involvement['Involvement']['name'].'. Please try again.', 'flash'.DS.'failure');
 				}
 			}
 		}
@@ -547,6 +546,7 @@ class RostersController extends AppController {
  */
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
+			//404
 			$this->Session->setFlash(__('Invalid roster', true));
 			$this->redirect(array('action' => 'index'));
 		}
@@ -593,9 +593,9 @@ class RostersController extends AppController {
 					$this->Roster->saveAll($children, array('validate' => false));
 				}
 				
-				$this->Session->setFlash('Your roster has been updated!', 'flash'.DS.'success');
+				$this->Session->setFlash('This roster has been saved.', 'flash'.DS.'success');
 			} else {
-				$this->Session->setFlash('There was an error with the changes.', 'flash'.DS.'failure');
+				$this->Session->setFlash('Unable to save this roster. Please try again.', 'flash'.DS.'failure');
 			}
 			
 			if (isset($children)) {
@@ -674,7 +674,7 @@ class RostersController extends AppController {
 			array('Roster.roster_status_id' => 1),
 			array('Roster.id' => $selected)
 		);
-		$this->Session->setFlash(__('Roster confirmed', true));
+		$this->Session->setFlash('Roster members confirmed.', 'flash'.DS.'success');
 		$this->redirect(array('action'=>'index'));
 	}
 
@@ -688,6 +688,7 @@ class RostersController extends AppController {
 		$selected = $this->MultiSelect->getSelected($uid);
 
 		if (empty($selected)) {
+			//404
 			$this->Session->setFlash(__('Roster was not deleted', true));
 			$this->redirect(array('action' => 'index'));
 		}
@@ -704,14 +705,16 @@ class RostersController extends AppController {
 			))) {
 				$this->Roster->Involvement->contain(array('InvolvementType'));
 				$this->Roster->Involvement->Leader->User->contain(array('Profile'));
-				$this->set('involvement', $this->Roster->Involvement->read(null, $roster['Roster']['involvement_id']));
-				$this->set('user', $this->Roster->Involvement->Leader->User->read(null, $roster['Roster']['user_id']));
+				$involvement = $this->Roster->Involvement->read(null, $roster['Roster']['involvement_id']);
+				$this->set('involvement', $involvement);
+				$user = $this->Roster->Involvement->Leader->User->read(null, $roster['Roster']['user_id']);
+				$this->set('user', $user);
 				$this->set('activeUser', $this->activeUser);
 				// notify the user that they left
 				$this->Notifier->notify(array(
 					'to' => $roster['Roster']['user_id'],
 					'template' => 'rosters_delete',
-					'subject' => 'Left involvement',
+					'subject' => ($this->activeUser['User']['id'] == $user['User']['id'] ? 'You have' : $user['Profile']['name'].' has').' been removed from '.$involvement['Involvement']['name']
 				));
 			}
 		}
@@ -722,15 +725,17 @@ class RostersController extends AppController {
 				'model' => 'Involvement'
 			)
 		));
+		$involvement = $this->Roster->Involvement->read(null, $roster['Roster']['involvement_id']);
 		foreach ($leaders as $leader) {
-			$this->set('user', $this->Roster->Involvement->Leader->User->read(null, $leader['Leader']['user_id']));
+			$user = $this->Roster->Involvement->Leader->User->read(null, $leader['Leader']['user_id']);
+			$this->set('user', $user);
 			$this->Notifier->notify(array(
 				'to' => $leader['Leader']['user_id'],
 				'template' => 'rosters_delete',
-				'subject' => 'Left involvement',
+				'subject' => ($this->activeUser['User']['id'] == $user['User']['id'] ? 'You have' : $user['Profile']['name'].' has').' been removed from '.$involvement['Involvement']['name']
 			));
 		}
-		$this->Session->setFlash(__('Roster deleted', true));
+		$this->Session->setFlash('Roster members removed.', 'flash'.DS.'success');
 		$this->redirect(array('action'=>'index'));
 	}
 }

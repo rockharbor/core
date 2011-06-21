@@ -83,21 +83,21 @@ class Document extends MediaAppModel {
 		'file' => array(
 			'resource' => array(
 				'rule' => 'checkResource',
-				'message' => 'Invalid resource.'
+				'message' => 'Upload failed. Please try again.'
 			),
 			'access' => array(
 				'rule' => 'checkAccess',
-				'message' => 'Cannot access.'
+				'message' => 'Upload failed. Please try again.'
 			),
 			'location' => array(
 				'rule' => array('checkLocation', array(
 					MEDIA_TRANSFER, '/tmp/', 'http://', 'C:\\'
 				)),
-				'message' => 'Invalid upload location.'
+				'message' => 'Upload failed. Please try again.'
 			),
 			'permission' => array(
 				'rule' => array('checkPermission', '*'),
-				'message' => 'Problem with permissions.'
+				'message' => 'Upload failed. Please try again.'
 			),
 			'size'       => array(
 				'rule' => array('checkSize', '5M'),

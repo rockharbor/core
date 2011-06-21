@@ -52,11 +52,11 @@ class User extends AppModel {
 		'username' => array(
 			'isUnique' => array(
 				'rule' => 'isUnique',
-				'message' => 'That username is taken.'
+				'message' => 'That username is unavailable.'
 			),
 			'notempty' => array(
 				'rule' => 'notEmpty',
-				'message' => 'Gotta have a username.'
+				'message' => 'Please fill in the required field.'
 			),
 			'characters' => array(
 				'rule' => '/^[a-z0-9\-_]{5,}$/i',
@@ -66,17 +66,17 @@ class User extends AppModel {
 		'password' => array(			
 			'minLength' => array(
 				'rule' => array('minLength', 6),
-				'message' => 'Your password must be at least 6 characters.'
+				'message' => 'Your password must be at least 6 characters long.'
 			),
 			'notempty' => array(
 				'rule' => 'notEmpty',
-				'message' => 'Gotta have a password.'
+				'message' => 'Please fill in the required field.'
 			)
 		),
 		'confirm_password' => array(
 			'identical' => array(
 				'rule' => array('identicalFieldValues', 'password'),
-				'message' => 'Password confirmation must match password.'
+				'message' => 'Password confirmation does not match password.'
 			)
 		)
 	);

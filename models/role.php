@@ -37,7 +37,8 @@ class Role extends AppModel {
  */
 	var $validate = array(
 		'name' => array(
-			'notEmpty'
+			'rule' => 'notEmpty',
+			'message' => 'Please fill in the required field.'
 		)
 	);
 

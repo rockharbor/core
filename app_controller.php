@@ -173,7 +173,7 @@ class AppController extends Controller {
 				!isset($this->params['requested']) &&
 				!$this->RequestHandler->isAjax()
 			) {				
-				$this->Session->setFlash('Your last password was automatically generated. Please reset it.');
+				$this->Session->setFlash('Your password needs to be changed. Please reset it.');
 				$this->redirect(array('controller' => 'users', 'action' => 'edit', 'User' => $this->Auth->user('id')));
 			}
 			

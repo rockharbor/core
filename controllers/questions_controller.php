@@ -55,10 +55,10 @@ class QuestionsController extends AppController {
 		if (!empty($this->data)) {
 			$this->Question->create();
 			if ($this->Question->save($this->data)) {
-				$this->Session->setFlash(__('The question has been saved', true), 'flash'.DS.'success');
+				$this->Session->setFlash('This question has been created.', 'flash'.DS.'success');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The question could not be saved. Please, try again.', true), 'flash'.DS.'failure');
+				$this->Session->setFlash('Unable to create this question. Please try again.', 'flash'.DS.'failure');
 			}
 		}
 		
@@ -73,14 +73,15 @@ class QuestionsController extends AppController {
  */ 
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
+			//404
 			$this->Session->setFlash(__('Invalid question', true), 'flash'.DS.'failure');
 			$this->redirect(array('action' => 'index'));
 		}
 		if (!empty($this->data)) {
 			if ($this->Question->save($this->data)) {
-				$this->Session->setFlash(__('The question has been saved', true), 'flash'.DS.'success');
+				$this->Session->setFlash('This question has been saved.', 'flash'.DS.'success');
 			} else {
-				$this->Session->setFlash(__('The question could not be saved. Please, try again.', true), 'flash'.DS.'failure');
+				$this->Session->setFlash('Unable to save this question. Please try again.', 'flash'.DS.'failure');
 			}
 		}
 		if (empty($this->data)) {
@@ -101,6 +102,7 @@ class QuestionsController extends AppController {
  */
 	function move($id = null, $direction = null) {
 		if (!$id || !$direction) {
+			//404
 			$this->Session->setFlash('Invalid');
 			$this->redirect(array('action' => 'index'));
 		}
@@ -118,14 +120,15 @@ class QuestionsController extends AppController {
  */ 
 	function delete($id = null) {
 		if (!$id) {
+			//404
 			$this->Session->setFlash(__('Invalid id for question', true), 'flash'.DS.'failure');
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->Question->delete($id)) {
-			$this->Session->setFlash(__('Question deleted', true), 'flash'.DS.'success');
+			$this->Session->setFlash('This question has been deleted.', 'flash'.DS.'success');
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash(__('Question was not deleted', true), 'flash'.DS.'failure');
+		$this->Session->setFlash('Unable to delete this question. Please try again.', 'flash'.DS.'failure');
 		$this->redirect(array('action' => 'index'));
 	}
 }

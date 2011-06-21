@@ -146,7 +146,6 @@ class UsersController extends AppController {
 					// avoid needing a password to save
 					$success = $this->User->saveField('username', $this->data['User']['username']);
 					$this->set('username', $this->data['User']['username']);
-					$subject = 'New username';
 				break;
 				case 'password':
 					unset($this->data['User']['username']);
@@ -162,30 +161,28 @@ class UsersController extends AppController {
 						$success = false;
 					}
 					$this->set('password', $this->data['User']['password']);
-					$subject = 'New password';
 				break;
 				case 'both':
 					$this->data['User']['reset_password'] = false;
 					$success = $this->User->save($this->data);
 					$this->set('username', $this->data['User']['username']);
 					$this->set('password', $this->data['User']['password']);
-					$subject = 'New username and password';
 				break;
 			}
 			
 			if ($success) {
-				$this->Session->setFlash('Please log in with your new credentials.', 'flash'.DS.'success');
+				$this->Session->setFlash('Please log in with your updated account information.', 'flash'.DS.'success');
 				$this->set('reset', $this->data['User']['reset']);
 				$this->Notifier->notify(array(
 					'to' => $this->data['User']['id'],
-					'subject' => $subject,
+					'subject' => 'Your account settings have changed',
 					'template' => 'users_edit'
 				), 'email');
 			} else {
 				if ($invalidPassword) {
-					$this->User->invalidate('current_password', 'What exactly are you trying to pull? This isn\'t your current password.');
+					$this->User->invalidate('current_password', 'Incorrect password. Please try again.');
 				}
-				$this->Session->setFlash('D\'oh! Couldn\'t reset password. Please, try again.', 'flash'.DS.'failure');
+				$this->Session->setFlash('Unable to save this user. Please try again.', 'flash'.DS.'failure');
 			}
 		}
 		
@@ -217,18 +214,18 @@ class UsersController extends AppController {
 		
 				if ($this->User->saveField('password', $newPassword)) {
 					$this->User->saveField('reset_password', true);
-					$this->Session->setFlash('Your new password has been sent via email.', 'flash'.DS.'success');
+					$this->Session->setFlash('Your new password has been sent to your email address.', 'flash'.DS.'success');
 					$this->set('password', $newPassword);
 					$this->Notifier->notify(array(
 						'to' => $user,
-						'subject' => 'Password reset',
+						'subject' => 'Your password has been reset',
 						'template' => 'users_forgot_password'
-					));
+					), 'email');
 				} else {
-					$this->Session->setFlash('D\'oh! Couldn\'t reset password. Please, try again.', 'flash'.DS.'failure');
+					$this->Session->setFlash('Unable to process request. Please try again.', 'flash'.DS.'failure');
 				}
 			} else {
-				$this->Session->setFlash('I couldn\'t find you. Try again.', 'flash'.DS.'failure');
+				$this->Session->setFlash('User not found. Please try again.', 'flash'.DS.'failure');
 			}
 		}
 	}
@@ -263,12 +260,12 @@ class UsersController extends AppController {
 				$this->Notifier->notify(array(
 					'to' => Core::read('notifications.activation_requests'),
 					'template' => 'users_request_activation',
-					'subject' => 'Account activation request',
+					'subject' => 'Account merge request',
 				));
-				$this->Session->setFlash('Request sent!', 'flash'.DS.'success');
+				$this->Session->setFlash('Account merge request has been received.', 'flash'.DS.'success');
 				$this->redirect('/');
 			} else {
-				$this->Session->setFlash('Fill out all the info por favor.', 'flash'.DS.'failure');
+				$this->Session->setFlash('Unable to send account merge request. Please try again.', 'flash'.DS.'failure');
 			}			
 		}
 		
@@ -289,8 +286,8 @@ class UsersController extends AppController {
 			));
 
 			if ($foundUser !== false) {
-				$this->Session->setFlash('User already exists!', 'flash'.DS.'failure');
-				$this->redirect(array('action' => 'view', 'User' => 1));
+				$this->Session->setFlash('That user already exists.', 'flash'.DS.'failure');
+				$this->redirect(array('controller' => 'profiles', 'action' => 'view', 'User' => $foundUser));
 			}
 
 			if ($this->User->createUser($this->data, null, $this->activeUser)) {
@@ -300,7 +297,7 @@ class UsersController extends AppController {
 					$this->Notifier->notify(array(
 						'to' => $notifyUser['id'],
 						'template' => 'users_register',
-						'subject' => 'Account registration'
+						'subject' => 'Welcome to '.Core::read('general.site_name_tagless').'!'
 					));
 				}
 
@@ -315,14 +312,14 @@ class UsersController extends AppController {
 					), 'notification');
 				}
 
-				$this->Session->setFlash('User(s) added and notified!', 'flash'.DS.'success');
+				$this->Session->setFlash('An account has been created for '.$this->data['Profile']['first_name'].' '.$this->data['Profile']['last_name'].'.', 'flash'.DS.'success');
 
 				$this->redirect(array(
 					'controller' => 'users',
 					'action' => 'index'
 				));
 			} else {		
-				$this->Session->setFlash('Oops, validation errors...', 'flash'.DS.'failure');
+				$this->Session->setFlash('Unable to create account. Please try again.', 'flash'.DS.'failure');
 			}
 		}
 		
@@ -355,7 +352,7 @@ class UsersController extends AppController {
 			}
 			
 			if ($this->User->createUser($this->data)) {
-				$this->Session->setFlash('Your account has been created!', 'flash'.DS.'success');
+				$this->Session->setFlash('You have successfully registered.', 'flash'.DS.'success');
 
 				foreach ($this->User->tmpAdded as $notifyUser) {
 					$this->set('username', $notifyUser['username']);
@@ -363,7 +360,7 @@ class UsersController extends AppController {
 					$this->Notifier->notify(array(
 						'to' => $notifyUser['id'],
 						'template' => 'users_register',
-						'subject' => 'Account registration'
+						'subject' => 'Welcome to '.Core::read('general.site_name_tagless').'!'
 					));
 				}
 
@@ -384,7 +381,7 @@ class UsersController extends AppController {
 					$this->data['User']['username']
 				));
 			} else {
-				$this->Session->setFlash('Oops, validation errors...', 'flash'.DS.'failure');
+				$this->Session->setFlash('Unable to register. Please try again.', 'flash'.DS.'failure');
 			}
 		}
 
@@ -416,14 +413,15 @@ class UsersController extends AppController {
  */
 	function delete($id = null) {		
 		if (!$id) {
+			//404
 			$this->Session->setFlash(__('Invalid id for user', true));
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->User->delete($id)) {
-			$this->Session->setFlash(__('User deleted', true));
+			$this->Session->setFlash(__('User record has been removed.', true), 'flash'.DS.'success');
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash(__('User was not deleted', true));
+		$this->Session->setFlash(__('Unable to remove user. Please try again.', true), 'flash'.DS.'failure');
 		$this->redirect(array('action' => 'index'));
 	}
 }

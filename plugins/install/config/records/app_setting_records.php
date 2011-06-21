@@ -89,7 +89,7 @@ class AppSettingRecords extends Records {
 			'id' => 11,
 			'name' => 'notifications.email_subject_prefix',
 			'description' => 'A prefix to put in front of the subject of each email sent through the app.',
-			'value' => 'CORE :: ',
+			'value' => 'CORE: ',
 			'type' => 'string'
 		),
 		array(

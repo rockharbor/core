@@ -111,6 +111,7 @@ class NotificationsController extends AppController {
  */
 	function read($id = null, $read = 1) {
 		if (!$id) {
+			//404
 			$this->redirect(array('action'=>'index'));
 		}
 		
@@ -132,6 +133,12 @@ class NotificationsController extends AppController {
 				$this->Notification->saveField('read', $read == 1);
 			}
 		}
+
+		if ($read) {
+			$this->Session->setFlash('Notifications have been marked as read.', 'flash'.DS.'success');
+		} else {
+			$this->Session->setFlash('Notifications have been marked as unread.', 'flash'.DS.'success');
+		}
 	
 		$this->redirect(array('action' => 'index'));
 	}
@@ -143,6 +150,7 @@ class NotificationsController extends AppController {
  */
 	function delete($id = null) {
 		if (!$id) {
+			//404
 			$this->Session->setFlash('Could not delete notification', 'flash'.DS.'failure');
 			$this->redirect(array('action'=>'index'));
 		}
@@ -162,15 +170,11 @@ class NotificationsController extends AppController {
 		foreach ($ids as $id) {
 			$this->Notification->id = $id;
 			if ($this->Notification->ownedBy($this->activeUser['User']['id'])) {
-				if ($this->Notification->delete($id)) {
-					$this->Session->setFlash('Notification deleted', 'flash'.DS.'success');
-				} else {
-					$this->Session->setFlash('Could not delete notification', 'flash'.DS.'failure');
-				}
-			} else {
-				$this->Session->setFlash('Could not delete notification', 'flash'.DS.'failure');
+				$this->Notification->delete($id);
 			}
 		}
+
+		$this->Session->setFlash('Notifications have been deleted.', 'flash'.DS.'success');
 		
 		$this->redirect(array('action' => 'index'));
 	}

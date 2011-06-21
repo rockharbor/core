@@ -53,11 +53,16 @@ class Profile extends AppModel {
  * @var array
  */
 	var $validate = array(
-		'first_name' => array('rule' => 'notempty'),
-		'last_name' => array('rule' => 'notempty'),
+		'first_name' => array(
+			'rule' => 'notempty',
+			'message' => 'Please fill in the required field.'
+		),
+		'last_name' => array(
+			'rule' => 'notempty',
+			'message' => 'Please fill in the required field.'
+		),
 		'gender_name' => array(
 			'rule' => array('inList', array('m','f')),
-			/*'required' => false,*/
 			'allowEmpty' => true
 		),
 		'birth_date' => array(
@@ -66,33 +71,33 @@ class Profile extends AppModel {
 			'allowEmpty' => true
 		),
 		'job_name' => array(
-			'rule' => 'alphaNumeric',
+			'rule' => array('custom', '/^[a-z0-9 ]*$/i'),
 			'required' => false,
 			'allowEmpty' => true,
-			'message' => 'Letters and numbers only, please.'
+			'message' => 'Please use alpha and numeric characters only.'
 		),
 		'cell_phone' => array(
 			'rule' => array('phone', null, 'us'),
 			'required' => false,
 			'allowEmpty' => true,
-			'message' => 'Must be a phone number.'
+			'message' => 'Please enter a valid phone number.'
 		),
 		'home_phone' => array(
 			'rule' => array('phone', null, 'us'),
 			'required' => false,
 			'allowEmpty' => true,
-			'message' => 'Must be a phone number.'
+			'message' => 'Pleaes enter a valid phone number.'
 		),
 		'work_phone' => array(
 			'rule' => array('phone', null, 'us'),
 			'required' => false,
 			'allowEmpty' => true,
-			'message' => 'Must be a phone number.'
+			'message' => 'Please enter a valid phone number.'
 		),
 		'primary_email' => array(
 			'email' => array(
 				'rule' => 'email',
-				'message' => 'Must be a valid email address.',
+				'message' => 'Pleae enter a valid email address.',
 				'required' => false,
 				'allowEmpty' => true
 			),
@@ -102,7 +107,7 @@ class Profile extends AppModel {
 				'rule' => 'email',
 				'required' => false,
 				'allowEmpty' => true,
-				'message' => 'Must be a valid email address.'
+				'message' => 'Please enter a valid email address.'
 			),
 		),
 		'alternate_email_2' => array(
@@ -110,7 +115,7 @@ class Profile extends AppModel {
 				'rule' => 'email',
 				'required' => false,
 				'allowEmpty' => true,
-				'message' => 'Must be a valid email address.'
+				'message' => 'Please enter a valid email address.'
 			),
 		)
 	);

@@ -72,14 +72,15 @@ class ProfilesController extends AppController {
  */
 	function edit() {
 		if (!$this->passedArgs['User'] && empty($this->data)) {
+			//404
 			$this->Session->setFlash('Invalid user');
 			$this->redirect(array('action' => 'index'));
 		}
 		if (!empty($this->data)) {
 			if ($this->Profile->saveAll($this->data)) {
-				$this->Session->setFlash('The user has been saved', 'flash'.DS.'success');
+				$this->Session->setFlash('This user has been saved.', 'flash'.DS.'success');
 			} else {
-				$this->Session->setFlash('The user could not be saved. Please, try again.', 'flash'.DS.'failure');
+				$this->Session->setFlash('Unable to save this user. Please try again.', 'flash'.DS.'failure');
 			}
 		}
 		
@@ -104,14 +105,15 @@ class ProfilesController extends AppController {
  */
 	function admin() {
 		if (!$this->passedArgs['User'] && empty($this->data)) {
+			//404
 			$this->Session->setFlash('Invalid user');
 			$this->redirect(array('action' => 'index'));
 		}
 		if (!empty($this->data)) {
 			if ($this->Profile->saveAll($this->data)) {
-				$this->Session->setFlash('The user has been saved', 'flash'.DS.'success');
+				$this->Session->setFlash('This. user has been saved.', 'flash'.DS.'success');
 			} else {
-				$this->Session->setFlash('The user could not be saved. Please, try again.', 'flash'.DS.'failure');
+				$this->Session->setFlash('Unable to save this user. Please try again.', 'flash'.DS.'failure');
 			}
 		}
 		$this->data = $this->Profile->find('first', array(

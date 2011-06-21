@@ -1,1 +1,1 @@
-<?php echo $name; ?> is no longer <?php echo $type; ?> the <?php echo strtolower($itemType); ?> <?php echo $itemName; ?>.
+<?php echo $name; ?> has been removed from leading <?php echo strtolower($itemType); ?> in <?php echo $itemName; ?>.

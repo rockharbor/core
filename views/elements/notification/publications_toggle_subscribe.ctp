@@ -1,1 +1,1 @@
-You have been <?php echo $subscribe ? 'subscribed' : 'unsubscribed'; ?> from <?php echo $publication['Publication']['name']; ?>.
+You have <?php echo $subscribe ? 'subscribed for' : 'unsubscribed from'; ?> <strong><?php echo $publication['Publication']['name']; ?></strong>.

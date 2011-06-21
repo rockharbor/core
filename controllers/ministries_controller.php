@@ -90,6 +90,7 @@ class MinistriesController extends AppController {
 		$id = $this->passedArgs['Ministry'];
 		
 		if (!$id) {
+			//404
 			$this->Session->setFlash(__('Invalid ministry', true));
 			$this->redirect(array('action' => 'index'));
 		}
@@ -113,7 +114,7 @@ class MinistriesController extends AppController {
 		));
 
 		if ($ministry['Ministry']['private'] && !$this->Ministry->Leader->User->Group->canSeePrivate($this->activeUser['Group']['id'])) {
-			$this->Session->setFlash('That Ministry is private', 'flash'.DS.'failure');
+			$this->Session->setFlash('Cannot view '.$ministry['Ministry']['name'].'.', 'flash'.DS.'failure');
 			$this->redirect(array('action' => 'index'));
 		}
 
@@ -129,10 +130,10 @@ class MinistriesController extends AppController {
 		if (!empty($this->data)) {
 			$this->Ministry->create();
 			if ($this->Ministry->save($this->data)) {
-				$this->Session->setFlash(__('The ministry has been saved', true));
+				$this->Session->setFlash('This ministry has been created.', 'flash'.DS.'success');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The ministry could not be saved. Please, try again.', true));
+				$this->Session->setFlash('Unable to create this ministry. Please try again.', 'flash'.DS.'failure');
 			}
 		}
 		$this->data['Ministry']['campus_id'] = $this->passedArgs['Campus'];
@@ -169,19 +170,20 @@ class MinistriesController extends AppController {
 				}
 				$this->Ministry->create();
 				$this->Ministry->id = $id;
+				$name = $this->Ministry->field('name');
 				$this->Ministry->data = $this->data;
 				if ($this->Ministry->save()) {
 					$this->set('ministry', $this->Ministry->read());
 					$this->Notifier->notify(array(
 						'to' => Core::read('notifications.ministry_content'),
 						'template' => 'ministries_edit',
-						'subject' => 'Ministry content change',
+						'subject' => 'The '.$name.' ministry has been edited'
 					));
 					$count++;
 				}
 			}
 			$this->Ministry->clearCache();
-			$this->Session->setFlash($count.'/'.count($selected).' Ministries have been bulk edited.', 'flash'.DS.'success');
+			$this->Session->setFlash($count.'/'.count($selected).' ministries have been bulk edited.', 'flash'.DS.'success');
 		}
 		$this->set('campuses', $this->Ministry->Campus->find('list'));
 		$this->set('parents', $this->Ministry->active('list', array(
@@ -198,36 +200,44 @@ class MinistriesController extends AppController {
 		$id = $this->passedArgs['Ministry'];
 	
 		if (!$id) {
+			//404
 			$this->Session->setFlash('Invalid ministry');
 			$this->redirect(array('action' => 'index'));
 		}
 
 		// if they can confirm a revision, there's no need to go through the confirmation process
+		$authorized = false;
 		if ($this->isAuthorized('ministries/revise')) {
+			$authorized = true;
 			$this->Ministry->Behaviors->disable('Confirm');
 		}
 		
 		$this->Ministry->id = $id;
+		$name = $this->Ministry->field('name');
 		$revision = $this->Ministry->revision($id);
 		
 		if (!empty($this->data)) {
 			if (!$revision) {
 				if ($this->Ministry->save($this->data)) {
-					$this->Session->setFlash('The changes to this ministry are pending.', 'flash'.DS.'success');
+					if ($authorized) {
+						$this->Session->setFlash('This ministry has been saved.', 'flash'.DS.'success');
+					} else {
+						$this->Session->setFlash('Your changes are pending review.', 'flash'.DS.'success');
+					}
 
 					$this->set('ministry', $this->Ministry->read(null, $id));
 					$this->Notifier->notify(array(
 						'to' => Core::read('notifications.ministry_content'),
 						'template' => 'ministries_edit',
-						'subject' => 'Ministry content change',
+						'subject' => 'The '.$name.' ministry has been edited'
 					));
 				} else {
-					$this->Session->setFlash('There were problems saving the changes.', 'flash'.DS.'failure');
+					$this->Session->setFlash('Unable to save this ministry. Please try again.', 'flash'.DS.'failure');
 				}
 				
 				$revision = $this->Ministry->revision($id);
 			} else {
-				$this->Session->setFlash('There\'s already a pending revision for this ministry.', 'flash'.DS.'failure');
+				$this->Session->setFlash('There\'s already a pending change for this ministry.', 'flash'.DS.'failure');
 			}
 		}
 		
@@ -259,6 +269,7 @@ class MinistriesController extends AppController {
 		$id = $this->passedArgs['Ministry'];
 
 		if (!$id) {
+			//404
 			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
 			$this->redirect(array('action' => 'edit', $id));
 		}
@@ -266,8 +277,8 @@ class MinistriesController extends AppController {
 		// get involvement
 		$this->Ministry->contain(array('Leader'));
 		$ministry = $this->Ministry->read(null, $id);
-		if (empty($ministry['Leader'])) {
-			$this->Session->setFlash('Cannot activate until a manager is added', 'flash'.DS.'failure');
+		if (empty($ministry['Leader']) && $active) {
+			$this->Session->setFlash($ministry['Ministry']['name'].' cannot be activated until a leader is assigned.', 'flash'.DS.'failure');
 			$this->redirect($this->emptyPage);
 			return;
 		}
@@ -279,15 +290,13 @@ class MinistriesController extends AppController {
 		if ($success) {
 			$this->Session->setFlash(
 				'Successfully '.($active ? 'activated' : 'deactivated')
-				.' Ministry '.$id.' '
-				.($recursive ? ' and all related items' : ''),
+				.' this ministry.',
 				'flash'.DS.'success'
 			);
 		} else {
 			$this->Session->setFlash(
-				'Failed to '.($active ? 'activate' : 'deactivate')
-				.' Ministry '.$id.' '
-				.($recursive ? ' and all related items' : ''),
+				'Unable to '.($active ? 'activate' : 'deactivate')
+				.' this ministry.',
 				'flash'.DS.'failure'
 			);
 		}
@@ -304,6 +313,7 @@ class MinistriesController extends AppController {
 		$id = $this->passedArgs['Ministry'];
 
 		if (!$id) {
+			//404
 			$this->Session->setFlash(__('Invalid ministry', true));
 			$this->redirect(array('action' => 'index'));
 		}
@@ -332,9 +342,13 @@ class MinistriesController extends AppController {
 		}
 		
 		if ($success) {
-			$this->Session->setFlash('Action taken');
+			if ($confirm) {
+				$this->Session->setFlash('This request has been approved.', 'flash'.DS.'success');
+			} else {
+				$this->Session->setFlash('This request has been denied.', 'flash'.DS.'success');
+			}
 		} else {
-			$this->Session->setFlash('Error');
+			$this->Session->setFlash('Unable to process this request.', 'flash'.DS.'failure');
 		}		
 		
 		$this->redirect(array('action' => 'history', 'Ministry' => $id));
@@ -347,14 +361,15 @@ class MinistriesController extends AppController {
  */ 
 	function delete($id = null) {
 		if (!$id) {
+			//404
 			$this->Session->setFlash(__('Invalid id for ministry', true));
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->Ministry->delete($id)) {
-			$this->Session->setFlash(__('Ministry deleted', true));
+			$this->Session->setFlash('This ministry has been deleted.', 'flash'.DS.'success');
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash(__('Ministry was not deleted', true));
+		$this->Session->setFlash('Unable to delete this ministry. Please try again.', 'flash'.DS.'failure');
 		$this->redirect(array('action' => 'index'));
 	}
 }

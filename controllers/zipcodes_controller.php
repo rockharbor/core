@@ -39,6 +39,7 @@ class ZipcodesController extends AppController {
  */
 	function add() {
 		if (!isset($this->passedArgs['Region'])) {
+			//404
 			$this->setFlash('Invalid id');
 			$this->redirect(array('controller' => 'regions'));
 		}
@@ -46,9 +47,9 @@ class ZipcodesController extends AppController {
 		if (!empty($this->data)) {
 			$this->Zipcode->create();
 			if ($this->Zipcode->save($this->data)) {
-				$this->Session->setFlash('The Zipcode has been added', 'flash'.DS.'success');
+				$this->Session->setFlash('This Zipcode has been created.', 'flash'.DS.'success');
 			} else {
-				$this->Session->setFlash('The Zipcode could not be added. Please, try again.', 'flash'.DS.'failure');
+				$this->Session->setFlash('Unable to create zipcode. Please try again.', 'flash'.DS.'failure');
 			}
 		}
 		
@@ -62,14 +63,15 @@ class ZipcodesController extends AppController {
  */
 	function delete($id = null) {
 		if (!$id) {
+			//404
 			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->Zipcode->delete($id)) {
-			$this->Session->setFlash('Zipcode deleted', 'flash'.DS.'success');
+			$this->Session->setFlash('This zipcode has been deleted.', 'flash'.DS.'success');
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash('Zipcode was not deleted', 'flash'.DS.'failure');
+		$this->Session->setFlash('Unable to delete this zipcode. Please try again.', 'flash'.DS.'failure');
 		$this->redirect(array('action' => 'index'));
 	}
 

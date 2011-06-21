@@ -130,7 +130,7 @@ class NotifierComponent extends Object {
 			'from' => null,
 			'subject' => '',
 			'template' => 'default',
-			'layout' => 'default',
+			'layout' => 'notifications',
 			'body' => null,
 			'attachments' => array()
 		);

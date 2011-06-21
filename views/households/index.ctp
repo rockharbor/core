@@ -90,7 +90,7 @@
 					}
 					if (!$householdMember['confirmed']) {
 						echo $this->Permission->link('Confirm', array('controller' => 'households', 'action' => 'confirm', $user['id'], $household['Household']['id'], 'User' => $activeUser['User']['id']), array('id' => 'household_confirm_'.$m));
-						$this->Js->buffer('CORE.confirmation("household_confirm_'.$m.'","Are you sure you want to confirm '.$user['Profile']['name'].'\'s addition to this household?", {update:"households"});');
+						$this->Js->buffer('CORE.confirmation("household_confirm_'.$m.'","Are you sure you want to confirm '.$user['Profile']['name'].' to this household?", {update:"households"});');
 						echo '<br />';
 					}
 					?>

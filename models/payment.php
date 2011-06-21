@@ -38,13 +38,11 @@ class Payment extends AppModel {
  * @var array
  */
 	var $validate = array(
-		'user_id' => 'notEmpty',
 		'amount' => array(
 			'rule' => 'notEmpty',
-			'required' => true
-		),
-		'payment_type_id' => 'notEmpty',
-		'payment_placed_by' => 'notEmpty'
+			'required' => true,
+			'message' => 'Please enter a valid amount.'
+		)
 	);
 
 /**

@@ -106,6 +106,7 @@ class AppSettingsController extends AppController {
  */
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
+			//404
 			$this->Session->setFlash('Invalid setting', 'flash'.DS.'failure');
 		}
 		if (!empty($this->data)) {
@@ -131,9 +132,9 @@ class AppSettingsController extends AppController {
 			}
 
 			if ($this->AppSetting->save($this->data)) {
-				$this->Session->setFlash('The setting has been saved', 'flash'.DS.'success');
+				$this->Session->setFlash('This setting has been saved.', 'flash'.DS.'success');
 			} else {
-				$this->Session->setFlash('The setting could not be saved. Please, try again.', 'flash'.DS.'failure');
+				$this->Session->setFlash('Unable to save setting. Please try again.', 'flash'.DS.'failure');
 			}
 		}
 
