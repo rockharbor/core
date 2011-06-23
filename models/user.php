@@ -124,6 +124,9 @@ class User extends AppModel {
 		),
 		'Payment' => array(
 			'dependent' => true
+		),
+		'Invitation' => array(
+			'dependent' => true
 		)
 	);
 

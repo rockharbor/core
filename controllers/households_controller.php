@@ -152,13 +152,11 @@ class HouseholdsController extends AppController {
 						);
 						$this->Session->setFlash('Added that dude.', 'flash'.DS.'success');
 					} elseif (!$addUser['Profile']['child'] && $success) {
-						$this->Notifier->notify(
+						$this->Notifier->invite(
 							array(
 								'to' => $user,
-								'template' => 'households_invite',
-								'type' => 'invitation'
-							),
-							'notification'
+								'template' => 'households_invite'
+							)
 						);
 						$this->Session->setFlash('Invited that dude.', 'flash'.DS.'success');
 					} else {
@@ -175,13 +173,11 @@ class HouseholdsController extends AppController {
 				$cSuccess = $this->Household->createHousehold($user);
 
 				if ($dSuccess && $cSuccess) {
-					$this->Notifier->notify(
+					$this->Notifier->invite(
 						array(
 							'to' => $user,
-							'template' => 'households_remove',
-							'type' => 'invitation'
-						),
-						'notification'
+							'template' => 'households_remove'
+						)
 					);
 
 					$this->Session->setFlash('He left in a hurry.', 'flash'.DS.'success');

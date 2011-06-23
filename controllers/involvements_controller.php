@@ -241,10 +241,9 @@ class InvolvementsController extends AppController {
 				$this->Involvement->Roster->create();
 				if ($this->Involvement->Roster->save($roster)) {
 					$this->set('involvement', $involvement);
-					$this->Notifier->notify(
+					$this->Notifier->invite(
 						array(
 							'to' => $userId,
-							'type' => 'invitation',
 							'template' => 'involvements_invite_'.$status,
 							'subject' => 'Invitation'
 						)
@@ -292,10 +291,9 @@ class InvolvementsController extends AppController {
 			$this->Involvement->Roster->create();
 			if ($this->Involvement->Roster->save($roster)) {
 				$this->set('involvement', $involvement);
-				$this->Notifier->notify(
+				$this->Notifier->invite(
 					array(
 						'to' => $userId,
-						'type' => 'invitation',
 						'template' => 'involvements_invite_'.$status,
 						'subject' => 'Invitation'
 					)
