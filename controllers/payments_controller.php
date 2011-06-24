@@ -88,6 +88,7 @@ class PaymentsController extends AppController {
  */
 	function index() {
 		if (!isset($this->passedArgs['User'])) {
+			//404
 			$this->Session->setFlash(__('Invalid user', true));
 			$this->redirect($this->referer());
 		}
@@ -266,15 +267,14 @@ class PaymentsController extends AppController {
 					
 					$this->Payment->saveAll($payments, array('validate' => false));
 			
-					$verb = count($payments) > 1 ? 'payments' : 'a payment';
-					App::import('Helper', 'Text');
-					$Text = new TextHelper();
-					$this->Session->setFlash('You\'ve made '.$verb.' for '.$Text->toList(Set::extract('/User/Profile/name', $payForUsers)).'!', 'flash'.DS.'success');
+					App::import('Helper', 'Formatting');
+					$Formatting = new FormattingHelper();
+					$this->Session->setFlash('Your payment of '.$Formatting->money($this->data['Payment']['amount']).' has been received.', 'flash'.DS.'success');
 				} else {
-					$this->Session->setFlash('Error processing payment. '.$this->Payment->CreditCard->creditCardError, 'flash'.DS.'failure');						
+					$this->Session->setFlash('Unable to process payment. '.$this->Payment->CreditCard->creditCardError, 'flash'.DS.'failure');
 				}					
 			} else {
-				$this->Session->setFlash('Could not process payment.', 'flash'.DS.'failure');
+				$this->Session->setFlash('Unable to process payment. Please try again.', 'flash'.DS.'failure');
 			}			
 		}
 		
@@ -307,14 +307,15 @@ class PaymentsController extends AppController {
  */
 	function delete($id = null) {
 		if (!$id) {
+			//404
 			$this->Session->setFlash(__('Invalid id for payment', true));
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->Payment->delete($id)) {
-			$this->Session->setFlash(__('Payment deleted', true));
+			$this->Session->setFlash('This payment has been deleted.', 'flash'.DS.'success');
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash(__('Payment was not deleted', true));
+		$this->Session->setFlash('Unable to delete this payment. Please try again.', 'flash'.DS.'failure');
 		$this->redirect(array('action' => 'index'));
 	}
 }

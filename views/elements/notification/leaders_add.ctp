@@ -1,1 +1,1 @@
-<?php echo $name; ?> is now <?php echo $type; ?> the <?php echo strtolower($itemType); ?> <?php echo $itemName; ?>.
+<?php echo $name; ?> is now leading <?php echo strtolower($itemType); ?> in <strong><?php echo $itemName; ?></strong>.

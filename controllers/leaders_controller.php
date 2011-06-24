@@ -121,12 +121,11 @@ class LeadersController extends AppController {
 				$this->Leader->User->contain(array('Profile'));
 				$leader = $this->Leader->User->read(null, $data['Leader']['user_id']);
 
-				$itemType = $model;
+				$itemType = $data['Leader']['model'] == 'Involvement' ? 'Involvement Opportunities' : 'Ministry';
 				$itemName = $item[$model]['name'];
 				$name = $leader['Profile']['name'];
-				$type = $model == 'Involvement' ? 'leading' : 'managing';
 
-				$this->set(compact('itemType','itemName','name','type'));
+				$this->set(compact('itemType','itemName','name'));
 
 				// notify this user
 				$this->Notifier->notify(array(
@@ -142,10 +141,10 @@ class LeadersController extends AppController {
 					), 'notification');
 				}
 
-				$this->Session->setFlash('The leader has been added', 'flash'.DS.'success');
+				$this->Session->setFlash($name.' is now a leader of'.$itemName.'.', 'flash'.DS.'success');
 				//$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('The leader could not be added. Please, try again.', 'flash'.DS.'failure');
+				$this->Session->setFlash('Unable to process this request. Please try again.', 'flash'.DS.'failure');
 			}
 		}
 		$this->redirect(array(	
@@ -175,9 +174,10 @@ class LeadersController extends AppController {
 			)
 		));
 
+		$item = $this->Leader->{$this->model}->read(array('name'), $this->modelId);
+
 		if ($leaderCount <= 1) {
-			$type = $this->model == 'Involvement' ? 'leader' : 'manager';
-			$this->Session->setFlash('There needs to be at least one '.$type.'!', 'flash'.DS.'failure');
+			$this->Session->setFlash($item[$this->model]['name'].' cannot be without a leader.', 'flash'.DS.'failure');
 			$this->redirect(array('action'=>'index'));
 		}
 
@@ -193,15 +193,13 @@ class LeadersController extends AppController {
 		));
 		$this->Leader->User->contain(array('Profile'));
 		$leader = $this->Leader->User->read(null, $this->passedArgs['User']);
-		$item = $this->Leader->{$this->model}->read(array('name'), $this->modelId);
 		
 		if ($this->Leader->delete($leaderId['Leader']['id'])) {
-			$itemType = $this->model;
+			$itemType = $this->model == 'Involvement' ? 'Involvement Opportunities' : 'Ministry';
 			$itemName = $item[$this->model]['name'];
 			$name = $leader['Profile']['name'];
-			$type = $this->model == 'Involvement' ? 'leading' : 'managing';
 			
-			$this->set(compact('itemType','itemName','name','type'));
+			$this->set(compact('itemType','itemName','name'));
 			
 			// notify this user
 			$this->Notifier->notify(array(
@@ -221,10 +219,10 @@ class LeadersController extends AppController {
 				}
 			}
 		
-			$this->Session->setFlash('Leader removed', 'flash'.DS.'success');
+			$this->Session->setFlash($name.' has been removed from as a leader of '.$itemName.'.', 'flash'.DS.'success');
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash('Leader was not removed', 'flash'.DS.'failure');
+		$this->Session->setFlash('Unable to process request. Please try again.', 'flash'.DS.'failure');
 		$this->redirect(array('action' => 'index'));
 	}
 }

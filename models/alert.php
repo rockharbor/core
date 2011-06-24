@@ -44,13 +44,13 @@ class Alert extends AppModel {
 		'name' => array(
 			'notempty' => array(
 				'rule' => 'notempty',
-				'message' => 'Please fill in the name.'
+				'message' => 'Please fill in the required field.'
 			)
 		),
 		'description' => array(
 			'notempty' => array(
 				'rule' => 'notempty',
-				'message' => 'Please fill in the alert text.'
+				'message' => 'Please fill in the required field.'
 			)
 		),
 		'group_id' => array(

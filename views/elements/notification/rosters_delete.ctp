@@ -3,4 +3,4 @@ if ($activeUser['User']['id'] == $user['User']['id']) {
 	echo 'You have';
 } else {
 	echo $user['Profile']['name'].' has';
-}?> left <?php echo $involvement['Involvement']['name']; ?>.
+}?> been removed from <strong><?php echo $involvement['Involvement']['name']; ?></strong>.

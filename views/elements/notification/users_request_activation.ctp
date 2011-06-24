@@ -1,1 +1,1 @@
-There has been an account creation request.
+A new account has been created and needs merged with an existing record.

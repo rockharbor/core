@@ -71,35 +71,35 @@ class CreditCard extends AppModel {
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
 				'required' => true,
-				'message' => 'Please enter the first name that appears on the credit card.'
+				'message' => 'Please fill in the required field.'
 			)
 		),
 		'last_name' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
 				'required' => true,
-				'message' => 'Please enter the last name that appears on the credit card.'
+				'message' => 'Please fill in the required field.'
 			)
 		),
 		'email' => array(
 			'notEmpty' => array(
 				'rule' => 'email',
 				'required' => true,
-				'message' => 'Please enter the email associated with the person that appears on the credit card.'
+				'message' => 'Please fill in the required field.'
 			)
 		),
 		'credit_card_number' => array(
 			'cc' => array(
 				'rule' => array('cc', 'all', false, null),
 				'required' => true,
-				'message' => 'Please enter a valid credit card number.'
+				'message' => 'Please fill in the required field.'
 			)
 		),
 		'cvv' => array(
 			'minLength' => array(
-				'rule' => array('minLength', 3),
+				'rule' => 'minLength',
 				'required' => true,
-				'message' => 'Please enter the CVV.'
+				'message' => 'Please fill in the required field.'
 			)
 		),
 		'amount' => array(
@@ -113,19 +113,28 @@ class CreditCard extends AppModel {
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
 				'required' => true,
-				'message' => 'Please enter a description.'
+				'message' => 'Please fill in the required field.'
 			)
 		),
 		'invoice_number' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
 				'required' => true,
-				'message' => 'Please enter an invoice number.'
+				'message' => 'Please fill in the required field.'
 			)
 		),
-		'address_line_1' => array('rule' => 'notEmpty'),
-		'city' => array('rule' => 'notEmpty'),
-		'state' => array('rule' => 'notEmpty'),
+		'address_line_1' => array(
+			'rule' => 'notEmpty',
+			'message' => 'Please fill in the required field.'
+		),
+		'city' => array(
+			'rule' => 'notEmpty',
+			'message' => 'Please fill in the required field.'
+		),
+		'state' => array(
+			'rule' => 'notEmpty',
+			'message' => 'Please fill in the required field.'
+		),
 		'zip' => array(
 			'rule' => array('postal', null, 'us'),
 			'message' => 'Please enter a valid zipcode.',

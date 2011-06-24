@@ -1,4 +1,4 @@
-<?php
+ <?php
 /**
  * Address model class.
  *
@@ -56,7 +56,7 @@ class Address extends AppModel {
 			'rule' => array('custom', '/^[a-z0-9 ]*$/i'),
 			'required' => false,
 			'allowEmpty' => true,
-			'message' => 'Alpha-numeric characters only.'
+			'message' => 'Please use alpha and numeric characters only.'
 		),
 		'zip' => array(
 			'rule' => array('postal', null, 'us'),

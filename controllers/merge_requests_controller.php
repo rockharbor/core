@@ -87,6 +87,7 @@ class MergeRequestsController extends AppController {
  */ 	
 	function view($id = null) {
 		if (!$id) {
+			//404
 			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
 			$this->redirect(array('action' => 'index'));
 		}
@@ -105,6 +106,7 @@ class MergeRequestsController extends AppController {
  */
 	function merge($id = null) {
 		if (!$id) {
+			//404
 			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
 			$this->redirect(array('action' => 'index'));
 		}
@@ -123,9 +125,9 @@ class MergeRequestsController extends AppController {
 			}
 			
 			$this->MergeRequest->delete($id);
-			$this->Session->setFlash('Merge complete!');
+			$this->Session->setFlash('Merge was successful.', 'flash'.DS.'success');
 		} else {
-			$this->Session->setFlash('Error merging requests');
+			$this->Session->setFlash('Unable to process request. Please try again.', 'flash'.DS.'failure');
 		}	
 	}
 
@@ -136,6 +138,7 @@ class MergeRequestsController extends AppController {
  */
 	function delete($id = null) {		
 		if (!$id) {
+			//404
 			$this->Session->setFlash('Invalid id');
 			$this->redirect(array('action'=>'index'));
 		}
@@ -149,10 +152,10 @@ class MergeRequestsController extends AppController {
 		if ($Model->delete($request['MergeRequest']['merge_id'])) {
 			// remove request
 			$this->MergeRequest->delete($id);
-			$this->Session->setFlash('Request and merge data deleted. The original data was left untouched.');
+			$this->Session->setFlash('Merge request was deleted.', 'flash'.DS.'success');
 			$this->redirect(array('action'=>'index', 'model' => $request['MergeRequest']['model']));
 		}
-		$this->Session->setFlash('Request was not deleted');
+		$this->Session->setFlash('Unable to process request. Please try again.', 'flash'.DS.'failure');
 		$this->redirect(array('action' => 'index', 'model' => $request['MergeRequest']['model']));
 	}
 

@@ -155,7 +155,7 @@ class HouseholdsController extends AppController {
 							'notification'
 						);
 						$success = true;
-						$this->Session->setFlash('Added that dude.', 'flash'.DS.'success');
+						$this->Session->setFlash($addUser['Profile']['name'].' has been added to this household.', 'flash'.DS.'success');
 					} elseif (!$addUser['Profile']['child'] && $success) {
 						$this->Notifier->invite(
 							array(
@@ -166,10 +166,10 @@ class HouseholdsController extends AppController {
 							)
 						);
 						$success = true;
-						$this->Session->setFlash('Invited that dude.', 'flash'.DS.'success');
+						$this->Session->setFlash($addUser['Profile']['name'].' has been invited to this household.', 'flash'.DS.'success');
 					} else {
-						$success = false;
-						$this->Session->setFlash('Error joining household!', 'flash'.DS.'failure');
+						$success = true;
+						$this->Session->setFlash('Unable to add '.$addUser['Profile']['name'].' to this household. Please try again.', 'flash'.DS.'failure');
 					}
 				} else {
 					$success = false;
@@ -182,6 +182,12 @@ class HouseholdsController extends AppController {
 				// add user to a household (function will check if they have one or not)
 				$cSuccess = $this->Household->createHousehold($user);
 
+				$deleteUser = $this->Household->HouseholdMember->User->find('first', array(
+					'conditions' => array(
+						'User.id' => $user
+					),
+					'contain' => 'Profile'
+				));
 				if ($dSuccess && $cSuccess) {
 					$this->Notifier->notify(
 						array(
@@ -192,10 +198,10 @@ class HouseholdsController extends AppController {
 					);
 
 					$success = true;
-					$this->Session->setFlash('He left in a hurry.', 'flash'.DS.'success');
+					$this->Session->setFlash($deleteUser['Profile']['name'].' has left this household.', 'flash'.DS.'success');
 				} else {
 					$success = false;
-					$this->Session->setFlash('Something broke. FIX IT!', 'flash'.DS.'failure');				
+					$this->Session->setFlash('Unable to remove '.$deleteUser['Profile']['name'].' from this household. Pleaes try again.', 'flash'.DS.'failure');			
 				}
 			}
 		}

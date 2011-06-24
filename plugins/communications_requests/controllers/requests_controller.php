@@ -108,9 +108,9 @@ class RequestsController extends CommunicationsRequestsAppController {
 						'template' => 'CommunicationsRequests.add_request'
 					), 'notification');
 				}
-				$this->Session->setFlash(__('Your request has been sent.', true), 'flash'.DS.'success');
+				$this->Session->setFlash(__('Your communication request has been received.', true), 'flash'.DS.'success');
 			} else {
-				$this->Session->setFlash(__('Your request could not be submitted. Please try again.', true), 'flash'.DS.'failure');
+				$this->Session->setFlash(__('Unable to send your request. Please try again.', true), 'flash'.DS.'failure');
 			}
 		}
 		$requestTypes = $this->Request->RequestType->find('all');
@@ -145,7 +145,7 @@ class RequestsController extends CommunicationsRequestsAppController {
 						'to' => $request['User']['id'],
 						'template' => 'CommunicationsRequests.edit_request'
 					), 'notification');
-					$this->Session->setFlash(__('The selected requests have been edited.', true), 'flash'.DS.'success');
+					$this->Session->setFlash(__('The selected requests have been updated.', true), 'flash'.DS.'success');
 				}
 			}
 		}
@@ -159,6 +159,7 @@ class RequestsController extends CommunicationsRequestsAppController {
  */
 	function delete($mskey = null) {
 		if (!$mskey) {
+			//404
 			$this->Session->setFlash('Invalid id for Request', 'flash'.DS.'failure');
 			$this->redirect(array('action'=>'index'));
 		}
@@ -168,7 +169,7 @@ class RequestsController extends CommunicationsRequestsAppController {
 		}
 		foreach ($selected as $requestId) {
 			$this->Request->delete($requestId);
-			$this->Session->setFlash('Requests deleted', 'flash'.DS.'success');
+			$this->Session->setFlash('The selected requests have been deleted.', 'flash'.DS.'success');
 		}
 		$this->redirect(array('action' => 'index'));
 	}

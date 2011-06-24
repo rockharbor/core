@@ -32,13 +32,13 @@ class Publication extends AppModel {
 		'name' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
-				'message' => 'Please fill in the name.'
+				'message' => 'Please fill in the required field.'
 			)
 		),
 		'description' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
-				'message' => 'Please fill in the description.'
+				'message' => 'Please fill in the required field.'
 			)
 		)
 	);

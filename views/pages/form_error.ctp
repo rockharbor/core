@@ -1,2 +1,4 @@
-<h2>I'm sorry</h2>
-<p>There was an error submitting your form...</p>
+<h1>Error</h1>
+<div class="content-box">
+	<p>Could not complete form submission. Please go back and try again.</p>
+</div>

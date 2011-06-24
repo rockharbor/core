@@ -46,7 +46,8 @@ class Question extends AppModel {
 	var $validate = array(
 		'description' => array(	
 			'rule' => 'notEmpty',
-			'required' => true
+			'required' => true,
+			'message' => 'Please fill in the required field.'
 		)
 	);
 

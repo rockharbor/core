@@ -151,7 +151,7 @@ class AttachmentsController extends AppController {
 			}
 
 			if ($this->{$this->modelClass}->save($this->data)) {
-				$this->Session->setFlash(Inflector::humanize($this->modelKey).' added!', 'flash'.DS.'success');
+				$this->Session->setFlash('Upload successful.', 'flash'.DS.'success');
 			}
 			//failures will be handled by error messages, no need to set flash since they'll see an error (no ajax)
 			//and ajax uploads handle the errors nicely
@@ -169,14 +169,15 @@ class AttachmentsController extends AppController {
 	function approve($id = null, $approve = false) {
 		$this->{$this->modelClass}->Behaviors->detach('Media.Coupler'); // don't require 'file' key
 		if (!$id) {
+			//404
 			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
 		} else {
 			if ($approve) {
 				$this->{$this->modelClass}->id = $id;
 				if ($this->{$this->modelClass}->saveField('approved', true)) {
-					$this->Session->setFlash(Inflector::humanize($this->modelKey).' approved', 'flash'.DS.'success');
+					$this->Session->setFlash('The upload request has been approved.', 'flash'.DS.'success');
 				} else {
-					$this->Session->setFlash(Inflector::humanize($this->modelKey).' could not be approved', 'flash'.DS.'failure');
+					$this->Session->setFlash('Unable to approve upload request. Please try again.', 'flash'.DS.'failure');
 				}
 			} else {
 				$this->setAction('delete', $id);
@@ -238,12 +239,13 @@ class AttachmentsController extends AppController {
  */ 
 	function delete($id = null) {		
 		if (!$id) {
+			//404
 			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
 		} else {		
 			if ($this->{$this->modelClass}->delete($id)) {
-				$this->Session->setFlash(Inflector::humanize($this->modelKey).' deleted', 'flash'.DS.'success');
+				$this->Session->setFlash('Your '.Inflector::humanize($this->modelKey).' has been deleted.', 'flash'.DS.'success');
 			} else {
-				$this->Session->setFlash(Inflector::humanize($this->modelKey).' was not deleted', 'flash'.DS.'failure');
+				$this->Session->setFlash('Unable to delete '.Inflector::humanize($this->modelKey).'. Please try agian.', 'flash'.DS.'failure');
 			}	
 		}
 		

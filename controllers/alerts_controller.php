@@ -80,6 +80,7 @@ class AlertsController extends AppController {
 		));
 
 		if (empty($alert)) {
+			//404
 			$this->Session->setFlash('You cannot view that alert', 'flash'.DS.'failure');
 			$this->redirect(array('action'=>'history'));
 		}
@@ -137,6 +138,7 @@ class AlertsController extends AppController {
 		$userId = $this->activeUser['User']['id'];
 		
 		if (!$id) {
+			//404
 			$this->Session->setFlash('Could not mark alert as read', 'flash'.DS.'failure');
 			$this->redirect(array('action'=>'history'));
 		}
@@ -150,11 +152,7 @@ class AlertsController extends AppController {
 		}
 		
 		foreach ($ids as $id) {
-			if ($this->Alert->markAsRead($userId, $id)) {
-				$this->Session->setFlash('Alert marked as read', 'flash'.DS.'success');
-			} else {
-				$this->Session->setFlash('Could not mark alert as read', 'flash'.DS.'failure');
-			}
+			$this->Alert->markAsRead($userId, $id);
 		}
 	
 		$this->redirect(array('action' => 'history', 'both'));
@@ -167,10 +165,10 @@ class AlertsController extends AppController {
 		if (!empty($this->data)) {
 			$this->Alert->create();
 			if ($this->Alert->save($this->data)) {
-				$this->Session->setFlash('The alert has been saved', 'flash'.DS.'success');
+				$this->Session->setFlash('This alert has been created.', 'flash'.DS.'success');
 				$this->redirect(array('action' => 'index'), null, null, true);
 			} else {
-				$this->Session->setFlash('Could not save the alert', 'flash'.DS.'failure');
+				$this->Session->setFlash('Unable to create alert. Please try again.', 'flash'.DS.'failure');
 			}
 		}
 		
@@ -188,14 +186,15 @@ class AlertsController extends AppController {
  */ 
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
+			//404
 			$this->Session->setFlash('Invalid alert', 'flash'.DS.'failure');
 			$this->redirect(array('action' => 'index'));
 		}
 		if (!empty($this->data)) {
 			if ($this->Alert->save($this->data)) {
-				$this->Session->setFlash('The alert has been saved', 'flash'.DS.'success');
+				$this->Session->setFlash('This alert has been modified.', 'flash'.DS.'success');
 			} else {
-				$this->Session->setFlash('Could not save the alert', 'flash'.DS.'failure');
+				$this->Session->setFlash('Unable to update alert. Please try again.', 'flash'.DS.'failure');
 			}
 		}
 		if (empty($this->data)) {
@@ -216,14 +215,15 @@ class AlertsController extends AppController {
  */ 
 	function delete($id = null) {
 		if (!$id) {
+			//404
 			$this->Session->setFlash('Invalid alert', 'flash'.DS.'failure');
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->Alert->delete($id)) {
-			$this->Session->setFlash('Alert deleted', 'flash'.DS.'success');
+			$this->Session->setFlash('This alert has been deleted.', 'flash'.DS.'success');
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash('Could not delete alert', 'flash'.DS.'failure');
+		$this->Session->setFlash('Unable to delete alert. Please try again.', 'flash'.DS.'failure');
 		$this->redirect(array('action' => 'index'));
 	}
 }

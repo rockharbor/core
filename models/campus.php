@@ -44,10 +44,12 @@ class Campus extends AppModel {
  */
 	var $validate = array(
 		'name' => array(
-			'rule' => 'notempty'
+			'rule' => 'notempty',
+			'message' => 'Please fill in the required field.'
 		),
 		'description' => array(
-			'rule' => 'notempty'
+			'rule' => 'notempty',
+			'message' => 'Please fill in the required field.'
 		)
 	);
 

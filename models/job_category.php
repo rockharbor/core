@@ -29,7 +29,10 @@ class JobCategory extends AppModel {
  * @var array
  */
 	var $validate = array(
-		'name' => 'notempty'
+		'name' => array(
+			'rule' => 'notempty',
+			'message' => 'Please fill in the required field.'
+		)
 	);
 
 }

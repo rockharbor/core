@@ -73,9 +73,9 @@ class RolesController extends AppController {
 			}
 			$this->Role->create();
 			if ($this->Role->save($this->data)) {
-				$this->Session->setFlash('The Role has been added', 'flash'.DS.'success');
+				$this->Session->setFlash('This Role has been created.', 'flash'.DS.'success');
 			} else {
-				$this->Session->setFlash('The Role could not be added. Please, try again.', 'flash'.DS.'failure');
+				$this->Session->setFlash('Unable to create this role. Please try again.', 'flash'.DS.'failure');
 			}
 		}
 		$this->set('ministry', $this->Role->Ministry->read(null, $this->passedArgs['Ministry']));
@@ -86,13 +86,14 @@ class RolesController extends AppController {
  */
 	function edit($id) {
 		if (!$id && empty($this->data)) {
+			//404
 			$this->Session->setFlash('Invalid Role', 'flash'.DS.'failure');
 		}
 		if (!empty($this->data)) {
 			if ($this->Role->save($this->data)) {
-				$this->Session->setFlash('The Role has been saved', 'flash'.DS.'success');
+				$this->Session->setFlash('This role has been saved.', 'flash'.DS.'success');
 			} else {
-				$this->Session->setFlash('The Role could not be saved. Please, try again.', 'flash'.DS.'failure');
+				$this->Session->setFlash('Unable to save this role. Please try again.', 'flash'.DS.'failure');
 			}
 		}
 		if (empty($this->data)) {
@@ -107,14 +108,15 @@ class RolesController extends AppController {
  */
 	function delete($id = null) {
 		if (!$id) {
+			//404
 			$this->Session->setFlash('Invalid id for Role', 'flash'.DS.'failure');
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->Role->delete($id)) {
-			$this->Session->setFlash('Role deleted', 'flash'.DS.'success');
+			$this->Session->setFlash('This role has been deleted.', 'flash'.DS.'success');
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash('Role was not deleted', 'flash'.DS.'failure');
+		$this->Session->setFlash('Unable to delete this role. Please try again.', 'flash'.DS.'failure');
 		$this->redirect(array('action' => 'index'));
 	}
 

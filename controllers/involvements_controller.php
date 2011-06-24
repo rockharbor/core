@@ -136,6 +136,7 @@ class InvolvementsController extends AppController {
 		$id = $this->passedArgs['Involvement'];
 		
 		if (!$id) {
+			//404
 			$this->Session->setFlash('Invalid involvement');
 			$this->redirect(array('action' => 'index'));
 		}
@@ -167,7 +168,7 @@ class InvolvementsController extends AppController {
 		$involvement['Date'] = $this->Involvement->Date->generateDates($id, array('limit' => 5));
 
 		if ($involvement['Involvement']['private'] && !$this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id'])) {
-			$this->Session->setFlash('That Involvement is private', 'flash'.DS.'failure');
+			$this->Session->setFlash('Cannot view this involvement opportunity.', 'flash'.DS.'failure');
 			$this->redirect(array('action' => 'index'));
 		}
 
@@ -246,7 +247,7 @@ class InvolvementsController extends AppController {
 							array(
 								'to' => $userId,
 								'template' => 'involvements_invite_'.$status,
-								'subject' => 'Invitation'
+								'You\'ve been invited to join '.$involvement['Involement']['name']
 							)
 						);
 					} else {
@@ -259,11 +260,10 @@ class InvolvementsController extends AppController {
 							)
 						);
 					}
-					
 				}
 			}
 		}
-		$this->Session->setFlash('The users of this involvement were '.($status == 1 ? 'added' : 'invited').' to the selected ones.', 'flash'.DS.'success');
+		$this->Session->setFlash('Your invitation has been sent.', 'flash'.DS.'success');
 		
 		$this->redirect($this->referer());
 	}
@@ -307,14 +307,13 @@ class InvolvementsController extends AppController {
 					array(
 						'to' => $userId,
 						'template' => 'involvements_invite_'.$status,
-						'subject' => 'Invitation',
 						'confirm' => '/rosters/status/'.$this->Involvement->Roster->id.'/1',
 						'deny' => '/rosters/status/'.$this->Involvement->Roster->id.'/4' //status 4 = declined
 					)
 				);
 			}
 		}
-		$this->Session->setFlash('The users of this involvement were '.($status == 1 ? 'added' : 'invited').' to the selected ones.', 'flash'.DS.'success');
+		$this->Session->setFlash('Your invitation has been sent.', 'flash'.DS.'success');
 
 		$this->redirect($this->referer());
 	}
@@ -329,10 +328,10 @@ class InvolvementsController extends AppController {
 		if (!empty($this->data)) {
 			$this->Involvement->create();
 			if ($this->Involvement->save($this->data)) {
-				$this->Session->setFlash('Involvement opportunity saved!', 'flash'.DS.'success');
+				$this->Session->setFlash('This involvement opportunity has been created.', 'flash'.DS.'success');
 				$this->redirect(array('action' => 'edit', 'Involvement' => $this->Involvement->id));
 			} else {
-				$this->Session->setFlash('The involvement could not be saved. Please, try again.', 'flash'.DS.'failure');
+				$this->Session->setFlash('Unable to create involvement opportunity. Please try again.', 'flash'.DS.'failure');
 			}
 		}
 				
@@ -348,15 +347,16 @@ class InvolvementsController extends AppController {
 		$id = $this->passedArgs['Involvement'];
 	
 		if (!$id && empty($this->data)) {
+			//404
 			$this->Session->setFlash('Invalid involvement');
 			$this->redirect(array('action' => 'index'));
 		}
 
 		if (!empty($this->data)) {
 			if ($this->Involvement->save($this->data)) {
-				$this->Session->setFlash('Updated Involvement!', 'flash'.DS.'success');
+				$this->Session->setFlash('This involvement opportunity has been updated.', 'flash'.DS.'success');
 			} else {
-				$this->Session->setFlash('There were problems saving the changes.', 'flash'.DS.'failure');
+				$this->Session->setFlash('Unable to update involvement opportunity. Please try again.', 'flash'.DS.'failure');
 			}	
 		}
 		if (empty($this->data)) {
@@ -383,6 +383,7 @@ class InvolvementsController extends AppController {
 		$id = $this->passedArgs['Involvement'];
 		
 		if (!$id) {
+			//404
 			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
 			$this->redirect(array('action' => 'edit', $id));
 		}
@@ -392,13 +393,13 @@ class InvolvementsController extends AppController {
 		$involvement = $this->Involvement->read(null, $id);
 		if ($involvement['Involvement']['take_payment'] && $active) {
 			if (empty($involvement['PaymentOption'])) {
-				$this->Session->setFlash('Cannot activate until a payment option is defined', 'flash'.DS.'failure');
+				$this->Session->setFlash($involvement['Involvement']['name'].' cannot be activated until a payment option is created.', 'flash'.DS.'failure');
 				$this->redirect($this->referer());
 				return;
 			}
 		}
 		if (empty($involvement['Leader']) && $active) {
-			$this->Session->setFlash('Cannot activate until a leader is added', 'flash'.DS.'failure');
+			$this->Session->setFlash($involvement['Involvement']['name'].' cannot be activated until a leader has been assigned.', 'flash'.DS.'failure');
 			$this->redirect($this->referer());
 			return;
 		}
@@ -407,16 +408,14 @@ class InvolvementsController extends AppController {
 		
 		if ($success) {
 			$this->Session->setFlash(
-				'Successfully '.($active ? 'activated' : 'deactivated')				
-				.' Involvement '.$id.' '
-				.($recursive ? ' and all related items' : ''),
+				'Successfully '.($active ? 'activated' : 'deactivated')
+				.' this involvement opportunity.',
 				'flash'.DS.'success'
 			);
 		} else {
 			$this->Session->setFlash(
-				'Failed to '.($active ? 'activate' : 'deactivate')				
-				.' Involvement '.$id.' '
-				.($recursive ? ' and all related items' : ''),
+				'Unable to '.($active ? 'activate' : 'deactivate')
+				.' this invovlement opportunity.',
 				'flash'.DS.'failure'
 			);
 		}
@@ -431,14 +430,15 @@ class InvolvementsController extends AppController {
  */
 	function delete($id = null) {
 		if (!$id) {
+			//404
 			$this->Session->setFlash(__('Invalid id for involvement', true));
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->Involvement->delete($id)) {
-			$this->Session->setFlash(__('Involvement deleted', true));
+			$this->Session->setFlash('This involvement opportunity has been deleted.', 'flash'.DS.'success');
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash(__('Involvement was not deleted', true));
+		$this->Session->setFlash('Unable to delete involvement opportunity. Please try again.', 'flash'.DS.'failure');
 		$this->redirect(array('action' => 'index'));
 	}
 }

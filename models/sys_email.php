@@ -53,11 +53,13 @@ class SysEmail extends AppModel {
 	var $validate = array(
 		'subject' => array(
 			'rule' => 'notempty',
-			'required' => true
+			'required' => true,
+			'message' => 'Please fill in the required field.'
 		),
 		'body' => array(
 			'rule' => 'notempty',
-			'required' => true
+			'required' => true,
+			'message' => 'Please fill in the required field.'
 		)
 	);
 

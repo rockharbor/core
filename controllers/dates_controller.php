@@ -179,9 +179,9 @@ class DatesController extends AppController {
 		if (!empty($this->data)) {		
 			$this->Date->create();
 			if ($this->Date->save($this->data)) {
-				$this->Session->setFlash(__('The date has been saved', true));
+				$this->Session->setFlash(__('This date has been created.', true));
 			} else {
-				$this->Session->setFlash(__('The date could not be saved. Please, try again.', true));
+				$this->Session->setFlash(__('Unable to create date. Please try again.', true));
 			}
 		}
 		
@@ -195,13 +195,14 @@ class DatesController extends AppController {
  */ 
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
+			//404
 			$this->Session->setFlash(__('Invalid date', true));
 		}
 		if (!empty($this->data)) {
 			if ($this->Date->save($this->data)) {
-				$this->Session->setFlash('The date has been saved', 'flash'.DS.'success');
+				$this->Session->setFlash('This date has been updated.', 'flash'.DS.'success');
 			} else {
-				$this->Session->setFlash('The date could not be saved. Please, try again.', 'flash'.DS.'failure');
+				$this->Session->setFlash('Unable to update date. Please try again.', 'flash'.DS.'failure');
 			}
 		}
 		if (empty($this->data)) {
@@ -216,14 +217,15 @@ class DatesController extends AppController {
  */ 
 	function delete($id = null) {
 		if (!$id) {
+			//404
 			$this->Session->setFlash(__('Invalid id for date', true));
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->Date->delete($id)) {
-			$this->Session->setFlash(__('Date deleted', true));
+			$this->Session->setFlash(__('This date has been deleted.', true));
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash(__('Date was not deleted', true));
+		$this->Session->setFlash(__('Unable to delete date. Please try again.', true));
 		$this->redirect(array('action' => 'index'));
 	}
 }

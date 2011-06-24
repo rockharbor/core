@@ -47,14 +47,15 @@ class PaymentOption extends AppModel {
 		'total' => array(
 			'money' => array(	
 				'rule' => 'money',
-				'message' => 'Please enter a monetary amount.'
+				'message' => 'Please enter a valid amount.'
 			),
 			'notEmpty'
 		),
 		'account_code' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
-				'required' => true
+				'required' => true,
+				'message' => 'Please fill in the required field.'
 			)
 		),
 		'name' => array(
@@ -66,7 +67,7 @@ class PaymentOption extends AppModel {
 		'childcare' => array(
 			'money' => array(	
 				'rule' => 'money',
-				'message' => 'Please enter a monetary amount.',
+				'message' => 'Please enter a valid amount.',
 				'required' => false,
 				'allowEmpty' => true
 			)
@@ -74,7 +75,7 @@ class PaymentOption extends AppModel {
 		'deposit' => array(
 			'money' => array(	
 				'rule' => 'money',
-				'message' => 'Please enter a monetary amount.',
+				'message' => 'Please enter a valid amount.',
 				'required' => false,
 				'allowEmpty' => true
 			)

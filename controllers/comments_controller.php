@@ -91,10 +91,10 @@ class CommentsController extends AppController {
 		if (!empty($this->data)) {
 			$this->Comment->create();
 			if ($this->Comment->save($this->data)) {
-				$this->Session->setFlash('The comment has been saved', 'flash'.DS.'success');
+				$this->Session->setFlash('This comment has been created.', 'flash'.DS.'success');
 				$this->redirect(array('action' => 'index', 'User' => $viewUser));
 			} else {
-				$this->Session->setFlash('The comment could not be saved. Please, try again.', 'flash'.DS.'failure');
+				$this->Session->setFlash('Unable to create comment. Please try again.', 'flash'.DS.'failure');
 			}
 		}
 		$groups = $this->Comment->Group->findGroups($this->activeUser['Group']['id']);
@@ -110,15 +110,16 @@ class CommentsController extends AppController {
 		$viewUser = $this->passedArgs['User'];
 		
 		if (!$id && empty($this->data)) {
+			//404
 			$this->Session->setFlash('Invalid comment');
 			$this->redirect(array('action' => 'index'));
 		}
 		if (!empty($this->data)) {
 			if ($this->Comment->save($this->data)) {
-				$this->Session->setFlash('The comment has been saved', 'flash'.DS.'success');
+				$this->Session->setFlash('This comment has been updated.', 'flash'.DS.'success');
 				$this->redirect(array('action' => 'index') + $this->passedArgs);
 			} else {
-				$this->Session->setFlash('The comment could not be saved. Please, try again.', 'flash'.DS.'failure');
+				$this->Session->setFlash('Unable to update comment. Please try again.', 'flash'.DS.'failure');
 			}
 		}
 		if (empty($this->data)) {
@@ -137,14 +138,15 @@ class CommentsController extends AppController {
 		$id = $this->passedArgs['Comment'];
 
 		if (!$id) {
+			//404
 			$this->Session->setFlash('Invalid id for comment');
 			$this->redirect(array('action'=>'index', 'User' => $viewUser));
 		}
 		if ($this->Comment->delete($id)) {
-			$this->Session->setFlash('Comment deleted', 'flash'.DS.'success');
+			$this->Session->setFlash('This comment has been deleted.', 'flash'.DS.'success');
 			$this->redirect(array('action'=>'index', 'User' => $viewUser));
 		}
-		$this->Session->setFlash('Comment was not deleted', 'flash'.DS.'failure');
+		$this->Session->setFlash('Unable to delete this comment. Please try again.', 'flash'.DS.'failure');
 		$this->redirect(array('action' => 'index', 'User' => $viewUser));
 	}
 }
