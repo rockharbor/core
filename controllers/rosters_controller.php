@@ -52,6 +52,7 @@ class RostersController extends AppController {
 	function beforeFilter() {
 		/*$this->Security->blackHoleCallback = '_forceSSL';
 		$this->Security->requireSecure('add');*/
+		$this->_editSelf('status');
 		parent::beforeFilter();
 	}
 	
@@ -668,12 +669,16 @@ class RostersController extends AppController {
 /**
  * Confirms a set of roster ids
  *
- * @param integer $uid The multi select id
+ * @param integer $uid The multi select id or a single roster record id
+ * @param integer $status The RosterStatus id
  */
-	function confirm($uid = null) {
+	function status($uid = null, $status = 1) {
 		$selected = $this->MultiSelect->getSelected($uid);
+		if (empty($selected)) {
+			$selected = $uid;
+		}
 		$this->Roster->updateAll(
-			array('Roster.roster_status_id' => 1),
+			array('Roster.roster_status_id' => $status),
 			array('Roster.id' => $selected)
 		);
 		$this->Session->setFlash(__('Roster confirmed', true));
