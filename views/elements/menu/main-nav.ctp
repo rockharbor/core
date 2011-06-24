@@ -51,7 +51,7 @@
 	</li>
 	<li id="nav-notifications">
 		<?php 
-		echo $this->requestAction('/notifications/quick', array('return'));
+		echo $this->requestAction('/notifications/quick', array('return', 'renderAs' => 'ajax'));
 		echo $this->element('hooks', array(
 			'hook' => 'root.notifications'
 		));

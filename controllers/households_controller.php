@@ -76,12 +76,16 @@ class HouseholdsController extends AppController {
 				),
 				'notification'
 			);
-			
+			$success = true;
 			$this->Session->setFlash($joined['Profile']['name'].' joined '.$contact['HouseholdContact']['Profile']['name'].'\'s household.', 'flash'.DS.'success');
 		} else {
+			$success = false;
 			$this->Session->setFlash('Unable to process request. Please try again.', 'flash'.DS.'failure');
 		}
 
+		if ($this->params['requested']) {
+			return $success;
+		}
 		$this->redirect(array(
 			'action' => 'index',
 			'User' => $viewUser
@@ -150,6 +154,7 @@ class HouseholdsController extends AppController {
 							),
 							'notification'
 						);
+						$success = true;
 						$this->Session->setFlash('Added that dude.', 'flash'.DS.'success');
 					} elseif (!$addUser['Profile']['child'] && $success) {
 						$this->Notifier->invite(
@@ -160,11 +165,14 @@ class HouseholdsController extends AppController {
 								'deny' => '/households/shift_households/'.$addUser['User']['id'].'/'.$household,
 							)
 						);
+						$success = true;
 						$this->Session->setFlash('Invited that dude.', 'flash'.DS.'success');
 					} else {
+						$success = false;
 						$this->Session->setFlash('Error joining household!', 'flash'.DS.'failure');
 					}
 				} else {
+					$success = false;
 					$this->Session->setFlash('Invalid Id.');
 				}
 			} else {		
@@ -183,11 +191,17 @@ class HouseholdsController extends AppController {
 						'notification'
 					);
 
+					$success = true;
 					$this->Session->setFlash('He left in a hurry.', 'flash'.DS.'success');
 				} else {
+					$success = false;
 					$this->Session->setFlash('Something broke. FIX IT!', 'flash'.DS.'failure');				
 				}
 			}
+		}
+		
+		if ($this->params['requested']) {
+			return $success;
 		}
 		
 		$this->set('users', $usersShifted);

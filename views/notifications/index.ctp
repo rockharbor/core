@@ -60,7 +60,7 @@
 			<tr<?php echo $class;?> id="notification-<?php echo $notification['Notification']['id'];?>">
 				<td><?php echo $this->MultiSelect->checkbox($notification['Notification']['id']); ?></td>
 				<td><?php
-				$class = $notification['Notification']['read'] ? 'notification-read' : 'notification-unread';
+				$class = 'notification ' . ($notification['Notification']['read'] ? 'read' : 'unread');
 				$style = 'padding-left:5px';
 				echo $this->Html->tag('span', $notification['Notification']['body'], compact('class', 'style'));
 				?></td>

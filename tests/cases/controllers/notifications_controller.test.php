@@ -11,7 +11,7 @@ Mock::generatePartial('NotificationsController', 'TestNotificationsController', 
 class NotificationsControllerTestCase extends CoreTestCase {
 
 	function startTest() {
-		$this->loadFixtures('Notification');
+		$this->loadFixtures('Notification', 'Invitation');
 		$this->Notifications =& new TestNotificationsController();
 		$this->Notifications->__construct();
 		$this->Notifications->constructClasses();
@@ -37,6 +37,7 @@ class NotificationsControllerTestCase extends CoreTestCase {
 		));
 		$this->assertTrue(count($vars['notifications']) > 0);
 		$this->assertTrue($vars['new'] > 0);
+		$this->assertTrue($vars['invitations'] > 0);
 	}
 
 	function testIndex() {

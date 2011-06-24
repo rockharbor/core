@@ -677,11 +677,16 @@ class RostersController extends AppController {
 		if (empty($selected)) {
 			$selected = $uid;
 		}
-		$this->Roster->updateAll(
+		
+		$success = $this->Roster->updateAll(
 			array('Roster.roster_status_id' => $status),
 			array('Roster.id' => $selected)
 		);
+		
 		$this->Session->setFlash(__('Roster confirmed', true));
+		if ($this->params['requested']) {
+			return $success;
+		}
 		$this->redirect(array('action'=>'index'));
 	}
 

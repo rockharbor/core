@@ -887,6 +887,12 @@ Custom Icons
 .icon-core {
 	background-position: -48px -16px;
 }
+.icon-confirm {
+	background-position: -80px -64px;
+}
+.icon-deny {
+	background-position: -96px -64px;
+}
 
 /* large "icons" */
 h1 .core-icon {
