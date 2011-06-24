@@ -702,7 +702,7 @@ class RostersController extends AppController {
 				$this->redirect(array('action' => 'index'));
 			}
 			$selected = array($uid);
-		} else {
+		} elseif (empty($selected)) {
 			$this->Session->setFlash(__('Roster was not deleted', true));
 			$this->redirect(array('action' => 'index'));
 		}
@@ -745,7 +745,7 @@ class RostersController extends AppController {
 				'subject' => 'Left involvement',
 			));
 		}
-		$this->Session->setFlash(__('Roster deleted', true));
+		$this->Session->setFlash(__('Roster deleted', true), 'flash'.DS.'success');
 		$this->redirect(array('action'=>'index'));
 	}
 }
