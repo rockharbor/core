@@ -241,13 +241,25 @@ class InvolvementsController extends AppController {
 				$this->Involvement->Roster->create();
 				if ($this->Involvement->Roster->save($roster)) {
 					$this->set('involvement', $involvement);
-					$this->Notifier->invite(
-						array(
-							'to' => $userId,
-							'template' => 'involvements_invite_'.$status,
-							'subject' => 'Invitation'
-						)
-					);
+					if ($status == 1) {
+						$this->Notifier->notify(
+							array(
+								'to' => $userId,
+								'template' => 'involvements_invite_'.$status,
+								'subject' => 'Invitation'
+							)
+						);
+					} else {
+						$this->Notifier->invite(
+							array(
+								'to' => $userId,
+								'template' => 'involvements_invite_'.$status,
+								'confirm' => '/rosters/status/'.$this->Involvement->Roster->id.'/1',
+								'deny' => '/rosters/status/'.$this->Involvement->Roster->id.'/4' //status 4 = declined
+							)
+						);
+					}
+					
 				}
 			}
 		}
@@ -295,7 +307,9 @@ class InvolvementsController extends AppController {
 					array(
 						'to' => $userId,
 						'template' => 'involvements_invite_'.$status,
-						'subject' => 'Invitation'
+						'subject' => 'Invitation',
+						'confirm' => '/rosters/status/'.$this->Involvement->Roster->id.'/1',
+						'deny' => '/rosters/status/'.$this->Involvement->Roster->id.'/4' //status 4 = declined
 					)
 				);
 			}
