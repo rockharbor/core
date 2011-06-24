@@ -77,7 +77,7 @@ class HouseholdsController extends AppController {
 				'notification'
 			);
 			
-			$this->Session->setFlash($joined['Profile']['name'].' joined '.$contact['Profile']['name'].'\'s household.', 'flash'.DS.'success');
+			$this->Session->setFlash($joined['Profile']['name'].' joined '.$contact['HouseholdContact']['Profile']['name'].'\'s household.', 'flash'.DS.'success');
 		} else {
 			$this->Session->setFlash('Unable to process request. Please try again.', 'flash'.DS.'failure');
 		}
