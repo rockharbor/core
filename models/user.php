@@ -352,9 +352,12 @@ class User extends AppModel {
 		// add missing data for the main user
 		$data = $this->_createUserData($data);
 		
+		// temporarily remove household member info - we have to do that separately
+		$householdMembers = isset($data['HouseholdMember']) ? $data['HouseholdMember'] : array();
+		unset($data['HouseholdMember']);
 		// validate new household members first
 		$return = true;
-		foreach ($data['HouseholdMember'] as $number => &$member) {
+		foreach ($householdMembers as $number => &$member) {
 			$contain = array(
 				'Profile' => array(
 					'fields' => array(
@@ -412,12 +415,9 @@ class User extends AppModel {
 		if (!$return) {
 			unset($data['User']['password']);
 			unset($data['User']['confirm_password']);
+			$data['HouseholdMember'] = $householdMembers;
 			return false;
 		}
-
-		// temporarily remove household member info - we have to do that separately
-		$householdMembers = $data['HouseholdMember'];
-		unset($data['HouseholdMember']);
 
 		// save user and related info
 		$this->create();
@@ -519,7 +519,6 @@ class User extends AppModel {
 				'created_by_type' => 0,
 				'created_by' => 0
 			),
-			'HouseholdMember' => array()
 		);
 
 		$data = Set::merge($default, $data);
