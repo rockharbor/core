@@ -11,9 +11,7 @@ echo $this->Form->create(array(
 			'type' => 'checkbox',
 			'label' => 'Check to move to a new campus'
 		));
-		echo $this->Form->input('campus_id', array(
-			'empty' => true
-		));
+		echo $this->Form->input('campus_id');
 		echo $this->Form->input('move_ministry', array(
 			'type' => 'checkbox',
 			'label' => 'Check to move to a new ministry'
@@ -22,7 +20,6 @@ echo $this->Form->create(array(
 			'empty' => true
 		));
 		echo $this->Form->input('active', array(
-			'hiddenField' => false,
 			'type' => 'radio',
 			'options' => array(
 				1 => 'Yes',
@@ -30,7 +27,6 @@ echo $this->Form->create(array(
 			)
 		));
 		echo $this->Form->input('private', array(
-			'hiddenField' => false,
 			'type' => 'radio',
 			'options' => array(
 				1 => 'Yes',

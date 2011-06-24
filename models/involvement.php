@@ -157,7 +157,7 @@ class Involvement extends AppModel {
 			'className' => 'Image',
 			'foreignKey' => 'foreign_key',
 			'dependent' => true,
-			'conditions' => array('Image.model' => 'Involvement', 'Image.group' => 'Image')
+			'conditions' => array('Image.model' => 'Involvement', 'Image.group' => 'Image', 'Image.approved' => true)
 		)
 	);
 
@@ -198,6 +198,15 @@ class Involvement extends AppModel {
 		'notInvolvement' => array(
 			'conditions' => array(
 				'Involvement.id <>' => ':0:'
+			)
+		),
+		'canBePromoted' => array(
+			'conditions' => array(
+				'Image.approved' => true,
+				'Image.promoted' => false
+			),
+			'link' => array(
+				'Image'
 			)
 		)
 	);

@@ -1,6 +1,6 @@
 <?php
 /**
- * Address controller class.
+ * Roles controller class.
  *
  * @copyright     Copyright 2010, *ROCK*HARBOR
  * @link          http://rockharbor.org *ROCK*HARBOR
@@ -9,12 +9,7 @@
  */
 
 /**
- * Includes
- */
-App::import('Controller', 'SimpleCruds');
-
-/**
- * Addresses Controller
+ * Roles Controller
  *
  * @package       core
  * @subpackage    core.app.controllers
@@ -67,6 +62,15 @@ class RolesController extends AppController {
  */
 	function add() {
 		if (!empty($this->data)) {
+			if ($this->data['Role']['copy']) {
+				$subministries = $this->Role->Ministry->children($this->data['Role']['ministry_id']);
+				foreach ($subministries as $subministry) {
+					$this->Role->create();
+					$data = $this->data;
+					$data['Role']['ministry_id'] = $subministry['Ministry']['id'];
+					$this->Role->save($data);
+				}
+			}
 			$this->Role->create();
 			if ($this->Role->save($this->data)) {
 				$this->Session->setFlash('This Role has been created.', 'flash'.DS.'success');

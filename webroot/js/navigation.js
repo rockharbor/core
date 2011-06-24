@@ -5,11 +5,11 @@
  */
 
 CORE.initNavigation = function() {
-	$('#nav-ministries .campuses input:radio').change(function() {
-		$('#nav-ministries li[id^=campus]').hide();
-		$('#nav-ministries li#campus-'+$(this).val()).show();
+	$('#nav-campuses .campuses input:radio').change(function() {
+		$('#nav-campuses li[id^=campus]').hide();
+		$('#nav-campuses li#campus-'+$(this).val()).show();
 	});
-	$('#nav-ministries .campuses input:radio:first').change();
+	$('#nav-campuses .campuses input:radio:first').change();
 
 	$('#nav-notifications ul li.notification').live('mouseenter', function() {
 		var name = $(this).attr('id').split('-');

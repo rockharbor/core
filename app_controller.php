@@ -74,11 +74,7 @@ class AppController extends Controller {
 				)
 			)
 		),
-		'Notifier' => array(
-			'saveData' => array(
-				'type' => 'default'
-			)
-		),
+		'Notifier',
 		'QueueEmail.QueueEmail',
 		'Security'
 	);
@@ -176,17 +172,16 @@ class AppController extends Controller {
 				$this->Session->setFlash('Your password needs to be changed. Please reset it.');
 				$this->redirect(array('controller' => 'users', 'action' => 'edit', 'User' => $this->Auth->user('id')));
 			}
-			
-			// don't cache - when a user leaves and reopens after the session expires, they still saw a page instead of being redirected
-			$this->disableCache();
 		} else {
 			$this->layout = 'public';
 		}
 
+		// don't cache - when a user leaves and reopens after the session expires, they still saw a page instead of being redirected
+		$this->disableCache();
+			
 		// use custom authentication (password encrypt/decrypt)
 		$this->Auth->authenticate = new User();
 
-		
 		// set to log using this user (see LogBehavior)
 		if (!$this->params['plugin'] && sizeof($this->uses) && $this->{$this->modelClass}->Behaviors->attached('Logable')) { 
 			$this->{$this->modelClass}->setUserData($this->activeUser); 
@@ -249,6 +244,8 @@ class AppController extends Controller {
  * @see Controller::beforeRender()
  */	
 	function beforeRender() {
+		$this->defaultSubmitOptions['url'] = $this->here;
+		
 		$this->set('activeUser', $this->activeUser);	
 		$this->set('defaultSubmitOptions', $this->defaultSubmitOptions);
 

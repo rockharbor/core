@@ -29,7 +29,7 @@ if ($new > 0) {
 			));
 			echo '</li>';
 		}
-		echo '<li id="notification-viewall">';
+		echo '<li class="bottom-link">';
 		echo $this->Html->link('View All Notifications', array('controller' => 'notifications', 'action' => 'index'), array('rel' => 'modal-notifications'));
 		echo ' / ';
 		echo $this->Html->link('Alerts', array('controller' => 'alerts', 'action' => 'history'), array('rel' => 'modal-notifications'));

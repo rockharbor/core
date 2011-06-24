@@ -40,8 +40,8 @@
 		}
 
 		// google cdn scripts
-		$this->AssetCompress->script('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js');
-		$this->AssetCompress->script('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.js');
+		echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js');
+		echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.js');
 
 		// vendor scripts
 		$this->AssetCompress->script('jquery.plugins/jquery.qtip');

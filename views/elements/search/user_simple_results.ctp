@@ -15,6 +15,7 @@ $this->MultiSelect->create();
 			<th><?php echo $this->Paginator->sort('username'); ?></th>
 			<th><?php echo $this->Paginator->sort('First Name', 'Profile.first_name'); ?></th>
 			<th><?php echo $this->Paginator->sort('Last Name', 'Profile.last_name'); ?></th>
+			<th><?php echo $this->Paginator->sort('City', 'ActiveAddress.city'); ?></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -31,6 +32,7 @@ $this->MultiSelect->create();
 				<td><?php echo $result['User']['username'].$this->Formatting->flags('User', $result); ?></td>
 				<td><?php echo $result['Profile']['first_name']; ?></td>
 				<td><?php echo $result['Profile']['last_name']; ?></td>
+				<td><?php echo $result['ActiveAddress']['city']; ?></td>
 			</tr>
 		<?php endforeach; ?>
 	</tbody>

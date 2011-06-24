@@ -100,21 +100,25 @@ CORE.request = function(url, options, data) {
  * updateable, or the closest updateable parent
  *
  * @param string id The pagination container's id
+ * @param string id The id of the div containing the pagination links
  * @see CORE.getUpdateableParent
  */
-CORE.updateablePagination = function(updateable) {
+CORE.updateablePagination = function(updateable, id) {
+	if (id == undefined) {
+		return;
+	}
 	if (updateable == undefined) {
 		updateable = 'parent';
 	}
-	$('a[href*="page:"]')
+	if (updateable == 'parent') {
+		var parent = CORE.getUpdateableParent(id);
+		updateable = parent.updateable;
+	}
+	$('a[href*="page:"]', $('#'+id))
 		.unbind('click')
 		.bind('click', function() {
 			if ($(this).attr('id') == '') {
 				$(this).attr('id', unique('pagination-link-'));
-			}
-			if (updateable == 'parent') {
-				var parent = CORE.getUpdateableParent($(this).attr('id'));
-				updateable = parent.updateable;
 			}
 			for (var div in CORE.updateables[updateable]) {
 				CORE.request($(this).attr('href'), {
@@ -136,7 +140,10 @@ CORE.updateablePagination = function(updateable) {
  * @return hash Hash containing `updateable`, `url` and `id` keys
  */
 CORE.getUpdateableParent = function(id) {
-	var parent = $('#'+id).closest('.ui-tabs-panel');
+	var parent = $('#'+id).closest('.content-box');
+	if (parent.length == 0) {
+		parent = $('#'+id).closest('.ui-tabs-panel');
+	}
 	if (parent.length == 0) {
 		return {
 			url: CORE.updateables['content']['content'],
@@ -144,9 +151,16 @@ CORE.getUpdateableParent = function(id) {
 			updateable: 'content'
 		};
 	}
+	if (parent.attr('id') == '') {
+		parent.attr('id', unique());
+	}
 	var tab = parent.closest('.ui-tabs').find('a[href="#'+parent.attr('id')+'"]');
 	var alias = unique('parent-');
-	CORE.register(alias, parent.attr('id'), tab.data('load.tabs'));
+	var url = tab.data('load.tabs');
+	if (tab.data('load.tabs') == undefined) {
+		url = '/';
+	}
+	CORE.register(alias, parent.attr('id'), url);
 	return {
 		url: tab.data('load.tabs'),
 		id: parent.attr('id'),

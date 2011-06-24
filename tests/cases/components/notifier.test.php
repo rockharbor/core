@@ -1,6 +1,6 @@
 <?php
 App::import('Lib', 'CoreTestCase');
-App::import('Model', 'Notification');
+App::import('Model', array('Notification', 'Invitation'));
 App::import('Component', array('Notifier', 'QueueEmail.QueueEmail'));
 
 Mock::generatePartial('NotifierComponent', 'MockNotifierComponent', array('_render'));
@@ -37,6 +37,61 @@ class NotifierTestCase extends CoreTestCase {
 		unset($this->Notification);
 		unset($this->Controller);
 		ClassRegistry::flush();
+	}
+	
+	function testInvite() {
+		$this->loadFixtures('Invitation', 'InvitationsUser');
+		
+		$this->assertFalse($this->Notifier->invite(array(
+			'to' => 1
+		)));
+		
+		$countBefore = $this->Notifier->Invitation->find('count');
+		$this->assertTrue($this->Notifier->invite(array(
+			'to' => 1,
+			'confirm' => '/confirmation/path',
+			'deny' => '/confirmation/path',
+			'template' => 'some_invite'
+		)));
+		$countAfter = $this->Notifier->Invitation->find('count');
+		$this->assertEqual($countAfter-$countBefore, 1);
+		
+		$countBefore = $this->Notifier->Invitation->find('count');
+		$countCcBefore = $this->Notifier->Invitation->InvitationsUser->find('count');
+		$this->assertTrue($this->Notifier->invite(array(
+			'to' => 1,
+			'cc' => 2,
+			'confirm' => '/confirmation/path',
+			'deny' => '/confirmation/path',
+			'template' => 'some_invite'
+		)));
+		$countAfter = $this->Notifier->Invitation->find('count');
+		$countCcAfter = $this->Notifier->Invitation->InvitationsUser->find('count');
+		$this->assertEqual($countAfter-$countBefore, 1);
+		$this->assertEqual($countCcAfter-$countCcBefore, 1);
+		
+		$countBefore = $this->Notifier->Invitation->find('count');
+		$countCcBefore = $this->Notifier->Invitation->InvitationsUser->find('count');
+		$this->assertTrue($this->Notifier->invite(array(
+			'to' => 1,
+			'cc' => array(2, 3, 5),
+			'confirm' => '/confirmation/path',
+			'deny' => '/confirmation/path',
+			'template' => 'some_invite'
+		)));
+		$countAfter = $this->Notifier->Invitation->find('count');
+		$countCcAfter = $this->Notifier->Invitation->InvitationsUser->find('count');
+		$this->assertEqual($countAfter-$countBefore, 1);
+		$this->assertEqual($countCcAfter-$countCcBefore, 3);
+		
+		$countBefore = $this->Notifier->Invitation->find('count');
+		$countCcBefore = $this->Notifier->Invitation->InvitationsUser->find('count');
+		$this->Notifier->Invitation->delete($this->Notifier->Invitation->id);
+		$countAfter = $this->Notifier->Invitation->find('count');
+		$countCcAfter = $this->Notifier->Invitation->InvitationsUser->find('count');
+		$this->assertEqual($countAfter-$countBefore, -1);
+		$this->assertEqual($countCcAfter-$countCcBefore, -3);
+		
 	}
 
 	function testNotify() {
@@ -81,12 +136,11 @@ class NotifierTestCase extends CoreTestCase {
 		);
 		$this->Notifier->_save($user, $data);
 		$this->Notification->recursive = -1;
-		$result = $this->Notification->read(array('user_id', 'read', 'type'));
+		$result = $this->Notification->read(array('user_id', 'read'));
 		$expected = array(
 			'Notification' => array(
 				'user_id' => 1,
-				'read' => false,
-				'type' => 'default'
+				'read' => false
 			)
 		);
 		$this->assertEqual($result, $expected);
@@ -97,12 +151,11 @@ class NotifierTestCase extends CoreTestCase {
 		);
 		$this->Notifier->_save($user, $data);
 		$this->Notification->recursive = -1;
-		$result = $this->Notification->read(array('user_id', 'read', 'type'));
+		$result = $this->Notification->read(array('user_id', 'read'));
 		$expected = array(
 			'Notification' => array(
 				'user_id' => 1,
-				'read' => false,
-				'type' => 'invitation'
+				'read' => false
 			)
 		);
 		$this->assertEqual($result, $expected);

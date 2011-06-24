@@ -28,7 +28,7 @@ class Ministry extends AppModel {
  * 
  * @var string
  */
-	var $order = 'Ministry.name ASC';
+	var $order = ':ALIAS:.name ASC';
 
 /**
  * Extra behaviors for this model
@@ -134,7 +134,7 @@ class Ministry extends AppModel {
 			'className' => 'Image',
 			'foreignKey' => 'foreign_key',
 			'dependent' => true,
-			'conditions' => array('Image.model' => 'Ministry', 'Image.group' => 'Image')
+			'conditions' => array('Image.model' => 'Ministry', 'Image.group' => 'Image', 'Image.approved' => true)
 		)
 	);
 
@@ -176,6 +176,29 @@ class Ministry extends AppModel {
 			'field' => array(
 				'Ministry.name',
 				'Ministry.description',
+			)
+		)
+	);
+
+/**
+ * Array of search filters for SearchesController::simple().
+ *
+ * They are merged with any existing conditions and parameters sent to
+ * Controller::paginate(). Works in conjunction with
+ * SearchesController::simple() where arguments sent after the filter name are
+ * inserted in order within the filter. Make sure to include contains or links
+ * where related model data is needed.
+ *
+ * @var array
+ */	
+	var $searchFilter = array(
+		'canBePromoted' => array(
+			'conditions' => array(
+				'Image.approved' => true,
+				'Image.promoted' => false
+			),
+			'link' => array(
+				'Image'
 			)
 		)
 	);

@@ -40,7 +40,8 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 			'data' => array(
 				'Involvement' => array(
 					'inactive' => 1,
-					'private' => 0
+					'private' => 0,
+					'passed' => 0
 				)
 			)
 		));
@@ -49,11 +50,29 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$expected = array(1, 2, 4, 5);
 		$this->assertEqual($results, $expected);
 		
+		$this->Involvements->Session->write('User', array(
+			'Group' => array('id' => 8)
+		));
 		$vars = $this->testAction('/involvements/index/Ministry:1', array(
 			'data' => array(
 				'Involvement' => array(
 					'inactive' => 1,
-					'private' => 1
+					'private' => 1,
+					'passed' => 1
+				)
+			)
+		));
+		$results = Set::extract('/Involvement/id', $vars['involvements']);
+		sort($results);
+		$expected = array(1, 2, 4, 5);
+		$this->assertEqual($results, $expected);
+		
+		$vars = $this->testAction('/involvements/index/Ministry:1/User:1', array(
+			'data' => array(
+				'Involvement' => array(
+					'inactive' => 1,
+					'private' => 1,
+					'passed' => 1
 				)
 			)
 		));

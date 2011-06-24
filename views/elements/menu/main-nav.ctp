@@ -57,9 +57,9 @@
 		));
 		?>
 	</li>
-	<li id="nav-ministries">
+	<li id="nav-campuses">
 		<?php
-		echo $this->Html->link('Ministries', array('plugin' => false, 'controller' => 'ministries'));
+		echo $this->Html->link('Campuses', array('plugin' => false, 'controller' => 'campuses'));
 		echo $this->element('menu'.DS.'campus', array(
 			'campuses' => $campusesMenu,
 			'cache' => '+1 day'
@@ -74,7 +74,7 @@
 			<li>
 				<?php echo $this->element('calendar', array('size' => 'mini')); ?>
 			</li>
-			<li id="calendar-viewall">
+			<li class="bottom-link">
 				<?php echo $this->Html->link('View Full Size Calendar', array('plugin' => false, 'controller' => 'dates', 'action' => 'calendar', 'full')); ?>
 			</li>
 		</ul>

@@ -15,6 +15,8 @@ class VirtualFieldModel extends AppModel {
 	var $useTable = false;
 
 	var $name = 'VirtualField';
+	
+	var $order = ':ALIAS:.name';
 
 	var $virtualFields = array(
 		'name' => 'CONCAT(:ALIAS:.first_name, " ", :ALIAS:.last_name)',
@@ -40,6 +42,18 @@ class AppModelTestCase extends CoreTestCase {
 	function endTest() {
 		unset($this->User);
 		ClassRegistry::flush();
+	}
+	
+	function testAliasInOrder() {
+		$VirtualField = new VirtualFieldModel();
+		$result = $VirtualField->order;
+		$expected = 'VirtualField.name';
+		$this->assertEqual($result, $expected);
+
+		$VirtualField = new VirtualFieldModel(array('alias' => 'SomeOtherName'));
+		$result = $VirtualField->order;
+		$expected = 'SomeOtherName.name';
+		$this->assertEqual($result, $expected);
 	}
 
 	function testScopeConditions() {

@@ -22,10 +22,9 @@
 		$this->AssetCompress->css('styles');
 		$this->AssetCompress->css('tables');
 
-		$browser = get_browser($_SERVER['HTTP_USER_AGENT']);
-		if($browser->browser == 'IE' && $browser->majorver < 9) {
+		if(preg_match('/MSIE/i', $_SERVER['HTTP_USER_AGENT'])) {
 			$this->AssetCompress->css('ie');
-		}		
+		}
 		$this->AssetCompress->css('calendar');
 
 		// google cdn scripts

@@ -354,6 +354,11 @@ class RostersController extends AppController {
 			$cValidates = true;
 			if (isset($this->data['Child']) && $pValidates) {
 				foreach ($this->data['Child'] as $roster => &$child) {
+					if ($child['Roster']['user_id'] == 0) {
+						unset($this->data['Child'][$roster]);
+						continue;
+					}
+
 					$child = $this->Roster->setDefaultData(array(
 						'roster' => $child,
 						'involvement' => $involvement,
@@ -554,22 +559,13 @@ class RostersController extends AppController {
 		// get roster ids for comparison (to see if they're signed up)
 		$thisRoster = $this->Roster->read(null, $id);
 		
-		// get roster ids for comparison (to see if they're signed up)
-		$roster = $this->Roster->find('list', array(
-			'conditions' => array(
-				'Roster.id',
-				'Roster.involvement_id' => $thisRoster['Roster']['involvement_id']
-			),
-			'fields' => array(
-				'Roster.id',
-				'Roster.user_id'
-			),
-			'contain' => false
-		));
-		
 		if (!empty($this->data)) {
 			if (isset($this->data['Child'])) {
-				foreach ($this->data['Child'] as &$child) {
+				foreach ($this->data['Child'] as $key => &$child) {
+					if ($child['user_id'] == 0) {
+						unset($this->data['Child'][$key]);
+						continue;
+					}
 					$child['roster_status_id'] = 1;
 					$child['parent_id'] = $this->data['Roster']['user_id'];
 					$child['involvement_id'] = $this->data['Roster']['involvement_id'];
@@ -579,7 +575,11 @@ class RostersController extends AppController {
 				$children = $this->data['Child'];
 				unset($this->data['Child']);
 				
-				$cValidates = $this->Roster->saveAll($children, array('validate' => 'only'));
+				if (count($children) > 0) {
+					$cValidates = $this->Roster->saveAll($children, array('validate' => 'only'));
+				} else {
+					$cValidates = true;
+				}
 			} else {
 				$cValidates = true;
 			}
@@ -589,7 +589,7 @@ class RostersController extends AppController {
 			if ($rValidates && $cValidates) {
 				$this->Roster->saveAll($this->data, array('validate' => false));
 				
-				if (isset($children)) {
+				if (isset($children) && count($children) > 0) {
 					$this->Roster->saveAll($children, array('validate' => false));
 				}
 				
@@ -604,6 +604,7 @@ class RostersController extends AppController {
 		}
 		
 		// get needed information about the user and this involvement
+		$this->Roster->Involvement->contain(array('Question'));
 		$involvement = $this->Roster->Involvement->read(null, $thisRoster['Roster']['involvement_id']);
 		// get user info and all household info where they are the contact
 		$householdMemberIds = $this->Roster->User->HouseholdMember->Household->getMemberIds($thisRoster['Roster']['user_id'], true);
@@ -623,6 +624,7 @@ class RostersController extends AppController {
 		$user = $this->Roster->User->read(null, $thisRoster['Roster']['user_id']);
 		
 		if (empty($this->data)) {
+			$this->Roster->contain(array('Answer'));
 			$this->data = $this->Roster->read(null, $id);
 		}
 		
@@ -682,13 +684,21 @@ class RostersController extends AppController {
  * Deletes a set of roster ids
  *
  * @param integer $uid The multi select id
- * @todo Restrict to proper permissions
  */
 	function delete($uid = null) {
 		$selected = $this->MultiSelect->getSelected($uid);
 
-		if (empty($selected)) {
-			//404
+		if (empty($selected) && ($uid && isset($this->passedArgs['User']))) {
+			$roster = $this->Roster->read(null, $uid);
+			if ($this->passedArgs['User'] !== $roster['Roster']['user_id'] &&
+			!$this->Roster->User->HouseholdMember->Household->isContactFor($this->passedArgs['User'], $roster['Roster']['user_id'])
+			) {
+				//404
+				$this->Session->setFlash(__('Roster was not deleted', true));
+				$this->redirect(array('action' => 'index'));
+			}
+			$selected = array($uid);
+		} else {
 			$this->Session->setFlash(__('Roster was not deleted', true));
 			$this->redirect(array('action' => 'index'));
 		}

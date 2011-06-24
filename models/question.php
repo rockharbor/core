@@ -63,5 +63,15 @@ class Question extends AppModel {
 		)
 	);
 
+/**
+ * Sanitization rules
+ *
+ * @var array
+ * @see Sanitizer.SanitizeBehavior
+ */
+	var $sanitize = array(
+		'description' => 'stripScripts'
+	);
+
 }
 ?>

@@ -43,15 +43,13 @@ echo $this->Form->hidden('Roster.involvement_id');
 					'value' => $child['Profile']['user_id'],
 					'label' => $child['Profile']['name'],
 					'checked' => 'checked',
-					'disabled' => 'disabled',
-					'hiddenField' => false
+					'disabled' => 'disabled'
 				));
 			} else {
 				echo $this->Form->input('Child.'.$c.'.user_id', array(
 					'type' => 'checkbox',
 					'value' => $child['Profile']['user_id'],
-					'label' => $child['Profile']['name'],
-					'hiddenField' => false
+					'label' => $child['Profile']['name']
 				));
 			}
 			$c++;
@@ -65,16 +63,28 @@ if (!empty($involvement['Question'])) {
 	?>
 	<fieldset>
 		<legend>Questions</legend>
+		<div class="core-tabs">
+			<ul>
+				<?php $q = 1; foreach ($involvement['Question'] as $question): ?>
+				<li><?php echo $this->Html->link('Question '.$q, '#question'.$q); ?></li>
+				<?php $q++; endforeach; ?>
+			</ul>
 	<?php
 		$q = 0;
 		foreach ($involvement['Question'] as $question) {
-			echo $this->Form->hidden('Answer.'.$q.'.question_id');
+			echo '<div id="question'.($q+1).'">';
+			echo $this->Form->hidden('Answer.'.$q.'.question_id', array(
+				'value' => $question['id']
+			));
 			echo $this->Form->input('Answer.'.$q.'.description', array(
-				'label' => $question['description']
+				'label' => $question['description'],
+				'type' => 'textarea'
 			));
 			$q++;
+			echo '</div>';
 		}
 	?>
+		</div>
 	</fieldset>
 	<?php } ?>
 	<fieldset>

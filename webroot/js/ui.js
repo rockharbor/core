@@ -43,6 +43,7 @@ CORE.modal = function(id, options) {
 		if ($('#modal').dialog('option', 'update') != undefined) {
 			CORE.update($('#modal').dialog('option', 'update'));
 		}
+		$('#modal').empty();
 	};
 	
 	useOptions.open = function(event, ui) {
@@ -76,7 +77,6 @@ CORE.modal = function(id, options) {
 		// load the link into the modal
 		$('#modal').dialog('open');
 		$('#content').dialog('option', 'title', 'Loading');
-		$('#content').empty();
 		$("#content").parent().position({
 			my: 'center',
 			at: 'center',
@@ -434,6 +434,10 @@ CORE.confirmation = function(id, message, options) {
 	if (useOptions.update == 'parent') {
 		var parent = CORE.getUpdateableParent(id);
 		useOptions.update = parent.updateable;
+	}
+	if (useOptions.updateHtml == 'parent') {
+		var parent = CORE.getUpdateableParent(id);
+		useOptions.updateHtml = parent.id;
 	}
 
 	if (useOptions.update != '') {

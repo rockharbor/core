@@ -4,8 +4,9 @@ if (isset($this->Paginator->options['updateable'])) {
 	$updateable = $this->Paginator->options['updateable'];
 	unset($this->Paginator->options['updateable']);
 }
+$id = uniqid('pagination-');
 ?>
-<div class="pagination clearfix">
+<div class="pagination clearfix" id="<?php echo $id; ?>">
 	<span style="float:left">
 	<?php
 	echo $this->Paginator->prev('Prev', array('class' => 'button'), null, array('class' => 'button disabled'));
@@ -17,6 +18,6 @@ if (isset($this->Paginator->options['updateable'])) {
 </div>
 <?php
 if ($updateable) {
-	$this->Js->buffer("CORE.updateablePagination('$updateable')");
+	$this->Js->buffer("CORE.updateablePagination('$updateable', '$id')");
 }
 ?>

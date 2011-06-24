@@ -21,6 +21,7 @@ class NotificationsControllerTestCase extends CoreTestCase {
 		$this->Notifications->Notifier->QueueEmail = new MockQueueEmailComponent();
 		$this->Notifications->Notifier->QueueEmail->setReturnValue('_smtp', true);
 		$this->Notifications->Notifier->QueueEmail->setReturnValue('_mail', true);
+		$this->Notifications->setReturnValue('isAuthorized', true);
 		$this->testController = $this->Notifications;
 	}
 
@@ -50,7 +51,6 @@ class NotificationsControllerTestCase extends CoreTestCase {
 					'created' => '2010-06-24 14:37:38',
 					'modified' => '2010-06-24 14:37:38',
 					'read' => 0,
-					'type' => 'invitation',
 					'body' => 'You have been invited somewhere.'
 				)
 			),
@@ -61,28 +61,7 @@ class NotificationsControllerTestCase extends CoreTestCase {
 					'created' => '2010-06-04 10:24:49',
 					'modified' => '2010-06-24 10:21:54',
 					'read' => 0,
-					'type' => 'default',
 					'body' => 'Jeremy Harris is now managing the campus Fischer.'
-				)
-			)
-		);
-		$this->assertEqual($vars['notifications'], $expected);
-	}
-
-	function testIndexFiltered() {
-		$vars = $this->testAction('/notifications/index/invitation/User:1', array(
-			'return' => 'vars'
-		));
-		$expected = array(
-			array(
-				'Notification' => array(
-					'id' => 1,
-					'user_id' => 1,
-					'created' => '2010-06-24 14:37:38',
-					'modified' => '2010-06-24 14:37:38',
-					'read' => 0,
-					'type' => 'invitation',
-					'body' => 'You have been invited somewhere.'
 				)
 			)
 		);

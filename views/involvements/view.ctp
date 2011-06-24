@@ -1,6 +1,8 @@
 <?php 
 echo $this->Html->script('super_date', array('inline' => false));
 echo $this->Html->script('misc/involvement', array('inline' => false));
+$shortRoster = !empty($signedUp) && $involvement['Involvement']['roster_visible'];
+$canSeeRoster = $this->Permission->check(array('controller' => 'rosters', 'Involvement' => $involvement['Involvement']['id']));
 ?>
 
 <span class="breadcrumb"><?php
@@ -12,9 +14,16 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 <div class="involvements view core-tabs">
 	<ul>
 		<li><a href="#details-tab">Details</a></li>
-		<?php if ($this->Permission->can('viewRoster')) { ?>
-		<li><?php echo $this->Html->link('Roster', array('controller' => 'rosters', 'Involvement' => $involvement['Involvement']['id']), array('title' => 'roster-tab')); ?></li>
-		<?php } ?>
+		<?php 
+		if ($shortRoster || $canSeeRoster) {
+			if ($shortRoster) {
+				$link = $this->Html->link('Roster', '#roster-tab');
+			} else {
+				$link = $this->Html->link('Roster', array('controller' => 'rosters', 'Involvement' => $involvement['Involvement']['id'], 'User' => $activeUser['User']['id']), array('title' => 'roster-tab'));
+			}
+			echo $this->Html->tag('li', $link);
+		}
+		?>
 	</ul>
 
 	<div class="content-box clearfix">
@@ -109,10 +118,19 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 						<?php
 						$leaders = array();
 						foreach ($involvement['Leader'] as $leader) {
+							echo '<div class="core-iconable">';
 							$icon = $this->Html->tag('span', 'Email', array('class' => 'core-icon icon-email'));
-							$leaders[] = $icon.$this->Html->link($leader['User']['Profile']['name'], array('controller' => 'sys_emails', 'action' => 'compose', 'model' => 'User', 'User' => $leader['User']['id']), array('rel' => 'modal-none'));
+							echo $icon.$this->Html->link($leader['User']['Profile']['name'], array('controller' => 'sys_emails', 'action' => 'compose', 'model' => 'User', 'User' => $leader['User']['id']), array('rel' => 'modal-none'));
+							if (!empty($leader)) {
+								$icon = $this->element('icon', array('icon' => 'delete'));
+								$link = $this->Permission->link($icon, array('controller' => 'involvement_leaders', 'action' => 'delete', 'Involvement' => $involvement['Involvement']['id'], 'User' => $leader['User']['id']), array('id' => 'remove-leader-'.$leader['User']['id']));
+								if ($link) {
+									$this->Js->buffer('CORE.confirmation("remove-leader-'.$leader['User']['id'].'", "Are you sure you want to remove '.$leader['User']['Profile']['name'].' from leading?", {update:"content"})');
+									echo $this->Html->tag('div', $link, array('class' => 'core-icon-container'));
+								}
+							}
+							echo '</div>';
 						}
-						echo implode('<br />', $leaders);
 						?>
 					</div>
 					<?php endif; ?>
@@ -120,11 +138,29 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 					<h3>Address</h3>
 					<div class="box"><?php echo $this->Formatting->address($involvement['Address']); ?></div>
 					<?php endif; ?>
-					<?php if (!empty($involvement['Roster'])): ?>
+					<?php if (!empty($signedUp)): ?>
 					<h3>Signed Up</h3>
 					<div class="box highlight">
-						<?php	foreach ($involvement['Roster'] as $householdMember) {
+						<?php	
+						foreach ($signedUp as $householdMember) {
+							echo '<div class="core-iconable">';
 							echo $this->Html->link($householdMember['User']['Profile']['name'], array('controller' => 'profiles', 'action' => 'view', 'User' => $householdMember['User']['id']), array('style' => 'display:block'));
+							$links = array();
+							$icon = $this->element('icon', array('icon' => 'edit'));
+							$link = $this->Permission->link($icon, array('controller' => 'rosters', 'action' => 'edit', $householdMember['Roster']['id'], 'User' => $householdMember['User']['id']), array('rel' => 'modal-none', 'class' => 'no-hover', 'escape' => false));
+							if ($link) {
+								$links[] = $link;
+							}
+							$icon = $this->element('icon', array('icon' => 'delete'));
+							$link = $this->Permission->link($icon, array('controller' => 'rosters', 'action' => 'delete', $householdMember['Roster']['id'], 'User' => $householdMember['User']['id']), array('class' => 'no-hover', 'escape' => false, 'id' => 'remove-'.$householdMember['Roster']['id']));
+							if ($link) {
+								$links[] = $link;
+								$this->Js->buffer('CORE.confirmation("remove-'.$householdMember['Roster']['id'].'", "Are you sure you want to remove '.$householdMember['User']['Profile']['name'].'?", {update:"content"})');
+							}
+							if (!empty($links)) {
+								echo $this->Html->tag('div', implode('', $links), array('class' => 'core-icon-container'));
+							}
+							echo '</div>';
 						} ?>
 					</div>
 					<?php endif; ?>
@@ -147,7 +183,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 				<?php 
 				if ($involvement['Involvement']['signup'] && $involvement['Involvement']['active'] && !$involvement['Involvement']['passed']) {
 					echo $this->Html->link('Sign up', array('controller' => 'rosters', 'action' => 'add', 'User' => $activeUser['User']['id'], 'Involvement' => $involvement['Involvement']['id']), array('rel' => 'modal-content', 'class' => 'button'));
-				}		
+				}
 				?>
 			</div>
 			<ul class="core-admin-tabs">
@@ -159,20 +195,35 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 				?>
 			</ul>
 		</div>
-		<?php if ($this->Permission->can('viewRoster')) { ?>
+		<?php if ($shortRoster || $canSeeRoster): ?>
 		<div id="roster-tab">
-			<?php
-			echo $this->requestAction('/rosters/index', array(
-				'named' => array(
-					'Involvement' => $involvement['Involvement']['id']
-				),
-				'return',
-				'respondAs' => 'ajax'
-			));
-			$this->Js->buffer('CORE.register("roster", "roster-tab", "/rosters/index/Involvement:'.$involvement['Involvement']['id'].'")');
+			<?php 
+			if ($shortRoster) {
+				$table = '';
+				for ($r=0; $r<count($involvement['Roster']); $r++) {
+					$row = array();
+					$row[] = $involvement['Roster'][$r]['User']['Profile']['name'];
+					$r++;
+					if ($r<count($involvement['Roster'])) {
+						$row[] = $involvement['Roster'][$r]['User']['Profile']['name'];
+					}
+					$table .= $this->Html->tableCells($row, array('class' => 'altrow'));
+				}
+				echo $this->Html->tag('table', $table, array('class' => 'datatable'));
+			}  else {
+				echo $this->requestAction('/rosters/index', array(
+					'named' => array(
+						'Involvement' => $involvement['Involvement']['id'],
+						'User' => $activeUser['User']['id']
+					),
+					'return',
+					'respondAs' => 'ajax'
+				));
+				$this->Js->buffer('CORE.register("roster", "roster-tab", "/rosters/index/Involvement:'.$involvement['Involvement']['id'].'")');
+			}
 			?>
 		</div>
-		<?php } ?>
+		<?php endif; ?>
 	</div>
 </div>
 

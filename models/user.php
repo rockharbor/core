@@ -60,7 +60,8 @@ class User extends AppModel {
 			),
 			'characters' => array(
 				'rule' => '/^[a-z0-9\-_]{5,}$/i',
-				'message' => 'Username must be at least 5 characters long and can only contain letters, numbers, dashes and underscores.'
+				'message' => 'Username must be at least 5 characters long and can only contain letters, numbers, dashes and underscores.',
+				'allowEmpty' => true
 			)
 		),
 		'password' => array(			
@@ -193,7 +194,10 @@ class User extends AppModel {
 				AND household_members.user_id = User.id)'
 			),
 			'link' => array(
-				'Profile'
+				'Profile',
+				'ActiveAddress' => array(
+					'fields' => array('city')
+				)
 			)
 		),
 		'notLeaderOf' => array(
@@ -203,7 +207,10 @@ class User extends AppModel {
 				AND leaders.model_id = :1: AND leaders.user_id = User.id)'
 			),
 			'link' => array(
-				'Profile'
+				'Profile',
+				'ActiveAddress' => array(
+					'fields' => array('city')
+				)
 			)
 		),
 		'notSignedUp' => array(
@@ -212,7 +219,10 @@ class User extends AppModel {
 				AND rosters.user_id = User.id)'
 			),
 			'link' => array(
-				'Profile'
+				'Profile',
+				'ActiveAddress' => array(
+					'fields' => array('city')
+				)
 			)
 		)
 	);
@@ -260,14 +270,17 @@ class User extends AppModel {
 	}
 
 /**
- * Gets a user id using an arbitrary amount of data by searching a set of
- * distinguishable fields (username, email fields, name, etc.). If more than
- * one match is found it fails.
+ * Gets a list of users that match the data provided, using distinguishable 
+ * fields (username, email fields, name, etc.). Returns a list of matching user 
+ * ids. Uses `User::prepareSearch()` to generate the search options from the 
+ * data.
  * 
- * @param array $data An array of search possibilities. Can be emails, username, names
- * @return mixed False on no matches, the id on a match
+ * @param array $data Data to search
+ * @param string $operator The search operator
+ * @return array The matching ids or an empty array
+ * @see User::prepareSearch()
  */
-	function findUser($data = array()) {
+	function findUser($data = array(), $operator = 'AND') {
 		if (!is_array($data)) {
 			$data = array($data);
 		}
@@ -275,33 +288,52 @@ class User extends AppModel {
 		$data = Set::filter($data);
 
 		if (empty($data)) {
-			return false;
-		}		
-		
-		$foundUser = $this->find('all', array(
-			'fields' => 'User.id',
-			'conditions' => array(
-				'or' => array(
-					'and' => array(
-						'Profile.first_name' => $data,
-						'Profile.last_name' => $data
-					),
-					'Profile.primary_email' => $data,
-					'Profile.alternate_email_1' => $data,
-					'Profile.alternate_email_2' => $data,
-					'User.username' => $data
-				)
-			),
-			'contain' => array(
-				'Profile'
-			)
-		));
-		
-		if (count($foundUser) > 1 || empty($foundUser)) {
-			return false;
+			return array();
 		}
 		
-		return $foundUser[0]['User']['id'];
+		// normalize data
+		$user = $profile = array();
+		if (isset($data['User'])) {
+			$user = $data['User'];
+		}
+		if (isset($data['Profile'])) {
+			$profile = $data['Profile'];
+		} elseif (isset($user['Profile'])) {
+			$profile = $user['Profile'];
+			unset($user['Profile']);
+		}
+		$data = array(
+			'Search' => array(
+				'operator' => $operator
+			),
+			'User' => $user,
+			'Profile' => $profile
+		);
+		
+		$options = $this->prepareSearch(new AppController(), $data);
+		$options['fields'] = 'User.id';
+
+		if (empty($options['conditions'])) {
+			// don't return all the users
+			return array();
+		}
+		
+		// special condition: since we don't want to search for "first_name" OR
+		// "last_name", make them an AND condition
+		if (strtolower($operator) == 'or') {
+			if (isset($options['conditions'][$operator]['Profile.first_name LIKE'])) {
+				$options['conditions'][$operator]['and']['Profile.first_name LIKE'] = $options['conditions'][$operator]['Profile.first_name LIKE'];
+				unset($options['conditions'][$operator]['Profile.first_name LIKE']);
+			}
+			if (isset($options['conditions'][$operator]['Profile.last_name LIKE'])) {
+				$options['conditions'][$operator]['and']['Profile.last_name LIKE'] = $options['conditions'][$operator]['Profile.last_name LIKE'];
+				unset($options['conditions'][$operator]['Profile.last_name LIKE']);
+			}
+		}
+		
+		$foundUsers = $this->find('all', $options);
+		
+		return Set::extract('/User/id', $foundUsers);
 	}
 
 /**
@@ -324,28 +356,66 @@ class User extends AppModel {
 		$data = $this->_createUserData($data);
 		
 		// validate new household members first
+		$return = true;
 		foreach ($data['HouseholdMember'] as $number => &$member) {
-			$findConditions = Set::filter($member['Profile']);
-			$foundUser = $this->findUser($findConditions);
-
-			if ($foundUser === false) {				
-				$member = $this->_createUserData($member);
+			$contain = array(
+				'Profile' => array(
+					'fields' => array(
+						'id',
+						'first_name',
+						'last_name'
+					)
+				),
+				'ActiveAddress' => array(
+					'fields' => array(
+						'city'
+					)
+				)
+			);
+			
+			if (!empty($member['User']['id'])) {
+				$this->contain($contain);
+				$member = $this->read(array('id'), $member['User']['id']);
 			} else {
-				$this->contain(array('Profile'));
-				$found = $this->read(null, $foundUser);
-				$member = Set::merge($found, $member);
+				$foundUser = $this->findUser($member);
+				
+				if (count($foundUser) == 1) {
+					// don't need to make them pick
+					$this->contain($contain);
+					$member = $this->read(array('id'), $foundUser[0]);
+				} elseif (count($foundUser) > 0) {
+					// user will have to pick one
+					$this->contain($contain);
+					$member['found'] = $this->find('all', array(
+						'fields' => array(
+							'id'
+						),
+						'conditions' => array(
+							'User.id' => $foundUser
+						)
+					));
+					$return = false;
+				} else {
+					// create a new user
+					$allEmpty = Set::filter($member['Profile']);
+					if (!empty($allEmpty)) {
+						$member = $this->_createUserData($member);
+						$this->create();
+						if (!$this->saveAll($member, array('validate' => 'only'))) {
+							$this->HouseholdMember->validationErrors += array(
+								$number => $this->invalidFields()
+							);
+							$return = false;
+						}
+					}
+				}
 			}
-
-			// validate
-			if ($foundUser === false 
-				&& (empty($member['Profile']['primary_email']) || empty($member['Profile']['first_name']) || empty($member['Profile']['last_name']))
-				&& !(empty($member['Profile']['primary_email']) && empty($member['Profile']['first_name']) && empty($member['Profile']['last_name']))
-			) {
-				$this->HouseholdMember->validationErrors += array(
-					$number => array('Profile' => array('first_name' => 'Please fill in all of the information for this user.'))
-				);
-				return false;
-			}
+		}
+		
+		if (!$return) {
+			unset($data['User']['password']);
+			unset($data['User']['confirm_password']);
+			return false;
 		}
 
 		// temporarily remove household member info - we have to do that separately
@@ -375,6 +445,8 @@ class User extends AppModel {
 				$this->HouseholdMember->Household->createHousehold($this->id);
 				$householdId = $this->HouseholdMember->Household->id;
 				$creator = $data;
+			} elseif (!$this->HouseholdMember->Household->isMember($this->id, $householdId)) {
+				$this->HouseholdMember->Household->join($householdId, $this->id);
 			}
 
 			foreach ($householdMembers as $householdMember) {
@@ -384,7 +456,7 @@ class User extends AppModel {
 
 					$this->create();
 					if ($this->saveAll($householdMember)) {
-						$this->HouseholdMember->Household->join($householdId, $this->id, $creator);
+						$this->HouseholdMember->Household->join($householdId, $this->id);
 						$this->tmpAdded[] = array(
 							'id' => $this->id,
 							'username' => $householdMember['User']['username'],
@@ -392,7 +464,7 @@ class User extends AppModel {
 						);
 					}
 				} else {
-					$this->HouseholdMember->Household->join($householdId, $householdMember['User']['id'], $creator);
+					$this->HouseholdMember->Household->join($householdId, $householdMember['User']['id']);
 					$this->contain(array('Profile'));
 					$oldUser = $this->read(null, $householdMember['User']['id']);
 					if ($oldUser['Profile']['child']) {
@@ -501,6 +573,8 @@ class User extends AppModel {
 		unset($data['Profile']['Birthday']);
 		$email = $data['Profile']['email'];
 		unset($data['Profile']['email']);
+		unset($data['User']['password']);
+		unset($data['User']['confirm_password']);
 
 		// remove blank
 		$callback = function(&$item) use (&$callback) {
@@ -560,6 +634,20 @@ class User extends AppModel {
 			$conditions['Profile.birth_date BETWEEN ? AND ?'] = array($start, $end);
 		}
 		
+		// check for birthdate
+		if (!empty($data['Profile']['birth_date'])) {
+			if (is_array($data['Profile']['birth_date'])) {
+				$birthdate = $data['Profile']['birth_date'];
+				$bday = $data['Profile']['birth_date']['year'].'-'.$data['Profile']['birth_date']['month'].'-'.$data['Profile']['birth_date']['day'];
+			} else {
+				$bday = date('Y-m-d', strtotime($data['Profile']['birth_date']));
+			}
+			// remove automatic conditions
+			unset($conditions['Profile.birth_date']);
+			unset($conditions['Profile.birth_date LIKE']);
+			$conditions['Profile.birth_date'] = $bday;
+		}
+		
 		// check for region
 		if (!empty($data['Address']['Zipcode']['region_id'])) {
 			$conditions[$operator]['Zipcode.region_id'] = $data['Address']['Zipcode']['region_id'];
@@ -594,6 +682,10 @@ class User extends AppModel {
 		if (strtolower($operator) == 'and' && isset($conditions[$operator])) {
 			$conditions = array_merge($conditions, $conditions[$operator]);
 			unset($conditions[$operator]);
+		}
+		
+		if (strtolower($operator) == 'or' && empty($conditions[$operator])) {
+			$conditions = array();
 		}
 		
 		$group = 'User.id';

@@ -13,6 +13,34 @@ class GroupTestCase extends CoreTestCase {
 		unset($this->Comment);
 		ClassRegistry::flush();
 	}
+	
+	function testBeforeSave() {
+		$this->Address->save(array(
+			'Address' => array(
+				'city' => 'Placentia',
+				'zip' => '92870'
+			)
+		));
+		$result = $this->Address->read();
+		$this->assertEqual($result['Address']['name'], 'Placentia Address');
+		
+		$this->Address->create();
+		$this->Address->save(array(
+			'Address' => array(
+				'zip' => '92870'
+			)
+		));
+		$result = $this->Address->read();
+		$this->assertEqual($result['Address']['name'], '92870 Address');
+		
+		$this->Address->create();
+		$this->Address->save(array(
+			'city' => 'Placentia',
+			'zip' => '92870'
+		));
+		$result = $this->Address->read();
+		$this->assertEqual($result['Address']['name'], 'Placentia Address');
+	}
 
 	function testDistance() {
 		$this->assertNull($this->Address->distance());

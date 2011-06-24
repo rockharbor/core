@@ -31,8 +31,8 @@ class HouseholdsControllerTestCase extends CoreTestCase {
 	}
 
 	function testConfirm() {
-		$this->testAction('/households/confirm/6/6');
-		$results = $this->Households->Household->HouseholdMember->read(null, 6);
+		$this->testAction('/households/confirm/1/3/User:1');
+		$results = $this->Households->Household->HouseholdMember->read();
 		$this->assertTrue($results['HouseholdMember']['confirmed']);
 	}
 

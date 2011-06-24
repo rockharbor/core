@@ -158,7 +158,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$oldPassword = $this->Users->User->read('password', 1);
 		$data = array(
 			'User' => array(
-				'forgotten' => 'jeremy harris'
+				'forgotten' => 'jharris@rockharbor.org'
 			)
 		);
 		$vars = $this->testAction('/users/forgot_password', array(
@@ -291,9 +291,6 @@ class UsersControllerTestCase extends CoreTestCase {
 			'data' => $data
 		));
 
-		$result = $vars['foundId'];
-		$this->assertEqual($result, 1);
-
 		$data['User']['username'] = 'newusername';
 		$vars = $this->testAction('/users/register/1', array(
 			'data' => $data
@@ -305,6 +302,82 @@ class UsersControllerTestCase extends CoreTestCase {
 		$user = $this->Users->User->findByUsername('newusername');
 		$result = $user['Profile']['name'];
 		$this->assertEqual($result, 'Test User');
+	}
+	
+	function testChooseUser() {
+		$this->Users->choose_user(array(1, 2), '/users/request_activation/:ID:/1', '/original/action');
+		$vars = $this->Users->viewVars;
+		$this->assertEqual(count($vars['users']), 2);
+		$this->assertEqual($vars['redirect'], FULL_BASE_URL.'/users/request_activation/:ID:/1');
+		$this->assertEqual($vars['return'], FULL_BASE_URL.'/original/action/skip_check:1');
+		
+		$this->Users->choose_user(array(1, 2), array(
+			'controller' => 'some_controller',
+			'action' => 'action',
+			':ID:'
+		), '/original/action');
+		$vars = $this->Users->viewVars;
+		$this->assertEqual($vars['redirect'], FULL_BASE_URL.'/some_controller/action/:ID:');
+	}
+	
+	function testHouseholdAdd() {
+		$this->loadFixtures('MergeRequest', 'Address', 'Household', 'HouseholdMember', 'Notification');
+		$notificationsBefore = $this->Users->User->Notification->find('count');
+
+		$data = array(
+			'User' => array(
+				'username' => 'jharris'
+			),
+			'Address' => array(
+				0 => array(
+					'zip' => '12345'
+				)
+			),
+			'Profile' => array(
+				'first_name' => 'Jeremy',
+				'last_name' => 'Harris',
+				'primary_email' => 'test@test.com'
+			),
+			'Household' => array(
+				'id' => 2
+			)
+		);
+		// will redirect to choose_user because a user is found
+		$vars = $this->testAction('/users/household_add/Household:2', array(
+			'data' => $data
+		));
+		$this->assertEqual($vars['redirect'], FULL_BASE_URL.'/households/shift_households/:ID:/2');
+		$this->assertEqual($this->testController->data['Household']['id'], 2);
+
+		// simulate coming from choose_user when no user is chosen
+		$data['User']['username'] = 'newusername';
+		$data['Household']['id'] = 2;
+		$vars = $this->testAction('/users/household_add/skip_check:1', array(
+			'data' => $data
+		));
+		$notificationsAfter = $this->Users->User->Notification->find('count');
+		$this->assertEqual($notificationsAfter-$notificationsBefore, 2);
+
+		$this->Users->User->contain(array(
+			'Profile', 
+			'HouseholdMember' => array(
+				'Household' => array(
+					'HouseholdContact'
+				)
+			)
+		));
+		$user = $this->Users->User->findByUsername('newusername');
+		$result = $user['Profile']['name'];
+		$this->assertEqual($result, 'Jeremy Harris');
+		
+		// make sure they only have one household
+		$this->assertEqual(count($user['HouseholdMember']), 1);
+		
+		// make sure they belong to user 1's household
+		$result = $user['HouseholdMember'][0]['Household']['HouseholdContact']['id'];
+		$this->assertEqual($result, 2);
+		$result = $user['HouseholdMember'][0]['Household']['id'];
+		$this->assertEqual($result, 2);
 	}
 
 }

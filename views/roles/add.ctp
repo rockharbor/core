@@ -11,6 +11,10 @@ echo $this->Form->create(null, array(
 $defaultSubmitOptions['success'] = 'CORE.update("content");';
 echo $this->Form->hidden('Role.ministry_id', array('value' => $ministry['Ministry']['id']));
 echo $this->Form->input('Role.name');
+echo $this->Form->input('copy', array(
+	'type' => 'checkbox',
+	'label' => 'Copy this role to '.$ministry['Ministry']['name'].'\'s subministries as well'
+));
 echo $this->Js->submit('Add', $defaultSubmitOptions);
 ?>
 </fieldset>

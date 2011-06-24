@@ -63,25 +63,24 @@ class HouseholdsController extends AppController {
 	function confirm($user, $household) {
 		$viewUser = $this->passedArgs['User'];
 		
-		$householdMember = $this->Household->HouseholdMember->find('first', array(
-			'conditions' => array(
-				'household_id' => $household,
-				'user_id' => $user
-			)
-		));
-		$this->Household->HouseholdMember->id = $householdMember['HouseholdMember']['id'];
-		$this->Household->HouseholdMember->saveField('confirmed', true);
-
-		$this->Household->contain(array('HouseholdContact' => array('Profile')));
-		$contact = $this->Household->read(null, $household);
-		$this->set('contact', $contact['HouseholdContact']);
-		$this->Notifier->notify(
-			array(
-				'to' => $user,
-				'template' => 'households_join'
-			),
-			'notification'
-		);
+		if ($this->Household->join($household, $user, true)) {
+			$this->Household->contain(array('HouseholdContact' => array('Profile')));
+			$contact = $this->Household->read(null, $household);
+			$this->Household->HouseholdMember->User->contain(array('Profile'));
+			$joined = $this->Household->HouseholdMember->User->read(null, $user);
+			$this->set('contact', $contact['HouseholdContact']);
+			$this->Notifier->notify(
+				array(
+					'to' => $user,
+					'template' => 'households_join'
+				),
+				'notification'
+			);
+			
+			$this->Session->setFlash($joined['Profile']['name'].' joined '.$contact['Profile']['name'].'\'s household.', 'flash'.DS.'success');
+		} else {
+			$this->Session->setFlash('Unable to process request. Please try again.', 'flash'.DS.'failure');
+		}
 
 		$this->redirect(array(
 			'action' => 'index',
@@ -104,6 +103,13 @@ class HouseholdsController extends AppController {
 			// allow for a single user to be passed
 			$users = array($mskey);
 		}
+		
+		$this->Household->contain(array('HouseholdContact' => array('Profile')));
+		$contact = $this->Household->read(null, $household);
+		$this->set('contact', $contact['HouseholdContact']);
+		
+		$usersShifted = array();
+		
 		foreach ($users as $user) {
 			// check to see if they are in this household
 			$householdMember = $this->Household->HouseholdMember->find('first', array(
@@ -112,7 +118,10 @@ class HouseholdsController extends AppController {
 					'user_id' => $user
 				)
 			));
-				
+			
+			$this->Household->HouseholdContact->contain(array('Profile'));
+			$usersShifted[] = $this->Household->HouseholdContact->read(null, $user);
+			
 			if (empty($householdMember)) {			
 				// add them to the household if it exists
 				$this->Household->id = $household;
@@ -125,9 +134,6 @@ class HouseholdsController extends AppController {
 					));
 					$this->Household->HouseholdContact->contain(array('Profile'));
 					$this->set('notifier', $this->Household->HouseholdContact->read(null, $this->activeUser['User']['id']));
-					$this->Household->contain(array('HouseholdContact' => array('Profile')));
-					$contact = $this->Household->read(null, $household);
-					$this->set('contact', $contact['HouseholdContact']);
 
 					$success = $this->Household->join(
 						$household,
@@ -175,9 +181,6 @@ class HouseholdsController extends AppController {
 					'contain' => 'Profile'
 				));
 				if ($dSuccess && $cSuccess) {
-					$this->Household->contain(array('HouseholdContact' => array('Profile')));
-					$contact = $this->Household->read(null, $household);
-					$this->set('contact', $contact['HouseholdContact']);
 					$this->Notifier->notify(
 						array(
 							'to' => $user,
@@ -194,7 +197,7 @@ class HouseholdsController extends AppController {
 			}
 		}
 		
-		$this->redirect($this->referer());
+		$this->set('users', $usersShifted);
 	}
 
 /**

@@ -86,8 +86,7 @@ echo $this->Form->create('Roster', array(
 				echo $this->Form->input('Child.'.$c.'.Roster.user_id', array(
 					'type' => 'checkbox',
 					'value' => $child['Profile']['user_id'],
-					'label' => $child['Profile']['name'],
-					'hiddenField' => false
+					'label' => $child['Profile']['name']
 				));
 				
 				$c++;
@@ -120,7 +119,8 @@ echo $this->Form->create('Roster', array(
 						'value' => $question['id']
 					));
 					echo $this->Form->input('Adult.'.$r.'.Answer.'.$q.'.description', array(
-						'label' => $question['description']
+						'label' => $question['description'],
+						'type' => 'textarea'
 					));
 					$q++;
 				}

@@ -46,6 +46,55 @@ class UserImagesControllerTestCase extends CoreTestCase {
 		$this->assertFalse($this->Attachments->Image->read(null, 4));
 		$result = $this->Attachments->Session->read('Message.flash.element', 'flash'.DS.'success');
 	}
-
+	
+	function testPromote() {
+		$this->loadFixtures('Attachment');
+		$this->Attachments->model = 'Involvement';
+		
+		$this->Attachments->Session->write('MultiSelect.test', array(
+			'selected' => array(1, 2)
+		));
+		$this->testAction('/involvement_images/promote/test/1');
+		$results = $this->Attachments->Image->find('all', array(
+			'conditions' => array(
+				'id' => array(6, 7)
+			)
+		));
+		$results = Set::extract('/Image/promoted', $results);
+		$expected = array(1, 0);
+		$this->assertEqual($results, $expected);
+		
+		$this->testAction('/involvement_images/promote/1/0');
+		$results = $this->Attachments->Image->read(null, 6);
+		$results = Set::extract('/Image/promoted', $results);
+		$expected = array(0);
+		$this->assertEqual($results, $expected);
+		
+		$this->Attachments->model = 'Ministry';
+		
+		$this->Attachments->Session->write('MultiSelect.test', array(
+			'selected' => array(1, 2)
+		));
+		$this->testAction('/ministry_images/promote/test/1');
+		$results = $this->Attachments->Image->find('all', array(
+			'conditions' => array(
+				'id' => array(8, 9)
+			)
+		));
+		$results = Set::extract('/Image/promoted', $results);
+		$expected = array(1, 0);
+		$this->assertEqual($results, $expected);
+		
+		$this->testAction('/ministry_images/promote/1/0');
+		$results = $this->Attachments->Image->find('all', array(
+			'conditions' => array(
+				'id' => array(8, 9)
+			)
+		));
+		$results = Set::extract('/Image/promoted', $results);
+		$expected = array(0, 0);
+		$this->assertEqual($results, $expected);
+	}
+	
 }
 ?>

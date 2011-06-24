@@ -164,6 +164,7 @@ class MinistriesController extends AppController {
 			if (!$this->data['Ministry']['move_campus']) {
 				unset($this->data['Ministry']['campus_id']);
 			}
+			$this->data['Ministry'] = Set::filter($this->data['Ministry']);
 			foreach ($selected as $id) {
 				if (!$this->isAuthorized('ministries/edit', array('Ministry' => $id))) {
 					continue;

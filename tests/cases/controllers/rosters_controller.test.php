@@ -100,7 +100,8 @@ class RostersControllerTestCase extends CoreTestCase {
 
 		$data = array(
 			'Filter' => array(
-				'roster_status_id' => 1
+				'roster_status_id' => 1,
+				'Role' => array()
 			)
 		);
 		$vars = $this->testAction('/rosters/index/Involvement:1', array(
@@ -263,6 +264,13 @@ class RostersControllerTestCase extends CoreTestCase {
 					)
 				)
 			),
+			'Child' => array(
+				array(
+					'Roster' => array(
+						'user_id' => 0
+					)
+				)
+			),
 			'CreditCard' => array(
 				'first_name' => 'Joe',
 				'last_name' => 'Schmoe',
@@ -306,6 +314,9 @@ class RostersControllerTestCase extends CoreTestCase {
 		$data['Child'] = array(
 			array(
 				'user_id' => 2
+			),
+			array(
+				'user_id' => 0
 			)
 		);
 		$vars = $this->testAction('/rosters/edit/5', array(
@@ -315,6 +326,17 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, 'flash'.DS.'success');
 
 		$this->assertEqual($this->Rosters->Roster->field('parent_id'), 1);
+		
+		$data['Child'] = array(
+			array(
+				'user_id' => 0
+			)
+		);
+		$vars = $this->testAction('/rosters/edit/5', array(
+			'data' => $data
+		));
+		$result = $this->Rosters->Session->read('Message.flash.element');
+		$this->assertEqual($result, 'flash'.DS.'success');
 	}
 
 	function testDelete() {
@@ -337,6 +359,16 @@ class RostersControllerTestCase extends CoreTestCase {
 
 		$notificationsAfter = $this->Rosters->Roster->User->Notification->find('count');
 		$this->assertEqual($notificationsAfter-$notificationsBefore, 3);
+		
+		$rostersBefore = $this->Rosters->Roster->find('count');
+		$vars = $this->testAction('/rosters/delete/testDelete/3');
+		$rostersAfter = $this->Rosters->Roster->find('count');
+		$this->assertEqual($rostersAfter-$rostersBefore, 0);
+		
+		$rostersBefore = $this->Rosters->Roster->find('count');
+		$vars = $this->testAction('/rosters/delete/testDelete/3/User:1');
+		$rostersAfter = $this->Rosters->Roster->find('count');
+		$this->assertEqual($rostersAfter-$rostersBefore, 0);
 	}
 
 	function testConfirm() {

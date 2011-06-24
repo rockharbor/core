@@ -141,6 +141,13 @@ class AppSettingRecords extends Records {
 			'value' => null,
 			'type' => 'image'
 		),
+		array(
+			'id' => 19,
+			'name' => 'general.promoted_item_limit',
+			'description' => 'The maximum amount of promoted items to show on the Profile page.',
+			'value' => 2,
+			'type' => 'integer'
+		),
 	);
 
 }

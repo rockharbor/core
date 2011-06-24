@@ -50,12 +50,8 @@ class InvolvementsController extends AppController {
  * @access private
  */
 	function beforeFilter() {
+		$this->_editSelf('index');
 		parent::beforeFilter();
-		$this->set('_canViewRoster', $this->isAuthorized('rosters/index'));
-		$this->set('_canEmail', $this->isAuthorized('sys_emails/compose'));
-		$this->set('_canViewMap', $this->isAuthorized('reports/map'));
-		$this->set('_canRemove', $this->isAuthorized('rosters/delete'));
-		$this->set('_canConfirm', $this->isAuthorized('rosters/confirm'));
 	}
 	
 /**
@@ -63,7 +59,6 @@ class InvolvementsController extends AppController {
  */	
 	function index($viewStyle = 'column') {
 		$private = $this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id']);
-		$inactive = $private;
 
 		$subministries = $this->Involvement->Ministry->children($this->passedArgs['Ministry']);
 		$ids = Set::extract('/Ministry/id', $subministries);
@@ -72,11 +67,26 @@ class InvolvementsController extends AppController {
 		$conditions['or']['Involvement.ministry_id'] = $ids;
 		if (empty($this->data) || !$this->data['Involvement']['inactive']) {
 			$conditions['Involvement.active'] = true;
-			$db = $this->Involvement->getDataSource();
-			$conditions[] = $db->expression('('.$this->Involvement->getVirtualField('passed').') = false');
 		}
 		if (empty($this->data) || !$this->data['Involvement']['private']) {
 			$conditions['Involvement.private'] = false;
+		} elseif (!$private) {
+			$signedUp = array();
+			if (isset($this->passedArgs['User'])) {
+				$signedUp = $this->Involvement->Roster->find('all', array(
+					'conditions' => array(
+						'user_id' => $this->passedArgs['User']
+					)
+				));
+			}
+			$conditions[]['or'] = array(
+				'Involvement.private' => false,
+				'Involvement.id' => Set::extract('/Roster/involvement_id', $signedUp)
+			);
+		}
+		if (empty($this->data) || !$this->data['Involvement']['passed']) {
+			$db = $this->Involvement->getDataSource();
+			$conditions[] = $db->expression('('.$this->Involvement->getVirtualField('passed').') = false');
 		}
 		
 		$displayInvolvements = $this->Involvement->Ministry->find('all', array(
@@ -116,7 +126,7 @@ class InvolvementsController extends AppController {
 			$involvement['dates'] = $this->Involvement->Date->generateDates($involvement['Involvement']['id'], array('limit' => 1));
 		}
 
-		$this->set(compact('viewStyle', 'involvements', 'private', 'inactive'));
+		$this->set(compact('viewStyle', 'involvements'));
 	}
 	
 /**
@@ -130,8 +140,7 @@ class InvolvementsController extends AppController {
 			$this->Session->setFlash('Invalid involvement');
 			$this->redirect(array('action' => 'index'));
 		}
-		$householdMembers = $this->Involvement->Roster->User->HouseholdMember->Household->getMemberIds($this->activeUser['User']['id']);
-		$householdMembers[] = $this->activeUser['User']['id'];
+		
 		$this->Involvement->contain(array(
 			'InvolvementType',
 			'Ministry' => array(
@@ -146,9 +155,6 @@ class InvolvementsController extends AppController {
 			),
 			'Address',
 			'Roster' => array(
-				'conditions' => array(
-					'Roster.user_id' => $householdMembers
-				),
 				'User' => array(
 					'Profile' => array(
 						'fields' => array('name', 'user_id', 'id'),
@@ -166,7 +172,23 @@ class InvolvementsController extends AppController {
 			$this->redirect(array('action' => 'index'));
 		}
 
-		$this->set(compact('involvement'));
+		$householdMembers = $this->Involvement->Roster->User->HouseholdMember->Household->getMemberIds($this->activeUser['User']['id']);
+		$householdMembers[] = $this->activeUser['User']['id'];
+		$signedUp = $this->Involvement->Roster->find('all', array(
+			'conditions' => array(
+				'Roster.user_id' => $householdMembers,
+				'Roster.involvement_id' => $involvement['Involvement']['id']
+			),
+			'contain' => array(
+				'User' => array(
+					'Profile' => array(
+						'fields' => array('name', 'user_id', 'id'),
+					)
+				)
+			)
+		));
+		
+		$this->set(compact('involvement', 'signedUp'));
 	}
 
 /**

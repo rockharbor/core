@@ -262,17 +262,15 @@ class Household extends AppModel {
  *
  * @param integer $household Household id
  * @param integer $user User id
- * @param integer $notifier The user who is adding/inviting
  * @param boolean $confirm True to add, false to invite
  * @return boolean True on success, false on failure
  * @access public
- * @todo remove notifier as it's unneeded
  */ 
-	function join($household, $user, $notifier = null, $confirm = false) {
+	function join($household, $user, $confirm = false) {
 		$this->HouseholdMember->User->id = $user;
 		$this->id = $household;
 		// find the user
-		if (!$this->HouseholdMember->User->exists($user) || !$this->exists($household)) {
+		if (!$this->HouseholdMember->User->exists() || !$this->exists()) {
 			return false;
 		}
 

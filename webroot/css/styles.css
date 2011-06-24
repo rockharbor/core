@@ -89,6 +89,10 @@ hr {
 	margin:5px 0;
 	padding:0;
 }
+li{
+	list-style: disc;
+	margin-left: 20px;
+}
 .deemphasized {
 	color: #acacac;
 }
@@ -246,13 +250,14 @@ tr.core-iconable .core-icon-container {
 }
 
 /** special containers, perhaps place somewhere else **/
-#details-toggle {
+#my-details {
 	background: #f1f1f1;
 	padding: 10px 0;
+	border-top: 1px solid #acacac;
 	border-bottom: 1px solid #acacac;
-	height:120px; /* jQuery.slideToggle() needs a height to display the bg properly */
+	margin-top: 10px;
 }
-#details-toggle dl {
+#my-details dl {
 	margin-left:10px;
 }
 div.household-member, div.household-contact {
@@ -510,12 +515,15 @@ div#report-form div.input, div#report-form div.submit {
 /*
 Small Tabs
 */
-ul.core-admin-tabs {	
+ul.core-admin-tabs {
+	list-style: none;
 	bottom:-20px;
 	position:absolute;
 	right:0px;
 }
 ul.core-admin-tabs li {
+	list-style: none;
+	margin: 0;
 	background: rgb(48,48,48);
 	background-image: -webkit-gradient(
 		linear,
@@ -716,11 +724,11 @@ div.select .checkbox {
 }
 .core-radio.selected {
 	background-image: url('../assets/images/icons.png');
-	background-position: -67px -66px;; /* slightly different than it should be because checkbox is smaller than 16x16 */
+	background-position: -67px -82px; /* slightly different than it should be because checkbox is smaller than 16x16 */
 }
 .core-checkbox.selected {
 	background-image: url('../assets/images/icons.png');
-	background-position: -99px -2px; /* slightly different than it should be because checkbox is smaller than 16x16 */
+	background-position: -115px -66px; /* slightly different than it should be because checkbox is smaller than 16x16 */
 }
 .core-checkbox.disabled, .core-radio.disabled {
 	border: 1px solid #f1f1f1;

@@ -37,6 +37,15 @@ class AttachmentsController extends AppController {
 	);
 	
 /**
+ * Extra components for this controller
+ * 
+ * @var array
+ */
+	var $components = array(
+		'MultiSelect.MultiSelect'
+	);
+	
+/**
  * The name of the model this Attachment belongs to. Used for Acl
  *
  * @var string
@@ -158,11 +167,13 @@ class AttachmentsController extends AppController {
  * @param boolean $approve Whether or not to approve
  */
 	function approve($id = null, $approve = false) {
+		$this->{$this->modelClass}->Behaviors->detach('Media.Coupler'); // don't require 'file' key
 		if (!$id) {
 			//404
 			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
 		} else {
 			if ($approve) {
+				$this->{$this->modelClass}->id = $id;
 				if ($this->{$this->modelClass}->saveField('approved', true)) {
 					$this->Session->setFlash('The upload request has been approved.', 'flash'.DS.'success');
 				} else {
@@ -174,9 +185,51 @@ class AttachmentsController extends AppController {
 		}
 
 		$this->redirect(array(
-			'action' => 'index',
+			'action' => 'approval',
 			$this->model => $this->modelId
 		));
+	}
+	
+/**
+ * Promotes or demotes a model's first image
+ * 
+ * @param mixed $mskey A multiselect token or the model's id
+ * @param int $level The promotion level
+ */	
+	function promote($mskey = null, $level = 0) {
+		$this->{$this->modelClass}->Behaviors->detach('Media.Coupler'); // don't require 'file' key
+		if ($this->MultiSelect->check($mskey)) {
+			$ids = $this->MultiSelect->getSelected($mskey);
+		} else {
+			$ids = array($mskey);
+		}
+		
+		foreach ($ids as $id) {
+			$attachment = $this->{$this->modelClass}->find('first', array(
+				'fields' => array(
+					'id'
+				),
+				'conditions' => array(
+					'model' => $this->model,
+					'group' => $this->modelClass,
+					'foreign_key' => $id,
+					'approved' => true
+				)
+			));
+			if (!empty($attachment)) {
+				$this->{$this->modelClass}->id = $attachment[$this->modelClass]['id'];
+				$this->{$this->modelClass}->saveField('promoted', $level);
+			}
+		}
+		
+		if ($level == 1) {
+			$msg = 'The selected Involvement Opportunities have been promoted.';
+		} else {
+			$msg = 'The selected Involvement Opportunities have been removed from the list of promoted items.';
+		}
+		
+		$this->Session->setFlash($msg, 'flash'.DS.'success');
+		$this->redirect($this->referer());
 	}
 	
 /**

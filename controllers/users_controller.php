@@ -42,7 +42,7 @@ class UsersController extends AppController {
 		'Cookie',
 		'Security' => array(
 			'disabledFields' => array(
-				'HouseholdMember.Profile'
+				'HouseholdMember'
 			)
 		)
 	);
@@ -58,7 +58,7 @@ class UsersController extends AppController {
 		parent::beforeFilter();
 		
 		// public actions
-		$this->Auth->allow('login', 'logout', 'forgot_password', 'register', 'request_activation');
+		$this->Auth->allow('login', 'logout', 'forgot_password', 'register', 'request_activation', 'choose_user');
 		
 		$this->_editSelf('edit');
 	}
@@ -199,15 +199,34 @@ class UsersController extends AppController {
 /**
  * Sends a user a new password
  */
-	function forgot_password() {		
-		if (!empty($this->data)) {
-			if (!empty($this->data['User']['forgotten'])) {			
-				$user = $this->User->findUser(explode(' ', $this->data['User']['forgotten']));
-			} else {
-				$user = false;
+	function forgot_password($id = null) {
+		if ((!empty($this->data) || !is_null($id)) && !isset($this->passedArgs['skip_check'])) {
+			if (!$id) {
+				$searchData = array(
+					'User' => array(
+						'username' => $this->data['User']['forgotten']
+					),
+					'Profile' => array(
+						'email' => $this->data['User']['forgotten']
+					)
+				);
+				$user = $this->User->findUser($searchData, 'OR');
+				if (count($user) == 0) {
+					$user = false;
+				} elseif (count($user) > 1) {
+					return $this->setAction('choose_user', $user, array(
+						'controller' => 'users',
+						'action' => 'forgot_password',
+						':ID:'
+					), array('action' => 'forgot_password'));
+				} else {
+					$user = $user[0];
+				}
+			} else{
+				$user = $id;
 			}
 			
-			if ($user !== false) {
+			if ($user) {
 				$this->User->id = $user;
 		
 				$newPassword = $this->User->generatePassword();
@@ -228,6 +247,55 @@ class UsersController extends AppController {
 				$this->Session->setFlash('User not found. Please try again.', 'flash'.DS.'failure');
 			}
 		}
+		
+		if (isset($this->passedArgs['skip_check'])) {
+			$this->Session->setFlash('Try searching on something more specific to you.', 'flash'.DS.'success');
+			$this->here = str_replace('skip_check', 'skipped', $this->here);
+		}
+	}
+
+/**
+ * Allows a user to choose from a list of users found via `User::findUser()` and
+ * redirect them to another action. 
+ * 
+ * This action should only be called via `setAction` so arrays can be passed and 
+ * data is preserved. The redirect url can be an array or string, but _must_ 
+ * contain the special passed parameter `:ID:`. This will be replaced with the 
+ * id that the user chooses.
+ * 
+ * A named parameter `skip_check` will be appended to `$return`. It's the
+ * responsibility of the return action to act appropriately and skip the `User::findUser()`
+ * check that brought them here in the first place, otherwise they will be directed
+ * here again (since the data is persisted).
+ * 
+ * @param array $users The array of user ids returned by `User::findUser()`
+ * @param mixed $redirect The redirect string or Cake url array
+ * @param string $return The url to return to if the user decides there aren't any matches
+ */
+	function choose_user($users = array(), $redirect = '/users/request_activation/:ID:/1', $return = null) {
+		if (empty($users) || !$return) {
+			$this->redirect($this->referer());
+		}
+		// need full path because FormHelper prepends the controller name to the url 
+		// (which already has one defined) 
+		$redirect = Router::url($redirect, true);
+		$return = Router::url($return, true);
+		$return = trim($return, '/').'/skip_check:1';
+
+		$users = $this->User->find('all', array(
+			'conditions' => array(
+				'User.id' => $users
+			),
+			'contain' => array(
+				'Profile' => array(
+					'fields' => array('first_name', 'last_name')
+				),
+				'ActiveAddress' => array(
+					'fields' => array('city')
+				)
+			)
+		));
+		$this->set(compact('redirect', 'users', 'return'));
 	}
 
 /**
@@ -277,17 +345,26 @@ class UsersController extends AppController {
  */
 	function add() {
 		if (!empty($this->data)) {
-			// check if user exists
-			$foundUser = $this->User->findUser(array(
-				$this->data['User']['username'],
-				$this->data['Profile']['primary_email'],
-				$this->data['Profile']['first_name'],
-				$this->data['Profile']['last_name']
-			));
+			$foundUser = array();
+			if (!isset($this->passedArgs['skip_check'])) {
+				// check if user exists (only use profile info to search)
+				$searchData = array('Profile' => $this->data['Profile']);
+				$searchData['Profile']['email'] = $searchData['Profile']['primary_email'];
+				$foundUser = $this->User->findUser($searchData, 'OR');
+			}
 
-			if ($foundUser !== false) {
-				$this->Session->setFlash('That user already exists.', 'flash'.DS.'failure');
-				$this->redirect(array('controller' => 'profiles', 'action' => 'view', 'User' => $foundUser));
+			if (!empty($foundUser)) {
+				// take to activation request (preserve data)
+				if (count($foundUser) == 1) {
+					return $this->setAction('request_activation', $foundUser, true);
+				} else {
+					return $this->setAction('choose_user', $foundUser, array(
+						'controller' => 'users',
+						'action' => 'request_activation',
+						':ID:',
+						true
+					), array('action' => 'add'));
+				}
 			}
 
 			if ($this->User->createUser($this->data, null, $this->activeUser)) {
@@ -323,32 +400,104 @@ class UsersController extends AppController {
 			}
 		}
 		
-		$this->set('elementarySchools', $this->User->Profile->ElementarySchool->find('list'));
-		$this->set('middleSchools', $this->User->Profile->MiddleSchool->find('list'));
-		$this->set('highSchools', $this->User->Profile->HighSchool->find('list'));
-		$this->set('colleges', $this->User->Profile->College->find('list'));
-		$this->set('publications', $this->User->Publication->find('list')); 
-		$this->set('jobCategories', $this->User->Profile->JobCategory->find('list')); 
-		$this->set('classifications', $this->User->Profile->Classification->find('list'));
-		$this->set('campuses', $this->User->Profile->Campus->find('list'));
+		$this->_prepareAdd();
 	}
 
+/**
+ * Creates a user account and adds it to a household
+ */
+	function household_add() {
+		if (!empty($this->data)) {
+			// check if user exists (only use profile info to search)
+			$searchData = array('Profile' => $this->data['Profile']);
+			$searchData['Profile']['email'] = $searchData['Profile']['primary_email'];
+			$foundUser = $this->User->findUser($searchData, 'OR');
+			if (!empty($foundUser) && !isset($this->passedArgs['skip_check'])) {
+				// take to choose user
+				// - takes them to Households::shift_households() if a match is found
+				// - takes them back here, otherwise
+				return $this->setAction('choose_user', $foundUser, array(
+					'controller' => 'households',
+					'action' => 'shift_households',
+					':ID:',
+					$this->data['Household']['id']
+				), array('action' => 'household_add', 'Household' => $this->data['Household']['id']));
+			}
+
+			if ($this->User->createUser($this->data, $this->data['Household']['id'], $this->activeUser)) {
+				$name = $this->data['Profile']['first_name'].' '.$this->data['Profile']['last_name'];
+				$this->Session->setFlash('An account for '.$name.' has been created. '.$name.' has also been added to your household.', 'flash'.DS.'success');
+
+				$this->set('username', $this->data['User']['username']);
+				$this->set('password', $this->data['User']['password']);
+				$this->Notifier->notify(array(
+					'to' => $this->User->id,
+					'template' => 'users_register',
+					'subject' => 'Account registration'
+				));
+				
+				$this->set('contact', $this->activeUser);
+				$this->Notifier->notify(array(
+					'to' => $this->User->id,
+					'template' => 'households_join',
+					'type' => 'invitation',
+				), 'notification');
+
+				$this->redirect(array(
+					'controller' => 'users',
+					'action' => 'login',
+					$this->data['User']['username']
+				));
+			} else {
+				$this->Session->setFlash('Oops, validation errors...', 'flash'.DS.'failure');
+			}
+		}
+		
+		if (!isset($this->data['Household'])) {
+			$this->data['Household']['id'] = $this->passedArgs['Household'];
+		}
+		
+		if (isset($this->passedArgs['skip_check'])) {
+			$this->Session->setFlash('Finishing filling out the form to add a new user.', 'flash'.DS.'success');
+		}
+		
+		// household contact's addresses
+		$this->User->HouseholdMember->Household->contain(array(
+			'HouseholdContact' => array(
+				'Address'
+			)
+		));
+		$householdContact = $this->User->HouseholdMember->Household->read(null, $this->data['Household']['id']);
+		$this->set('addresses', $householdContact['HouseholdContact']);
+		
+		$this->_prepareAdd();
+	}
+	
 /**
  * Registers a user
  */
 	function register() {
 		if (!empty($this->data)) {
-			// check if user exists
-			$foundUser = $this->User->findUser(array(
-				$this->data['User']['username'],
-				$this->data['Profile']['primary_email'],
-				$this->data['Profile']['first_name'],
-				$this->data['Profile']['last_name']
-			));
+			$foundUser = array();
+			if (!isset($this->passedArgs['skip_check'])) {
+				// check if user exists (only use profile info to search)
+				$searchData = array('Profile' => $this->data['Profile']);
+				$searchData['Profile']['email'] = $searchData['Profile']['primary_email'];
+				$foundUser = $this->User->findUser($searchData, 'OR');
+			}
 
-			if ($foundUser !== false) {
+			if (!empty($foundUser)) {
 				// take to activation request (preserve data)
-				return $this->setAction('request_activation', $foundUser, true);
+				if (count($foundUser) == 1) {
+					return $this->setAction('request_activation', $foundUser, true);
+				} else {
+					return $this->setAction('choose_user', $foundUser, array(
+						'controller' => 'users',
+						'action' => 'request_activation',
+						':ID:',
+						true
+					), array('action' => 'register'));
+				}
 			}
 			
 			if ($this->User->createUser($this->data)) {
@@ -385,6 +534,13 @@ class UsersController extends AppController {
 			}
 		}
 
+		$this->_prepareAdd();
+	}
+	
+/**
+ * Common code used in `Users::household_add()`, `Users::add()` and `Users::register()`
+ */
+	function _prepareAdd() {
 		$this->set('elementarySchools', $this->User->Profile->ElementarySchool->find('list'));
 		$this->set('middleSchools', $this->User->Profile->MiddleSchool->find('list'));
 		$this->set('highSchools', $this->User->Profile->HighSchool->find('list'));
@@ -393,9 +549,6 @@ class UsersController extends AppController {
 		$this->set('jobCategories', $this->User->Profile->JobCategory->find('list'));
 		$this->set('classifications', $this->User->Profile->Classification->find('list'));
 		$this->set('campuses', $this->User->Profile->Campus->find('list'));
-
-		$this->autoRender = false;
-		$this->render('add');
 	}
 
 /**
