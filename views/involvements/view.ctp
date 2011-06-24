@@ -1,8 +1,8 @@
 <?php 
 echo $this->Html->script('super_date', array('inline' => false));
 echo $this->Html->script('misc/involvement', array('inline' => false));
-$shortRoster = !empty($signedUp) && $involvement['Involvement']['roster_visible'];
 $canSeeRoster = $this->Permission->check(array('controller' => 'rosters', 'Involvement' => $involvement['Involvement']['id']));
+$shortRoster = !empty($signedUp) && $involvement['Involvement']['roster_visible'] && !$canSeeRoster;
 ?>
 
 <span class="breadcrumb"><?php
@@ -19,7 +19,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 			if ($shortRoster) {
 				$link = $this->Html->link('Roster', '#roster-tab');
 			} else {
-				$link = $this->Html->link('Roster', array('controller' => 'rosters', 'Involvement' => $involvement['Involvement']['id'], 'User' => $activeUser['User']['id']), array('title' => 'roster-tab'));
+				$link = $this->Html->link('Roster', array('controller' => 'rosters', 'Involvement' => $involvement['Involvement']['id']), array('title' => 'roster-tab'));
 			}
 			echo $this->Html->tag('li', $link);
 		}
@@ -213,8 +213,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 			}  else {
 				echo $this->requestAction('/rosters/index', array(
 					'named' => array(
-						'Involvement' => $involvement['Involvement']['id'],
-						'User' => $activeUser['User']['id']
+						'Involvement' => $involvement['Involvement']['id']
 					),
 					'return',
 					'respondAs' => 'ajax'
