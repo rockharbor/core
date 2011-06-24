@@ -453,6 +453,7 @@ class InstallShell extends Shell {
 			'controllers/Roles',
 			'controllers/RosterStatuses',
 			'controllers/Images/approval',
+			'controllers/Rosters/status'
 		),
 		'Intern' => array(
 			'controllers/Comments/index',
