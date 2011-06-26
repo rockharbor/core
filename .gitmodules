@@ -18,16 +18,16 @@
 	url = http://github.com/CakeDC/search.git
 [submodule "plugins/cacher"]
 	path = plugins/cacher
-	url = git@codaset.com:jeremyharris/cacher.git
+	url = git://github.com/jeremyharris/cacher.git
 [submodule "plugins/sanitizer"]
 	path = plugins/sanitizer
-	url = git://codaset.com/jeremyharris/sanitizer.git
+	url = git://github.com/jeremyharris/sanitizer.git
 [submodule "plugins/slugger"]
 	path = plugins/slugger
-	url = git://codaset.com/jeremyharris/slugger.git
+	url = git://github.com/jeremyharris/slugger.git
 [submodule "plugins/queue_email"]
 	path = plugins/queue_email
-	url = git://codaset.com/jeremyharris/queue-email.git
+	url = git://github.com/jeremyharris/queue_email.git
 [submodule "plugins/asset_compress"]
 	path = plugins/asset_compress
 	url = git@github.com:jeremyharris/asset_compress.git
