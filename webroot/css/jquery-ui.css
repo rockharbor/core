@@ -220,6 +220,9 @@
 .ui-autocomplete p {
 	margin:2px 0;
 }
+.ui-autocomplete .ui-menu-item {
+	list-style: none;
+}
 
 /* workarounds */
 * html .ui-autocomplete { width:1px; } /* without this, the menu expands to 100% in IE6 */

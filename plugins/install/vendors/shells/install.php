@@ -453,6 +453,7 @@ class InstallShell extends Shell {
 			'controllers/Roles',
 			'controllers/RosterStatuses',
 			'controllers/Images/approval',
+			'controllers/Rosters/status'
 		),
 		'Intern' => array(
 			'controllers/Comments/index',
@@ -594,7 +595,7 @@ class InstallShell extends Shell {
 			'controllers/Questions/index',
 			'controllers/Questions/move',
 			'controllers/Payments/add',
-			'controllers/Rosters/confirm',
+			'controllers/Rosters/status',
 			'controllers/Rosters/roles'
 		),
 		'Owner' => array(
@@ -630,7 +631,8 @@ class InstallShell extends Shell {
 			'controllers/Publications/toggle_subscribe',
 			'controllers/Profiles/edit',
 			'controllers/Payments/view',
-			'controllers/Payments/index'
+			'controllers/Payments/index',
+			'controllers/Rosters/status'
 		)
 	);
 	

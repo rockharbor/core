@@ -47,11 +47,20 @@ class HouseholdsControllerTestCase extends CoreTestCase {
 		// since household 1 doesn't get deleted, user 1 is just re-added to it
 		$this->assertTrue($this->Households->Household->isMember(1, 1));
 		$this->assertFalse($this->Households->Household->isMember(3, 1));
-
+		
 		$this->testAction('/households/shift_households/test/2/User:1');
 		$this->assertTrue($this->Households->Household->isMember(1, 2));
 		$this->assertTrue($this->Households->Household->isMember(5, 2));
 		$this->assertFalse($this->Households->Household->isMember(3, 2));
+		
+		$invites = $this->Households->Household->HouseholdMember->User->Invitation->getInvitations(1);
+		$invitation = $this->Households->Household->HouseholdMember->User->Invitation->read(null, $invites[0]);
+		$results = $invitation['Invitation']['confirm_action'];
+		$expected = '/households/confirm/1/2';
+		$this->assertEqual($results, $expected);
+		$results = $invitation['Invitation']['deny_action'];
+		$expected = '/households/shift_households/1/2';
+		$this->assertEqual($results, $expected);
 	}
 
 	function testMakeHouseholdContact() {

@@ -93,11 +93,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		));
 		$countBefore = $this->Involvements->Involvement->Roster->find('count');
 		$vars = $this->testAction('/involvements/invite_roster/test/3/Involvement:1');
-		$invites = $this->Involvements->Involvement->Roster->User->Notification->find('all', array(
-			'conditions' => array(
-				'Notification.type' => 'invitation'
-			)
-		));
+		$invites = $this->Involvements->Involvement->Roster->User->Invitation->find('all');
 		$this->assertEqual(count($invites), 2);
 		$countNow = $this->Involvements->Involvement->Roster->find('count');
 		$this->assertEqual($countBefore+2, $countNow);
@@ -115,11 +111,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		));
 		$countBefore = $this->Involvements->Involvement->Roster->find('count');
 		$vars = $this->testAction('/involvements/invite/test/3/Involvement:1');
-		$invites = $this->Involvements->Involvement->Roster->User->Notification->find('all', array(
-			'conditions' => array(
-				'Notification.type' => 'invitation'
-			)
-		));
+		$invites = $this->Involvements->Involvement->Roster->User->Invitation->find('all');
 		$this->assertEqual(count($invites), 2);
 		$countNow = $this->Involvements->Involvement->Roster->find('count');
 		$this->assertEqual($countBefore+2, $countNow);

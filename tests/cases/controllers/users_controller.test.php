@@ -207,8 +207,9 @@ class UsersControllerTestCase extends CoreTestCase {
 	}
 
 	function testAdd() {
-		$this->loadFixtures('MergeRequest', 'Address', 'Household', 'HouseholdMember', 'Notification');
+		$this->loadFixtures('MergeRequest', 'Address', 'Household', 'HouseholdMember', 'Notification', 'Invitation');
 		$notificationsBefore = $this->Users->User->Notification->find('count');
+		$invitesBefore = $this->Users->User->Invitation->find('count');
 
 		$data = array(
 			'User' => array(
@@ -248,7 +249,9 @@ class UsersControllerTestCase extends CoreTestCase {
 		));
 
 		$notificationsAfter = $this->Users->User->Notification->find('count');
-		$this->assertEqual($notificationsAfter-$notificationsBefore, 3);
+		$invitesAfter = $this->Users->User->Invitation->find('count');
+		$this->assertEqual($notificationsAfter-$notificationsBefore, 2);
+		$this->assertEqual($invitesAfter-$invitesBefore, 1);
 
 		$this->Users->User->contain(array('Profile'));
 		$user = $this->Users->User->findByUsername('newusername');
@@ -257,8 +260,9 @@ class UsersControllerTestCase extends CoreTestCase {
 	}
 
 	function testRegister() {
-		$this->loadFixtures('MergeRequest', 'Address', 'Household', 'HouseholdMember', 'Notification');
+		$this->loadFixtures('MergeRequest', 'Address', 'Household', 'HouseholdMember', 'Notification', 'Invitation');
 		$notificationsBefore = $this->Users->User->Notification->find('count');
+		$invitesBefore = $this->Users->User->Invitation->find('count');
 
 		$data = array(
 			'User' => array(
@@ -284,6 +288,12 @@ class UsersControllerTestCase extends CoreTestCase {
 						'last_name' => 'user',
 						'primary_email' => 'child@example.com'
 					)
+				),
+				1 => array(
+					'Profile' => array(
+						'first_name' => 'jeremy',
+						'last_name' => 'harris'
+					)
 				)
 			)
 		);
@@ -296,12 +306,27 @@ class UsersControllerTestCase extends CoreTestCase {
 			'data' => $data
 		));
 		$notificationsAfter = $this->Users->User->Notification->find('count');
+		$invitesAfter = $this->Users->User->Invitation->find('count');
 		$this->assertEqual($notificationsAfter-$notificationsBefore, 2);
+		$this->assertEqual($invitesAfter-$invitesBefore, 1);
 
 		$this->Users->User->contain(array('Profile'));
 		$user = $this->Users->User->findByUsername('newusername');
 		$result = $user['Profile']['name'];
 		$this->assertEqual($result, 'Test User');
+		
+		// get last invitation and make sure it has the right actions
+		$this->Users->User->contain(array('Profile', 'HouseholdMember' => array('Household')));
+		$user = $this->Users->User->read(null, 1);
+		$invitations = $this->Users->User->Invitation->getInvitations(1);
+		$invitation = $this->Users->User->Invitation->read(null, $invitations[count($invitations)-1]);
+		$lastHousehold = $user['HouseholdMember'][count($user['HouseholdMember'])-1]['Household'];
+		$results = $invitation['Invitation']['confirm_action'];
+		$expected = '/households/confirm/1/'.$lastHousehold['id'];
+		$this->assertEqual($results, $expected);
+		$results = $invitation['Invitation']['deny_action'];
+		$expected = '/households/shift_households/1/'.$lastHousehold['id'];
+		$this->assertEqual($results, $expected);
 	}
 	
 	function testChooseUser() {
@@ -321,7 +346,7 @@ class UsersControllerTestCase extends CoreTestCase {
 	}
 	
 	function testHouseholdAdd() {
-		$this->loadFixtures('MergeRequest', 'Address', 'Household', 'HouseholdMember', 'Notification');
+		$this->loadFixtures('MergeRequest', 'Address', 'Household', 'HouseholdMember', 'Notification', 'Invitation');
 		$notificationsBefore = $this->Users->User->Notification->find('count');
 
 		$data = array(

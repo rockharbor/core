@@ -1,5 +1,4 @@
 <ul>
-	<li id="nav-home"><?php echo $this->Html->link('☻', array('plugin' => false, 'controller' => 'pages', 'action' => 'display', 'home')); ?></li>
 	<li id="nav-profile"><?php echo $this->Html->link('Profile', array('plugin' => false, 'controller' => 'profiles', 'action' => 'view', 'User' => $activeUser['User']['id'])); ?>
 		<ul>
 			<li>
@@ -51,7 +50,7 @@
 	</li>
 	<li id="nav-notifications">
 		<?php 
-		echo $this->requestAction('/notifications/quick', array('return'));
+		echo $this->requestAction('/notifications/quick', array('return', 'renderAs' => 'ajax'));
 		echo $this->element('hooks', array(
 			'hook' => 'root.notifications'
 		));

@@ -52,6 +52,7 @@ class RostersController extends AppController {
 	function beforeFilter() {
 		/*$this->Security->blackHoleCallback = '_forceSSL';
 		$this->Security->requireSecure('add');*/
+		$this->_editSelf('status');
 		parent::beforeFilter();
 		$this->_editSelf('involvement', 'add');
 	}
@@ -668,15 +669,23 @@ class RostersController extends AppController {
 /**
  * Confirms a set of roster ids
  *
- * @param integer $uid The multi select id
+ * @param integer $uid The multi select id or a single roster record id
+ * @param integer $status The RosterStatus id
  */
-	function confirm($uid = null) {
+	function status($uid = null, $status = 1) {
 		$selected = $this->MultiSelect->getSelected($uid);
-		$this->Roster->updateAll(
-			array('Roster.roster_status_id' => 1),
+		if (empty($selected)) {
+			$selected = $uid;
+		}
+		
+		$success = $this->Roster->updateAll(
+			array('Roster.roster_status_id' => $status),
 			array('Roster.id' => $selected)
 		);
 		$this->Session->setFlash('Roster members confirmed.', 'flash'.DS.'success');
+		if ($this->params['requested']) {
+			return $success;
+		}
 		$this->redirect(array('action'=>'index'));
 	}
 
@@ -698,7 +707,7 @@ class RostersController extends AppController {
 				$this->redirect(array('action' => 'index'));
 			}
 			$selected = array($uid);
-		} else {
+		} elseif (empty($selected)) {
 			$this->Session->setFlash(__('Roster was not deleted', true));
 			$this->redirect(array('action' => 'index'));
 		}

@@ -371,12 +371,12 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($rostersAfter-$rostersBefore, 0);
 	}
 
-	function testConfirm() {
+	function testStatus() {
 		$this->Rosters->Session->write('MultiSelect.testConfirm', array(
 			'selected' => array(2, 4)
 		));
 
-		$vars = $this->testAction('/rosters/confirm/testConfirm');
+		$vars = $this->testAction('/rosters/status/testConfirm');
 		$rosters = $this->Rosters->Roster->find('all', array(
 			'conditions' => array(
 				'Roster.id' => array(2, 4)
@@ -384,6 +384,10 @@ class RostersControllerTestCase extends CoreTestCase {
 		));
 		$results = Set::extract('/Roster/roster_status_id', $rosters);
 		$this->assertEqual($results, array(1,1));
+		
+		$this->testAction('/rosters/status/2/4');
+		$results = $this->Rosters->Roster->read(null, 2);
+		$this->assertEqual($results['Roster']['roster_status_id'], 4);
 	}
 
 }

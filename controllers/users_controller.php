@@ -382,11 +382,14 @@ class UsersController extends AppController {
 					$this->User->contain(array('Profile'));
 					$this->set('notifier', $this->User->read(null, $this->activeUser['User']['id']));
 					$this->set('contact', $this->User->read(null, $this->User->id));
-					$this->Notifier->notify(array(
-						'to' => $notifyUser['id'],
-						'template' => 'households_invite',
-						'type' => 'invitation',
-					), 'notification');
+					$this->Notifier->invite(
+						array(
+							'to' => $notifyUser['id'],
+							'template' => 'households_invite',
+							'confirm' => '/households/confirm/'.$notifyUser['id'].'/'.$this->User->HouseholdMember->Household->id,
+							'deny' => '/households/shift_households/'.$notifyUser['id'].'/'.$this->User->HouseholdMember->Household->id
+						)
+					);
 				}
 
 				$this->Session->setFlash('An account has been created for '.$this->data['Profile']['first_name'].' '.$this->data['Profile']['last_name'].'.', 'flash'.DS.'success');
@@ -439,8 +442,7 @@ class UsersController extends AppController {
 				$this->set('contact', $this->activeUser);
 				$this->Notifier->notify(array(
 					'to' => $this->User->id,
-					'template' => 'households_join',
-					'type' => 'invitation',
+					'template' => 'households_join'
 				), 'notification');
 
 				$this->redirect(array(
@@ -517,11 +519,14 @@ class UsersController extends AppController {
 					$this->User->contain(array('Profile'));
 					$this->set('notifier', $this->User->read(null, $this->User->id));
 					$this->set('contact', $this->User->read(null, $this->User->id));
-					$this->Notifier->notify(array(
-						'to' => $notifyUser['user'],
-						'template' => 'households_invite',
-						'type' => 'invitation'
-					), 'notification');
+					$this->Notifier->invite(
+						array(
+							'to' => $notifyUser['id'],
+							'template' => 'households_invite',
+							'confirm' => '/households/confirm/'.$notifyUser['id'].'/'.$this->User->HouseholdMember->Household->id,
+							'deny' => '/households/shift_households/'.$notifyUser['id'].'/'.$this->User->HouseholdMember->Household->id
+						)
+					);
 				}
 
 				$this->redirect(array(

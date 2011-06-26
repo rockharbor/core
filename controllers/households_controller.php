@@ -76,12 +76,16 @@ class HouseholdsController extends AppController {
 				),
 				'notification'
 			);
-			
-			$this->Session->setFlash($joined['Profile']['name'].' joined '.$contact['Profile']['name'].'\'s household.', 'flash'.DS.'success');
+			$success = true;
+			$this->Session->setFlash($joined['Profile']['name'].' joined '.$contact['HouseholdContact']['Profile']['name'].'\'s household.', 'flash'.DS.'success');
 		} else {
+			$success = false;
 			$this->Session->setFlash('Unable to process request. Please try again.', 'flash'.DS.'failure');
 		}
 
+		if ($this->params['requested']) {
+			return $success;
+		}
 		$this->redirect(array(
 			'action' => 'index',
 			'User' => $viewUser
@@ -150,21 +154,25 @@ class HouseholdsController extends AppController {
 							),
 							'notification'
 						);
+						$success = true;
 						$this->Session->setFlash($addUser['Profile']['name'].' has been added to this household.', 'flash'.DS.'success');
 					} elseif (!$addUser['Profile']['child'] && $success) {
-						$this->Notifier->notify(
+						$this->Notifier->invite(
 							array(
 								'to' => $user,
 								'template' => 'households_invite',
-								'type' => 'invitation'
-							),
-							'notification'
+								'confirm' => '/households/confirm/'.$addUser['User']['id'].'/'.$household,
+								'deny' => '/households/shift_households/'.$addUser['User']['id'].'/'.$household,
+							)
 						);
+						$success = true;
 						$this->Session->setFlash($addUser['Profile']['name'].' has been invited to this household.', 'flash'.DS.'success');
 					} else {
+						$success = true;
 						$this->Session->setFlash('Unable to add '.$addUser['Profile']['name'].' to this household. Please try again.', 'flash'.DS.'failure');
 					}
 				} else {
+					$success = false;
 					$this->Session->setFlash('Invalid Id.');
 				}
 			} else {		
@@ -184,17 +192,22 @@ class HouseholdsController extends AppController {
 					$this->Notifier->notify(
 						array(
 							'to' => $user,
-							'template' => 'households_remove',
-							'type' => 'invitation'
-						),
+							'template' => 'households_remove'
+						), 
 						'notification'
 					);
 
+					$success = true;
 					$this->Session->setFlash($deleteUser['Profile']['name'].' has left this household.', 'flash'.DS.'success');
 				} else {
+					$success = false;
 					$this->Session->setFlash('Unable to remove '.$deleteUser['Profile']['name'].' from this household. Pleaes try again.', 'flash'.DS.'failure');			
 				}
 			}
+		}
+		
+		if ($this->params['requested']) {
+			return $success;
 		}
 		
 		$this->set('users', $usersShifted);

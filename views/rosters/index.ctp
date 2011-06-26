@@ -135,7 +135,7 @@ $this->Paginator->options(array(
 					'title' => 'Confirm',
 					'url' => array(
 						'controller' => 'rosters',
-						'action' => 'confirm',
+						'action' => 'status',
 						$this->MultiSelect->token
 					),
 					'options' => array(

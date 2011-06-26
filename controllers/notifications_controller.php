@@ -64,6 +64,13 @@ class NotificationsController extends AppController {
 			'limit' => 5
 		));
 		$this->set('alerts', $alerts);
+		
+		$invitations = $this->Notification->User->Invitation->find('all', array(
+			'conditions' => array(
+				'Invitation.id' => $this->Notification->User->Invitation->getInvitations($this->activeUser['User']['id'])
+			)
+		));
+		$this->set('invitations', $invitations);
 
 		// get notifications
 		$this->set('new', $this->Notification->find('count', array(

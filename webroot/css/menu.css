@@ -93,52 +93,43 @@ li#nav-profile .profile-name {
 li#nav-notifications {
 	position:relative;
 }
-li#nav-notifications .alert p {
+li#nav-notifications li.notification {
+	min-width:350px;
+	margin: 5px;
+	padding-left: 5px;
+	padding-right: 30px;
+	position: relative;
+	color:#807980;
+	line-height: 14px;
+}
+li#nav-notifications .alert {
 	color: #e03a14;
 	background: #ffcbbf;
 	border: 1px solid #e03a14;
-	padding: 2px 5px;
+	padding: 5px;
 }
-li#nav-notifications .alert {
-	margin-right: 0 !important;
+li#nav-notifications .actions {
+	position: absolute;
+	right: 2px;
+	top: 0;
 }
-li#nav-notifications .notification p {
-	color:#807980;
-	margin:5px 0;
-	margin-bottom:5px;
-	padding:0 5px;
-	clear:both;
-	position: relative;
-	width:350px;
-}
-li#nav-notifications .notification {
-	margin:0;
-	margin-right:20px;
-}
-li#nav-notifications p a {
+li#nav-notifications li a {
 	display:inline;
 	padding:0;
 }
+#nav-notifications ul li.notification:hover a.delete {
+	display: block;
+}
 li#nav-notifications .delete {
-	background-image: url('../assets/images/icons.png');
-	background-position: -96px 0px;
-	padding:0;
-	height:16px;
-	width:16px;
-	overflow:hidden;
-	text-indent:-99999px;
-	position:absolute;
-	top:0;
-	right:-18px;
 	display: none;
 }
 li#nav-notifications .delete:hover {
 	background-position: -96px -16px;
 }
-.notification-read {
+.notification.read, .notification.invitation {
 	border-left:3px solid transparent;
 }
-.notification-unread {
+.notification.unread {
 	border-left:3px solid #e03a14;
 }
 li#nav-notifications .notification-counter {
@@ -164,10 +155,6 @@ li#nav-notifications .notification-flag {
 li#nav-notifications .notification-flag img {
 	width: 100%;
 	height: 6px;
-}
-li#nav-notifications li.notification {
-	padding: 0 5px;
-	position:relative;
 }
 .bottom-link {
 	padding:5px !important;
@@ -275,7 +262,7 @@ Dropdown menu CSS
 	.main-nav-menu li a{
 		display:block;
 		margin:0px;
-		padding:0 30px;
+		padding:0 28px;
 		text-align:center;
 		}
 	.main-nav-menu li ul{
