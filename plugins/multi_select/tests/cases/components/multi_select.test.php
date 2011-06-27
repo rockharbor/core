@@ -61,7 +61,7 @@ class TheMultiSelectComponentTestController extends Controller {
  */
 class MultiSelectComponentTest extends CakeTestCase {
 	
-	function startCase() {
+	function startTest() {
 		$this->Controller =& new TheMultiSelectComponentTestController(array('components' => array('RequestHandler')));
 		$this->Controller->constructClasses();
 		$this->Controller->RequestHandler->initialize($this->Controller);
@@ -69,11 +69,12 @@ class MultiSelectComponentTest extends CakeTestCase {
 		$this->MultiSelect =& new MultiSelectComponent($this->Controller);
 		$this->MultiSelect->initialize($this->Controller);
 		$this->MultiSelect->Session =& new SessionComponent();
+		$this->MultiSelect->startup();
 	}
 
-	function startTest() {
+	function endTest() {
+		$this->MultiSelect->Session->delete('MultiSelect');
 		unset($this->Controller->params['named']['mstoken']);
-		$this->MultiSelect->startup();
 	}
 
 	function testStartup() {
