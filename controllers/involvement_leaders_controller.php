@@ -47,7 +47,18 @@ class InvolvementLeadersController extends LeadersController {
  */
 	function dashboard() {
 		$this->viewPath = 'involvement_leaders';
-		parent::dashboard();
+		$this->paginate = array(
+			'conditions' => array(
+				'Leader.model' => 'Involvement',
+				'Leader.user_id' => $this->passedArgs['User']
+			),
+			'contain' => array(
+				$this->model
+			)
+		);
+		$leaders = $this->paginate();
+		$this->set('leaders', $leaders);
+		$this->set('model', $this->model);
 	}
 	
 }

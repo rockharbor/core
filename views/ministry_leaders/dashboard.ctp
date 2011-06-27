@@ -14,7 +14,7 @@
 						'controller' => 'sys_emails',
 						'action' => 'compose',
 						$this->MultiSelect->token,
-						'model' => $model,
+						'model' => 'Ministry',
 						'submodel' => 'Leader'
 					),
 					'options' => array(
@@ -44,7 +44,7 @@
 			?>
 			<tr>
 				<th>&nbsp;</th>
-				<th><?php echo $this->Paginator->sort('Name', $model.'.name');?></th>
+				<th><?php echo $this->Paginator->sort('Name', 'Ministry.name');?></th>
 				<th>Roles</th>
 			</tr>
 		</thead>
@@ -58,15 +58,15 @@
 				}
 			?>
 			<tr<?php echo $class;?>>
-				<td><?php echo $this->MultiSelect->checkbox($leader[$model]['id']); ?></td>
-				<td><?php echo $this->Html->link($leader[$model]['name'], array('controller' => strtolower(Inflector::pluralize($model)), 'action' => 'view', $model => $leader[$model]['id'])).$this->Formatting->flags('Ministry', $leader); ?></td>
+				<td><?php echo $this->MultiSelect->checkbox($leader['Ministry']['id']); ?></td>
+				<td><?php echo $this->Html->link($leader['Ministry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $leader['Ministry']['id'])).$this->Formatting->flags('Ministry', $leader); ?></td>
 				<td><?php
-				$link = array('controller' => 'roles', 'action' => 'index', 'Ministry' => $leader[$model]['id']);
+				$link = array('controller' => 'roles', 'action' => 'index', 'Ministry' => $leader['Ministry']['id']);
 				$icon = $this->element('icon', array('icon' => 'add'));
 				echo $this->Html->link($icon, $link, array('rel' => 'modal', 'escape' => false, 'class' => 'no-hover'));
-				echo $this->Html->link(count($leader['Role']).' Roles', $link, array('rel' => 'modal'));
-				if (!empty($leader['Role'])) {
-					echo $this->Html->tag('div', $this->Text->toList(Set::extract('/name', $leader['Role'])), array('class' => 'core-tooltip'));
+				echo $this->Html->link(count($leader['Ministry']['Role']).' Roles', $link, array('rel' => 'modal'));
+				if (!empty($leader['Ministry']['Role'])) {
+					echo $this->Html->tag('div', $this->Text->toList(Set::extract('/name', $leader['Ministry']['Role'])), array('class' => 'core-tooltip'));
 				}
 				?></td>
 			</tr>

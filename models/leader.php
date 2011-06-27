@@ -42,22 +42,13 @@ class Leader extends AppModel {
 	var $belongsTo = array(
 		'User',
 		'Campus' => array(
-			'foreignKey' => 'model_id',
-			'conditions' => array(
-				'Leader.model' => 'Campus'
-			)
+			'foreignKey' => 'model_id'
 		),
 		'Ministry' => array(
-			'foreignKey' => 'model_id',
-			'conditions' => array(
-				'Leader.model' => 'Ministry'
-			)
+			'foreignKey' => 'model_id'
 		),
 		'Involvement' => array(
-			'foreignKey' => 'model_id',
-			'conditions' => array(
-				'Leader.model' => 'Involvement'
-			)
+			'foreignKey' => 'model_id'
 		)
 	);
 

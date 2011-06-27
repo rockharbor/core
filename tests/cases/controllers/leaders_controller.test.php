@@ -39,37 +39,6 @@ class LeadersControllerTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 
-	function testDashboard() {
-		$vars = $this->testAction('involvement_leaders/dashboard/User:1');
-		$results = Set::extract('/Leader/id', $vars['leaders']);
-		sort($results);
-		$this->assertEqual($results, array(2, 5));
-
-		$vars = $this->testAction('involvement_leaders/dashboard/User:100');
-		$results = Set::extract('/Leader/id', $vars['leaders']);
-		sort($results);
-		$this->assertEqual($results, array());
-
-		$this->_setLeaderController('Ministry');
-		$vars = $this->testAction('ministry_leaders/dashboard/User:2');
-		$results = Set::extract('/Leader/id', $vars['leaders']);
-		sort($results);
-		$this->assertEqual($results, array(4));
-
-		$this->_setLeaderController('Campus');
-		$vars = $this->testAction('campus_leaders/dashboard/User:1');
-		$results = Set::extract('/Leader/id', $vars['leaders']);
-		sort($results);
-		$this->assertEqual($results, array(3));
-
-		$this->loadFixtures('Role');
-		$this->_setLeaderController('Ministry');
-		$vars = $this->testAction('ministry_leaders/dashboard/User:1');
-		$results = Set::extract('/Role/id', $vars['leaders']);
-		sort($results);
-		$this->assertEqual($results, array(1,2));
-	}
-
 	function testIndex() {
 		$vars = $this->testAction('involvement_leaders/index/Involvement:1', array(
 			'return' => 'vars'

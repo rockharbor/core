@@ -14,7 +14,7 @@
 						'controller' => 'sys_emails',
 						'action' => 'compose',
 						$this->MultiSelect->token,
-						'model' => $model,
+						'model' => 'Involvement',
 						'submodel' => 'Roster'
 					),
 					'options' => array(
@@ -28,7 +28,7 @@
 						'controller' => 'sys_emails',
 						'action' => 'compose',
 						$this->MultiSelect->token,
-						'model' => $model,
+						'model' => 'Involvement',
 						'submodel' => 'Leader'
 					),
 					'options' => array(
@@ -42,7 +42,7 @@
 						'controller' => 'sys_emails',
 						'action' => 'compose',
 						$this->MultiSelect->token,
-						'model' => $model,
+						'model' => 'Involvement',
 						'submodel' => 'Both'
 					),
 					'options' => array(
@@ -61,7 +61,7 @@
 			?>
 			<tr>
 				<th>&nbsp;</th>
-				<th><?php echo $this->Paginator->sort('Name', $model.'.name');?></th>
+				<th><?php echo $this->Paginator->sort('Name', 'Involvement.name');?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -74,8 +74,8 @@
 				}
 			?>
 			<tr<?php echo $class;?>>
-				<td><?php echo $this->MultiSelect->checkbox($leader[$model]['id']); ?></td>
-				<td><?php echo $this->Html->link($leader[$model]['name'], array('controller' => strtolower(Inflector::pluralize($model)), 'action' => 'view', 'model' => $model, $model => $leader[$model]['id'])).$this->Formatting->flags('Involvement', $leader); ?></td>
+				<td><?php echo $this->MultiSelect->checkbox($leader['Involvement']['id']); ?></td>
+				<td><?php echo $this->Html->link($leader['Involvement']['name'], array('controller' => 'involvements', 'action' => 'view', 'model' => 'Involvement', 'Involvement' => $leader['Involvement']['id'])).$this->Formatting->flags('Involvement', $leader); ?></td>
 			</tr>
 			<?php endforeach; ?>
 		</tbody>

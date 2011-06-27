@@ -71,26 +71,9 @@ class LeadersController extends AppController {
 
 /**
  * A list of Involvements, Ministries or Campuses a user is a leader for
- *
- * ### Passed Args:
- * - `User` The user id
  */
 	function dashboard() {
-		$this->paginate = array(
-			'conditions' => array(
-				'Leader.model' => $this->model,
-				'Leader.user_id' => $this->passedArgs['User']
-			),
-			'contain' => array(
-				$this->model
-			)
-		);
-		$leaders = $this->paginate();
-		$ministries = Set::extract('/'.$this->model.'/id', $leaders);
-		$search = array('conditions' => array($this->model.'.id' => $ministries));
-		$this->MultiSelect->saveSearch($search);
-		$this->set('leaders', $leaders);
-		$this->set('model', $this->model);
+		
 	}
 	
 /**
