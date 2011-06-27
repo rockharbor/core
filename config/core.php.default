@@ -305,6 +305,6 @@
 		'prefix' => 'core_acl_',
 		'path' => CACHE.'acl',
 		'duration' => 3600,
-		'serialize' => false
+		'serialize' => true
 	));
 ?>

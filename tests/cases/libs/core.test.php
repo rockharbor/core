@@ -85,6 +85,7 @@ class CoreConfigureTestCase extends CoreTestCase {
 	function testAcl() {
 		$_oldCache = Configure::read('Cache.disable');
 		Configure::write('Cache.disable', false);
+		Cache::clear(false, 'acl');
 		
 		$core = Core::getInstance();
 		$core->Acl = new CoreConfigureMockAclComponent();
@@ -92,13 +93,19 @@ class CoreConfigureTestCase extends CoreTestCase {
 		$core->Acl->setReturnValueAt(0, 'check', true);
 		$this->assertTrue(Core::acl(8, '/some/path'));
 		
-		// cached
 		$core->Acl->setReturnValueAt(1, 'check', false);
+		// cached ('check' call not made here)
 		$this->assertTrue(Core::acl(8, '/some/path'));
 		
-		$core->Acl->setReturnValueAt(2, 'check', false);
 		$this->assertFalse(Core::acl(1, '/some/path'));
 		
+		Configure::write('Cache.disable', true);
+		
+		$core->Acl->setReturnValueAt(2, 'check', true);
+		$this->assertTrue(Core::acl(1, '/some/path'));
+		
+		Configure::write('Cache.disable', false);
+		Cache::clear(false, 'acl');
 		Configure::write('Cache.disable', $_oldCache);
 	}
 

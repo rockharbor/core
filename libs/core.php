@@ -266,9 +266,10 @@ class Core {
 		$key = md5(serialize(compact('model', 'foreign_key', 'action')).$type);
 		if (Cache::read($key, 'acl') !== false) {
 			$access = Cache::read($key, 'acl');
+			$access = $access[0];
 		} else {
 			$access = $self->Acl->check(compact('model', 'foreign_key'), $action);
-			Cache::write($key, $access, 'acl');
+			Cache::write($key, array($access), 'acl');
 		}
 		if (!$access) {
 			$message = "User of group $foreign_key trying to access $action without permission.";
