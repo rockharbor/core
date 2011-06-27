@@ -4,7 +4,7 @@
 <?php
 	echo $this->MultiSelect->create();
 ?>
-	<table cellpadding="0" cellspacing="0" id="rosterTable" class="datatable">
+	<table cellpadding="0" cellspacing="0"class="datatable">
 		<thead>
 			<?php
 			$links = array(
@@ -64,7 +64,7 @@
 				$link = array('controller' => 'roles', 'action' => 'index', 'Ministry' => $leader['Ministry']['id']);
 				$icon = $this->element('icon', array('icon' => 'add'));
 				echo $this->Html->link($icon, $link, array('rel' => 'modal', 'escape' => false, 'class' => 'no-hover'));
-				echo $this->Html->link(count($leader['Ministry']['Role']).' Roles', $link, array('rel' => 'modal'));
+				echo $this->Html->link(count($leader['Ministry']['Role']).' Roles', $link, array('rel' => 'modal-parent'));
 				if (!empty($leader['Ministry']['Role'])) {
 					echo $this->Html->tag('div', $this->Text->toList(Set::extract('/name', $leader['Ministry']['Role'])), array('class' => 'core-tooltip'));
 				}

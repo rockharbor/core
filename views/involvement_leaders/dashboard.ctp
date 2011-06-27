@@ -4,7 +4,7 @@
 <?php
 	echo $this->MultiSelect->create();
 ?>
-	<table cellpadding="0" cellspacing="0" id="rosterTable" class="datatable">
+	<table cellpadding="0" cellspacing="0" class="datatable">
 		<thead>
 			<?php
 			$links = array(
