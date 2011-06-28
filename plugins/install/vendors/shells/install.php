@@ -538,6 +538,7 @@ class InstallShell extends Shell {
 			'controllers/MultiSelect',
 			'controllers/Reports/export',
 			'controllers/Reports/map',
+			'controllers/Leaders/dashboard',
 			'controllers/InvolvementLeaders/dashboard',
 			'controllers/MinistryLeaders/dashboard',
 			'controllers/Users/household_add',
