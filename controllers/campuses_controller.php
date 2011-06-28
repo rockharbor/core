@@ -24,6 +24,16 @@ class CampusesController extends AppController {
 	var $name = 'Campuses';
 	
 /**
+ * Extra helpers for this controller
+ * 
+ * @var array
+ */
+	var $helpers = array(
+		'SelectOptions',
+		'Formatting'
+	);
+	
+/**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
@@ -39,6 +49,11 @@ class CampusesController extends AppController {
  */ 
 	function index() {
 		$this->Campus->recursive = 0;
+		$this->paginate = array(
+			'contain' => array(
+				'Leader'
+			)
+		);
 		$this->set('campuses', $this->paginate());
 	}
 
