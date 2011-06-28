@@ -14,10 +14,12 @@
 		echo $link ? $this->Html->tag('li', $link) : null;
 		$link = $this->Permission->link('Alerts', array('controller' => 'alerts', 'action' => 'index'), array('title' => 'alerts'));
 		echo $link ? $this->Html->tag('li', $link) : null;
-		$link = $this->Permission->link('Publications', array('controller' => 'publications', 'action' => 'index'), array('title' => 'publications'));
-		echo $link ? $this->Html->tag('li', $link) : null;
 		?>
 		<li><a href="#lists">Lists</a></li>
+		<?php
+		$link = $this->Permission->link('App Settings', array('controller' => 'app_settings'), array('title' => 'app-settings'));
+		echo $link ? $this->Html->tag('li', $link) : null;
+		?>
 	</ul>
 
 	<div class="content-box clearfix">
@@ -72,16 +74,6 @@
 			?>
 		</div>
 		<?php endif; ?>
-		<?php if ($this->Permission->check(array('controller' => 'publications'))): ?>
-		<div id="publications">
-			<?php
-			echo $this->requestAction('/publications/index', array(
-				'renderAs' => 'ajax',
-				'return'
-			));
-			?>
-		</div>
-		<?php endif; ?>
 		<div id="lists">
 			<div class="sub-tabs core-tabs">
 				<ul>
@@ -99,5 +91,15 @@
 				<?php endforeach; ?>
 			</div>
 		</div>
+		<?php if ($this->Permission->check(array('controller' => 'publications'))): ?>
+		<div id="app-settings">
+			<?php
+			echo $this->requestAction('/app_settings/index', array(
+				'renderAs' => 'ajax',
+				'return'
+			));
+			?>
+		</div>
+		<?php endif; ?>
 	</div>
 </div>

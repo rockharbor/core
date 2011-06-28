@@ -1,5 +1,5 @@
 <h1>App Settings</h1>
-<div class="app-settings form ui-tabs core-tabs">
+<div class="app-settings form ui-tabs core-tabs sub-tabs">
 	<ul>
 		<?php
 		$settings = Core::read();

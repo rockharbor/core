@@ -123,7 +123,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 							echo $icon.$this->Html->link($leader['User']['Profile']['name'], array('controller' => 'sys_emails', 'action' => 'compose', 'model' => 'User', 'User' => $leader['User']['id']), array('rel' => 'modal-none'));
 							if (!empty($leader)) {
 								$icon = $this->element('icon', array('icon' => 'delete'));
-								$link = $this->Permission->link($icon, array('controller' => 'involvement_leaders', 'action' => 'delete', 'Involvement' => $involvement['Involvement']['id'], 'User' => $leader['User']['id']), array('id' => 'remove-leader-'.$leader['User']['id']));
+								$link = $this->Permission->link($icon, array('controller' => 'involvement_leaders', 'action' => 'delete', 'Involvement' => $involvement['Involvement']['id'], 'User' => $leader['User']['id']), array('id' => 'remove-leader-'.$leader['User']['id'], 'escape' => false, 'class' => 'no-hover'));
 								if ($link) {
 									$this->Js->buffer('CORE.confirmation("remove-leader-'.$leader['User']['id'].'", "Are you sure you want to remove '.$leader['User']['Profile']['name'].' from leading?", {update:"content"})');
 									echo $this->Html->tag('div', $link, array('class' => 'core-icon-container'));
