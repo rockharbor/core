@@ -110,9 +110,15 @@ CORE.updateablePagination = function(updateable, id) {
 	if (updateable == undefined) {
 		updateable = 'parent';
 	}
+	var div;
 	if (updateable == 'parent') {
-		var parent = CORE.getUpdateableParent(id);
-		updateable = parent.updateable;
+		var div = CORE.getUpdateableParent(id, true);
+	} else {
+		// get first div in the updateable
+		for (var d in CORE.updateables[updateable]) {
+			div = d;
+			break;
+		}
 	}
 	$('a[href*="page:"]', $('#'+id))
 		.unbind('click')
@@ -120,11 +126,9 @@ CORE.updateablePagination = function(updateable, id) {
 			if ($(this).attr('id') == '') {
 				$(this).attr('id', unique('pagination-link-'));
 			}
-			for (var div in CORE.updateables[updateable]) {
-				CORE.request($(this).attr('href'), {
-					updateHtml: div
-				});
-			}
+			CORE.request($(this).attr('href'), {
+				updateHtml: $(div).attr('id')
+			});
 			return false;
 		});
 
@@ -137,10 +141,19 @@ CORE.updateablePagination = function(updateable, id) {
  * this pair.
  *
  * @param string id The element id
- * @return hash Hash containing `updateable`, `url` and `id` keys
+ * @param boolean elementOnly Return the element id only
+ * @return mixed Hash containing `updateable`, `url` and `id` keys, or the element
+ *   if `elementOnly = true`
  */
-CORE.getUpdateableParent = function(id) {
-	var parent = $('#'+id).closest('.content-box');
+CORE.getUpdateableParent = function(id, elementOnly) {
+	var parent, tab, alias, url;
+	parent = { length: 0 };
+	if (elementOnly == undefined) {
+		elementOnly = false;
+	}
+	if (elementOnly) {
+		parent = $('#'+id).closest('.content-box');
+	}
 	if (parent.length == 0) {
 		parent = $('#'+id).closest('.ui-tabs-panel');
 	}
@@ -154,9 +167,12 @@ CORE.getUpdateableParent = function(id) {
 	if (parent.attr('id') == '') {
 		parent.attr('id', unique());
 	}
-	var tab = parent.closest('.ui-tabs').find('a[href="#'+parent.attr('id')+'"]');
-	var alias = unique('parent-');
-	var url = tab.data('load.tabs');
+	if (elementOnly) {
+		return parent;
+	}
+	tab = parent.closest('.ui-tabs').find('a[href="#'+parent.attr('id')+'"]');
+	alias = unique('parent-');
+	url = tab.data('load.tabs');
 	if (tab.data('load.tabs') == undefined) {
 		url = '/';
 	}

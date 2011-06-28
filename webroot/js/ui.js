@@ -436,8 +436,8 @@ CORE.confirmation = function(id, message, options) {
 		useOptions.update = parent.updateable;
 	}
 	if (useOptions.updateHtml == 'parent') {
-		var parent = CORE.getUpdateableParent(id);
-		useOptions.updateHtml = parent.id;
+		var parent = CORE.getUpdateableParent(id, true);
+		useOptions.updateHtml = parent.attr('id');
 	}
 
 	if (useOptions.update != '') {

@@ -110,22 +110,22 @@ CORE.successForm = function(event, data, textStatus, options) {
 		$(event.currentTarget).closest('form').attr('id', unique('form-'));
 	}
 	// update the content
-	var parent = CORE.getUpdateableParent($(event.currentTarget).closest('form').attr('id'));
+	var parent = CORE.getUpdateableParent($(event.currentTarget).closest('form').attr('id'), true);
 	switch (options.autoUpdate) {
 		case 'failure':		
 			if (!validates) {
-				$('#'+parent.id).html(data);
+				parent.html(data);
 				CORE.showValidationErrors($(event.currentTarget).closest('form').attr('id'));
 			}
 		break;
 		case 'success':
 			if (validates) {
-				$('#'+parent.id).html(data);
+				parent.html(data);
 				CORE.showValidationErrors($(event.currentTarget).closest('form').attr('id'));
 			}
 		break;
 		default:
-			$('#'+parent.id).html(data);
+			parent.html(data);
 			CORE.showValidationErrors($(event.currentTarget).closest('form').attr('id'));
 		break;
 	} 
@@ -262,8 +262,8 @@ CORE.initFormUI = function() {
 			}
 		}
 		if (updateable == 'parent') {
-			var parent = CORE.getUpdateableParent($(this).attr('id'));
-			options = {updateHtml: parent.id};
+			var parent = CORE.getUpdateableParent($(this).attr('id'), true);
+			options = {updateHtml: parent.attr('id')};
 		}
 		var form = $(this);
 		$('input, select', form).change(function() {
