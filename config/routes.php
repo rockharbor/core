@@ -21,8 +21,10 @@
 /**
  * Static routes
  */
-	Router::connect('/', array('controller' => 'users', 'action' => 'login'));
+	Router::connect('/', array('controller' => 'profiles', 'action' => 'view'));
+	Router::connect('/login', array('controller' => 'users', 'action' => 'login'));
 	Router::connect('/logout', array('controller' => 'users', 'action' => 'logout'));
+	Router::connect('/pages/phrase/*', array('controller' => 'pages', 'action' => 'phrase'));
 	
 /**
  * Custom routes
@@ -35,7 +37,6 @@
 			'models' => array('User', 'Ministry', 'Involvement', 'Campus')
 		)
 	);
-	Router::connect('/pages/phrase/*', array('controller' => 'pages', 'action' => 'phrase'));
 
 /*
  * Asset Compress
