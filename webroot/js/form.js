@@ -238,7 +238,7 @@ CORE.initFormUI = function() {
 	// set up filter forms
 	$('.core-filter-form').each(function() {
 		if ($(this).attr('id') == '') {
-			$(this).attr('id') = unique('form-');
+			$(this).attr('id', unique('form-'));
 		}
 		if ($(this).data('configured') == true) {
 			return;
