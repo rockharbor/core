@@ -32,6 +32,15 @@ class Core {
  * @access protected
  */
 	var $_version = '2.0.0-alpha';
+	
+/**
+ * Loaded flag
+ * 
+ * If false, tries to load database settings if the database exists
+ * 
+ * @var boolean
+ */
+	var $_loaded = false;
 
 /**
  * Stored settings
@@ -65,14 +74,24 @@ class Core {
 /**
  * Returns a singleton instance
  * 
+ * Loads db settings if the database tables exists and it hasn't loaded them yet
+ * 
  * @return Core class object
  */
 	function &getInstance() {
 		static $instance = array();
 		if (!$instance) {
 			$instance[0] =& new Core();
-			$instance[0]->loadSettings();
-			$instance[0]->_initAcl();
+		}
+		if (!$instance[0]->_loaded) {
+			App::import('Model', 'ConnectionManager');
+			$db =& ConnectionManager::getDataSource('default');
+			$sources = $db->listSources();
+			if (!empty($sources)) {
+				$instance[0]->_loaded = true;
+				$instance[0]->loadSettings();
+				$instance[0]->_initAcl();
+			}
 		}
 		return $instance[0];	
 	}

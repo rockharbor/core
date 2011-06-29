@@ -133,6 +133,7 @@ class InstallShell extends Shell {
 
 		// insert tables
 		$this->SchemaShell->params['plugin'] = 'install';
+		$this->SchemaShell->params['name'] = 'install';
 		$this->SchemaShell->create();
 
 		// insert all records
