@@ -1,8 +1,6 @@
 <?php
-/* SVN FILE: $Id$ */
-/* App schema generated on: 2011-03-15 11:03:54 : 1300215234*/
-class CoreSchema extends CakeSchema {
-	var $name = 'Core';
+class InstallSchema extends CakeSchema {
+	var $name = 'Install';
 
 	function before($event = array()) {
 		return true;
@@ -276,7 +274,7 @@ class CoreSchema extends CakeSchema {
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'ministry_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
 		'involvement_type_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
-		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 64, 'key' => 'index'),
+		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 64),
 		'description' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 2000),
 		'roster_limit' => array('type' => 'integer', 'null' => true, 'default' => '0', 'length' => 3),
 		'roster_visible' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
@@ -341,7 +339,7 @@ class CoreSchema extends CakeSchema {
 	);
 	var $ministries = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
-		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 64, 'key' => 'index'),
+		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 64),
 		'description' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 2000),
 		'parent_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),
 		'lft' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8, 'key' => 'index'),
