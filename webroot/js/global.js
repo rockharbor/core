@@ -151,6 +151,7 @@ CORE.getUpdateableParent = function(id, elementOnly) {
 	if (elementOnly == undefined) {
 		elementOnly = false;
 	}
+	// this isn't looking for an updateable, so look for just paginatable boxes first
 	if (elementOnly) {
 		parent = $('#'+id).closest('.content-box');
 	}
@@ -158,6 +159,9 @@ CORE.getUpdateableParent = function(id, elementOnly) {
 		parent = $('#'+id).closest('.ui-tabs-panel');
 	}
 	if (parent.length == 0) {
+		if (elementOnly) {
+			return $('#content');
+		}
 		return {
 			url: CORE.updateables['content']['content'],
 			id: 'content',
