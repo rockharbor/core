@@ -331,7 +331,6 @@ class UsersController extends AppController {
 					'subject' => 'Account merge request',
 				));
 				$this->Session->setFlash('Account merge request has been received.', 'flash'.DS.'success');
-				$this->redirect('/');
 			} else {
 				$this->Session->setFlash('Unable to send account merge request. Please try again.', 'flash'.DS.'failure');
 			}			

@@ -59,7 +59,7 @@ echo $this->Form->create('User', array(
 <?php
 $defaultSubmitOptions['id'] = uniqid('submit_button');
 $defaultSubmitOptions['url'] = Router::url(array('controller' => 'users', 'action' => 'request_activation', $foundId));
-$defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals:true})';
+$defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals:true});CORE.showFlash(data);';
 echo $this->Form->button('Previous', array('id' => 'previous_button', 'class' => 'button', 'type' => 'button'));
 echo $this->Form->button('Next', array('id' => 'next_button', 'class' => 'button', 'type' => 'button'));
 echo $this->Js->submit('Request Activation', $defaultSubmitOptions);
