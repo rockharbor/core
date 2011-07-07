@@ -39,6 +39,7 @@ echo $this->MultiSelect->create();
 					'url' => array(
 						'controller' => 'reports',
 						'action' => 'map',
+						'User',
 						$this->MultiSelect->token
 					),
 					'options' => array(
