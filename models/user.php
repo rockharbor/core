@@ -605,7 +605,7 @@ class User extends AppModel {
 					$this->Address->getVirtualField('distance').' <= ' => (int)$dist['distance']
 				)
 			));
-			
+			$link['Address'] = array();
 			$conditions[$operator]['Address.id'] = array_values(Set::extract('/Address/id', $distancedAddresses));
 		}
 		
