@@ -35,6 +35,8 @@
 			<?php
 			$link = $this->Permission->link('Admin Dashboard', array('plugin' => false, 'controller' => 'users', 'action' => 'dashboard'));
 			echo $link ? $this->Html->tag('li', $link, array('class' => 'hover-row')) : null;
+			$link = $this->Permission->link('Search Users', array('plugin' => false, 'controller' => 'searches', 'action' => 'user'));
+			echo $link ? $this->Html->tag('li', $link, array('class' => 'hover-row')) : null;
 			?>
 			<?php
 			echo $this->element('hooks', array(
