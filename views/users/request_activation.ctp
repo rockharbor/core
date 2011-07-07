@@ -17,43 +17,13 @@ echo $this->Form->create('User', array(
 		<li><a href="#contact">Contact Information</a></li>
 	</ul>
 	<div id="personal">
-	<?php
-		echo $this->Form->input('username');
-		echo $this->Form->input('Profile.first_name');
-		echo $this->Form->input('Profile.last_name');
-		echo $this->Form->input('Profile.birth_date');
-	?>
+	<?php echo $this->element('register'.DS.'personal'); ?>
 	</div>
 	<div id="contact" class="clearfix">
-		<fieldset class="grid_6">
-			<legend>Address</legend>
-	<?php
-		echo $this->Form->input('Address.0.address_line_1');
-		echo $this->Form->input('Address.0.address_line_2');
-		echo $this->Form->input('Address.0.city');
-		echo $this->Form->input('Address.0.state', array(
-			'options' => $this->SelectOptions->states
-		));
-		echo $this->Form->input('Address.0.zip');
+	<?php 
+	echo $this->element('register'.DS.'address');
+	echo $this->element('register'.DS.'phone_email');
 	?>
-		</fieldset>
-		<fieldset class="grid_6">
-			<legend>Phone and Email</legend>
-	<?php
-		echo $this->Form->input('Profile.cell_phone', array(
-			'maxlength' => '30'
-		));
-		echo $this->Form->input('Profile.home_phone', array(
-			'maxlength' => '30'
-		));
-		echo $this->Form->input('Profile.work_phone', array(
-			'maxlength' => '30'
-		));
-		echo $this->Form->input('Profile.primary_email');
-		echo $this->Form->input('Profile.alternate_email_1');
-		echo $this->Form->input('Profile.alternate_email_2');
-	?>
-		</fieldset>
 	</div>
 </div>
 <?php
