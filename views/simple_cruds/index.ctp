@@ -4,7 +4,7 @@ $this->Paginator->options(array(
 ));
 ?>
 <h1><?php echo Inflector::pluralize(Inflector::humanize($modelKey)); ?></h1>
-<div class="simple_lists index">
+<div class="simple_lists index content-box">
 	<table class="datatable">
 		<thead>
 			<tr>
@@ -58,5 +58,5 @@ $this->Paginator->options(array(
 		</tbody>
 	</table>
 <?php echo $this->element('pagination'); ?>
-</div>
 <?php echo $this->Html->link('New '.Inflector::humanize($modelKey), array('action' => 'add'), array('rel' => 'modal-parent', 'class' => 'button')); ?>
+</div>
