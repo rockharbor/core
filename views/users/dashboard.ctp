@@ -103,7 +103,7 @@
 			?>
 		</div>
 		<?php endif; ?>
-		<?php if ($this->Permission->check(array('controller' => 'publications'))): ?>
+		<?php if ($this->Permission->check(array('controller' => 'app_settings'))): ?>
 		<div id="app-settings">
 			<?php
 			echo $this->requestAction('/app_settings/index', array(
