@@ -62,7 +62,7 @@ $this->MultiSelect->create();
 	<?php endif; ?>
 		<?php echo $this->Form->create('SysEmail', array(
 			'default' => false,
-			'url' => $this->passedArgs
+			'url' => $this->here
 		));?>
 	<fieldset>
 	<?php
@@ -74,18 +74,12 @@ $this->MultiSelect->create();
 	?>
 	</fieldset>
 <?php
-//$defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals:true})';
-$defaultSubmitOptions['url'] = array_merge(
-	array($this->MultiSelect->token),
-	$this->passedArgs
-);
-
+$defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals:true})';
 echo $this->Js->submit('Send', $defaultSubmitOptions);
 echo $this->Form->end();
 
 echo $this->Html->script('jquery.plugins/jquery.wysiwyg');
 echo $this->Html->css('jquery.wysiwyg');
 $this->Js->buffer('CORE.wysiwyg("SysEmailBody");');
-
 ?>
 </div>

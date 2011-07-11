@@ -16,7 +16,8 @@ echo $this->MultiSelect->create();
 					'url' => array(
 						'controller' => 'sys_emails',
 						'action' => 'compose',
-						$this->MultiSelect->token
+						$this->MultiSelect->token,
+						'model' => 'User'
 					),
 					'options' => array(
 						'rel' => 'modal-none'
