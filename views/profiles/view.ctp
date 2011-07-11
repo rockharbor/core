@@ -93,7 +93,7 @@
 			</div>
 			<div class="grid_10 alpha omega">
 				<div class="grid_7 alpha">
-					<div id="involvement" class="box">
+					<div id="involvement" class="parent box">
 						<?php
 						$this->Js->buffer('CORE.register("involvement", "involvement", "/rosters/involvement/User:'.$profile['User']['id'].'")');
 						echo $this->requestAction('/rosters/involvement', array(
