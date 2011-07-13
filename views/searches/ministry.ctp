@@ -28,6 +28,6 @@ echo $this->Form->end();
 $url = $this->here; // doesn't matter, as the updateable is only needed for the div (pagination)
 $this->Js->buffer('CORE.register("results", "ministry-results", "'.$url.'");');
 ?>
-	<div id="ministry-results">
+	<div id="ministry-results" class="parent">
 	</div>
 </div>

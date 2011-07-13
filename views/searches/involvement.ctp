@@ -42,6 +42,6 @@ $url = $this->here; // doesn't matter, as the updateable is only needed for the 
 $this->Js->buffer('CORE.register("results", "involvement-results", "'.$url.'");');
 ?>
 	
-	<div id="involvement-results">
+	<div id="involvement-results" class="parent">
 	</div>
 </div>

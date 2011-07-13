@@ -13,7 +13,7 @@ if (!empty($results)) {
 		<tbody>
 <?php
 	$this->Paginator->options(array(
-		 'updateable' => 'results'
+		 'updateable' => 'parent'
 	));
 	$i = 0;
 	foreach ($results as $result):

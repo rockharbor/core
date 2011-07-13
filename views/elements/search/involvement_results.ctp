@@ -9,7 +9,7 @@ if (!empty($results)) {
 	<div class="clearfix">
 <?php	
 	$this->Paginator->options(array(
-		 'updateable' => 'results'
+		 'updateable' => 'parent'
 	));
 	$i = 0;
 	foreach ($results as $result):

@@ -1,5 +1,5 @@
 <h1>Simple Search</h1>
-<div class="searches content-box">
+<div class="searches parent">
 <?php echo $this->Form->create(null, array(
 	'default' => false,
 	'url' => $this->passedArgs
