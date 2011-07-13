@@ -71,12 +71,12 @@ if (!empty($ministry['ParentMinistry']['id'])) {
 	<ul class="core-admin-tabs">
 	<?php
 	$link = $this->Permission->link('Edit', array('action' => 'edit', 'Ministry' => $ministry['Ministry']['id']));
-	if ($link) {
-		echo $this->Html->tag('li', $link);
-	}
+	echo $link ? $this->Html->tag('li', $link) : null;
 	$link = $this->Permission->link('Add Involvement Opportunity', array('controller' => 'involvements', 'action' => 'add', 'Ministry' => $ministry['Ministry']['id']));
-	if ($link) {
-		echo $this->Html->tag('li', $link);
+	echo $link ? $this->Html->tag('li', $link) : null;
+	if (empty($ministry['ParentMinistry']['id'])) {
+		$link = $this->Permission->link('Add Subministry', array('controller' => 'ministries', 'action' => 'add', 'Ministry' => $ministry['Ministry']['id'], 'Campus' => $ministry['Campus']['id']), array('rel' => 'modal-none'));
+		echo $link ? $this->Html->tag('li', $link) : null;
 	}
 	$link = $this->Permission->link('Delete', array('action' => 'delete', $ministry['Ministry']['id']), array('id' => 'delete_btn'));
 	if ($link) {
