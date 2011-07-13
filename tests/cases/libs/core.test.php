@@ -91,18 +91,18 @@ class CoreConfigureTestCase extends CoreTestCase {
 		$core->Acl = new CoreConfigureMockAclComponent();
 		
 		$core->Acl->setReturnValueAt(0, 'check', true);
-		$this->assertTrue(Core::acl(8, '/some/path'));
+		$this->assertIdentical(Core::acl(8, '/some/path'), true);
 		
 		$core->Acl->setReturnValueAt(1, 'check', false);
 		// cached ('check' call not made here)
-		$this->assertTrue(Core::acl(8, '/some/path'));
+		$this->assertIdentical(Core::acl(8, '/some/path'), true);
 		
-		$this->assertFalse(Core::acl(1, '/some/path'));
+		$this->assertIdentical(Core::acl(1, '/some/path'), false);
 		
 		Configure::write('Cache.disable', true);
 		
 		$core->Acl->setReturnValueAt(2, 'check', true);
-		$this->assertTrue(Core::acl(1, '/some/path'));
+		$this->assertIdentical(Core::acl(1, '/some/path'), true);
 		
 		Configure::write('Cache.disable', false);
 		Cache::clear(false, 'acl');
