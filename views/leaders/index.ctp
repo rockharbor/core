@@ -43,6 +43,11 @@ $this->Paginator->options(array(
 
 <div>
 <?php
+if ($this->Permission->check(array(
+	'controller' => $this->params['controller'],
+	'action' => 'add',
+	$model => $modelId
+))) {
 	echo $this->Permission->link('Add Leader', array(
 		'controller' => 'searches',
 		'action' => 'simple',
@@ -58,5 +63,6 @@ $this->Paginator->options(array(
 		'rel' => 'modal-leaders',
 		'class' => 'button'
 	));
+}
 ?>
 </div>
