@@ -391,7 +391,9 @@ class UserTestCase extends CoreTestCase {
 		$search['Distance']['distance'] = 5;
 		$results = $this->User->prepareSearch($this->Controller, $search);
 		$expected = array(
-			'link' => array(),
+			'link' => array(
+				'Address' => array()
+			),
 			'group' => 'User.id',
 			'conditions' => array(
 				'OR' => array(

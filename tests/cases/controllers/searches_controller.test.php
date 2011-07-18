@@ -205,8 +205,9 @@ class SearchesControllerTestCase extends CoreTestCase {
 			'data' => $search
 		));
 		$results = Set::extract('/Ministry/name', $vars['results']);
+		sort($results);
 		$expected = array(
-			'Web', 'Child Web'
+			'Child Web', 'Web'
 		);
 		$this->assertEqual($results, $expected);
 	}
