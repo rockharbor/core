@@ -393,8 +393,6 @@ class InstallShell extends Shell {
 			'controllers/Publications',
 			'controllers/Rosters/delete',
 			'controllers/Rosters/edit',
-			'controllers/Profiles/admin',
-			'controllers/MinistryLeaders/add',
 			'controllers/PaymentTypes',
 			'controllers/InvolvementTypes'
 		),
@@ -406,6 +404,8 @@ class InstallShell extends Shell {
 			'controllers/Campuses/edit',
 			'controllers/Campuses/revise',
 			'controllers/Campuses/history',
+			'controllers/CampusLeaders/add',
+			'controllers/MinistryLeaders/add',
 			'controllers/Classifications/add',
 			'controllers/Classifications/edit',
 			'controllers/Classifications/index',
@@ -496,6 +496,7 @@ class InstallShell extends Shell {
 			'controllers/InvolvementImages/upload',
 			'controllers/Profiles/view',
 			'controllers/Profiles/edit',
+			'controllers/Profiles/admin',
 			'controllers/Payments/view',
 			'controllers/Users/dashboard'
 		),
