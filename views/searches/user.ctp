@@ -116,6 +116,7 @@
 					'type' => 'select',
 					'options' => $chunk,
 					'multiple' => 'checkbox',
+					'hiddenField' => false,
 					'empty' => false
 				)), array(
 					 'style' => 'float:left;width:50px;margin-right:10px;'
