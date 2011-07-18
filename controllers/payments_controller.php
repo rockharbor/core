@@ -267,9 +267,7 @@ class PaymentsController extends AppController {
 					
 					$this->Payment->saveAll($payments, array('validate' => false));
 			
-					App::import('Helper', 'Formatting');
-					$Formatting = new FormattingHelper();
-					$this->Session->setFlash('Your payment of '.$Formatting->money($this->data['Payment']['amount']).' has been received.', 'flash'.DS.'success');
+					$this->Session->setFlash('Your payment has been received.', 'flash'.DS.'success');
 				} else {
 					$this->Session->setFlash('Unable to process payment. '.$this->Payment->CreditCard->creditCardError, 'flash'.DS.'failure');
 				}					
