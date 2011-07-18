@@ -107,9 +107,11 @@ class PaymentsControllerTestCase extends CoreTestCase {
 				'Roster'
 			)
 		));
-		$results = Set::extract('/Payment/amount', $results);
+		$amounts = Set::extract('/Payment/amount', $results);
 		$expected = array(5, 5);
-		$this->assertEqual($results, $expected);
+		$this->assertEqual($amounts, $expected);
+		$numbers = Set::extract('/Payment/number', $results);
+		$this->assertEqual($numbers, array(8888, 8888));
 
 		// pay the rest of 1 person who only has 5 left, then the other 20 on the other
 		$data['Payment']['amount'] = 25;

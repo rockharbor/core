@@ -241,7 +241,7 @@ class PaymentsController extends AppController {
 			
 			// make sure all the fields validate before charging the card, if there is one
 			if (empty($this->Payment->validationErrors) && $this->Payment->saveAll($payments, array('validate' => 'only'))) {
-				$isCreditCard = (isset($this->_data['CreditCard']) && isset($this->_data['CreditCard']['credit_card_number']));
+				$isCreditCard = (isset($this->data['CreditCard']) && isset($this->data['CreditCard']['credit_card_number']));
 				
 				// next, make sure the credit card gets authorized
 				if ($isCreditCard) {

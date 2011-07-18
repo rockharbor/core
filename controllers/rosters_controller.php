@@ -438,6 +438,7 @@ class RostersController extends AppController {
 							$this->Roster->create();
 							// include transaction id
 							$signuproster['Payment'][0]['transaction_id'] = $CreditCard->transactionId;
+							$signuproster['Payment'][0]['number'] = substr($this->data['CreditCard']['credit_card_number'], -4);
 							$this->Roster->saveAll($signuproster, array('validate' => false));							
 							$this->Notifier->notify(array(
 								'to' => $signuproster['Roster']['user_id'],
@@ -452,6 +453,7 @@ class RostersController extends AppController {
 								$this->Roster->create();
 								// include transaction id
 								$signupchild['Payment'][0]['transaction_id'] = $CreditCard->transactionId;
+								$signupchild['Payment'][0]['number'] = substr($this->data['CreditCard']['credit_card_number'], -4);
 								$this->Roster->saveAll($signupchild, array('validate' => false));
 								$this->Notifier->notify(array(
 								'to' => $signupchild['Roster']['user_id'],

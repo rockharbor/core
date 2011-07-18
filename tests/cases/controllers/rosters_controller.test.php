@@ -229,6 +229,8 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, 1);
 		$result = $payment['Payment']['roster_id'];
 		$this->assertEqual($result, $this->Rosters->Roster->id);
+		$result = $payment['Payment']['number'];
+		$this->assertEqual($result, 1234);
 
 		$notificationsNow = $this->Rosters->Roster->User->Notification->find('count');
 		$this->assertEqual($notificationsNow-$notificationsBefore, 2);
@@ -293,6 +295,17 @@ class RostersControllerTestCase extends CoreTestCase {
 
 		$rostersNow = $this->Rosters->Roster->find('count');
 		$this->assertEqual($rostersNow-$rostersBefore, 2);
+		
+		$payments = $this->Rosters->Roster->find('all', array(
+			'conditions' => array(
+				'Roster.involvement_id' => 1
+			),
+			'contain' => array(
+				'Payment'
+			)
+		));
+		$results = Set::extract('/Payment/number', $payments);
+		$this->assertEqual($results, array(1234, 1234));
 	}
 
 	function testEdit() {
