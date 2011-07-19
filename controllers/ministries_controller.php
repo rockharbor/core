@@ -145,13 +145,6 @@ class MinistriesController extends AppController {
 		}
 		
 		$this->set('campuses', $this->Ministry->Campus->find('list'));
-		$this->set('ministries', $this->Ministry->find('list', array(
-			'conditions' => array(
-				'Ministry.active' => true,
-				'Ministry.parent_id' => null,
-				'Ministry.campus_id' => $this->passedArgs['Campus']
-			)
-		)));
 	}
 
 /**

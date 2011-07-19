@@ -12,14 +12,6 @@
 		));
 		if (isset($parentId)) {
 			echo $this->Form->hidden('parent_id', array('value' => $parentId));
-		} else {
-			echo $this->Form->input('parent_id', array(
-				'type' => 'select',
-				'options' => $ministries,
-				'escape' => false, // for &nbsp;'s
-				'empty' => true,
-				'label' => 'Parent Ministry'
-			));
 		}
 		echo $this->Form->hidden('campus_id');
 		echo $this->Form->input('private');

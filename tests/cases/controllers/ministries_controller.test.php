@@ -133,14 +133,6 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$ministry = $this->Ministries->Ministry->read(null, $this->Ministries->Ministry->id);
 		$result = $ministry['Ministry']['name'];
 		$this->assertEqual($result, 'New Root Ministry');
-
-		$results = $vars['ministries'];
-		ksort($results);
-		$expected = array(
-			1 => 'Communications',
-			2 => 'Alpha'
-		);
-		$this->assertEqual($results, $expected);
 		
 		$vars = $this->testAction('/ministries/add/Campus:2/Ministry:1');
 		$this->assertEqual($vars['parentId'], 1);
