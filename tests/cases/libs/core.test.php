@@ -290,6 +290,18 @@ class CoreConfigureTestCase extends CoreTestCase {
 		$this->assertIdentical(Core::read('UndefinedSetting'), null);
 
 		$this->assertIdentical(Core::read('a.deep.UndefinedSetting'), null);
+		
+		$result = Core::read('general.church_name');
+		$this->assertTags($result, array(
+			'span' => array(
+				'class' => 'churchname'
+			),
+			'b' => array(), 
+			'ROCK',
+			'/b',
+			'HARBOR',
+			'/span'
+		));
 	}
 
 	function testWrite() {

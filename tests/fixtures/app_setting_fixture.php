@@ -22,7 +22,7 @@ class AppSettingFixture extends CakeTestFixture {
 			'description' => 'The name of your church. Wrap it in a span tag with your own class for easy customization.',
 			'created' => '2010-03-11 10:44:40',
 			'modified' => '2010-08-17 14:38:33',
-			'value' => '<span class=\"churchname\"><b>ROCK</b>HARBOR</span>',
+			'value' => '&lt;span class=\"churchname\"&gt;&lt;b&gt;ROCK&lt;/b&gt;HARBOR&lt;/span&gt;',
 			'type' => 'html'
 		),
 		array(

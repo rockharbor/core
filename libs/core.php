@@ -178,6 +178,7 @@ class Core {
 		$tagless = array();
 		foreach ($appSettings as &$appSetting) {
 			if ($appSetting['AppSetting']['type'] == 'html') {
+				$appSetting['AppSetting']['value'] = stripslashes(html_entity_decode($appSetting['AppSetting']['value']));
 				$tagless[] = array(
 					'AppSetting' => array(
 						'name' => $appSetting['AppSetting']['name'].'_tagless',
