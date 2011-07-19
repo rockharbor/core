@@ -59,7 +59,15 @@
 			?>
 			<tr<?php echo $class;?>>
 				<td><?php echo $this->MultiSelect->checkbox($leader['Ministry']['id']); ?></td>
-				<td><?php echo $this->Html->link($leader['Ministry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $leader['Ministry']['id'])).$this->Formatting->flags('Ministry', $leader); ?></td>
+				<td><?php 
+				echo $this->Html->link($leader['Ministry']['Campus']['name'], array('controller' => 'campuses', 'action' => 'view', 'Campus' => $leader['Ministry']['Campus']['id']), array('escape' => false));
+				if (!empty($leader['Ministry']['ParentMinistry']['id'])) {
+					echo ' > ';
+					echo $this->Html->link($leader['Ministry']['ParentMinistry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $leader['Ministry']['ParentMinistry']['id']), array('escape' => false));
+				}
+				echo ' > ';
+				echo $this->Html->link($leader['Ministry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $leader['Ministry']['id'])).$this->Formatting->flags('Ministry', $leader); 
+				?></td>
 				<td><?php
 				$link = array('controller' => 'roles', 'action' => 'index', 'Ministry' => $leader['Ministry']['id']);
 				$icon = $this->element('icon', array('icon' => 'add'));

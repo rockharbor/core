@@ -54,7 +54,9 @@ class MinistryLeadersController extends LeadersController {
 			),
 			'contain' => array(
 				'Ministry' => array(
-					'Role'
+					'Role',
+					'ParentMinistry',
+					'Campus'
 				)
 			)
 		);
