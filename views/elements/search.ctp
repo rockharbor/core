@@ -1,4 +1,4 @@
-<span class="search-form clearfix">
+<div class="search-form clearfix">
 	<?php
 	echo $this->Form->create('Search', array(
 		'inputDefaults' => array(
@@ -33,4 +33,4 @@
 	);
 	echo $this->Form->end();
 	?>
-</span>
+</div>
