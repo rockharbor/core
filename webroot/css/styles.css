@@ -424,6 +424,7 @@ div.payment-options {
 	display: inline-block;
 	vertical-align: top;
 	z-index: 1;
+	max-width: 400px;
 }
 div.payment-option {
 	float:left;
