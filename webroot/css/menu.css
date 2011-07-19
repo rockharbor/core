@@ -217,6 +217,7 @@ Ministry menu CSS
 	width:200px;
 	float:left;
 	margin-left:5px;
+	position: relative;
 }
 #nav-campuses li {
 	margin-bottom: 10px;

@@ -17,6 +17,7 @@ foreach ($campuses as $campus) {
 	$half = round(count($campus['Ministry'])/2);
 	$i = 0;
 	$h = 0;
+	echo '<div class="clearfix">';
 	while ($i < 2) {
 		echo '<ul class="ministry-column">';
 		for($h; $h<($half*($i+1)) && $h < count($campus['Ministry']); $h++) {
@@ -37,7 +38,7 @@ foreach ($campuses as $campus) {
 		echo '</ul>';
 		$i++;
 	}
-	echo $this->Html->tag('span', '&nbsp;', array('class' => 'clearfix'));
+	echo '</div>';
 	$link = $this->Html->link('View '.$campus['Campus']['name'].' campus page', array('plugin' => false, 'controller' => 'campuses', 'action' => 'view', 'Campus' => $campus['Campus']['id']));
 	echo $this->Html->tag('div', $link, array('class' => 'bottom-link'));
 	echo '</li>';
