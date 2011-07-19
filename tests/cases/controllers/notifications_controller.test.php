@@ -11,7 +11,7 @@ Mock::generatePartial('NotificationsController', 'TestNotificationsController', 
 class NotificationsControllerTestCase extends CoreTestCase {
 
 	function startTest() {
-		$this->loadFixtures('Notification', 'Invitation');
+		$this->loadFixtures('Notification');
 		$this->Notifications =& new TestNotificationsController();
 		$this->Notifications->__construct();
 		$this->Notifications->constructClasses();
@@ -32,12 +32,14 @@ class NotificationsControllerTestCase extends CoreTestCase {
 	}
 
 	function testQuick() {
+		$this->loadFixtures('Alert', 'AlertsUser', 'Invitation', 'InvitationsUser', 'Group');
 		$vars = $this->testAction('/notifications/quick/User:1', array(
 			'return' => 'vars'
 		));
-		$this->assertTrue(count($vars['notifications']) > 0);
-		$this->assertTrue($vars['new'] > 0);
-		$this->assertTrue($vars['invitations'] > 0);
+		$this->assertEqual(count($vars['notifications']), 2);
+		$this->assertEqual(count($vars['invitations']), 2);
+		$this->assertEqual(count($vars['alerts']), 3);
+		$this->assertEqual($vars['new'], 7);
 	}
 
 	function testIndex() {

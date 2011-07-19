@@ -10,8 +10,8 @@ if ($new > 0) {
 	<?php
 		foreach ($alerts as $alert) {
 			$title = $this->Html->link($alert['Alert']['name'], array('controller' => 'alerts', 'action' => 'view', $alert['Alert']['id']), array('rel' => 'modal-notifications'));
-			$desc = $this->Text->truncate($alert['Alert']['description'], 50);
-			echo $this->Html->tag('li', $title.' - '.$desc, array('class' => 'notification alert'));
+			$title = $this->Html->tag('strong', $title);
+			echo $this->Html->tag('li', $title, array('class' => 'notification alert'));
 		}
 	?>
 	<?php

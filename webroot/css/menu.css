@@ -103,10 +103,7 @@ li#nav-notifications li.notification {
 	line-height: 14px;
 }
 li#nav-notifications .alert {
-	color: #e03a14;
-	background: #ffcbbf;
-	border: 1px solid #e03a14;
-	padding: 5px;
+	border-left:3px solid #e03a14;
 }
 li#nav-notifications .actions {
 	position: absolute;
@@ -126,10 +123,10 @@ li#nav-notifications .delete {
 li#nav-notifications .delete:hover {
 	background-position: -96px -16px;
 }
-.notification.read, .notification.invitation {
+.notification.read {
 	border-left:3px solid transparent;
 }
-.notification.unread {
+.notification.unread, .notification.invitation {
 	border-left:3px solid #e03a14;
 }
 li#nav-notifications .notification-counter {

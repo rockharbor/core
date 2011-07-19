@@ -48,15 +48,18 @@ echo $this->MultiSelect->create();
 	?>		
 		<tr<?php echo $class;?>>
 			<td><?php echo $this->MultiSelect->checkbox($alert['Alert']['id']); ?></td>
-			<td><?php echo in_array($alert['Alert']['id'], $read) ? 'read' : 'unread';?></td>
-			<td><?php echo $this->Html->link($alert['Alert']['name'], array('controller' => 'alerts', 'action' => 'view', $alert['Alert']['id']), array('rel' => 'modal-notifications'));?></td>
+			<td><?php 
+			$class = 'notification ' . (in_array($alert['Alert']['id'], $read) ? 'read' : 'unread');
+			$style = 'padding-left:5px';
+			echo $this->Html->link($alert['Alert']['name'], array('controller' => 'alerts', 'action' => 'view', $alert['Alert']['id']), array('rel' => 'modal-notifications', 'class' => $class, 'style' => $style));
+			?></td>
 			<td><?php echo $this->Formatting->date($alert['Alert']['created']);?></td>
 		</tr>
-	<?php
-	endforeach;
-	echo $this->MultiSelect->end();
-	?>
+	<?php endforeach; ?>
 		</tbody>
 	</table>
-	<?php echo $this->element('pagination'); ?>
+	<?php 
+	echo $this->MultiSelect->end();
+	echo $this->element('pagination'); 
+	?>
 </div>

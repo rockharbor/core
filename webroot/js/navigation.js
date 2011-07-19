@@ -20,8 +20,13 @@ CORE.initNavigation = function() {
 	});
 	$('#nav-notifications ul').find('a.delete, a.confirm, a.deny').live('click', function(event) {
 		event.preventDefault();
-		CORE.request(this.href);
-		$(this).closest('.notification').fadeOut('fast');
+		var ele = $(this);
+		CORE.request(this.href, {
+			success: function() {
+				$(ele).closest('.notification').fadeOut('fast');
+				CORE.decrementCount();
+			}
+		});
 		return false;
 	});
 
@@ -38,11 +43,21 @@ CORE.initNavigation = function() {
  * @param ele Element The notification element
  */
 CORE.readNotification = function(id, ele) {
-	CORE.request('/notifications/read/'+id);
-	$(ele).animate({borderLeftColor:'transparent'}, {
-		duration: 'slow',
-		complete: function() { $(this).removeClass('unread').addClass('read'); }
+	CORE.request('/notifications/read/'+id, {
+		success: function() {
+			$(ele).animate({borderLeftColor:'transparent'}, {
+				duration: 'slow',
+				complete: function() { $(ele).removeClass('unread').addClass('read'); }
+			});
+			CORE.decrementCount();
+		}
 	});
+}
+
+/**
+ * Reduces the notification count by 1
+ */
+CORE.decrementCount = function() {
 	var count = Number($('.notification-count').text()) - 1;
 	if (count == 0) {
 		$('.notification-counter').fadeOut('fast');

@@ -65,20 +65,17 @@ class NotificationsController extends AppController {
 		));
 		$this->set('alerts', $alerts);
 		
+		// get invites
+		$invites = $this->Notification->User->Invitation->getInvitations($this->activeUser['User']['id']);
 		$invitations = $this->Notification->User->Invitation->find('all', array(
 			'conditions' => array(
-				'Invitation.id' => $this->Notification->User->Invitation->getInvitations($this->activeUser['User']['id'])
-			)
+				'Invitation.id' => $invites
+			),
+			'limit' => 5
 		));
 		$this->set('invitations', $invitations);
 
 		// get notifications
-		$this->set('new', $this->Notification->find('count', array(
-			'conditions' => array(
-				'Notification.user_id' => $this->Auth->user('id'),
-				'Notification.read' => false
-			)
-		)));
 		$this->paginate = array(
 			'conditions' => array(
 				'Notification.user_id' => $this->Auth->user('id')
@@ -87,6 +84,17 @@ class NotificationsController extends AppController {
 			'limit' => 10
 		);
 		$this->set('notifications', $this->paginate());
+		
+		// get count
+		$new = $this->Notification->find('count', array(
+			'conditions' => array(
+				'Notification.user_id' => $this->Auth->user('id'),
+				'Notification.read' => false
+			)
+		));
+		$new += count($unread);
+		$new += count($invites);
+		$this->set('new', $new);
 	}
 
 /**
