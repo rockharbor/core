@@ -3,7 +3,9 @@
 
 <p>Create a new involvement opportunity! You will be able to add dates, a location, and media after you've created the involvement opportunity. The involvement opportunity will remain inactive until you activate it.</p>
 
-<?php echo $this->Form->create('Involvement');?>
+<?php echo $this->Form->create('Involvement', array(
+	'url' => $this->here
+));?>
 	<fieldset>
  		<legend>Create Involvement Opportunity</legend>
 	<?php
