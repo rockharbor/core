@@ -127,6 +127,13 @@ class MinistriesController extends AppController {
 	function add() {
 		$this->Ministry->Behaviors->disable('Confirm');
 		
+		if (isset($this->passedArgs['Ministry'])) {
+			$this->set('parentId', $this->passedArgs['Ministry']);
+			$parentMinistry = $this->Ministry->read(null, $this->passedArgs['Ministry']);
+			$this->passedArgs['Campus'] = $parentMinistry['Ministry']['campus_id'];
+		}
+		$this->data['Ministry']['campus_id'] = $this->passedArgs['Campus'];
+		
 		if (!empty($this->data)) {
 			$this->Ministry->create();
 			if ($this->Ministry->save($this->data)) {
@@ -136,13 +143,6 @@ class MinistriesController extends AppController {
 				$this->Session->setFlash('Unable to create this ministry. Please try again.', 'flash'.DS.'failure');
 			}
 		}
-		
-		if (isset($this->passedArgs['Ministry'])) {
-			$this->set('parentId', $this->passedArgs['Ministry']);
-			$parentMinistry = $this->Ministry->read(null, $this->passedArgs['Ministry']);
-			$this->passedArgs['Campus'] = $parentMinistry['Ministry']['campus_id'];
-		}
-		$this->data['Ministry']['campus_id'] = $this->passedArgs['Campus'];
 		
 		$this->set('campuses', $this->Ministry->Campus->find('list'));
 		$this->set('ministries', $this->Ministry->find('list', array(

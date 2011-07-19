@@ -1,5 +1,8 @@
+<h1>Add Ministry</h1>
 <div class="ministries form">
-<?php echo $this->Form->create('Ministry');?>
+<?php echo $this->Form->create('Ministry', array(
+	'default' => false
+));?>
 	<fieldset>
  		<legend><?php printf(__('Add %s', true), __('Ministry', true)); ?></legend>
 	<?php
@@ -22,7 +25,11 @@
 		echo $this->Form->input('private');
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('Submit', true));?>
+<?php
+$defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals:true});CORE.showFlash(data);';
+echo $this->Js->submit('Submit', $defaultSubmitOptions);
+echo $this->Form->end();
+?>
 </div>
 <?php
 echo $this->Html->script('jquery.plugins/jquery.wysiwyg');
