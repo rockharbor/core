@@ -114,7 +114,7 @@ class SearchesController extends AppController {
 			$query = implode(' ', $query);
 			// check access to results based on access to actions
 			if ((!$restrictModel || $restrictModel == 'User') && $this->isAuthorized('searches/user')) {
-				$users = $this->User->find('all', array(
+				$options = array(
 					'fields' => array(
 						'id', 'username', 'active', 'flagged'
 					),
@@ -135,19 +135,23 @@ class SearchesController extends AppController {
 							'Campus' => array(
 								'fields' => array('id', 'name')
 							)
-						),
-						'Roster' => array(
-							 'Involvement' => array(
-								  'Ministry'
-							 )
-						)
+						)						
 					),
 					'contain' => array(
 						'Image'						
 					),
 					'limit' => 9,
 					'group' => 'User.id'
-				));
+				);
+				if (!empty($search['Ministry.id'])) {
+					// this is a very *slow* join, so only use it if we need to
+					$options['link']['Roster'] = array(
+						 'Involvement' => array(
+							  'Ministry'
+						 )
+					);
+				}
+				$users = $this->User->find('all', $options);
 			}
 			if ((!$restrictModel || $restrictModel == 'Involvement') && $this->isAuthorized('searches/involvement')) {
 				$involvements = $this->Involvement->find('all', array(
