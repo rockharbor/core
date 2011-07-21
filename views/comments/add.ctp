@@ -8,7 +8,8 @@
 			'value' => $userId
 		));
 		echo $this->Form->input('group_id', array(
-			'label' => 'Comment Type'
+			'label' => 'Comment Type',
+			'selected' => $activeUser['Group']['id']
 		));
 		echo $this->Form->input('comment');
 		echo $this->Form->hidden('created_by', array(

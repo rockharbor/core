@@ -97,7 +97,7 @@ class CommentsController extends AppController {
 				$this->Session->setFlash('Unable to create comment. Please try again.', 'flash'.DS.'failure');
 			}
 		}
-		$groups = $this->Comment->Group->findGroups($this->activeUser['Group']['id']);
+		$groups = $this->Comment->Group->findGroups(1);
 		$this->set('groups', $groups);
 		$this->set('userId', $viewUser);
 	}
@@ -126,7 +126,7 @@ class CommentsController extends AppController {
 			$this->data = $this->Comment->read(null, $id);
 		}
 
-		$groups = $this->Comment->Group->findGroups($this->activeUser['Group']['id']);
+		$groups = $this->Comment->Group->findGroups(1);
 		$this->set('groups', $groups);
 	}
 	
