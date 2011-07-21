@@ -102,15 +102,11 @@ class SearchesController extends AppController {
 		}
 
 		if (!empty($this->data)) {
-			$filterArg = 'simple';
 			$query = explode(' ', $search['query']);
-			if ($this->RequestHandler->ext !== 'json') {
-				foreach ($query as &$word) {
-					$word .= '*';
-					$word = trim($word);
-				}				
-				$filterArg = 'simple_fulltext';
-			}
+			foreach ($query as &$word) {
+				$word .= '*';
+				$word = trim($word);
+			}			
 			$query = implode(' ', $query);
 			// check access to results based on access to actions
 			if ((!$restrictModel || $restrictModel == 'User') && $this->isAuthorized('searches/user')) {
@@ -121,8 +117,8 @@ class SearchesController extends AppController {
 					'conditions' => array(
 						$this->User->scopeConditions($search),
 						'or' => array(
-							$this->User->parseCriteria(array($filterArg => $query)),
-							$this->User->Profile->parseCriteria(array($filterArg => $query)),
+							$this->User->parseCriteria(array('simple_fulltext' => $query)),
+							$this->User->Profile->parseCriteria(array('simple_fulltext' => $query)),
 						)
 					),
 					'link' => array(
@@ -160,7 +156,7 @@ class SearchesController extends AppController {
 					),
 					'conditions' => array(
 						$this->Involvement->scopeConditions($search),
-						$this->Involvement->parseCriteria(array($filterArg => $query))
+						$this->Involvement->parseCriteria(array('simple_fulltext' => $query))
 					),
 					'link' => array(
 						'Ministry' => array(
@@ -187,7 +183,7 @@ class SearchesController extends AppController {
 					),
 					'conditions' =>  array(
 						$this->Ministry->scopeConditions($search),
-						$this->Ministry->parseCriteria(array($filterArg => $query))
+						$this->Ministry->parseCriteria(array('simple_fulltext' => $query))
 					),
 					'link' => array(
 						'Image',
