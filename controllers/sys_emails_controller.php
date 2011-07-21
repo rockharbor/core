@@ -139,6 +139,12 @@ class SysEmailsController extends AppController {
  * @param string $uid The unique cache id of the list to pull
  */ 
 	function compose($uid = null) {
+		if (!$uid) {
+			if (!isset($this->passedArgs['mstoken'])) {
+				$this->passedArgs['mstoken'] = $this->MultiSelect->_token;
+			}
+			$uid = $this->passedArgs['mstoken'];
+		}
 		$User = ClassRegistry::init('User');
 
 		$modelIds = $this->MultiSelect->getSelected($uid);
@@ -199,7 +205,8 @@ class SysEmailsController extends AppController {
 			$Document->recursive = -1;
 			$documents = $Document->find('all', array(
 				'conditions' => array(
-					'foreign_key' => $this->MultiSelect->_token
+					'foreign_key' => $uid,
+					'model' => 'SysEmail'
 				)
 			));
 			

@@ -1,5 +1,8 @@
 <?php
 $this->MultiSelect->create();
+if (!isset($this->passedArgs['mstoken'])) {
+	$this->passedArgs['mstoken'] = $this->MultiSelect->token;
+}
 ?>
 <h1>Compose Email</h1>
 <div class="email">
@@ -60,10 +63,15 @@ $this->MultiSelect->create();
 		?>
 	</div>
 	<?php endif; ?>
-		<?php echo $this->Form->create('SysEmail', array(
+		<?php 
+		if (strpos($this->here, 'mstoken') === false) {
+			$this->here = rtrim($this->here, '/').'/mstoken:'.$this->MultiSelect->token;
+		}
+		echo $this->Form->create('SysEmail', array(
 			'default' => false,
 			'url' => $this->here
-		));?>
+		));
+		?>
 	<fieldset>
 	<?php
 		echo $this->Form->input('SysEmail.subject', array(
@@ -75,6 +83,7 @@ $this->MultiSelect->create();
 	</fieldset>
 <?php
 $defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals:true})';
+$defaultSubmitOptions['url'] = $this->here;
 echo $this->Js->submit('Send', $defaultSubmitOptions);
 echo $this->Form->end();
 
