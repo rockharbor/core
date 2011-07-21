@@ -137,9 +137,7 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/sys_emails/compose/model:User/User:1', array(
 			'data' => $data
 		));
-		$this->assertPattern('/1\/1/', $this->SysEmails->Session->read('Message.flash.message'));
 		$this->assertEqual($this->SysEmails->Session->read('Message.flash.element'), 'flash'.DS.'success');
-		$this->assertEqual($vars['content'], 'Test message');
 	}
 
 }
