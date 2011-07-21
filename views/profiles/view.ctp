@@ -1,12 +1,14 @@
 <h1><?php echo $profile['Profile']['name'].$this->Formatting->flags('User', $profile); ?></h1>
 
 <div class="profiles core-tabs">
-
+	<?php
+	$prefix = $activeUser['User']['id'] == $profile['User']['id'] ? 'My ' : null;
+	?>
 	<ul>
-		<li><a href="#my-involvement">My Involvement</a></li>
-		<li><a href="#my-profile">My Profile</a></li>
-		<li><?php echo $this->Html->link('My Household', array('controller' => 'households', 'User' => $profile['User']['id']), array('title' => 'household')); ?></li>
-		<li><?php echo $this->Html->link('Payments', array('controller' => 'payments', 'User' => $profile['User']['id']), array('title' => 'payments')); ?></li>
+		<li><a href="#my-involvement"><?php echo $prefix; ?>Involvement</a></li>
+		<li><a href="#my-profile"><?php echo $prefix; ?>Profile</a></li>
+		<li><?php echo $this->Html->link($prefix.'Household', array('controller' => 'households', 'User' => $profile['User']['id']), array('title' => 'household')); ?></li>
+		<li><?php echo $this->Html->link($prefix.'Payments', array('controller' => 'payments', 'User' => $profile['User']['id']), array('title' => 'payments')); ?></li>
 	</ul>
 
 	<div class="content-box clearfix">
@@ -184,18 +186,20 @@
 						</span>
 					</p>
 					<hr>
-					<p>
-					<?php $emails = array();
-					$emails[] = $profile['Profile']['primary_email'];
-					$emails[] = $profile['Profile']['alternate_email_1'];
-					$emails[] = $profile['Profile']['alternate_email_2'];
-					$emails = array_filter($emails);
-					foreach ($emails as &$email) {
-						$email = $this->Formatting->email($email, $profile['User']['id']);
+					<dl>
+					<?php
+					echo $this->Html->tag('dt', 'Joined:');
+					echo $this->Html->tag('dd', $this->Formatting->datetime($profile['Profile']['created']));
+					echo $this->Html->tag('dt', 'Profile Updated:');
+					echo $this->Html->tag('dd', $this->Formatting->datetime($profile['Profile']['modified']));
+					echo $this->Html->tag('dt', 'Logged In:');
+					if ($activeUser['User']['id'] == $profile['User']['id']) {
+						echo $this->Html->tag('dd', $this->Formatting->datetime($activeUser['User']['last_logged_in']));
+					} else {
+						echo $this->Html->tag('dd', $this->Formatting->datetime($profile['User']['last_logged_in']));
 					}
-					echo implode('<br />', $emails);
 					?>
-					</p>
+					</dl>
 				</div>
 				<div class="grid_5 omega">
 					<dl>
@@ -214,6 +218,19 @@
 						}
 						?>
 					</dl>
+					<hr>
+					<p>
+					<?php $emails = array();
+					$emails[] = $profile['Profile']['primary_email'];
+					$emails[] = $profile['Profile']['alternate_email_1'];
+					$emails[] = $profile['Profile']['alternate_email_2'];
+					$emails = array_filter($emails);
+					foreach ($emails as &$email) {
+						$email = $this->Formatting->email($email, $profile['User']['id']);
+					}
+					echo implode('<br />', $emails);
+					?>
+					</p>
 					<hr>
 					<dl>
 						<?php
