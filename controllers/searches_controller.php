@@ -62,20 +62,21 @@ class SearchesController extends AppController {
 		$users = array();
 		$involvements = array();
 		$query = '';
+		
+		if (empty($this->data['Search']['Campus']['id'])) {
+			$this->data['Search']['Campus']['id'] = array_keys($campuses);
+		}
 
 		$_default = array(
 			'Search' => array(
 				'query' => '',
 				'private' => $private,
-				'Campus' => array(
-					'id' => array_keys($campuses)
-				),
 				'active' => !$inactive,
 				'passed' => 0
 			)
 		);
-		$this->data = $search = Set::merge($_default, $this->data);
-		$search = $search['Search'];
+		$this->data = Set::merge($_default, $this->data);
+		$search = $this->data['Search'];
 		if ($search['private']) {
 			$search['private'] = array(0,1);
 		}

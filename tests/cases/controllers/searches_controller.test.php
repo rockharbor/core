@@ -82,7 +82,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 				'Search' => array(
 					'query' => 'downtown fullerton builder church',
 					'Campus' => array(
-						'id' => 2
+						'id' => array(2)
 					)
 				)
 			)
@@ -108,7 +108,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 				'Search' => array(
 					'query' => 'downtown fullerton builder church',
 					'Campus' => array(
-						'id' => 2
+						'id' => array(2)
 					),
 					'active' => 1,
 					'private' => 0
@@ -151,6 +151,20 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/User/username', $vars['users']);
 		$expected = array('rickyrockharbor', 'rickyrockharborjr');
 		$this->assertEqual($results, $expected);
+		
+		$vars = $this->testAction('/searches/index/', array(
+			'data' => array(
+				'Search' => array(
+					'query' => 'downtown fullerton builder church',
+					'Campus' => array(
+						'id' => array(2)
+					),
+					'private' => 0
+				)
+			)
+		));
+		$results = Set::extract('/Ministry/name', $vars['ministries']);
+		$this->assertEqual($results, array());
 	}
 
 	function testInvolvement() {
