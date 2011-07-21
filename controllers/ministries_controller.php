@@ -54,36 +54,6 @@ class MinistriesController extends AppController {
 	}
 
 /**
- * Shows a list of ministries
- */ 
-	function index() {
-		$this->Ministry->recursive = 0;
-
-		$this->paginate = array(
-			'contain' => array(
-				'Involvement',
-				'DisplayInvolvement',
-				'ChildMinistry',
-				'ParentMinistry',
-				'Campus'
-			)
-		);
-
-		$menuConditions = array(
-			'order' => 'Ministry.lft ASC'
-		);
-		if (!$this->Ministry->Leader->User->Group->canSeePrivate($this->activeUser['Group']['id'])) {
-			$this->paginate['conditions']['Ministry.private'] = false;
-			$this->paginate['contain']['Involvement']['conditions']['Involvement.private'] = false;
-			$menuConditions['conditions']['Ministry.private'] = false;
-		}
-
-		$this->set('ministries', $this->paginate());
-		
-		$this->set('ministryMenu', $this->Ministry->find('all', $menuConditions));
-	}
-
-/**
  * Ministry details
  */ 
 	function view() {
@@ -115,7 +85,8 @@ class MinistriesController extends AppController {
 
 		if ($ministry['Ministry']['private'] && !$this->Ministry->Leader->User->Group->canSeePrivate($this->activeUser['Group']['id'])) {
 			$this->Session->setFlash('Cannot view '.$ministry['Ministry']['name'].'.', 'flash'.DS.'failure');
-			$this->redirect(array('action' => 'index'));
+			//404
+			$this->redirect('/');
 		}
 
 		$this->set(compact('ministry'));
@@ -138,7 +109,7 @@ class MinistriesController extends AppController {
 			$this->Ministry->create();
 			if ($this->Ministry->save($this->data)) {
 				$this->Session->setFlash('This ministry has been created.', 'flash'.DS.'success');
-				$this->redirect(array('action' => 'index'));
+				$this->redirect(array('action' => 'view', 'Ministry' => $this->Ministry->id));
 			} else {
 				$this->Session->setFlash('Unable to create this ministry. Please try again.', 'flash'.DS.'failure');
 			}
@@ -315,7 +286,7 @@ class MinistriesController extends AppController {
 		if (!$id) {
 			//404
 			$this->Session->setFlash(__('Invalid ministry', true));
-			$this->redirect(array('action' => 'index'));
+			$this->redirect('/');
 		}
 		
 		$this->set('ministry', $this->Ministry->read(null, $id));
@@ -363,14 +334,15 @@ class MinistriesController extends AppController {
 		if (!$id) {
 			//404
 			$this->Session->setFlash(__('Invalid id for ministry', true));
-			$this->redirect(array('action'=>'index'));
+			$this->redirect('/');
 		}
+		$ministry = $this->Ministry->read(null, $id);
 		if ($this->Ministry->delete($id)) {
 			$this->Session->setFlash('This ministry has been deleted.', 'flash'.DS.'success');
-			$this->redirect(array('action'=>'index'));
+			$this->redirect(array('action' => 'view', 'Ministry' => $ministry['Ministry']['campus_id']));
 		}
 		$this->Session->setFlash('Unable to delete this ministry. Please try again.', 'flash'.DS.'failure');
-		$this->redirect(array('action' => 'index'));
+		$this->redirect(array('action' => 'view', 'Ministry' => $ministry['Ministry']['campus_id']));
 	}
 }
 ?>

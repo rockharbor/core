@@ -94,26 +94,6 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testIndex() {
-		Core::read('notifications.ministry_content');
-		$this->loadFixtures('Involvement', 'InvolvementsMinistry');
-		$vars = $this->testAction('/ministries/index');
-		$results = Set::extract('/Ministry[id=3]/../DisplayInvolvement/name', $vars['ministries']);
-		sort($results);
-		$expected = array(
-			'Rock Climbing',
-			'Team CORE'
-		);
-		$this->assertEqual($results, $expected);
-
-		$results = Set::extract('/Ministry[id=4]/../DisplayInvolvement/name', $vars['ministries']);
-		sort($results);
-		$expected = array(
-			'Third Wednesday'
-		);
-		$this->assertEqual($results, $expected);
-	}
-
 	function testAdd() {
 		$data = array(
 			'Ministry' => array(
