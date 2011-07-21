@@ -17,8 +17,9 @@ echo $this->Form->create(array(
 		<li><a href="#personal-information">Personal</a></li>
 		<li><a href="#contact-information">Contact</a></li>
 		<?php if ($this->data['Profile']['child']): ?>
-		<li><a href="#child-information">Child and School</a></li>
+		<li><a href="#child-information">Child Needs</a></li>
 		<?php endif; ?>
+		<li><a href="#school-information">School</a></li>
 		<li><?php echo $this->Html->link('Subscriptions', array('controller' => 'publications', 'action' => 'subscriptions', 'User' => $this->data['Profile']['user_id']), array('title' => 'subscriptions')); ?></li>
 	</ul>
 
@@ -69,79 +70,19 @@ echo $this->Form->create(array(
 			<div style="clear:both"><?php echo $this->Js->submit('Save', $defaultSubmitOptions); ?></div>
 		</div>
 		<div id="contact-information">
-			<fieldset class="grid_5 alpha">
-				<legend>Phone Numbers</legend>
-				<?php
-				echo $this->Form->input('Profile.cell_phone', array(
-					'maxlength' => '30',
-					'value' => $this->Formatting->phone($this->data['Profile']['cell_phone'])
-				));
-				echo $this->Form->input('Profile.home_phone', array(
-					'maxlength' => '30',
-					'value' => $this->Formatting->phone($this->data['Profile']['home_phone'])
-				));
-				echo $this->Form->input('Profile.work_phone', array(
-					'maxlength' => '30',
-					'value' => $this->Formatting->phone($this->data['Profile']['work_phone'])
-				));
-
-				?>
-			</fieldset>
-			<fieldset class="grid_5 omega">
-				<legend>Email Addresses</legend>
-				<?php
-				echo $this->Form->input('Profile.primary_email');
-				echo $this->Form->input('Profile.alternate_email_1');
-				echo $this->Form->input('Profile.alternate_email_2');
-				?>
-			</fieldset>
+			<?php echo $this->element('register'.DS.'phone_email'); ?>
 			<div style="clear:both"><?php echo $this->Js->submit('Save', $defaultSubmitOptions); ?></div>
 		</div>
 		<?php if ($this->data['Profile']['child']): ?>
 		<div id="child-information">
-			<fieldset class="grid_5 alpha">
-				<legend>Child Information</legend>
-				<?php
-				echo $this->Form->input('baby_dedication_date', array(
-					'type' => 'date'
-				));
-				echo $this->Form->input('special_needs', array(
-					'label' => 'Child Special Needs',
-					'type' => 'textarea'
-				));
-				echo $this->Form->input('special_alert', array(
-					'label' => 'Child Special Alerts',
-					'type' => 'textarea'
-				));
-				echo $this->Form->input('allergies', array(
-					'label' => 'Child Allergies',
-					'type' => 'textarea'
-				));
-				?>
-			</fieldset>
-			<fieldset class="grid_5 omega">
-				<legend>School Information</legend>
-				<?php
-				echo $this->Form->input('grade', array(
-					'type' => 'select',
-					'options' => $this->SelectOptions->grades
-				));
-				echo $this->Form->input('graduation_year', array(
-					'type' => 'select',
-					'options' => $this->SelectOptions->generateOptions('year', array(
-						'min' => 1900,
-						'max' => date('Y') + 20
-					))
-				));
-				echo $this->Form->input('elementary_school_id');
-				echo $this->Form->input('middle_school_id');
-				echo $this->Form->input('high_school_id');
-				echo $this->Form->input('college_id');
-				?>
-			</fieldset>
+			<?php echo $this->element('register'.DS.'child_info'); ?>
 			<div style="clear:both"><?php echo $this->Js->submit('Save', $defaultSubmitOptions); ?></div>
 		</div>
 		<?php endif; ?>
+		<div id="school-information">
+			<?php echo $this->element('register'.DS.'school'); ?>
+			<div style="clear:both"><?php echo $this->Js->submit('Save', $defaultSubmitOptions); ?></div>
+		</div>
 		<div id="subscriptions">
 			<?php
 			echo $this->requestAction('/publications/subscriptions', array(
