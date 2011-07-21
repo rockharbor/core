@@ -85,11 +85,9 @@ class UsersController extends AppController {
 		if (!empty($this->data)) {
 			if ($this->Auth->login($this->data)) {
 				$this->User->id = $this->Auth->user('id');
-				$this->User->saveField('last_logged_in', date('Y-m-d H:i:s'));
-
 				$this->User->contain(array('Profile', 'Group', 'Image', 'ActiveAddress'));
 				$this->Session->write('User', $this->User->read());
-			
+				$this->User->saveField('last_logged_in', date('Y-m-d H:i:s'));
 				// go!
 				$this->redirect($this->Auth->redirect());
 			} else {
