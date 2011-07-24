@@ -167,9 +167,14 @@ class InvolvementsController extends AppController {
 		$involvement = $this->Involvement->read(null, $id);
 		$involvement['Date'] = $this->Involvement->Date->generateDates($id, array('limit' => 5));
 
-		if ($involvement['Involvement']['private'] && !$this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id'])) {
+		$inRoster = $this->Involvement->Roster->hasAny(array(
+			'user_id' => $this->activeUser['User']['id'],
+			'involvement_id' => $id
+		));
+		
+		if ($involvement['Involvement']['private'] && !$this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id']) && !$inRoster) {
 			$this->Session->setFlash('Cannot view this involvement opportunity.', 'flash'.DS.'failure');
-			$this->redirect(array('action' => 'index'));
+			$this->redirect($this->referer());
 		}
 
 		$householdMembers = $this->Involvement->Roster->User->HouseholdMember->Household->getMemberIds($this->activeUser['User']['id']);
@@ -188,7 +193,7 @@ class InvolvementsController extends AppController {
 			)
 		));
 		
-		$this->set(compact('involvement', 'signedUp'));
+		$this->set(compact('involvement', 'signedUp', 'inRoster'));
 	}
 
 /**

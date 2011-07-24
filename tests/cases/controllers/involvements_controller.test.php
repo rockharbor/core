@@ -32,6 +32,44 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 	
+	function testView() {
+		$this->loadSettings();
+
+		// public
+		$vars = $this->testAction('/involvements/view/Involvement:1');
+		$this->assertNull($this->Involvements->Session->read('Message.flash.element'));
+		
+		// inactive
+		$vars = $this->testAction('/involvements/view/Involvement:2');
+		$this->assertNull($this->Involvements->Session->read('Message.flash.element'));
+		
+		// private, not registered, but admin
+		$this->Involvements->Session->write('User', array(
+			'User' => array('id' => 100),
+			'Group' => array('id' => 1)
+		));
+		$vars = $this->testAction('/involvements/view/Involvement:3');
+		$this->assertNull($this->Involvements->Session->read('Message.flash.element'));
+		
+		// private but registered
+		$this->Involvements->Session->write('User', array(
+			'User' => array('id' => 1),
+			'Group' => array('id' => 8)
+		));
+		$vars = $this->testAction('/involvements/view/Involvement:3');
+		$this->assertNull($this->Involvements->Session->read('Message.flash.element'));
+		
+		// private
+		$this->Involvements->Session->write('User', array(
+			'User' => array('id' => 100),
+			'Group' => array('id' => 8)
+		));
+		$vars = $this->testAction('/involvements/view/Involvement:3');
+		$this->assertEqual($this->Involvements->Session->read('Message.flash.element'), 'flash'.DS.'failure');
+		
+		$this->unloadSettings();
+	}
+	
 	function testIndex() {
 		$this->loadSettings();
 		$this->loadFixtures('InvolvementsMinistry');
