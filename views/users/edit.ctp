@@ -1,4 +1,4 @@
-<div class="users">
+<div class="users" class="content-box">
 <p>If you choose to change this information, you will automatically logged out and will need to log in using the new details.</p>
 <?php
 echo $this->Form->create('User', array(
@@ -32,12 +32,14 @@ echo $this->Form->create('User', array(
 	?>
 </fieldset>
 <?php
-$defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {autoUpdate:"failure", success:onComplete})';
+if ($this->data['User']['id'] == $activeUser['User']['id']) {
+	$defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {autoUpdate:"failure", success:onComplete})';
+	$this->Js->buffer('function onComplete() {
+		redirect("'.Router::url(array('action' => 'logout', 'message' => 'Please log in with your new credentials.')).'");
+	}');
+}
 echo $this->Js->submit('Submit', $defaultSubmitOptions);
 echo $this->Form->end();
-$this->Js->buffer('function onComplete() {
-	redirect("'.Router::url(array('action' => 'logout', 'message' => 'Please log in with your new credentials.')).'");
-}');
 $this->Js->buffer('$("#UserReset").bind("change", function() {
 	switch ($(this).val()) {
 		case "password":
