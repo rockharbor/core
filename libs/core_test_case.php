@@ -20,6 +20,11 @@ require_once APP.'config'.DS.'routes.php';
 Mock::generatePartial('AclComponent', 'MockAclComponent', array('check'));
 
 /**
+ * Ensure SimpleTest doesn't think this is a test case
+ */
+SimpleTest::ignore('CoreTestCase');
+
+/**
  * CoreTestCase class
  *
  * Extends the functionality of CakeTestCase
@@ -99,6 +104,43 @@ class CoreTestCase extends CakeTestCase {
  * @var object
  */
 	var $testController = null;
+
+/**
+ * Methods to test
+ * 
+ * @param Array of methods to test
+ */
+	var $testMethods = null;
+	
+/**
+ * Overrides `CakeTestCase::getTests()` to allow running a subset of tests within
+ * the test case
+ * 
+ * @return array Array of tests to run
+ */
+	function getTests() {
+		$tests = parent::getTests();
+		$testMethods = array_udiff($tests, $this->methods, 'strcasecmp');
+		if (!isset($this->testMethods) || empty($this->testMethods)) {
+			$this->testMethods = $testMethods;
+		}
+		if (!is_array($this->testMethods)) {
+			$this->testMethods = array($this->testMethods);
+		}
+		if (isset($this->skipSetup) && $this->skipSetup) {
+			$tests = array_udiff($tests, array('start', 'end'), 'strcasecmp');
+		}
+		if (empty($this->testMethods)) {
+			return $tests;
+		}
+		$removeMethods = array_udiff($testMethods, $this->testMethods, 'strcasecmp');
+		$tests = array_udiff($tests, $removeMethods, 'strcasecmp');
+		$skipped = array_udiff($testMethods, $this->testMethods, 'strcasecmp');
+		foreach ($skipped as $skip) {
+			$this->_reporter->paintSkip(sprintf(__('Skipped entire test method: %s', true), $skip));
+		}
+		return $tests;
+	}
 
 /**
  * Tests an action using the controller itself and skipping the dispatcher, and
