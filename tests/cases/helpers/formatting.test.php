@@ -1,6 +1,8 @@
 <?php
 App::import('Lib', 'CoreTestCase');
-App::import('Helper', array('Formatting', 'Html', 'Text', 'Time', 'Number'));
+App::import('Helper', array('Formatting', 'Html', 'Text', 'Time', 'Number', 'Permission'));
+
+Mock::generatePartial('PermissionHelper', 'MockPermissionHelper', array('check'));
 
 class FormattingHelperTestCase extends CoreTestCase {
 
@@ -17,6 +19,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 		$this->Formatting->Text = new TextHelper();
 		$this->Formatting->Time = new TimeHelper();
 		$this->Formatting->Number = new NumberHelper();
+		$this->Formatting->Permission = new MockPermissionHelper();
 	}
 
 	function endTest() {
@@ -33,19 +36,28 @@ class FormattingHelperTestCase extends CoreTestCase {
 
 		$result = $this->Formatting->email('jeremy@42pixels.com');
 		$this->assertTags($result, array(
-			'span' => array(),
+			'<span',
 			'jeremy@42pixels.com',
 			'/span'
 		));
 
+		$this->Formatting->Permission->setReturnValueAt(0, 'check', false);
 		$result = $this->Formatting->email('jeremy@42pixels.com', 1);
 		$this->assertTags($result, array(
-			'span' => array('class' => 'core-icon icon-email'),
+			'<span',
+			'jeremy@42pixels.com',
+			'/span'
+		));
+		
+		$this->Formatting->Permission->setReturnValueAt(1, 'check', true);
+		$result = $this->Formatting->email('jeremy@42pixels.com', 1);
+		$this->assertTags($result, array(
+			array('span' => array('class' => 'core-icon icon-email')),
 			'Email',
 			'/span',
 			'a' => array('rel' => 'modal-none', 'href' => '/sys_emails/compose/model:User/User:1'),
 			'jeremy@42pixels.com',
-			'/a'
+			'/a',
 		));
 	}
 
@@ -67,6 +79,16 @@ class FormattingHelperTestCase extends CoreTestCase {
 			'/span'
 		));
 
+		$this->Formatting->Permission->setReturnValueAt(0, 'check', false);
+		$this->assertTags($this->Formatting->address($address), array(
+			'<span',
+			'123 Main',
+			'br' => array(),
+			'Somewhere, CA ',
+			'/span'
+		));
+		
+		$this->Formatting->Permission->setReturnValueAt(1, 'check', true);
 		$this->assertTags($this->Formatting->address($address), array(
 			'span' => array('class' => 'core-icon icon-address'),
 			'Map',
