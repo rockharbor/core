@@ -23,6 +23,7 @@ Mock::generatePartial('AclComponent', 'MockAclComponent', array('check'));
  * Ensure SimpleTest doesn't think this is a test case
  */
 SimpleTest::ignore('CoreTestCase');
+ClassRegistry::flush();
 
 /**
  * CoreTestCase class
