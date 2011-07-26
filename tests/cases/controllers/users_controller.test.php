@@ -88,13 +88,15 @@ class UsersControllerTestCase extends CoreTestCase {
 				'id' => 1,
 				'reset' => 'password',
 				'password' => 'newpassword',
-				'current_password' => 'password',
-				'confirm_password' => 'not confirmed!'
+				'confirm_password' => 'not confirmed!',
+				'current_password' => 'password'
 			)
 		);
 		$vars = $this->testAction('/users/edit/User:1', array(
 			'data' => $data
 		));
+		$this->assertTrue(!empty($this->Users->User->validationErrors));
+		
 		$user = $this->Users->User->read(null, 1);
 		$result = $user['User']['password'];
 		$expected = $this->Users->Auth->password('password');
@@ -108,14 +110,39 @@ class UsersControllerTestCase extends CoreTestCase {
 				'id' => 1,
 				'reset' => 'password',
 				'password' => 'newpassword',
-				'current_password' => 'password',
-				'confirm_password' => 'newpassword'
+				'confirm_password' => 'newpassword',
+				'current_password' => 'password'
 			)
 		);
 		$vars = $this->testAction('/users/edit/User:1', array(
 			'data' => $data
 		));
 		$user = $this->Users->User->read(null, 1);
+		$result = $user['User']['password'];
+		$expected = $this->Users->Auth->password('newpassword');
+		$this->assertEqual($result, $expected);
+
+		$result = $vars['password'];
+		$this->assertEqual($result, 'newpassword');
+
+		$result = $this->Users->Session->read('Message.flash.element');
+		$this->assertEqual($result, 'flash'.DS.'success');
+		
+		$data = array(
+			'User' => array(
+				'id' => 2,
+				'reset' => 'password',
+				'password' => 'newpassword',
+				'confirm_password' => 'newpassword',
+				'current_password' => 'wrongpassword'
+			)
+		);
+		$vars = $this->testAction('/users/edit/User:2', array(
+			'data' => $data
+		));
+		$this->assertTrue(empty($this->Users->User->validationErrors));
+		
+		$user = $this->Users->User->read(null, 2);
 		$result = $user['User']['password'];
 		$expected = $this->Users->Auth->password('newpassword');
 		$this->assertEqual($result, $expected);

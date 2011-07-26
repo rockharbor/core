@@ -133,6 +133,7 @@ class UsersController extends AppController {
 		
 		if (!empty($this->data)) {
 			$invalidPassword = false;
+			$this->User->id = $this->data['User']['id'];
 			
 			// check if they're resetting their username or password and stop validation for the other
 			switch ($this->data['User']['reset']) {
@@ -140,7 +141,6 @@ class UsersController extends AppController {
 					unset($this->data['User']['password']);
 					unset($this->data['User']['current_password']);
 					unset($this->data['User']['confirm_password']);					
-					$this->User->id = $this->data['User']['id'];
 					// avoid needing a password to save
 					$success = $this->User->saveField('username', $this->data['User']['username']);
 					$this->set('username', $this->data['User']['username']);
@@ -150,11 +150,13 @@ class UsersController extends AppController {
 					if ($needCurrentPassword && $this->Auth->password($this->data['User']['current_password']) != $this->User->field('password')) {
 						$invalidPassword = true;
 					}
-					// avoid needing a username to save
-					if ($this->User->validates(array('fieldList' => array('password', 'confirm_password')))) {
+					$this->User->set($this->data);
+					if (!$invalidPassword && $this->User->validates()) {
 						$this->User->id = $this->data['User']['id'];
 						$success = $this->User->saveField('password', $this->data['User']['password']);
-						$this->User->saveField('reset_password', false);
+						if ($this->activeUser['User']['id'] != $this->passedArgs['User']) {
+							$this->User->saveField('reset_password', false);
+						}
 					} else {
 						$success = false;
 					}
@@ -169,7 +171,7 @@ class UsersController extends AppController {
 			}
 			
 			if ($success) {
-				$this->Session->setFlash('Please log in with your updated account information.', 'flash'.DS.'success');
+				$this->Session->setFlash('This user as been updated.', 'flash'.DS.'success');
 				$this->set('reset', $this->data['User']['reset']);
 				$this->Notifier->notify(array(
 					'to' => $this->data['User']['id'],
@@ -457,7 +459,7 @@ class UsersController extends AppController {
 		}
 		
 		if (isset($this->passedArgs['skip_check'])) {
-			$this->Session->setFlash('Finishing filling out the form to add a new user.', 'flash'.DS.'success');
+			$this->Session->setFlash('Finish filling out the form to add a new user.', 'flash'.DS.'success');
 		}
 		
 		// household contact's addresses
