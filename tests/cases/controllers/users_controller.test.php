@@ -175,7 +175,10 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, 'Jeremy Harris');
 
 		$result = $this->Users->Session->read('User.User.last_logged_in');
-		$this->assertNotEqual($result, $lastLoggedIn['User']['last_logged_in']);
+		$this->assertEqual($result, $lastLoggedIn['User']['last_logged_in']);
+		
+		$result = $this->Users->User->read(null, 1);
+		$this->assertNotEqual($result['User']['last_logged_in'], $lastLoggedIn['User']['last_logged_in']);
 
 		$this->Users->Session->delete('User');
 		$this->Users->Session->delete('Auth');
