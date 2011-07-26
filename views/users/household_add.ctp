@@ -2,7 +2,8 @@
 echo $this->Html->script('misc/user');
 $this->Js->buffer('CORE_user.init("profile_tabs");');
 ?>
-<h1>Register</h1>
+<h1>Add to Household</h1>
+<p>To add a user to your household, fill out the information below. If that user already exists in <?php echo Core::read('general.site_name'); ?>, they will be invited.</p>
 <?php
 echo $this->Form->create('User', array(
 	'default'=> true,
