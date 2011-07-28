@@ -155,10 +155,12 @@ class UsersControllerTestCase extends CoreTestCase {
 	}
 
 	function testLogin() {
+		$this->Users->Cookie->delete('Auth');
 		$lastLoggedIn = $this->Users->User->read('last_logged_in', 1);
 
 		// trick CoreTestCase into not setting up a user
 		$this->Users->Session->write('User', true);
+		
 		$vars = $this->testAction('/users/login', array(
 			'data' => array(
 				'User' => array(
@@ -180,8 +182,29 @@ class UsersControllerTestCase extends CoreTestCase {
 		$result = $this->Users->User->read(null, 1);
 		$this->assertNotEqual($result['User']['last_logged_in'], $lastLoggedIn['User']['last_logged_in']);
 
-		$this->Users->Session->delete('User');
-		$this->Users->Session->delete('Auth');
+		$this->assertNotNull($this->Users->Cookie->read('Auth.User'));
+		
+		// logout and try with cookie
+		$this->Users->Session->destroy();
+		$this->Users->Session->write('User', true);
+		
+		$vars = $this->testAction('/users/login');
+		$this->assertNotNull($this->Users->Cookie->read('Auth.User'));
+		$result = $this->Users->Session->read('Auth.User.id');
+		$this->assertEqual($result, 1);
+		
+		// logout fail with cookie (because of password change)
+		$this->Users->Session->destroy();
+		$this->Users->Session->write('User', true);
+		
+		$this->Users->Cookie->write('Auth.User', array('username' => 'no', 'password' => 'access'));
+		$vars = $this->testAction('/users/login');
+		$this->assertNull($this->Users->Cookie->read('Auth.User'));
+		$this->assertNull($this->Users->Session->read('Auth'));
+		$this->assertTrue(!empty($this->Users->User->validationErrors));
+		
+		$this->Users->Session->destroy();
+		$this->Users->Cookie->delete('Auth');
 	}
 
 	function testForgotPassword() {

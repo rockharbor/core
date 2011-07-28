@@ -74,12 +74,13 @@ class UsersController extends AppController {
 		if (!empty($this->data) && $this->data['User']['remember_me']) {
 			unset($this->data['User']['remember_me']);
 			$this->Session->delete('Message.auth');
-			$this->Cookie->write('Auth.User', $this->data['User'], false, '+2 weeks');
+			$this->Cookie->write('Auth.User', $this->data['User'], true, '+2 weeks');
 		}
 
-		// check for remember me cookie and use that data
+		// check for remember me cookie and use that data and reset the cookie
 		if (empty($this->data) && !is_null($this->Cookie->read('Auth.User'))) {
 			$this->data['User'] = $this->Cookie->read('Auth.User');
+			$this->Cookie->write('Auth.User', $this->data['User'], true, '+2 weeks');
 		}
 		
 		if (!empty($this->data)) {
@@ -92,6 +93,8 @@ class UsersController extends AppController {
 				$this->redirect($this->Auth->redirect());
 			} else {
 				// trick into not redirecting and to highlighting fields
+				$this->Cookie->delete('Auth');
+				$this->Session->setFlash('Invalid username or password. Please try again.', 'flash'.DS.'failure');
 				$this->User->invalidate('username', 'Invalid'); 
 				$this->User->invalidate('password', 'Invalid');
 			}
