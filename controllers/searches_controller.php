@@ -35,7 +35,15 @@ class SearchesController extends AppController {
  *
  * @var array
  */
-	var $components = array('FilterPagination', 'MultiSelect.MultiSelect');
+	var $components = array(
+		'FilterPagination', 
+		'MultiSelect.MultiSelect',
+		'Security' => array(
+			'disabledFields' => array(
+				'Profile.age'
+			)
+		)
+	);
 
 /**
  * Model::beforeFilter() callback
