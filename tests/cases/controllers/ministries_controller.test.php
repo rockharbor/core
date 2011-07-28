@@ -95,6 +95,12 @@ class MinistriesControllerTestCase extends CoreTestCase {
 	}
 
 	function testAdd() {
+		$countBefore = $this->Ministries->Ministry->find('count');
+		$vars = $this->testAction('/ministries/add/Campus:1');
+		$this->assertNull($this->Ministries->Session->read('Message'));
+		$countAfter = $this->Ministries->Ministry->find('count');
+		$this->assertEqual($countBefore - $countAfter, 0);
+		
 		$data = array(
 			'Ministry' => array(
 				'name' => 'New Root Ministry',

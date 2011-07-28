@@ -103,7 +103,6 @@ class MinistriesController extends AppController {
 			$parentMinistry = $this->Ministry->read(null, $this->passedArgs['Ministry']);
 			$this->passedArgs['Campus'] = $parentMinistry['Ministry']['campus_id'];
 		}
-		$this->data['Ministry']['campus_id'] = $this->passedArgs['Campus'];
 		
 		if (!empty($this->data)) {
 			$this->Ministry->create();
@@ -113,6 +112,10 @@ class MinistriesController extends AppController {
 			} else {
 				$this->Session->setFlash('Unable to create this ministry. Please try again.', 'flash'.DS.'failure');
 			}
+		}
+		
+		if (empty($this->data)) {
+			$this->data['Ministry']['campus_id'] = $this->passedArgs['Campus'];
 		}
 		
 		$this->set('campuses', $this->Ministry->Campus->find('list'));
