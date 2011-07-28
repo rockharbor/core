@@ -95,4 +95,14 @@ if (!empty($plugins)) {
 		App::import('Plugin', Inflector::camelize($plugin). 'Bootstrap');
 	}
 }
+
+/**
+ * Converts `<br />`'s to newlines
+ * 
+ * @param string $input
+ * @return string
+ */
+function br2nl($input) {
+	return preg_replace('/<br(\s+)?\/?>/i', PHP_EOL, $input);
+}
 ?>
