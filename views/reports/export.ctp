@@ -27,6 +27,7 @@ echo $this->element('report'.DS.strtolower($model).'_export_options');
 
 <?php
 echo $this->Form->hidden('Export.header_aliases', array('value' => $this->Report->headerAliases()));
+echo $this->Form->hidden('Export.squashed_fields', array('value' => $this->Report->squashFields()));
 echo $this->Form->submit('Download');
 echo $this->Form->end();
 

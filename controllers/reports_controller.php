@@ -302,8 +302,10 @@ class ReportsController extends AppController {
 			// set render path (which sets response type)
 			$this->RequestHandler->renderAs($this, $this->data['Export']['type'], $options);
 			$aliases = $this->data['Export']['header_aliases'];
+			$squashed = $this->data['Export']['squashed_fields'];
 			unset($this->data['Export']['type']);
 			unset($this->data['Export']['header_aliases']);
+			unset($this->data['Export']['squashed_fields']);
 			
 			$search = $this->MultiSelect->getSearch($uid);
 			$selected = $this->MultiSelect->getSelected($uid);
@@ -315,7 +317,7 @@ class ReportsController extends AppController {
 			$results = $this->{$model}->find('all', $search);
 			
 			$this->set('models', $this->data['Export']);
-			$this->set(compact('results', 'aliases'));
+			$this->set(compact('results', 'aliases', 'squashed'));
 		}
 		
 		$this->set(compact('uid', 'model'));

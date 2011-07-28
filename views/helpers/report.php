@@ -34,6 +34,24 @@ class ReportHelper extends AppHelper {
  * @access protected
  */
 	var $_fields = array();
+	
+/**
+ * Array of squashed fields
+ * 
+ * {{{
+ * array(
+ *   field_to_use => array(
+ *     'alias' => // header alias
+ *     'fields' => // array of fields to squash
+ *     'format' => // sprintf format
+ *   )
+ * );
+ * }}}
+ *
+ * @var array
+ * @access protected
+ */
+	var $_squashed = array();
 
 /**
  * Resets the ReportHelper so it can used again
@@ -41,6 +59,7 @@ class ReportHelper extends AppHelper {
 	function reset() {
 		$this->_fields = array();
 		$this->_aliases = array();
+		$this->_squashed = array();
 	}
 
 /**
@@ -112,12 +131,15 @@ class ReportHelper extends AppHelper {
 		$paths = array_keys(Set::flatten($this->_fields));
 		$allpaths = array_keys(Set::flatten($data));
 		$flat = array_intersect($paths, $allpaths);
+		$squashed = array_keys($this->_squashed);
 		$headers = array();
 
 		foreach ($flat as $path) {
 			$exp = explode('.', $path);
 			$name = $exp[count($exp)-1];
-			if (array_key_exists($path, $this->_aliases)) {
+			if (in_array($squashed, $this->_squashed)) {
+				$headers[] = $this->_squashed[$squashed]['alias'];
+			} elseif (array_key_exists($path, $this->_aliases)) {
 				$headers[] = $this->_aliases[$path];
 			} else {
 				$headers[] = Inflector::humanize($name);
@@ -141,13 +163,25 @@ class ReportHelper extends AppHelper {
 		if (empty($this->_fields) || empty($raw)) {
 			return array();
 		}
+		$squashed = array_keys($this->_squashed);
 		$paths = array_keys(Set::flatten($this->_fields));
 		$clean = array();
 		foreach ($raw as $rawrow) {
 			$flat = Set::flatten($rawrow);
 			$cleanrow = array();
 			foreach ($paths as $path) {
-				if (array_key_exists($path, $flat)) {
+				if (in_array($path, $squashed)) {
+					$values = array();
+					foreach ($this->_squashed[$path]['fields'] as $fpath) {
+						if (array_key_exists($fpath, $flat)) {
+							$values[] = $flat[$fpath];
+						} else {
+							$values[] = null;
+						}
+					}
+					$params = array_merge(array($this->_squashed[$path]['format']), $values);
+					$cleanrow[] = call_user_func_array('sprintf', $params);
+				} elseif (array_key_exists($path, $flat)) {
 					$cleanrow[] = $flat[$path];
 				} else {
 					$cleanrow[] = null;
@@ -156,5 +190,36 @@ class ReportHelper extends AppHelper {
 			$clean[] = $cleanrow;
 		}
 		return $clean;
+	}
+	
+/**
+ * Squashes fields into a single field
+ * 
+ * Multiple fields can be 'squashed' into a single field. This is useful for things
+ * like addresses. The `$squashee` is the field that will be overwritten by the
+ * squashed `$fields`. `$format` is a `sprintf`-type formatting, and `$alias` is
+ * the header alias.
+ * 
+ * @param string $squashee The field to squash
+ * @param array $fields The fields to be squashed
+ * @param string $format How to format the fields (when they are data values)
+ * @param string $alias The header alias
+ */
+	function squash($squashee = '', $fields = array(), $format = null, $alias = '') {
+		$this->_squashed[$squashee] = compact('fields', 'format', 'alias');
+	}
+	
+/**
+ * Gets or sets squashed fields. If setting, make sure they are set _before_
+ * `createHeaders()` is called to ensure they make it into the headers
+ * 
+ * @param string $str The fields to sqhash
+ */
+	function squashFields($str = '') {
+		if (!empty($str)) {
+			$this->_squashed = unserialize($str);
+		} else {
+			return serialize($this->_squashed);
+		}
 	}
 }

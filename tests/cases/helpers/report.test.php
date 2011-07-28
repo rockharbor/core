@@ -1,7 +1,10 @@
 <?php
+App::import('Lib', 'CoreTestCase');
 App::import('Helper', array('Report'));
 
-class ReportHelperTestCase extends CakeTestCase {
+class ReportHelperTestCase extends CoreTestCase {
+	
+	var $skipSetup = true;
 
 	function startTest() {
 		$this->Report = new ReportHelper();
@@ -10,6 +13,85 @@ class ReportHelperTestCase extends CakeTestCase {
 	function endTest() {
 		unset($this->Report);
 		ClassRegistry::flush();
+	}
+	
+	function testSquash() {
+		$fields = array('Address.address_line_1', 'Address.city', 'Address.state', 'Address.zip');
+		$format = '%s %s, %s %d';
+		$alias = 'Address';
+		$this->Report->squash('Address.name', $fields, $format, $alias);
+		$expected = array(
+			'Address.name' => array(
+				'fields' => $fields,
+				'format' => $format,
+				'alias' => $alias
+			)
+		);
+		$this->assertEqual($this->Report->_squashed, $expected);
+	}
+
+	function testGetResultsWithSquashed() {
+		$headers = array(
+			'User' => array(
+				'username' => null,
+			),
+			'Address' => array(
+				'name' => null
+			)
+		);
+		$squashed = array(
+			'Address.name' => array(
+				'fields' => array('Address.address_line_1', 'Address.city', 'Address.state', 'Address.zip'),
+				'format' => '%s %s, %s %d',
+				'alias' => 'Address'
+			)
+		);
+		$data = array(
+			array(
+				'User' => array(
+					'username' => 'jeremy',
+				),
+				'Address' => array(
+					'name' => 'Home',
+					'address_line_1' => '123 Main',
+					'city' => 'Somewhere',
+					'state' => 'CA',
+					'zip' => 12345
+				)
+			),
+			array(
+				'User' => array(
+					'username' => 'rickyrockharbor',
+				),
+				'Address' => array(
+					'name' => 'Home',
+					'address_line_1' => '456 Main',
+					'city' => 'Anywhere',
+					'state' => 'CA',
+					'zip' => 78910
+				)
+			)
+		);
+
+		$this->Report->squashFields(serialize($squashed));
+		
+		$results  = $this->Report->createHeaders($headers);
+		$expected = array(
+			'Username', 'Address'
+		);
+		
+		$results = $this->Report->getResults($data);
+		$expected = array(
+			array('jeremy', '123 Main Somewhere, CA 12345'),
+			array('rickyrockharbor', '456 Main Anywhere, CA 78910'),
+		);
+		$this->assertEqual($results, $expected);
+	}
+	
+	function testSquashFields() {
+		$fields = array(array('Address.address_line_1', 'Address.city', 'Address.state', 'Address.zip'), '%s/n%s, %s %d', 'Address');
+		$this->Report->squashFields(serialize($fields));
+		$this->assertEqual($this->Report->_squashed, $fields);
 	}
 
 	function testAlias() {

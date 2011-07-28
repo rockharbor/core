@@ -1,4 +1,5 @@
 <?php
+$this->Report->squashFields($squashed);
 $this->Report->headerAliases($aliases);
 ?>
 <table>
