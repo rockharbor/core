@@ -5,6 +5,9 @@ if (isset($this->Paginator->options['updateable'])) {
 	unset($this->Paginator->options['updateable']);
 }
 $id = uniqid('pagination-');
+if ($this->Paginator->counter(array('format' => '%pages%')) == 1) {
+	return;
+}
 ?>
 <div class="pagination clearfix" id="<?php echo $id; ?>">
 	<span style="float:left">
