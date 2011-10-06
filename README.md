@@ -21,58 +21,74 @@ CORE is in-depth church member and event management software.
 
 ## Installation Steps
 
-1. Install CORE by cloning it with git
-    $ git clone --recursive git://codaset.com/rockharbor/core.git core
+### Install
 
-2. Rename the config/core.php.default to config/core.php
-3. Change the salt value in config/core.php
-4. Rename the config/database.php.default to config/database.php
-5. Change the username/password/database values in database.php
-6. Install CakePHP by cloning it with git
-    $ git clone git://github.com/cakephp/cakephp.git cakephp
-    $ git checkout 1.3.11
+Install CORE by cloning it with git
 
-7. Make sure MySQL is running and create the database you configured in database.php
-8. Add the directory where the Cake baker lives to your path (i.e., to the end of your ~/.bashrc file)
-    export PATH=/var/www/cakephp/cake/console/:$PATH 
+	$ git clone --recursive git://codaset.com/rockharbor/core.git core
+	$ git clone git://github.com/cakephp/cakephp.git cakephp
+	$ cd cakephp
+	$ git checkout 1.3.11
 
-9. You should now be able to execute the command "cake" in any directory and get this output.
+### Configure
 
-    Welcome to CakePHP v1.3.10 Console
-    ---------------------------------------------------------------
-    Current Paths
-     -app: core
-     -working: /var/www/core
-     -root: /var/www
-     -core: /var/www/cakephp
+1. Rename the `config/core.php.default` to `config/core.php`
+2. Change the salt value in `config/core.php`
+3. Rename the `config/database.php.default` to `config/database.php`
+4. Change the username/password/database values in `config/database.php`
+5. Make sure MySQL is running and create the database you configured in `config/database.php`
 
-    Changing Paths:
-    your working path should be the same as your application path
-    to change your path use the '-app' param.
-    Example: -app relative/path/to/myapp or -app /absolute/path/to/myapp
+### Set up bake
 
-    Available Shells:
-     acl [CORE]                        benchmark [DebugKit]              queue_sender [QueueEmail]         
-     acl_extras [AclExtras]            console [CORE]                    schema [CORE]                     
-     api [CORE]                        i18n [CORE]                       testsuite [CORE]                  
-     api_index [ApiGenerator]          install [Install]                 whitespace [DebugKit]             
-     asset_compress [AssetCompress]    media [Media]                     
-     bake [CORE]                       migrator [Migrator]               
+Add the directory where the Cake baker lives to your path (i.e., to the end 
+of your ~/.bashrc file).
 
-    To run a command, type 'cake shell_name [args]'
-    To get help on a specific command, type 'cake shell_name help'
+	export PATH=/var/www/cakephp/cake/console/:$PATH
 
-10. From the core directory /var/www/core/ execute 
-    $ cake -app /var/www/core install install
+If you're on Windows, edit the `Path` Environment Variable (under System Properties > 
+Advanced > Environment Variables) and add the directory to the CakePHP install's
+`console` folder. Also make sure you can run `php`. If you're using XAMPP, you'll
+need to point to the `php` folder under XAMPP's install.
 
-11. Finally, initialize the media folders.
-    $ cake -app /var/www/core media init
+You should now be able to execute the command "cake" in any directory and get this output.
+When baking, make sure to pass the `-app` parameter to ensure you bake against CORE.
+
+	$ cake -app /var/www/core
+
+	Welcome to CakePHP v1.3.10 Console
+	---------------------------------------------------------------
+	Current Paths
+	 -app: core
+	 -working: /var/www/core
+	 -root: /var/www
+	 -core: /var/www/cakephp
+
+	Changing Paths:
+	your working path should be the same as your application path
+	to change your path use the '-app' param.
+	Example: -app relative/path/to/myapp or -app /absolute/path/to/myapp
+
+	Available Shells:
+	 acl [CORE]                        benchmark [DebugKit]              queue_sender [QueueEmail]         
+	 acl_extras [AclExtras]            console [CORE]                    schema [CORE]                     
+	 api [CORE]                        i18n [CORE]                       testsuite [CORE]                  
+	 api_index [ApiGenerator]          install [Install]                 whitespace [DebugKit]             
+	 asset_compress [AssetCompress]    media [Media]                     
+	 bake [CORE]                       migrator [Migrator]               
+
+	To run a command, type 'cake shell_name [args]'
+	To get help on a specific command, type 'cake shell_name help'
+
+### Install app data and setup media folders
+
+	$ cake -app /var/www/core install install
+	$ cake -app /var/www/core media init
+
+### Log in
 
 A default user 'admin' with the password 'password' will be created for you. Depending on your
 setup, you may need to modify the `tmp` directory and the `webroot/media/transfer` directory
 to be writeable by Apache.
-
-When baking, make sure to pass the `-app` parameter to ensure you bake against CORE.
 
 ## Maintenance
 
