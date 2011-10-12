@@ -42,6 +42,10 @@ class ClassificationRecords extends Records {
 		array(
 			'id' => 7,
 			'name' => 'Weekend Attender At Huntington Beach'
+		),
+		array(
+			'id' => 8,
+			'name' => 'Weekend Attender At Orange'
 		)
 	);
 

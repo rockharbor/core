@@ -20,7 +20,8 @@ class UserTask extends MigratorTask {
 		'CURIOUS' => 5,
 		'FRIEND' => 6,
 		'WEEKEND_SC' => null,
-		'WEEKEND_HUNTINGTON' => 7
+		'WEEKEND_HUNTINGTON' => 7,
+		'WEEKEND_ORANGE' => 8
 	);
 
 	var $_maritalStatusMap = array(
