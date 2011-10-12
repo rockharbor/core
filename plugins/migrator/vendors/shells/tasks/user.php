@@ -133,6 +133,7 @@ class UserTask extends MigratorTask {
 				'background_check_complete' => $oldData['background_check_complete'],
 				'background_check_by' => $oldData['background_check_administered_by'],
 				'background_check_date' => $oldData['background_check_date'],
+				'signed_covenant_date' => $oldData['signed_covenant'],
 				'grade' => $oldData['grade'],
 				'graduation_year' => $oldData['high_school_grad_year'],
 				'created_by' => $oldData['entered_by_person_id'],
@@ -151,6 +152,17 @@ class UserTask extends MigratorTask {
 			)
 		);
 		$this->_editingRecord = $userData;
+	}
+
+/**
+ * Formats signed covenant. Nothing too special is needed since CORE 1 actually
+ * validates this field
+ *
+ * @param string $old
+ * @return string
+ */
+	function _prepareSignedCovenant($old) {
+		return date('Y-m-d', strtotime($old));
 	}
 
 /**

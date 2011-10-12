@@ -117,6 +117,11 @@ class Profile extends AppModel {
 				'allowEmpty' => true,
 				'message' => 'Please enter a valid email address.'
 			),
+		),
+		'signed_covenant_date' => array(
+			'rule' => 'date',
+			'required' => false,
+			'allowEmpty' => true
 		)
 	);
 

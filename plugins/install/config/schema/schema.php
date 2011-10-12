@@ -450,6 +450,7 @@ class InstallSchema extends CakeSchema {
 		'background_check_complete' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
 		'background_check_by' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),
 		'background_check_date' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),
+		'signed_covenant_date' => array('type' => 'date', 'null' => true, 'default' => NULL),
 		'grade' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 2),
 		'graduation_year' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 4),
 		'created_by' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),

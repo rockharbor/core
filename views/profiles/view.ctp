@@ -279,6 +279,13 @@
 								$bt = 'No';
 							}
 							echo $this->Html->tag('dd', $bt);
+							echo $this->Html->tag('dt', 'Signed Covenant:');
+							if (!empty($profile['Profile']['signed_covenant_date'])) {
+								$sc .= 'Yes, '.$this->Formatting->date($profile['Profile']['signed_covenant_date']);
+							} else {
+								$sc = 'No';
+							}
+							echo $this->Html->tag('dd', $sc);
 						?>
 						</dl>
 					</div>
