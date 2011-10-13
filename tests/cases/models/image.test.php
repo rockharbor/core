@@ -2,7 +2,7 @@
 App::import('Lib', 'CoreTestCase');
 App::import('Model', 'Image');
 
-class UserTestCase extends CoreTestCase {
+class ImageTestCase extends CoreTestCase {
 
 	function startTest() {
 		$this->loadFixtures('Attachment');

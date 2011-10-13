@@ -2,7 +2,7 @@
 App::import('Lib', 'CoreTestCase');
 App::import('Model', 'Address');
 
-class GroupTestCase extends CoreTestCase {
+class AddressTestCase extends CoreTestCase {
 
 	function startTest() {
 		$this->loadFixtures('Address');

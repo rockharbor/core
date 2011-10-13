@@ -2,7 +2,7 @@
 App::import('Lib', 'CoreTestCase');
 App::import('Model', 'Comment');
 
-class GroupTestCase extends CoreTestCase {
+class CommentTestCase extends CoreTestCase {
 
 	function startTest() {
 		$this->loadFixtures('Comment', 'Group', 'User');
