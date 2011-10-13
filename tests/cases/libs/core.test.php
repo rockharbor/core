@@ -26,6 +26,7 @@ class CoreConfigureTestCase extends CoreTestCase {
 		// the test database, so force them here
 		$core->Acl->Aro = ClassRegistry::init('Aro');
 		$core->Acl->Aro->setDataSource('test_suite');
+		$core->Acl->Aro->Permission->setDataSource('test_suite');
 		$core->Acl->Aco = ClassRegistry::init('Aco');
 		$core->Acl->Aco->setDataSource('test_suite');
 	}
