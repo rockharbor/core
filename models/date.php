@@ -10,6 +10,26 @@
 
 /**
  * Date model
+ * 
+ * ### How recurring dates work
+ * 
+ * Recurring dates are a single record that contains all the information needed
+ * to generate a group of dates based on a recurrance pattern. For example, "the
+ * third wednesday of each month." Recurring dates also have exemptions, single
+ * dates that can be removed from the recurrance pattern.
+ * 
+ * ### Recurrance fields
+ * 
+ * - `permanent` A boolean specifying if the recurrance doesn't have an end date
+ * - `recurrance_type` Type of recurrance, see `$recurranceTypes`
+ * - `frequency` Frequency of recurrance. If it's a weekly occurance, than 2 would
+ * mean every 2 weeks. For `md` and `mw` types, it refers to the month
+ * - `weekday` Only applies to `w` and `mw` types. 0-index indicator of the day
+ * of the week the event falls on
+ * - `day` Only applies to `md` type. Indicates the actual day of the month the
+ * event falls on
+ * - `offset` Only applies to `mw` type. Refers to the nth week the event falls
+ * on
  *
  * @package       core
  * @subpackage    core.app.models
@@ -279,12 +299,12 @@ class Date extends AppModel {
 					$date['Date']['end_date'] = $date['Date']['start_date'];
 				break;
 				case 'mw':
-					// first day of the month and set the frequency to start there so we don't miss anything
-					$onDate = strtotime('first day', $onDate);
-					// get week offset
-					$week = strtotime('+'.($masterDate['Date']['offset']-1).' week', $onDate);
+					// get first weekday
+					$first = $weekdays[$date['Date']['weekday']].' '.date('M Y', $onDate);
+					// add week offset
+					$week = strtotime('+'.($masterDate['Date']['offset']-1).' week', strtotime($first));
 					// always on this weekday
-					$date['Date']['start_date'] = date('Y-m-d', strtotime($weekdays[$date['Date']['weekday']], $week));
+					$date['Date']['start_date'] = date('Y-m-d', $week);
 					$date['Date']['end_date'] = $date['Date']['start_date'];
 				break;
 				case 'w':
