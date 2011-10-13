@@ -17,32 +17,40 @@ class SchoolTestCase extends CoreTestCase {
 	}
 
 	function testMagicAliases() {
-		$this->ElementarySchool =& ClassRegistry::init('School');
-		$this->ElementarySchool->alias = 'ElementarySchool';
+		$this->ElementarySchool =& ClassRegistry::init(array(
+			'class' => 'School',
+			'alias' => 'ElementarySchool'
+		));
 		$results = $this->ElementarySchool->find('list');
 		$expected = array(
 			2 => 'East Bluff'
 		);
 		$this->assertEqual($results, $expected);
 
-		$this->MiddleSchool =& ClassRegistry::init('School');
-		$this->MiddleSchool->alias = 'MiddleSchool';
+		$this->MiddleSchool =& ClassRegistry::init(array(
+			'class' => 'School',
+			'alias' => 'MiddleSchool'
+		));
 		$results = $this->MiddleSchool->find('list');
 		$expected = array(
 			3 => 'Adams'
 		);
 		$this->assertEqual($results, $expected);
 
-		$this->HighSchool =& ClassRegistry::init('School');
-		$this->HighSchool->alias = 'HighSchool';
+		$this->HighSchool =& ClassRegistry::init(array(
+			'class' => 'School',
+			'alias' => 'HighSchool'
+		));
 		$results = $this->HighSchool->find('list');
 		$expected = array(
 			1 => 'El Dorado'
 		);
 		$this->assertEqual($results, $expected);
 
-		$this->College =& ClassRegistry::init('School');
-		$this->College->alias = 'College';
+		$this->College =& ClassRegistry::init(array(
+			'class' => 'School',
+			'alias' => 'College'
+		));
 		$results = $this->College->find('list');
 		$expected = array(
 			4 => 'Azusa Pacific'
