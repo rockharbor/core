@@ -184,7 +184,7 @@ class AppSettingFixture extends CakeTestFixture {
 			'description' => 'The default user image.',
 			'created' => '2010-09-13 00:00:00',
 			'modified' => '2010-09-13 00:00:00',
-			'value' => null,
+			'value' => 5,
 			'type' => 'image'
 		),
 		array(

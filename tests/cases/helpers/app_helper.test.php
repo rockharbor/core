@@ -11,7 +11,7 @@ class ProxyAppHelper extends AppHelper {
 	}
 }
 
-class FormattingHelperTestCase extends CoreTestCase {
+class AppHelperTestCase extends CoreTestCase {
 
 	function startTest() {
 		$this->App = new ProxyAppHelper();
