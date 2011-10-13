@@ -33,4 +33,4 @@
 	url = git@github.com:jeremyharris/asset_compress.git
 [submodule "plugins/named_scope"]
 	path = plugins/named_scope
-	url = https://codaset.com/joelmoss/cakephp-named-scope.git
+	url = https://github.com/joelmoss/cakephp-namedscope.git
