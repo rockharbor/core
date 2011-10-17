@@ -5,7 +5,7 @@ App::import('Controller', 'Payments');
 App::import('Model', 'CreditCard');
 
 Mock::generatePartial('PaymentsController', 'TestPaymentsController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header'));
-Mock::generatePartial('CreditCard', 'MockCreditCard', array('save', 'saveAll'));
+Mock::generatePartial('CreditCard', 'MockPaymentsCreditCard', array('save', 'saveAll'));
 
 class PaymentsControllerTestCase extends CoreTestCase {
 
@@ -13,7 +13,7 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		$this->Payments =& new TestPaymentsController();
 		$this->Payments->__construct();
 		$this->Payments->constructClasses();
-		$CreditCard =& new MockCreditCard();
+		$CreditCard =& new MockPaymentsCreditCard();
 		$CreditCard->something = 'nothing';
 		$CreditCard->setReturnValue('save', true);
 		$CreditCard->setReturnValue('saveAll', true);

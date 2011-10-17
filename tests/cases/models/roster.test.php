@@ -3,12 +3,12 @@
 App::import('Lib', 'CoreTestCase');
 App::import('Model', array('Roster', 'CreditCard'));
 
-Mock::generatePartial('CreditCard', 'MockCreditCard', array('save'));
+Mock::generatePartial('CreditCard', 'MockRosterCreditCard', array('save'));
 
 class RosterTestCase extends CoreTestCase {
 	function startTest() {
 		$this->loadFixtures('Roster', 'Payment', 'PaymentOption', 'Involvement', 'PaymentType', 'Role', 'RolesRoster', 'RosterStatus');
-		$CreditCard = new MockCreditCard();
+		$CreditCard = new MockRosterCreditCard();
 		$CreditCard->setReturnValue('save', true);
 		ClassRegistry::removeObject('CreditCard');
 		ClassRegistry::addObject('CreditCard', $CreditCard);

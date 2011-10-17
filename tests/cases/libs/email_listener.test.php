@@ -4,7 +4,7 @@ App::import('Component', array('Notifier'));
 App::import('Core', 'Controller');
 App::import('Lib', array('CoreTestCase', 'Email'));
 
-Mock::generatePartial('NotifierComponent', 'MockNotifierComponent', array('notify'));
+Mock::generatePartial('NotifierComponent', 'MockEmailListenerNotifierComponent', array('notify'));
 
 class EmailListenerTestCase extends CoreTestCase {
 
@@ -19,7 +19,7 @@ class EmailListenerTestCase extends CoreTestCase {
 	}
 
 	function testError() {
-		$this->EmailListener->Notifier = new MockNotifierComponent();
+		$this->EmailListener->Notifier = new MockEmailListenerNotifierComponent();
 		$this->EmailListener->Notifier->initialize(new Controller());
 		$this->EmailListener->Notifier->setReturnValue('notify', true);
 		$this->assertNoErrors();

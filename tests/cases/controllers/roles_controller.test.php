@@ -5,7 +5,7 @@ App::import('Controller', 'Roles');
 
 Mock::generatePartial('RolesController', 'MockRolesController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header'));
 
-class RostersControllerTestCase extends CoreTestCase {
+class RolesControllerTestCase extends CoreTestCase {
 
 	function startTest() {
 		$this->loadFixtures('Role');

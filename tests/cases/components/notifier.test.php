@@ -3,7 +3,7 @@ App::import('Lib', 'CoreTestCase');
 App::import('Model', array('Notification', 'Invitation'));
 App::import('Component', array('Notifier', 'QueueEmail.QueueEmail'));
 
-Mock::generatePartial('NotifierComponent', 'MockNotifierComponent', array('_render'));
+Mock::generatePartial('NotifierComponent', 'MockNotifierNotifierComponent', array('_render'));
 Mock::generatePartial('QueueEmailComponent', 'MockQueueEmailComponent', array('send'));
 
 class TestNotifierController extends Controller {
@@ -24,7 +24,7 @@ class NotifierTestCase extends CoreTestCase {
 		$this->loadSettings();
 		$this->Notification = ClassRegistry::init('Notification');
 		$this->Controller = new TestNotifierController();
-		$this->Notifier = new MockNotifierComponent();
+		$this->Notifier = new MockNotifierNotifierComponent();
 		$this->Notifier->setReturnValue('_render', 'A notification');
 		$this->Notifier->initialize($this->Controller, array());		
 		$this->Notifier->QueueEmail = new MockQueueEmailComponent();
