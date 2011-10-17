@@ -62,7 +62,7 @@ class CommentsControllerTestCase extends CoreTestCase {
 				'comment' => 'This is a new comment'
 			)
 		);
-		$this->Comments->Session->write('Auth.User', array('id' => 1));
+		$this->Comments->Session->write('Auth.User', array('id' => 1, 'reset_password' => 0));
 		$this->Comments->Session->write('User', array('Group' => array('id' => 5)));
 		$vars = $this->testAction('/comments/add/User:1', array(
 			'data' => $data,
