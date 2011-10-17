@@ -18,7 +18,21 @@
  * @modified 18. des. 2008 by alexander morland 
  */
 class MergeBehavior extends ModelBehavior  {
-		
+
+/**
+ * List of association types
+ * 
+ * @var array
+ */
+	var $types = array('belongsTo', 'hasOne', 'hasMany', 'hasAndBelongsToMany');
+	
+/**
+ * Saved association bindings
+ * 
+ * @var array
+ */
+	var $_assocs;
+	
 	/**
 	 * Cake called intializer
 	 * Config options are list of field names and instructions on how to merge:
@@ -226,6 +240,33 @@ class MergeBehavior extends ModelBehavior  {
 			$Model->delete($source_id, false);			
 		}
 		return true;
+	}
+
+/**
+ * Unbinds all associations to make updates faster and so the queries are not 
+ * contaminated by automatic joins
+ * 
+ * @param Model $model 
+ */
+	function unbindAll(&$model) {
+		foreach ($this->types as $type) {
+			if (isset($model->{$type})) {
+				$this->_assocs[$model->alias][$type] = $model->{$type};
+				$model->{$type} = array();
+			}
+		}
+	}
+	
+/**
+ * Rebinds all previously unbound associations
+ * 
+ * @param Model $model 
+ */
+	function rebindAll(&$model) {
+		foreach ($this->_assocs[$model->alias] as $type => $bindings) {
+			$model->{$type} = $bindings;
+		}
+		unset($this->_assocs[$model->alias]);
 	}
 }
 ?>
