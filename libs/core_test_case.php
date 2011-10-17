@@ -219,7 +219,7 @@ class CoreTestCase extends CakeTestCase {
 				$Controller->Session->write('Auth.User', array('id' => 1, 'username' => 'testadmin', 'reset_password' => 0));
 				$Controller->Session->write('User', array(
 					'Group' => array('id' => 1, 'lft' => 1),
-					'Profile' => array('name' => 'Test Admin', 'primary_email' => 'test@test.com')
+					'Profile' => array('name' => 'Test Admin', 'primary_email' => 'test@test.com', 'leading' => 0, 'managing' => 0)
 				));
 			}
 		}
