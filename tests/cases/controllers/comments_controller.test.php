@@ -99,20 +99,6 @@ class CommentsControllerTestCase extends CoreTestCase {
 			8 => 'User'
 		);
 		$this->assertEqual($results, $expected);
-
-		$this->Comments->Session->write('User', array('Group' => array('id' => 5)));
-		$vars = $this->testAction('/comments/edit/Comment:3/User:3', array(
-			'data' => $data,
-			'return' => 'vars'
-		));
-		$results = $vars['groups'];
-		$expected = array(
-			5 => 'Staff',
-			6 => 'Intern',
-			7 => 'Developer',
-			8 => 'User'
-		);
-		$this->assertEqual($results, $expected);
 	}
 
 	function testDelete() {
