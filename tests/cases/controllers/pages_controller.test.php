@@ -1,9 +1,7 @@
 <?php
 App::import('Lib', 'CoreTestCase');
 App::import('Controller', 'Pages');
-App::import('Component', 'RequestHandler');
 
-Mock::generatePartial('RequestHandlerComponent', 'MockPagesRequestHandlerComponent', array('_header'));
 Mock::generatePartial('PagesController', 'TestPagesController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header'));
 
 class PagesControllerTestCase extends CoreTestCase {
@@ -13,7 +11,6 @@ class PagesControllerTestCase extends CoreTestCase {
 		$this->Pages =& new TestPagesController();
 		$this->Pages->__construct();
 		$this->Pages->constructClasses();
-		$this->Pages->RequestHandler = new MockPagesRequestHandlerComponent();
 		$this->testController = $this->Pages;
 	}
 

@@ -1,12 +1,11 @@
 <?php
 /* Reports Test cases generated on: 2010-07-19 12:07:49 : 1279566109 */
 App::import('Lib', 'CoreTestCase');
-App::import('Component', array('RequestHandler', 'QueueEmail.QueueEmail', 'Notifier'));
+App::import('Component', array('QueueEmail.QueueEmail', 'Notifier'));
 App::import('Controller', 'Reports');
 
 Mock::generatePartial('QueueEmailComponent', 'MockReportsQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('NotifierComponent', 'MockReportsNotifierComponent', array('_render'));
-Mock::generatePartial('RequestHandlerComponent', 'MockReportsRequestHandlerComponent', array('_header'));
 Mock::generatePartial('ReportsController', 'TestReportsController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header'));
 
 class ReportsControllerTestCase extends CoreTestCase {
@@ -23,7 +22,6 @@ class ReportsControllerTestCase extends CoreTestCase {
 		$this->Reports->Notifier->QueueEmail = new MockReportsQueueEmailComponent();
 		$this->Reports->Notifier->QueueEmail->setReturnValue('_smtp', true);
 		$this->Reports->Notifier->QueueEmail->setReturnValue('_mail', true);
-		$this->Reports->RequestHandler = new MockReportsRequestHandlerComponent();
 		$this->Reports->setReturnValue('isAuthorized', true);
 
 		$this->testController = $this->Reports;
@@ -220,8 +218,6 @@ class ReportsControllerTestCase extends CoreTestCase {
 			)
 		);
 		
-		$this->Reports->RequestHandler->expectAt(0, '_header', array('Content-Type: application/vnd.ms-excel; charset=UTF-8'));
-		$this->Reports->RequestHandler->expectAt(1, '_header', array('Content-Disposition: attachment; filename="ministry-search-export.csv"'));
 		$vars = $this->testAction('/reports/export/Ministry/testExportCsvWithSearch.csv', array(
 			'data' => $data
 		));
@@ -249,7 +245,6 @@ class ReportsControllerTestCase extends CoreTestCase {
 				)
 			)
 		);
-		$this->Reports->RequestHandler->expectAt(0, '_header', array('Content-Type: text/html; charset=UTF-8'));
 		$vars = $this->testAction('/reports/export/Ministry/testExportPrint.print', array(
 			'data' => $data
 		));

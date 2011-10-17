@@ -2,9 +2,7 @@
 /* AppSettings Test cases generated on: 2010-07-09 14:07:19 : 1278709879 */
 App::import('Lib', 'CoreTestCase');
 App::import('Controller', 'AppSettings');
-App::import('Component', 'RequestHandler');
 
-Mock::generatePartial('RequestHandlerComponent', 'MockAppSettingsRequestHandlerComponent', array('_header'));
 Mock::generatePartial('AppSettingsController', 'TestAppSettingsController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header'));
 
 class AppSettingsControllerTestCase extends CoreTestCase {
@@ -15,7 +13,6 @@ class AppSettingsControllerTestCase extends CoreTestCase {
 		$this->AppSettings->__construct();
 		$this->AppSettings->constructClasses();
 		$this->AppSettings->setReturnValue('isAuthorized', true);
-		$this->AppSettings->RequestHandler = new MockAppSettingsRequestHandlerComponent();
 		$this->testController = $this->AppSettings;
 	}
 
