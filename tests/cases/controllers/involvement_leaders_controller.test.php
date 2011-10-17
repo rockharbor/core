@@ -12,7 +12,6 @@ class InvolvementLeadersControllerTestCase extends CoreTestCase {
 		$this->Leaders =& new MockInvolvementLeadersController;
 		$this->Leaders->__construct();
 		$this->Leaders->constructClasses();
-		$this->Leaders->Component->initialize($this->Leaders);
 		$this->testController = $this->Leaders;
 	}
 
