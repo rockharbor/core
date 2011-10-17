@@ -91,7 +91,7 @@ class AddressesController extends AppController {
  * By default, the newly created address is set as the new primary address. All other addresses
  * belonging to this model are marked as not being primary
  */
-	function add() {		
+	function add() {
 		if (!empty($this->data)) {
 			// check to see if they chose an existing address. 
 			// if so, duplicate the selected address			
@@ -119,17 +119,9 @@ class AddressesController extends AppController {
 			
 			// mark all others as not primary
 			if ($success) {
-				$this->Address->updateAll(
-					array(
-						'Address.primary' => 0
-					),
-					array(
-						'Address.foreign_key' => $this->data['Address']['foreign_key'],
-						'Address.model' => $this->data['Address']['model'],
-						'Address.id <>' => $lastId
-					)
-				);
-				$this->Address->id = $lastId;
+				if ($this->data['Address']['primary']) {
+					$this->Address->setPrimary($lastId);
+				}
 				$this->Session->setFlash('Your address has been saved.', 'flash'.DS.'success');
 				$this->redirect(array('action' => 'index', $this->model => $this->modelId));
 			} else {
@@ -165,6 +157,10 @@ class AddressesController extends AppController {
 
 		if (!empty($this->data)) {
 			if ($this->Address->save($this->data)) {
+				if ($this->data['Address']['primary']) {
+					$this->Address->setPrimary($id);
+				}
+				$this->Address->id = $id;
 				$this->Session->setFlash('Your address has been updated.', 'flash'.DS.'success');
 				$this->redirect(array('action' => 'index', $this->model => $this->modelId));
 			} else {

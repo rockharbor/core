@@ -33,7 +33,7 @@ class AddressesControllerTestCase extends CoreTestCase {
 
 	function testToggleActivity() {
 		$this->testAction('/user_addresses/toggle_activity/0/Address:3');
-		$this->assertEqual($this->Addresses->Session->read('Message.flash.element'), 'flash'.DS.'failure');
+		$this->assertEqual($this->Addresses->Session->read('Message.flash.element'), 'flash'.DS.'success');
 
 		$this->testAction('/user_addresses/toggle_activity/0/Address:1');
 		$this->assertEqual($this->Addresses->Session->read('Message.flash.element'), 'flash'.DS.'success');
@@ -84,7 +84,8 @@ class AddressesControllerTestCase extends CoreTestCase {
 				'state' => 'CA',
 				'zip' => 92886,
 				'model' => 'User',
-				'foreign_key' => 1
+				'foreign_key' => 1,
+				'primary' => 1
 			)
 		);
 		$vars = $this->testAction('/user_addresses/add', array(
