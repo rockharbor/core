@@ -121,6 +121,7 @@ class MergeBehavior extends ModelBehavior  {
 					$use = $assoc_options[$assoc_model];
 				} 				 
 			}
+			$this->unbindAll($Model->{$assoc_model});
 			switch ($use) {
 				case 'neither': // delete or reset both
 					if ($dependent) {
@@ -148,6 +149,7 @@ class MergeBehavior extends ModelBehavior  {
 				default:
 					return FALSE;				
 			}
+			$this->rebindAll($Model->{$assoc_model});
 		}
 		
 		// hasMany - default is both, options are : target,source,neither,both
@@ -165,6 +167,7 @@ class MergeBehavior extends ModelBehavior  {
 					$use = $assoc_options[$assoc_model];
 				} 				 
 			}
+			$this->unbindAll($Model->{$assoc_model});
 			switch ($use) {
 				case 'both':
 					$Model->{$assoc_model}->updateAll(array($foreignKey=>$target_id),array($foreignKey=>$source_id));
@@ -194,6 +197,7 @@ class MergeBehavior extends ModelBehavior  {
 				default:
 					return FALSE;
 			}
+			$this->rebindAll($Model->{$assoc_model});
 		}
 
 		// HABTM - default is both, options are : target,source,neither,both
@@ -215,6 +219,7 @@ class MergeBehavior extends ModelBehavior  {
 					$use = $assoc_options[$assoc_model];
 				} 				 
 			}
+			$this->unbindAll($Model->{$joinModel});
 			switch ($use) {
 				case 'both':
 					$Model->{$joinModel}->updateAll(array($foreignKey=>$target_id),array($foreignKey=>$source_id));
@@ -232,6 +237,7 @@ class MergeBehavior extends ModelBehavior  {
 				default:
 					return FALSE;
 			}
+			$this->rebindAll($Model->{$joinModel});
 		}
 		
 		$data = $target;
