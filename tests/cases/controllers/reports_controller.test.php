@@ -7,7 +7,7 @@ App::import('Controller', 'Reports');
 Mock::generatePartial('QueueEmailComponent', 'MockReportsQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('NotifierComponent', 'MockReportsNotifierComponent', array('_render'));
 Mock::generatePartial('RequestHandlerComponent', 'MockReportsRequestHandlerComponent', array('_header'));
-Mock::generatePartial('ReportsController', 'TestReportsController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
+Mock::generatePartial('ReportsController', 'TestReportsController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header'));
 
 class ReportsControllerTestCase extends CoreTestCase {
 

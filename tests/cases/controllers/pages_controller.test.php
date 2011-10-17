@@ -4,7 +4,7 @@ App::import('Controller', 'Pages');
 App::import('Component', 'RequestHandler');
 
 Mock::generatePartial('RequestHandlerComponent', 'MockPagesRequestHandlerComponent', array('_header'));
-Mock::generatePartial('PagesController', 'TestPagesController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
+Mock::generatePartial('PagesController', 'TestPagesController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header'));
 
 class PagesControllerTestCase extends CoreTestCase {
 

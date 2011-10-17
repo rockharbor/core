@@ -4,7 +4,7 @@ App::import('Lib', 'CoreTestCase');
 App::import('Controller', 'Payments');
 App::import('Model', 'CreditCard');
 
-Mock::generatePartial('PaymentsController', 'TestPaymentsController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
+Mock::generatePartial('PaymentsController', 'TestPaymentsController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header'));
 Mock::generatePartial('CreditCard', 'MockCreditCard', array('save', 'saveAll'));
 
 class PaymentsControllerTestCase extends CoreTestCase {

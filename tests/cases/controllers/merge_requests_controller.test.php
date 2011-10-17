@@ -7,7 +7,7 @@ App::import('Component', array('QueueEmail.QueueEmail', 'Notifier'));
 
 Mock::generatePartial('QueueEmailComponent', 'MockMergeRequestsQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('NotifierComponent', 'MockMergeRequestsNotifierComponent', array('_render'));
-Mock::generatePartial('MergeRequestsController', 'TestMergeRequestsController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
+Mock::generatePartial('MergeRequestsController', 'TestMergeRequestsController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header'));
 
 class MergeRequestsControllerTestCase extends CoreTestCase {
 

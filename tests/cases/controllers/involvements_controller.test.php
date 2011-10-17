@@ -6,7 +6,7 @@ App::import('Controller', 'Involvements');
 
 Mock::generatePartial('QueueEmailComponent', 'MockInvolvementsQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('NotifierComponent', 'MockInvolvementsNotifierComponent', array('_render'));
-Mock::generatePartial('InvolvementsController', 'TestInvolvementsController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
+Mock::generatePartial('InvolvementsController', 'TestInvolvementsController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header'));
 
 class InvolvementsControllerTestCase extends CoreTestCase {
 

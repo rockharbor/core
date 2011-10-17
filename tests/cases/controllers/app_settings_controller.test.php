@@ -5,7 +5,7 @@ App::import('Controller', 'AppSettings');
 App::import('Component', 'RequestHandler');
 
 Mock::generatePartial('RequestHandlerComponent', 'MockAppSettingsRequestHandlerComponent', array('_header'));
-Mock::generatePartial('AppSettingsController', 'TestAppSettingsController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
+Mock::generatePartial('AppSettingsController', 'TestAppSettingsController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header'));
 
 class AppSettingsControllerTestCase extends CoreTestCase {
 
