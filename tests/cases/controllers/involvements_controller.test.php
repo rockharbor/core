@@ -45,7 +45,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		
 		// private, not registered, but admin
 		$this->Involvements->Session->write('User', array(
-			'User' => array('id' => 100),
+			'User' => array('id' => 100, 'reset_password' => 0),
 			'Group' => array('id' => 1)
 		));
 		$vars = $this->testAction('/involvements/view/Involvement:3');
@@ -53,7 +53,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		
 		// private but registered
 		$this->Involvements->Session->write('User', array(
-			'User' => array('id' => 1),
+			'User' => array('id' => 1, 'reset_password' => 0),
 			'Group' => array('id' => 8)
 		));
 		$vars = $this->testAction('/involvements/view/Involvement:3');
@@ -61,7 +61,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		
 		// private
 		$this->Involvements->Session->write('User', array(
-			'User' => array('id' => 100),
+			'User' => array('id' => 100, 'reset_password' => 0),
 			'Group' => array('id' => 8)
 		));
 		$vars = $this->testAction('/involvements/view/Involvement:3');
