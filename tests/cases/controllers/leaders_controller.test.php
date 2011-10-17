@@ -4,25 +4,25 @@ App::import('Lib', 'CoreTestCase');
 App::import('Component', array('QueueEmail.QueueEmail', 'Notifier'));
 App::import('Controller', array('InvolvementLeaders', 'MinistryLeaders', 'CampusLeaders'));
 
-Mock::generatePartial('QueueEmailComponent', 'MockQueueEmailComponent', array('_smtp', '_mail'));
-Mock::generatePartial('NotifierComponent', 'MockNotifierComponent', array('_render'));
-Mock::generatePartial('InvolvementLeadersController', 'MockInvolvementLeadersController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
-Mock::generatePartial('MinistryLeadersController', 'MockMinistryLeadersController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
-Mock::generatePartial('CampusLeadersController', 'MockCampusLeadersController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
+Mock::generatePartial('QueueEmailComponent', 'MockLeadersQueueEmailComponent', array('_smtp', '_mail'));
+Mock::generatePartial('NotifierComponent', 'MockLeadersNotifierComponent', array('_render'));
+Mock::generatePartial('InvolvementLeadersController', 'MockLeadersInvolvementLeadersController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
+Mock::generatePartial('MinistryLeadersController', 'MockLeadersMinistryLeadersController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
+Mock::generatePartial('CampusLeadersController', 'MockLeadersCampusLeadersController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
 
 class LeadersControllerTestCase extends CoreTestCase {
 
 	function _setLeaderController($name = 'Involvement') {
-		if (class_exists('Mock'.$name.'LeadersController')) {
-			$className = 'Mock'.$name.'LeadersController';
+		if (class_exists('MockLeaders'.$name.'LeadersController')) {
+			$className = 'MockLeaders'.$name.'LeadersController';
 			$this->Leaders =& new $className;
 			$this->Leaders->__construct();
 			$this->Leaders->constructClasses();
 			$this->Leaders->Component->initialize($this->Leaders);
-			$this->Leaders->Notifier = new MockNotifierComponent();
+			$this->Leaders->Notifier = new MockLeadersNotifierComponent();
 			$this->Leaders->Notifier->initialize($this->Leaders);
 			$this->Leaders->Notifier->setReturnValue('_render', 'Notification body text');
-			$this->Leaders->Notifier->QueueEmail = new MockQueueEmailComponent();
+			$this->Leaders->Notifier->QueueEmail = new MockLeadersQueueEmailComponent();
 			$this->Leaders->Notifier->QueueEmail->setReturnValue('_smtp', true);
 			$this->Leaders->Notifier->QueueEmail->setReturnValue('_mail', true);
 			$this->testController = $this->Leaders;

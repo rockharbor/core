@@ -4,8 +4,8 @@ App::import('Lib', 'CoreTestCase');
 App::import('Component', array('Notifier', 'QueueEmail.QueueEmail'));
 App::import('Controller', 'Alerts');
 
-Mock::generatePartial('QueueEmailComponent', 'MockQueueEmailComponent', array('_smtp', '_mail'));
-Mock::generatePartial('NotifierComponent', 'MockNotifierComponent', array('_render'));
+Mock::generatePartial('QueueEmailComponent', 'MockAlertsQueueEmailComponent', array('_smtp', '_mail'));
+Mock::generatePartial('NotifierComponent', 'MockAlertsNotifierComponent', array('_render'));
 Mock::generatePartial('AlertsController', 'TestAlertsController', array('render', 'redirect', '_stop', 'header'));
 
 class AlertsControllerTestCase extends CoreTestCase {
@@ -15,10 +15,10 @@ class AlertsControllerTestCase extends CoreTestCase {
 		$this->Alerts =& new TestAlertsController();
 		$this->Alerts->__construct();
 		$this->Alerts->constructClasses();
-		$this->Alerts->Notifier = new MockNotifierComponent();
+		$this->Alerts->Notifier = new MockAlertsNotifierComponent();
 		$this->Alerts->Notifier->initialize($this->Alerts);
 		$this->Alerts->Notifier->setReturnValue('_render', 'Notification body text');
-		$this->Alerts->Notifier->QueueEmail = new MockQueueEmailComponent();
+		$this->Alerts->Notifier->QueueEmail = new MockAlertsQueueEmailComponent();
 		$this->Alerts->Notifier->QueueEmail->setReturnValue('_smtp', true);
 		$this->Alerts->Notifier->QueueEmail->setReturnValue('_mail', true);
 		$this->testController = $this->Alerts;

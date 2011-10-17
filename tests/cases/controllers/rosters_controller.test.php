@@ -5,10 +5,10 @@ App::import('Component', array('QueueEmail.QueueEmail', 'Notifier'));
 App::import('Controller', 'Rosters');
 App::import('Model', 'CreditCard');
 
-Mock::generatePartial('QueueEmailComponent', 'MockQueueEmailComponent', array('_smtp', '_mail'));
-Mock::generatePartial('NotifierComponent', 'MockNotifierComponent', array('_render'));
+Mock::generatePartial('QueueEmailComponent', 'MockRostersQueueEmailComponent', array('_smtp', '_mail'));
+Mock::generatePartial('NotifierComponent', 'MockRostersNotifierComponent', array('_render'));
 Mock::generatePartial('RostersController', 'MockRostersController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
-Mock::generatePartial('CreditCard', 'MockCreditCard', array('save', 'saveAll'));
+Mock::generatePartial('CreditCard', 'MockRostersCreditCard', array('save', 'saveAll'));
 
 class RostersControllerTestCase extends CoreTestCase {
 
@@ -19,14 +19,14 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->Rosters =& new MockRostersController();
 		$this->Rosters->__construct();
 		$this->Rosters->constructClasses();
-		$this->Rosters->Notifier = new MockNotifierComponent();
+		$this->Rosters->Notifier = new MockRostersNotifierComponent();
 		$this->Rosters->Notifier->initialize($this->Rosters);
 		$this->Rosters->Notifier->setReturnValue('_render', 'Notification body text');
-		$this->Rosters->Notifier->QueueEmail = new MockQueueEmailComponent();
+		$this->Rosters->Notifier->QueueEmail = new MockRostersQueueEmailComponent();
 		$this->Rosters->Notifier->QueueEmail->initialize($this->Rosters);
 		$this->Rosters->Notifier->QueueEmail->setReturnValue('_smtp', true);
 		$this->Rosters->Notifier->QueueEmail->setReturnValue('_mail', true);
-		$CreditCard =& new MockCreditCard();
+		$CreditCard =& new MockRostersCreditCard();
 		$CreditCard->something = 'nothing';
 		$CreditCard->setReturnValue('save', true);
 		$CreditCard->setReturnValue('saveAll', true);

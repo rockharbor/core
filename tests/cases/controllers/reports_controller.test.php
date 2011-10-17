@@ -4,9 +4,9 @@ App::import('Lib', 'CoreTestCase');
 App::import('Component', array('RequestHandler', 'QueueEmail.QueueEmail', 'Notifier'));
 App::import('Controller', 'Reports');
 
-Mock::generatePartial('QueueEmailComponent', 'MockQueueEmailComponent', array('_smtp', '_mail'));
-Mock::generatePartial('NotifierComponent', 'MockNotifierComponent', array('_render'));
-Mock::generatePartial('RequestHandlerComponent', 'MockRequestHandlerComponent', array('_header'));
+Mock::generatePartial('QueueEmailComponent', 'MockReportsQueueEmailComponent', array('_smtp', '_mail'));
+Mock::generatePartial('NotifierComponent', 'MockReportsNotifierComponent', array('_render'));
+Mock::generatePartial('RequestHandlerComponent', 'MockReportsRequestHandlerComponent', array('_header'));
 Mock::generatePartial('ReportsController', 'TestReportsController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
 
 class ReportsControllerTestCase extends CoreTestCase {
@@ -17,13 +17,13 @@ class ReportsControllerTestCase extends CoreTestCase {
 		$this->Reports = new TestReportsController();
 		$this->Reports->__construct();
 		$this->Reports->constructClasses();
-		$this->Reports->Notifier = new MockNotifierComponent();
+		$this->Reports->Notifier = new MockReportsNotifierComponent();
 		$this->Reports->Notifier->initialize($this->Reports);
 		$this->Reports->Notifier->setReturnValue('_render', 'Notification body text');
-		$this->Reports->Notifier->QueueEmail = new MockQueueEmailComponent();
+		$this->Reports->Notifier->QueueEmail = new MockReportsQueueEmailComponent();
 		$this->Reports->Notifier->QueueEmail->setReturnValue('_smtp', true);
 		$this->Reports->Notifier->QueueEmail->setReturnValue('_mail', true);
-		$this->Reports->RequestHandler = new MockRequestHandlerComponent();
+		$this->Reports->RequestHandler = new MockReportsRequestHandlerComponent();
 		$this->Reports->setReturnValue('isAuthorized', true);
 
 		$this->testController = $this->Reports;

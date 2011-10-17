@@ -4,8 +4,7 @@ App::import('Lib', 'CoreTestCase');
 App::import('Component', array('QueueEmail.QueueEmail', 'Notifier'));
 App::import('Controller', 'Households');
 
-Mock::generatePartial('QueueEmailComponent', 'MockQueueEmailComponent', array('_smtp', '_mail'));
-Mock::generatePartial('NotifierComponent', 'MockNotifierComponent', array('_render'));
+Mock::generatePartial('QueueEmailComponent', 'MockHouseholdsQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('HouseholdsController', 'TestHouseholdsController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
 
 class HouseholdsControllerTestCase extends CoreTestCase {
@@ -16,7 +15,7 @@ class HouseholdsControllerTestCase extends CoreTestCase {
 		$this->Households->__construct();
 		$this->Households->constructClasses();
 		$this->Households->Component->initialize($this->Households);
-		$this->Households->Notifier->QueueEmail = new MockQueueEmailComponent();
+		$this->Households->Notifier->QueueEmail = new MockHouseholdsQueueEmailComponent();
 		$this->Households->Notifier->initialize($this->Households);
 		$this->Households->setReturnValue('isAuthorized', true);
 		$this->Households->Notifier->QueueEmail->setReturnValue('_smtp', true);

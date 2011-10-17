@@ -3,23 +3,21 @@
 App::import('Lib', 'CoreTestCase');
 App::import('Component', array('Notifier', 'QueueEmail.QueueEmail'));
 App::import('Controller', 'UserImages');
-App::import('Behavior', 'Media.Transfer');
 
-Mock::generatePartial('QueueEmailComponent', 'MockQueueEmailComponent', array('_smtp', '_mail'));
-Mock::generatePartial('NotifierComponent', 'MockNotifierComponent', array('_render'));
+Mock::generatePartial('QueueEmailComponent', 'MockAttachmentsQueueEmailComponent', array('_smtp', '_mail'));
+Mock::generatePartial('NotifierComponent', 'MockAttachmentsNotifierComponent', array('_render'));
 Mock::generatePartial('UserImagesController', 'MockUserImagesController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
-Mock::generatePartial('TransferBehavior', 'MockTransferBehavior', array('transfer'));
 
-class UserImagesControllerTestCase extends CoreTestCase {
+class AttachmentsControllerTestCase extends CoreTestCase {
 
 	function startTest() {
 		$this->Attachments =& new MockUserImagesController();
 		$this->Attachments->__construct();
 		$this->Attachments->constructClasses();
-		$this->Attachments->Notifier = new MockNotifierComponent();
+		$this->Attachments->Notifier = new MockAttachmentsNotifierComponent();
 		$this->Attachments->Notifier->initialize($this->Attachments);
 		$this->Attachments->Notifier->setReturnValue('_render', 'Notification body text');
-		$this->Attachments->Notifier->QueueEmail = new MockQueueEmailComponent();
+		$this->Attachments->Notifier->QueueEmail = new MockAttachmentsQueueEmailComponent();
 		$this->Attachments->Notifier->QueueEmail->setReturnValue('_smtp', true);
 		$this->Attachments->Notifier->QueueEmail->setReturnValue('_mail', true);
 		$this->testController = $this->Attachments;

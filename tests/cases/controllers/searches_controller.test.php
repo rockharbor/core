@@ -4,7 +4,7 @@ App::import('Lib', 'CoreTestCase');
 App::import('Component', array('QueueEmail.QueueEmail'));
 App::import('Controller', 'Searches');
 
-Mock::generatePartial('QueueEmailComponent', 'MockQueueEmailComponent', array('_smtp', '_mail'));
+Mock::generatePartial('QueueEmailComponent', 'MockSearchesQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('SearchesController', 'MockSearchesController', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
 
 class SearchesControllerTestCase extends CoreTestCase {
@@ -15,7 +15,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$this->Searches->__construct();
 		$this->Searches->constructClasses();
 		$this->Searches->FilterPagination->initialize($this->Searches);
-		$this->Searches->Notifier->QueueEmail = new MockQueueEmailComponent();
+		$this->Searches->Notifier->QueueEmail = new MockSearchesQueueEmailComponent();
 		$this->Searches->Notifier->QueueEmail->enabled = true;
 		$this->Searches->Notifier->QueueEmail->setReturnValue('_smtp', true);
 		$this->Searches->Notifier->QueueEmail->setReturnValue('_mail', true);
