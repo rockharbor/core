@@ -18,7 +18,6 @@ class LeadersControllerTestCase extends CoreTestCase {
 			$this->Leaders =& new $className;
 			$this->Leaders->__construct();
 			$this->Leaders->constructClasses();
-			$this->Leaders->Component->initialize($this->Leaders);
 			$this->Leaders->Notifier = new MockLeadersNotifierComponent();
 			$this->Leaders->Notifier->initialize($this->Leaders);
 			$this->Leaders->Notifier->setReturnValue('_render', 'Notification body text');
