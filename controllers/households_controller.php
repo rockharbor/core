@@ -83,7 +83,7 @@ class HouseholdsController extends AppController {
 			$this->Session->setFlash('Unable to process request. Please try again.', 'flash'.DS.'failure');
 		}
 
-		if ($this->params['requested']) {
+		if (isset($this->params['requested']) && $this->params['requested']) {
 			return $success;
 		}
 		$this->redirect(array(
@@ -206,7 +206,7 @@ class HouseholdsController extends AppController {
 			}
 		}
 		
-		if ($this->params['requested']) {
+		if (isset($this->params['requested']) && $this->params['requested']) {
 			return $success;
 		}
 		
