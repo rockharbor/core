@@ -213,6 +213,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 			'Export' => array(
 				'type' => 'csv',
 				'header_aliases' => '',
+				'squashed_fields' => '',
 				'Ministry' => array(
 					'name'
 				)
@@ -226,7 +227,8 @@ class ReportsControllerTestCase extends CoreTestCase {
 		));
 		
 		$results = Set::extract('/Ministry/name', $vars['results']);
-		$expected = array('Communications', 'Alpha', 'All Church', 'Downtown Reach');
+		sort($results);
+		$expected = array('All Church', 'Alpha', 'Communications', 'Downtown Reach');
 		$this->assertEqual($results, $expected);
 	}
 
@@ -241,6 +243,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 			'Export' => array(
 				'type' => 'print',
 				'header_aliases' => '',
+				'squashed_fields' => '',
 				'Ministry' => array(
 					'name'
 				)
@@ -258,7 +261,8 @@ class ReportsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 
 		$results = Set::extract('/Ministry/name', $vars['results']);
-		$expected = array('Alpha', 'All Church');
+		sort($results);
+		$expected = array('All Church', 'Alpha');
 		$this->assertEqual($results, $expected);
 	}
 
