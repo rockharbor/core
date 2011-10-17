@@ -10,7 +10,6 @@ class AppControllerTestCase extends CoreTestCase {
 		$this->App =& new AppController();		
 		$this->App->__construct();
 		$this->App->constructClasses();
-		$this->App->Component->initialize($this->App);
 		$this->App->activeUser = array(
 			'User' => array('id' => 1),
 			'Group' => array('id' => 1)
