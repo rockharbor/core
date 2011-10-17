@@ -37,7 +37,7 @@ class AlertsControllerTestCase extends CoreTestCase {
 	}
 
 	function testView() {
-		$this->Alerts->Session->write('Auth', array('User' => array('id' => 1)));
+		$this->Alerts->Session->write('Auth', array('User' => array('id' => 1, 'reset_password' => false)));
 		$this->Alerts->Session->write('User', array('Group' => array('id' => 8)));
 		$vars = $this->testAction('/alerts/view/1');
 		$result = Set::extract('/Alert/id', $vars['alert']);
@@ -56,7 +56,7 @@ class AlertsControllerTestCase extends CoreTestCase {
 	}
 
 	function testHistory() {
-		$this->Alerts->Session->write('Auth.User', array('id' => 1));
+		$this->Alerts->Session->write('Auth.User', array('id' => 1, 'reset_password' => false));
 		$this->Alerts->Session->write('User', array('Group' => array('id' => 8)));
 		$vars = $this->testAction('/alerts/history', array(
 			'return' => 'vars'
