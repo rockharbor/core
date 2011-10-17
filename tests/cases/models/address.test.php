@@ -68,6 +68,20 @@ class AddressTestCase extends CoreTestCase {
 		$result = $this->Address->toggleActivity(1, true);
 		$this->assertTrue($result);
 	}
+	
+	function testSetPrimary() {
+		$this->Address->setPrimary(1);
+		$this->Address->id = 1;
+		$this->assertEqual($this->Address->field('primary'), 1);
+		$this->Address->id = 2;
+		$this->assertEqual($this->Address->field('primary'), 0);
+		
+		$this->Address->setPrimary(2);
+		$this->Address->id = 1;
+		$this->assertEqual($this->Address->field('primary'), 0);
+		$this->Address->id = 2;
+		$this->assertEqual($this->Address->field('primary'), 1);
+	}
 
 }
 ?>

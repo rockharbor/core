@@ -143,5 +143,26 @@ class Address extends AppModel {
 		}
 		return false;
 	}
+
+/**
+ * Sets the primary address
+ * 
+ * @param integer $id 
+ */
+	function setPrimary($id) {
+		$this->id = $id;
+		$address = $this->read();
+		$this->updateAll(
+			array(
+				'Address.primary' => 0
+			),
+			array(
+				'Address.foreign_key' => $address[$this->alias]['foreign_key'],
+				'Address.model' => $address[$this->alias]['model'],
+				'Address.id <>' => $id
+			)
+		);
+		$this->saveField('primary', true);
+	}
 }
 ?>
