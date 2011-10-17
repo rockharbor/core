@@ -146,7 +146,8 @@ class DatesController extends AppController {
 		$involvements = $this->Date->Involvement->find('all', array(
 			'fields' => array('id', 'name'),
 			'link' => $link,
-			'conditions' => $conditions
+			'conditions' => $conditions,
+			'group' => 'Involvement.id'
 		));
 
 		foreach ($involvements as $involvement) {
