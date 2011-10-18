@@ -76,7 +76,9 @@ class NotificationsControllerTestCase extends CoreTestCase {
 		$this->Notifications->Notification->id = 3;
 		$this->assertFalse($this->Notifications->Notification->field('read'));
 
-		$this->Notifications->Session->write('Auth.User', array('id' => 2, 'reset_password' => 0));
+		$this->su(array(
+			'User' => array('id' => 2)
+		));
 		$vars = $this->testAction('/notifications/read/3');
 		$this->Notifications->Notification->id = 3;
 		$this->assertTrue($this->Notifications->Notification->field('read'));
@@ -105,7 +107,9 @@ class NotificationsControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/notifications/delete/3');
 		$this->assertNotNull($this->Notifications->Notification->read(null, 3));
 
-		$this->Notifications->Session->write('Auth.User', array('id' => 2, 'reset_password' => 0));
+		$this->su(array(
+			'User' => array('id' => 2)
+		));
 		$vars = $this->testAction('/notifications/delete/3');
 		$this->Notifications->Notification->id = 3;
 		$this->assertFalse($this->Notifications->Notification->read(null, 3));

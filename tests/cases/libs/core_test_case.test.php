@@ -14,6 +14,7 @@
 App::import('Lib', 'CoreTestCase');
 App::import('Component', 'RequestHandler');
 App::import('Model', 'App');
+App::import('Controller', 'App');
 
 /**
  * Dummy app model
@@ -61,7 +62,7 @@ class DumberBehavior extends ModelBehavior {
  * @package       core
  * @subpackage    core.app.tests.cases.libs
  */
-class DummiesController extends Controller {
+class DummiesController extends AppController {
 	var $name = 'Dummies';
 
 	var $components = array('Session', 'Dumb');
@@ -168,6 +169,65 @@ class CoreTestCaseTestCase extends CakeTestCase {
 		$this->assertEqual($this->Dummies->data, $result);
 
 		$this->assertFalse($vars['saveSuccess']);
+	}
+	
+	function testSu() {
+		$result = $this->CoreTestCase->su();
+		$this->assertTrue($result);
+		
+		$results = $this->CoreTestCase->testController->Session->read('Auth');
+		$this->assertEqual($results['User']['id'], 1);
+		$this->assertEqual($results['User']['username'], 'testadmin');
+		
+		$results = $this->CoreTestCase->testController->Session->read('User');
+		$this->assertEqual($results['Group']['id'], 1);
+		$this->assertEqual($results['Profile']['primary_email'], 'test@test.com');
+		
+		$this->CoreTestCase->testAction('/dummies/dummy_action/0');
+		$results = $this->CoreTestCase->testController->activeUser;
+		$this->assertEqual($results['Group']['id'], 1);
+		$this->assertEqual($results['Profile']['primary_email'], 'test@test.com');
+		
+		$newUser = array(
+			'User' => array(
+				'id' => 3
+			),
+			'Profile' => array(
+				'name' => 'New User'
+			)
+		);
+		$result = $this->CoreTestCase->su($newUser);
+		$this->assertTrue($result);
+		
+		$results = $this->CoreTestCase->testController->Session->read('Auth');
+		$this->assertEqual($results['User']['id'], 3);
+		$results = $this->CoreTestCase->testController->Session->read('User');
+		$this->assertEqual($results['Profile']['name'], 'New User');
+		
+		$this->CoreTestCase->testAction('/dummies/dummy_action/2');
+		$results = $this->CoreTestCase->testController->activeUser;
+		$this->assertEqual($results['User']['id'], 3);
+		$this->assertEqual($results['Profile']['name'], 'New User');
+		
+		$addToUser = array(
+			'Group' => array(
+				'id' => 10
+			)
+		);
+		$result = $this->CoreTestCase->su($addToUser, false);
+		$this->assertTrue($result);
+		
+		$results = $this->CoreTestCase->testController->Session->read('Auth');
+		$this->assertEqual($results['User']['id'], 3);
+		$results = $this->CoreTestCase->testController->Session->read('User');
+		$this->assertEqual($results['Profile']['name'], 'New User');
+		$this->assertEqual($results['Group']['id'], 10);
+		
+		$this->CoreTestCase->testAction('/dummies/dummy_action/1');
+		$results = $this->CoreTestCase->testController->activeUser;
+		$this->assertEqual($results['User']['id'], 3);
+		$this->assertEqual($results['Profile']['name'], 'New User');
+		$this->assertEqual($results['Group']['id'], 10);
 	}
 
 }

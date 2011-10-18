@@ -28,7 +28,9 @@ class InvitationsControllerTestCase extends CoreTestCase {
 		$expected = array(1, 2);
 		$this->assertEqual($results, $expected);
 		
-		$this->Invitations->Session->write('Auth.User.id', 100);
+		$this->su(array(
+			'User' => array('id' => 100)
+		));
 		$vars = $this->testAction('/Invitations/index');
 		$results = Set::extract('/Invitation/id', $vars['invitations']);
 		$expected = array();

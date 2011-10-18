@@ -216,11 +216,7 @@ class CoreTestCase extends CakeTestCase {
 		if (isset($Controller->Auth)) {
 			$Controller->Auth->initialize($Controller);
 			if (!$Controller->Session->check('Auth.User') && !$Controller->Session->check('User')) {
-				$Controller->Session->write('Auth.User', array('id' => 1, 'username' => 'testadmin', 'reset_password' => 0));
-				$Controller->Session->write('User', array(
-					'Group' => array('id' => 1, 'lft' => 1),
-					'Profile' => array('name' => 'Test Admin', 'primary_email' => 'test@test.com', 'leading' => 0, 'managing' => 0)
-				));
+				$this->su();
 			}
 		}
 		// configure acl
@@ -253,6 +249,53 @@ class CoreTestCase extends CakeTestCase {
 	function unloadSettings() {
 		ClassRegistry::init('AppSetting')->clearCache();
 		Configure::write('Cache.disable', $this->_cacheDisable);
+	}
+
+/**
+ * Changes the session user, and therefore the `$activeUser` on the controller
+ * when an action is called
+ * 
+ * @param array $user User data to use
+ * @param boolean $wipe Set to `false` to merge existing session info
+ * @return boolean
+ */
+	function su($user = array(), $wipe = true) {
+		if (!$this->testController) {
+			return false;
+		}
+		
+		$_defaults = array(
+			'User' => array(
+				'id' => 1,
+				'username' => 'testadmin',
+				'password' => Security::hash('password', null, true),
+				'reset_password' => false
+			),
+			'Group' => array(
+				'id' => 1, 
+				'lft' => 1,
+				'rght' => 26
+			),
+			'Profile' => array(
+				'name' => 'Test Admin', 
+				'primary_email' => 'test@test.com', 
+				'leading' => 0, 
+				'managing' => 0
+			)
+		);
+		
+		if (!$wipe) {
+			$_defaults = array(
+				'User' => $this->testController->Session->read('Auth.User')
+			);
+			$_defaults = array_merge($this->testController->Session->read('User'), $_defaults);
+		}
+		$user = Set::merge($_defaults, $user);
+		
+		$auth = $this->testController->Session->write('Auth.User', $user['User']);
+		$sess = $this->testController->Session->write('User', $user);
+		
+		return $auth && $sess;
 	}
 
 }

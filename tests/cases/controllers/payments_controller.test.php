@@ -50,9 +50,11 @@ class PaymentsControllerTestCase extends CoreTestCase {
 	}
 
 	function testAdd() {
-		$this->Payments->Session->write('Auth.User.id', 1);
-		$this->Payments->Session->write('User.Group.id', 1);
-		$this->Payments->Session->write('User.Profile.primary_email', 'test@test.com');
+		$this->su(array(
+			'User' => array('id' => 1),
+			'Group' => array('id' => 1),
+			'Profile' => array('primary_email' => 'test@test.com')
+		));
 		$this->Payments->Session->write('MultiSelect.test', array(
 			'selected' => array(2,1)
 		));

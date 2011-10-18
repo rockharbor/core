@@ -44,24 +44,24 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$this->assertNull($this->Involvements->Session->read('Message.flash.element'));
 		
 		// private, not registered, but admin
-		$this->Involvements->Session->write('User', array(
-			'User' => array('id' => 100, 'reset_password' => 0),
+		$this->su(array(
+			'User' => array('id' => 100),
 			'Group' => array('id' => 1)
 		));
 		$vars = $this->testAction('/involvements/view/Involvement:3');
 		$this->assertNull($this->Involvements->Session->read('Message.flash.element'));
 		
 		// private but registered
-		$this->Involvements->Session->write('User', array(
-			'User' => array('id' => 1, 'reset_password' => 0),
-			'Group' => array('id' => 8)
+		$this->su(array(
+			'User' => array('id' => 1),
+			'Group' => array('id' => 1)
 		));
 		$vars = $this->testAction('/involvements/view/Involvement:3');
 		$this->assertNull($this->Involvements->Session->read('Message.flash.element'));
 		
 		// private
-		$this->Involvements->Session->write('User', array(
-			'User' => array('id' => 100, 'reset_password' => 0),
+		$this->su(array(
+			'User' => array('id' => 100),
 			'Group' => array('id' => 8)
 		));
 		$vars = $this->testAction('/involvements/view/Involvement:3');
@@ -88,7 +88,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$expected = array(1, 2, 4, 5);
 		$this->assertEqual($results, $expected);
 		
-		$this->Involvements->Session->write('User', array(
+		$this->su(array(
 			'Group' => array('id' => 8)
 		));
 		$vars = $this->testAction('/involvements/index/Ministry:1', array(
