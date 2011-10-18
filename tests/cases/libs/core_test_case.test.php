@@ -67,10 +67,6 @@ class DummiesController extends AppController {
 
 	var $components = array('Session', 'Dumb');
 
-	function isAuthorized() {
-		return true;
-	}
-
 	function dummy_action($var) {
 		$this->set('var', $var);
 		return true;
@@ -91,10 +87,8 @@ class DummiesController extends AppController {
 
 	function get_me() {
 		$this->set('query', $this->params['url']['query']);
-	}
+	}	
 }
-
-Mock::generatePartial('RequestHandlerComponent', 'MockRequestHandlerComponent', array('_header'));
 
 /**
  * CoreTestCase test case
@@ -102,14 +96,12 @@ Mock::generatePartial('RequestHandlerComponent', 'MockRequestHandlerComponent', 
  * @package       core
  * @subpackage    core.app.tests.cases.libs
  */
-class CoreTestCaseTestCase extends CakeTestCase {
+class CoreTestCaseTestCase extends CoreTestCase {
 
 	function startTest() {
 		$this->CoreTestCase =& new CoreTestCase();
 		$this->Dummies = new DummiesController();
 		$this->Dummies->constructClasses();
-		$this->Dummies->RequestHandler = new MockRequestHandlerComponent();
-		$this->Dummies->Component->initialize($this->Dummies);
 		$this->CoreTestCase->testController = $this->Dummies;
 	}
 

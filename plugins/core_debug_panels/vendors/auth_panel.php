@@ -90,32 +90,29 @@ class AuthPanel extends DebugPanel {
  * @access protected
  */
 	function _logAccess($controller) {
-		$model = 'Group';
-		$userId = $controller->activeUser['User']['id'];
+		$groupId = $controller->activeUser['Group']['id'];
+		$controller->_setConditionalGroups();
 		$authHistory = $controller->Session->read('CoreDebugPanels.authHistory');
-
-		if (!isset($controller->activeUser['ConditionalGroup'])) {
-			$controller->_setConditionalGroups();
-
-			// check for conditional group, which takes priority
-			if (isset($controller->activeUser['ConditionalGroup'])) {
-				$foreign_key = $controller->activeUser['ConditionalGroup']['id'];
-				$condAccess = $controller->Acl->check(compact('model', 'foreign_key'), $controller->Auth->action());
-				$action = $controller->Auth->action();
-				$perm = $condAccess ? 'yes' : 'no';
-				$message = "User $userId of conditional group $foreign_key allowed to access $action? [$perm]";
+		$action = $controller->Auth->action();
+		
+		$condAccess = false;
+		if (!empty($controller->activeUser['ConditionalGroup'])) {
+			foreach ($controller->activeUser['ConditionalGroup'] as $group) {
+				$condAccess = Core::acl($groupId, $action, 'conditional');
+				$message = "User of group $groupId allowed to access $action? [$condAccess]";
 				$authHistory[] = $message;
 				if (($this->logAllow && $condAccess) || ($this->logDeny && !$condAccess)) {
 					CakeLog::write('auth', $message);
 				}
+				if ($condAccess) {
+					break;
+				}
 			}
 		}
-
-		$foreign_key = $controller->activeUser['Group']['id'];
-		$mainAccess = $controller->Acl->check(compact('model', 'foreign_key'), $controller->Auth->action());
-		$action = $controller->Auth->action();
-		$perm = $mainAccess ? 'yes' : 'no';
-		$message = "User $userId of group $foreign_key allowed to access $action? [$perm]";
+		
+		// main group
+		$mainAccess = Core::acl($groupId, $action);
+		$message = "User of group $groupId allowed to access $action? [$mainAccess]";
 		$authHistory[] = $message;
 		if (($this->logAllow && $mainAccess) || ($this->logDeny && !$mainAccess)) {
 			CakeLog::write('auth', $message);
