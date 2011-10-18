@@ -14,7 +14,7 @@ class EmailListenerTestCase extends CoreTestCase {
 	}
 
 	function endTest() {
-		unset($this->Whistle);
+		unset($this->EmailListener);
 		$this->unloadSettings();
 	}
 
