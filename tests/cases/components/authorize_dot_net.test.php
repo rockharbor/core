@@ -3,6 +3,10 @@ App::import('Lib', 'CoreTestCase');
 App::import('Controller', 'App');
 App::import('Component', 'AuthorizeDotNet');
 
+if (!isset($_SERVER['REQUEST_URI'])) {
+	$_SERVER['REQUEST_URI'] = 'http://www.example.com';
+}
+
 class TestAuthorizeController extends AppController {}
 
 class AuthorizeDotNetTestCase extends CoreTestCase {
