@@ -65,11 +65,13 @@ class AppController extends Controller {
 				'DbLog',
 				'Screen',
 				'Email' => array(
-					array(
-						'levels' => E_ERROR
-					),
-					array(
-						'levels' => E_WARNING
+					'mailerConfig' => array(
+						'to' => 'jharris@rockharbor.org',
+						'smtpOptions' => array(
+							'port'=>'25',
+							'timeout'=>'30',
+							'host' => 'mail.rockharbor.org'
+						)
 					)
 				)
 			)
