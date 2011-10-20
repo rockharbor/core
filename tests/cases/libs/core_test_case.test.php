@@ -15,6 +15,7 @@ App::import('Lib', 'CoreTestCase');
 App::import('Component', 'RequestHandler');
 App::import('Model', 'App');
 App::import('Controller', 'App');
+App::import('View', 'View');
 
 /**
  * Dummy app model
@@ -66,7 +67,12 @@ class DummiesController extends AppController {
 	var $name = 'Dummies';
 
 	var $components = array('Session', 'Dumb');
-
+	
+	function __mergeVars() {
+		parent::__mergeVars();
+		unset($this->components['DebugKit.Toolbar']);
+	}
+	
 	function dummy_action($var) {
 		$this->set('var', $var);
 		return true;
@@ -87,7 +93,11 @@ class DummiesController extends AppController {
 
 	function get_me() {
 		$this->set('query', $this->params['url']['query']);
-	}	
+	}
+	
+	function disableCache() {
+		return true;
+	}
 }
 
 /**
