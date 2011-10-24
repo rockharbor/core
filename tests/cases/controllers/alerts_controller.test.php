@@ -6,7 +6,7 @@ App::import('Controller', 'Alerts');
 
 Mock::generatePartial('QueueEmailComponent', 'MockAlertsQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('NotifierComponent', 'MockAlertsNotifierComponent', array('_render'));
-Mock::generatePartial('AlertsController', 'TestAlertsController', array('render', 'redirect', '_stop', 'header'));
+Mock::generatePartial('AlertsController', 'TestAlertsController', array('render', 'redirect', '_stop', 'header', 'disableCache'));
 
 class AlertsControllerTestCase extends CoreTestCase {
 	

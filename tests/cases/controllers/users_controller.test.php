@@ -8,6 +8,10 @@ Mock::generatePartial('QueueEmailComponent', 'MockUsersQueueEmailComponent', arr
 Mock::generatePartial('NotifierComponent', 'MockUsersNotifierComponent', array('_render'));
 Mock::generatePartial('UsersController', 'MockUsersController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header'));
 
+if (!defined('FULL_BASE_URL')) {
+	define('FULL_BASE_URL', 'http://www.example.com');
+}
+
 class UsersControllerTestCase extends CoreTestCase {
 
 	function startTest() {
