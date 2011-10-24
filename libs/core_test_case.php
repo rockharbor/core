@@ -174,7 +174,7 @@ class CoreTestCase extends CakeTestCase {
 		}
 
 		$Controller = $this->testController;
-
+		
 		// reset parameters
 		$Controller->passedArgs = array();
 		$Controller->params = array();
@@ -236,6 +236,12 @@ class CoreTestCase extends CakeTestCase {
 		$Controller->beforeRender();
 		$Controller->Component->triggerCallback('beforeRender', $Controller);
 
+		// trick debugkit into skipping its __destruct method which clutters up the response
+		if (class_exists('DebugKitDebugger')) {
+			$_debugkit =& DebugKitDebugger::getInstance();
+			$_debugkit->__benchmarks = null;
+		}
+		
 		return $Controller->viewVars;
 	}
 
