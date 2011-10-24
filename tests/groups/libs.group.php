@@ -7,6 +7,5 @@ class LibsGroupTest extends TestSuite {
 	function LibsGroupTest() {
 		TestManager::addTestFile($this, APP . 'tests' . DS . 'cases' . DS . 'libs' . DS . 'core');
 		TestManager::addTestFile($this, APP . 'tests' . DS . 'cases' . DS . 'libs' . DS . 'core_test_case');
-		TestManager::addTestFile($this, APP . 'tests' . DS . 'cases' . DS . 'libs' . DS . 'email_listener');
 	}
 }
