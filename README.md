@@ -19,7 +19,7 @@ CORE is in-depth church member and event management software.
 
 * MySQL Server
 
-## Installation Steps
+## Manual Installation Steps
 
 ### Install
 
@@ -89,6 +89,13 @@ When baking, make sure to pass the `-app` parameter to ensure you bake against C
 A default user 'admin' with the password 'password' will be created for you. Depending on your
 setup, you may need to modify the `tmp` directory and the `webroot/media/transfer` directory
 to be writeable by Apache.
+
+## Automated Installation Steps
+
+Verify that the MySQL service is running. Next, run the installer, which automates the manual
+installation steps listed above.
+
+	$ ./install
 
 ## Maintenance
 

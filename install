@@ -1,0 +1,58 @@
+#!/bin/sh
+
+# Prerequisites
+if [ "`ps -A | grep mysqld`" = "" ]; then
+  echo -e "Please start mysqld before beginning the installation. This can be "\
+    "done by\nrunning the following command (may differ slightly, based on "\
+    "distribution):"
+  echo "  /etc/init.d/mysql start"
+  exit 1
+fi
+
+# Install
+pushd .. > /dev/null
+if [ ! -e "cakephp" ]; then
+  git clone -q git://github.com/cakephp/cakephp.git cakephp
+fi
+cd ./cakephp
+git checkout -q 1.3.11
+cd ./cake/console
+export CAKEDIR=`pwd`
+popd > /dev/null
+
+# Set up bake
+export EXPORTCAKE="export PATH=$CAKEDIR:\$PATH"
+if [ "`cat ~/.bashrc | grep -e "^export" | grep $CAKEDIR`" = "" ]; then
+  while true; do
+    read -e -p "Add the cake directory to .bashrc? [y/n]: " -i "y" YN
+    case $YN in
+      [Yy]* )
+        echo $EXPORTCAKE >> ~/.bashrc;
+        echo "\"$EXPORTCAKE\" has been added to your .bashrc file."; break;;
+      [Nn]* ) break;;
+      * ) echo "Please answer yes or no.";;
+    esac
+  done
+fi
+
+# Configure
+export A_SALT=`grep salt config/core.php.default | sed -E "s/.*, '(.*?)'.*/\1/"`
+export B_SALT=`tr -dc A-Za-z0-9 < /dev/urandom | head -c${1:-49}`
+cat config/core.php.default | sed "s/$A_SALT/$B_SALT/" > config/core.php
+read -p "Enter a valid mysql database username: " MYSQLDBUSERNAME
+read -sp "Enter the corresponding password:      " MYSQLDBPASSWORD
+echo
+read -p "Enter a new database name:             " MYSQLDBNAME
+cat config/database.php.default | \
+  sed "s/'login' => 'username'/'login' => '${MYSQLDBUSERNAME}'/" |\
+  sed "s/'password' => 'password'/'password' => '${MYSQLDBPASSWORD}'/" |\
+  sed "s/'database' => 'database'/'database' => '${MYSQLDBNAME}'/" |\
+  sed "s/'database' => 'database_test'/'database' => '${MYSQLDBNAME}_test'/"\
+  > config/database.php
+echo CREATE DATABASE $MYSQLDBNAME | \
+  mysql --user=$MYSQLDBUSERNAME --password=$MYSQLDBPASSWORD
+
+# Bake
+cake -app .
+cake -app . install install
+cake -app . media init
