@@ -1,36 +1,36 @@
 [submodule "plugins/acl_extras"]
 	path = plugins/acl_extras
-	url = http://github.com/markstory/acl_extras.git
+	url = https://github.com/markstory/acl_extras.git
 [submodule "plugins/debug_kit"]
 	path = plugins/debug_kit
-	url = http://github.com/cakephp/debug_kit.git
+	url = https://github.com/cakephp/debug_kit.git
 [submodule "plugins/media"]
 	path = plugins/media
-	url = http://github.com/davidpersson/media.git
+	url = https://github.com/davidpersson/media.git
 [submodule "plugins/referee"]
 	path = plugins/referee
-	url = http://github.com/joebeeson/referee.git
+	url = https://github.com/joebeeson/referee.git
 [submodule "plugins/api_generator"]
 	path = plugins/api_generator
-	url = http://github.com/cakephp/api_generator.git
+	url = https://github.com/cakephp/api_generator.git
 [submodule "plugins/search"]
 	path = plugins/search
-	url = http://github.com/CakeDC/search.git
+	url = https://github.com/CakeDC/search.git
 [submodule "plugins/cacher"]
 	path = plugins/cacher
-	url = git://github.com/jeremyharris/cacher.git
+	url = https://github.com/jeremyharris/cacher.git
 [submodule "plugins/sanitizer"]
 	path = plugins/sanitizer
-	url = git://github.com/jeremyharris/sanitizer.git
+	url = https://github.com/jeremyharris/sanitizer.git
 [submodule "plugins/slugger"]
 	path = plugins/slugger
-	url = git://github.com/jeremyharris/slugger.git
+	url = https://github.com/jeremyharris/slugger.git
 [submodule "plugins/queue_email"]
 	path = plugins/queue_email
-	url = git://github.com/jeremyharris/queue_email.git
+	url = https://github.com/jeremyharris/queue_email.git
 [submodule "plugins/asset_compress"]
 	path = plugins/asset_compress
-	url = git@github.com:jeremyharris/asset_compress.git
+	url = https://github.com/jeremyharris/asset_compress.git
 [submodule "plugins/named_scope"]
 	path = plugins/named_scope
 	url = https://github.com/joelmoss/cakephp-namedscope.git
