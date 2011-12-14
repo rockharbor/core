@@ -36,4 +36,4 @@
 	url = https://github.com/joelmoss/cakephp-namedscope.git
 [submodule "plugins/multi_select"]
 	path = plugins/multi_select
-	url = https://jeremyharris@github.com/jeremyharris/multi_select.git
+	url = https://github.com/jeremyharris/multi_select.git
