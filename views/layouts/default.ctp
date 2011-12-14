@@ -22,10 +22,8 @@
 		$this->AssetCompress->css('styles');
 		$this->AssetCompress->css('tables');
 
-		if(preg_match('/MSIE/i', $_SERVER['HTTP_USER_AGENT'])) {
-			$this->AssetCompress->css('ie');
-		}
 		$this->AssetCompress->css('calendar');
+		echo '<!--[if lt IE 9]>'.$this->Html->css('ie').'<![endif]-->';
 
 		// google cdn scripts
 		$min = Configure::read('debug') == 0 ? '.min' : null;
