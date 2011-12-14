@@ -25,19 +25,22 @@
 	Router::connect('/login', array('controller' => 'users', 'action' => 'login'));
 	Router::connect('/logout', array('controller' => 'users', 'action' => 'logout'));
 	Router::connect('/pages/phrase/*', array('controller' => 'pages', 'action' => 'phrase'));
-	
+
 /**
  * Custom routes
  */
 	Router::connectNamed(array('User', 'Ministry', 'Involvement', 'Campus', 'model'), array('defaults' => true));
+	$controllers = App::objects('controller');
+	$controllers = array_map('Inflector::underscore', $controllers);
 	Router::connect('/:controller/:action/*',
-	   array(),
+		array(),
 		array(
 			'routeClass' => 'SluggableRoute',
-			'models' => array('User', 'Ministry', 'Involvement', 'Campus')
+			'models' => array('User', 'Ministry', 'Involvement', 'Campus'),
+			'controller' => implode('|', $controllers)
 		)
 	);
-
+	
 /*
  * Asset Compress
  */
@@ -48,4 +51,3 @@
  * ...and connect the rest of 'Pages' controller's urls.
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
-?>
