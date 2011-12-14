@@ -58,7 +58,7 @@
 	<div class="container_12" id="wrapper">
 		<div class="container_12 clearfix" id="header">
 			<div class="grid_10 main-nav-menu" id="primary">
-				<?php echo $this->element('menu'.DS.'main-nav'); ?>
+				<?php echo $this->element('menu'.DS.'main_nav'); ?>
 			</div>
 			<div class="grid_2" id="secondary">
 				<?php
