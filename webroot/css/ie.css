@@ -26,6 +26,12 @@ div.subministry {
 	margin: 0;
 	position: absolute;
 }
+/* inline-block fix */
+span.breadcrumb.editing,
+div#payment-details,
+.toggle div.checkbox, 
+.toggle div.radio,
+.core-icon-container,
 .core-icon {
 	zoom:1;	
 	display: inline;

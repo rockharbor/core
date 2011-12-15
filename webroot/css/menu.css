@@ -8,6 +8,8 @@ Global styles
 div#header {
 	height:29px;
 	background: #ffffff;
+	position: relative;
+	z-index: 100;
 }
 div#header div#primary {
 	background: rgb(48,48,48);
@@ -58,6 +60,7 @@ div#header div#primary>ul>li>a:hover {
 	text-decoration: none;
 }
 div#header div#primary>ul>li>a {
+	position: relative;
 	color:#FFF;
 	text-transform: uppercase;
 	font-family: LeagueGothicRegular,'Lucida Sans',Helvetica,Arial,sans-serif;
