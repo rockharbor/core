@@ -7,48 +7,19 @@ styles.css
 */
 div.content-box,
 .shadow {
-	left:-3px;
-	top: -3px;
-	filter:
-		progid:DXImageTransform.Microsoft.Shadow(color=#999999,direction=0,strength=3)
-		progid:DXImageTransform.Microsoft.Shadow(color=#999999,direction=90,strength=3)
-		progid:DXImageTransform.Microsoft.Shadow(color=#999999,direction=180,strength=3)
-		progid:DXImageTransform.Microsoft.Shadow(color=#999999,direction=270,strength=3);
-}
-div.content-box .content-box {
-	filter:none;
-	left:0;
-	top:0;
-}
-h1 {
-	margin: 0 -13px;
-	margin-bottom:10px;
+	behavior: url(css/PIE.htc);
 }
 .message {
-	filter:
-		progid:DXImageTransform.Microsoft.Shadow(color=#999999,direction=0,strength=3)
-		progid:DXImageTransform.Microsoft.Shadow(color=#999999,direction=90,strength=3)
-		progid:DXImageTransform.Microsoft.Shadow(color=#999999,direction=180,strength=3)
-		progid:DXImageTransform.Microsoft.Shadow(color=#999999,direction=270,strength=3);
-}
-span.breadcrumb {
-	margin: 0 -13px;
+	behavior: url(css/PIE.htc);
 }
 div.mapset.history {
 	filter:Alpha(Opacity=50);
 }
-ul.core-admin-tabs {
-	bottom: -23px;
-	right: -3px;
-}
-ul.core-admin-tabs li {
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FF444445, endColorstr=#FF303030);
-}
-ul.core-admin-tabs li:hover {
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FF45DA88, endColorstr=#FF5EA67E);
-}
+.qtip a:hover,
+ul.core-admin-tabs li,
+ul.core-admin-tabs li:hover,
 div.subministry {
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FF444445, endColorstr=#FF303030);
+	behavior: url(css/PIE.htc);
 }
 .core-checkbox-hidden, .core-radio-hidden {
 	filter:Alpha(Opacity=0);
@@ -73,17 +44,18 @@ jquery-ui.css
 .ui-widget-shadow {
 	filter:Alpha(Opacity=30);
 }
-.ui-widget-header {
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FF444445, endColorstr=#FF303030);
-}
-.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FF444445, endColorstr=#FF303030);
-}
-.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FF45DA88, endColorstr=#FF5EA67E);
-}
-.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FF45DA88, endColorstr=#FF5EA67E);
+.ui-state-default, 
+.ui-widget-content .ui-state-default, 
+.ui-widget-header .ui-state-default,
+.ui-state-hover, 
+.ui-widget-content .ui-state-hover, 
+.ui-widget-header .ui-state-hover, 
+.ui-state-focus, .ui-widget-content .ui-state-focus, 
+.ui-widget-header .ui-state-focus,
+.ui-state-active, 
+.ui-widget-content .ui-state-active, 
+.ui-widget-header .ui-state-active {
+	behavior: url(css/PIE.htc);
 }
 .ui-priority-secondary, .ui-widget-content .ui-priority-secondary,  .ui-widget-header .ui-priority-secondary {
 	filter:Alpha(Opacity=70);
@@ -91,18 +63,24 @@ jquery-ui.css
 .ui-state-disabled, .ui-widget-content .ui-state-disabled, .ui-widget-header .ui-state-disabled {
 	filter:Alpha(Opacity=35);
 }
-.ui-tabs-nav .ui-state-default, .ui-tabs-nav .ui-widget-content .ui-state-default, .ui-tabs-nav .ui-widget-header .ui-state-default {
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FF444445, endColorstr=#FF303030);
-}
-.ui-tabs-nav .ui-state-hover, .ui-tabs-nav .ui-widget-content .ui-state-hover, .ui-tabs-nav .ui-widget-header .ui-state-hover, .ui-tabs-nav .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FF45DA88, endColorstr=#FF5EA67E);
-}
-.ui-tabs-nav .ui-state-active, .ui-tabs-nav .ui-widget-content .ui-state-active, .ui-tabs-nav .ui-widget-header .ui-state-active {
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FF45DA88, endColorstr=#FF5EA67E);
+.ui-tabs-nav .ui-state-default, 
+.ui-tabs-nav .ui-widget-content .ui-state-default, 
+.ui-tabs-nav .ui-widget-header .ui-state-default ,
+.ui-tabs-nav .ui-state-hover, 
+.ui-tabs-nav .ui-widget-content .ui-state-hover, 
+.ui-tabs-nav .ui-widget-header .ui-state-hover, 
+.ui-tabs-nav .ui-state-focus, 
+.ui-widget-content .ui-state-focus, 
+.ui-widget-header .ui-state-focus,
+.ui-tabs-nav .ui-state-active,
+.ui-tabs-nav .ui-widget-content .ui-state-active,
+.ui-tabs-nav .ui-widget-header .ui-state-active {
+	behavior: url(css/PIE.htc);
 }
 .ui-tabs .ui-tabs-nav {
-	filter:none;
+	z-index: 2;
 }
+
 /* IE6 IFRAME FIX (taken from datepicker 1.5.3 */
 .ui-datepicker-cover {
     display: none; /*sorry for IE5*/
@@ -119,12 +97,12 @@ jquery-ui.css
 /*
 menu.css
 */
-div#header div#primary {
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FF444445, endColorstr=#FF303030);
-}
-div#header div#primary>ul>li>a:hover {
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FF45DA88, endColorstr=#FF5EA67E);
-}
+div#header div#primary,
+div#header div#primary>ul>li>a:hover,
 #nav-search button {
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FF45DA88, endColorstr=#FF5EA67E);
+	behavior: url(css/PIE.htc);
+}
+
+.main-nav-menu ul li ul {
+	
 }

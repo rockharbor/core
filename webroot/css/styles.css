@@ -376,14 +376,19 @@ div#involvement-dates .date:first-child {
 }
 div.subministry {
 	background: rgb(48,48,48);
-	background-image: -webkit-gradient(
+	background: -webkit-gradient(
 		linear,
 		left bottom,
 		left top,
 		color-stop(0.25, rgb(48,48,48)),
 		color-stop(0.61, rgb(68,68,69))
 	);
-	background-image: -moz-linear-gradient(
+	background: -moz-linear-gradient(
+		center bottom,
+		rgb(48,48,48) 25%,
+		rgb(68,68,69) 61%
+	);
+	-pie-background: linear-gradient(
 		center bottom,
 		rgb(48,48,48) 25%,
 		rgb(68,68,69) 61%
@@ -526,14 +531,19 @@ ul.core-admin-tabs li {
 	list-style: none;
 	margin: 0;
 	background: rgb(48,48,48);
-	background-image: -webkit-gradient(
+	background: -webkit-gradient(
 		linear,
 		left bottom,
 		left top,
 		color-stop(0.25, rgb(48,48,48)),
 		color-stop(0.61, rgb(68,68,69))
 	);
-	background-image: -moz-linear-gradient(
+	background: -moz-linear-gradient(
+		center bottom,
+		rgb(48,48,48) 25%,
+		rgb(68,68,69) 61%
+	);
+	-pie-background: linear-gradient(
 		center bottom,
 		rgb(48,48,48) 25%,
 		rgb(68,68,69) 61%
@@ -543,17 +553,23 @@ ul.core-admin-tabs li {
 	height:20px;
 	line-height:20px;
 	margin-left:5px;
+	position: relative;
 }
 ul.core-admin-tabs li:hover {
 	background: rgb(55,174,107);
-	background-image: -webkit-gradient(
+	background: -webkit-gradient(
 		linear,
 		left bottom,
 		left top,
 		color-stop(0, rgb(55,174,107)),
 		color-stop(0.61, rgb(69,218,136))
 	);
-	background-image: -moz-linear-gradient(
+	background: -moz-linear-gradient(
+		center bottom,
+		rgb(55,174,107) 0%,
+		rgb(69,218,136) 61%
+	);
+	-pie-background: linear-gradient(
 		center bottom,
 		rgb(55,174,107) 0%,
 		rgb(69,218,136) 61%
@@ -611,14 +627,19 @@ Tooltip
 .qtip a:hover {
 	color: #343434 !important;
 	background: rgb(55,174,107);
-	background-image: -webkit-gradient(
+	background: -webkit-gradient(
 		linear,
 		left bottom,
 		left top,
 		color-stop(0, rgb(55,174,107)),
 		color-stop(0.61, rgb(69,218,136))
 	) !important;
-	background-image: -moz-linear-gradient(
+	background: -moz-linear-gradient(
+		center bottom,
+		rgb(55,174,107) 0%,
+		rgb(69,218,136) 61%
+	) !important;
+	-pie-background: linear-gradient(
 		center bottom,
 		rgb(55,174,107) 0%,
 		rgb(69,218,136) 61%

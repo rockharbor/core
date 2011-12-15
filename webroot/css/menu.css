@@ -23,7 +23,11 @@ div#header div#primary {
 		rgb(48,48,48) 25%,
 		rgb(68,68,69) 61%
 	);
-	background-image: url('../assets/images/header-bottom.png') repeat-x;
+	-pie-background: linear-gradient(
+		center bottom,
+		rgb(48,48,48) 25%,
+		rgb(68,68,69) 61%
+	);
 	height:100%;
 	margin:0;
 }
@@ -33,14 +37,19 @@ div#header div#primary>ul>li {
 }
 div#header div#primary>ul>li>a:hover {
 	background: rgb(55,174,107);
-	background-image: -webkit-gradient(
+	background: -webkit-gradient(
 		linear,
 		left bottom,
 		left top,
 		color-stop(0, rgb(55,174,107)),
 		color-stop(0.61, rgb(69,218,136))
 	);
-	background-image: -moz-linear-gradient(
+	background: -moz-linear-gradient(
+		center bottom,
+		rgb(55,174,107) 0%,
+		rgb(69,218,136) 61%
+	);
+	-pie-background: linear-gradient(
 		center bottom,
 		rgb(55,174,107) 0%,
 		rgb(69,218,136) 61%
@@ -185,14 +194,19 @@ Search
 	-moz-border-radius: 0 4px 4px 0;
 	-webkit-border-radius: 0 4px 4px 0;
 	border-radius: 0 4px 4px 0;
-	background-image: -webkit-gradient(
+	background: -webkit-gradient(
 		linear,
 		left bottom,
 		left top,
 		color-stop(0, rgb(55,174,107)),
 		color-stop(0.61, rgb(69,218,136))
 	);
-	background-image: -moz-linear-gradient(
+	background: -moz-linear-gradient(
+		center bottom,
+		rgb(55,174,107) 0%,
+		rgb(69,218,136) 61%
+	);
+	-pie-background: linear-gradient(
 		center bottom,
 		rgb(55,174,107) 0%,
 		rgb(69,218,136) 61%
