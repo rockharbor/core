@@ -619,6 +619,7 @@ Tooltip
 	line-height:20px !important;
 	padding: 0 5px !important;
 	min-width: 80px;
+	overflow: hidden;
 }
 .qtip img {
 	float:left;
