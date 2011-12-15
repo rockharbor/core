@@ -297,6 +297,7 @@ function Calendar(element, options, eventSources) {
 	
 	
 	function elementVisible() {
+		return true;
 		return _element.offsetWidth !== 0;
 	}
 	
