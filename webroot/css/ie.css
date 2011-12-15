@@ -103,6 +103,6 @@ div#header div#primary>ul>li>a:hover,
 	behavior: url(css/PIE.htc);
 }
 
-.main-nav-menu ul li ul {
-	
+#nav-calendar ul {
+	width: 210px;
 }
