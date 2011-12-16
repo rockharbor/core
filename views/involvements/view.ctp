@@ -73,10 +73,10 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 							<?php
 							if (isset($date['Date']['original'])) {
 								// recurring
-								echo $this->Formatting->readableDate($date['Date']['original']);
+								echo $this->Html->tag('p', $this->Formatting->readableDate($date['Date']['original']));
 							} else {
 								// non-recurring
-								echo $this->Formatting->readableDate($date);
+								echo $this->Html->tag('p', $this->Formatting->readableDate($date));
 							}
 							?>
 						</div>
@@ -181,7 +181,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 			</div>
 			<div class="grid_10 alpha omega">
 				<?php 
-				if ($involvement['Involvement']['signup'] && $involvement['Involvement']['active'] && !$involvement['Involvement']['passed']) {
+				if ($involvement['Involvement']['signup'] && $involvement['Involvement']['active'] && !$involvement['Involvement']['passed'] && !$inRoster) {
 					echo $this->Html->link('Sign up', array('controller' => 'rosters', 'action' => 'add', 'User' => $activeUser['User']['id'], 'Involvement' => $involvement['Involvement']['id']), array('rel' => 'modal-content', 'class' => 'button'));
 				}
 				?>

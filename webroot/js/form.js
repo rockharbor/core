@@ -195,7 +195,7 @@ CORE.initFormUI = function() {
 	$('input:checkbox:not(.ui-helper-hidden-accessible, .core-checkbox-hidden)').each(function() {
 		$(this).addClass('core-checkbox-hidden');
 		$(this).wrap(function() {
-			return ($(this).is(':checked')) ? '<div class="core-checkbox selected" />' : '<div class="core-checkbox" />';
+			return ($(this).is(':checked')) ? '<span class="core-checkbox selected" />' : '<span class="core-checkbox" />';
 		});
 	}).change(function () {
 		this.checked ?	$(this).parent().addClass('selected') : $(this).parent().removeClass('selected');
@@ -203,7 +203,7 @@ CORE.initFormUI = function() {
 	$('input:radio:not(.ui-helper-hidden-accessible, .core-radio-hidden)').each(function() {
 		$(this).addClass('core-radio-hidden');
 		$(this).wrap(function() {
-			return ($(this).is(':checked')) ? '<div class="core-radio selected" />' : '<div class="core-radio" />';
+			return ($(this).is(':checked')) ? '<span class="core-radio selected" />' : '<span class="core-radio" />';
 		});
 	}).change(function () {
 		$('.core-radio input[name="'+$(this).attr('name')+'"]').each(function() { $(this).parent().removeClass('selected') });

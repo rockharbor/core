@@ -22,10 +22,8 @@
 		$this->AssetCompress->css('styles');
 		$this->AssetCompress->css('tables');
 
-		if(preg_match('/MSIE/i', $_SERVER['HTTP_USER_AGENT'])) {
-			$this->AssetCompress->css('ie');
-		}
 		$this->AssetCompress->css('calendar');
+		echo '<!--[if lt IE 9]>'.$this->Html->css('ie').'<![endif]-->';
 
 		// google cdn scripts
 		$min = Configure::read('debug') == 0 ? '.min' : null;
@@ -51,8 +49,7 @@
 		$this->Js->buffer('CORE.init();');
 		$this->Js->buffer('CORE.register("notifications", "nav-notifications", "/notifications/quick")');
 		echo $this->Js->writeBuffer();
-		//echo $this->AssetCompress->includeAssets(Configure::read('debug') == 0);
-		echo $this->AssetCompress->includeAssets(false);
+		echo $this->AssetCompress->includeAssets(Configure::read('debug') == 0);
 		echo $scripts_for_layout;
 	?>
 </head>
@@ -60,7 +57,7 @@
 	<div class="container_12" id="wrapper">
 		<div class="container_12 clearfix" id="header">
 			<div class="grid_10 main-nav-menu" id="primary">
-				<?php echo $this->element('menu'.DS.'main-nav'); ?>
+				<?php echo $this->element('menu'.DS.'main_nav'); ?>
 			</div>
 			<div class="grid_2" id="secondary">
 				<?php

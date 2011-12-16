@@ -1,4 +1,5 @@
-<div id="members">
+
+<div id="members" class="clearfix">
 <?php
 if (empty($this->data)) {
 	$this->data['HouseholdMember'] = array(array());
@@ -17,10 +18,10 @@ endforeach;
 <?php
 echo $this->Html->link('Add additional member', 'javascript:;', array(
 	'onclick' => 'CORE_user.addAdditionalMember()',
-	'class' => 'button',
 	'id' => 'add-member'
 ));
-
+?>
+<?php
 $this->Js->buffer('CORE_user.member = '.$hmcount);
 $this->Js->buffer('CORE_user.element = "'.addslashes(str_replace(array("\r\n", "\r", "\n"), ' ', $this->element('register'.DS.'household_member', array('count' => 'COUNT')))).'"');
 ?>

@@ -10,10 +10,10 @@
 		<legend>User Info</legend>
 	<?php
 	echo $this->Form->input('username', array(
-		'after' => '<div>Leave blank if you want '.Core::read('general.site_name').' to pick one for you based on your name.</div>'
+		'after' => '<p>Leave blank if you want '.Core::read('general.site_name').' to pick one for you based on your name.</p>'
 	));
 	echo $this->Form->input('password', array(
-		'after' => '<div>Leave blank if you want '.Core::read('general.site_name').' to pick one for you.</div>'
+		'after' => '<p>Leave blank if you want '.Core::read('general.site_name').' to pick one for you.</p>'
 	));
 	echo $this->Form->input('confirm_password', array(
 		'type' => 'password'

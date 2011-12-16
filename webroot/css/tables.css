@@ -1,6 +1,7 @@
 table {
 	width: 100%;
 	border-collapse: separate;
+	margin-bottom: 20px;
 }
 table tr {
 	line-height: 22px;

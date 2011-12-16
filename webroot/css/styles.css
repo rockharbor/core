@@ -29,7 +29,14 @@ h1, h2, h3 {
 div .content-box h1, div.ui-dialog h1, div.ui-dialog .breadcrumb { display:none; }
 h1 { font-size: 44px; position: relative; left: -25px; margin-bottom: 10px; margin-top: 5px; }
 h2 { font-size: 20px;}
-h3 { font-size: 16px; margin:0; text-transform: uppercase; line-height: 18px; padding-bottom: 5px; }
+h3 { 
+	font-size: 16px;
+	margin:0; 
+	text-transform: uppercase; 
+	line-height: 18px; 
+	padding-bottom: 5px; 
+	padding-top: 8px; 
+}
 
 /*
 Highlight and flash classes
@@ -78,8 +85,10 @@ div.content-box,
 	-webkit-box-shadow:0 0 15px #999999;
 }
 p {
-	line-height: 14px;
 	margin-bottom: 10px;
+}
+p {
+	line-height: 14px;
 }
 hr {
 	background: #acacac;
@@ -351,8 +360,8 @@ div.involvement-column .involvement-details {
 	width: 280px;
 	margin-right: 10px;
 	float:left;
-	max-height: 100px;
-   overflow: hidden;
+	max-height: 120px;
+	overflow: hidden;
 }
 div.involvement-column .involvement-date {
 	width: 90px;
@@ -376,14 +385,19 @@ div#involvement-dates .date:first-child {
 }
 div.subministry {
 	background: rgb(48,48,48);
-	background-image: -webkit-gradient(
+	background: -webkit-gradient(
 		linear,
 		left bottom,
 		left top,
 		color-stop(0.25, rgb(48,48,48)),
 		color-stop(0.61, rgb(68,68,69))
 	);
-	background-image: -moz-linear-gradient(
+	background: -moz-linear-gradient(
+		center bottom,
+		rgb(48,48,48) 25%,
+		rgb(68,68,69) 61%
+	);
+	-pie-background: linear-gradient(
 		center bottom,
 		rgb(48,48,48) 25%,
 		rgb(68,68,69) 61%
@@ -526,14 +540,19 @@ ul.core-admin-tabs li {
 	list-style: none;
 	margin: 0;
 	background: rgb(48,48,48);
-	background-image: -webkit-gradient(
+	background: -webkit-gradient(
 		linear,
 		left bottom,
 		left top,
 		color-stop(0.25, rgb(48,48,48)),
 		color-stop(0.61, rgb(68,68,69))
 	);
-	background-image: -moz-linear-gradient(
+	background: -moz-linear-gradient(
+		center bottom,
+		rgb(48,48,48) 25%,
+		rgb(68,68,69) 61%
+	);
+	-pie-background: linear-gradient(
 		center bottom,
 		rgb(48,48,48) 25%,
 		rgb(68,68,69) 61%
@@ -543,17 +562,23 @@ ul.core-admin-tabs li {
 	height:20px;
 	line-height:20px;
 	margin-left:5px;
+	position: relative;
 }
 ul.core-admin-tabs li:hover {
 	background: rgb(55,174,107);
-	background-image: -webkit-gradient(
+	background: -webkit-gradient(
 		linear,
 		left bottom,
 		left top,
 		color-stop(0, rgb(55,174,107)),
 		color-stop(0.61, rgb(69,218,136))
 	);
-	background-image: -moz-linear-gradient(
+	background: -moz-linear-gradient(
+		center bottom,
+		rgb(55,174,107) 0%,
+		rgb(69,218,136) 61%
+	);
+	-pie-background: linear-gradient(
 		center bottom,
 		rgb(55,174,107) 0%,
 		rgb(69,218,136) 61%
@@ -603,6 +628,7 @@ Tooltip
 	line-height:20px !important;
 	padding: 0 5px !important;
 	min-width: 80px;
+	overflow: hidden;
 }
 .qtip img {
 	float:left;
@@ -611,14 +637,19 @@ Tooltip
 .qtip a:hover {
 	color: #343434 !important;
 	background: rgb(55,174,107);
-	background-image: -webkit-gradient(
+	background: -webkit-gradient(
 		linear,
 		left bottom,
 		left top,
 		color-stop(0, rgb(55,174,107)),
 		color-stop(0.61, rgb(69,218,136))
 	) !important;
-	background-image: -moz-linear-gradient(
+	background: -moz-linear-gradient(
+		center bottom,
+		rgb(55,174,107) 0%,
+		rgb(69,218,136) 61%
+	) !important;
+	-pie-background: linear-gradient(
 		center bottom,
 		rgb(55,174,107) 0%,
 		rgb(69,218,136) 61%
@@ -662,8 +693,6 @@ legend {
 div.hr {
 	border-top: 1px solid #acacac;
 	padding: 5px 0;
-}
-div.hr {
 	padding: 10px 0;
 	position:relative;
 	margin-top: 10px;
@@ -685,6 +714,9 @@ input, textarea {
 	font-family: 'Lucida Sans',Helvetica,Arial,sans-serif;
 	margin-right:0px;
 }
+.input div {
+	margin-top: 10px;
+}
 input[type=text], input[type=password], textarea {
 	padding: 3px;
 	background: #f1f1f1;
@@ -693,6 +725,7 @@ select {
 	color: #838383;
 	border: 1px solid #838383;
 	padding: 2px;
+	margin-bottom: 5px;
 	background: #f1f1f1;
 	font-family: 'Lucida Sans',Helvetica,Arial,sans-serif;
 	font-size: 11px;
@@ -746,6 +779,12 @@ div.input.error .error-message {
 	color: #e03a14;
 	margin-top: 3px;
 }
+.error-message {
+	font-size: 10px;
+}
+div.submit {
+	display: inline-block;
+}
 
 /*
 Definition lists
@@ -774,7 +813,7 @@ Custom Icons
 	display: inline-block;
 	background-image: url('../assets/images/icons.png');
 	background-position: 20px 20px; /* default none */
-	padding-right: 2px;
+	padding-right: 4px;
 	vertical-align: middle;
 }
 .icon-error {

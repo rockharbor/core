@@ -2,7 +2,11 @@ body {
 	background: #ffffff;
 }
 #wrapper {
-	padding-top:100px;
+	padding-top:150px;
+}
+#login {
+	width: 450px;
+	display: inline-block;
 }
 #login-form {
 	padding: 10px 0;

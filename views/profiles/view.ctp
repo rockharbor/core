@@ -60,25 +60,25 @@
 						'controller' => 'involvement_images',
 						'action' => 'promote'
 					))) {
-						echo $this->Permission->link('Promote an Involvement Opportunity', array(
+						echo $this->Html->tag('p', $this->Permission->link('Promote an Involvement Opportunity', array(
 							'controller' => 'searches',
 							'action' => 'simple',
 							'Involvement',
 							'promote_items',
 							'canBePromoted'
-						), array('rel' => 'modal', 'class' => 'button'));
+						), array('rel' => 'modal', 'class' => 'button')));
 					}
 					if ($this->Permission->check(array(
 						'controller' => 'involvement_images',
 						'action' => 'promote'
 					))) {
-						echo $this->Permission->link('Promote a Ministry', array(
+						echo $this->Html->tag('p', $this->Permission->link('Promote a Ministry', array(
 							'controller' => 'searches',
 							'action' => 'simple',
 							'Ministry',
 							'promote_items',
 							'canBePromoted'
-						), array('rel' => 'modal', 'class' => 'button'));
+						), array('rel' => 'modal', 'class' => 'button')));
 					}
 					?>
 				</div>

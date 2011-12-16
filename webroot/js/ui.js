@@ -466,7 +466,7 @@ CORE.confirmation = function(id, message, options) {
 			title: useOptions.title,
 			modal: true
 		});
-		$('#confirmation-modal').html(message);
+		$('#confirmation-modal').html('<p>'+message+'</p>');
 		$('#confirmation-modal').dialog('open');
 		
 		// stop href

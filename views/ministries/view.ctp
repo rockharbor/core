@@ -8,7 +8,7 @@ if (!empty($ministry['ParentMinistry']['id'])) {
 <h1><?php echo $ministry['Ministry']['name'].$this->Formatting->flags('Ministry', $ministry); ?></h1>
 <div class="content-box clearfix">
 	<div class="grid_10 alpha omega">
-		<h2>Description</h2>
+		<h3>Description</h3>
 		<p class="ministry-description">
 			<?php 
 			echo $ministry['Ministry']['description'];
@@ -19,10 +19,28 @@ if (!empty($ministry['ParentMinistry']['id'])) {
 			?>
 		</p>
 	</div>
+	
+	<div class="grid_10 alpha omega">
+		<h3>Get Involved!</h3>
+	</div>
+	<div class="grid_10 alpha omega">
+		<div id="involvement" class="parent">
+		<?php
+			$url = Router::url(array(
+				'controller' => 'involvements',
+				'action' => 'index',
+				'column',
+				'Ministry' => $ministry['Ministry']['id']
+			));
+			$this->Js->buffer('CORE.register("involvement", "involvement", "'.$url.'")');
+			echo $this->requestAction($url, array('renderAs' => 'ajax', 'return', 'bare' => false));
+		?>
+		</div>
+	</div>
 	<?php if (!empty($ministry['ChildMinistry'])): ?>
 	<br />
 	<div class="grid_10 alpha omega">
-		<h2>Sub Ministries</h2>
+		<h3>Sub Ministries</h3>
 		<div class="subministries">
 			<?php
 			foreach ($ministry['ChildMinistry'] as $subministry):
@@ -31,7 +49,7 @@ if (!empty($ministry['ParentMinistry']['id'])) {
 				<?php
 				echo $this->Html->link($subministry['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $subministry['id']), array('class' => 'subministry-title'));
 				echo '<hr>';
-				echo $this->Text->truncate($subministry['description'], 120, array('html' => true));
+				echo $this->Html->tag('p', $this->Text->truncate($subministry['description'], 100, array('html' => true)));
 				?>
 			</div>
 			<?php 
@@ -51,23 +69,6 @@ if (!empty($ministry['ParentMinistry']['id'])) {
 	</div>
 	<?php endif; ?>
 	<br />
-	<div class="grid_10 alpha omega">
-		<h2>Get Involved!</h2>
-	</div>
-	<div class="grid_10 alpha omega">
-		<div id="involvement">
-		<?php
-			$url = Router::url(array(
-				'controller' => 'involvements',
-				'action' => 'index',
-				'column',
-				'Ministry' => $ministry['Ministry']['id']
-			));
-			$this->Js->buffer('CORE.register("involvement", "involvement", "'.$url.'")');
-			echo $this->requestAction($url, array('renderAs' => 'ajax', 'return', 'bare' => false));
-		?>
-		</div>
-	</div>
 	<ul class="core-admin-tabs">
 	<?php
 	$link = $this->Permission->link('Edit', array('action' => 'edit', 'Ministry' => $ministry['Ministry']['id']));

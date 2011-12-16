@@ -5,9 +5,7 @@ if (!isset($filters)) {
 if (!isset($size)) {
 	$size = 'mini';
 }
-if ($size == 'mini' && !isset($width)) {
-	$width = '200px';
-} elseif (!isset($width)) {
+if (!isset($width)) {
 	$width = '100%';
 }
 if (!isset($id)) {

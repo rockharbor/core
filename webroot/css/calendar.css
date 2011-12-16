@@ -1,6 +1,10 @@
 .fc {
 	background: #ffffff;
 }
+.fc table {
+	margin-bottom: 0;
+}
+
 .fc table, .fc td {
 	border:none;
 }
