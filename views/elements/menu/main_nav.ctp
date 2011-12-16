@@ -58,7 +58,7 @@
 		echo $this->Html->link('Campuses', array('plugin' => false, 'controller' => 'campuses'));
 		echo $this->element('menu'.DS.'campus', array(
 			'campuses' => $campusesMenu,
-			'cache' => '+1 day'
+			//'cache' => '+1 day'
 		), true);
 		echo $this->element('hooks', array(
 			'hook' => 'root.ministries'
@@ -76,19 +76,44 @@
 		</ul>
 	</li>
 	<?php
-	echo $this->element('hooks', array(
+	/*echo $this->element('hooks', array(
 		'hook' => 'root',
 		'exclude' => array('profile', 'notifications', 'ministries')
-	));
+	));*/
 	?>
-	<?php if (Configure::read()): ?>
-	<li><?php echo $this->Html->link('Debugging', array('plugin' => false, 'controller' => 'reports', 'action' => 'index')); ?>
+	
+	<li><?php echo $this->Html->link('Debug', array('plugin' => false, 'controller' => 'reports', 'action' => 'index')); ?>
 		<ul><li><?php
 	echo $this->Html->link('Report a bug on this page', array('plugin' => false, 'controller' => 'sys_emails', 'action' => 'bug_compose'), array('rel' => 'modal-none'));
 	echo $this->Html->link('View activity logs', array('plugin' => false, 'controller' => 'logs', 'action' => 'index'), array('rel' => 'modal-none'));
-	?></li></ul>
+	
+	
+echo $this->Form->input('group_id', array(
+	'type' => 'select',
+	'label' => false,
+	'options' => $groupList,
+	'value' => $activeUser['Group']['id'],
+	'empty' => false,
+	'id' => 'group_id'
+)); ?>
+<script type="text/javascript">
+$("#group_id").bind("change", function() {
+	$.ajax({
+		url: "<?php echo Router::url(array(
+			'controller' => 'cdp_groups',
+			'action' => 'swap',
+			'plugin' => 'core_debug_panels'			
+		)); ?>/"+$("#group_id").val(),
+		success: function(data) {
+			location.reload(true);
+		}
+	})
+});
+</script>
+	
+	</li></ul>
 	</li>
-	<?php endif; ?>
+	
 	<li id="nav-search">
 		<?php
 		echo $this->element('search', array(

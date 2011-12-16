@@ -188,6 +188,19 @@ class AppController extends Controller {
 		if (!$this->params['plugin'] && sizeof($this->uses) && $this->{$this->modelClass}->Behaviors->attached('Logable')) { 
 			$this->{$this->modelClass}->setUserData($this->activeUser); 
 		}
+		
+		if (!$this->Session->check('CoreDebugPanels.visitHistory')) {
+			$this->Session->write('CoreDebugPanels.visitHistory', array());
+		}
+
+		$visitHistory = $this->Session->read('CoreDebugPanels.visitHistory');
+		$visitHistory[] = $this->here;
+
+		while (count($visitHistory) > 10) {
+			array_shift($visitHistory);
+		}
+
+		$this->Session->write('CoreDebugPanels.visitHistory', $visitHistory);
 	}
 
 /**
@@ -295,6 +308,12 @@ class AppController extends Controller {
 				$options['contain']['Ministry']['ChildMinistry']['conditions']['ChildMinistry.private'] = false;
 			}
 			$this->set('campusesMenu', $Campus->find('all', $options));
+			
+			$this->set('groupList', $Group->find('list', array(
+				'conditions' => array(
+					'conditional' => false
+				)
+			)));
 		}
 	}
 	

@@ -11,7 +11,7 @@ class CdpGroupsController extends CoreDebugPanelsAppController {
  */
 	function swap($groupId = null) {
 		if (Configure::read() < 2 || !$groupId || !$this->activeUser) {
-			return;
+			//return;
 		}
 
 		$group = $this->Group->read(null, $groupId);
