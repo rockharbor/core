@@ -21,7 +21,7 @@
 	echo $this->Form->input('query', array(
 		'label' => false,
 		'value' => 'Search '.$term,
-		'size' => 30,
+		'size' => 18,
 		'class' => 'search-out',
 		'id' => uniqid('SearchQuery')
 	));

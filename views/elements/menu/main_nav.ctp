@@ -58,7 +58,7 @@
 		echo $this->Html->link('Campuses', array('plugin' => false, 'controller' => 'campuses'));
 		echo $this->element('menu'.DS.'campus', array(
 			'campuses' => $campusesMenu,
-			//'cache' => '+1 day'
+			'cache' => '+1 day'
 		), true);
 		echo $this->element('hooks', array(
 			'hook' => 'root.ministries'
@@ -76,10 +76,10 @@
 		</ul>
 	</li>
 	<?php
-	/*echo $this->element('hooks', array(
+	echo $this->element('hooks', array(
 		'hook' => 'root',
 		'exclude' => array('profile', 'notifications', 'ministries')
-	));*/
+	));
 	?>
 	
 	<li><?php echo $this->Html->link('Debug', array('plugin' => false, 'controller' => 'reports', 'action' => 'index')); ?>
