@@ -35,9 +35,7 @@
 		$this->AssetCompress->css('jquery-ui');
 		$this->AssetCompress->css('styles');
 		$this->AssetCompress->css('public');
-		if(preg_match('/MSIE/i', $_SERVER['HTTP_USER_AGENT'])) {
-			$this->AssetCompress->css('ie');
-		}
+		echo '<!--[if lt IE 9]>'.$this->Html->css('ie').'<![endif]-->';
 
 		// google cdn scripts
 		echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js');

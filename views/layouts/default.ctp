@@ -49,8 +49,7 @@
 		$this->Js->buffer('CORE.init();');
 		$this->Js->buffer('CORE.register("notifications", "nav-notifications", "/notifications/quick")');
 		echo $this->Js->writeBuffer();
-		//echo $this->AssetCompress->includeAssets(Configure::read('debug') == 0);
-		echo $this->AssetCompress->includeAssets(false);
+		echo $this->AssetCompress->includeAssets(Configure::read('debug') == 0);
 		echo $scripts_for_layout;
 	?>
 </head>
