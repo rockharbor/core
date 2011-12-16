@@ -2,7 +2,7 @@
 
 $this->Js->buffer('CORE.fallbackRegister("involvement");');
 $this->Paginator->options(array(
-    'updateable' => 'involvement'
+    'updateable' => 'parent'
 ));
 ?>
 <h1>Involvement Opportunities</h1>
@@ -50,7 +50,7 @@ $this->Paginator->options(array(
 		<?php
 		$i = 0;
 		if ($viewStyle == 'list') {
-			echo '<table><tbody>';
+			echo '<table class="datatable"><tbody>';
 		}
 		foreach ($involvements as $involvement):
 			$class = ($i % 2 == 0) ? 'alpha' : 'omega';
@@ -61,7 +61,8 @@ $this->Paginator->options(array(
 			break;
 			case 'list':
 			default:
-			echo '<tr>';
+			$trclass = ($i % 2 == 0) ? 'altrow' : null;
+			echo '<tr class="'.$trclass.'">';
 			$breadcrumb = '';
 			$breadcrumb .= $this->Html->link($involvement['Ministry']['Campus']['name'], array('controller' => 'campuses', 'action' => 'view', 'Campus' => $involvement['Ministry']['Campus']['id']));
 			$breadcrumb .= ' > ';

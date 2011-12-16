@@ -226,6 +226,7 @@ Ministry menu CSS
 */
 #nav-campuses .campuses {
 	width:100%;
+	margin: 10px 5px;
 }
 #nav-campuses ul.ministry-column {
 	width:200px;

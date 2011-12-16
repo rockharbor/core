@@ -29,7 +29,14 @@ h1, h2, h3 {
 div .content-box h1, div.ui-dialog h1, div.ui-dialog .breadcrumb { display:none; }
 h1 { font-size: 44px; position: relative; left: -25px; margin-bottom: 10px; margin-top: 5px; }
 h2 { font-size: 20px;}
-h3 { font-size: 16px; margin:0; text-transform: uppercase; line-height: 18px; padding-bottom: 5px; }
+h3 { 
+	font-size: 16px;
+	margin:0; 
+	text-transform: uppercase; 
+	line-height: 18px; 
+	padding-bottom: 5px; 
+	padding-top: 8px; 
+}
 
 /*
 Highlight and flash classes
@@ -78,8 +85,10 @@ div.content-box,
 	-webkit-box-shadow:0 0 15px #999999;
 }
 p {
-	line-height: 14px;
 	margin-bottom: 10px;
+}
+p {
+	line-height: 14px;
 }
 hr {
 	background: #acacac;
@@ -351,8 +360,8 @@ div.involvement-column .involvement-details {
 	width: 280px;
 	margin-right: 10px;
 	float:left;
-	max-height: 100px;
-   overflow: hidden;
+	max-height: 120px;
+	overflow: hidden;
 }
 div.involvement-column .involvement-date {
 	width: 90px;
@@ -684,8 +693,6 @@ legend {
 div.hr {
 	border-top: 1px solid #acacac;
 	padding: 5px 0;
-}
-div.hr {
 	padding: 10px 0;
 	position:relative;
 	margin-top: 10px;
@@ -707,6 +714,9 @@ input, textarea {
 	font-family: 'Lucida Sans',Helvetica,Arial,sans-serif;
 	margin-right:0px;
 }
+.input div {
+	margin-top: 10px;
+}
 input[type=text], input[type=password], textarea {
 	padding: 3px;
 	background: #f1f1f1;
@@ -715,6 +725,7 @@ select {
 	color: #838383;
 	border: 1px solid #838383;
 	padding: 2px;
+	margin-bottom: 5px;
 	background: #f1f1f1;
 	font-family: 'Lucida Sans',Helvetica,Arial,sans-serif;
 	font-size: 11px;
@@ -768,6 +779,12 @@ div.input.error .error-message {
 	color: #e03a14;
 	margin-top: 3px;
 }
+.error-message {
+	font-size: 10px;
+}
+div.submit {
+	display: inline-block;
+}
 
 /*
 Definition lists
@@ -796,7 +813,7 @@ Custom Icons
 	display: inline-block;
 	background-image: url('../assets/images/icons.png');
 	background-position: 20px 20px; /* default none */
-	padding-right: 2px;
+	padding-right: 4px;
 	vertical-align: middle;
 }
 .icon-error {

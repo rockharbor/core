@@ -17,7 +17,7 @@ if (!isset($class)) {
 		}
 		echo $this->Html->link($involvement['Ministry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $involvement['Ministry']['id']));
 		echo '<hr>';
-		echo $this->Text->truncate($involvement['Involvement']['description'], 250, array('html' => true));
+		echo $this->Html->tag('p', $this->Text->truncate(br2nl($involvement['Involvement']['description']), 150, array('html' => true)));
 		?>
 	</div>
 	<div class="involvement-date">

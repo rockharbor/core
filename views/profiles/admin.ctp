@@ -1,6 +1,4 @@
-<span class="breadcrumb editing">Editing<?php echo $this->Html->image('../assets/images/edit-flag-right.png'); ?></span>
 <h1>Administration</h1>
-
 <div class="profiles">
 <?php
 echo $this->Form->create(array(

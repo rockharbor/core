@@ -76,7 +76,7 @@
 				'options' => $regions
 			));		
 			echo $this->Form->input('Distance.distance_from', array(
-				'after' => '(try: orange, ca)'
+				'after' => '<p>(try: orange, ca)</p>'
 			));
 			echo $this->Form->input('Distance.distance', array(
 				'type' => 'select',
@@ -168,6 +168,7 @@
 <?php
 $submitOptions['success'] = '$("#user-results").html(data);';
 echo $this->Js->submit('Search!', $submitOptions);
+// DOES NOT RESET CHECKBOXES because onchange doesn't fire ..... //echo $this->Form->button('Clear fields', array('type' => 'reset')); 
 echo $this->Form->end();
 $url = $this->here; // doesn't matter, as the updateable is only needed for the div (pagination)
 $this->Js->buffer('CORE.register("results", "user-results", "'.$url.'");');
