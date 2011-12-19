@@ -132,43 +132,15 @@ class AuthorizeDotNetComponent extends Object {
 	}
 			
 /**
- * Sends the request to authorize.net
+ * Makes a payment request
  *
- * @todo Update to use HTTPSocket class instead of manual curl
  * @return boolean Success
  */
 	function request() {
 		$this->_init();
 
-		$fields = array();
-		
-		// Build the data string that we're posting
-		foreach ($this->_data as $key => $value) {
-			$fields[] = $key . '=' . urlencode(trim($value));
-		}
-		
-		$fields = implode('&', $fields);
+		$buffer = $this->_request($this->_data);
 
-		/* Set up CURL to post the $fields string to authorize.net */
-		$ch=curl_init();
-		curl_setopt($ch, CURLOPT_URL, "https://secure.authorize.net/gateway/transact.dll");
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-		curl_setopt($ch, CURLOPT_NOPROGRESS, 1);
-		curl_setopt($ch, CURLOPT_VERBOSE, 1);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION,0);
-
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
-
-		curl_setopt ($ch, CURLOPT_TIMEOUT, 120);
-		curl_setopt($ch, CURLOPT_USERAGENT, $this->_credentials['useragent']);
-		curl_setopt($ch, CURLOPT_REFERER, $this->_credentials['refer']);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);	
-					
-		/* we set CURL to return the response, so we capture it in $buffer */
-		$buffer = curl_exec($ch);
-		curl_close($ch);
-					
 		/* return values are comma delimited, as specified by x_Delim_Char */
 		$details = explode($this->_data['x_Delim_Char'], $buffer);  	// $details = explode(",",$buffer);
 
@@ -184,6 +156,56 @@ class AuthorizeDotNetComponent extends Object {
 		return $success;
 	}
 
+/**
+ * Makes a cURL request to the authorize.net gateway
+ * 
+ * @param array $fields Array of key/value fields to POST
+ * @return string Data from authorize.net
+ * @todo Update to use HTTPSocket class instead of manual curl
+ */	
+	function _request($fields) {
+		/* Set up CURL to post the $fields string to authorize.net */
+		$ch=curl_init();
+		curl_setopt($ch, CURLOPT_URL, "https://secure.authorize.net/gateway/transact.dll");
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+		curl_setopt($ch, CURLOPT_NOPROGRESS, 1);
+		curl_setopt($ch, CURLOPT_VERBOSE, 1);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION,0);
+
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $this->_formatFields($fields));
+
+		curl_setopt ($ch, CURLOPT_TIMEOUT, 120);
+		curl_setopt($ch, CURLOPT_USERAGENT, $this->_credentials['useragent']);
+		curl_setopt($ch, CURLOPT_REFERER, $this->_credentials['refer']);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);	
+					
+		/* we set CURL to return the response, so we capture it in $buffer */
+		$buffer = curl_exec($ch);
+		curl_close($ch);
+		
+		return $buffer;
+	}
+
+/**
+ * Formats field data to be accepted by cURL
+ * 
+ * @param array $data Array of key/value fields
+ * @return string
+ */
+	function _formatFields($data = array()) {
+		$fields = array();
+		// Build the data string that we're posting
+		foreach ($data as $key => $value) {
+			$fields[] = $key . '=' . urlencode(trim($value));
+		}
+		
+		return implode('&', $fields);
+	}
+
+/**
+ * Initializes necessary data
+ */
 	function _init() {
 		$this->error = '';
 		$this->transactionId = '';

@@ -3,6 +3,8 @@ App::import('Lib', 'CoreTestCase');
 App::import('Controller', 'App');
 App::import('Component', 'AuthorizeDotNet');
 
+Mock::generatePartial('AuthorizeDotNetComponent', 'MockAuthorizeDotNetComponent', array('_request'));
+
 if (!isset($_SERVER['REQUEST_URI'])) {
 	$_SERVER['REQUEST_URI'] = 'http://www.example.com';
 }
@@ -14,7 +16,7 @@ class AuthorizeDotNetTestCase extends CoreTestCase {
 	function startTest() {
 		$this->loadFixtures('User', 'Profile');
 		$this->loadSettings();
-		$this->AuthorizeDotNet = new AuthorizeDotNetComponent();
+		$this->AuthorizeDotNet = new MockAuthorizeDotNetComponent();
 		$this->Controller = new TestAuthorizeController();
 	}
 
@@ -23,6 +25,17 @@ class AuthorizeDotNetTestCase extends CoreTestCase {
 		unset($this->Controller);
 		$this->unloadSettings();
 		ClassRegistry::flush();
+	}
+	
+	function testFormatFields() {
+		$data = array(
+			'Key' => 'Value',
+			'Something' => 'Nothing',
+			'this' => 'is that'
+		);
+		$result = $this->AuthorizeDotNet->_formatFields($data);
+		$expected = 'Key=Value&Something=Nothing&this=is+that';
+		$this->assertEqual($result, $expected);
 	}
 
 	function testInit() {
@@ -41,6 +54,7 @@ class AuthorizeDotNetTestCase extends CoreTestCase {
 	}
 
 	function testRequest() {
+		$this->AuthorizeDotNet->setReturnValue('_request', '1||||||123456');
 		$this->AuthorizeDotNet->_data = array(
 			'x_First_Name' => 'Jeremy',
 			'x_Last_Name' => 'Harris',
