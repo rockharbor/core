@@ -685,7 +685,7 @@ class RostersController extends AppController {
 			array('Roster.id' => $selected)
 		);
 		$this->Session->setFlash('Roster members confirmed.', 'flash'.DS.'success');
-		if ($this->params['requested']) {
+		if (isset($this->params['requested']) &&  $this->params['requested']) {
 			return $success;
 		}
 		$this->redirect(array('action'=>'index'));
