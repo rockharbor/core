@@ -20,6 +20,11 @@ require_once APP.'config'.DS.'routes.php';
 Mock::generatePartial('AclComponent', 'MockAclComponent', array('check'));
 
 /**
+ * Disable Referee plugin from swallowing errors
+ */
+Configure::write('Referee', false);
+
+/**
  * Ensure SimpleTest doesn't think this is a test case
  */
 SimpleTest::ignore('CoreTestCase');
@@ -209,7 +214,10 @@ class CoreTestCase extends CakeTestCase {
 		$Controller->url = $urlParams;
 		$Controller->action = $urlParams['plugin'].'/'.$urlParams['controller'].'/'.$urlParams['action'];
 
-		$this->_componentsInitialized = true;
+		// disable components that mess with testing
+		$Controller->Whistler->enabled = false;
+		$Controller->Toolbar->enabled = false;
+		
 		$Controller->Component->initialize($Controller);
 
 		// configure auth
