@@ -1,11 +1,12 @@
 <?php
 /* Users Test cases generated on: 2010-08-11 07:08:43 : 1281537883 */
 App::import('Lib', 'CoreTestCase');
-App::import('Component', array('QueueEmail.QueueEmail', 'Notifier'));
+App::import('Component', array('QueueEmail.QueueEmail', 'Notifier', 'Cookie'));
 App::import('Controller', 'Users');
 
 Mock::generatePartial('QueueEmailComponent', 'MockUsersQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('NotifierComponent', 'MockUsersNotifierComponent', array('_render'));
+Mock::generatePartial('CookieComponent', 'MockUsersCookieComponent', array('read', 'write', 'delete'));
 Mock::generatePartial('UsersController', 'MockUsersController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header'));
 
 if (!defined('FULL_BASE_URL')) {
@@ -20,6 +21,11 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->Users =& new MockUsersController();
 		$this->Users->__construct();
 		$this->Users->constructClasses();
+		$this->Users->Cookie = new MockUsersCookieComponent();
+		$this->Users->Cookie->initialize($this->Users, array());
+		$this->Users->Cookie->enabled = true;
+		$this->Users->Cookie->setReturnValue('write', true);
+		$this->Users->Cookie->setReturnValue('delete', true);
 		$this->Users->Notifier = new MockUsersNotifierComponent();
 		$this->Users->Notifier->initialize($this->Users);
 		$this->Users->Notifier->setReturnValue('_render', 'Notification body text');
@@ -159,12 +165,12 @@ class UsersControllerTestCase extends CoreTestCase {
 	}
 
 	function testLogin() {
-		$this->Users->Cookie->delete('Auth');
 		$lastLoggedIn = $this->Users->User->read('last_logged_in', 1);
 
 		// trick CoreTestCase into not setting up a user
 		$this->Users->Session->write('User', true);
 		
+		$this->Users->Cookie->setReturnValueAt(0, 'read', null);
 		$vars = $this->testAction('/users/login', array(
 			'data' => array(
 				'User' => array(
@@ -186,14 +192,14 @@ class UsersControllerTestCase extends CoreTestCase {
 		$result = $this->Users->User->read(null, 1);
 		$this->assertNotEqual($result['User']['last_logged_in'], $lastLoggedIn['User']['last_logged_in']);
 
-		$this->assertNotNull($this->Users->Cookie->read('Auth.User'));
-		
 		// logout and try with cookie
 		$this->Users->Session->destroy();
 		$this->Users->Session->write('User', true);
-		
+		$this->Users->Cookie->setReturnValueAt(1, 'read', array(
+			'username' => 'jharris',
+			'password' => '005b8f6046bb2039063d9dde0678f9f28ae38827'
+		));
 		$vars = $this->testAction('/users/login');
-		$this->assertNotNull($this->Users->Cookie->read('Auth.User'));
 		$result = $this->Users->Session->read('Auth.User.id');
 		$this->assertEqual($result, 1);
 		
@@ -201,14 +207,15 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->Users->Session->destroy();
 		$this->Users->Session->write('User', true);
 		
-		$this->Users->Cookie->write('Auth.User', array('username' => 'no', 'password' => 'access'));
+		$this->Users->Cookie->setReturnValueAt(2, 'read', array(
+			'username' => 'no',
+			'password' => 'access'
+		));
 		$vars = $this->testAction('/users/login');
-		$this->assertNull($this->Users->Cookie->read('Auth.User'));
 		$this->assertNull($this->Users->Session->read('Auth'));
 		$this->assertTrue(!empty($this->Users->User->validationErrors));
 		
 		$this->Users->Session->destroy();
-		$this->Users->Cookie->delete('Auth');
 	}
 
 	function testForgotPassword() {

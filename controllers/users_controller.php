@@ -78,8 +78,9 @@ class UsersController extends AppController {
 		}
 
 		// check for remember me cookie and use that data and reset the cookie
-		if (empty($this->data) && !is_null($this->Cookie->read('Auth.User'))) {
-			$this->data['User'] = $this->Cookie->read('Auth.User');
+		$cookie = $this->Cookie->read('Auth.User');
+		if (empty($this->data) && !is_null($cookie)) {
+			$this->data['User'] = $cookie;
 			$this->Cookie->write('Auth.User', $this->data['User'], true, '+2 weeks');
 		}
 		
