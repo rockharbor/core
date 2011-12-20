@@ -30,7 +30,7 @@
 		</div>
 		<div id="ministry-dashboard">
 			<?php 
-			if ($activeUser['Profile']['leading'] > 0) {
+			if ($activeUser['Profile']['managing'] > 0) {
 				echo $this->requestAction('/ministry_leaders/dashboard', array(
 					'return',
 					'named' => array(
