@@ -75,7 +75,17 @@
 			?>
 			<tr<?php echo $class;?>>
 				<td><?php echo $this->MultiSelect->checkbox($leader['Involvement']['id']); ?></td>
-				<td><?php echo $this->Html->link($leader['Involvement']['name'], array('controller' => 'involvements', 'action' => 'view', 'model' => 'Involvement', 'Involvement' => $leader['Involvement']['id'])).$this->Formatting->flags('Involvement', $leader); ?></td>
+				<td><?php
+				echo $this->Html->link($leader['Involvement']['Ministry']['Campus']['name'], array('controller' => 'campuses', 'action' => 'view', 'Campus' => $leader['Involvement']['Ministry']['Campus']['id']), array('escape' => false));
+				if (!empty($leader['Involvement']['Ministry']['ParentMinistry']['id'])) {
+					echo ' > ';
+					echo $this->Html->link($leader['Involvement']['Ministry']['ParentMinistry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $leader['Involvement']['Ministry']['ParentMinistry']['id']), array('escape' => false));
+				}
+				echo ' > ';
+				echo $this->Html->link($leader['Involvement']['Ministry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $leader['Involvement']['Ministry']['id'])); 
+				echo ' > ';
+				echo $this->Html->link($leader['Involvement']['name'], array('controller' => 'involvements', 'action' => 'view', 'model' => 'Involvement', 'Involvement' => $leader['Involvement']['id'])).$this->Formatting->flags('Involvement', $leader); 
+				?></td>
 			</tr>
 			<?php endforeach; ?>
 		</tbody>

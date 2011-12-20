@@ -53,7 +53,12 @@ class InvolvementLeadersController extends LeadersController {
 				'Leader.user_id' => $this->passedArgs['User']
 			),
 			'contain' => array(
-				$this->model
+				'Involvement' => array(
+					'Ministry' => array(
+						'ParentMinistry',
+						'Campus'
+					)
+				)
 			)
 		);
 		$leaders = $this->paginate();
