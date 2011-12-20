@@ -25,6 +25,7 @@ echo $this->Form->create(array(
 
 	<div class="content-box clearfix">
 		<div id="personal-information">
+			<?php echo $this->element('non_migratable', array('data' => $this->data['Profile']['non_migratable'])); ?>
 			<fieldset class="grid_5 alpha">
 				<legend>Personal Info</legend>
 				<?php
@@ -75,6 +76,7 @@ echo $this->Form->create(array(
 		</div>
 		<?php if ($this->data['Profile']['child']): ?>
 		<div id="child-information">
+			<?php echo $this->element('non_migratable', array('data' => $this->data['Profile']['non_migratable'])); ?>
 			<?php echo $this->element('register'.DS.'child_info'); ?>
 			<div style="clear:both"><?php echo $this->Js->submit('Save', $defaultSubmitOptions); ?></div>
 		</div>
