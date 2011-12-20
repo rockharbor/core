@@ -1,5 +1,5 @@
 <ul>
-	<li id="nav-profile"><?php echo $this->Html->link('Profile', array('plugin' => false, 'controller' => 'profiles', 'action' => 'view', 'User' => $activeUser['User']['id'])); ?>
+	<li id="nav-profile"><?php echo $this->Html->link('Profile', array('plugin' => false, 'controller' => 'profiles', 'action' => 'view')); ?>
 		<ul>
 			<li>
 				<?php
@@ -26,11 +26,11 @@
 				</div>
 				<div style="clear:both" />
 			</li>
-			<li class="hover-row"><?php echo $this->Html->link('My Profile', array('plugin' => false, 'controller' => 'profiles', 'action' => 'view', 'User' => $activeUser['User']['id'])); ?></li>
+			<li class="hover-row"><?php echo $this->Html->link('My Profile', array('plugin' => false, 'controller' => 'profiles', 'action' => 'view')); ?></li>
 			<?php
 			if ($activeUser['Profile']['leading'] > 0 || $activeUser['Profile']['managing'] > 0):
 			?>
-			<li class="hover-row"><?php echo $this->Html->link('Leader Dashboard', array('plugin' => false, 'controller' => 'leaders', 'action' => 'dashboard', 'User' => $activeUser['User']['id'])); ?></li>
+			<li class="hover-row"><?php echo $this->Html->link('Leader Dashboard', array('plugin' => false, 'controller' => 'leaders', 'action' => 'dashboard')); ?></li>
 			<?php endif; ?>
 			<?php
 			$link = $this->Permission->link('Admin Dashboard', array('plugin' => false, 'controller' => 'users', 'action' => 'dashboard'));
