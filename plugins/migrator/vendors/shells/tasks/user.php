@@ -175,7 +175,7 @@ class UserTask extends MigratorTask {
 		if (date('Y-m-d', strtotime($old)) !== '1969-12-31') {
 			list($year, $month, $day) = explode('-', date('Y-m-d', strtotime($old)));
 			$old = compact('year', 'month', 'day');
-		} else {
+		} elseif (!empty($old)) {
 			$this->_editingRecord['non_migratable']['baptism_date'] = $old;
 			$old = '';
 		}
@@ -192,7 +192,7 @@ class UserTask extends MigratorTask {
 		if (date('Y-m-d', strtotime($old)) !== '1969-12-31') {
 			list($year, $month, $day) = explode('-', date('Y-m-d', strtotime($old)));
 			$old = compact('year', 'month', 'day');
-		} else {
+		} elseif (!empty($old)) {
 			$this->_editingRecord['non_migratable']['baby_dedication_date'] = $old;
 			$old = '';
 		}
@@ -209,7 +209,7 @@ class UserTask extends MigratorTask {
 		if (date('Y-m-d', strtotime($old)) !== '1969-12-31') {
 			list($year, $month, $day) = explode('-', date('Y-m-d', strtotime($old)));
 			$old = compact('year', 'month', 'day');
-		} else {
+		} elseif (!empty($old)) {
 			$this->_editingRecord['non_migratable']['background_check_date'] = $old;
 			$old = '';
 		}
