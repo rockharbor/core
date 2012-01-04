@@ -18,6 +18,7 @@
  */
 ?>
 <?php
+echo $scripts_for_layout;
 $this->Js->buffer('$("#content").dialog("option", "title", "'.$title_for_layout.'");');
 
 echo $this->Session->flash('auth');
@@ -28,6 +29,3 @@ echo $content_for_layout;
 $this->Js->buffer('CORE.initUI();');
 echo $this->Js->writeBuffer();
 
-//echo $this->element('sql_dump');
-
-?>
