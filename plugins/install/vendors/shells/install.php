@@ -521,6 +521,7 @@ class InstallShell extends Shell {
 			'controllers/InvolvementDocuments/download',
 			'controllers/InvolvementDocuments/index',
 			'controllers/InvolvementImages/view',
+			'controllers/Invitations',
 			'controllers/Ministries/index',
 			'controllers/Ministries/view',
 			'controllers/MinistryImages/view',
