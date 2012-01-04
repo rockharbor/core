@@ -30,8 +30,6 @@ $this->Js->buffer('CORE.initLogin()');
 		echo ' | ';
 		echo $this->Html->link('Forgot password', array('action' => 'forgot_password'), array('rel' => 'modal-none'));
 		echo ' | ';
-		echo $this->Html->link('Help', array('controller' => 'pages', 'action' => 'display', 'help'), array('rel' => 'modal-none'));
-		echo ' | ';
 		echo $this->Html->link('Sign Up', array('action' => 'register'), array('rel' => 'modal-none'));
 		echo $this->Form->end('Whoosh!');
 		?>
