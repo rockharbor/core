@@ -106,8 +106,7 @@ class AppSettingsController extends AppController {
  */
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
-			//404
-			$this->Session->setFlash('Invalid setting', 'flash'.DS.'failure');
+			$this->cakeError('error404');
 		}
 		if (!empty($this->data)) {
 			$this->AppSetting->Behaviors->detach('Sanitizer.Sanitize');

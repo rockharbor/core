@@ -77,9 +77,7 @@ class PaymentOptionsController extends AppController {
  */ 
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
-			//404
-			$this->Session->setFlash(__('Invalid payment option', true), 'flash'.DS.'failure');
-			$this->redirect(array('action' => 'index'));
+			$this->cakeError('error404');
 		}
 		if (!empty($this->data)) {
 			if ($this->PaymentOption->save($this->data)) {
@@ -101,9 +99,7 @@ class PaymentOptionsController extends AppController {
  */ 
 	function delete($id = null) {
 		if (!$id) {
-			//404
-			$this->Session->setFlash(__('Invalid id for payment option', true), 'flash'.DS.'failure');
-			$this->redirect(array('action'=>'index'));
+			$this->cakeError('error404');
 		}
 		if ($this->PaymentOption->delete($id)) {
 			$this->Session->setFlash('This payment option has been deleted.', 'flash'.DS.'success');

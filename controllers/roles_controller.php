@@ -86,8 +86,7 @@ class RolesController extends AppController {
  */
 	function edit($id) {
 		if (!$id && empty($this->data)) {
-			//404
-			$this->Session->setFlash('Invalid Role', 'flash'.DS.'failure');
+			$this->cakeError('error404');
 		}
 		if (!empty($this->data)) {
 			if ($this->Role->save($this->data)) {
@@ -108,9 +107,7 @@ class RolesController extends AppController {
  */
 	function delete($id = null) {
 		if (!$id) {
-			//404
-			$this->Session->setFlash('Invalid id for Role', 'flash'.DS.'failure');
-			$this->redirect(array('action'=>'index'));
+			$this->cakeError('error404');
 		}
 		if ($this->Role->delete($id)) {
 			$this->Session->setFlash('This role has been deleted.', 'flash'.DS.'success');

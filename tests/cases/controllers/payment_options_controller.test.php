@@ -3,7 +3,7 @@
 App::import('Lib', 'CoreTestCase');
 App::import('Controller', 'PaymentOptions');
 
-Mock::generatePartial('PaymentOptionsController', 'TestPaymentOptionsController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header'));
+Mock::generatePartial('PaymentOptionsController', 'TestPaymentOptionsController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 
 class PaymentOptionsControllerTestCase extends CoreTestCase {
 

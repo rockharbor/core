@@ -110,9 +110,7 @@ class CommentsController extends AppController {
 		$viewUser = $this->passedArgs['User'];
 		
 		if (!$id && empty($this->data)) {
-			//404
-			$this->Session->setFlash('Invalid comment');
-			$this->redirect(array('action' => 'index'));
+			$this->cakeError('error404');
 		}
 		if (!empty($this->data)) {
 			if ($this->Comment->save($this->data)) {
@@ -138,9 +136,7 @@ class CommentsController extends AppController {
 		$id = $this->passedArgs['Comment'];
 
 		if (!$id) {
-			//404
-			$this->Session->setFlash('Invalid id for comment');
-			$this->redirect(array('action'=>'index', 'User' => $viewUser));
+			$this->cakeError('error404');
 		}
 		if ($this->Comment->delete($id)) {
 			$this->Session->setFlash('This comment has been deleted.', 'flash'.DS.'success');

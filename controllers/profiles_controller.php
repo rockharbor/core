@@ -73,9 +73,7 @@ class ProfilesController extends AppController {
  */
 	function edit() {
 		if (!$this->passedArgs['User'] && empty($this->data)) {
-			//404
-			$this->Session->setFlash('Invalid user');
-			$this->redirect(array('action' => 'index'));
+			$this->cakeError('error404');
 		}
 		if (!empty($this->data)) {
 			if ($this->Profile->saveAll($this->data)) {
@@ -106,9 +104,7 @@ class ProfilesController extends AppController {
  */
 	function admin() {
 		if (!$this->passedArgs['User'] && empty($this->data)) {
-			//404
-			$this->Session->setFlash('Invalid user');
-			$this->redirect(array('action' => 'index'));
+			$this->cakeError('error404');
 		}
 		if (!empty($this->data)) {
 			if ($this->Profile->saveAll($this->data)) {

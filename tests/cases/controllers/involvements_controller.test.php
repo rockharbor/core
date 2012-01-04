@@ -6,7 +6,7 @@ App::import('Controller', 'Involvements');
 
 Mock::generatePartial('QueueEmailComponent', 'MockInvolvementsQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('NotifierComponent', 'MockInvolvementsNotifierComponent', array('_render'));
-Mock::generatePartial('InvolvementsController', 'TestInvolvementsController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header'));
+Mock::generatePartial('InvolvementsController', 'TestInvolvementsController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 
 class InvolvementsControllerTestCase extends CoreTestCase {
 
@@ -60,12 +60,12 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$this->assertNull($this->Involvements->Session->read('Message.flash.element'));
 		
 		// private
+		$this->Involvements->expectOnce('cakeError');
 		$this->su(array(
 			'User' => array('id' => 100),
 			'Group' => array('id' => 8)
 		));
 		$vars = $this->testAction('/involvements/view/Involvement:3');
-		$this->assertEqual($this->Involvements->Session->read('Message.flash.element'), 'flash'.DS.'failure');
 		
 		$this->unloadSettings();
 	}

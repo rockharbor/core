@@ -150,9 +150,7 @@ class AddressesController extends AppController {
  */
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
-			//404
-			$this->Session->setFlash('Invalid address.', 'flash'.DS.'failure');
-			$this->redirect(array('action' => 'index', $this->model => $this->modelId));
+			$this->cakeError('error404');
 		}
 
 		if (!empty($this->data)) {
@@ -180,9 +178,7 @@ class AddressesController extends AppController {
  */
 	function primary() {
 		if (!$this->passedArgs['Address']) {
-			//404
-			$this->Session->setFlash('Invalid id for address', 'flash'.DS.'failure');
-			$this->redirect(array('action'=>'index', $this->model => $this->modelId));
+			$this->cakeError('error404');
 		}
 		$related = $this->Address->related($this->passedArgs['Address']);
 		$this->Address->updateAll(
@@ -208,9 +204,7 @@ class AddressesController extends AppController {
  */
 	function toggle_activity($active = true) {
 		if (!$this->passedArgs['Address']) {
-			//404
-			$this->Session->setFlash('Invalid id for address', 'flash'.DS.'failure');
-			$this->redirect(array('action'=>'index', $this->model => $this->modelId));
+			$this->cakeError('error404');
 		}
 		if ($this->Address->toggleActivity($this->passedArgs['Address'], $active)) {
 			$this->Session->setFlash('Your address has been '.$active ? 'activated' : 'deactivated'.'.', 'flash'.DS.'success');
@@ -228,9 +222,7 @@ class AddressesController extends AppController {
  */
 	function delete($id = null) {
 		if (!$id) {
-			//404
-			$this->Session->setFlash('Invalid id for address', 'flash'.DS.'failure');
-			$this->redirect(array('action'=>'index', $this->model => $this->modelId));
+			$this->cakeError('error404');
 		}
 		if ($this->Address->delete($id)) {
 			$this->Session->setFlash('Your address was deleted.', 'flash'.DS.'success');

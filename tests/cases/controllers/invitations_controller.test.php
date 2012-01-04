@@ -3,7 +3,7 @@
 App::import('Lib', 'CoreTestCase');
 App::import('Controller', 'Invitations');
 
-Mock::generatePartial('InvitationsController', 'TestInvitationsController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'requestAction'));
+Mock::generatePartial('InvitationsController', 'TestInvitationsController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'requestAction', 'cakeError'));
 
 class InvitationsControllerTestCase extends CoreTestCase {
 

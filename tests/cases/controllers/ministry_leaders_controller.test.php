@@ -3,7 +3,7 @@
 App::import('Lib', 'CoreTestCase');
 App::import('Controller', array('MinistryLeaders'));
 
-Mock::generatePartial('MinistryLeadersController', 'MockMinistryLeadersController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header'));
+Mock::generatePartial('MinistryLeadersController', 'MockMinistryLeadersController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 
 class MinistryLeadersControllerTestCase extends CoreTestCase {
 

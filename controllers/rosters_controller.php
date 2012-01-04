@@ -155,9 +155,7 @@ class RostersController extends AppController {
 		$userId = $this->passedArgs['User'];
 		
 		if (!$userId) {
-			//404
-			$this->Session->setFlash(__('Invalid user', true));
-			$this->redirect($this->referer());
+			$this->cakeError('error404');
 		}
 
 		$leaderOf = $this->Roster->Involvement->Leader->find('list', array(
@@ -252,9 +250,7 @@ class RostersController extends AppController {
 		$involvementId = $this->passedArgs['Involvement'];
 		
 		if (!$userId || !$involvementId) {
-			//404
-			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
-			$this->redirect(array('action'=>'index'));
+			$this->cakeError('error404');
 		}
 
 		// get needed information about the user and this involvement
@@ -554,9 +550,7 @@ class RostersController extends AppController {
  */
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
-			//404
-			$this->Session->setFlash(__('Invalid roster', true));
-			$this->redirect(array('action' => 'index'));
+			$this->cakeError('error404');
 		}
 		
 		// get roster ids for comparison (to see if they're signed up)
@@ -704,9 +698,7 @@ class RostersController extends AppController {
 			if ($this->passedArgs['User'] !== $roster['Roster']['user_id'] &&
 			!$this->Roster->User->HouseholdMember->Household->isContactFor($this->passedArgs['User'], $roster['Roster']['user_id'])
 			) {
-				//404
-				$this->Session->setFlash(__('Roster was not deleted', true));
-				$this->redirect(array('action' => 'index'));
+				$this->cakeError('error404');
 			}
 			$selected = array($uid);
 		} elseif (empty($selected)) {

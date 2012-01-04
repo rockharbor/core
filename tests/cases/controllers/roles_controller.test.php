@@ -3,7 +3,7 @@
 App::import('Lib', 'CoreTestCase');
 App::import('Controller', 'Roles');
 
-Mock::generatePartial('RolesController', 'MockRolesController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header'));
+Mock::generatePartial('RolesController', 'MockRolesController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 
 class RolesControllerTestCase extends CoreTestCase {
 

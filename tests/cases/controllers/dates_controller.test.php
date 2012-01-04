@@ -6,7 +6,7 @@ App::import('Controller', 'Dates');
 
 Mock::generatePartial('QueueEmailComponent', 'MockDatesQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('NotifierComponent', 'MockDatesNotifierComponent', array('_render'));
-Mock::generatePartial('DatesController', 'TestDatesController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header'));
+Mock::generatePartial('DatesController', 'TestDatesController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 
 class DatesControllerTestCase extends CoreTestCase {
 	

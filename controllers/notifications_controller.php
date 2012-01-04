@@ -121,8 +121,7 @@ class NotificationsController extends AppController {
  */
 	function read($id = null, $read = 1) {
 		if (!$id) {
-			//404
-			$this->redirect(array('action'=>'index'));
+			$this->cakeError('error404');
 		}
 		
 		// check to see if this is a MultiSelect
@@ -160,9 +159,7 @@ class NotificationsController extends AppController {
  */
 	function delete($id = null) {
 		if (!$id) {
-			//404
-			$this->Session->setFlash('Could not delete notification', 'flash'.DS.'failure');
-			$this->redirect(array('action'=>'index'));
+			$this->cakeError('error404');
 		}
 		
 		// check to see if this is a MultiSelect

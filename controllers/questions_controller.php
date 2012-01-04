@@ -73,9 +73,7 @@ class QuestionsController extends AppController {
  */ 
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
-			//404
-			$this->Session->setFlash(__('Invalid question', true), 'flash'.DS.'failure');
-			$this->redirect(array('action' => 'index'));
+			$this->cakeError('error404');
 		}
 		if (!empty($this->data)) {
 			if ($this->Question->save($this->data)) {
@@ -102,9 +100,7 @@ class QuestionsController extends AppController {
  */
 	function move($id = null, $direction = null) {
 		if (!$id || !$direction) {
-			//404
-			$this->Session->setFlash('Invalid');
-			$this->redirect(array('action' => 'index'));
+			$this->cakeError('error404');
 		}
 		
 		$this->Question->{'move'.$direction}($id);
@@ -120,9 +116,7 @@ class QuestionsController extends AppController {
  */ 
 	function delete($id = null) {
 		if (!$id) {
-			//404
-			$this->Session->setFlash(__('Invalid id for question', true), 'flash'.DS.'failure');
-			$this->redirect(array('action'=>'index'));
+			$this->cakeError('error404');
 		}
 		if ($this->Question->delete($id)) {
 			$this->Session->setFlash('This question has been deleted.', 'flash'.DS.'success');

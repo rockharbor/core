@@ -6,9 +6,9 @@ App::import('Controller', array('InvolvementLeaders', 'MinistryLeaders', 'Campus
 
 Mock::generatePartial('QueueEmailComponent', 'MockLeadersQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('NotifierComponent', 'MockLeadersNotifierComponent', array('_render'));
-Mock::generatePartial('InvolvementLeadersController', 'MockLeadersInvolvementLeadersController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header'));
-Mock::generatePartial('MinistryLeadersController', 'MockLeadersMinistryLeadersController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header'));
-Mock::generatePartial('CampusLeadersController', 'MockLeadersCampusLeadersController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header'));
+Mock::generatePartial('InvolvementLeadersController', 'MockLeadersInvolvementLeadersController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
+Mock::generatePartial('MinistryLeadersController', 'MockLeadersMinistryLeadersController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
+Mock::generatePartial('CampusLeadersController', 'MockLeadersCampusLeadersController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 
 class LeadersControllerTestCase extends CoreTestCase {
 

@@ -169,8 +169,7 @@ class AttachmentsController extends AppController {
 	function approve($id = null, $approve = false) {
 		$this->{$this->modelClass}->Behaviors->detach('Media.Coupler'); // don't require 'file' key
 		if (!$id) {
-			//404
-			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
+			$this->cakeError('error404');
 		} else {
 			if ($approve) {
 				$this->{$this->modelClass}->id = $id;
@@ -239,8 +238,7 @@ class AttachmentsController extends AppController {
  */ 
 	function delete($id = null) {		
 		if (!$id) {
-			//404
-			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
+			$this->cakeError('error404');
 		} else {		
 			if ($this->{$this->modelClass}->delete($id)) {
 				$this->Session->setFlash('Your '.Inflector::humanize($this->modelKey).' has been deleted.', 'flash'.DS.'success');

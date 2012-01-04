@@ -5,7 +5,7 @@ App::import('Component', array('QueueEmail.QueueEmail'));
 App::import('Controller', 'Searches');
 
 Mock::generatePartial('QueueEmailComponent', 'MockSearchesQueueEmailComponent', array('_smtp', '_mail'));
-Mock::generatePartial('SearchesController', 'MockSearchesController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header'));
+Mock::generatePartial('SearchesController', 'MockSearchesController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 
 class SearchesControllerTestCase extends CoreTestCase {
 

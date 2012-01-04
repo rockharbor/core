@@ -6,7 +6,7 @@ App::import('Controller', 'Comments');
 
 Mock::generatePartial('QueueEmailComponent', 'MockCommentsQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('NotifierComponent', 'MockCommentsNotifierComponent', array('_render'));
-Mock::generatePartial('CommentsController', 'TestCommentsController', array('render', 'redirect', '_stop', 'header', 'disableCache'));
+Mock::generatePartial('CommentsController', 'TestCommentsController', array('render', 'redirect', '_stop', 'header', 'disableCache', 'cakeError'));
 
 class CommentsControllerTestCase extends CoreTestCase {
 

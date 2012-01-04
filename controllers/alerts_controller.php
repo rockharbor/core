@@ -80,9 +80,7 @@ class AlertsController extends AppController {
 		));
 
 		if (empty($alert)) {
-			//404
-			$this->Session->setFlash('You cannot view that alert', 'flash'.DS.'failure');
-			$this->redirect(array('action'=>'history'));
+			$this->cakeError('error404');
 		}
 		
 		$this->set(compact('alert')); 
@@ -138,9 +136,7 @@ class AlertsController extends AppController {
 		$userId = $this->activeUser['User']['id'];
 		
 		if (!$id) {
-			//404
-			$this->Session->setFlash('Could not mark alert as read', 'flash'.DS.'failure');
-			$this->redirect(array('action'=>'history'));
+			$this->cakeError('error404');
 		}
 		
 		// check to see if this is a MultiSelect
@@ -186,9 +182,7 @@ class AlertsController extends AppController {
  */ 
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
-			//404
-			$this->Session->setFlash('Invalid alert', 'flash'.DS.'failure');
-			$this->redirect(array('action' => 'index'));
+			$this->cakeError('error404');
 		}
 		if (!empty($this->data)) {
 			if ($this->Alert->save($this->data)) {
@@ -215,9 +209,7 @@ class AlertsController extends AppController {
  */ 
 	function delete($id = null) {
 		if (!$id) {
-			//404
-			$this->Session->setFlash('Invalid alert', 'flash'.DS.'failure');
-			$this->redirect(array('action'=>'index'));
+			$this->cakeError('error404');
 		}
 		if ($this->Alert->delete($id)) {
 			$this->Session->setFlash('This alert has been deleted.', 'flash'.DS.'success');

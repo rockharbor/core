@@ -39,9 +39,7 @@ class ZipcodesController extends AppController {
  */
 	function add() {
 		if (!isset($this->passedArgs['Region'])) {
-			//404
-			$this->setFlash('Invalid id');
-			$this->redirect(array('controller' => 'regions'));
+			$this->cakeError('error404');
 		}
 				
 		if (!empty($this->data)) {
@@ -63,9 +61,7 @@ class ZipcodesController extends AppController {
  */
 	function delete($id = null) {
 		if (!$id) {
-			//404
-			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
-			$this->redirect(array('action'=>'index'));
+			$this->cakeError('error404');
 		}
 		if ($this->Zipcode->delete($id)) {
 			$this->Session->setFlash('This zipcode has been deleted.', 'flash'.DS.'success');

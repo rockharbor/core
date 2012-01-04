@@ -574,9 +574,7 @@ class UsersController extends AppController {
  */
 	function delete($id = null) {		
 		if (!$id) {
-			//404
-			$this->Session->setFlash(__('Invalid id for user', true));
-			$this->redirect(array('action'=>'index'));
+			$this->cakeError('error404');
 		}
 		if ($this->User->delete($id)) {
 			$this->Session->setFlash(__('User record has been removed.', true), 'flash'.DS.'success');

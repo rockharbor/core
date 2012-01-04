@@ -77,8 +77,7 @@ class SimpleCrudsController extends AppController {
  */
 	function view($id = null) {
 		if (!$id) {
-			//404
-			$this->Session->setFlash('Invalid '.Inflector::humanize($this->modelKey), 'flash'.DS.'failure');
+			$this->cakeError('error404');
 		}
 		$this->set('result', $this->{$this->modelClass}->read(null, $id));
 	}
@@ -105,8 +104,7 @@ class SimpleCrudsController extends AppController {
  */
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
-			//404
-			$this->Session->setFlash('Invalid '.Inflector::humanize($this->modelKey), 'flash'.DS.'failure');
+			$this->cakeError('error404');
 		}
 		if (!empty($this->data)) {
 			if ($this->{$this->modelClass}->save($this->data)) {
@@ -127,9 +125,7 @@ class SimpleCrudsController extends AppController {
  */
 	function delete($id = null) {
 		if (!$id) {
-			//404
-			$this->Session->setFlash('Invalid id for '.Inflector::humanize($this->modelKey), 'flash'.DS.'failure');
-			$this->redirect(array('action'=>'index'));
+			$this->cakeError('error404');
 		}
 		if ($this->{$this->modelClass}->delete($id)) {
 			$this->Session->setFlash('This '.Inflector::humanize($this->modelKey).' has been deleted.', 'flash'.DS.'success');

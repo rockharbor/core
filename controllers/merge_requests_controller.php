@@ -87,9 +87,7 @@ class MergeRequestsController extends AppController {
  */ 	
 	function view($id = null) {
 		if (!$id) {
-			//404
-			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
-			$this->redirect(array('action' => 'index'));
+			$this->cakeError('error404');
 		}
 		
 		$this->MergeRequest->recursive = 2;
@@ -106,9 +104,7 @@ class MergeRequestsController extends AppController {
  */
 	function merge($id = null) {
 		if (!$id) {
-			//404
-			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
-			$this->redirect(array('action' => 'index'));
+			$this->cakeError('error404');
 		}
 		
 		// get request
@@ -138,9 +134,7 @@ class MergeRequestsController extends AppController {
  */
 	function delete($id = null) {		
 		if (!$id) {
-			//404
-			$this->Session->setFlash('Invalid id');
-			$this->redirect(array('action'=>'index'));
+			$this->cakeError('error404');
 		}
 		
 		// get request

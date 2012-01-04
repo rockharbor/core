@@ -48,9 +48,7 @@ class PublicationsController extends SimpleCrudsController {
 		
 		$userId = $this->passedArgs['User'];
 		if (!$userId) {
-			//404
-			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
-			$this->redirect(array('action' => 'index'));
+			$this->cakeError('error404');
 		}
 		
 		// ones they are subscribed to (have to go a bit round about so we don't do HABTM joins
@@ -77,18 +75,10 @@ class PublicationsController extends SimpleCrudsController {
  */
 	function toggle_subscribe($publicationId = null, $subscribe = false) {
 		$this->viewPath = 'publications';
-		
-		if (!$publicationId) {
-			//404
-			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
-			$this->redirect(array('action' => 'subscriptions'));
-		}
-		
 		$userId = $this->passedArgs['User'];
-		if (!$userId) {
-			//404
-			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
-			$this->redirect(array('action' => 'subscriptions'));
+		
+		if (!$publicationId || !$userId) {
+			$this->cakeError('error404');
 		}
 		
 		$current = $this->Publication->User->find('first', array(

@@ -64,9 +64,7 @@ class CampusesController extends AppController {
 		$id = $this->passedArgs['Campus'];
 		
 		if (!$id) {
-			//404
-			$this->Session->setFlash(__('Invalid campus', true));
-			$this->redirect(array('action' => 'index'));
+			$this->cakeError('error404');
 		}
 		
 		$this->set('campus', $this->Campus->read(null, $id));
@@ -96,9 +94,7 @@ class CampusesController extends AppController {
 		$id = $this->passedArgs['Campus'];
 	
 		if (!$id) {
-			//404
-			$this->Session->setFlash('Invalid campus');
-			$this->redirect(array('action' => 'index'));
+			$this->cakeError('error404');
 		}
 
 		// if they can confirm a revision, there's no need to go through the confirmation process
@@ -150,9 +146,7 @@ class CampusesController extends AppController {
 		$id = $this->passedArgs['Campus'];
 
 		if (!$id) {
-			//404
-			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
-			$this->redirect(array('action' => 'edit', $id));
+			$this->cakeError('error404');
 		}
 
 		// get involvement
@@ -196,9 +190,7 @@ class CampusesController extends AppController {
 		$id = $this->passedArgs['Campus'];
 
 		if (!$id) {
-			//404
-			$this->Session->setFlash(__('Invalid campus', true));
-			$this->redirect(array('action' => 'index'));
+			$this->cakeError('error404');
 		}
 
 		$this->set('campus', $this->Campus->read(null, $id));
@@ -241,9 +233,7 @@ class CampusesController extends AppController {
  */ 
 	function delete($id = null) {
 		if (!$id) {
-			//404
-			$this->Session->setFlash(__('Invalid id for campus', true));
-			$this->redirect(array('action'=>'index'));
+			$this->cakeError('error404');
 		}
 		if ($this->Campus->delete($id)) {
 			$this->Session->setFlash(__('This campus has been deleted.', true));

@@ -60,9 +60,7 @@ class MinistriesController extends AppController {
 		$id = $this->passedArgs['Ministry'];
 		
 		if (!$id) {
-			//404
-			$this->Session->setFlash(__('Invalid ministry', true));
-			$this->redirect(array('action' => 'index'));
+			$this->cakeError('error404');
 		}
 		
 		$ministry = $this->Ministry->find('first', array(
@@ -84,9 +82,7 @@ class MinistriesController extends AppController {
 		));
 
 		if ($ministry['Ministry']['private'] && !$this->Ministry->Leader->User->Group->canSeePrivate($this->activeUser['Group']['id'])) {
-			$this->Session->setFlash('Cannot view '.$ministry['Ministry']['name'].'.', 'flash'.DS.'failure');
-			//404
-			$this->redirect('/');
+			$this->cakeError('privateItem', array('type' => 'Ministry'));
 		}
 
 		$this->set(compact('ministry'));
@@ -174,9 +170,7 @@ class MinistriesController extends AppController {
 		$id = $this->passedArgs['Ministry'];
 	
 		if (!$id) {
-			//404
-			$this->Session->setFlash('Invalid ministry');
-			$this->redirect(array('action' => 'index'));
+			$this->cakeError('error404');
 		}
 
 		// if they can confirm a revision, there's no need to go through the confirmation process
@@ -243,9 +237,7 @@ class MinistriesController extends AppController {
 		$id = $this->passedArgs['Ministry'];
 
 		if (!$id) {
-			//404
-			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
-			$this->redirect(array('action' => 'edit', $id));
+			$this->cakeError('error404');
 		}
 
 		// get involvement
@@ -287,9 +279,7 @@ class MinistriesController extends AppController {
 		$id = $this->passedArgs['Ministry'];
 
 		if (!$id) {
-			//404
-			$this->Session->setFlash(__('Invalid ministry', true));
-			$this->redirect('/');
+			$this->cakeError('error404');
 		}
 		
 		$this->set('ministry', $this->Ministry->read(null, $id));
@@ -335,9 +325,7 @@ class MinistriesController extends AppController {
  */ 
 	function delete($id = null) {
 		if (!$id) {
-			//404
-			$this->Session->setFlash(__('Invalid id for ministry', true));
-			$this->redirect('/');
+			$this->cakeError('error404');
 		}
 		$ministry = $this->Ministry->read(null, $id);
 		if ($this->Ministry->delete($id)) {

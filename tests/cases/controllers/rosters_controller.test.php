@@ -7,7 +7,7 @@ App::import('Model', 'CreditCard');
 
 Mock::generatePartial('QueueEmailComponent', 'MockRostersQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('NotifierComponent', 'MockRostersNotifierComponent', array('_render'));
-Mock::generatePartial('RostersController', 'MockRostersController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header'));
+Mock::generatePartial('RostersController', 'MockRostersController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 Mock::generatePartial('CreditCard', 'MockRostersCreditCard', array('save', 'saveAll'));
 
 class RostersControllerTestCase extends CoreTestCase {

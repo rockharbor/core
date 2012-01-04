@@ -88,9 +88,7 @@ class PaymentsController extends AppController {
  */
 	function index() {
 		if (!isset($this->passedArgs['User'])) {
-			//404
-			$this->Session->setFlash(__('Invalid user', true));
-			$this->redirect($this->referer());
+			$this->cakeError('error404');
 		}
 		
 		$userId = $this->passedArgs['User'];
@@ -305,9 +303,7 @@ class PaymentsController extends AppController {
  */
 	function delete($id = null) {
 		if (!$id) {
-			//404
-			$this->Session->setFlash(__('Invalid id for payment', true));
-			$this->redirect(array('action'=>'index'));
+			$this->cakeError('error404');
 		}
 		if ($this->Payment->delete($id)) {
 			$this->Session->setFlash('This payment has been deleted.', 'flash'.DS.'success');

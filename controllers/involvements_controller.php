@@ -136,9 +136,7 @@ class InvolvementsController extends AppController {
 		$id = $this->passedArgs['Involvement'];
 		
 		if (!$id) {
-			//404
-			$this->Session->setFlash('Invalid involvement');
-			$this->redirect(array('action' => 'index'));
+			$this->cakeError('error404');
 		}
 		
 		$this->Involvement->contain(array(
@@ -173,8 +171,7 @@ class InvolvementsController extends AppController {
 		));
 		
 		if ($involvement['Involvement']['private'] && !$this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id']) && !$inRoster) {
-			$this->Session->setFlash('Cannot view this involvement opportunity.', 'flash'.DS.'failure');
-			$this->redirect($this->referer());
+			$this->cakeError('privateItem', array('type' => 'Involvement'));
 		}
 
 		$householdMembers = $this->Involvement->Roster->User->HouseholdMember->Household->getMemberIds($this->activeUser['User']['id']);
@@ -352,9 +349,7 @@ class InvolvementsController extends AppController {
 		$id = $this->passedArgs['Involvement'];
 	
 		if (!$id && empty($this->data)) {
-			//404
-			$this->Session->setFlash('Invalid involvement');
-			$this->redirect(array('action' => 'index'));
+			$this->cakeError('error404');
 		}
 
 		if (!empty($this->data)) {
@@ -388,9 +383,7 @@ class InvolvementsController extends AppController {
 		$id = $this->passedArgs['Involvement'];
 		
 		if (!$id) {
-			//404
-			$this->Session->setFlash('Invalid id', 'flash'.DS.'failure');
-			$this->redirect(array('action' => 'edit', $id));
+			$this->cakeError('error404');
 		}
 		
 		// get involvement
@@ -435,9 +428,7 @@ class InvolvementsController extends AppController {
  */
 	function delete($id = null) {
 		if (!$id) {
-			//404
-			$this->Session->setFlash(__('Invalid id for involvement', true));
-			$this->redirect(array('action'=>'index'));
+			$this->cakeError('error404');
 		}
 		if ($this->Involvement->delete($id)) {
 			$this->Session->setFlash('This involvement opportunity has been deleted.', 'flash'.DS.'success');

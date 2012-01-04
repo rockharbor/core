@@ -196,8 +196,7 @@ class DatesController extends AppController {
  */ 
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
-			//404
-			$this->Session->setFlash(__('Invalid date', true));
+			$this->cakeError('error404');
 		}
 		if (!empty($this->data)) {
 			if ($this->Date->save($this->data)) {
@@ -218,9 +217,7 @@ class DatesController extends AppController {
  */ 
 	function delete($id = null) {
 		if (!$id) {
-			//404
-			$this->Session->setFlash(__('Invalid id for date', true));
-			$this->redirect(array('action'=>'index'));
+			$this->cakeError('error404');
 		}
 		if ($this->Date->delete($id)) {
 			$this->Session->setFlash(__('This date has been deleted.', true));
