@@ -1,4 +1,4 @@
-<h1>New credentials</h1>
+<p>New credentials</p>
 <?php if ($reset != 'both'): ?>
 <p>You changed your <?php echo $reset; ?> in <?php echo Core::read('general.site_name'); ?>. Your new <?php echo $reset; ?> is:<br/><strong><?php echo ${$reset}; ?></strong></p>
 <?php else: ?>

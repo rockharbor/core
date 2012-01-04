@@ -1,4 +1,4 @@
-<h1>Leaving <?php echo $involvement['InvolvementType']['name']; ?></h1>
+<p>Leaving <?php echo $involvement['InvolvementType']['name']; ?></p>
 <p><?php 
 if ($activeUser['User']['id'] == $user['User']['id']) {
 	echo 'You have';

@@ -1,4 +1,4 @@
-<h1>Your <?php echo Core::read('general.site_name'); ?> Account Information</h1>
+<p>Your <?php echo Core::read('general.site_name'); ?> Account Information</p>
 <p>Hi. I'm <?php echo Core::read('general.site_name'); ?>, <?php echo Core::read('general.church_name'); ?>'s online church management application. I have good news and bad news for you. The good news is, we're going to be friends! An account has been created for you in <?php echo Core::read('general.site_name'); ?>.</p>
 <p>If you're thinking, "so what?" let me help you understand why this is so great. This is how I'll make being involved at <?php echo Core::read('general.church_name'); ?> so simple:</p>
 <ul>
