@@ -3,6 +3,109 @@
  */
 var CORE_date = {};
 
+CORE_date.setup = function() {
+	$('#DateRecurranceType').bind('change', function() {
+		var label = $('#frequency_label');
+
+		$('#day').hide();
+		$('#weekday').hide();
+		$('#offset').hide();
+
+		switch($(this).val()) {
+			case 'h':
+			label.text('hour(s)');
+			break;
+			case 'd':
+			label.text('day(s)');
+			break;
+			case 'w':
+			label.text('week(s)');
+			$('#weekday').show();
+			break;
+			case 'md':
+			label.text('month(s)');
+			$('#day').show();
+			break;
+			case 'mw':
+			label.text('month(s)');
+			$('#offset').show();
+			$('#weekday').show();
+			break;
+			case 'y':
+			label.text('year(s)');
+			break;
+		}
+	});
+
+	$('#DateRecurring').bind('change', function() {
+		this.checked ? $('#pattern').show() : $('#pattern').hide();
+	});
+
+	$('#DatePermanent').bind('change', function() {
+		this.checked ? $('#end_date').hide() : $('#end_date').show();
+	});
+
+	$('#DateAllDay').bind('change', function() {
+		this.checked ? $('#start_time, #end_time').hide() : $('#start_time, #end_time').show();
+	});
+
+	$('#DateExemption').bind('change', function() {
+		if (this.checked) {
+			$('#DateAllDay').attr('checked', 'checked');
+			$('#DateAllDay').closest('div').hide();
+			$('#DateAllDay').change();
+		} else {
+			$('#DateAllDay').closest('div').show();
+			$('#DateAllDay').change();
+		}
+	});
+
+	// date validation (forcing end dates to be greater than start)
+	$('#DateStartDateMonth').bind('change', function() { CORE_date.validateDate('DateStartDate', 'DateEndDate'); });
+	$('#DateStartDateDay').bind('change', function() { CORE_date.validateDate('DateStartDate', 'DateEndDate'); });
+	$('#DateStartDateYear').bind('change', function() { CORE_date.validateDate('DateStartDate', 'DateEndDate'); });
+	$('#DateEndDateMonth').bind('change', function() { CORE_date.validateDate('DateStartDate', 'DateEndDate'); });
+	$('#DateEndDateDay').bind('change', function() { CORE_date.validateDate('DateStartDate', 'DateEndDate'); });
+	$('#DateEndDateYear').bind('change', function() { CORE_date.validateDate('DateStartDate', 'DateEndDate'); });
+
+	// time validation (forcing end times to be greater than start)
+	$('#DateStartTimeHour').bind('change', function() { CORE_date.validateTime('DateStartTime', 'DateEndTime'); });
+	$('#DateStartTimeMin').bind('change', function() { CORE_date.validateTime('DateStartTime', 'DateEndTime'); });
+	$('#DateStartTimeMeridian').bind('change', function() { CORE_date.validateTime('DateStartTime', 'DateEndTime'); });
+	$('#DateEndTimeHour').bind('change', function() { CORE_date.validateTime('DateStartTime', 'DateEndTime'); });
+	$('#DateEndTimeMin').bind('change', function() { CORE_date.validateTime('DateStartTime', 'DateEndTime'); });
+	$('#DateEndTimeMeridian').bind('change', function() { CORE_date.validateTime('DateStartTime', 'DateEndTime'); });
+
+	// finally, make everything update the humanized version
+	$('select, input').bind('change', function() { 
+		var hr = CORE_date.makeHumanReadable({
+			recurring: $('#DateRecurring').is(':checked'),
+			type: $('#DateRecurranceType').val(),
+			frequency: $('#DateFrequency').val(),
+			allday: $('#DateAllDay').is(':checked'),
+			day:$('#DateDay').val(),
+			weekday: $('#DateWeekday').val(),
+			offset: $('#DateOffset').val(),
+			permanent: $('#DatePermanent').is(':checked'),
+			startDate: $('#DateStartDateYear').val()+'-'+$('#DateStartDateMonth').val()+'-'+$('#DateStartDateDay').val(),
+			endDate: $('#DateEndDateYear').val()+'-'+$('#DateEndDateMonth').val()+'-'+$('#DateEndDateDay').val(),
+			startTime: (Number($('#DateStartTimeHour').val()) + ($('#DateStartTimeMeridian').val() == 'pm' ? 12 : 0))+':'+$('#DateStartTimeMin').val(),
+			endTime: (Number($('#DateEndTimeHour').val()) + ($('#DateEndTimeMeridian').val() == 'pm' ? 12 : 0))+':'+$('#DateEndTimeMin').val()
+		});
+
+		$('#humanized').text(hr);
+	});
+
+	// initial setup
+	$('#DateRecurranceType').change();
+	$('#DateRecurring').change();
+	$('#DatePermanent').change();
+	$('#DateAllDay').change();
+	$('#DateStartDateMonth').change();
+	$('#DateStartTimeHour').change();
+	$('#DateExemption').change();
+}
+
 /**
  * Makes a human readable date. Supports recurring, all day
  * permanent, etc. Pretty fancy, eh?
