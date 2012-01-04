@@ -55,15 +55,3 @@ foreach ($visitHistory as $history) {
 ?>
 </ol>
 </p>
-</p>
-<p>Last 10 errors (newest first):<br />
-<ol>
-<?php 
-foreach ($errors as $error) {
-?>
-	<li><?php echo $error['Error']['level']; ?>: <?php echo $error['Error']['message'].' ('.$error['Error']['file'].': '.$error['Error']['line'].')'; ?> on <?php echo $error['Error']['created']; ?></li>
-<?php 
-} 
-?>
-</ol>
-</p>

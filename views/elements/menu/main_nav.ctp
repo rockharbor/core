@@ -82,38 +82,6 @@
 	));
 	?>
 	
-	<li><?php echo $this->Html->link('Debug', array('plugin' => false, 'controller' => 'reports', 'action' => 'index')); ?>
-		<ul><li><?php
-	echo $this->Html->link('Report a bug on this page', array('plugin' => false, 'controller' => 'sys_emails', 'action' => 'bug_compose'), array('rel' => 'modal-none'));
-	echo $this->Html->link('View activity logs', array('plugin' => false, 'controller' => 'logs', 'action' => 'index'), array('rel' => 'modal-none'));
-	
-	
-echo $this->Form->input('group_id', array(
-	'type' => 'select',
-	'label' => false,
-	'options' => $groupList,
-	'value' => $activeUser['Group']['id'],
-	'empty' => false,
-	'id' => 'group_id'
-)); ?>
-<script type="text/javascript">
-$("#group_id").bind("change", function() {
-	$.ajax({
-		url: "<?php echo Router::url(array(
-			'controller' => 'cdp_groups',
-			'action' => 'swap',
-			'plugin' => 'core_debug_panels'			
-		)); ?>/"+$("#group_id").val(),
-		success: function(data) {
-			location.reload(true);
-		}
-	})
-});
-</script>
-	
-	</li></ul>
-	</li>
-	
 	<li id="nav-search">
 		<?php
 		echo $this->element('search', array(

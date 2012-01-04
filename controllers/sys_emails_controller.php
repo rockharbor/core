@@ -81,12 +81,6 @@ class SysEmailsController extends AppController {
 			}
 		}
 		
-		$errors = ClassRegistry::init('Referee.Error')->find('all', array(
-			'limit' => 10,
-			'order' => 'Error.created DESC'
-		));
-		
-		$this->set('errors', $errors);
 		$this->set('visitHistory', array_reverse($this->Session->read('CoreDebugPanels.visitHistory')));
 		$this->set('toUsers', array($jeremy));
 		$this->set('fromUser', $this->activeUser);
