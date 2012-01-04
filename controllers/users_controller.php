@@ -159,6 +159,8 @@ class UsersController extends AppController {
 						$this->User->id = $this->data['User']['id'];
 						$success = $this->User->saveField('password', $this->data['User']['password']);
 						if ($this->activeUser['User']['id'] != $this->passedArgs['User']) {
+							$this->User->saveField('reset_password', true);
+						} else {
 							$this->User->saveField('reset_password', false);
 						}
 					} else {
@@ -167,7 +169,11 @@ class UsersController extends AppController {
 					$this->set('password', $this->data['User']['password']);
 				break;
 				case 'both':
-					$this->data['User']['reset_password'] = false;
+					if ($this->activeUser['User']['id'] != $this->passedArgs['User']) {
+						$this->data['User']['reset_password'] = true;
+					} else {
+						$this->data['User']['reset_password'] = false;
+					}
 					$success = $this->User->save($this->data);
 					$this->set('username', $this->data['User']['username']);
 					$this->set('password', $this->data['User']['password']);

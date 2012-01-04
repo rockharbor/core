@@ -65,6 +65,9 @@ class UsersControllerTestCase extends CoreTestCase {
 
 		$result = $user['User']['username'];
 		$this->assertEqual($result, 'newusername');
+		
+		$result = $user['User']['reset_password'];
+		$this->assertFalse($result);
 
 		$result = $vars['password'];
 		$this->assertEqual($result, 'newpassword');
@@ -111,6 +114,9 @@ class UsersControllerTestCase extends CoreTestCase {
 		$result = $user['User']['password'];
 		$expected = $this->Users->Auth->password('password');
 		$this->assertEqual($result, $expected);
+		
+		$result = $user['User']['reset_password'];
+		$this->assertFalse($result);
 
 		$result = $this->Users->Session->read('Message.flash.element');
 		$this->assertEqual($result, 'flash'.DS.'failure');
@@ -131,6 +137,9 @@ class UsersControllerTestCase extends CoreTestCase {
 		$result = $user['User']['password'];
 		$expected = $this->Users->Auth->password('newpassword');
 		$this->assertEqual($result, $expected);
+		
+		$result = $user['User']['reset_password'];
+		$this->assertFalse($result);
 
 		$result = $vars['password'];
 		$this->assertEqual($result, 'newpassword');
@@ -156,6 +165,9 @@ class UsersControllerTestCase extends CoreTestCase {
 		$result = $user['User']['password'];
 		$expected = $this->Users->Auth->password('newpassword');
 		$this->assertEqual($result, $expected);
+		
+		$result = $user['User']['reset_password'];
+		$this->assertTrue($result);
 
 		$result = $vars['password'];
 		$this->assertEqual($result, 'newpassword');
