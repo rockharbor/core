@@ -1,6 +1,7 @@
-if (CORE == undefined) {
-	throw 'CORE global.js needs to be imported first!';
-}
+/**
+ * Namespaced object
+ */
+var CORE_date = {};
 
 /**
  * Makes a human readable date. Supports recurring, all day
@@ -24,7 +25,7 @@ if (CORE == undefined) {
  * @param object settings Recursion and date settings
  * @return string Human readable date string
  */
-CORE.makeHumanReadable = function(settings) {	
+CORE_date.makeHumanReadable = function(settings) {	
 	var months = new Array('','January','February','March','April','May','June','July','August','September','October','November','December');
 	var weekdays = new Array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
 	var types = {h:'hourly', d:'daily', w:'weekly', m:'monthly', y:'yearly'};
@@ -169,7 +170,7 @@ CORE.makeHumanReadable = function(settings) {
  * @param string startDateModel The id prefix for the Cake model's start date, i.e., DateStartDate ([Date][start_date])
  * @param string endDateModel The id prefix for the associated end date, i.e., DateEndDate ([Date][end_date])
  */
-CORE.validateDate = function(startDateModel, endDateModel) {
+CORE_date.validateDate = function(startDateModel, endDateModel) {
 	// get the start date
 	var startDate = new Date($('#'+startDateModel+'Year').val(),$('#'+startDateModel+'Month').val()-1,$('#'+startDateModel+'Day').val());
 	var endDate = new Date($('#'+endDateModel+'Year').val(),$('#'+endDateModel+'Month').val()-1,$('#'+endDateModel+'Day').val());
@@ -187,7 +188,7 @@ CORE.validateDate = function(startDateModel, endDateModel) {
  * @param string startTimeModel The id prefix for the Cake model's start time, i.e., DateStartTime ([Date][start_time])
  * @param string endTimeModel The id prefix for the associated end time, i.e., DateEndTime ([Date][end_time])
  */
-CORE.validateTime = function(startTimeModel, endTimeModel) {
+CORE_date.validateTime = function(startTimeModel, endTimeModel) {
 	var startTime = new Date();
 	var startHours = $('#'+startTimeModel+'Meridian').val() == 'am' ? $('#'+startTimeModel+'Hour').val()-1 : $('#'+startTimeModel+'Hour').val()-1+12;
 	startTime.setHours(startHours);

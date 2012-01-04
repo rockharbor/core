@@ -87,7 +87,7 @@ echo $this->Form->end();
 
 <?php
 
-echo $this->Html->script('super_date');
+echo $this->Html->script('misc/date', array('inline' => false));
 
 $this->Html->scriptStart(array('inline'=>true));
 

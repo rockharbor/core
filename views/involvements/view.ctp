@@ -1,5 +1,4 @@
 <?php 
-echo $this->Html->script('super_date', array('inline' => false));
 echo $this->Html->script('misc/involvement', array('inline' => false));
 $canSeeRoster = $this->Permission->check(array('controller' => 'rosters', 'Involvement' => $involvement['Involvement']['id']));
 $shortRoster = !empty($signedUp) && $involvement['Involvement']['roster_visible'] && !$canSeeRoster;
