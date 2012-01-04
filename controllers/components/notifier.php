@@ -202,17 +202,8 @@ class NotifierComponent extends Object {
 		} else {
 			$from = $this->User->read(null, $from);
 		}
-		// send to debug email if 
-		if (Configure::read('debug') > 0) {
-			$this->Controller->set('_originalUser', $user);
-			$user = array(
-				'Profile' => array(
-					'name' => $this->Controller->activeUser['Profile']['name'],
-					'primary_email' => $this->Controller->activeUser['Profile']['primary_email']
-				)
-			);
-			$layout = 'debug';
-		}
+	
+		$this->Controller->set('toUser', $user);
 		$this->QueueEmail->smtpOptions = $this->smtp;
 		$this->QueueEmail->delivery = 'smtp';
 		$this->QueueEmail->sendAs = 'html';
