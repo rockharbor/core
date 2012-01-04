@@ -286,11 +286,13 @@ class AppController extends Controller {
 						),
 						'conditions' => array(
 							'Ministry.active' => true,
-							'Ministry.parent_id' => null
+							'Ministry.parent_id' => null,
+							'Ministry.private' => false
 						),
 						'ChildMinistry' => array(
 							'conditions' => array(
 								'ChildMinistry.active' => true,
+								'ChildMinistry.private' => false
 							),
 							'fields' => array(
 								'ChildMinistry.id',
@@ -305,10 +307,6 @@ class AppController extends Controller {
 				),
 				'cacher' => '+1 day'
 			);
-			if (!in_array($this->activeUser['Group']['id'], array_keys((array)$Group->findGroups(Core::read('general.private_group'), 'list', '>')))) {
-				$options['contain']['Ministry']['conditions']['Ministry.private'] = false;
-				$options['contain']['Ministry']['ChildMinistry']['conditions']['ChildMinistry.private'] = false;
-			}
 			$this->set('campusesMenu', $Campus->find('all', $options));
 		}
 	}
