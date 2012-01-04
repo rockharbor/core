@@ -233,6 +233,13 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($this->Users->Session->read('Message.flash.element'), 'flash'.DS.'success');
 		$user = $this->Users->User->read('reset_password', 1);
 		$this->assertTrue($user['User']['reset_password']);
+		
+		// test as if we just came from choose_user
+		$oldPassword = $this->Users->User->read('password', 2);
+		$vars = $this->testAction('/users/forgot_password/1');
+		$result = $vars['password'];
+		$this->assertNotEqual($oldPassword['User']['password'], $result);
+		$this->assertEqual($this->Users->Session->read('Message.flash.element'), 'flash'.DS.'success');
 	}
 
 	function testRequestActivation() {
