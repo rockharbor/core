@@ -310,12 +310,6 @@ class AppController extends Controller {
 				$options['contain']['Ministry']['ChildMinistry']['conditions']['ChildMinistry.private'] = false;
 			}
 			$this->set('campusesMenu', $Campus->find('all', $options));
-			
-			$this->set('groupList', $Group->find('list', array(
-				'conditions' => array(
-					'conditional' => false
-				)
-			)));
 		}
 	}
 	
