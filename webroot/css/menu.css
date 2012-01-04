@@ -188,7 +188,8 @@ div#header div#secondary {
 Search
 */
 #nav-search {
-	padding-left:10px;
+	float: right;
+	padding-right: 5px;
 	padding-top:5px;
 	border-right:none !important;
 }
