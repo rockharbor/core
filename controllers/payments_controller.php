@@ -45,8 +45,6 @@ class PaymentsController extends AppController {
  * @access private
  */ 
 	function beforeFilter() {
-		/*$this->Security->blackHoleCallback = '_forceSSL';
-		$this->Security->requireSecure('add');*/
 		$this->_editSelf('index', 'view');
 		parent::beforeFilter();
 	}

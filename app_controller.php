@@ -183,6 +183,8 @@ class AppController extends Controller {
 			
 		// use custom authentication (password encrypt/decrypt)
 		$this->Auth->authenticate = new User();
+		
+		$this->Security->blackHoleCallback = 'cakeError';
 
 		// set to log using this user (see LogBehavior)
 		if (!$this->params['plugin'] && sizeof($this->uses) && $this->{$this->modelClass}->Behaviors->attached('Logable')) { 
@@ -479,13 +481,5 @@ class AppController extends Controller {
 		}		
 	}
 
-/**
- * Forces the user to use SSL for this request
- *
- * @see SecurityComponent::blackHoleCallback
- */
-	function _forceSSL() {
-		$this->redirect('https://' . env('SERVER_NAME') . $this->here);
-	}
 }
 ?>
