@@ -686,10 +686,6 @@ fieldset {
 	padding: 10px 0;
 	position: relative;
 }
-legend {
-	position: absolute;
-	top: -16px;
-}
 div.hr {
 	border-top: 1px solid #acacac;
 	padding: 5px 0;
