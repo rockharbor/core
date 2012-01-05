@@ -56,7 +56,7 @@ class RolesControllerTestCase extends CoreTestCase {
 			)
 		));
 		$countAfter = $this->Roles->Role->find('count');
-		$this->assertEqual($countBefore, $countAfter-2);
+		$this->assertEqual($countBefore, $countAfter-3);
 		
 		$results = $this->Roles->Role->find('all', array(
 			'conditions' => array(
