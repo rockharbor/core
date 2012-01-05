@@ -55,7 +55,10 @@ class AppController extends Controller {
 				'controller' => 'profiles',
 				'action' =>'view'
 			),
-			'userScope' => array('User.active' => true)
+			'userScope' => array(
+				'User.active' => true,
+				'DATEDIFF(CURDATE(), Profile.birth_date)/365.25 >' => 12
+			)
 		),
 		'Referee.Whistle' => array(
 			'paths' => array(

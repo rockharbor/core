@@ -85,6 +85,8 @@ class UsersController extends AppController {
 		}
 		
 		if (!empty($this->data)) {
+			$authModel =& $this->Auth->getModel();
+			$authModel->contain(array('Profile'));
 			if ($this->Auth->login($this->data)) {
 				$this->User->id = $this->Auth->user('id');
 				$this->User->contain(array('Profile', 'Group', 'Image', 'ActiveAddress'));

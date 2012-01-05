@@ -176,6 +176,40 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, 'flash'.DS.'success');
 	}
 
+	function testRestrictLogin() {
+		// trick CoreTestCase into not setting up a user
+		$this->Users->Session->write('User', true);
+		$this->Users->Cookie->setReturnValue('read', null);
+		
+		// children can't log in
+		$vars = $this->testAction('/users/login', array(
+			'data' => array(
+				'User' => array(
+					'username' => 'rickyrockharbor',
+					'password' => 'password',
+					'remember_me' => true
+				)
+			)
+		));
+		$result = $this->Users->Session->read('Auth.User.id');
+		$this->assertNull($result);
+		
+		// inactive users can't log in
+		$vars = $this->testAction('/users/login', array(
+			'data' => array(
+				'User' => array(
+					'username' => 'joe',
+					'password' => 'password',
+					'remember_me' => true
+				)
+			)
+		));
+		$result = $this->Users->Session->read('Auth.User.id');
+		$this->assertNull($result);
+		
+		$this->Users->Session->destroy();
+	}
+
 	function testLogin() {
 		$lastLoggedIn = $this->Users->User->read('last_logged_in', 1);
 
