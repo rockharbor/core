@@ -402,14 +402,20 @@ div.subministry {
 		rgb(48,48,48) 25%,
 		rgb(68,68,69) 61%
 	);
-	height: 100px;
-	width: 138px;
+	height: 110px;
+	width: 30.667%;
 	color:#acacac;
 	margin-bottom: 10px;
-	padding: 5px;
+	padding: 1%;
 	float:left;
-	margin-right: 10px;
+	margin-right: 1%;
+	overflow: hidden;
 }
+
+div.subministry:nth-child(3n+3) {
+	margin-right: 0;
+}
+
 div.subministry .subministry-title {
 	font-weight: bold;
 	color: #ffffff;

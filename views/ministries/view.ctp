@@ -49,21 +49,11 @@ if (!empty($ministry['ParentMinistry']['id'])) {
 				<?php
 				echo $this->Html->link($subministry['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $subministry['id']), array('class' => 'subministry-title'));
 				echo '<hr>';
-				echo $this->Html->tag('p', $this->Text->truncate($subministry['description'], 100, array('html' => true)));
+				echo $this->Html->tag('p', $this->Text->truncate($subministry['description'], 200, array('html' => true)));
 				?>
 			</div>
 			<?php 
 			endforeach;
-			if (count($ministry['ChildMinistry']) > 5) {
-				$this->Html->script('misc/ministry', array('inline' => false, 'once' => true));
-				$this->Js->buffer('CORE_ministry.setup();');
-			}
-			?>
-		</div>
-		<div class="pagination" style="display:none; text-align: center;">
-			<?php
-			echo $this->Html->link('Prev', 'javascript:;', array('class' => 'prev-button'));
-			echo $this->Html->link('Next', 'javascript:;', array('class' => 'next-button'));
 			?>
 		</div>
 	</div>
