@@ -212,7 +212,7 @@ class InstallSchema extends CakeSchema {
 		'parent_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),
 		'lft' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
 		'rght' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'tree' => array('column' => array('lft', 'rght'), 'unique' => 1), 'name_key' => array('column' => 'name', 'unique' => 1)),
+		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'tree' => array('column' => array('lft', 'rght')), 'name_key' => array('column' => 'name', 'unique' => 1)),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 	var $household_members = array(
@@ -339,7 +339,7 @@ class InstallSchema extends CakeSchema {
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'active' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'tree' => array('column' => array('lft', 'rght'), 'unique' => 1), 'campus_key' => array('column' => 'campus_id', 'unique' => 0), 'fulltext' => array('column' => array('name', 'description'), 'unique' => 0, 'type' => 'fulltext')),
+		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'tree' => array('column' => array('lft', 'rght')), 'campus_key' => array('column' => 'campus_id', 'unique' => 0), 'fulltext' => array('column' => array('name', 'description'), 'unique' => 0, 'type' => 'fulltext')),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 	var $ministries_revs = array(

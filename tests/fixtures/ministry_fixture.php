@@ -15,7 +15,7 @@ class MinistryFixture extends CakeTestFixture {
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'active' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'tree' => array('column' => array('lft', 'rght'), 'unique' => 1), 'campus_key' => array('column' => 'campus_id', 'unique' => 0), 'fulltext' => array('column' => array('name', 'description'), 'unique' => 0, 'type' => 'fulltext')),
+		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'tree' => array('column' => array('lft', 'rght')), 'campus_key' => array('column' => 'campus_id', 'unique' => 0), 'fulltext' => array('column' => array('name', 'description'), 'unique' => 0, 'type' => 'fulltext')),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
@@ -97,9 +97,7 @@ class MinistryFixture extends CakeTestFixture {
  */
 	function insert(&$db) {
 		$success = parent::insert($db);
-		if ($success) {
-			ClassRegistry::init('Ministry')->recover();
-		}
+		ClassRegistry::init('Ministry')->recover();
 		return $success;
 	}
 }
