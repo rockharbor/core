@@ -95,9 +95,7 @@ class ReportsController extends AppController {
 			}
 		}
 		if (empty($this->data)) {
-			foreach ($campuses as $id => $campus) {
-				$involvedUsers = array_merge($involvedUsers, $this->Campus->getInvolved($id, true));
-			}
+			$involvedUsers = array_merge($involvedUsers, $this->Campus->getInvolved(array_keys($campuses), true));
 		}
 
 		$ministryCounts = array();
