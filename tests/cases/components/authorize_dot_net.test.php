@@ -70,6 +70,9 @@ class AuthorizeDotNetTestCase extends CoreTestCase {
 		);
 		$results = $this->AuthorizeDotNet->request();
 		$this->assertTrue($results);
+		
+		$this->AuthorizeDotNet->_data['x_Login'] = Configure::read('AuthorizeDotNet.username');
+		$this->AuthorizeDotNet->_data['x_Password'] = Configure::read('AuthorizeDotNet.password');
 	}
 
 }

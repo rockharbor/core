@@ -21,4 +21,6 @@ class DATABASE_CONFIG {
 		'database' => 'database_test'
 	);
 }
-?>
+
+Configure::write('AuthorizeDotNet.username', '<USERNAME>');
+Configure::write('AuthorizeDotNet.password', '<PASSWORD>');

@@ -33,19 +33,6 @@ App::import('Model', 'User');
 class AuthorizeDotNetComponent extends Object {
 
 /**
- * Authorize.net login credentials
- *
- * @var array
- * @access protected
- */
-	var $_credentials = array(
-		'username' 	=> '7u9e6TuTw',        // authorize.net username
-		'password' 	=> '95MvJs8wP54975qL',    // authorize.net password
-		'useragent' => 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)',    // browser to identify ourselves as
-		'refer'		=> ''
-	);
-
-/**
  * Data to send to authorize.net
  *
  * @var array
@@ -176,8 +163,8 @@ class AuthorizeDotNetComponent extends Object {
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $this->_formatFields($fields));
 
 		curl_setopt ($ch, CURLOPT_TIMEOUT, 120);
-		curl_setopt($ch, CURLOPT_USERAGENT, $this->_credentials['useragent']);
-		curl_setopt($ch, CURLOPT_REFERER, $this->_credentials['refer']);
+		curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)');
+		curl_setopt($ch, CURLOPT_REFERER, $_SERVER['REQUEST_URI']);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);	
 					
 		/* we set CURL to return the response, so we capture it in $buffer */
@@ -232,12 +219,9 @@ class AuthorizeDotNetComponent extends Object {
 
 		$this->_data['x_Merchant_Email'] = $user['Profile']['primary_email'];
 
-		// referrer url to report to authorize.net
-		$this->_credentials['refer'] = $_SERVER['REQUEST_URI'];
-
 		/* Sets the Authorize.net account info */
-		$this->_data['x_Login'] = $this->_credentials['username'];
-		$this->_data['x_Password'] = $this->_credentials['password'];
+		$this->_data['x_Login'] = Configure::read('AuthorizeDotNet.username');
+		$this->_data['x_Password'] = Configure::read('AuthorizeDotNet.password');
 
 		/* Sets preferences - return info should be pipe (|) delimited */
 		$this->_data['x_Delim_Data'] = 'TRUE';
