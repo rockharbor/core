@@ -76,7 +76,8 @@ class MinistriesController extends AppController {
 				'ChildMinistry' => array(
 					'fields' => array('id', 'name', 'description'),
 					'conditions' => array(
-						'ChildMinistry.private' => $private ? array(1, 0) : 0
+						'ChildMinistry.private' => $private ? array(1, 0) : 0,
+						'ChildMinistry.active' => 1
 					)
 				),
 				'ParentMinistry' => array(
