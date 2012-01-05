@@ -34,6 +34,25 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 
+	function testView() {
+		$this->loadFixtures('Group');
+		
+		$vars = $this->testAction('/ministries/view/Ministry:3');
+		$result = $vars['ministry']['Ministry']['id'];
+		$this->assertEqual($result, 3);
+		
+		$result = $vars['ministry']['ChildMinistry'][0]['id'];
+		$this->assertEqual($result, 5);
+		
+		$this->su(array('Group' => array('id' => 8)));
+		$vars = $this->testAction('/ministries/view/Ministry:3');
+		
+		$result = $vars['ministry']['Ministry']['id'];
+		$this->assertEqual($result, 3);
+		
+		$this->assertTrue(empty($vars['ministry']['ChildMinistry']));
+	}
+
 	function testBulkEdit() {
 		$this->Ministries->Session->write('MultiSelect.test', array(
 			'selected' => array(1,4,5),

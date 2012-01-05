@@ -63,6 +63,8 @@ class MinistriesController extends AppController {
 			$this->cakeError('error404');
 		}
 		
+		$private = $this->Ministry->Leader->User->Group->canSeePrivate($this->activeUser['Group']['id']);
+		
 		$ministry = $this->Ministry->find('first', array(
 			'conditions' => array(
 				'Ministry.id' => $id
@@ -72,7 +74,10 @@ class MinistriesController extends AppController {
 					'fields' => array('id', 'name')
 				),
 				'ChildMinistry' => array(
-					'fields' => array('id', 'name', 'description')
+					'fields' => array('id', 'name', 'description'),
+					'conditions' => array(
+						'ChildMinistry.private' => $private ? array(1, 0) : 0
+					)
 				),
 				'ParentMinistry' => array(
 					'fields' => array('id', 'name')
@@ -81,7 +86,7 @@ class MinistriesController extends AppController {
 			)
 		));
 
-		if ($ministry['Ministry']['private'] && !$this->Ministry->Leader->User->Group->canSeePrivate($this->activeUser['Group']['id'])) {
+		if ($ministry['Ministry']['private'] && !$private) {
 			$this->cakeError('privateItem', array('type' => 'Ministry'));
 		}
 

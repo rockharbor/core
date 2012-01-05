@@ -37,7 +37,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 		$results = $vars['userCounts']['involved'];
 		$this->assertEqual($results, 4);
 		$results = $vars['ministryCounts']['active'];
-		$this->assertEqual($results, 2);
+		$this->assertEqual($results, 3);
 		$results = $vars['involvementCounts']['Event']['involved'];
 		$this->assertEqual($results, 3);
 		$results = $vars['involvementCounts']['Group']['total'];
@@ -224,7 +224,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 		
 		$results = Set::extract('/Ministry/name', $vars['results']);
 		sort($results);
-		$expected = array('All Church', 'Alpha', 'Communications', 'Downtown Reach');
+		$expected = array('All Church', 'Alpha', 'Communications');
 		$this->assertEqual($results, $expected);
 	}
 

@@ -76,7 +76,7 @@ class MinistryFixture extends CakeTestFixture {
 			'id' => 5,
 			'name' => 'Downtown Reach',
 			'description' => 'Connecting with the Fullerton peeps',
-			'parent_id' => null,
+			'parent_id' => 3,
 			'lft' => 8,
 			'rght' => 9,
 			'campus_id' => 2,
