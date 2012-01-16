@@ -37,7 +37,8 @@
 		array(
 			'routeClass' => 'SluggableRoute',
 			'models' => array('User', 'Ministry', 'Involvement', 'Campus'),
-			'controller' => implode('|', $controllers)
+			'controller' => implode('|', $controllers),
+			'prependPk' => true
 		)
 	);
 	
