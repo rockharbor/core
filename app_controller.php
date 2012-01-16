@@ -180,9 +180,6 @@ class AppController extends Controller {
 		} else {
 			$this->layout = 'public';
 		}
-
-		// don't cache - when a user leaves and reopens after the session expires, they still saw a page instead of being redirected
-		$this->disableCache();
 			
 		// use custom authentication (password encrypt/decrypt)
 		$this->Auth->authenticate = new User();

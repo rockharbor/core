@@ -70,6 +70,9 @@ class UsersController extends AppController {
  * @todo Restrict login to users older than 12 (use Auth.userScope?)
  */
 	function login($username = null) {
+		// don't cache login page so _Tokens don't expire and blackhole
+		$this->disableCache();
+		
 		// check for remember me checkbox
 		if (!empty($this->data) && $this->data['User']['remember_me']) {
 			unset($this->data['User']['remember_me']);
