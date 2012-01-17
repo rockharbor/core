@@ -15,7 +15,7 @@ foreach ($events as $event) {
 				'controller' => 'involvements',
 				'action' => 'view',
 				'Involvement' => $event['Involvement']['id']
-				)
+				), true
 			)
 		);
 	}
