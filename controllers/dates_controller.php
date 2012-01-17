@@ -124,10 +124,13 @@ class DatesController extends AppController {
 			}
 		}
 		
-		$range = array(
-			'start' => date('Y-m-d H:i', $this->params['url']['start']),
-			'end' => date('Y-m-d H:i', $this->params['url']['end']) 
-		);
+		$options = array();
+		if (isset($this->params['url']['start'])) {
+			$options['start'] = $this->params['url']['start'];
+		}
+		if (isset($this->params['url']['end'])) {
+			$options['end'] = $this->params['url']['end'];
+		}
 		
 		// currently we're grabbing this event. we want to grab all public and published
 		// events, then pair them with their dates
@@ -141,7 +144,7 @@ class DatesController extends AppController {
 			'Date.start_date <>' => null
 		);
 		if ($size == 'mini') {
-			$range['single'] = true;
+			$options['single'] = true;
 		}
 		
 		// get all involvements and their dates within the range
@@ -153,7 +156,7 @@ class DatesController extends AppController {
 		));
 
 		foreach ($involvements as $involvement) {
-			$involvement_dates = $this->Date->generateDates($involvement['Involvement']['id'], $range);
+			$involvement_dates = $this->Date->generateDates($involvement['Involvement']['id'], $options);
 
 			if (!empty($involvement_dates)) {
 				$events[] = array_merge($involvement, array('dates' => $involvement_dates));
