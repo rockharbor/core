@@ -561,6 +561,79 @@ class DateTestCase extends CoreTestCase {
 		$results = $this->Date->_generateRecurringDates($date, $range);
 		$this->assertEqual($results, array());
 	}
+	
+	function testRangeAsTime() {
+		$date = array(
+			'Date' => array(
+				'start_date' => '2010-04-05',
+				'end_date' => '2010-05-20',
+				'start_time' => '08:00:00',
+				'end_time' => '11:00:00',
+				'all_day' => 0,
+				'permanent' => 0,
+				'recurring' => 1,
+				'recurrance_type' => 'md',
+				'frequency' => 1,
+				'weekday' => 2,
+				'day' => 12,
+				'exemption' => 0,
+				'offset' => 2
+			)
+		);
+		
+		$range = array(
+			'start' => mktime(0, 0, 0, 5, 1, 2010),
+			'end' => mktime(0, 0, 0, 7, 1, 2010)
+		);
+		$results = $this->Date->_generateRecurringDates($date, $range);
+		$results = Set::extract('/Date/start_date', $results);
+		$expected = array(
+			'2010-05-12'
+		);
+		$this->assertEqual($results, $expected);
+		
+		$range = array(
+			'start' => (string)mktime(0, 0, 0, 5, 1, 2010),
+			'end' => (string)mktime(0, 0, 0, 7, 1, 2010)
+		);
+		$results = $this->Date->_generateRecurringDates($date, $range);
+		$results = Set::extract('/Date/start_date', $results);
+		$expected = array(
+			'2010-05-12'
+		);
+		$this->assertEqual($results, $expected);
+	}
+	
+	function testRangeAsString() {
+		$date = array(
+			'Date' => array(
+				'start_date' => '2010-04-05',
+				'end_date' => '2010-05-20',
+				'start_time' => '08:00:00',
+				'end_time' => '11:00:00',
+				'all_day' => 0,
+				'permanent' => 0,
+				'recurring' => 1,
+				'recurrance_type' => 'md',
+				'frequency' => 1,
+				'weekday' => 2,
+				'day' => 12,
+				'exemption' => 0,
+				'offset' => 2
+			)
+		);
+		
+		$range = array(
+			'start' => date('Y-m-d H:i', mktime(0, 0, 0, 5, 1, 2010)),
+			'end' => date('Y-m-d H:i', mktime(0, 0, 0, 7, 1, 2010))
+		);
+		$results = $this->Date->_generateRecurringDates($date, $range);
+		$results = Set::extract('/Date/start_date', $results);
+		$expected = array(
+			'2010-05-12'
+		);
+		$this->assertEqual($results, $expected);
+	}
 
 }
 ?>

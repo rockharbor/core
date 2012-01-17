@@ -226,10 +226,10 @@ class Date extends AppModel {
 	function _generateRecurringDates($masterDate, $range, $limit = null, $exemptions = array()) {
 		$dates = array();
 		
-		if (isset($range['start']) && !is_int($range['start'])) {
+		if (isset($range['start']) && !is_numeric($range['start'])) {
 			$range['start'] = strtotime($range['start']);
 		}
-		if (isset($range['end']) && !is_int($range['end'])) {
+		if (isset($range['end']) && !is_numeric($range['end'])) {
 			$range['end'] = strtotime($range['end']);
 		}
 
