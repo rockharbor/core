@@ -145,8 +145,8 @@ class Date extends AppModel {
 
 		// default is this month
 		$default = array(
-			'start' => strtotime('now'),
-			'end' => strtotime('last day')
+			'start' => strtotime('first day of this month'),
+			'end' => strtotime('last day of this month')
 		);
 		$range = array();
 		$limit = null;
