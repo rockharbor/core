@@ -114,16 +114,11 @@
 				<div class="grid_3 omega">
 					<div id="user_calendar" class="box">
 						<?php
-						$this->Js->buffer('CORE.register("user_calendar", "user_calendar", "/dates/calendar/model:User/User:'.$profile['User']['id'].'")');
-						echo $this->requestAction('/dates/calendar/model:User/User:'.$profile['User']['id'], array(
-							'renderAs' => 'ajax',
-							'bare' => false,
-							'return',
-							'named' => array(
+						echo $this->element('calendar', array(
+							'filters' => array(
 								'model' => 'User',
 								'User' => $profile['User']['id']
-							),
-							'data' => null
+							)
 						));
 						?>
 					</div>
