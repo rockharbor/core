@@ -38,6 +38,7 @@ class DatesController extends AppController {
  * @access private
  */ 
 	function beforeFilter() {
+		$this->Auth->allow('calendar');
 		parent::beforeFilter();
 	}
 
