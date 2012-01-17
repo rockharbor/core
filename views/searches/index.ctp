@@ -56,8 +56,7 @@ if (!empty($this->data['Search']['query'])) {
 	</div>
 <?php endif; ?>
 <?php if (!empty($users)) { ?>
-<div class="hr">
-	<div class="legend">People</div>
+	<h3>Users</h3>
 	<?php
 	$i = 0;
 	foreach ($users as $user):
@@ -97,42 +96,36 @@ if (!empty($this->data['Search']['query'])) {
 		echo '</div>';
 	}
 	?>
-</div>
-<div class="grid_10 alpha omega" style="text-align: right">
-	<?php echo $this->Permission->link('Advanced Search', array('action' => 'user')); ?>
-</div>
+	<?php echo $this->Permission->link('Advanced Search', array('action' => 'user'), array('class' => 'button')); ?>
+	<hr />
 <?php }
 
 if (!empty($ministries)) { ?>
-<div class="hr">
-	<div class="legend">Ministries</div>
+	<h3>Ministries</h3>
+	<div class="subministries clearfix">
 <?php
 foreach ($ministries as $ministry):
 ?>
-	<p>
+	<div class="subministry">
 <?php 
-	echo $this->Formatting->flags('Ministry', $ministry);
-	$link = $this->Html->link($ministry['Ministry']['name'],
+	echo $this->Html->link($ministry['Ministry']['name'].$this->Formatting->flags('Ministry', $ministry),
 		array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $ministry['Ministry']['id']),
-		array('escape' => false)
+		array('escape' => false, 'class' => 'subministry-title')
 	);
-	echo $this->Html->tag('strong', $link);
-	echo ':&nbsp;';
-	echo $this->Text->excerpt($ministry['Ministry']['description'], $this->data['Search']['query'], 100);
-?></p>
+	echo '<hr />';
+	echo $this->Html->tag('p', $this->Text->excerpt($ministry['Ministry']['description'], $this->data['Search']['query'], 100).'&nbsp;');
+?></div>
 
 <?php	
 endforeach;
 ?>
-</div>
-<div class="grid_10 alpha omega" style="text-align: right">
-	<?php echo $this->Permission->link('Advanced Search', array('action' => 'ministry')); ?>
-</div>
+	</div>
+	<?php echo $this->Permission->link('Advanced Search', array('action' => 'ministry'), array('class' => 'button')); ?>
+	<hr />
 <?php }
 
 if (!empty($involvements)) { ?>
-<div class="hr">
-	<div class="legend">Involvement Opportunities</div>
+	<h3>Involvement Opportunities</h3>
 	<div class="grid_10 alpha omega">
 	<?php
 	$i = 0;
@@ -140,13 +133,11 @@ if (!empty($involvements)) { ?>
 		$class = ($i % 2 == 0) ? 'alpha' : 'omega';
 		$i++;
 		echo $this->element('involvement_column', compact('involvement', 'class'));
-endforeach;
-?>
+	endforeach;
+	?>
 	</div>
-</div>
-<div class="grid_10 alpha omega" style="text-align: right">
-	<?php echo $this->Permission->link('Advanced Search', array('action' => 'involvement')); ?>
-</div>
+	<?php echo $this->Permission->link('Advanced Search', array('action' => 'involvement'), array('class' => 'button')); ?>
+	<hr />
 <?php }
 	
 if (empty($users) && empty($ministries) && empty($involvements)) { ?>

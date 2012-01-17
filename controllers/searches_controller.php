@@ -202,7 +202,7 @@ class SearchesController extends AppController {
 							'fields' => array('id', 'name')
 						)
 					),
-					'limit' => 5
+					'limit' => 6
 				));
 			}
 		}
