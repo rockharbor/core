@@ -13,7 +13,7 @@ echo $this->Form->end('Jump');
 $calendarid = uniqid();
 echo $this->element('calendar', array(
 	'id' => $calendarid,
-	'filters' => $filters,
+	'filters' => $this->passedArgs,
 	'size' => $size
 ));
 

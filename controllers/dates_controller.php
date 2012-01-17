@@ -60,25 +60,21 @@ class DatesController extends AppController {
  *
  * ### Passed Args:
  *
- * - `model` A model to filter by
- * - `model.id` The model's id to filter by
+ * If any of the three searchable models (User, Ministry, or Involvement) are
+ * passed, they are used as filters. The named parameter value can be a
+ * comma-delimited list of ids.
+ * 
+ * For example:
+ * {{{
+ * /dates/calendar/User:1,2,3/Ministry:1/Involvement:5,6 
+ * }}}
+ * The above would pull all involvements for users 1, 2 and 3, include all 
+ * involvements for ministry 1 and include the two involvements 5 and 6.
  *
  * @param string $size A mini or full-size calendar
  */ 
 	function calendar($size = 'mini') {
-		$filters = array();
-		
-		if (isset($this->passedArgs['model'])) {
-			$filterModel = $this->passedArgs['model'];
-			
-			if (isset($this->passedArgs[$this->passedArgs['model']])) {
-				$filterModelId = $this->passedArgs[$this->passedArgs['model']];
-				$filters['model'] = $filterModel;
-				$filters[$filterModel] = $filterModelId;
-			}
-		}
-		
-		$this->set(compact('filters', 'size'));
+		$this->set(compact('size'));
 		
 		// if it's not the calendar calling, just leave. there's nothing 
 		// special to pass to the calendar view
@@ -87,40 +83,45 @@ class DatesController extends AppController {
 		}
 				
 		// check for filtering and add extra conditions
-		$filter = array();
-		$link = array('Date');
-		if (isset($this->passedArgs['model']) && isset($this->passedArgs[$this->passedArgs['model']])) {
-			switch ($this->passedArgs['model']) {
-				case 'User':
-					$leaderOf = $this->Date->Involvement->Roster->Involvement->Leader->find('all', array(
-						'fields' => array(
-							'Leader.id',
-							'Leader.model_id'				
-						),
-						'conditions' => array(
-							'Leader.model' => 'Involvement',
-							'Leader.user_id' => $this->passedArgs[$this->passedArgs['model']]
-						)
-					));
-					$leaderIds = Set::extract('/Leader/model_id', $leaderOf);
-					$memberOf = $this->Date->Involvement->Roster->find('all', array(
-						'fields' => array(
-							'Roster.id',
-							'Roster.involvement_id'
-						),
-						'conditions' => array(
-							'Roster.user_id' => $this->passedArgs[$this->passedArgs['model']]
-						)
-					));
-					$memberIds = Set::extract('/Roster/involvement_id', $memberOf);
-					$filter['Involvement.id'] = array_merge($leaderIds, $memberIds);
-				break;
-				case 'Involvement':
-					$filter = array(
-						'Involvement.id' => $this->passedArgs[$this->passedArgs['model']]
-					);
-				break;
-			}			
+		$conditions = array();
+		$involvementIds = array();
+		foreach (array('User', 'Ministry', 'Involvement') as $model) {
+			if (isset($this->passedArgs[$model])) {
+				$this->passedArgs[$model] = preg_replace('/[^\d\,]/', '', $this->passedArgs[$model]);
+				$ids = explode(',', $this->passedArgs[$model]);
+				switch ($model) {
+					case 'User':
+						$leaderOf = $this->Date->Involvement->Roster->Involvement->Leader->find('all', array(
+							'fields' => array(
+								'Leader.id',
+								'Leader.model_id'				
+							),
+							'conditions' => array(
+								'Leader.model' => 'Involvement',
+								'Leader.user_id' => $ids
+							)
+						));
+						$leaderIds = Set::extract('/Leader/model_id', $leaderOf);
+						$memberOf = $this->Date->Involvement->Roster->find('all', array(
+							'fields' => array(
+								'Roster.id',
+								'Roster.involvement_id'
+							),
+							'conditions' => array(
+								'Roster.user_id' => $ids
+							)
+						));
+						$memberIds = Set::extract('/Roster/involvement_id', $memberOf);
+						$involvementIds = array_merge($involvementIds, $leaderIds, $memberIds);
+					break;
+					case 'Involvement':
+						$involvementIds = array_merge($involvementIds, $ids);
+					break;
+					case 'Ministry':
+						$conditions['and']['or']['Involvement.ministry_id'] = $ids;
+					break;
+				}			
+			}
 		}
 		
 		$range = array(
@@ -131,8 +132,9 @@ class DatesController extends AppController {
 		// currently we're grabbing this event. we want to grab all public and published
 		// events, then pair them with their dates
 		$events = array();
-		
-		$conditions = $filter;
+		if (!empty($involvementIds)) {
+			$conditions['and']['or']['Involvement.id'] = $involvementIds;
+		}
 		$conditions['Involvement.active'] = true;
 		$conditions['Involvement.private'] = false;
 		$conditions[] = array(
@@ -145,7 +147,7 @@ class DatesController extends AppController {
 		// get all involvements and their dates within the range
 		$involvements = $this->Date->Involvement->find('all', array(
 			'fields' => array('id', 'name'),
-			'link' => $link,
+			'link' => array('Date'),
 			'conditions' => $conditions,
 			'group' => 'Involvement.id'
 		));
