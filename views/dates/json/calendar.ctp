@@ -6,7 +6,7 @@ $e = 0;
 foreach ($events as $event) {	
 	foreach ($event['dates'] as $date) {
 		$fcEvents[] = array(
-			'id' => $date['Involvement']['id'],
+			'id' => $event['Involvement']['id'],
 			'title' => $event['Involvement']['name'],
 			'allDay' => ($date['Date']['all_day']==1),
 			'start' => date('Y-m-d H:i', strtotime($date['Date']['start_date'].' '.$date['Date']['start_time'])),
