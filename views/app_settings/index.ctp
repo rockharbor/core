@@ -38,6 +38,8 @@
 			<dd><?php
 			if (isset($appSetting['AppSetting']['readable_value'])) {
 				echo $appSetting['AppSetting']['readable_value'];
+			} elseif ($appSetting['AppSetting']['type'] == 'html') {
+				echo htmlentities($appSetting['AppSetting']['value']);
 			} else {
 				echo $appSetting['AppSetting']['value'];
 			}

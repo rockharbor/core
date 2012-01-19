@@ -109,12 +109,7 @@ class AppSettingsController extends AppController {
 			$this->cakeError('error404');
 		}
 		if (!empty($this->data)) {
-			$this->AppSetting->Behaviors->detach('Sanitizer.Sanitize');
-
 			switch($this->data['AppSetting']['type']) {
-				case 'html':
-					$this->data['AppSetting']['value'] = Sanitize::html($this->data['AppSetting']['value']);
-				break;
 				case 'string':
 					$this->data['AppSetting']['value'] = Sanitize::clean($this->data['AppSetting']['value'], array('remove_html' => true));
 				break;

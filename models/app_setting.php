@@ -58,5 +58,12 @@ class AppSetting extends AppModel {
 			'conditions' => array('Image.model' => 'AppSetting', 'Image.group' => 'Image')
 		)
 	);
+	
+/**
+ * Don't use Sanitizer.Sanitize behavior
+ * 
+ * @var mixed
+ */
+	var $sanitize = false;
 }
 ?>

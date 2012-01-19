@@ -54,14 +54,14 @@ class AppSettingsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($this->AppSettings->AppSetting->field('value'), 'Other Church');
 	}
 
-	function testSanitizeHtml() {
+	function testHtml() {
 		$data = $this->AppSettings->AppSetting->read(null, 1);
 		$data['AppSetting']['value'] = '<span>Other Church</span>';
 		$this->testAction('/app_settings/edit/1', array(
 			'data' => $data
 		));
 		$this->AppSettings->AppSetting->id = 1;
-		$this->assertEqual($this->AppSettings->AppSetting->field('value'), '&lt;span&gt;Other Church&lt;/span&gt;');
+		$this->assertEqual($this->AppSettings->AppSetting->field('value'), '<span>Other Church</span>');
 	}
 
 	function testSanitizeString() {
