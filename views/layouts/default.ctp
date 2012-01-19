@@ -51,6 +51,12 @@
 		echo $this->Js->writeBuffer();
 		echo $this->AssetCompress->includeAssets(Configure::read('debug') == 0);
 		echo $scripts_for_layout;
+		
+		// analytics
+		$trackingcode = Core::read('general.tracking_code');
+		if (!empty($trackingcode)) {
+			echo $trackingcode;
+		}
 	?>
 </head>
 <body>

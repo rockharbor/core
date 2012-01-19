@@ -148,6 +148,13 @@ class AppSettingRecords extends Records {
 			'value' => 2,
 			'type' => 'integer'
 		),
+		array(
+			'id' => 20,
+			'name' => 'general.tracking_code',
+			'description' => 'Analytic tracking JavaScript code for the site (i.e., Google Analytics, StatCounter, etc.). Exclude script tags.',
+			'value' => null,
+			'type' => 'html'
+		),
 	);
 
 }

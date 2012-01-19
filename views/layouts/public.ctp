@@ -56,7 +56,12 @@
 		$this->Js->buffer('CORE.initUI()');
 		echo $this->Js->writeBuffer();
 		echo $scripts_for_layout;
-
+		
+		// analytics
+		$trackingcode = Core::read('general.tracking_code');
+		if (!empty($trackingcode)) {
+			echo $trackingcode;
+		}
 	?>
 </head>
 <body>
