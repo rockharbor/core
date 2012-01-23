@@ -190,18 +190,8 @@ class NotifierComponent extends Object {
 		$options = array_merge($default, $options);
 		extract($options);
 
-		$this->User->contain(array('Profile'));
 		// set system defaults if no 'from' user
-		if (!$from) {
-			$from = array(
-				'Profile' => array(
-					'name' => Core::read('general.site_name_tagless'),
-					'primary_email' => Core::read('notifications.site_email')
-				)
-			);
-		} else {
-			$from = $this->User->read(null, $from);
-		}
+		$from = $this->_normalizeUser($from);
 	
 		$this->Controller->set('toUser', $user);
 		$this->QueueEmail->smtpOptions = $this->smtp;
@@ -269,6 +259,59 @@ class NotifierComponent extends Object {
 		$content = $View->element('notification' . DS . $template, compact('plugin'), true);
 		$content = $View->renderLayout($content);		
 		return $content;
+	}
+
+/**
+ * Normalizes a user argument for the purposes of sending an email
+ * 
+ * @param mixed $user Can be a user id, an email address, or a user array with
+ * the proper keys
+ * @return array Array containing user 'name' and 'primary_email' values
+ */
+	function _normalizeUser($user = null) {
+		if ($user === null) {
+			$user = array(
+				'Profile' => array(
+					'name' => Core::read('general.site_name_tagless'),
+					'primary_email' => Core::read('notifications.site_email')
+				)
+			);
+		} elseif (is_string($user)) {
+			$user = array(
+				'Profile' => array(
+					'name' => $user,
+					'primary_email' => $user
+				)
+			);
+		} elseif (is_numeric($user)) {
+			$user = $this->User->find('first', array(
+				'fields' => array(
+					'id'
+				),
+				'conditions' => array(
+					'User.id' => $user
+				),
+				'contain' => array(
+					'Profile' => array(
+						'fields' => array('primary_email', 'first_name', 'last_name')
+					)
+				)
+			));
+			$user = array(
+				'User' => array(
+					'id' => $user['User']['id']
+				),
+				'Profile' => array(
+					'name' => $user['Profile']['first_name'].' '.$user['Profile']['last_name'],
+					'primary_email' => $user['Profile']['primary_email']
+				)
+			);
+		} else {
+			if (!isset($user['Profile']['name']) || !isset($user['Profile']['primary_email'])) {
+				$user = null;
+			}
+		}
+		return $user;
 	}
 
 }

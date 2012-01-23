@@ -39,6 +39,58 @@ class NotifierTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 	
+	function testNormalizeUser() {
+		$results = $this->Notifier->_normalizeUser('email@example.com');
+		$expected = array(
+			'Profile' => array(
+				'name' => 'email@example.com',
+				'primary_email' => 'email@example.com'
+			)
+		);
+		$this->assertEqual($results, $expected);
+		
+		$results = $this->Notifier->_normalizeUser(1);
+		$expected = array(
+			'User' => array(
+				'id' => 1
+			),
+			'Profile' => array(
+				'name' => 'Jeremy Harris',
+				'primary_email' => 'jharris@rockharbor.org'
+			)
+		);
+		$this->assertEqual($results, $expected);
+		
+		$results = $this->Notifier->_normalizeUser(array(
+			'Profile' => array(
+				'name' => 'jeremy',
+				'primary_email' => 'jeremy@42pixels.com'
+			)
+		));
+		$expected = array(
+			'Profile' => array(
+				'name' => 'jeremy',
+				'primary_email' => 'jeremy@42pixels.com'
+			)
+		);
+		$this->assertEqual($results, $expected);
+		$results = $this->Notifier->_normalizeUser();
+		$expected = array(
+			'Profile' => array(
+				'name' => 'CORE',
+				'primary_email' => 'core@rockharbor.org'
+			)
+		);
+		$this->assertEqual($results, $expected);
+		
+		$results = $this->Notifier->_normalizeUser(array(
+			'Profile' => array(
+				'name' => 'jeremy'
+			)
+		));
+		$this->assertNull($results);
+	}
+	
 	function testInvite() {
 		$this->loadFixtures('Invitation', 'InvitationsUser');
 		
