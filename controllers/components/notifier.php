@@ -211,6 +211,7 @@ class NotifierComponent extends Object {
 		}
 		if (!$this->QueueEmail->send($body)) {
 			CakeLog::write('smtp', $this->QueueEmail->smtpError);
+			CakeLog::write('smtp', print_r($this->QueueEmail, true));
 			return false;
 		}
 
@@ -278,13 +279,6 @@ class NotifierComponent extends Object {
 					'primary_email' => Core::read('notifications.site_email')
 				)
 			);
-		} elseif (is_string($user)) {
-			$user = array(
-				'Profile' => array(
-					'name' => $user,
-					'primary_email' => $user
-				)
-			);
 		} elseif (is_numeric($user)) {
 			$user = $this->User->find('first', array(
 				'fields' => array(
@@ -308,6 +302,14 @@ class NotifierComponent extends Object {
 					'primary_email' => $user['Profile']['primary_email']
 				)
 			);
+		} elseif (is_string($user)) {
+			$user = array(
+				'Profile' => array(
+					'name' => $user,
+					'primary_email' => $user
+				)
+			);
+		
 		} else {
 			if (!isset($user['Profile']['name']) || !isset($user['Profile']['primary_email'])) {
 				$user = null;

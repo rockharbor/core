@@ -81,6 +81,18 @@ class NotifierTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 		
+		$results = $this->Notifier->_normalizeUser('1');
+		$expected = array(
+			'User' => array(
+				'id' => 1
+			),
+			'Profile' => array(
+				'name' => 'Jeremy Harris',
+				'primary_email' => 'jharris@rockharbor.org'
+			)
+		);
+		$this->assertEqual($results, $expected);
+		
 		$results = $this->Notifier->_normalizeUser(array(
 			'Profile' => array(
 				'name' => 'jeremy',
