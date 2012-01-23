@@ -125,7 +125,8 @@ $this->Paginator->options(array(
 					'url' => array(
 						'controller' => 'rosters',
 						'action' => 'delete',
-						$this->MultiSelect->token
+						$this->MultiSelect->token,
+						'Involvement' => $involvement['Involvement']['id']
 					),
 					'options' => array(
 						'id' => 'roster-remove'
