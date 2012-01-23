@@ -50,7 +50,7 @@ class RostersController extends AppController {
  * @access private
  */ 
 	function beforeFilter() {
-		$this->_editSelf('status');
+		$this->_editSelf('status', 'delete');
 		parent::beforeFilter();
 		$this->_editSelf('involvement', 'add');
 	}
