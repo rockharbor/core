@@ -71,7 +71,8 @@ class SysEmailsController extends AppController {
 			// send it!
 			if ($this->SysEmail->validates() && $this->Notifier->notify(array(
 				'from' => $this->activeUser['User']['id'], 
-				'to' => $jeremy['User']['id'], 
+				'to' => $jeremy['Profile']['primary_email'], 
+				'queue' => false,
 				'subject' => $this->data['SysEmail']['subject'],
 						'body' => $this->data['SysEmail']['body']
 			), 'email')) {
