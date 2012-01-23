@@ -185,7 +185,8 @@ class NotifierComponent extends Object {
 			'template' => 'default',
 			'layout' => 'notifications',
 			'body' => null,
-			'attachments' => array()
+			'attachments' => array(),
+			'queue' => true
 		);
 		$options = array_merge($default, $options);
 		extract($options);
@@ -200,6 +201,7 @@ class NotifierComponent extends Object {
 		$this->QueueEmail->layout = $layout;
 		$this->QueueEmail->template = $template;
 		$this->QueueEmail->attachments = $attachments;
+		$this->QueueEmail->queue = $queue;
 		$this->QueueEmail->from = $from['Profile']['name'].' <'.$from['Profile']['primary_email'].'>';
 		$this->QueueEmail->subject = Core::read('notifications.email_subject_prefix').' '.$subject;
 		if (!empty($user['Profile']['primary_email']) && !empty($user['Profile']['name'])) {

@@ -4,7 +4,7 @@ App::import('Model', array('Notification', 'Invitation'));
 App::import('Component', array('Notifier', 'QueueEmail.QueueEmail'));
 
 Mock::generatePartial('NotifierComponent', 'MockNotifierNotifierComponent', array('_render'));
-Mock::generatePartial('QueueEmailComponent', 'MockQueueEmailComponent', array('send'));
+Mock::generatePartial('QueueEmailComponent', 'MockQueueEmailComponent', array('__smtp', '_db', '__mail'));
 
 class TestNotifierController extends Controller {
 	
@@ -28,7 +28,7 @@ class NotifierTestCase extends CoreTestCase {
 		$this->Notifier->setReturnValue('_render', 'A notification');
 		$this->Notifier->initialize($this->Controller, array());		
 		$this->Notifier->QueueEmail = new MockQueueEmailComponent();
-		$this->Notifier->QueueEmail->setReturnValue('send', true);
+		$this->Notifier->QueueEmail->initialize($this->Controller, array());
 	}
 
 	function endTest() {
@@ -37,6 +37,26 @@ class NotifierTestCase extends CoreTestCase {
 		unset($this->Notification);
 		unset($this->Controller);
 		ClassRegistry::flush();
+	}
+	
+	function testNoQueue() {
+		$this->Notifier->QueueEmail->setReturnValue('_db', true);
+		$this->Notifier->QueueEmail->setReturnValue('__smtp', true);
+		$this->Notifier->QueueEmail->expectOnce('_db');
+		$this->Notifier->QueueEmail->expectOnce('__smtp');
+		
+		// sends now
+		$this->Controller->set('ministry', 1);
+		$this->assertTrue($this->Notifier->notify(array(
+			'to' => 1,
+			'template' => 'ministries_edit',
+			'queue' => false
+		)), 'email');
+		// queues
+		$this->assertTrue($this->Notifier->notify(array(
+			'to' => 1,
+			'template' => 'ministries_edit'
+		)), 'email');
 	}
 	
 	function testNormalizeUser() {
@@ -92,6 +112,7 @@ class NotifierTestCase extends CoreTestCase {
 	}
 	
 	function testInvite() {
+		$this->Notifier->QueueEmail->setReturnValue('_db', true);
 		$this->loadFixtures('Invitation', 'InvitationsUser');
 		
 		$this->assertFalse($this->Notifier->invite(array(
@@ -147,6 +168,8 @@ class NotifierTestCase extends CoreTestCase {
 	}
 
 	function testNotify() {
+		$this->Notifier->QueueEmail->setReturnValue('_db', true);
+		$this->Controller->set('ministry', 1);
 		$this->assertTrue($this->Notifier->notify(array(
 			'to' => 1,
 			'template' => 'ministries_edit'
@@ -158,6 +181,7 @@ class NotifierTestCase extends CoreTestCase {
 	}
 
 	function testSend() {
+		$this->Notifier->QueueEmail->setReturnValue('_db', true);
 		$this->Notification->User->contain(array('Profile'));
 		$user = $this->Notification->User->read(null, 1);
 
@@ -181,6 +205,7 @@ class NotifierTestCase extends CoreTestCase {
 	}
 
 	function testSave() {
+		$this->Notifier->QueueEmail->setReturnValue('_db', true);
 		$this->Notification->User->contain(array('Profile'));
 		$user = $this->Notification->User->read(null, 1);
 
