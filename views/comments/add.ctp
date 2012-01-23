@@ -11,7 +11,9 @@
 			'label' => 'Comment Type',
 			'selected' => $activeUser['Group']['id']
 		));
-		echo $this->Form->input('comment');
+		echo $this->Form->input('comment', array(
+			'type' => 'textarea'
+		));
 		echo $this->Form->hidden('created_by', array(
 			'value' => $activeUser['User']['id']
 		));

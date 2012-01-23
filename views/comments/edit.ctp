@@ -9,7 +9,9 @@
 		echo $this->Form->input('group_id', array(
 			'label' => 'Comment Type'
 		));
-		echo $this->Form->input('comment');
+		echo $this->Form->input('comment', array(
+			'type' => 'textarea'
+		));
 	?>
 	</fieldset>
 <?php 
