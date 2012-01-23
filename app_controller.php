@@ -398,6 +398,13 @@ class AppController extends Controller {
  * created on a case by case basis depending on if the user qualifies. For example, if the
  * active user owns the record they are trying to edit, they are added to the Owner
  * conditional group. These groups are not persistent.
+ * 
+ * If a URL contains more than one conditional group key (User, Involvement,
+ * Ministry and Campus) the lower of the keys will be used to check permissions.
+ * So, /involvements/view/Involvement:1/Ministry:5 would check permissions on
+ * involvement 1, ignoring ministry 5. This prevents forging permissions by 
+ * entering a ministry you *are* managing in the URL of an involvement you *aren't*
+ * in order to gain access.
  *
  * @param array $params The parameters to use in the check (default is passedArgs)
  * @param array $user The user to check
@@ -428,13 +435,9 @@ class AppController extends Controller {
 			$Involvement = ClassRegistry::init('Involvement');
 			if ($Involvement->isLeader($user['User']['id'], $params['Involvement'])) {
 				$groups[] = $Group->findByName('Involvement Leader');
-			} else {
-				$Ministry = ClassRegistry::init('Ministry');
-				$ministry_id = $Involvement->read(array('ministry_id'), $params['Involvement']);
-				if ($Ministry->isManager($user['User']['id'], $ministry_id['Involvement']['ministry_id'])) {
-					$groups[] = $Group->findByName('Ministry Manager');
-				}
 			}
+			$involvement = $Involvement->read(array('id', 'ministry_id'), $params['Involvement']);
+			$params['Ministry'] = $involvement['Involvement']['ministry_id'];
 		}
 		
 		// check ministry manager
@@ -443,6 +446,8 @@ class AppController extends Controller {
 			if ($Ministry->isManager($user['User']['id'], $params['Ministry'])) {
 				$groups[] = $Group->findByName('Ministry Manager');
 			}
+			$ministry = $Ministry->read(array('id', 'campus_id'), $params['Ministry']);
+			$params['Campus'] = $ministry['Ministry']['campus_id'];
 		}
 		
 		// check campus manager

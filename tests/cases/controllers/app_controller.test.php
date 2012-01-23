@@ -21,7 +21,7 @@ class AppControllerTestCase extends CoreTestCase {
 		unset($this->App);
 		ClassRegistry::flush();
 	}
-
+	
 	function testSetConditionalGroups() {
 		$this->App->passedArgs = array('User' => 1);
 		$results = $this->App->_setConditionalGroups($this->App->passedArgs, $this->App->activeUser);
@@ -52,14 +52,14 @@ class AppControllerTestCase extends CoreTestCase {
 		$this->App->passedArgs = array('Ministry' => 4);
 		$results = $this->App->_setConditionalGroups($this->App->passedArgs, $this->App->activeUser);
 		$results = Set::extract('/Group/name', $results);
-		$expected = array('Ministry Manager');
+		$expected = array('Ministry Manager', 'Campus Manager');
 		$this->assertEqual($results, $expected);
 
 		$this->App->activeUser['User']['id'] = 1;
 		$this->App->passedArgs = array('Involvement' => 1);
 		$results = $this->App->_setConditionalGroups($this->App->passedArgs, $this->App->activeUser);
 		$results = Set::extract('/Group/name', $results);
-		$expected = array('Involvement Leader');
+		$expected = array('Involvement Leader', 'Ministry Manager', 'Campus Manager');
 		$this->assertEqual($results, $expected);
 		
 		$this->App->activeUser['User']['id'] = 2;
@@ -73,7 +73,23 @@ class AppControllerTestCase extends CoreTestCase {
 		$this->App->passedArgs = array('Involvement' => 1, 'Ministry' => 4);
 		$results = $this->App->_setConditionalGroups($this->App->passedArgs, $this->App->activeUser);
 		$results = $results = Set::extract('/Group/name', $results);
-		$expected = array('Involvement Leader', 'Ministry Manager');
+		$expected = array('Involvement Leader', 'Ministry Manager', 'Campus Manager');
+		$this->assertEqual($results, $expected);
+		
+		$this->App->activeUser['User']['id'] = 1;
+		$this->App->passedArgs = array('Involvement' => 2);
+		$results = $this->App->_setConditionalGroups($this->App->passedArgs, $this->App->activeUser);
+		$results = $results = Set::extract('/Group/name', $results);
+		$expected = array('Campus Manager');
+		$this->assertEqual($results, $expected);
+		
+		// don't let them try to use a permission they have to get to something 
+		// they don't have permission to
+		$this->App->activeUser['User']['id'] = 2;
+		$this->App->passedArgs = array('Involvement' => 2, 'Ministry' => 4);
+		$results = $this->App->_setConditionalGroups($this->App->passedArgs, $this->App->activeUser);
+		$results = $results = Set::extract('/Group/name', $results);
+		$expected = array();
 		$this->assertEqual($results, $expected);
 	}
 
