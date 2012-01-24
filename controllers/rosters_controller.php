@@ -134,7 +134,7 @@ class RostersController extends AppController {
 
 		$roles = $this->Roster->Involvement->Ministry->Role->find('list', array(
 			'conditions' => array(
-				'Role.ministry_id' => $involvement['Involvement']['ministry_id']
+				'Role.id' => $this->Roster->Involvement->Ministry->Role->findRoles($involvement['Involvement']['ministry_id'])
 			)
 		));
 		$rosterStatuses = $this->Roster->RosterStatus->find('list');
@@ -533,7 +533,7 @@ class RostersController extends AppController {
 		
 		$this->set('roles', $this->Roster->Role->find('list', array(
 			'conditions' => array(
-				'ministry_id' => $involvement['Involvement']['ministry_id']
+				'Role.id' => $this->Roster->Involvement->Ministry->Role->findRoles($involvement['Involvement']['ministry_id'])
 			)
 		)));
 		$this->set(compact('involvement', 'user', 'addresses', 'userAddresses', 'paymentOptions', 'involvementPaymentOptions', 'paymentTypes'));
@@ -654,7 +654,7 @@ class RostersController extends AppController {
 		}
 		$roles = $this->Roster->Role->find('list', array(
 			'conditions' => array(
-				'Role.ministry_id' => $ministry['Ministry']['id']
+				'Role.id' => $this->Roster->Involvement->Ministry->Role->findRoles($ministry['Ministry']['id'])
 			)
 		));
 		$this->set(compact('roles', 'ministry'));

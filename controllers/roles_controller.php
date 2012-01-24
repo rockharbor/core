@@ -45,9 +45,12 @@ class RolesController extends AppController {
 
 /**
  * List of roles for a ministry
+ * 
+ * Note: Only shows roles of this ministry
  */
 	function index() {
 		$this->Role->recursive = -1;
+		
 		$this->paginate = array(
 			'conditions' => array(
 				'Role.ministry_id' => $this->passedArgs['Ministry']
@@ -62,15 +65,6 @@ class RolesController extends AppController {
  */
 	function add() {
 		if (!empty($this->data)) {
-			if ($this->data['Role']['copy']) {
-				$subministries = $this->Role->Ministry->children($this->data['Role']['ministry_id']);
-				foreach ($subministries as $subministry) {
-					$this->Role->create();
-					$data = $this->data;
-					$data['Role']['ministry_id'] = $subministry['Ministry']['id'];
-					$this->Role->save($data);
-				}
-			}
 			$this->Role->create();
 			if ($this->Role->save($this->data)) {
 				$this->Session->setFlash('This Role has been created.', 'flash'.DS.'success');
