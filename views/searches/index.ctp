@@ -31,12 +31,11 @@ if (!empty($this->data['Search']['query'])) {
 				'div' => false,
 				'id' => 'SearchFilterActive'
 			));
-			echo $this->Form->input('passed', array(
+			echo $this->Form->input('previous', array(
 				'type' => 'checkbox',
 				'class' => 'toggle',
 				'div' => false,
-				'id' => 'SearchFilterPassed',
-				'label' => 'Include Past'
+				'id' => 'SearchFilterPrevious'
 			));
 		}
 		if ($private) {

@@ -17,18 +17,18 @@ class DateTestCase extends CoreTestCase {
 		$this->loadFixtures('Date');
 		
 		$date = $this->Date->read(null, 1);
-		$result = $date['Date']['passed'];
+		$result = $date['Date']['previous'];
 		$this->assertFalse($result);
 
 		$date = $this->Date->read(null, 2);
-		$result = $date['Date']['passed'];
+		$result = $date['Date']['previous'];
 		$this->assertTrue($result);
 
 		$date = $this->Date->read(null, 2);
 		$date['Date']['end_date'] = date('Y-m-d', strtotime('+1 day'));
 		$this->Date->save($date);
 		$date = $this->Date->read(null, 2);
-		$result = $date['Date']['passed'];
+		$result = $date['Date']['previous'];
 		$this->assertFalse($result);
 	}
 	

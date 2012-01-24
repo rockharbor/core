@@ -421,7 +421,7 @@ class FormattingHelper extends AppHelper {
 		// default associated data that is needed
 		$_defaults = array(
 			'Involvement' => array(
-				'passed' => 0,
+				'previous' => 0,
 				'private' => 0,
 				'active' => 1
 			),
@@ -442,10 +442,10 @@ class FormattingHelper extends AppHelper {
 		
 		$output = null;
 
-		if ($involvement['Involvement']['passed']) {
+		if ($involvement['Involvement']['previous']) {
 			$output .= $this->Html->tag('span', '', array(
 				'class' => 'core-icon icon-passed',
-				'title' => 'Past '.$involvement['InvolvementType']['name']
+				'title' => 'Previous '.$involvement['InvolvementType']['name']
 			));
 		}
 

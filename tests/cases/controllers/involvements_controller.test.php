@@ -79,7 +79,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 				'Involvement' => array(
 					'inactive' => 1,
 					'private' => 0,
-					'passed' => 0
+					'previous' => 0
 				)
 			)
 		));
@@ -96,7 +96,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 				'Involvement' => array(
 					'inactive' => 1,
 					'private' => 1,
-					'passed' => 1
+					'previous' => 1
 				)
 			)
 		));
@@ -110,7 +110,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 				'Involvement' => array(
 					'inactive' => 1,
 					'private' => 1,
-					'passed' => 1
+					'previous' => 1
 				)
 			)
 		));

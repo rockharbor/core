@@ -187,7 +187,7 @@ class RostersController extends AppController {
 		}
 		$_default = array(
 			'Roster' => array(
-				'passed' => 0,
+				'previous' => 0,
 				'leading' => 1,
 				'inactive' => 0,
 				'private' => $private
@@ -198,9 +198,9 @@ class RostersController extends AppController {
 		if ($this->data['Roster']['leading']) {
 			$conditions['Involvement.id'] = array_merge(array_values($leaderOf), array_values($memberOf));
 		}
-		if ($this->data['Roster']['passed'] == false) {
+		if ($this->data['Roster']['previous'] == false) {
 			$db = $this->Roster->getDataSource();
-			$conditions[] = $db->expression('('.$this->Roster->Involvement->getVirtualField('passed').') = '.$this->data['Roster']['passed']);
+			$conditions[] = $db->expression('('.$this->Roster->Involvement->getVirtualField('previous').') = '.$this->data['Roster']['previous']);
 		}
 		if (!$this->data['Roster']['inactive']) {
 			$conditions['Involvement.active'] = true;
@@ -211,7 +211,7 @@ class RostersController extends AppController {
 
 		$this->paginate = array(
 			'fields' => array(
-				'id', 'name', 'passed', 'active', 'private'
+				'id', 'name', 'previous', 'active', 'private'
 			),
 			'conditions' => $conditions,
 			'contain' => array(					
@@ -256,7 +256,7 @@ class RostersController extends AppController {
 		$involvement = $this->Roster->Involvement->read(null, $involvementId);
 
 		// can't sign up for inactive or past involvements
-		if (!$involvement['Involvement']['active'] && !$involvement['Involvement']['passed']) {
+		if (!$involvement['Involvement']['active'] && !$involvement['Involvement']['previous']) {
 			$this->Session->setFlash('Cannot sign up for an inactive or past event.', 'flash'.DS.'failure');
 			$this->redirect($this->emptyPage);
 		}

@@ -63,7 +63,7 @@ class Date extends AppModel {
  * @var array
  */
 	var $virtualFields = array(
-		'passed' => 'IF (:ALIAS:.permanent, 0, CAST(CONCAT(:ALIAS:.end_date, " ", :ALIAS:.end_time) AS DATETIME) < NOW())'
+		'previous' => 'IF (:ALIAS:.permanent, 0, CAST(CONCAT(:ALIAS:.end_date, " ", :ALIAS:.end_time) AS DATETIME) < NOW())'
 	);
 
 /**

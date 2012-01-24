@@ -84,9 +84,9 @@ class InvolvementsController extends AppController {
 				'Involvement.id' => Set::extract('/Roster/involvement_id', $signedUp)
 			);
 		}
-		if (empty($this->data) || !$this->data['Involvement']['passed']) {
+		if (empty($this->data) || !$this->data['Involvement']['previous']) {
 			$db = $this->Involvement->getDataSource();
-			$conditions[] = $db->expression('('.$this->Involvement->getVirtualField('passed').') = false');
+			$conditions[] = $db->expression('('.$this->Involvement->getVirtualField('previous').') = false');
 		}
 		
 		$displayInvolvements = $this->Involvement->Ministry->find('all', array(

@@ -2,7 +2,7 @@
 App::import('Lib', 'CoreTestCase');
 App::import('Model', 'Role');
 
-class SchoolTestCase extends CoreTestCase {
+class RoleTestCase extends CoreTestCase {
 
 	function startTest() {
 		$this->Role =& ClassRegistry::init('Role');

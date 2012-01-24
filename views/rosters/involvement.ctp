@@ -11,7 +11,7 @@ $this->Paginator->options(array(
 			'class' => 'core-filter-form update-roster-involvement',
 			'url' => $this->passedArgs,
 		));
-		echo $this->Form->input('passed', array(
+		echo $this->Form->input('previous', array(
 			'type' => 'checkbox',
 			'class' => 'toggle',
 			'div' => false

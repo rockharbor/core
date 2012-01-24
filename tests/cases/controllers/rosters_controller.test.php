@@ -161,7 +161,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/rosters/involvement/User:1', array(
 			'data' => array(
 				'Roster' => array(
-					'passed' => true,
+					'previous' => true,
 					'leading' => true,
 					'inactive' => true,
 					'private' => false
@@ -178,7 +178,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/rosters/involvement/User:1', array(
 			'data' => array(
 				'Roster' => array(
-					'passed' => true,
+					'previous' => true,
 					'leading' => false,
 					'inactive' => true,
 					'private' => true

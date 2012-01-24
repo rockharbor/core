@@ -34,7 +34,7 @@ class Involvement extends AppModel {
  * @var array
  */
 	var $virtualFields = array(
-		'passed' => 'NOT EXISTS(
+		'previous' => 'NOT EXISTS(
 			SELECT 1 FROM dates AS NotPassed
 				WHERE NotPassed.involvement_id = :ALIAS:.id
 				AND (CAST(CONCAT(NotPassed.end_date, " ", NotPassed.end_time) AS DATETIME) > NOW()

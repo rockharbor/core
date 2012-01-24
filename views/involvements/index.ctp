@@ -19,7 +19,7 @@ $this->Paginator->options(array(
 				'class' => 'toggle',
 				'div' => false
 			));
-			echo $this->Form->input('passed', array(
+			echo $this->Form->input('previous', array(
 				'type' => 'checkbox',
 				'class' => 'toggle',
 				'div' => false

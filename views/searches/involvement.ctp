@@ -19,7 +19,7 @@
 			echo $this->Form->input('Involvement.description');
 			echo $this->Form->hidden('Involvement.private', array('value' => 0));
 			echo $this->Form->hidden('Involvement.active', array('value' => 1));
-			echo $this->Form->hidden('Involvement.passed', array('value' => 0));
+			echo $this->Form->hidden('Involvement.previous', array('value' => 0));
 		?>
 		</fieldset>
 		<fieldset class="grid_5 omega">

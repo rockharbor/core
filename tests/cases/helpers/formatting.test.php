@@ -244,7 +244,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 	function testFlagInvolvement() {
 		$involvement = array(
 			'Involvement' => array(
-				'passed' => 0,
+				'previous' => 0,
 				'private' => 1,
 				'active' => 0
 			),
@@ -262,7 +262,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 
 		$involvement = array(
 			'Involvement' => array(
-				'passed' => 0,
+				'previous' => 0,
 				'private' => 1,
 				'active' => 1
 			),
@@ -275,7 +275,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 
 		$involvement = array(
 			'Involvement' => array(
-				'passed' => 1,
+				'previous' => 1,
 				'private' => 0,
 				'active' => 0
 			),
@@ -285,7 +285,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 		);
 		$result = $this->Formatting->flags('Involvement', $involvement);
 		$this->assertTags($result, array(
-			array('span' => array('class' => 'core-icon icon-passed', 'title' => 'Past Interest List')),
+			array('span' => array('class' => 'core-icon icon-passed', 'title' => 'Previous Interest List')),
 			'/span',
 			array('span' => array('class' => 'core-icon icon-inactive', 'title' => 'Inactive Interest List')),
 			'/span'

@@ -80,7 +80,7 @@ class SearchesController extends AppController {
 				'query' => '',
 				'private' => $private,
 				'active' => !$inactive,
-				'passed' => 0
+				'previous' => 0
 			)
 		);
 		$this->data = Set::merge($_default, $this->data);
@@ -91,8 +91,8 @@ class SearchesController extends AppController {
 		if (!$search['active']) {
 			$search['active'] = array(0,1);
 		}
-		if ($search['passed']) {
-			unset($search['passed']);
+		if ($search['previous']) {
+			unset($search['previous']);
 		}
 		if (!empty($search['Campus'])) {
 			$search['Campus.id'] = $search['Campus']['id'];
@@ -160,7 +160,7 @@ class SearchesController extends AppController {
 			if ((!$restrictModel || $restrictModel == 'Involvement') && $this->isAuthorized('searches/involvement')) {
 				$involvements = $this->Involvement->find('all', array(
 					'fields' => array(
-						'id', 'name', 'description', 'active', 'private', 'passed'
+						'id', 'name', 'description', 'active', 'private', 'previous'
 					),
 					'conditions' => array(
 						$this->Involvement->scopeConditions($search),

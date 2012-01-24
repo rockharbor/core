@@ -17,21 +17,21 @@ class InvolvementTestCase extends CoreTestCase {
 
 	function testVirtualFields() {
 		$involvement = $this->Involvement->read(null, 1);
-		$this->assertTrue($involvement['Involvement']['passed']);
+		$this->assertTrue($involvement['Involvement']['previous']);
 
 		$involvement = $this->Involvement->read(null, 2);
-		$this->assertFalse($involvement['Involvement']['passed']);
+		$this->assertFalse($involvement['Involvement']['previous']);
 
 		$involvement = $this->Involvement->read(null, 3);
-		$this->assertTrue($involvement['Involvement']['passed']);
+		$this->assertTrue($involvement['Involvement']['previous']);
 		$this->assertTrue($involvement['Involvement']['has_dates']);
 
-		// involvements with no dates aren't considered 'passed'
+		// involvements with no dates aren't considered 'previous'
 		$this->Involvement->Date->deleteAll(array(
 			'Date.involvement_id' => 2
 		));
 		$involvement = $this->Involvement->read(null, 2);
-		$this->assertFalse($involvement['Involvement']['passed']);
+		$this->assertFalse($involvement['Involvement']['previous']);
 		$this->assertFalse($involvement['Involvement']['has_dates']);
 	}
 
