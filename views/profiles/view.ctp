@@ -9,6 +9,7 @@
 		<li><a href="#my-profile"><?php echo $prefix; ?>Profile</a></li>
 		<li><?php echo $this->Html->link($prefix.'Household', array('controller' => 'households', 'User' => $profile['User']['id']), array('title' => 'household')); ?></li>
 		<li><?php echo $this->Html->link($prefix.'Payments', array('controller' => 'payments', 'User' => $profile['User']['id']), array('title' => 'payments')); ?></li>
+		<li><?php echo $this->Html->link($prefix.'Subscriptions', array('controller' => 'publications', 'action' => 'subscriptions', 'User' => $this->data['Profile']['user_id']), array('title' => 'subscriptions')); ?></li>
 	</ul>
 
 	<div class="content-box clearfix">
