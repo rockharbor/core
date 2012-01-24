@@ -67,5 +67,34 @@ class Role extends AppModel {
 			'dependent' => true,
 		),
 	);
+	
+/**
+ * Gets all roles for a ministry and the roles of its parent ministry
+ * 
+ * @param integer $ministryId The ministry id
+ * @return array Array of role ids
+ * @todo Make it get not just the immediate parent, but all parents
+ */
+	function findRoles($ministryId = null) {
+		if ($ministryId === null) {
+			return array();
+		}
+		$parent = $this->Ministry->read(array('parent_id'), $ministryId);
+		if (!empty($parent['Ministry']['parent_id'])) {
+			$ministryId = array(
+				$parent['Ministry']['parent_id'],
+				$ministryId
+			);
+		}
+		$roles = $this->find('all', array(
+			'fields' => array(
+				'id'
+			),
+			'conditions' => array(
+				'ministry_id' => $ministryId
+			)
+		));
+		return Set::extract('/Role/id', $roles);
+	}
 }
 ?>
