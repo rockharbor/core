@@ -123,15 +123,12 @@ class Alert extends AppModel {
 		if (!$userId) {
 			return false;
 		}
-		// get group's lft value
 		if (!$groupId) {
-			$public = $this->Group->findByName('User');
-			$lft = $public['Group']['lft'];
+			$groups = $this->Group->findByName('User');
+			$groups = $groups['Group']['id'];
 		} else {
-			$this->Group->id = $groupId;
-			$lft = $this->Group->field('lft');
+			$groups = array_keys($this->Group->findGroups($groupId));
 		}
-
 		// get ids of alerts this user has read
 		$readAlerts = $this->getReadAlerts($userId);
 		
@@ -140,7 +137,7 @@ class Alert extends AppModel {
 				'not' => array(
 					'Alert.id' => $readAlerts
 				),
-				'Group.lft >=' => $lft
+				'Group.id' => $groups
 			),
 			'order' => 'Alert.created DESC'
 		);
