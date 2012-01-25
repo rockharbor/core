@@ -1,4 +1,4 @@
-<h1>Search People</h1>
+<h1>Search Users</h1>
 <div class="searches content-box">
 <?php echo $this->Form->create(null, array(
 	'action' => 'user',
