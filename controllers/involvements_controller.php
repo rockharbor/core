@@ -142,6 +142,7 @@ class InvolvementsController extends AppController {
 		$this->Involvement->contain(array(
 			'InvolvementType',
 			'Ministry' => array(
+				'ParentMinistry',
 				'Campus'
 			),
 			'Leader' => array(

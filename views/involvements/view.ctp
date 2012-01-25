@@ -7,6 +7,10 @@ $shortRoster = !empty($signedUp) && $involvement['Involvement']['roster_visible'
 <span class="breadcrumb"><?php
 echo $this->Html->link($involvement['Ministry']['Campus']['name'], array('controller' => 'campuses', 'action' => 'view', 'Campus' => $involvement['Ministry']['Campus']['id']), array('escape' => false));
 echo ' > ';
+if (!empty($involvement['Ministry']['ParentMinistry']['id'])) {
+	echo $this->Html->link($involvement['Ministry']['ParentMinistry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $involvement['Ministry']['ParentMinistry']['id']), array('escape' => false));
+	echo ' > ';
+}
 echo $this->Html->link($involvement['Ministry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $involvement['Ministry']['id']), array('escape' => false));
 ?></span>
 <h1><?php echo $involvement['Involvement']['name'].$this->Formatting->flags('Involvement', $involvement); ?></h1>
