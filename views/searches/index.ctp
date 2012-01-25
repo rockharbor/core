@@ -73,11 +73,11 @@ if (!empty($this->data['Search']['query'])) {
 	<div class="grid_third<?php echo $class; ?>">
 		<div class="offset-background">
 		<?php
-			echo $this->Formatting->flags('User', $user).$this->Html->link($user['Profile']['name'], array(
+			echo $this->Html->link($user['Profile']['name'], array(
 				'controller' => 'profiles',
 				'action' => 'view',
 				'User' => $user['User']['id']
-			));
+			)).$this->Formatting->flags('User', $user);
 			echo '<hr>';
 			echo $this->Formatting->email($user['Profile']['primary_email'], $user['User']['id']);
 			echo '<br />';
