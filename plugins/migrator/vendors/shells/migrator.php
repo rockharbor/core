@@ -49,7 +49,7 @@ class MigratorShell extends Shell {
 	var $_oldDbConfig = 'old';
 
 	function migrate_database() {
-		ini_set('memory_limit', '256M');
+		ini_set('memory_limit', '700M');
 
 		$this->_createLinkageTable();
 		@unlink(TMP.'logs'.DS.'migration.log');
