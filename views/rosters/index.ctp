@@ -171,6 +171,7 @@ $this->Paginator->options(array(
 			<tr>
 				<th>&nbsp;</th>
 				<th><?php echo $this->Paginator->sort('Name', 'Profile.last_name');?></th>
+				<th><?php echo $this->Paginator->sort('Email', 'Profile.primary_email');?></th>
 				<th><?php echo $this->Paginator->sort('Phone', 'Profile.cell_phone');?></th>
 				<th><?php echo $this->Paginator->sort('Status', 'RosterStatus.name');?></th>
 				<?php if ($involvement['Involvement']['take_payment']) { ?>
@@ -210,6 +211,7 @@ $this->Paginator->options(array(
 		?></div>
 		<?php echo $this->Formatting->flags('User', $roster); ?>
 		</td>
+		<td><?php echo $this->Formatting->email($roster['Profile']['primary_email'], $roster['User']['id']); ?>&nbsp;</td>
 		<td><?php echo $this->Formatting->phone($roster['Profile']['cell_phone']); ?>&nbsp;</td>
 		<td><?php echo $this->Html->link($roster['RosterStatus']['name'], array('controller' => 'rosters', 'action' => 'edit', $roster['Roster']['id']), array('rel' => 'modal-roster')); ?>&nbsp;</td>
 		<?php if ($involvement['Involvement']['take_payment']) { ?>

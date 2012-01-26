@@ -104,7 +104,8 @@ class RostersController extends AppController {
 					'fields' => array(
 						'name',
 						'cell_phone',
-						'allow_sponsorage'
+						'allow_sponsorage',
+						'primary_email'
 					)
 				),
 				'Image'
