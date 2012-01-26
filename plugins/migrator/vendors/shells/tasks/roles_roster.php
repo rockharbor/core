@@ -57,13 +57,7 @@ class RolesRosterTask extends MigratorTask {
 		$roster = $this->Roster->find('first', array(
 			'conditions' => array(
 				'user_id' => $this->_editingRecord['person_id'],
-				'involvement_id' => $this->_editingRecord['type_id'],
-				'Involvement.ministry_id' =>  $this->_editingRecord['ministry_id'],
-			),
-			'contain' => array(
-				'Involvement' => array(
-					'fields' => array('id', 'ministry_id')
-				)
+				'involvement_id' => $this->_editingRecord['type_id']
 			)
 		));
 		if ($roster == false || empty($roster)) {
