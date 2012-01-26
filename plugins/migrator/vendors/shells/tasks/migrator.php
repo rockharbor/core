@@ -49,6 +49,13 @@ class MigratorTask extends MigratorShell {
 			}
 			$this->_migrationCount++;
 			$this->mapData();
+			
+			if ($this->_editingRecord == false) {
+				$msg = 'Data mapping failed for '.$this->_oldTable.' #'.$oldRecord[$this->_oldPk];
+				$this->out($msg);
+				CakeLog::write('migration', $msg);
+				continue;
+			}
 
 			$this->{$this->_newModel}->create();
 			if (!$this->{$this->_newModel}->saveAll($this->_editingRecord, array('validate' => 'only'))) {
@@ -57,11 +64,13 @@ class MigratorTask extends MigratorShell {
 					CakeLog::write('migration', print_r($this->{$this->_newModel}->validationErrors, true));
 				}
 			}
+			$this->{$this->_newModel}->create();
 			$success = $this->{$this->_newModel}->saveAll($this->_editingRecord, array('validate' => false));
 			if (!$success) {
 				$msg = 'Couldn\'t save '.$this->_newModel.' ('.$this->_oldTable.' # '.$oldRecord[$this->_oldPk].')';
 				$this->out($msg);
 				CakeLog::write('migration', $msg);
+				return;
 			}			
 
 			if ($success && $this->addLinkages) {
@@ -159,6 +168,9 @@ class MigratorTask extends MigratorShell {
 					}
 
 					$link = $this->IdLinkage->find('first', array(
+						'fields' => array(
+							'new_pk'
+						),
 						'conditions' => array(
 							'new_model' => $newModel,
 							'old_table' => $oldTable,

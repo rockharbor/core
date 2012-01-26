@@ -69,6 +69,9 @@ class ImageTask extends MigratorTask {
 				'file' => ROOT.DS.'attachments'.DS.$this->_editingRecord['filename'].'.'.$this->_editingRecord['extension']
 			)
 		);
+		if (!file_exists($this->_editingRecord['Image']['file'])) {
+			$this->_editingRecord = false;
+		}
 	}
 
 }
