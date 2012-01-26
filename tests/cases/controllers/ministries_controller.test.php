@@ -33,6 +33,95 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$this->unloadSettings();
 		ClassRegistry::flush();
 	}
+	
+	function testIndex() {
+		$this->loadFixtures('Group');
+		
+		$vars = $this->testAction('/ministries/index/Campus:2');
+		$results = Set::extract('/Ministry/id', $vars['ministries']);
+		sort($results);
+		$this->assertEqual($results, array(5));
+		
+		$vars = $this->testAction('/ministries/index/Campus:1');
+		$results = Set::extract('/Ministry/id', $vars['ministries']);
+		sort($results);
+		$this->assertEqual($results, array(1, 2, 3, 4, 6));
+		
+		$vars = $this->testAction('/ministries/index/Campus:1', array(
+			'data' => array(
+				'Ministry' => array(
+					'inactive' => false,
+					'private' => false
+				)
+			)
+		));
+		$results = Set::extract('/Ministry/id', $vars['ministries']);
+		sort($results);
+		$this->assertEqual($results, array(1, 2));
+		
+		$vars = $this->testAction('/ministries/index/Campus:2', array(
+			'data' => array(
+				'Ministry' => array(
+					'private' => true,
+					'inactive' => true
+				)
+			)
+		));
+		$results = Set::extract('/Ministry/id', $vars['ministries']);
+		sort($results);
+		$this->assertEqual($results, array(5));
+		
+		$this->Ministries->Ministry->save(array(
+			'id' => 1,
+			'private' => 1
+		));
+		$vars = $this->testAction('/ministries/index/Campus:1', array(
+			'data' => array(
+				'Ministry' => array(
+					'private' => true,
+					'inactive' => false
+				)
+			)
+		));
+		$results = Set::extract('/Ministry/id', $vars['ministries']);
+		sort($results);
+		$this->assertEqual($results, array(1, 2));
+		
+		$vars = $this->testAction('/ministries/index/Campus:2');
+		$results = Set::extract('/Ministry/id', $vars['ministries']);
+		sort($results);
+		$this->assertEqual($results, array(5));
+		
+		$results = $this->Ministries->data;
+		$expected = array(
+			'Ministry' => array(
+				'inactive' => true,
+				'private' => true
+			)
+		);
+		$this->assertEqual($results, $expected);
+		
+		$this->su(array('Group' => 8));
+		
+		$vars = $this->testAction('/ministries/index/Campus:1');
+		$results = Set::extract('/Ministry/id', $vars['ministries']);
+		sort($results);
+		$this->assertEqual($results, array(1, 2));
+		
+		$vars = $this->testAction('/ministries/index/Campus:2');
+		$results = Set::extract('/Ministry/id', $vars['ministries']);
+		sort($results);
+		$this->assertEqual($results, array());
+		
+		$results = $this->Ministries->data;
+		$expected = array(
+			'Ministry' => array(
+				'inactive' => false,
+				'private' => false
+			)
+		);
+		$this->assertEqual($results, $expected);
+	}
 
 	function testView() {
 		$this->loadFixtures('Group');
@@ -40,9 +129,6 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/ministries/view/Ministry:3');
 		$result = $vars['ministry']['Ministry']['id'];
 		$this->assertEqual($result, 3);
-		
-		$result = $vars['ministry']['ChildMinistry'][0]['id'];
-		$this->assertEqual($result, 5);
 		
 		$this->su(array('Group' => array('id' => 8)));
 		$vars = $this->testAction('/ministries/view/Ministry:3');

@@ -35,7 +35,12 @@ class MinistriesController extends AppController {
  *
  * @var array
  */
-	var $components = array('MultiSelect.MultiSelect');
+	var $components = array(
+		'MultiSelect.MultiSelect', 
+		'FilterPagination' => array(
+			'startEmpty' => false
+		)
+	);
 
 /**
  * Model::beforeFilter() callback
@@ -45,12 +50,69 @@ class MinistriesController extends AppController {
  * @access private
  */ 
 	function beforeFilter() {
+		$this->Auth->allow('index');
+		
 		parent::beforeFilter();
 		
 		// if user is leading or managing, let them bulk edit ministries
 		if ($this->activeUser['Profile']['leading'] > 0 || $this->activeUser['Profile']['managing'] > 0) {
 			$this->Auth->allow('bulk_edit');
 		}
+	}
+
+/**
+ * Shows a list of ministries under a ministry or campus
+ */
+	function index() {
+		if (!isset($this->passedArgs['Campus']) && !isset($this->passedArgs['Ministry'])) {
+			$this->cakeError('error404');
+		}
+		
+		$conditions = array(
+			'Ministry' => array(
+				'active' => true,
+				'private' => false
+			)
+		);
+		$private = $this->Ministry->Leader->User->Group->canSeePrivate($this->activeUser['Group']['id']);
+		if ($private) {
+			$conditions['Ministry']['private'] = array(1, 0);
+			$conditions['Ministry']['active'] = array(1, 0);
+		}
+		if (isset($this->passedArgs['Campus'])) {
+			$conditions['Ministry']['campus_id'] = $this->passedArgs['Campus'];
+		}
+		if (isset($this->passedArgs['Ministry'])) {
+			$conditions['Ministry']['parent_id'] = $this->passedArgs['Ministry'];
+		}
+		
+		if (!empty($this->data)) {
+			if ($this->data['Ministry']['inactive']) {
+				$conditions['Ministry']['active'] = array(1, 0);
+			} else {
+				$conditions['Ministry']['active'] = true;
+			}
+			if ($this->data['Ministry']['private']) {
+				$conditions['Ministry']['private'] = array(1, 0);
+			} else {
+				$conditions['Ministry']['private'] = false;
+			}
+		} else {
+			$this->data = array(
+				'Ministry' => array(
+					'inactive' => $private,
+					'private' => $private
+				)
+			);
+		}
+		
+		$this->paginate = array(
+			'conditions' => $this->postConditions($conditions),
+			'limit' => 9,
+			'order' => 'Ministry.name ASC'
+		);
+		$ministries = $this->FilterPagination->paginate();
+		$this->set(compact('ministries', 'private'));
 	}
 
 /**
@@ -72,13 +134,6 @@ class MinistriesController extends AppController {
 			'contain' => array(
 				'Campus' => array(
 					'fields' => array('id', 'name')
-				),
-				'ChildMinistry' => array(
-					'fields' => array('id', 'name', 'description'),
-					'conditions' => array(
-						'ChildMinistry.private' => $private ? array(1, 0) : 0,
-						'ChildMinistry.active' => 1
-					)
 				),
 				'ParentMinistry' => array(
 					'fields' => array('id', 'name')

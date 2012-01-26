@@ -37,28 +37,23 @@ if (!empty($ministry['ParentMinistry']['id'])) {
 		?>
 		</div>
 	</div>
-	<?php if (!empty($ministry['ChildMinistry'])): ?>
 	<br />
+	<?php if (empty($ministry['Ministry']['parent_id'])): ?>
 	<div class="grid_10 alpha omega">
 		<h3>Sub Ministries</h3>
-		<div class="subministries">
+		<div class="subministries parent">
 			<?php
-			foreach ($ministry['ChildMinistry'] as $subministry):
-			?>
-			<div class="subministry">
-				<?php
-				echo $this->Html->link($subministry['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $subministry['id']), array('class' => 'subministry-title'));
-				echo '<hr>';
-				echo $this->Html->tag('p', $this->Text->truncate($subministry['description'], 200, array('html' => true)));
-				?>
-			</div>
-			<?php 
-			endforeach;
+			$url = Router::url(array(
+				'controller' => 'ministries',
+				'action' => 'index',
+				'Ministry' => $ministry['Ministry']['id']
+			));
+			echo $this->requestAction($url, array('renderAs' => 'ajax', 'return', 'bare' => false));
 			?>
 		</div>
 	</div>
-	<?php endif; ?>
 	<br />
+	<?php endif; ?>
 	<ul class="core-admin-tabs">
 	<?php
 	$link = $this->Permission->link('Edit', array('action' => 'edit', 'Ministry' => $ministry['Ministry']['id']));
