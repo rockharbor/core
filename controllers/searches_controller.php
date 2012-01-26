@@ -112,7 +112,7 @@ class SearchesController extends AppController {
 		if (!empty($this->data)) {
 			$query = explode(' ', $search['query']);
 			foreach ($query as &$word) {
-				$word .= '*';
+				$word = '+'.$word.'*';
 				$word = trim($word);
 			}			
 			$query = implode(' ', $query);
