@@ -186,9 +186,9 @@ class DatesController extends AppController {
 		if (!empty($this->data)) {		
 			$this->Date->create();
 			if ($this->Date->save($this->data)) {
-				$this->Session->setFlash(__('This date has been created.', true));
+				$this->Session->setFlash(__('This date has been created.', true), 'flash'.DS.'success');
 			} else {
-				$this->Session->setFlash(__('Unable to create date. Please try again.', true));
+				$this->Session->setFlash(__('Unable to create date. Please try again.', true), 'flash'.DS.'failure');
 			}
 		}
 		
@@ -226,10 +226,10 @@ class DatesController extends AppController {
 			$this->cakeError('error404');
 		}
 		if ($this->Date->delete($id)) {
-			$this->Session->setFlash(__('This date has been deleted.', true));
+			$this->Session->setFlash(__('This date has been deleted.', true), 'flash'.DS.'success');
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash(__('Unable to delete date. Please try again.', true));
+		$this->Session->setFlash(__('Unable to delete date. Please try again.', true), 'flash'.DS.'failure');
 		$this->redirect(array('action' => 'index'));
 	}
 }
