@@ -88,10 +88,10 @@
 			</div>
 			<div class="grid_10 alpha omega">
 				<div class="grid_7 alpha">
-					<h3>My Involvement</h3>
+					<h3><?php echo $prefix; ?>Involvement</h3>
 				</div>
 				<div class="grid_3 omega">
-					<h3>Calendar</h3>
+					<h3><?php echo $prefix; ?>Calendar</h3>
 				</div>
 			</div>
 			<div class="grid_10 alpha omega">
