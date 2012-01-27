@@ -15,33 +15,33 @@ echo $this->Form->create('User', array(
 ?>
 <div id="profile_tabs" class="core-tabs-wizard">
 	<ul>
-		<li><a href="#personal">Personal Information</a></li>
-		<li><a href="#about">About Me</a></li>
-		<li id="childinfo-tab"><a href="#childinfo">Child Information</a></li>
-		<li><a href="#contact">Contact Information</a></li>
-		<li><a href="#household">Household</a></li>
-		<li><a href="#subscriptions">Subscriptions</a></li>
+		<li><a href="#add-personal">Personal Information</a></li>
+		<li><a href="#add-about">About Me</a></li>
+		<li id="childinfo-tab"><a href="#add-childinfo">Child Information</a></li>
+		<li><a href="#add-contact">Contact Information</a></li>
+		<li><a href="#add-household">Household</a></li>
+		<li><a href="#add-subscriptions">Subscriptions</a></li>
 	</ul>
 
-	<div id="personal" class="clearfix">
+	<div id="add-personal" class="clearfix">
 		<?php echo $this->element('register'.DS.'personal'); ?>
 	</div>
-	<div id="about" class="clearfix">
+	<div id="add-about" class="clearfix">
 		<?php echo $this->element('register'.DS.'about'); ?>
 		<?php echo $this->element('register'.DS.'school'); ?>
 		<?php echo $this->element('register'.DS.'christian'); ?>
 	</div>
-	<div id="childinfo">
+	<div id="add-childinfo">
 		<?php echo $this->element('register'.DS.'child_info'); ?>
 	</div>
-	<div id="contact" class="clearfix">
+	<div id="add-contact" class="clearfix">
 		<?php echo $this->element('register'.DS.'address'); ?>
 		<?php echo $this->element('register'.DS.'phone_email'); ?>
 	</div>
-	<div id="household" class="clearfix">
+	<div id="add-household" class="clearfix">
 	<?php echo $this->element('register'.DS.'household'); ?>
 	</div>
-	<div id="subscriptions">
+	<div id="add-subscriptions">
 		<?php echo $this->element('register'.DS.'subscriptions'); ?>
 	</div>
 </div>
