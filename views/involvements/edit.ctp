@@ -2,7 +2,7 @@
 $icon = $this->element('icon', array('icon' => 'delete'));
 echo $this->Html->link($icon, array('action' => 'view', 'Involvement' => $this->data['Involvement']['id']), array('escape' => false, 'class' => 'no-hover'));
 ?>Editing<?php echo $this->Html->image('../assets/images/edit-flag-right.png'); ?></span>
-<h1>Edit <?php echo $involvementTypes[$this->data['Involvement']['involvement_type_id']]; ?></h1>
+<h1>Edit <?php echo $involvementTypes[$this->data['Involvement']['involvement_type_id']].$this->Formatting->flags('Involvement', $this->data);; ?></h1>
 <div class="core-tabs">
 	<ul>
 		<li><a href="#details"><?php echo $involvementTypes[$this->data['Involvement']['involvement_type_id']]; ?> Details</a></li>
