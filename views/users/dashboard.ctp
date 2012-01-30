@@ -37,33 +37,14 @@
 		<?php endif; ?>
 		<?php if ($this->Permission->check(array('controller' => 'images', 'action' => 'approval'))): ?>
 		<div id="images">
-			<?php
-			$this->Js->buffer('CORE.register("imageapproval", "images", "/images/approval");');
-			echo $this->requestAction('/images/approval', array(
-				'renderAs' => 'ajax',
-				'return'
-			));
-			?>
 		</div>
 		<?php endif; ?>
 		<?php if ($this->Permission->check(array('controller' => 'reports'))): ?>
 		<div id="reports">
-			<?php
-			echo $this->requestAction('/reports/index', array(
-				'renderAs' => 'ajax',
-				'return'
-			));
-			?>
 		</div>
 		<?php endif; ?>
 		<?php if ($this->Permission->check(array('controller' => 'reports', 'action' => 'payments'))): ?>
 		<div id="payment-reports">
-			<?php
-			echo $this->requestAction('/reports/payments', array(
-				'renderAs' => 'ajax',
-				'return'
-			));
-			?>
 		</div>
 		<?php endif; ?>
 		<?php if ($this->Permission->check(array('controller' => 'alerts'))): ?>
