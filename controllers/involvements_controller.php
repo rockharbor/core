@@ -126,7 +126,7 @@ class InvolvementsController extends AppController {
 			$involvement['dates'] = $this->Involvement->Date->generateDates($involvement['Involvement']['id'], array('limit' => 1));
 		}
 
-		$this->set(compact('viewStyle', 'involvements'));
+		$this->set(compact('viewStyle', 'involvements', 'private'));
 	}
 	
 /**
