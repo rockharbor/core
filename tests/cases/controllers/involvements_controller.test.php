@@ -6,14 +6,46 @@ App::import('Controller', 'Involvements');
 
 Mock::generatePartial('QueueEmailComponent', 'MockInvolvementsQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('NotifierComponent', 'MockInvolvementsNotifierComponent', array('_render'));
-Mock::generatePartial('InvolvementsController', 'TestInvolvementsController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
+
+class TestInvolvementsController extends InvolvementsController {
+	
+	private $_authorized = array();
+	
+	private $_defaultAuth = false;
+	
+	function setAuthorized($action, $return) {
+		if ($action === null) {
+			$this->_defaultAuth = $return;
+			return;
+		}
+		if (stripos($action, 'controllers') === false) {
+			$action = 'controllers/'.trim($action, '/');
+		}
+		$this->_authorized[strtolower($action)] = $return;
+	}
+	
+	function isAuthorized($action = null) {
+		if (empty($action)) {
+			$action = $this->Auth->action();
+		}
+		if (stripos($action, 'controllers') === false) {
+			$action = 'controllers/'.trim($action, '/');
+		}
+		if (!isset($this->_authorized[strtolower($action)])) {
+			return $this->_defaultAuth;
+		}
+		return $this->_authorized[strtolower($action)];
+	}
+	
+}
+Mock::generatePartial('TestInvolvementsController', 'MockTestInvolvementsController', array('disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 
 class InvolvementsControllerTestCase extends CoreTestCase {
 
 	function startTest() {
 		$this->loadFixtures('Involvement', 'Roster', 'User', 'InvolvementType', 'Group', 'Ministry');
 		$this->loadFixtures('MinistriesRev', 'Leader');
-		$this->Involvements =& new TestInvolvementsController();
+		$this->Involvements =& new MockTestInvolvementsController();
 		$this->Involvements->__construct();
 		$this->Involvements->constructClasses();
 		$this->Involvements->Notifier = new MockInvolvementsNotifierComponent();
@@ -22,8 +54,8 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$this->Involvements->Notifier->QueueEmail = new MockInvolvementsQueueEmailComponent();
 		$this->Involvements->Notifier->QueueEmail->setReturnValue('_smtp', true);
 		$this->Involvements->Notifier->QueueEmail->setReturnValue('_mail', true);
-		$this->Involvements->setReturnValue('isAuthorized', true);
 		$this->testController = $this->Involvements;
+		$this->Involvements->setAuthorized(null, true);
 	}
 
 	function endTest() {
@@ -35,34 +67,120 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 	function testView() {
 		$this->loadSettings();
 
-		// public
+		// public, not registered
+		$this->Involvements->setAuthorized('/rosters/index', false);
+		$this->su(array(
+			'User' => array('id' => 100),
+			'Group' => array('id' => 8)
+		));
 		$vars = $this->testAction('/involvements/view/Involvement:1');
-		$this->assertNull($this->Involvements->Session->read('Message.flash.element'));
+		$this->assertFalse($vars['inRoster']);
+		$this->assertFalse($vars['canSeeRoster']);
 		
-		// inactive
+		// inactive, not registered
+		$this->su(array(
+			'User' => array('id' => 100),
+			'Group' => array('id' => 8)
+		));
 		$vars = $this->testAction('/involvements/view/Involvement:2');
-		$this->assertNull($this->Involvements->Session->read('Message.flash.element'));
+		$this->assertFalse($vars['inRoster']);
+		$this->assertFalse($vars['canSeeRoster']);
 		
 		// private, not registered, but admin
+		$this->Involvements->setAuthorized('/rosters/index', true);
 		$this->su(array(
 			'User' => array('id' => 100),
 			'Group' => array('id' => 1)
 		));
 		$vars = $this->testAction('/involvements/view/Involvement:3');
-		$this->assertNull($this->Involvements->Session->read('Message.flash.element'));
+		$this->assertFalse($vars['inRoster']);
+		$this->assertTrue($vars['canSeeRoster']);
 		
-		// private but registered
+		// private, not registered, but campus leader
+		$this->Involvements->setAuthorized('/rosters/index', false);
 		$this->su(array(
 			'User' => array('id' => 1),
-			'Group' => array('id' => 1)
+			'Group' => array('id' => 8)
 		));
-		$vars = $this->testAction('/involvements/view/Involvement:3');
-		$this->assertNull($this->Involvements->Session->read('Message.flash.element'));
+		$vars = $this->testAction('/involvements/view/Involvement:5');
+		$this->assertFalse($vars['inRoster']);
+		$this->assertTrue($vars['canSeeRoster']);
 		
-		// private
-		$this->Involvements->expectOnce('cakeError');
+		// private, not registered, but ministry leader
+		$Leader = ClassRegistry::init('Leader');
+		$Leader->save(array(
+			'user_id' => 101,
+			'model' => 'Involvement',
+			'model_id' => 1,
+		));
+		$this->su(array(
+			'User' => array('id' => 101),
+			'Group' => array('id' => 8)
+		));
+		$vars = $this->testAction('/involvements/view/Involvement:1');
+		$this->assertFalse($vars['inRoster']);
+		$this->assertTrue($vars['canSeeRoster']);
+		
+		// private, not registered, but involvement leader
+		$Leader->save(array(
+			'user_id' => 100,
+			'model' => 'Involvement',
+			'model_id' => 3,
+		));
 		$this->su(array(
 			'User' => array('id' => 100),
+			'Group' => array('id' => 8)
+		));
+		$vars = $this->testAction('/involvements/view/Involvement:3');
+		$this->assertFalse($vars['inRoster']);
+		$this->assertTrue($vars['canSeeRoster']);
+		
+		// private, but registered, but not confirmed
+		$Roster = ClassRegistry::init('Roster');
+		$Roster->save(array(
+			'user_id' => 98,
+			'involvement_id' => 3,
+			'roster_status_id' => 2
+		));
+		$newId = $Roster->id;
+		$this->su(array(
+			'User' => array('id' => 98),
+			'Group' => array('id' => 8)
+		));
+		$vars = $this->testAction('/involvements/view/Involvement:3');
+		$this->assertTrue($vars['inRoster']);
+		$this->assertFalse($vars['canSeeRoster']);
+		
+		// private, but registered and confirmed
+		$Roster = ClassRegistry::init('Roster');
+		$Roster->save(array(
+			'id' => $newId,
+			'roster_status_id' => 1
+		));
+		$this->su(array(
+			'User' => array('id' => 98),
+			'Group' => array('id' => 8)
+		));
+		$vars = $this->testAction('/involvements/view/Involvement:3');
+		$this->assertTrue($vars['inRoster']);
+		$this->assertTrue($vars['canSeeRoster']);
+		
+		// private, but registered and confirmed but roster invisible
+		$this->Involvements->expectAt(0, 'cakeError', array('privateItem', '*'));
+		$this->Involvements->Involvement->id = 3;
+		$this->Involvements->Involvement->saveField('roster_visible', false);
+		$this->su(array(
+			'User' => array('id' => 98),
+			'Group' => array('id' => 8)
+		));
+		$vars = $this->testAction('/involvements/view/Involvement:3');
+		$this->assertTrue($vars['inRoster']);
+		$this->assertFalse($vars['canSeeRoster']);
+		
+		// private, not registered
+		$this->Involvements->expectAt(1, 'cakeError', array('privateItem', '*'));
+		$this->su(array(
+			'User' => array('id' => 97),
 			'Group' => array('id' => 8)
 		));
 		$vars = $this->testAction('/involvements/view/Involvement:3');

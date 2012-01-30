@@ -1,7 +1,5 @@
 <?php 
 echo $this->Html->script('misc/involvement', array('inline' => false));
-$canSeeRoster = $this->Permission->check(array('controller' => 'rosters', 'Involvement' => $involvement['Involvement']['id']));
-$shortRoster = !empty($signedUp) && $involvement['Involvement']['roster_visible'] && !$canSeeRoster;
 ?>
 
 <span class="breadcrumb"><?php
@@ -18,12 +16,8 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 	<ul>
 		<li><a href="#details-tab">Details</a></li>
 		<?php 
-		if ($shortRoster || $canSeeRoster) {
-			if ($shortRoster) {
-				$link = $this->Html->link('Roster', '#roster-tab');
-			} else {
-				$link = $this->Html->link('Roster', array('controller' => 'rosters', 'Involvement' => $involvement['Involvement']['id']), array('title' => 'roster-tab'));
-			}
+		if ($canSeeRoster) {
+			$link = $this->Html->link('Roster', array('controller' => 'rosters', 'Involvement' => $involvement['Involvement']['id']), array('title' => 'roster-tab'));
 			echo $this->Html->tag('li', $link);
 		}
 		?>
@@ -198,31 +192,17 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 				?>
 			</ul>
 		</div>
-		<?php if ($shortRoster || $canSeeRoster): ?>
+		<?php if ($canSeeRoster): ?>
 		<div id="roster-tab">
 			<?php 
-			if ($shortRoster) {
-				$table = '';
-				for ($r=0; $r<count($involvement['Roster']); $r++) {
-					$row = array();
-					$row[] = $involvement['Roster'][$r]['User']['Profile']['name'];
-					$r++;
-					if ($r<count($involvement['Roster'])) {
-						$row[] = $involvement['Roster'][$r]['User']['Profile']['name'];
-					}
-					$table .= $this->Html->tableCells($row, array('class' => 'altrow'));
-				}
-				echo $this->Html->tag('table', $table, array('class' => 'datatable'));
-			}  else {
-				echo $this->requestAction('/rosters/index', array(
-					'named' => array(
-						'Involvement' => $involvement['Involvement']['id']
-					),
-					'return',
-					'renderAs' => 'ajax'
-				));
-				$this->Js->buffer('CORE.register("roster", "roster-tab", "/rosters/index/Involvement:'.$involvement['Involvement']['id'].'")');
-			}
+			echo $this->requestAction('/rosters/index', array(
+				'named' => array(
+					'Involvement' => $involvement['Involvement']['id']
+				),
+				'return',
+				'renderAs' => 'ajax'
+			));
+			$this->Js->buffer('CORE.register("roster", "roster-tab", "/rosters/index/Involvement:'.$involvement['Involvement']['id'].'")');
 			?>
 		</div>
 		<?php endif; ?>

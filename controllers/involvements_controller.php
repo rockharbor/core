@@ -166,10 +166,22 @@ class InvolvementsController extends AppController {
 		$involvement = $this->Involvement->read(null, $id);
 		$involvement['Date'] = $this->Involvement->Date->generateDates($id, array('limit' => 5));
 
-		$inRoster = $this->Involvement->Roster->hasAny(array(
-			'user_id' => $this->activeUser['User']['id'],
-			'involvement_id' => $id
+		$roster = $this->Involvement->Roster->find('first', array(
+			'fields' => array(
+				'roster_status_id'
+			),
+			'conditions' => array(
+				'user_id' => $this->activeUser['User']['id'],
+				'involvement_id' => $id
+			)
 		));
+		$inRoster = !empty($roster);
+		$canSeeRoster = 
+			($inRoster && $roster['Roster']['roster_status_id'] == 1 && $involvement['Involvement']['roster_visible'])
+			|| $this->Involvement->isLeader($this->activeUser['User']['id'], $id)
+			|| $this->Involvement->Ministry->isManager($this->activeUser['User']['id'], $involvement['Involvement']['ministry_id'])
+			|| $this->Involvement->Ministry->Campus->isManager($this->activeUser['User']['id'], $involvement['Ministry']['campus_id'])
+			|| $this->isAuthorized('rosters/index', array('Involvement' => $id));
 		
 		if ($involvement['Involvement']['private'] && !$this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id']) && !$inRoster) {
 			$this->cakeError('privateItem', array('type' => 'Involvement'));
@@ -191,7 +203,7 @@ class InvolvementsController extends AppController {
 			)
 		));
 		
-		$this->set(compact('involvement', 'signedUp', 'inRoster'));
+		$this->set(compact('involvement', 'signedUp', 'inRoster', 'canSeeRoster'));
 	}
 
 /**

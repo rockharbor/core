@@ -50,6 +50,10 @@ class RostersController extends AppController {
  * @access private
  */ 
 	function beforeFilter() {
+		// index is special, in that its limitations are checked within the action
+		// there is also an ACL for it for checking if admin should have permission
+		$this->Auth->allow('index');
+		
 		$this->_editSelf('status', 'delete');
 		parent::beforeFilter();
 		$this->_editSelf('involvement', 'add');
@@ -68,6 +72,44 @@ class RostersController extends AppController {
 		$conditions = array();
 		$userConditions = array();
 		$involvementId = $this->passedArgs['Involvement'];
+		
+		$involvement = $this->Roster->Involvement->find('first', array(
+			'fields' => array(
+				'roster_visible',
+				'ministry_id'
+			),
+			'conditions' => array(
+				'Involvement.id' => $involvementId
+			),
+			'contain' => array(
+				'Ministry' => array(
+					'fields' => array(
+						'campus_id'
+					)
+				)
+			)
+		));
+		$roster = $this->Roster->find('first', array(
+			'fields' => array(
+				'roster_status_id'
+			),
+			'conditions' => array(
+				'user_id' => $this->activeUser['User']['id'],
+				'involvement_id' => $involvementId
+			),
+			'contain' => false
+		));
+		$inRoster = !empty($roster);
+		$canSeeRoster = 
+			($inRoster && $roster['Roster']['roster_status_id'] == 1 && $involvement['Involvement']['roster_visible'])
+			|| $this->Roster->Involvement->isLeader($this->activeUser['User']['id'], $involvementId)
+			|| $this->Roster->Involvement->Ministry->isManager($this->activeUser['User']['id'], $involvement['Involvement']['ministry_id'])
+			|| $this->Roster->Involvement->Ministry->Campus->isManager($this->activeUser['User']['id'], $involvement['Ministry']['campus_id'])
+			|| $this->isAuthorized('rosters/index', array('Involvement' => $id));
+		
+		if (!$canSeeRoster) {
+			$this->cakeError('privateItem', array('type' => 'Roster'));
+		}
 		
 		// if involvement is defined, show just that involvement
 		$conditions['Roster.involvement_id'] = $involvementId;
