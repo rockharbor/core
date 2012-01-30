@@ -231,16 +231,9 @@ $this->Paginator->options(array(
 		?></td>
 	</tr>
 <?php endforeach; ?>
-	</tbody>
-		<tfoot>
-			<tr>
-				<td colspan="<?php echo $colCount; ?>">
-					<?php echo $this->element('pagination'); ?>
-				</td>
-			</tr>
-		</tfoot>
 	</table>	
 <?php
+	echo $this->element('pagination');
 	echo $this->MultiSelect->end();
 ?>
 </div>
