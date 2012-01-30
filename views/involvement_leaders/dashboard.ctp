@@ -84,7 +84,7 @@
 				echo ' > ';
 				echo $this->Html->link($leader['Involvement']['Ministry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $leader['Involvement']['Ministry']['id'])); 
 				echo ' > ';
-				echo $this->Html->link($leader['Involvement']['name'], array('controller' => 'involvements', 'action' => 'view', 'model' => 'Involvement', 'Involvement' => $leader['Involvement']['id'])).$this->Formatting->flags('Involvement', $leader); 
+				echo $this->Html->link($leader['Involvement']['name'], array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $leader['Involvement']['id'])).$this->Formatting->flags('Involvement', $leader); 
 				?></td>
 			</tr>
 			<?php endforeach; ?>
