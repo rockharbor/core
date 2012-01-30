@@ -120,7 +120,7 @@ CORE.updateablePagination = function(updateable, id) {
 			break;
 		}
 	}
-	$('a[href*="page:"]', $('#'+id))
+	$('a[href*="page:"]', $(div))
 		.unbind('click')
 		.bind('click', function() {
 			if ($(this).attr('id') == '') {
@@ -131,7 +131,6 @@ CORE.updateablePagination = function(updateable, id) {
 			});
 			return false;
 		});
-
 }
 
 /**
