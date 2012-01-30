@@ -100,12 +100,16 @@ class RostersController extends AppController {
 			'contain' => false
 		));
 		$inRoster = !empty($roster);
-		$canSeeRoster = 
-			($inRoster && $roster['Roster']['roster_status_id'] == 1 && $involvement['Involvement']['roster_visible'])
-			|| $this->Roster->Involvement->isLeader($this->activeUser['User']['id'], $involvementId)
+		
+		$fullAccess = 
+			$this->Roster->Involvement->isLeader($this->activeUser['User']['id'], $involvementId)
 			|| $this->Roster->Involvement->Ministry->isManager($this->activeUser['User']['id'], $involvement['Involvement']['ministry_id'])
 			|| $this->Roster->Involvement->Ministry->Campus->isManager($this->activeUser['User']['id'], $involvement['Ministry']['campus_id'])
 			|| $this->isAuthorized('rosters/index', array('Involvement' => $id));
+		
+		$canSeeRoster = 
+			($inRoster && $roster['Roster']['roster_status_id'] == 1 && $involvement['Involvement']['roster_visible'])
+			|| $fullAccess;
 		
 		if (!$canSeeRoster) {
 			$this->cakeError('privateItem', array('type' => 'Roster'));
@@ -183,7 +187,7 @@ class RostersController extends AppController {
 		$rosterStatuses = $this->Roster->RosterStatus->find('list');
 
 		$this->set('rosters', $this->FilterPagination->paginate());
-		$this->set(compact('involvement', 'rosterIds', 'householdIds', 'rosterStatuses', 'counts', 'roles'));
+		$this->set(compact('involvement', 'rosterIds', 'householdIds', 'rosterStatuses', 'counts', 'roles', 'fullAccess'));
 	}
 
 /**

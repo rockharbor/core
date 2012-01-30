@@ -162,22 +162,28 @@ $this->Paginator->options(array(
 				$colCount--;
 			}
 			$this->Js->buffer('CORE.confirmation("roster-remove", "Are you sure you want to remove the selected users?", {update:"roster"})');
-			echo $this->element('multiselect', array(
-				'colCount' => $colCount,
-				'checkAll' => $canCheckAll,
-				'links' => $links
-			));
+			if ($fullAccess) {
+				echo $this->element('multiselect', array(
+					'colCount' => $colCount,
+					'checkAll' => $canCheckAll,
+					'links' => $links
+				));
+			}
 			?>			
 			<tr>
-				<th>&nbsp;</th>
+				<?php if ($fullAccess): ?>
+					<th>&nbsp;</th>
+				<?php endif; ?>
 				<th><?php echo $this->Paginator->sort('Name', 'Profile.last_name');?></th>
 				<th><?php echo $this->Paginator->sort('Email', 'Profile.primary_email');?></th>
-				<th><?php echo $this->Paginator->sort('Phone', 'Profile.cell_phone');?></th>
-				<th><?php echo $this->Paginator->sort('Status', 'RosterStatus.name');?></th>
-				<?php if ($involvement['Involvement']['take_payment']) { ?>
-				<th><?php echo $this->Paginator->sort('balance');?></th>
-				<?php } ?>
-				<th><?php echo $this->Paginator->sort('Date Joined', 'created');?></th>
+				<?php if ($fullAccess): ?>
+					<th><?php echo $this->Paginator->sort('Phone', 'Profile.cell_phone');?></th>
+					<th><?php echo $this->Paginator->sort('Status', 'RosterStatus.name');?></th>
+					<?php if ($involvement['Involvement']['take_payment']) { ?>
+					<th><?php echo $this->Paginator->sort('balance');?></th>
+					<?php } ?>
+					<th><?php echo $this->Paginator->sort('Date Joined', 'created');?></th>
+				<?php endif; ?>
 				<th>Roles</th>
 			</tr>
 		</thead>
@@ -191,14 +197,21 @@ $this->Paginator->options(array(
 		}
 	?>
 	<tr<?php echo $class;?>>
-		<td><?php 
-		if (in_array($roster['User']['id'], $householdIds) || $roster['Profile']['allow_sponsorage'] || $canCheckAll) {
-			echo $this->MultiSelect->checkbox($roster['Roster']['id']);
-		}
-		?></td>
+		<?php if ($fullAccess): ?>
+			<td><?php 
+			if (in_array($roster['User']['id'], $householdIds) || $roster['Profile']['allow_sponsorage'] || $canCheckAll) {
+				echo $this->MultiSelect->checkbox($roster['Roster']['id']);
+			}
+			?></td>
+		<?php endif; ?>
 		<td><?php 
 		$name = $roster['Profile']['name'];
-		echo $this->Html->link($name, array('controller' => 'profiles', 'action' => 'view', 'User' => $roster['User']['id']), array('escape' => false));
+		$link = array('controller' => 'profiles', 'action' => 'view', 'User' => $roster['User']['id']);
+		if ($this->Permission->check($link)) {
+			echo $this->Html->link($name, $link, array('escape' => false));
+		} else {
+			echo $name;
+		}
 		?>&nbsp;
 		<div class="core-tooltip"><?php
 			if (isset($roster['ImageIcon'])) {
@@ -212,17 +225,24 @@ $this->Paginator->options(array(
 		<?php echo $this->Formatting->flags('User', $roster); ?>
 		</td>
 		<td><?php echo $this->Formatting->email($roster['Profile']['primary_email'], $roster['User']['id']); ?>&nbsp;</td>
-		<td><?php echo $this->Formatting->phone($roster['Profile']['cell_phone']); ?>&nbsp;</td>
-		<td><?php echo $this->Html->link($roster['RosterStatus']['name'], array('controller' => 'rosters', 'action' => 'edit', $roster['Roster']['id']), array('rel' => 'modal-roster')); ?>&nbsp;</td>
-		<?php if ($involvement['Involvement']['take_payment']) { ?>
-		<td><?php echo $this->Formatting->money($roster['Roster']['balance']); ?>&nbsp;</td>
-		<?php } ?>
-		<td><?php echo $this->Formatting->date($roster['Roster']['created']); ?>&nbsp;</td>
+		<?php if ($fullAccess): ?>
+			<td><?php echo $this->Formatting->phone($roster['Profile']['cell_phone']); ?>&nbsp;</td>
+			<td><?php echo $this->Html->link($roster['RosterStatus']['name'], array('controller' => 'rosters', 'action' => 'edit', $roster['Roster']['id']), array('rel' => 'modal-roster')); ?>&nbsp;</td>
+			<?php if ($involvement['Involvement']['take_payment']) { ?>
+			<td><?php echo $this->Formatting->money($roster['Roster']['balance']); ?>&nbsp;</td>
+			<?php } ?>
+			<td><?php echo $this->Formatting->date($roster['Roster']['created']); ?>&nbsp;</td>
+		<?php endif; ?>
 		<td><?php
 		$link = array('controller' => 'rosters', 'action' => 'roles', 'Involvement' => $involvement['Involvement']['id'], $roster['Roster']['id']);
-		$icon = $this->element('icon', array('icon' => 'add'));
-		echo $this->Html->link($icon, $link, array('rel' => 'modal-roster', 'escape' => false, 'class' => 'no-hover'));
-		echo $this->Html->link(count($roster['Role']).' Roles', $link, array('rel' => 'modal-roster'));
+		$canModifyRoles = $this->Permission->check($link);
+		if ($canModifyRoles) {
+			$icon = $this->element('icon', array('icon' => 'add'));
+			echo $this->Html->link($icon, $link, array('rel' => 'modal-roster', 'escape' => false, 'class' => 'no-hover'));
+			echo $this->Html->link(count($roster['Role']).' Roles', $link, array('rel' => 'modal-roster'));
+		} else {
+			echo $this->Html->link(count($roster['Role']).' Roles', '#');
+		}
 		if (!empty($roster['Role'])) {
 			echo '<div class="core-tooltip">';
 			echo $this->Text->toList(Set::extract('/name', $roster['Role']));
