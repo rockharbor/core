@@ -17,7 +17,7 @@
 			}
 		?>
 		<tr class="core-iconable<?php echo $class;?>">
-			<td><?php echo $this->Html->link($campus['Campus']['name'], array('view', 'Campus' => $campus['Campus']['id'])); ?>&nbsp;</td>
+			<td><?php echo $this->Html->link($campus['Campus']['name'], array('action' => 'view', 'Campus' => $campus['Campus']['id'])); ?>&nbsp;</td>
 			<td><?php echo $campus['Campus']['description']; ?>&nbsp;</td>
 			<td><?php
 				$link = array('controller' => 'campus_leaders', 'action' => 'index', 'Campus' => $campus['Campus']['id']);
