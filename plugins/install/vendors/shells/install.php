@@ -104,6 +104,9 @@ class InstallShell extends Shell {
  * Updates permissions
  */
 	function update() {
+		// clear cache
+		Cache::clear(false, 'acl');
+		
 		// create Acos
 		$this->Acl =& new AclComponent();
 		$controller = null;
