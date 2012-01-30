@@ -92,7 +92,7 @@ echo $this->Form->create(array(
 					'User' => $this->data['Profile']['user_id']
 				),
 				'return',
-				'respondAs' => 'ajax'
+				'renderAs' => 'ajax'
 			));
 			?>
 		</div>

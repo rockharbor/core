@@ -219,7 +219,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 						'Involvement' => $involvement['Involvement']['id']
 					),
 					'return',
-					'respondAs' => 'ajax'
+					'renderAs' => 'ajax'
 				));
 				$this->Js->buffer('CORE.register("roster", "roster-tab", "/rosters/index/Involvement:'.$involvement['Involvement']['id'].'")');
 			}
