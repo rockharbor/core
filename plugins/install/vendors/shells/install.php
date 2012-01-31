@@ -465,7 +465,6 @@ class InstallShell extends Shell {
 			'controllers/Comments/add',
 			'controllers/Rosters/index',
 			'controllers/Rosters/add',
-			'controllers/Rosters/roles',
 			'controllers/Rosters/involvement',
 			'controllers/Users/edit',
 			'controllers/UserDocuments/delete',
@@ -550,7 +549,6 @@ class InstallShell extends Shell {
 			'controllers/Users/household_add',
 		),
 		'Campus Manager' => array(
-			'controllers/Ministries/add',
 			'controllers/Campuses/edit',
 			'controllers/Campuses/history',
 			'controllers/CampusLeaders/add',
@@ -561,6 +559,7 @@ class InstallShell extends Shell {
 			'controllers/MinistryImages/index',
 			'controllers/MinistryImages/upload',
 			'controllers/Involvements/add',
+			'controllers/Ministries/add',
 			'controllers/Ministries/edit',
 			'controllers/Ministries/history',
 			'controllers/MinistryLeaders/add',
