@@ -1,6 +1,6 @@
 <?php
 if (!empty($ministry['Image'])) {
-	$path = 's'.DS.$ministry['Image'][0]['dirname'].DS.$ministry['Image'][0]['basename'];
+	$path = 's'.DS.$ministry['Image']['dirname'].DS.$ministry['Image']['basename'];
 	echo $this->Html->tag('div', $this->Media->embed($path, array('restrict' => 'image')), array('class' => 'autocomplete-image'));
 }
 ?>

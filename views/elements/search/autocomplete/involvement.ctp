@@ -1,6 +1,6 @@
 <?php
 if (!empty($involvement['Image'])) {
-	$path = 's'.DS.$involvement['Image'][0]['dirname'].DS.$involvement['Image'][0]['basename'];
+	$path = 's'.DS.$involvement['Image']['dirname'].DS.$involvement['Image']['basename'];
 	echo $this->Html->tag('div', $this->Media->embed($path, array('restrict' => 'image')), array('class' => 'autocomplete-image'));
 }
 ?>

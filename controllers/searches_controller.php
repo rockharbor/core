@@ -175,7 +175,8 @@ class SearchesController extends AppController {
 							'ParentMinistry' => array(
 								'fields' => array('id', 'name')
 							)
-						)
+						),
+						'Image'
 					),
 					'limit' => 4
 				));
