@@ -1,7 +1,7 @@
 <?php
-if (!empty($ministry['Image'])) {
+if (!empty($ministry['Image']['dirname'])) {
 	$path = 's'.DS.$ministry['Image']['dirname'].DS.$ministry['Image']['basename'];
-	echo $this->Html->tag('div', $this->Media->embed($path, array('restrict' => 'image')), array('class' => 'autocomplete-image'));
+	echo $this->Html->tag('div', $this->Media->embed($path, array('restrict' => 'image')).'&nbsp;', array('class' => 'autocomplete-image'));
 }
 ?>
 <div class="autocomplete-row">

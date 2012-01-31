@@ -258,9 +258,11 @@
 .ui-autocomplete .autocomplete-image {
 	float:left;
 	margin-right: 5px;
+	width: 65px;
 }
 .ui-autocomplete .autocomplete-row {
 	float:left;	
+	width: 200px;
 }
 .ui-autocomplete p {
 	margin:2px 0;
