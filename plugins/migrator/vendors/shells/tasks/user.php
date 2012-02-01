@@ -277,10 +277,12 @@ class UserTask extends MigratorTask {
 		if (substr($old, 0, 1) == '1') {
 			$old = substr($old, 1, -1);
 		}
-		$phone = substr(preg_replace('/[^0-9]+/', '', $old), 0, 10);
-		$ext = substr(preg_replace('/[^0-9]+/', '', $old), 11);
+		$old = preg_replace('/[^0-9 ]+/', '', $old);
+		$old = ltrim($old);
+		$phone = substr($old, 0, 10);
+		$ext = substr($old, 11);
 		if ($ext !== false) {
-			$this->_editingRecord['work_phone_ext'] = $ext;
+			$this->_editingRecord['work_phone_ext'] = trim($ext);
 		} else {
 			$this->_editingRecord['work_phone_ext'] = null;
 		}
