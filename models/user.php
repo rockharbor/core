@@ -201,7 +201,8 @@ class User extends AppModel {
 				'ActiveAddress' => array(
 					'fields' => array('city')
 				)
-			)
+			),
+			'order' => 'first_name ASC, last_name ASC'
 		),
 		'notLeaderOf' => array(
 			'conditions' => array(
@@ -214,7 +215,8 @@ class User extends AppModel {
 				'ActiveAddress' => array(
 					'fields' => array('city')
 				)
-			)
+			),
+			'order' => 'first_name ASC, last_name ASC'
 		),
 		'notSignedUp' => array(
 			'conditions' => array(
@@ -226,7 +228,8 @@ class User extends AppModel {
 				'ActiveAddress' => array(
 					'fields' => array('city')
 				)
-			)
+			),
+			'order' => 'first_name ASC, last_name ASC'
 		)
 	);
 
