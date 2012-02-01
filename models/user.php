@@ -59,8 +59,8 @@ class User extends AppModel {
 				'message' => 'Please fill in the required field.'
 			),
 			'characters' => array(
-				'rule' => '/^[a-z0-9\-_]{5,}$/i',
-				'message' => 'Username must be at least 5 characters long and can only contain letters, numbers, dashes and underscores.',
+				'rule' => '/^[a-z0-9\-_]$/i',
+				'message' => 'Username must only contain letters, numbers, dashes and underscores.',
 				'allowEmpty' => true
 			)
 		),
