@@ -1,7 +1,7 @@
 <?php
 if (isset($user['ImageIcon'])) {
 	$path = 's'.DS.$user['ImageIcon']['dirname'].DS.$user['ImageIcon']['basename'];
-	echo $this->Html->tag('div', $this->Media->embed($path, array('restrict' => 'image')), array('class' => 'autocomplete-image'));
+	echo $this->Html->tag('div', $this->Media->embed($path, array('restrict' => 'image')).'&nbsp;', array('class' => 'autocomplete-image'));
 }
 ?>
 <div class="autocomplete-row">
