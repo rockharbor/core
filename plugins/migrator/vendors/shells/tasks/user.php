@@ -343,6 +343,9 @@ class UserTask extends MigratorTask {
 		if ($this->_originalRecord['Model']['active'] == 'F') {
 			return false;
 		}
+		if ($this->_originalRecord['Model']['active'] == 'T' && $this->_originalRecord['Model']['entered_by_person_id'] != 0) {
+			return true;
+		}
 		if (!empty($this->_originalRecord['Model']['last_logged_in'])) {
 			return true;
 		}
