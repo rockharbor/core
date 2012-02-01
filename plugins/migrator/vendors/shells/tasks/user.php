@@ -306,7 +306,7 @@ class UserTask extends MigratorTask {
 			return false;
 		}
 
-		if (preg_match('/[^a-z0-9_\-]/i', $old) == 1 || strlen($old) < 5) {
+		if (preg_match('/[^a-z0-9_\-]/i', $old) == 1) {
 			CakeLog::write('migration', 'Username did not validate (a new username will be generated): '.$old);
 			$old = $this->User->generateUsername($this->_editingRecord['first_name'], $this->_editingRecord['last_name']);
 		}
