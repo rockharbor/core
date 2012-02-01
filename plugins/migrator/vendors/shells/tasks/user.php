@@ -162,6 +162,9 @@ class UserTask extends MigratorTask {
  * @return string
  */
 	function _prepareSignedCovenant($old) {
+		if (empty($old)) {
+			return null;
+		}
 		return date('Y-m-d', strtotime($old));
 	}
 
