@@ -249,7 +249,9 @@ class UsersController extends AppController {
 				if ($this->User->saveField('password', $newPassword)) {
 					$this->User->saveField('reset_password', true);
 					$this->Session->setFlash('Your new password has been sent to your email address.', 'flash'.DS.'success');
+					$username = $this->User->field('username');
 					$this->set('password', $newPassword);
+					$this->set('username', $username);
 					$this->Notifier->notify(array(
 						'to' => $user,
 						'subject' => 'Your password has been reset',

@@ -28,7 +28,7 @@ $this->Js->buffer('CORE.initLogin()');
 			'label' => 'Forget me not'
 		));
 		echo ' | ';
-		echo $this->Html->link('Forgot password', array('action' => 'forgot_password'), array('rel' => 'modal-none'));
+		echo $this->Html->link('Forgot your login info?', array('action' => 'forgot_password'), array('rel' => 'modal-none'));
 		echo ' | ';
 		echo $this->Html->link('Sign Up', array('action' => 'register'), array('rel' => 'modal-none'));
 		echo $this->Form->end('Whoosh!');
