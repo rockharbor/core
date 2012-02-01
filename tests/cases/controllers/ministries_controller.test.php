@@ -311,7 +311,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 	}
 
 	function testDelete() {
-		$this->testAction('/ministries/delete/1');
+		$this->testAction('/ministries/delete/Ministry:1');
 		$this->assertFalse($this->Ministries->Ministry->read(null, 1));
 	}
 

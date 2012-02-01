@@ -64,7 +64,7 @@ if (!empty($ministry['ParentMinistry']['id'])) {
 		$link = $this->Permission->link('Add Subministry', array('controller' => 'ministries', 'action' => 'add', 'Ministry' => $ministry['Ministry']['id'], 'Campus' => $ministry['Campus']['id']), array('rel' => 'modal-none'));
 		echo $link ? $this->Html->tag('li', $link) : null;
 	}
-	$link = $this->Permission->link('Delete', array('action' => 'delete', $ministry['Ministry']['id']), array('id' => 'delete_btn'));
+	$link = $this->Permission->link('Delete', array('action' => 'delete', 'Ministry' => $ministry['Ministry']['id']), array('id' => 'delete_btn'));
 	if ($link) {
 		$this->Js->buffer('CORE.confirmation("delete_btn", "Are you sure you want to delete this ministry and all it\'s related content?", {update:"content"});');
 		echo $this->Html->tag('li', $link);

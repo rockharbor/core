@@ -436,19 +436,19 @@ class InvolvementsController extends AppController {
 	
 /**
  * Deletes an involvement opportunity
- *
- * @param integer $id The id of the involvement to delete
  */
-	function delete($id = null) {
+	function delete() {
+		$id = $this->passedArgs['Involvement'];
 		if (!$id) {
 			$this->cakeError('error404');
 		}
+		$ministry = $this->Involvement->read(array('ministry_id'), $id);
 		if ($this->Involvement->delete($id)) {
 			$this->Session->setFlash('This involvement opportunity has been deleted.', 'flash'.DS.'success');
-			$this->redirect(array('action'=>'index'));
+			$this->redirect(array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $ministry['Involvement']['ministry_id']));
 		}
 		$this->Session->setFlash('Unable to delete involvement opportunity. Please try again.', 'flash'.DS.'failure');
-		$this->redirect(array('action' => 'index'));
+		$this->redirect(array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $ministry['Involvement']['ministry_id']));
 	}
 }
 ?>

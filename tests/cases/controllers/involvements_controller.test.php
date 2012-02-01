@@ -392,7 +392,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 	}
 
 	function testDelete() {
-		$this->testAction('/involvements/delete/1');
+		$this->testAction('/involvements/delete/Involvement:1');
 		$this->assertFalse($this->Involvements->Involvement->read(null, 1));
 	}
 

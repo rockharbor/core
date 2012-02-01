@@ -381,20 +381,27 @@ class MinistriesController extends AppController {
 
 /**
  * Deletes a ministry
- *
- * @param integer $id The id of the ministry to delete
  */ 
-	function delete($id = null) {
+	function delete() {
+		$id = $this->passedArgs['Ministry'];
 		if (!$id) {
 			$this->cakeError('error404');
 		}
-		$ministry = $this->Ministry->read(null, $id);
+		$ministry = $this->Ministry->read(array('parent_id', 'campus_id'), $id);
 		if ($this->Ministry->delete($id)) {
 			$this->Session->setFlash('This ministry has been deleted.', 'flash'.DS.'success');
-			$this->redirect(array('action' => 'view', 'Ministry' => $ministry['Ministry']['campus_id']));
+			if (!empty($ministry['Ministry']['parent_id'])) {
+				$this->redirect(array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $ministry['Ministry']['parent_id']));
+			} else {
+				$this->redirect(array('controller' => 'campuses', 'action' => 'view', 'Ministry' => $ministry['Ministry']['campus_id']));
+			}
 		}
 		$this->Session->setFlash('Unable to delete this ministry. Please try again.', 'flash'.DS.'failure');
-		$this->redirect(array('action' => 'view', 'Ministry' => $ministry['Ministry']['campus_id']));
+		if (!empty($ministry['Ministry']['parent_id'])) {
+			$this->redirect(array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $ministry['Ministry']['parent_id']));
+		} else {
+			$this->redirect(array('controller' => 'campuses', 'action' => 'view', 'Ministry' => $ministry['Ministry']['campus_id']));
+		}
 	}
 }
 ?>
