@@ -261,7 +261,7 @@ $this->Paginator->options(array(
 	<?php if ($this->Permission->check(array('controller' => 'involvements', 'action' => 'invite', 'Involvement' => $involvement['Involvement']['id']))): ?>
 	<li>
 	<?php
-	echo $this->Permission->link('Invite A User',
+	echo $this->Permission->link('Invite/Add A User',
 		array(
 			'controller' => 'searches',
 			'action' => 'simple',
@@ -281,7 +281,7 @@ $this->Paginator->options(array(
 	<?php if ($this->Permission->check(array('controller' => 'involvements', 'action' => 'invite_roster', 'Involvement' => $involvement['Involvement']['id']))): ?>
 	<li>
 	<?php
-	echo $this->Permission->link('Invite This Roster To',
+	echo $this->Permission->link('Invite/Add This Roster To',
 		array(
 			'controller' => 'searches',
 			'action' => 'simple',
