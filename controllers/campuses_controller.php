@@ -153,7 +153,7 @@ class CampusesController extends AppController {
 		$this->Campus->contain(array('Leader'));
 		$campus = $this->Campus->read(null, $id);
 		if (empty($campus['Leader'])) {
-			$this->Session->setFlash('Campus cannot be activated until a manager has been assigned.', 'flash'.DS.'failure');
+			$this->Session->setFlash('Campus cannot be activated until a leader has been assigned.', 'flash'.DS.'failure');
 			$this->redirect($this->emptyPage);
 			return;
 		}

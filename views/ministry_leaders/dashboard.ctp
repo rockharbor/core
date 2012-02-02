@@ -1,4 +1,4 @@
-<h1>Ministry Manager Dashboard</h1>
+<h1>Ministry Leader Dashboard</h1>
 <div class="content-box">
 	<p>Manage your ministries.</p>
 <?php
@@ -9,7 +9,7 @@
 			<?php
 			$links = array(
 				array(
-					'title' => 'Email Ministry Managers',
+					'title' => 'Email Ministry Leaders',
 					'url' => array(
 						'controller' => 'sys_emails',
 						'action' => 'compose',
