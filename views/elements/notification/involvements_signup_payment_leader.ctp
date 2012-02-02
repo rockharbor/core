@@ -1,0 +1,1 @@
+Someone signed up and made a payment for the <?php echo $involvement['InvolvementType']['name']; ?> <strong><?php echo $involvement['Involvement']['name']; ?></strong>.

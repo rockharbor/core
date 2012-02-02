@@ -233,7 +233,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, 1234);
 
 		$notificationsNow = $this->Rosters->Roster->User->Notification->find('count');
-		$this->assertEqual($notificationsNow-$notificationsBefore, 2);
+		$this->assertEqual($notificationsNow-$notificationsBefore, 3);
 
 		$roster = $this->Rosters->Roster->read();
 		$result = $roster['Roster']['involvement_id'];
@@ -291,7 +291,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($paymentsNow-$paymentsBefore, 2);
 
 		$notificationsNow = $this->Rosters->Roster->User->Notification->find('count');
-		$this->assertEqual($notificationsNow-$notificationsBefore, 3);
+		$this->assertEqual($notificationsNow-$notificationsBefore, 4);
 
 		$rostersNow = $this->Rosters->Roster->find('count');
 		$this->assertEqual($rostersNow-$rostersBefore, 2);

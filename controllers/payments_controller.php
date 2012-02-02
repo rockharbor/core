@@ -262,6 +262,15 @@ class PaymentsController extends AppController {
 					}
 					
 					$this->Payment->saveAll($payments, array('validate' => false));
+					
+					$this->set('involvement', $involvement);
+					$leaders = $this->Payment->Roster->Involvement->getLeaders($involvement['Involvement']['id']);
+					foreach ($leaders as $leader) {
+						$this->Notifier->notify(array(
+							'to' => $leader,
+							'template' => 'involvements_signup_payment_leader'
+						), 'notification');
+					}
 			
 					$this->Session->setFlash('Your payment has been received.', 'flash'.DS.'success');
 				} else {

@@ -247,30 +247,36 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 			'selected' => array(1),
 			'search' => array()
 		));
+		$notificationCountBefore = $this->Involvements->Notifier->Notification->find('count');
 		$countBefore = $this->Involvements->Involvement->Roster->find('count');
 		$vars = $this->testAction('/involvements/invite_roster/test/3/Involvement:1');
 		$invites = $this->Involvements->Involvement->Roster->User->Invitation->find('all');
 		$this->assertEqual(count($invites), 2);
 		$countNow = $this->Involvements->Involvement->Roster->find('count');
 		$this->assertEqual($countBefore+2, $countNow);
+		$notificationCountAfter = $this->Involvements->Notifier->Notification->find('count');
+		$this->assertEqual($notificationCountAfter-$notificationCountBefore, 1);
 		
 		$newest = $this->Involvements->Involvement->Roster->read();
 		$this->assertEqual($newest['Roster']['payment_option_id'], 1);
 	}
 
 	function testInviteUser() {
-		$this->loadFixtures('PaymentOption');
+		$this->loadFixtures('PaymentOption', 'Leader');
 		
 		$this->Involvements->Session->write('MultiSelect.test', array(
 			'selected' => array(1, 2),
 			'search' => array()
 		));
 		$countBefore = $this->Involvements->Involvement->Roster->find('count');
+		$notificationCountBefore = $this->Involvements->Notifier->Notification->find('count');
 		$vars = $this->testAction('/involvements/invite/test/3/Involvement:1');
 		$invites = $this->Involvements->Involvement->Roster->User->Invitation->find('all');
 		$this->assertEqual(count($invites), 2);
 		$countNow = $this->Involvements->Involvement->Roster->find('count');
 		$this->assertEqual($countBefore+2, $countNow);
+		$notificationCountAfter = $this->Involvements->Notifier->Notification->find('count');
+		$this->assertEqual($notificationCountAfter-$notificationCountBefore, 1);
 		
 		$newest = $this->Involvements->Involvement->Roster->read();
 		$this->assertEqual($newest['Roster']['payment_option_id'], 1);

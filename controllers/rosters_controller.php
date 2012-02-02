@@ -503,6 +503,14 @@ class RostersController extends AppController {
 							}
 						}
 						
+						$leaders = $this->Roster->Involvement->getLeaders($involvement['Involvement']['id']);
+						foreach ($leaders as $leader) {
+							$this->Notifier->notify(array(
+								'to' => $leader,
+								'template' => 'involvements_signup_payment_leader'
+							), 'notification');
+						}
+						
 						$this->Notifier->notify(array(
 							'to' => $this->activeUser['User']['id'],
 							'template' => 'payments_payment_made',
@@ -537,6 +545,14 @@ class RostersController extends AppController {
 								'template' => 'involvements_signup',
 							), 'notification');
 						}
+					}
+					
+					$leaders = $this->Roster->Involvement->getLeaders($involvement['Involvement']['id']);
+					foreach ($leaders as $leader) {
+						$this->Notifier->notify(array(
+							'to' => $leader,
+							'template' => 'involvements_signup_leader'
+						), 'notification');
 					}
 					
 					$this->Session->setFlash('You have signed up for '.$involvement['Involvement']['name'].'.', 'flash'.DS.'success');

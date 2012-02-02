@@ -231,6 +231,8 @@ class InvolvementsController extends AppController {
 		$this->Involvement->Roster->User->contain(array('Profile'));
 		$this->set('notifier', $this->Involvement->Roster->User->read(null, $this->activeUser['User']['id']));
 
+		$this->Involvement->contain(array('InvolvementType'));
+		$fromInvolvement = $this->Involvement->read(null, $this->passedArgs['Involvement']);
 		$toInvolvements = $this->MultiSelect->getSelected($mskey);
 		foreach ($toInvolvements as $to) {
 			$this->Involvement->contain(array('InvolvementType', 'PaymentOption'));
@@ -276,6 +278,15 @@ class InvolvementsController extends AppController {
 						);
 					}
 				}
+			}
+			$leaders = $this->Involvement->getLeaders($to);
+			$this->set('toInvolvement', $involvement);
+			$this->set('fromInvolvement', $fromInvolvement);
+			foreach ($leaders as $leader) {
+				$this->Notifier->notify(array(
+					'to' => $leader,
+					'template' => 'involvements_invite_'.$status.'_leader'
+				), 'notification');
 			}
 		}
 		$this->Session->setFlash('Your invitation has been sent.', 'flash'.DS.'success');
@@ -327,6 +338,13 @@ class InvolvementsController extends AppController {
 					)
 				);
 			}
+		}
+		$leaders = $this->Involvement->getLeaders($involvement['Involvement']['id']);
+		foreach ($leaders as $leader) {
+			$this->Notifier->notify(array(
+				'to' => $leader,
+				'template' => 'involvements_invite_'.$status.'_leader'
+			), 'notification');
 		}
 		$this->Session->setFlash('Your invitation has been sent.', 'flash'.DS.'success');
 
