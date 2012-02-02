@@ -135,7 +135,7 @@ class UserTask extends MigratorTask {
 				'background_check_date' => $oldData['background_check_date'],
 				'signed_covenant_date' => $oldData['signed_covenant'],
 				'grade' => $oldData['grade'],
-				'graduation_year' => $oldData['high_school_grad_year'],
+				'graduation_year' => $oldData['college_grad_year'],
 				'created_by' => $oldData['entered_by_person_id'],
 				'created_by_type' => $oldData['entered_by_type'],
 				'created' => $oldData['created'],
