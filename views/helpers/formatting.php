@@ -394,10 +394,12 @@ class FormattingHelper extends AppHelper {
 		$user = Set::merge($_defaults, $user);
 		
 		if ($user['User']['flagged']) {
-			$output .= $this->Html->tag('span', '', array(
-				'class' => 'core-icon icon-flagged',
-				'title' => 'Flagged User'
-			));
+			if ($this->Permission->canSeePrivate()) {
+				$output .= $this->Html->tag('span', '', array(
+					'class' => 'core-icon icon-flagged',
+					'title' => 'Flagged User'
+				));
+			}
 		}
 		
 		if (!$user['User']['active']) {

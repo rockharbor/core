@@ -1,4 +1,5 @@
 <?php
+App::import('Lib', 'CoreTestCase');
 App::import('Helper', array('Permission', 'Js', 'Html'));
 App::import('Controller', 'App');
 
@@ -6,7 +7,7 @@ Mock::generate('HtmlHelper');
 Mock::generate('JsHelper');
 Mock::generatePartial('AppController', 'MockAppController', array('isAuthorized'));
 
-class PermissionHelperTestCase extends CakeTestCase {
+class PermissionHelperTestCase extends CoreTestCase {
 
 	function startTest() {
 		$this->Permission =& new PermissionHelper();
@@ -72,6 +73,32 @@ class PermissionHelperTestCase extends CakeTestCase {
 		$this->Permission->AppController = new MockAppController();
 		$this->Permission->AppController->setReturnValue('isAuthorized', true);
 		$this->assertTrue($this->Permission->check(array('controller' => 'a', 'action' => 'path')));
+	}
+	
+	function testCanSeePrivate() {
+		$this->loadFixtures('Group');
+		
+		$view = new View(new Controller());
+		$view->viewVars['activeUser'] = array(
+			'Group' => array(
+				'id' => 1
+			)
+		);
+		
+		// allowed
+		$this->assertTrue($this->Permission->canSeePrivate());
+		
+		$view->viewVars['activeUser'] = array(
+			'Group' => array(
+				'id' => 8
+			)
+		);
+		
+		// cached
+		$this->assertTrue($this->Permission->canSeePrivate());
+		$this->Permission->_canSeePrivate = null;
+		// not allowed
+		$this->assertFalse($this->Permission->canSeePrivate());
 	}
 
 }

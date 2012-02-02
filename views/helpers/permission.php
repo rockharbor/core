@@ -36,6 +36,13 @@ class PermissionHelper extends AppHelper {
 		'Html',
 		'Js'
 	);
+	
+/**
+ * Whether the user can see private items or not
+ * 
+ * @var boolean
+ */
+	var $_canSeePrivate = null;
 
 /**
  * Takes all vars named _can{DoSomething} set on the view and saves them as a
@@ -110,5 +117,20 @@ class PermissionHelper extends AppHelper {
 			$this->AppController->Auth->initialize($this->AppController, $this->AppController->components['Auth']);
 		}
 		return $this->AppController->isAuthorized($path, $params, $view->viewVars['activeUser']);
+	}
+	
+/**
+ * Checks if a user is allowed to see private items
+ * 
+ * @return boolean
+ */
+	function canSeePrivate() {
+		if ($this->_canSeePrivate === null) {
+			$view =& ClassRegistry::getObject('view');
+			$currentUserGroup = $view->viewVars['activeUser']['Group']['id'];
+			$Group = ClassRegistry::init('Group');
+			$this->_canSeePrivate = $Group->canSeePrivate($currentUserGroup);
+		}
+		return $this->_canSeePrivate;
 	}
 }

@@ -220,6 +220,14 @@ class FormattingHelperTestCase extends CoreTestCase {
 	}
 
 	function testFlagUser() {
+		$this->loadFixtures('Group');
+		$view = new View(new Controller());
+		$view->viewVars['activeUser'] = array(
+			'Group' => array(
+				'id' => 1
+			)
+		);
+		
 		$user = array(
 			'User' => array(
 				'active' => 1,
