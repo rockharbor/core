@@ -13,8 +13,8 @@ if (CORE == undefined) {
  * @return mixed Modal response
  */
 CORE.modal = function(id, options) {
-	if ($('#modal').length == 0) {
-		$('#wrapper').append('<div id="modal" class="container_12"></div>');
+	if ($('.core-modal').length == 0) {
+		$('#wrapper').append('<div id="modal" class="container_12 core-modal"></div>');
 	}
 
 	var _defaultOptions = {
