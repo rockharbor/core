@@ -8,7 +8,7 @@ echo $this->Form->create(array(
 <fieldset>
 	<legend>Edit</legend>
 <?php
-echo $this->Form->hidden('Role.ministry_id');
+echo $this->Form->hidden('Role.id');
 echo $this->Form->input('Role.name');
 echo $this->Form->input('Role.description');
 $defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals: true})';
