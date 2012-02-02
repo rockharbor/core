@@ -93,6 +93,12 @@ class HouseholdsControllerTestCase extends CoreTestCase {
 					'id' => 3,
 					'contact_id' => 3
 				)
+			),
+			array(
+				'Household' => array(
+					'id' => 6,
+					'contact_id' => 1
+				)
 			)
 		);
 		$this->assertEqual($results, $expected);

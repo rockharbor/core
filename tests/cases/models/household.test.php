@@ -81,6 +81,7 @@ class HouseholdTestCase extends CoreTestCase {
 		$this->assertTrue($this->Household->isContactFor(2,3));
 		$this->assertFalse($this->Household->isContactFor(1,2));
 		$this->assertTrue($this->Household->isContactFor(1,3));
+		$this->assertFalse($this->Household->isContactFor(1,6));
 	}
 
 	function testCreateHousehold() {

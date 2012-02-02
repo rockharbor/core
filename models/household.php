@@ -197,6 +197,7 @@ class Household extends AppModel {
 		$households = $this->HouseholdMember->find('all', array(
 			'conditions' => array(
 				'HouseholdMember.user_id' => $userId,
+				'HouseholdMember.confirmed' => true,
 				'Household.contact_id' => $contactId
 			),
 			'link' => array(
