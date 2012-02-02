@@ -82,6 +82,9 @@ class DocumentTask extends MigratorTask {
 		$friendly = explode('.', $this->_editingRecord['displayname']);
 		array_pop($friendly);
 		$friendly = implode('.', $friendly);
+		
+		/// this relies on a hack on Media/TransferBehavior to force the mimetype
+		$this->{$this->_newModel}->_mimeType = $this->_editingRecord['mimetype'];
 
 		$this->_editingRecord = array(
 			'Document' => array(
@@ -94,9 +97,6 @@ class DocumentTask extends MigratorTask {
 				'file' => ROOT.DS.'attachments'.DS.$this->_editingRecord['filename']
 			)
 		);
-		
-		/// this relies on a hack on Media/TransferBehavior to force the mimetype
-		$this->{$this->_newModel}->_mimeType = $this->_editingRecord['mimetype'];
 		
 		if (!file_exists($this->_editingRecord['Document']['file'])) {
 			$this->_editingRecord = false;
