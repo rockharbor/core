@@ -86,6 +86,7 @@ echo $this->Html->link($icon, array('action' => 'view', 'Involvement' => $this->
 				<fieldset class="grid_5 alpha">
 					<legend>Roster</legend>
 					<?php
+						echo $this->Form->input('default_status_id');
 						echo $this->Form->input('signup', array(
 							'label' => 'Offer signup'
 						));

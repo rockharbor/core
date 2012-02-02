@@ -36,7 +36,7 @@ class RosterTestCase extends CoreTestCase {
 		$expected = array(2, 3);
 		$this->assertEqual($results, $expected);
 	}
-
+	
 	function testSetDefaultChildcare() {
 		$involvement = $this->Roster->Involvement->read(null, 1);
 		$parent = 1;
@@ -88,7 +88,7 @@ class RosterTestCase extends CoreTestCase {
 		$expected = array(
 			'user_id' => 2,
 			'involvement_id' => 1,
-			'roster_status_id' => 1,
+			'roster_status_id' => 4,
 			'parent' => 1,
 			'payment_option_id' => 2,
 		);
@@ -219,7 +219,7 @@ class RosterTestCase extends CoreTestCase {
 		$expected = array(
 			'Roster' => array(
 				'involvement_id' => 1,
-				'roster_status_id' => 1,
+				'roster_status_id' => 4,
 				'parent' => null,
 				'payment_option_id' => 1
 			)

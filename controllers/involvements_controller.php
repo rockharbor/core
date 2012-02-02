@@ -371,6 +371,7 @@ class InvolvementsController extends AppController {
 		$this->set('ministries', $this->Involvement->Ministry->active('list'));
 		$this->set('displayMinistries', array($this->Involvement->Ministry->active('list')));
 		$this->set('involvementTypes', $this->Involvement->InvolvementType->find('list'));
+		$this->set('defaultStatuses', $this->Involvement->DefaultStatus->find('list'));
 	}
 	
 /**
@@ -398,6 +399,7 @@ class InvolvementsController extends AppController {
 		$this->set('ministries', $this->Involvement->Ministry->active('list'));
 		$this->set('displayMinistries', array($this->Involvement->Ministry->active('list')));
 		$this->set('involvementTypes', $this->Involvement->InvolvementType->find('list'));
+		$this->set('defaultStatuses', $this->Involvement->DefaultStatus->find('list'));
 	}
 
 /**

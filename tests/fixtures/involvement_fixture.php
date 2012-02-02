@@ -19,6 +19,7 @@ class InvolvementFixture extends CakeTestFixture {
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'force_payment' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
+		'default_status_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'ministry_key' => array('column' => 'ministry_id', 'unique' => 0), 'involvement_type_key' => array('column' => 'involvement_type_id', 'unique' => 0), 'fulltext' => array('column' => array('name', 'description'), 'unique' => 0, 'type' => 'fulltext')),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
@@ -39,7 +40,8 @@ class InvolvementFixture extends CakeTestFixture {
 			'active' => 1,
 			'created' => '2010-03-04 13:37:22',
 			'modified' => '2010-04-09 13:34:48',
-			'force_payment' => 0
+			'force_payment' => 0,
+			'default_status_id' => 4
 		),
 		array(
 			'id' => 2,
@@ -56,7 +58,8 @@ class InvolvementFixture extends CakeTestFixture {
 			'active' => 0,
 			'created' => '2010-03-08 13:27:43',
 			'modified' => '2010-04-13 11:27:14',
-			'force_payment' => 0
+			'force_payment' => 0,
+			'default_status_id' => 1
 		),
 		array(
 			'id' => 3,
@@ -73,7 +76,8 @@ class InvolvementFixture extends CakeTestFixture {
 			'active' => 0,
 			'created' => '2010-04-09 14:35:17',
 			'modified' => '2010-06-24 19:02:50',
-			'force_payment' => 0
+			'force_payment' => 0,
+			'default_status_id' => 1
 		),
 		array(
 			'id' => 4,
@@ -90,7 +94,8 @@ class InvolvementFixture extends CakeTestFixture {
 			'active' => 1,
 			'created' => '2010-04-23 13:07:08',
 			'modified' => '2010-04-23 13:07:21',
-			'force_payment' => 0
+			'force_payment' => 0,
+			'default_status_id' => 1
 		),
 		array(
 			'id' => 5,
@@ -107,7 +112,8 @@ class InvolvementFixture extends CakeTestFixture {
 			'active' => 1,
 			'created' => '2010-04-23 13:07:08',
 			'modified' => '2010-04-23 13:07:21',
-			'force_payment' => 0
+			'force_payment' => 0,
+			'default_status_id' => 1
 		),
 		array(
 			'id' => 6,
@@ -124,7 +130,8 @@ class InvolvementFixture extends CakeTestFixture {
 			'active' => 1,
 			'created' => '2010-04-23 13:07:08',
 			'modified' => '2010-04-23 13:07:21',
-			'force_payment' => 0
+			'force_payment' => 0,
+			'default_status_id' => 1
 		),
 	);
 }

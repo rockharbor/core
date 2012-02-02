@@ -192,7 +192,7 @@ class Roster extends AppModel {
 		
 		// set defaults
 		$roster['Roster']['involvement_id'] = $involvement['Involvement']['id'];
-		$roster['Roster']['roster_status_id'] = 1;
+		$roster['Roster']['roster_status_id'] = $involvement['Involvement']['default_status_id'];
 		$roster['Roster']['parent'] = $parent;
 		$roster['Roster']['payment_option_id'] = $defaults['payment_option_id'];
 		

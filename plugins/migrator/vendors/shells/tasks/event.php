@@ -30,6 +30,7 @@ class EventTask extends MigratorTask {
 				'offer_childcare' => $this->_editingRecord['offer_childcare'],
 				'active' => $this->_editingRecord['active'],
 				'force_payment' => $this->_editingRecord['requirePayment'],
+				'default_status_id' => 1, //confirmed
 			)
 		);
 	}

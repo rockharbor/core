@@ -112,7 +112,11 @@ class Involvement extends AppModel {
 			'fields' => '',
 			'order' => ''
 		),
-		'InvolvementType'
+		'InvolvementType',
+		'DefaultStatus' => array(
+			'className' => 'RosterStatus',
+			'foreignKey' => 'default_status_id'
+		)
 	);
 
 /**

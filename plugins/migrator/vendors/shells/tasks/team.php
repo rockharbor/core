@@ -41,6 +41,7 @@ class TeamTask extends MigratorTask {
 				'offer_childcare' => false,
 				'active' => $this->_editingRecord['active'],
 				'force_payment' => false,
+				'default_status_id' => 2, //pending
 			)
 		);
 		if (!empty($this->_editingRecord['meetingDay'])) {
