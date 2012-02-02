@@ -93,10 +93,10 @@ class HouseholdsController extends AppController {
 	}
 
 /**
- * Removes/adds a user from/to a houshold
+ * Invites a user to a houshold or removes them
  *
  * Checks to see if the user is already in the household. If they are,
- * it removes them. If not, it will add them.
+ * it removes them. If not, it will invite them.
  *
  * @param integer $mskey Multiselect token
  * @param integer $household The id of the household the user is leaving
@@ -142,21 +142,10 @@ class HouseholdsController extends AppController {
 					$success = $this->Household->join(
 						$household,
 						$user,
-						$this->activeUser['User']['id'],
-						$addUser['Profile']['child']
+						false
 					);
 
-					if ($addUser['Profile']['child'] && $success) {
-						$this->Notifier->notify(
-							array(
-								'to' => $user,
-								'template' => 'households_join'
-							),
-							'notification'
-						);
-						$success = true;
-						$this->Session->setFlash($addUser['Profile']['name'].' has been added to this household.', 'flash'.DS.'success');
-					} elseif (!$addUser['Profile']['child'] && $success) {
+					if ($success) {
 						$this->Notifier->invite(
 							array(
 								'to' => $user,
@@ -169,7 +158,7 @@ class HouseholdsController extends AppController {
 						$this->Session->setFlash($addUser['Profile']['name'].' has been invited to this household.', 'flash'.DS.'success');
 					} else {
 						$success = true;
-						$this->Session->setFlash('Unable to add '.$addUser['Profile']['name'].' to this household. Please try again.', 'flash'.DS.'failure');
+						$this->Session->setFlash('Unable to invite '.$addUser['Profile']['name'].' to this household. Please try again.', 'flash'.DS.'failure');
 					}
 				} else {
 					$success = false;

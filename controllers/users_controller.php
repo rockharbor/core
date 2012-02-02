@@ -460,11 +460,10 @@ class UsersController extends AppController {
 					'to' => $this->User->id,
 					'template' => 'households_join'
 				), 'notification');
-
+				
 				$this->redirect(array(
-					'controller' => 'users',
-					'action' => 'login',
-					$this->data['User']['username']
+					'controller' => 'households',
+					'action' => 'index'
 				));
 			} else {
 				$this->Session->setFlash('Oops, validation errors...', 'flash'.DS.'failure');

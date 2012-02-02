@@ -52,7 +52,15 @@
 				<div style="float:left;width:60%">
 					<p>
 					<?php
-					echo $this->Html->link($user['Profile']['name'], array('controller' => 'profiles', 'action' => 'view', 'User' => $user['id']));
+					$confirmed = null;
+					if (!$householdMember['confirmed']) {
+						$confirmed = ' (Unconfirmed)';
+					}
+					if ($this->Permission->check(array('controller' => 'profiles', 'action' => 'view', 'User' => $user['id']))) {
+						echo $this->Html->link($user['Profile']['name'].$confirmed, array('controller' => 'profiles', 'action' => 'view', 'User' => $user['id']));
+					} else {
+						echo $user['Profile']['name'].$confirmed;
+					}
 					echo $this->Formatting->flags('User', $householdMember);
 					echo '<br />';
 					echo $this->Formatting->email($user['Profile']['primary_email'], $user['id']);
@@ -72,28 +80,21 @@
 					?>
 					</p>
 					<hr>
-					<p>
+					<p class="actions">
 					<?php
-					$this->Permission->activeUser = array('User' => $user, 'Group' => $user['Group']);
-					$this->Permission->params = array('User' => $user['id']);
 					echo $this->Permission->link('Edit Profile', array('controller' => 'profiles', 'action' => 'edit', 'User' => $user['id']));
-					echo '<br />';
 					echo $this->Permission->link('View Involvement', array('controller' => 'profiles', 'action' => 'view', 'User' => $user['id']));
-					echo '<br />';
-					if ($class != 'household-contact' && ($activeUser['User']['id'] == $household['HouseholdContact']['id'] || $this->Permission->check(array('controller' => 'households', 'action' => 'shift_households', $user['id'], $household['Household']['id'], 'User' => $activeUser['User']['id'])))) {
-						echo $this->Html->link('Remove', array('controller' => 'households', 'action' => 'shift_households', $user['id'], $household['Household']['id'], 'User' => $activeUser['User']['id']), array('id' => 'household_remove_'.$m));
+					if ($class != 'household-contact') {
+						echo $this->Permission->link('Remove', array('controller' => 'households', 'action' => 'shift_households', $user['id'], $household['Household']['id'], 'User'), array('id' => 'household_remove_'.$m));
 						$this->Js->buffer('CORE.confirmation("household_remove_'.$m.'","Are you sure you want to remove '.$user['Profile']['name'].' from this household?", {update:"households"});');
-						echo '<br />';
 					}
 					if ($class != 'household-contact' && !$user['Profile']['child']) {
-						echo $this->Permission->link('Make Household Contact', array('controller' => 'households', 'action' => 'make_household_contact', $user['id'], $household['Household']['id'], 'User' => $activeUser['User']['id']), array('id' => 'household_contact_'.$m));
+						echo $this->Permission->link('Make Household Contact', array('controller' => 'households', 'action' => 'make_household_contact', $user['id'], $household['Household']['id'], 'User' => $user['id']), array('id' => 'household_contact_'.$m));
 						$this->Js->buffer('CORE.confirmation("household_contact_'.$m.'","Are you sure you want to make '.$user['Profile']['name'].' the household contact?", {update:"households"});');
-						echo '<br />';
 					}
 					if (!$householdMember['confirmed']) {
-						echo $this->Permission->link('Confirm', array('controller' => 'households', 'action' => 'confirm', $user['id'], $household['Household']['id'], 'User' => $activeUser['User']['id']), array('id' => 'household_confirm_'.$m));
+						echo $this->Permission->link('Confirm', array('controller' => 'households', 'action' => 'confirm', $user['id'], $household['Household']['id'], 'User' => $user['id']), array('id' => 'household_confirm_'.$m));
 						$this->Js->buffer('CORE.confirmation("household_confirm_'.$m.'","Are you sure you want to confirm '.$user['Profile']['name'].' to this household?", {update:"households"});');
-						echo '<br />';
 					}
 					?>
 					</p>

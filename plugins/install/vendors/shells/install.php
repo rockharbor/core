@@ -307,6 +307,19 @@ class InstallShell extends Shell {
 				}
 			}
 		}
+		
+		foreach ($this->_denyPermissions as $alias => $perms) {
+			$group = $Group->findByName($alias);
+			$Group->id = $group['Group']['id'];
+			
+			foreach ($perms as $deny) {
+				if (@$this->Acl->deny($Group, $deny)) {
+					$this->out('Permission denied for '.$alias.' at '.$deny);
+				} else {
+					$this->out('Error: Could not set permission for '.$alias.' at '.$deny);
+				}
+			}
+		}
 	}
 
 	function _createTable($schema, $table, $fields) {
@@ -362,19 +375,9 @@ class InstallShell extends Shell {
  * @access private
  */ 
 	var $_denyPermissions = array(
-		/*2 => array('controllers'),
-		3 => array('controllers'),
-		4 => array('controllers'),
-		5 => array('controllers'),
-		6 => array('controllers'),
-		7 => array('controllers'),
-		8 => array('controllers'),
-		9 => array('controllers'),
-		10 => array('controllers'),
-		11 => array('controllers'),
-		12 => array('controllers'),
-		13 => array('controllers'),
-		14 => array('controllers')*/
+		'Owner' => array(
+			'controllers/Households/make_household_contact'
+		)
 	);
 	
 /**
@@ -519,6 +522,7 @@ class InstallShell extends Shell {
 			'controllers/Campuses/view',
 			'controllers/Dates/calendar',
 			'controllers/Dates/index',
+			'controllers/Households/shift_households',
 			'controllers/Involvements/index',
 			'controllers/Involvements/view',
 			'controllers/InvolvementAddresses/index',
@@ -640,6 +644,7 @@ class InstallShell extends Shell {
 			'controllers/Publications/subscriptions',
 			'controllers/Publications/toggle_subscribe',
 			'controllers/Profiles/edit',
+			'controllers/Profiles/view',
 			'controllers/Payments/view',
 			'controllers/Payments/index',
 			'controllers/Rosters/status'

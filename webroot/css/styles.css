@@ -274,6 +274,9 @@ div.household-member, div.household-contact {
 	min-height: 150px;
 	margin-bottom:10px;
 }
+div.household-member .actions a, div.household-contact .actions a {
+	display: block;
+}
 div.household-member {
 	background: #f1f1f1;
 }

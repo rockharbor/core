@@ -7,4 +7,4 @@ if (count($usersNames) > 1) {
 } else {
 	echo ' has';
 }
-echo ' joined '.$contact['Profile']['name'].'\'s household.';
+echo ' been invited '.$contact['Profile']['name'].'\'s household.';

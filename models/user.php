@@ -452,7 +452,7 @@ class User extends AppModel {
 				$householdId = $this->HouseholdMember->Household->id;
 				$creator = $data;
 			} elseif (!$this->HouseholdMember->Household->isMember($this->id, $householdId)) {
-				$this->HouseholdMember->Household->join($householdId, $this->id);
+				$this->HouseholdMember->Household->join($householdId, $this->id, true);
 			}
 
 			foreach ($householdMembers as $householdMember) {
@@ -462,7 +462,7 @@ class User extends AppModel {
 
 					$this->create();
 					if ($this->saveAll($householdMember)) {
-						$this->HouseholdMember->Household->join($householdId, $this->id);
+						$this->HouseholdMember->Household->join($householdId, $this->id, true);
 						$this->tmpAdded[] = array(
 							'id' => $this->id,
 							'username' => $householdMember['User']['username'],
@@ -473,19 +473,11 @@ class User extends AppModel {
 					$this->HouseholdMember->Household->join($householdId, $householdMember['User']['id']);
 					$this->contain(array('Profile'));
 					$oldUser = $this->read(null, $householdMember['User']['id']);
-					if ($oldUser['Profile']['child']) {
-						$this->tmpAdded[] = array(
-							'id' => $oldUser['User']['id'],
-							'username' => $oldUser['User']['username'],
-							'password' => $oldUser['User']['password']
-						);
-					} else {
-						$this->tmpInvited[] = array(
-							'id' => $oldUser['User']['id'],
-							'username' => $oldUser['User']['username'],
-							'password' => $oldUser['User']['password']
-						);
-					}
+					$this->tmpInvited[] = array(
+						'id' => $oldUser['User']['id'],
+						'username' => $oldUser['User']['username'],
+						'password' => $oldUser['User']['password']
+					);
 				}
 			}
 			$this->id = $data['User']['id'];
