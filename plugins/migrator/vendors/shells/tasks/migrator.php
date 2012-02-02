@@ -180,13 +180,13 @@ class MigratorTask extends MigratorShell {
 					if (empty($link) && $oldCrappyData > 0) {
 						$this->orphans[] = $this->_editingRecord[$this->_oldPk];
 						// keep users even if they're missing some linkage
-						$oldCrappyData = null;
 						if ($this->_newModel != 'User') {
 							$msg = "Missing linkage for $oldTable # $oldCrappyData when adding checking $newModel";
 							CakeLog::write('migration', $msg);
 							$this->_editingRecord = false;
 							return;
 						}
+						$oldCrappyData = null;
 					} elseif ($oldCrappyData > 0) {
 						$oldCrappyData = $link['IdLinkage']['new_pk'];
 					}
