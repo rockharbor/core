@@ -360,9 +360,9 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/searches/simple/User/some_element/notSignedUp/1', compact('data'));
 		$results = Set::extract('/User/username', $vars['results']);
 		$expected = array(
+			'bob',
 			'jharris',
-			'joe',
-			'bob'
+			'joe'
 		);
 		$this->assertEqual($results, $expected);
 		$this->Searches->Session->delete('FilterPagination');
@@ -375,11 +375,11 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/searches/simple/User/some_element/notSignedUp/20', compact('data'));
 		$results = Set::extract('/User/username', $vars['results']);
 		$expected = array(
+			'bob',
 			'jharris',
-			'rickyrockharbor',
-			'rickyrockharborjr',
 			'joe',
-			'bob'
+			'rickyrockharbor',
+			'rickyrockharborjr'
 		);
 		$this->assertEqual($results, $expected);
 		$this->Searches->Session->delete('FilterPagination');
