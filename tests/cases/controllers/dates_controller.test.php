@@ -31,7 +31,7 @@ class DatesControllerTestCase extends CoreTestCase {
 	}
 
 	function testCalendar() {
-		$this->loadFixtures('Roster', 'Leader');
+		$this->loadFixtures('Roster', 'Leader', 'Ministry');
 		
 		$vars = $this->testAction('/dates/calendar/full.json', array(
 			'return' => 'vars',
@@ -54,7 +54,7 @@ class DatesControllerTestCase extends CoreTestCase {
 			)
 		));
 		$results = Set::extract('/Involvement/id', $vars['events']);
-		$expected = array(1, 4, 5);
+		$expected = array(1, 4, 5, 6);
 		$this->assertEqual($results, $expected);
 		
 		$vars = $this->testAction('/dates/calendar/User:2.json', array(
@@ -117,7 +117,6 @@ class DatesControllerTestCase extends CoreTestCase {
 		$expected = array(1, 4);
 		$this->assertEqual($results, $expected);
 		
-		
 		$vars = $this->testAction('/dates/calendar/Involvement:1,4/Ministry:4,1/full.json', array(
 			'return' => 'vars',
 			'method' => 'get',
@@ -128,6 +127,30 @@ class DatesControllerTestCase extends CoreTestCase {
 		));
 		$results = Set::extract('/Involvement/id', $vars['events']);
 		$expected = array(1, 4, 5);
+		$this->assertEqual($results, $expected);
+		
+		$vars = $this->testAction('/dates/calendar/Campus:1/full.json', array(
+			'return' => 'vars',
+			'method' => 'get',
+			'data' => array(
+				'start' => strtotime('1/1/2009'),
+				'end' => strtotime('1/1/2012')
+			)
+		));
+		$results = Set::extract('/Involvement/id', $vars['events']);
+		$expected = array(1, 4, 5);
+		$this->assertEqual($results, $expected);
+		
+		$vars = $this->testAction('/dates/calendar/Campus:2/full.json', array(
+			'return' => 'vars',
+			'method' => 'get',
+			'data' => array(
+				'start' => strtotime('1/1/2009'),
+				'end' => strtotime('1/1/2012')
+			)
+		));
+		$results = Set::extract('/Involvement/id', $vars['events']);
+		$expected = array(6);
 		$this->assertEqual($results, $expected);
 	}
 

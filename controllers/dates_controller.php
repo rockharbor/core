@@ -86,7 +86,7 @@ class DatesController extends AppController {
 		// check for filtering and add extra conditions
 		$conditions = array();
 		$involvementIds = array();
-		foreach (array('User', 'Ministry', 'Involvement') as $model) {
+		foreach (array('User', 'Ministry', 'Involvement', 'Campus') as $model) {
 			if (isset($this->passedArgs[$model])) {
 				$this->passedArgs[$model] = preg_replace('/[^\d\,]/', '', $this->passedArgs[$model]);
 				$ids = explode(',', $this->passedArgs[$model]);
@@ -121,6 +121,9 @@ class DatesController extends AppController {
 					case 'Ministry':
 						$conditions['and']['or']['Involvement.ministry_id'] = $ids;
 					break;
+					case 'Campus':
+						$conditions['and']['or']['Ministry.campus_id'] = $ids;
+					break;
 				}			
 			}
 		}
@@ -151,7 +154,14 @@ class DatesController extends AppController {
 		// get all involvements and their dates within the range
 		$involvements = $this->Date->Involvement->find('all', array(
 			'fields' => array('id', 'name'),
-			'link' => array('Date'),
+			'link' => array(
+				'Date' => array(
+					'fields' => array('id', 'start_date')
+				), 
+				'Ministry' => array(
+					'fields' => array('campus_id')
+				)
+			),
 			'conditions' => $conditions,
 			'group' => 'Involvement.id'
 		));
