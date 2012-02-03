@@ -358,6 +358,7 @@ class ReportsController extends AppController {
 			$results = $this->{$model}->find('all', $search);
 		} else {
 			$search['contain'] = array_merge($contain, array(
+				'ActiveAddress',
 				'Profile' => array(
 					'fields' => array('name')
 				),

@@ -12,9 +12,14 @@ foreach ($results as $result) {
 
 	$name = null;
 	switch ($model) {
+		case 'Roster':
 		case 'User':
 			$name = $result['Profile']['name'];
 		break;
+	}
+	
+	if (isset($result['ActiveAddress'])) {
+		$result['Address'] = $result['ActiveAddress'];
 	}
 
 	if (!empty($result['Address'])) {
