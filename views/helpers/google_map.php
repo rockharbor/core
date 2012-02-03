@@ -149,7 +149,7 @@ class GoogleMapHelper extends AppHelper {
 		$this->_mapName = $mapName;
 		
 		$this->options = array_merge($default, $options);
-		return $this->Html->script('http://maps.google.com/maps/api/js?sensor='.($this->options['sensor'] ? 'true': 'false'), array('inline' => $this->options['inline']));
+		return $this->Html->script('http://maps.google.com/maps/api/js?callback='.$mapName.'load&sensor='.($this->options['sensor'] ? 'true': 'false'), array('inline' => $this->options['inline']));
 	}
 
 /**
@@ -201,6 +201,8 @@ class GoogleMapHelper extends AppHelper {
 		});");
 		array_unshift($this->_buffer, "var mapCenter = new google.maps.LatLng($centerLat, $centerLng);");
 		array_unshift($this->_buffer, "var infowindow = new google.maps.InfoWindow();");
+		array_unshift($this->_buffer, 'function '.$mapName.'load() {');
+		array_push($this->_buffer, '}');
 		
 		foreach ($this->_buffer as $buffer) {
 			$this->Js->buffer($buffer);
