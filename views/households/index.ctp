@@ -85,7 +85,7 @@
 					echo $this->Permission->link('Edit Profile', array('controller' => 'profiles', 'action' => 'edit', 'User' => $user['id']));
 					echo $this->Permission->link('View Involvement', array('controller' => 'profiles', 'action' => 'view', 'User' => $user['id']));
 					if ($class != 'household-contact') {
-						echo $this->Permission->link('Remove', array('controller' => 'households', 'action' => 'shift_households', $user['id'], $household['Household']['id'], 'User'), array('id' => 'household_remove_'.$m));
+						echo $this->Permission->link('Remove', array('controller' => 'households', 'action' => 'delete', $user['id'], $household['Household']['id'], 'User' => $user['id']), array('id' => 'household_remove_'.$m));
 						$this->Js->buffer('CORE.confirmation("household_remove_'.$m.'","Are you sure you want to remove '.$user['Profile']['name'].' from this household?", {update:"households"});');
 					}
 					if ($class != 'household-contact' && !$user['Profile']['child']) {

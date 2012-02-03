@@ -51,7 +51,7 @@ class HouseholdsController extends AppController {
  */
 	function beforeFilter() {
 		parent::beforeFilter();
-		$this->_editSelf('index');
+		$this->_editSelf('index', 'delete');
 	}
 
 /**
@@ -93,105 +93,65 @@ class HouseholdsController extends AppController {
 	}
 
 /**
- * Invites a user to a houshold or removes them
+ * Invites a user to a houshold
  *
- * Checks to see if the user is already in the household. If they are,
- * it removes them. If not, it will invite them.
- *
- * @param integer $mskey Multiselect token
- * @param integer $household The id of the household the user is leaving
+ * @param integer $userId The user id
+ * @param integer $household The id of the household
  */ 
-	function shift_households($mskey, $household) {
-		$users = $this->MultiSelect->getSelected($mskey);
-		if (empty($users)) {
-			// allow for a single user to be passed
-			$users = array($mskey);
-		}
-		
+	function invite($userId, $household) {
 		$this->Household->contain(array('HouseholdContact' => array('Profile')));
 		$contact = $this->Household->read(null, $household);
 		$this->set('contact', $contact['HouseholdContact']);
 		
-		$usersShifted = array();
-		
-		foreach ($users as $user) {
-			// check to see if they are in this household
-			$householdMember = $this->Household->HouseholdMember->find('first', array(
-				'conditions' => array(
-					'household_id' => $household,
-					'user_id' => $user
-				)
-			));
-			
-			$this->Household->HouseholdContact->contain(array('Profile'));
-			$usersShifted[] = $this->Household->HouseholdContact->read(null, $user);
-			
-			if (empty($householdMember)) {			
-				// add them to the household if it exists
-				$this->Household->id = $household;
-				if ($this->Household->exists($household)) {
-					$addUser = $this->Household->HouseholdMember->User->find('first', array(
-						'conditions' => array(	
-							'User.id' => $user
-						),
-						'contain' => 'Profile'
-					));
-					$this->Household->HouseholdContact->contain(array('Profile'));
-					$this->set('notifier', $this->Household->HouseholdContact->read(null, $this->activeUser['User']['id']));
+		$usersInvited = array();
+		// check to see if they are in this household
+		$householdMember = $this->Household->HouseholdMember->find('first', array(
+			'conditions' => array(
+				'household_id' => $household,
+				'user_id' => $userId
+			)
+		));
 
-					$success = $this->Household->join(
-						$household,
-						$user,
-						false
-					);
+		$this->Household->HouseholdContact->contain(array('Profile'));
+		$user = $this->Household->HouseholdContact->read(null, $userId);
 
-					if ($success) {
-						$this->Notifier->invite(
-							array(
-								'to' => $user,
-								'template' => 'households_invite',
-								'confirm' => '/households/confirm/'.$addUser['User']['id'].'/'.$household,
-								'deny' => '/households/shift_households/'.$addUser['User']['id'].'/'.$household,
-							)
-						);
-						$success = true;
-						$this->Session->setFlash($addUser['Profile']['name'].' has been invited to this household.', 'flash'.DS.'success');
-					} else {
-						$success = true;
-						$this->Session->setFlash('Unable to invite '.$addUser['Profile']['name'].' to this household. Please try again.', 'flash'.DS.'failure');
-					}
-				} else {
-					$success = false;
-					$this->Session->setFlash('Invalid Id.');
-				}
-			} else {		
-				// remove household member record
-				$dSuccess = $this->Household->HouseholdMember->delete($householdMember['HouseholdMember']['id']);
-
-				// add user to a household (function will check if they have one or not)
-				$cSuccess = $this->Household->createHousehold($user);
-
-				$deleteUser = $this->Household->HouseholdMember->User->find('first', array(
-					'conditions' => array(
-						'User.id' => $user
+		if (empty($householdMember)) {			
+			// add them to the household if it exists
+			$this->Household->id = $household;
+			if ($this->Household->exists($household)) {
+				$addUser = $this->Household->HouseholdMember->User->find('first', array(
+					'conditions' => array(	
+						'User.id' => $userId
 					),
 					'contain' => 'Profile'
 				));
-				if ($dSuccess && $cSuccess) {
-					$this->Notifier->notify(
-						array(
-							'to' => $user,
-							'template' => 'households_remove'
-						), 
-						'notification'
-					);
+				$this->Household->HouseholdContact->contain(array('Profile'));
+				$this->set('notifier', $this->Household->HouseholdContact->read(null, $this->activeUser['User']['id']));
 
+				$success = $this->Household->join(
+					$household,
+					$userId,
+					false
+				);
+
+				if ($success) {
+					$this->Notifier->invite(
+						array(
+							'to' => $userId,
+							'template' => 'households_invite',
+							'confirm' => '/households/confirm/'.$userId.'/'.$household,
+							'deny' => '/households/delete/'.$userId.'/'.$household,
+						)
+					);
 					$success = true;
-					$this->Session->setFlash($deleteUser['Profile']['name'].' has left this household.', 'flash'.DS.'success');
+					$this->Session->setFlash($addUser['Profile']['name'].' has been invited to this household.', 'flash'.DS.'success');
 				} else {
-					$success = false;
-					$this->Session->setFlash('Unable to remove '.$deleteUser['Profile']['name'].' from this household. Pleaes try again.', 'flash'.DS.'failure');			
+					$success = true;
+					$this->Session->setFlash('Unable to invite '.$addUser['Profile']['name'].' to this household. Please try again.', 'flash'.DS.'failure');
 				}
+			} else {
+				$success = false;
+				$this->Session->setFlash('Invalid Id.');
 			}
 		}
 		
@@ -199,7 +159,51 @@ class HouseholdsController extends AppController {
 			return $success;
 		}
 		
-		$this->set('users', $usersShifted);
+		$this->redirect(array('action' => 'index'));
+	}
+
+/**
+ * Removes a user from a household
+ *
+ * @param integer $userId The user id
+ * @param integer $household The id of the household
+ */ 
+	function delete($userId, $household) {
+		$householdMember = $this->Household->HouseholdMember->find('first', array(
+			'conditions' => array(
+				'household_id' => $household,
+				'user_id' => $userId
+			)
+		));
+		// remove household member record
+		$dSuccess = $this->Household->HouseholdMember->delete($householdMember['HouseholdMember']['id']);
+
+		// add user to a household (function will check if they have one or not)
+		$cSuccess = $this->Household->createHousehold($userId);
+
+		$user = $this->Household->HouseholdMember->User->find('first', array(
+			'conditions' => array(
+				'User.id' => $userId
+			),
+			'contain' => 'Profile'
+		));
+		if ($dSuccess && $cSuccess) {
+			$this->Notifier->notify(
+				array(
+					'to' => $userId,
+					'template' => 'households_remove'
+				), 
+				'notification'
+			);
+
+			$success = true;
+			$this->Session->setFlash($user['Profile']['name'].' has left this household.', 'flash'.DS.'success');
+		} else {
+			$success = false;
+			$this->Session->setFlash('Unable to remove '.$user['Profile']['name'].' from this household. Pleaes try again.', 'flash'.DS.'failure');			
+		}
+		
+		$this->redirect(array('action' => 'index'));
 	}
 
 /**

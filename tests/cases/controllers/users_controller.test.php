@@ -444,7 +444,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$expected = '/households/confirm/1/'.$lastHousehold['id'];
 		$this->assertEqual($results, $expected);
 		$results = $invitation['Invitation']['deny_action'];
-		$expected = '/households/shift_households/1/'.$lastHousehold['id'];
+		$expected = '/households/delete/1/'.$lastHousehold['id'];
 		$this->assertEqual($results, $expected);
 	}
 	
@@ -490,7 +490,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/users/household_add/Household:2', array(
 			'data' => $data
 		));
-		$this->assertEqual($vars['redirect'], FULL_BASE_URL.'/households/shift_households/:ID:/2');
+		$this->assertEqual($vars['redirect'], FULL_BASE_URL.'/households/invite/:ID:/2');
 		$this->assertEqual($this->testController->data['Household']['id'], 2);
 
 		// simulate coming from choose_user when no user is chosen

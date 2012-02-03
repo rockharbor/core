@@ -403,7 +403,7 @@ class UsersController extends AppController {
 							'to' => $notifyUser['id'],
 							'template' => 'households_invite',
 							'confirm' => '/households/confirm/'.$notifyUser['id'].'/'.$this->User->HouseholdMember->Household->id,
-							'deny' => '/households/shift_households/'.$notifyUser['id'].'/'.$this->User->HouseholdMember->Household->id
+							'deny' => '/households/delete/'.$notifyUser['id'].'/'.$this->User->HouseholdMember->Household->id
 						)
 					);
 				}
@@ -433,11 +433,11 @@ class UsersController extends AppController {
 			$foundUser = $this->User->findUser($searchData, 'OR');
 			if (!empty($foundUser) && !isset($this->passedArgs['skip_check'])) {
 				// take to choose user
-				// - takes them to Households::shift_households() if a match is found
+				// - takes them to Households::invite() if a match is found
 				// - takes them back here, otherwise
 				return $this->setAction('choose_user', $foundUser, array(
 					'controller' => 'households',
-					'action' => 'shift_households',
+					'action' => 'invite',
 					':ID:',
 					$this->data['Household']['id']
 				), array('action' => 'household_add', 'Household' => $this->data['Household']['id']));
@@ -539,7 +539,7 @@ class UsersController extends AppController {
 							'to' => $notifyUser['id'],
 							'template' => 'households_invite',
 							'confirm' => '/households/confirm/'.$notifyUser['id'].'/'.$this->User->HouseholdMember->Household->id,
-							'deny' => '/households/shift_households/'.$notifyUser['id'].'/'.$this->User->HouseholdMember->Household->id
+							'deny' => '/households/delete/'.$notifyUser['id'].'/'.$this->User->HouseholdMember->Household->id
 						)
 					);
 				}
