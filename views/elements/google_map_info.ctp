@@ -10,6 +10,10 @@ $default = array(
 	
 $data = array_merge($default, $data);
 
+foreach ($data as &$datum) {
+	$datum = str_replace(array("\r", "\r\n", "\n"), '', $datum);
+}
+
 extract($data);
 
 if (!empty($image)) {
