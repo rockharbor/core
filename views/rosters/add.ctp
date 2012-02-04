@@ -185,7 +185,7 @@ echo $this->Form->create('Roster', array(
 					</div>
 					<div id="pay-deposit" class="clearfix">
 						<?php
-						echo $this->Form->input('PaymentOption.pay_deposit_amount', array(
+						echo $this->Form->input('Default.pay_deposit_amount', array(
 							'type' => 'checkbox',
 							'div' => array(
 								'id' => 'deposit'

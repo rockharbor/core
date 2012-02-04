@@ -9,7 +9,7 @@ var CORE_roster = {};
 CORE_roster.init = function() {
 	CORE.noDuplicateCheckboxes('members');
 	$('#members input[type=checkbox]').change();
-	$('#PaymentOptionPayDepositAmount').bind('change', CORE_roster.updateAmount);
+	$('#DefaultPayDepositAmount').bind('change', CORE_roster.updateAmount);
 	$('#DefaultPaymentOptionId').change();
 	$('#RosterAddressId').change();
 	// by default, click the first available tab under answers
@@ -85,7 +85,7 @@ CORE_roster.updateAmount = function() {
 	numberSignedUp = $('input[id^=Adult]:checked').length;
 	peopleAmount = Number(selectedOption.total);
 	totalDue = peopleAmount*numberSignedUp;
-	if (deposit && $('#PaymentOptionPayDepositAmount').is(':checked')) {
+	if (deposit && $('#DefaultPayDepositAmount').is(':checked')) {
 		totalDue = Number(selectedOption.deposit)*numberSignedUp;
 	}
 	$('#people-number').html(numberSignedUp);
