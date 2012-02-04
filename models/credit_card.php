@@ -197,7 +197,6 @@ class CreditCard extends AppModel {
 		if (!($options['validate']) || $this->validates()) {
 			App::import('Component', 'AuthorizeDotNet');
 			$AuthorizeDotNet = new AuthorizeDotNetComponent();
-			$AuthorizeDotNet->initialize();
 			// set up credit card authorization
 			$AuthorizeDotNet->setCustomer($data);
 			$AuthorizeDotNet->setInvoiceNumber($data['invoice_number']);
