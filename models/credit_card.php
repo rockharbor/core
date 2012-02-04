@@ -151,14 +151,6 @@ class CreditCard extends AppModel {
 	var $transactionId = null;
 
 /**
- * The returned credit card error, if any. Set after a saveAll call
- *
- * @var string
- */ 	
-	var $creditCardError = null;
-	
-	
-/**
  * Overwrite Model::exists() due to Cake looking for a table
  * when validating.
  */

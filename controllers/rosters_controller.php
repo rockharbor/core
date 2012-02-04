@@ -520,8 +520,8 @@ class RostersController extends AppController {
 						$this->Session->setFlash('Your payment has been received and you have signed up for '.$involvement['Involvement']['name'].'.', 'flash'.DS.'success');
 						$this->redirect(array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvementId));
 					} else {
-						$CreditCard->invalidate('credit_card_number', $CreditCard->creditCardError);
-						$this->Session->setFlash('Unable to process payment. '.$CreditCard->creditCardError, 'flash'.DS.'failure');
+						$this->validationErrors['CreditCard'] = $CreditCard->validationErrors;
+						$this->Session->setFlash('Unable to process payment.', 'flash'.DS.'failure');
 					}
 				} else {
 					// no credit card, just save as normal
