@@ -125,8 +125,6 @@ class AuthorizeDotNetComponent extends Object {
  */
 	function request() {
 		$this->_init();
-		
-		return true;
 
 		$buffer = $this->_request($this->_data);
 
