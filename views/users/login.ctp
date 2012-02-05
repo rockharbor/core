@@ -28,6 +28,9 @@ $this->Js->buffer('CORE.initLogin()');
 			'label' => 'Forget me not'
 		));
 		echo ' | ';
+		$new = $this->Html->tag('span', '[new] ', array('style' => 'color:red'));
+		echo $new.$this->Html->link('Watch me', array('controller' => 'pages', 'action' => 'display', 'welcome'), array('rel' => 'modal-none', 'escape' => false));
+		echo ' | ';
 		echo $this->Html->link('Trouble logging in?', array('action' => 'forgot_password'), array('rel' => 'modal-none'));
 		echo ' | ';
 		echo $this->Html->link('Sign Up', array('action' => 'register'), array('rel' => 'modal-none'));
