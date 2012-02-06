@@ -372,7 +372,7 @@ class UsersController extends AppController {
 			if (!empty($foundUser)) {
 				// take to activation request (preserve data)
 				if (count($foundUser) == 1) {
-					return $this->setAction('request_activation', $foundUser, true);
+					return $this->setAction('request_activation', $foundUser[0], true);
 				} else {
 					return $this->setAction('choose_user', $foundUser, array(
 						'controller' => 'users',
@@ -506,7 +506,7 @@ class UsersController extends AppController {
 			if (!empty($foundUser)) {
 				// take to activation request (preserve data)
 				if (count($foundUser) == 1) {
-					return $this->setAction('request_activation', $foundUser, true);
+					return $this->setAction('request_activation', $foundUser[0], true);
 				} else {
 					return $this->setAction('choose_user', $foundUser, array(
 						'controller' => 'users',
