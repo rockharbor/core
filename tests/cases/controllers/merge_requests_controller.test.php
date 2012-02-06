@@ -92,7 +92,13 @@ class MergeRequestsControllerTestCase extends CoreTestCase {
 		$this->testAction('/merge_requests/delete/1');
 
 		$this->assertFalse($this->MergeRequests->MergeRequest->read(null, 1));
+		
+		$results = $this->User->read(null, 3);
+		$this->assertFalse($results);
 
+		$results = $this->User->read(null, 2);
+		$this->assertTrue(!empty($results));
+		
 		$result = $this->Profile->find('count');
 		$this->assertEqual($result, 4);
 

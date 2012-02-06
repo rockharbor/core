@@ -143,7 +143,7 @@ class MergeRequestsController extends AppController {
 		$Model = ClassRegistry::init($request['MergeRequest']['model']);
 		
 		// delete associated model target first
-		if ($Model->delete($request['MergeRequest']['merge_id'])) {
+		if ($Model->delete($request['MergeRequest']['model_id'])) {
 			// remove request
 			$this->MergeRequest->delete($id);
 			$this->Session->setFlash('Merge request was deleted.', 'flash'.DS.'success');
