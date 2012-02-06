@@ -57,7 +57,10 @@ class AppController extends Controller {
 			),
 			'userScope' => array(
 				'User.active' => true,
-				'DATEDIFF(CURDATE(), Profile.birth_date)/365.25 >' => 12
+				'or' => array(
+					'DATEDIFF(CURDATE(), Profile.birth_date)/365.25 >' => 12,
+					'Profile.adult' => true
+				)
 			)
 		),
 		'Referee.Whistle' => array(
