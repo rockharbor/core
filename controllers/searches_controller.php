@@ -111,6 +111,7 @@ class SearchesController extends AppController {
 
 		if (!empty($this->data)) {
 			$query = explode(' ', $search['query']);
+			$cleanQuery = $search['query'];
 			foreach ($query as &$word) {
 				$word = '+'.$word.'*';
 				$word = trim($word);
@@ -125,8 +126,8 @@ class SearchesController extends AppController {
 					'conditions' => array(
 						$this->User->scopeConditions($search),
 						'or' => array(
-							$this->User->parseCriteria(array('simple_fulltext' => $query)),
-							$this->User->Profile->parseCriteria(array('simple_fulltext' => $query)),
+							$this->User->parseCriteria(array('simple' => $cleanQuery)),
+							$this->User->Profile->parseCriteria(array('simple' => $cleanQuery)),
 						)
 					),
 					'link' => array(
