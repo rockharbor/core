@@ -16,12 +16,16 @@ echo $this->Form->create('User', array(
 <div id="profile_tabs" class="core-tabs-wizard">
 	<ul>
 		<li><a href="#personal">Personal Information</a></li>
+		<li><a href="#about">About Me</a></li>
 		<li><a href="#contact">Contact Information</a></li>
 		<li><a href="#household">Household</a></li>
 	</ul>
 
 	<div id="personal" class="clearfix">
 		<?php echo $this->element('register'.DS.'personal'); ?>
+	</div>
+	<div id="about" class="clearfix">
+		<?php echo $this->element('register'.DS.'about'); ?>
 	</div>
 	<div id="contact" class="clearfix">
 		<?php echo $this->element('register'.DS.'address'); ?>
