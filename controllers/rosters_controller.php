@@ -156,14 +156,14 @@ class RostersController extends AppController {
 		// set based on criteria
 		$this->Roster->Involvement->contain(array('InvolvementType', 'Leader'));
 		$involvement = $this->Roster->Involvement->read(null, $involvementId);
-
-		$childConditions = $countConditions = $pendingConditions = array('Roster.involvement_id' => $involvementId);
-		$childConditions['Roster.parent_id >'] = 0;
-		$pendingConditions['Roster.roster_status_id'] = 2;
-		$counts['childcare'] = $this->Roster->find('count', array('conditions' => $childConditions));
-		$counts['pending'] = $this->Roster->find('count', array('conditions' => $pendingConditions));
+		
+		$rosters =  $this->FilterPagination->paginate();
+		
+		$counts['childcare'] = count(Set::extract('/Roster[parent_id>0]', $rosters));
+		$counts['pending'] = count(Set::extract('/Roster[roster_status_id=2]', $rosters));
 		$counts['leaders'] = count($involvement['Leader']);
-		$counts['total'] = $this->Roster->find('count', array('conditions' => $countConditions));
+		$counts['confirmed'] = count(Set::extract('/Roster[roster_status_id=1]', $rosters));
+		$counts['total'] = count($rosters);
 
 		$roles = $this->Roster->Involvement->Ministry->Role->find('list', array(
 			'conditions' => array(
@@ -172,8 +172,7 @@ class RostersController extends AppController {
 		));
 		$rosterStatuses = $this->Roster->RosterStatus->find('list');
 
-		$this->set('rosters', $this->FilterPagination->paginate());
-		$this->set(compact('involvement', 'rosterIds', 'rosterStatuses', 'counts', 'roles', 'fullAccess'));
+		$this->set(compact('rosters', 'involvement', 'rosterIds', 'rosterStatuses', 'counts', 'roles', 'fullAccess'));
 	}
 
 /**
