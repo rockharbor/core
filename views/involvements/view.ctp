@@ -117,7 +117,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 						foreach ($involvement['Leader'] as $leader) {
 							echo '<div class="core-iconable">';
 							$icon = $this->Html->tag('span', 'Email', array('class' => 'core-icon icon-email'));
-							echo $icon.$this->Html->link($leader['User']['Profile']['name'], array('controller' => 'sys_emails', 'action' => 'compose', 'model' => 'User', 'User' => $leader['User']['id']), array('rel' => 'modal-none'));
+							echo $icon.$this->Html->link($leader['User']['Profile']['name'], array('controller' => 'sys_emails', 'action' => 'email_leader', $leader['id']), array('rel' => 'modal-none'));
 							if (!empty($leader)) {
 								$icon = $this->element('icon', array('icon' => 'delete'));
 								$link = $this->Permission->link($icon, array('controller' => 'involvement_leaders', 'action' => 'delete', 'Involvement' => $involvement['Involvement']['id'], 'User' => $leader['User']['id']), array('id' => 'remove-leader-'.$leader['User']['id'], 'escape' => false, 'class' => 'no-hover'));

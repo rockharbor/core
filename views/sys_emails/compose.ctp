@@ -35,7 +35,7 @@ if (!isset($this->passedArgs['mstoken'])) {
 		);
 		?>
 	</fieldset>
-	<?php if ($showAttachments): ?>
+	<?php if ($showAttachments && $this->Permission->check('sys_email_documents/index')): ?>
 	<div id="document_attachments">
 		<?php
 		/*
