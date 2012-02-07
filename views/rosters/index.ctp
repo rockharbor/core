@@ -210,7 +210,7 @@ $this->Paginator->options(array(
 		if ($this->Permission->check($link)) {
 			echo $this->Html->link($name, $link, array('escape' => false));
 		} else {
-			echo $name;
+			echo $this->Html->link($name, '#', array('escape' => false));
 		}
 		?>&nbsp;
 		<div class="core-tooltip"><?php
@@ -218,9 +218,9 @@ $this->Paginator->options(array(
 				$path = 's'.DS.$roster['ImageIcon']['dirname'].DS.$roster['ImageIcon']['basename'];
 				echo $this->Media->embed($path, array('restrict' => 'image'));
 			}
-			echo $this->Html->link('Edit Info', array('controller' => 'rosters', 'action' => 'edit', $roster['Roster']['id']), array('rel' => 'modal-roster'));
-			echo $this->Html->link('View Profile', array('controller' => 'profiles', 'action' => 'view', 'User' => $roster['User']['id']));
-			echo $this->Html->link('View Payments', array('controller' => 'payments', 'action' => 'index', 'User' => $roster['User']['id'], 'Involvement' => $involvement['Involvement']['id']), array('rel' => 'modal-none'));
+			echo $this->Permission->link('Edit Info', array('controller' => 'rosters', 'action' => 'edit', $roster['Roster']['id'], 'Involvement' => $involvement['Involvement']['id'], 'User' => $roster['User']['id']), array('rel' => 'modal-roster'));
+			echo $this->Permission->link('View Profile', array('controller' => 'profiles', 'action' => 'view', 'User' => $roster['User']['id']));
+			echo $this->Permission->link('View Payments', array('controller' => 'payments', 'action' => 'index', 'User' => $roster['User']['id'], 'Involvement' => $involvement['Involvement']['id']), array('rel' => 'modal-none'));
 		?></div>
 		<?php echo $this->Formatting->flags('User', $roster); ?>
 		</td>
