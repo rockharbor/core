@@ -66,7 +66,6 @@ class RosterTestCase extends CoreTestCase {
 		// assert that they were confirmed and a payment was made
 		$this->Roster->contain(array('Payment'));
 		$results = $this->Roster->read(null, 2);
-		debug($results);
 		$this->assertEqual($results['Roster']['roster_status_id'], 1);
 		$this->assertEqual($rosterCountBefore, $rosterCountAfter);
 		$this->assertEqual($paymentCountAfter-$paymentCountBefore, 1);
