@@ -154,8 +154,7 @@ class RostersController extends AppController {
 						'primary_email'
 					)
 				),
-				'Image',
-				'ActiveAddress'
+				'Image'
 			),
 			'RosterStatus'
 		);
