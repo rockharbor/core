@@ -239,7 +239,43 @@ class RostersControllerTestCase extends CoreTestCase {
 		$result = $roster['Roster']['involvement_id'];
 		$this->assertEqual($result, 1);
 		$result = $roster['Roster']['user_id'];
-		$this->assertEqual($result, 1);		
+		$this->assertEqual($result, 1);
+		
+		$data = array(
+			'Default' => array(
+				'payment_option_id' => 1,
+				'payment_type_id' => 1,
+				'pay_later' => false,
+				'pay_deposit_amount' => false,
+			),
+			'Adult' => array(
+				array(
+					'Roster' => array(
+						'user_id' => 2
+					)
+				)
+			),
+			'CreditCard' => array(
+				'first_name' => 'Joe',
+				'last_name' => 'Schmoe',
+				'credit_card_number' => '1234567891001234',
+				'cvv' => '123',
+				'email' => 'joe@test.com'
+			)
+		);
+		$vars = $this->testAction('/rosters/add/User:1/Involvement:1', array(
+			'data' => $data
+		));
+		$result = $this->Rosters->Roster->validationErrors;
+		$this->assertEqual($result, array());
+
+		$this->Rosters->Roster->contain(array('Payment'));
+		$roster = $this->Rosters->Roster->read(null, 2);
+		$this->assertEqual($roster['Payment'][0]['roster_id'], 2);
+		$this->assertEqual($roster['Payment'][0]['user_id'], 2);
+		$this->assertEqual($roster['Payment'][0]['number'], 1234);
+		$this->assertEqual($roster['Roster']['id'], 2);
+		$this->assertEqual($roster['Roster']['roster_status_id'], 1);
 	}
 	
 	function testAddMultiple() {
@@ -293,8 +329,9 @@ class RostersControllerTestCase extends CoreTestCase {
 		$notificationsNow = $this->Rosters->Roster->User->Notification->find('count');
 		$this->assertEqual($notificationsNow-$notificationsBefore, 4);
 
+		// added one for the child, saved over the one for the person already signed up
 		$rostersNow = $this->Rosters->Roster->find('count');
-		$this->assertEqual($rostersNow-$rostersBefore, 2);
+		$this->assertEqual($rostersNow-$rostersBefore, 1);
 		
 		$payments = $this->Rosters->Roster->find('all', array(
 			'conditions' => array(
