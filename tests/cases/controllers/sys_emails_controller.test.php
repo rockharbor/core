@@ -34,6 +34,15 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 	
+	function testEmailLeader() {
+		$this->loadFixtures('Leader');
+		
+		$vars = $this->testAction('/sys_emails/email_leader/4');
+		$results = Set::extract('/User/id', $vars['toUsers']);
+		sort($results);
+		$this->assertEqual($results, array(2));
+	}
+	
 	function testComposeToUsersAndLeaders() {
 		$this->loadFixtures('Leader');
 		

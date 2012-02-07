@@ -103,6 +103,24 @@ class SysEmailsController extends AppController {
 		
 		$this->render('compose');
 	}
+
+/**
+ * Pass-through function to allow regular users to email leaders
+ * 
+ * @param integer $leaderId The leader id
+ */
+	function email_leader($leaderId) {
+		$Leader = ClassRegistry::init('Leader');
+		$user = $Leader->findById($leaderId);
+		$this->MultiSelect->saveSearch(array(
+			'conditions' => array(
+				'User.id' => $user['Leader']['user_id']
+			)
+		));
+		$this->passedArgs['model'] = 'User';
+		$this->setAction('compose');
+	}
+	
 /**
  * Creates a new email
  *
