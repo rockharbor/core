@@ -6,6 +6,7 @@ echo $this->Form->input('Profile.gender', array(
 	'options' => $this->SelectOptions->genders
 ));
 echo $this->Form->input('Profile.birth_date');
+echo $this->Html->tag('p', 'Just to make sure you\'re old enough to be on '.Core::read('general.site_name').'!');
 echo $this->Form->input('Profile.campus_id', array(
 	'empty' => true
 ));
