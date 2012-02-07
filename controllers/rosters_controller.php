@@ -412,7 +412,8 @@ class RostersController extends AppController {
 			$lValidates = true;
 			$currentCount = $this->Roster->find('count', array(
 				'conditions' => array(
-					'Roster.involvement_id' => $involvement['Involvement']['id']
+					'Roster.involvement_id' => $involvement['Involvement']['id'],
+					'Roster.roster_status_id' => 1
 				),
 				'contain' => false
 			));
