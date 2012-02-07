@@ -137,10 +137,11 @@ $this->Paginator->options(array(
 					'url' => array(
 						'controller' => 'rosters',
 						'action' => 'status',
-						$this->MultiSelect->token
+						$this->MultiSelect->token,
+						'Involvement' => $involvement['Involvement']['id'],
 					),
 					'options' => array(
-						'rel' => 'modal-roster'
+						'success' => 'CORE.showFlash(data);'
 					)
 				)
 			);
@@ -227,7 +228,14 @@ $this->Paginator->options(array(
 		<td><?php echo $this->Formatting->email($roster['Profile']['primary_email'], $roster['User']['id']); ?>&nbsp;</td>
 		<?php if ($fullAccess): ?>
 			<td><?php echo $this->Formatting->phone($roster['Profile']['cell_phone']); ?>&nbsp;</td>
-			<td><?php echo $this->Html->link($roster['RosterStatus']['name'], array('controller' => 'rosters', 'action' => 'edit', $roster['Roster']['id']), array('rel' => 'modal-roster')); ?>&nbsp;</td>
+			<td><?php 
+			$link = array('controller' => 'rosters', 'action' => 'edit', $roster['Roster']['id'], 'Involvement' => $involvement['Involvement']['id'], 'User' => $roster['User']['id']);
+			if ($this->Permission->check($link)) {
+				echo $this->Html->link($roster['RosterStatus']['name'], $link, array('rel' => 'modal-roster')); 
+			} else {
+				echo $roster['RosterStatus']['name'];
+			}
+			?>&nbsp;</td>
 			<?php if ($involvement['Involvement']['take_payment']) { ?>
 			<td><?php echo $this->Formatting->money($roster['Roster']['balance']); ?>&nbsp;</td>
 			<?php } ?>
