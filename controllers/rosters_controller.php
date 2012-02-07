@@ -118,19 +118,6 @@ class RostersController extends AppController {
 		// if involvement is defined, show just that involvement
 		$conditions['Roster.involvement_id'] = $involvementId;
 		
-		// get roster ids
-		$roster = $this->Roster->find('all', compact('conditions'));
-		$rosterIds = Set::extract('/Roster/user_id', $roster);
-
-		// if we're limiting this to one user, just pull their household signup data
-		$householdIds = array();
-		if (isset($this->passedArgs['User'])) {
-			$householdIds = $this->Roster->User->HouseholdMember->Household->getMemberIds($this->passedArgs['User'], true);
-			$viewableIds = array_intersect($householdIds, $rosterIds);
-			$viewableIds[] = $this->passedArgs['User'];
-			$conditions['User.id'] = $viewableIds;
-		}
-
 		if (!empty($this->data)) {
 			if (!empty($this->data['Filter']['roster_status_id'])) {
 				$conditions['Roster.roster_status_id'] = $this->data['Filter']['roster_status_id'];
@@ -159,15 +146,14 @@ class RostersController extends AppController {
 			'RosterStatus'
 		);
 		$contain = array('Role');
-		
-		$this->Roster->recursive = 0;
+
+		$this->Roster->recursive = -1;
 		$this->paginate = compact('conditions','link','contain');
 		
 		// save search for multi select actions
 		$this->MultiSelect->saveSearch($this->paginate);
 		
 		// set based on criteria
-		$this->set('canCheckAll', !isset($this->passedArgs['User']));
 		$this->Roster->Involvement->contain(array('InvolvementType', 'Leader'));
 		$involvement = $this->Roster->Involvement->read(null, $involvementId);
 
@@ -187,7 +173,7 @@ class RostersController extends AppController {
 		$rosterStatuses = $this->Roster->RosterStatus->find('list');
 
 		$this->set('rosters', $this->FilterPagination->paginate());
-		$this->set(compact('involvement', 'rosterIds', 'householdIds', 'rosterStatuses', 'counts', 'roles', 'fullAccess'));
+		$this->set(compact('involvement', 'rosterIds', 'rosterStatuses', 'counts', 'roles', 'fullAccess'));
 	}
 
 /**

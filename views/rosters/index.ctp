@@ -199,11 +199,7 @@ $this->Paginator->options(array(
 	?>
 	<tr<?php echo $class;?>>
 		<?php if ($fullAccess): ?>
-			<td><?php 
-			if (in_array($roster['User']['id'], $householdIds) || $roster['Profile']['allow_sponsorage'] || $canCheckAll) {
-				echo $this->MultiSelect->checkbox($roster['Roster']['id']);
-			}
-			?></td>
+			<td><?php echo $this->MultiSelect->checkbox($roster['Roster']['id']); ?></td>
 		<?php endif; ?>
 		<td><?php 
 		$name = $roster['Profile']['name'];
