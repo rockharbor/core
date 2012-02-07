@@ -296,18 +296,6 @@ class RostersController extends AppController {
 		
 		// create model to make use of validation
 		$CreditCard = ClassRegistry::init('CreditCard');
-		// get roster ids for comparison (to see if they're signed up)
-		$involvementRoster = $this->Roster->find('list', array(
-			'conditions' => array(
-				'Roster.id',
-				'Roster.involvement_id' => $involvementId
-			),
-			'fields' => array(
-				'Roster.id',
-				'Roster.user_id'
-			),
-			'contain' => false
-		));
 		///HouseholdMember/Household/HouseholdMember/User/Profile
 		$this->Roster->User->contain(array(
 			'Profile',
@@ -587,7 +575,6 @@ class RostersController extends AppController {
 			)
 		)));
 		$this->set(compact('involvement', 'user', 'addresses', 'userAddresses', 'paymentOptions', 'involvementPaymentOptions', 'paymentTypes'));
-		$this->set('roster', $involvementRoster);
 	}
 
 /**
