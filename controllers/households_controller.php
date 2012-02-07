@@ -235,6 +235,11 @@ class HouseholdsController extends AppController {
 		
 		// get all households this user belongs to
 		$householdIds = $this->Household->getHouseholdIds($user, false);
+		
+		if (empty($householdIds)) {
+			$this->Household->createHousehold($user);
+			$householdIds = $this->Household->getHouseholdIds($user, false);
+		}
 	
 		$this->set('households', $this->Household->find('all', array(
 			'conditions' => array(
