@@ -20,6 +20,71 @@ class RosterTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 
+	function testSetDefaultAlreadySignedUp() {
+		$involvement = $this->Roster->Involvement->read(null, 1);
+		$defaults = array(
+			'payment_option_id' => 1,
+			'payment_type_id' => 1,
+			'pay_later' => false,
+			'pay_deposit_amount' => false,
+		);
+		$creditCard = array(
+			'CreditCard' => array(
+				'first_name' => 'Joe',
+				'last_name' => 'Schmoe',
+				'credit_card_number' => '1234567891001234'
+			)
+		);
+		$payer = array(
+			'User' => array(
+				'id' => 50
+			),
+			'Profile' => array(
+				'name' => 'Some guy'
+			)
+		);
+		
+		$results = $this->Roster->setDefaultData(array(
+			'roster' => array(
+				'Roster' => array(
+					'user_id' => 2
+				)
+			),
+			'defaults' => $defaults,
+			'involvement' => $involvement,
+			'creditCard' => $creditCard,
+			'payer' => $payer
+		));
+		$this->assertEqual($results['Roster']['roster_status_id'], 1);
+		
+		$rosterCountBefore = $this->Roster->find('count');
+		$paymentCountBefore = $this->Roster->Payment->find('count');
+		$this->assertTrue($this->Roster->saveAll($results));
+		$rosterCountAfter = $this->Roster->find('count');
+		$paymentCountAfter = $this->Roster->Payment->find('count');
+		
+		// assert that they were confirmed and a payment was made
+		$this->Roster->contain(array('Payment'));
+		$results = $this->Roster->read(null, 2);
+		$this->assertEqual($results['Roster']['roster_status_id'], 1);
+		$this->assertEqual($rosterCountBefore, $rosterCountAfter);
+		$this->assertEqual($paymentCountAfter-$paymentCountBefore, 1);
+		$this->assertEqual($results['Payment'][0]['roster_id'], 2);
+		
+		$results = $this->Roster->setDefaultData(array(
+			'roster' => array(
+				'Roster' => array(
+					'user_id' => 1
+				)
+			),
+			'defaults' => $defaults,
+			'involvement' => $involvement,
+			'creditCard' => $creditCard,
+			'payer' => $payer
+		));
+		$this->assertEqual($results['Roster']['roster_status_id'], 4);
+	}
+
 	function testRoles() {
 		$this->Roster->contain(array('Role', 'RosterStatus'));
 		$results = $this->Roster->read(null, 5);
@@ -48,7 +113,7 @@ class RosterTestCase extends CoreTestCase {
 		);
 		$roster = array(
 			'Roster' => array(
-				'user_id' => 2
+				'user_id' => 12
 			)
 		);
 		$creditCard = array(
@@ -75,7 +140,7 @@ class RosterTestCase extends CoreTestCase {
 
 		$result = $newRoster['Payment'][0];
 		$expected = array(
-			'user_id' => 2,
+			'user_id' => 12,
 			'amount' => 10,
 			'payment_type_id' => 1,
 			'number' => 1234,
@@ -86,7 +151,7 @@ class RosterTestCase extends CoreTestCase {
 		
 		$result = $newRoster['Roster'];		
 		$expected = array(
-			'user_id' => 2,
+			'user_id' => 12,
 			'involvement_id' => 1,
 			'roster_status_id' => 4,
 			'parent' => 1,
@@ -211,6 +276,7 @@ class RosterTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 		
 		$result = $this->Roster->setDefaultData(array(
+			'roster' => $roster,
 			'defaults' => array(
 				'pay_later' => true
 			),
@@ -218,6 +284,7 @@ class RosterTestCase extends CoreTestCase {
 		));
 		$expected = array(
 			'Roster' => array(
+				'user_id' => 1,
 				'involvement_id' => 1,
 				'roster_status_id' => 4,
 				'parent' => null,

@@ -118,19 +118,6 @@ class RostersController extends AppController {
 		// if involvement is defined, show just that involvement
 		$conditions['Roster.involvement_id'] = $involvementId;
 		
-		// get roster ids
-		$roster = $this->Roster->find('all', compact('conditions'));
-		$rosterIds = Set::extract('/Roster/user_id', $roster);
-
-		// if we're limiting this to one user, just pull their household signup data
-		$householdIds = array();
-		if (isset($this->passedArgs['User'])) {
-			$householdIds = $this->Roster->User->HouseholdMember->Household->getMemberIds($this->passedArgs['User'], true);
-			$viewableIds = array_intersect($householdIds, $rosterIds);
-			$viewableIds[] = $this->passedArgs['User'];
-			$conditions['User.id'] = $viewableIds;
-		}
-
 		if (!empty($this->data)) {
 			if (!empty($this->data['Filter']['roster_status_id'])) {
 				$conditions['Roster.roster_status_id'] = $this->data['Filter']['roster_status_id'];
@@ -154,31 +141,29 @@ class RostersController extends AppController {
 						'primary_email'
 					)
 				),
-				'Image',
-				'ActiveAddress'
+				'Image'
 			),
 			'RosterStatus'
 		);
 		$contain = array('Role');
-		
-		$this->Roster->recursive = 0;
+
+		$this->Roster->recursive = -1;
 		$this->paginate = compact('conditions','link','contain');
 		
 		// save search for multi select actions
 		$this->MultiSelect->saveSearch($this->paginate);
 		
 		// set based on criteria
-		$this->set('canCheckAll', !isset($this->passedArgs['User']));
 		$this->Roster->Involvement->contain(array('InvolvementType', 'Leader'));
 		$involvement = $this->Roster->Involvement->read(null, $involvementId);
-
-		$childConditions = $countConditions = $pendingConditions = array('Roster.involvement_id' => $involvementId);
-		$childConditions['Roster.parent_id >'] = 0;
-		$pendingConditions['Roster.roster_status_id'] = 2;
-		$counts['childcare'] = $this->Roster->find('count', array('conditions' => $childConditions));
-		$counts['pending'] = $this->Roster->find('count', array('conditions' => $pendingConditions));
+		
+		$rosters =  $this->FilterPagination->paginate();
+		
+		$counts['childcare'] = count(Set::extract('/Roster[parent_id>0]', $rosters));
+		$counts['pending'] = count(Set::extract('/Roster[roster_status_id=2]', $rosters));
 		$counts['leaders'] = count($involvement['Leader']);
-		$counts['total'] = $this->Roster->find('count', array('conditions' => $countConditions));
+		$counts['confirmed'] = count(Set::extract('/Roster[roster_status_id=1]', $rosters));
+		$counts['total'] = count($rosters);
 
 		$roles = $this->Roster->Involvement->Ministry->Role->find('list', array(
 			'conditions' => array(
@@ -187,8 +172,7 @@ class RostersController extends AppController {
 		));
 		$rosterStatuses = $this->Roster->RosterStatus->find('list');
 
-		$this->set('rosters', $this->FilterPagination->paginate());
-		$this->set(compact('involvement', 'rosterIds', 'householdIds', 'rosterStatuses', 'counts', 'roles', 'fullAccess'));
+		$this->set(compact('rosters', 'involvement', 'rosterIds', 'rosterStatuses', 'counts', 'roles', 'fullAccess'));
 	}
 
 /**
@@ -311,18 +295,6 @@ class RostersController extends AppController {
 		
 		// create model to make use of validation
 		$CreditCard = ClassRegistry::init('CreditCard');
-		// get roster ids for comparison (to see if they're signed up)
-		$involvementRoster = $this->Roster->find('list', array(
-			'conditions' => array(
-				'Roster.id',
-				'Roster.involvement_id' => $involvementId
-			),
-			'fields' => array(
-				'Roster.id',
-				'Roster.user_id'
-			),
-			'contain' => false
-		));
 		///HouseholdMember/Household/HouseholdMember/User/Profile
 		$this->Roster->User->contain(array(
 			'Profile',
@@ -427,7 +399,8 @@ class RostersController extends AppController {
 			$lValidates = true;
 			$currentCount = $this->Roster->find('count', array(
 				'conditions' => array(
-					'Roster.involvement_id' => $involvement['Involvement']['id']
+					'Roster.involvement_id' => $involvement['Involvement']['id'],
+					'Roster.roster_status_id' => 1
 				),
 				'contain' => false
 			));
@@ -601,7 +574,6 @@ class RostersController extends AppController {
 			)
 		)));
 		$this->set(compact('involvement', 'user', 'addresses', 'userAddresses', 'paymentOptions', 'involvementPaymentOptions', 'paymentTypes'));
-		$this->set('roster', $involvementRoster);
 	}
 
 /**

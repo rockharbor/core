@@ -68,7 +68,7 @@ class Profile extends AppModel {
 		'birth_date' => array(
 			'rule' => 'date',
 			'required' => false,
-			'allowEmpty' => true
+			'allowEmpty' => false
 		),
 		'job_name' => array(
 			'rule' => array('custom', '/^[a-z0-9 ]*$/i'),

@@ -506,7 +506,8 @@ class InstallShell extends Shell {
 			'controllers/Profiles/edit',
 			'controllers/Profiles/admin',
 			'controllers/Payments/view',
-			'controllers/Users/dashboard'
+			'controllers/Users/dashboard',
+			'controllers/Users/add'
 		),
 		'Developer' => array(
 			'controllers/ApiGenerator/ApiClasses/index',

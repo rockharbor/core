@@ -195,6 +195,21 @@ class Roster extends AppModel {
 		$roster['Roster']['roster_status_id'] = $involvement['Involvement']['default_status_id'];
 		$roster['Roster']['parent'] = $parent;
 		$roster['Roster']['payment_option_id'] = $defaults['payment_option_id'];
+
+		$exists = $this->find('first', array(
+			'fields' => array(
+				'Roster.id'
+			),
+			'conditions' => array(
+				'Roster.involvement_id' => $involvement['Involvement']['id'],
+				'Roster.user_id' => $roster['Roster']['user_id']
+			)
+		));
+		if (!empty($exists)) {
+			// this will confirm them
+			$roster['Roster']['id'] = $exists['Roster']['id'];
+			$roster['Roster']['roster_status_id'] = 1;
+		}
 		
 		// only add a payment if we're taking one
 		if ($involvement['Involvement']['take_payment'] && $defaults['payment_option_id'] > 0 && !$defaults['pay_later']) {

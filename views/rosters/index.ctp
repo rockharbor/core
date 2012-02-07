@@ -9,7 +9,7 @@ $this->Paginator->options(array(
 	<div class="grid_2 column border-right alpha">
 		<span class="font-large">
 		<?php
-		echo $counts['total'];
+		echo $counts['confirmed'];
 		if ($involvement['Involvement']['roster_limit'] > 0) {
 			echo ' / '.$involvement['Involvement']['roster_limit'];
 		}
@@ -20,10 +20,10 @@ $this->Paginator->options(array(
 	<div class="grid_2 column border-right">
 		<span class="font-large">
 		<?php
-			echo $counts['pending']
+			echo $counts['total']-$counts['confirmed']
 		?>
 		</span>
-		<p># Pending</p>
+		<p># Unconfirmed</p>
 	</div>
 	<?php if ($involvement['Involvement']['offer_childcare']) { ?>
 	<div class="grid_2 column border-right">
@@ -199,11 +199,7 @@ $this->Paginator->options(array(
 	?>
 	<tr<?php echo $class;?>>
 		<?php if ($fullAccess): ?>
-			<td><?php 
-			if (in_array($roster['User']['id'], $householdIds) || $roster['Profile']['allow_sponsorage'] || $canCheckAll) {
-				echo $this->MultiSelect->checkbox($roster['Roster']['id']);
-			}
-			?></td>
+			<td><?php echo $this->MultiSelect->checkbox($roster['Roster']['id']); ?></td>
 		<?php endif; ?>
 		<td><?php 
 		$name = $roster['Profile']['name'];
