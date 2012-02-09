@@ -69,7 +69,11 @@ class InvitationsController extends AppController {
 			$this->Invitation->id = $id;
 			$invitation = $this->Invitation->read();
 			
-			$success = $this->requestAction($invitation['Invitation'][$action.'_action']);
+			$success = $this->requestAction($invitation['Invitation'][$action.'_action'], array(
+				'named' => array(
+					'User' => $this->activeUser['User']['id']
+				)
+			));
 			if ($success) {
 				$action = $action == 'confirm' ? 'confirmed' : 'denied';
 				$this->Session->setFlash('You have '.$action.' this invitation.', 'flash'.DS.'success');

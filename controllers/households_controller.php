@@ -51,7 +51,7 @@ class HouseholdsController extends AppController {
  */
 	function beforeFilter() {
 		parent::beforeFilter();
-		$this->_editSelf('index', 'delete');
+		$this->_editSelf('index', 'delete', 'confirm');
 	}
 
 /**
