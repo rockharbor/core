@@ -120,6 +120,19 @@ class InstallShell extends Shell {
 		$this->_createGroupAros();
 		// create acl
 		$this->_createAcl();
+		// add acl for plugins
+		$plugins = Core::read('plugin');
+		if (!empty($plugins)) {
+			$plugins = array_keys($plugins);
+			foreach ($plugins as $plugin) {
+				$class = Inflector::camelize($plugin).'Install';
+				if (App::import('Plugin', $class)) {
+					$this->out(__('Running plugin\'s install routine', true));
+					$installer = new $class;
+					$installer->install();
+				}
+			}
+		}
 	}
 
 /**
