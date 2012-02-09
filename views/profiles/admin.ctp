@@ -28,6 +28,7 @@ echo $this->Form->create(array(
 		<fieldset class="grid_5 omega">
 			<legend>User Permissions</legend>
 			<?php
+			echo $this->Form->input('User.active');
 			echo $this->Form->input('adult');
 			echo $this->Form->input('qualified_leader');
 			echo $this->Form->input('User.id');
