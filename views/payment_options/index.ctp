@@ -34,10 +34,10 @@ $this->Paginator->options(array(
 			<td><?php echo $this->SelectOptions->booleans[$paymentOption['PaymentOption']['tax_deductible']]; ?>&nbsp;</td>
 			<td>
 				<div class="core-icon-container">
-					<?php echo $this->Html->link($this->element('icon', array('icon' => 'edit')), array('action' => 'edit', $paymentOption['PaymentOption']['id']), array('rel' => 'modal-paymentOptions', 'escape' => false)); ?>
+					<?php echo $this->Permission->link($this->element('icon', array('icon' => 'edit')), array('action' => 'edit', $paymentOption['PaymentOption']['id'], 'Involvement' => $involvementId), array('rel' => 'modal-parent', 'escape' => false, 'class' => 'no-hover')); ?>
 					<?php 
-					echo $this->Html->link($this->element('icon', array('icon' => 'delete')), array('action' => 'delete', $paymentOption['PaymentOption']['id']), array('id' => 'delete_btn_'.$paymentOption['PaymentOption']['id'], 'escape' => false));
-					$this->Js->buffer('CORE.confirmation("delete_btn_'.$paymentOption['PaymentOption']['id'].'","Are you sure you want to delete this payment option?", {update:"paymentOptions"});');
+					echo $this->Permission->link($this->element('icon', array('icon' => 'delete')), array('action' => 'delete', $paymentOption['PaymentOption']['id'], 'Involvement' => $involvementId), array('id' => 'delete_btn_'.$paymentOption['PaymentOption']['id'], 'escape' => false, 'class' => 'no-hover'));
+					$this->Js->buffer('CORE.confirmation("delete_btn_'.$paymentOption['PaymentOption']['id'].'","Are you sure you want to delete this payment option?", {update:"parent"});');
 					?>
 				</div>
 			</td>
@@ -45,8 +45,10 @@ $this->Paginator->options(array(
 	<?php endforeach; ?>
 		</tbody>
 	</table>
+	<?php echo $this->element('pagination'); ?>
+	<ul class="core-admin-tabs">
 	<?php
-	echo $this->element('icon', array('icon' => 'add')).$this->Html->link('Add Payment Option', array('action' => 'add', 'Involvement' => $involvementId), array('rel'=>'modal-paymentOptions'));
-	echo $this->element('pagination');
+		echo $this->Html->tag('li', $this->Html->link('Add Payment Option', array('action' => 'add', 'Involvement' => $involvementId), array('rel'=>'modal-parent')));
 	?>
+	</ul>
 </div>
