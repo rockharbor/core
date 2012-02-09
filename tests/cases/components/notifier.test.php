@@ -190,6 +190,10 @@ class NotifierTestCase extends CoreTestCase {
 			'to' => 100,
 			'template' => 'ministries_edit'
 		)));
+		$this->assertFalse($this->Notifier->notify(array(
+			'to' => 4,
+			'template' => 'ministries_edit'
+		)));
 	}
 
 	function testSend() {

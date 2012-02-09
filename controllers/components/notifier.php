@@ -84,7 +84,12 @@ class NotifierComponent extends Object {
 			return false;
 		}
 		$this->User->contain(array('Profile'));
-		$user = $this->User->read(null, $options['to']);
+		$user = $this->User->find('first', array(
+			'conditions' => array(
+				'User.active' => true,
+				'User.id' => $options['to']
+			)
+		));
 		if (!$user) {
 			return false;
 		}
