@@ -166,7 +166,7 @@ $this->Paginator->options(array(
 			if ($fullAccess) {
 				echo $this->element('multiselect', array(
 					'colCount' => $colCount,
-					'checkAll' => $canCheckAll,
+					'checkAll' => $fullAccess,
 					'links' => $links
 				));
 			}
