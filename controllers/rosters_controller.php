@@ -635,13 +635,24 @@ class RostersController extends AppController {
 		}
 		
 		// get needed information about the user and this involvement
-		$this->Roster->Involvement->contain(array('Question'));
+		$this->Roster->Involvement->contain(array(
+			'Question',
+			'Roster' => array(
+				'fields' => array(
+					'user_id'
+				)
+			)
+		));
 		$involvement = $this->Roster->Involvement->read(null, $thisRoster['Roster']['involvement_id']);
 		// get user info and all household info where they are the contact
+		$signedUp = Set::extract('/Roster/user_id', $involvement);
 		$householdMemberIds = $this->Roster->User->HouseholdMember->Household->getMemberIds($thisRoster['Roster']['user_id'], true);
 		$householdMembers = $this->Roster->User->find('all', array(
 			'conditions' => array(
-				'User.id' => $householdMemberIds
+				'User.id' => $householdMemberIds,
+				'not' => array(
+					'User.id' => $signedUp
+				)
 			),
 			'contain' => array(
 				'Profile',

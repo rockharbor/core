@@ -10,9 +10,7 @@ check to see if this is a quick signup
 */
 
 // get kids in their households
-$children = Set::extract('/HouseholdMember/Household/HouseholdMember/User/Profile[child=1]', $user);
-// all household members that he can sign up
-$householdMembers = Set::extract('/HouseholdMember/Household/HouseholdMember/User/Profile', $user);
+$children = Set::extract('/Profile[child=1]', $householdMembers);
 
 echo $this->Form->create('Roster', array(
 	'default' => false,
