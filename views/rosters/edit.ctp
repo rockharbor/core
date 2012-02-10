@@ -85,7 +85,10 @@ if (!empty($involvement['Question'])) {
 	?>
 		</div>
 	</fieldset>
-	<?php } ?>
+	<?php 
+	} 
+	if ($fullAccess) {
+	?>
 	<fieldset>
  		<legend>Signup Options</legend>
 	<?php		
@@ -98,6 +101,7 @@ if (!empty($involvement['Question'])) {
 	</fieldset>
 	
 <?php 
+	}
 	echo $this->Js->submit('Save', $defaultSubmitOptions);
 	echo $this->Form->end();
 ?>

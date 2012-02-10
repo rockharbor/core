@@ -677,7 +677,13 @@ class RostersController extends AppController {
 		));
 		$rosterStatuses = $this->Roster->RosterStatus->find('list');
 		
-		$this->set(compact('involvement', 'user', 'roster', 'paymentOptions', 'householdMembers', 'rosterStatuses'));
+		$fullAccess = 
+			$this->Roster->Involvement->isLeader($this->activeUser['User']['id'], $involvementId)
+			|| $this->Roster->Involvement->Ministry->isManager($this->activeUser['User']['id'], $involvement['Involvement']['ministry_id'])
+			|| $this->Roster->Involvement->Ministry->Campus->isManager($this->activeUser['User']['id'], $involvement['Ministry']['campus_id'])
+			|| $this->isAuthorized('rosters/index', array('Involvement' => $id));
+		
+		$this->set(compact('involvement', 'user', 'roster', 'paymentOptions', 'householdMembers', 'rosterStatuses', 'fullAccess'));
 	}
 
 /**
