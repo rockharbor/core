@@ -50,7 +50,8 @@ class ReportsController extends AppController {
  */
 	var $components = array(
 		'MultiSelect.MultiSelect',
-		'FilterPagination'
+		'FilterPagination',
+		'Report'
 	);
 	
 /**
@@ -308,11 +309,16 @@ class ReportsController extends AppController {
 			$search = $this->MultiSelect->getSearch($uid);
 			$selected = $this->MultiSelect->getSelected($uid);
 			// assume they want all if they didn't select any
-			if (!empty($selected)) {
-				$search['conditions'][$model.'.id'] = $selected;
+			if (empty($selected)) {
+				$selected = $this->{$model}->find('all', $search);
+				$pk = $this->{$model}->primaryKey;
+				$selected = Set::extract("/$model/$pk", $selected);
 			}
-			
-			$results = $this->{$model}->find('all', $search);
+			// add to field list if contain or link is restricting them
+			$options = $this->Report->generateSearchOptions($this->data['Export']);
+			$options['conditions']["$model.$pk"] = $selected;
+		
+			$results = $this->{$model}->find('all', $options);
 			
 			$this->set('models', $this->data['Export']);
 			$this->set(compact('results', 'aliases', 'squashed'));
