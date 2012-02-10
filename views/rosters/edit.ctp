@@ -10,9 +10,7 @@ check to see if this is a quick signup
 */
 
 // get kids in their households
-$children = Set::extract('/HouseholdMember/Household/HouseholdMember/User/Profile[child=1]', $user);
-// all household members that he can sign up
-$householdMembers = Set::extract('/HouseholdMember/Household/HouseholdMember/User/Profile', $user);
+$children = Set::extract('/Profile[child=1]', $householdMembers);
 
 echo $this->Form->create('Roster', array(
 	'default' => false,
@@ -71,13 +69,14 @@ if (!empty($involvement['Question'])) {
 			</ul>
 	<?php
 		$q = 0;
+		$answers = Set::combine($this->data, '{n}.Answer.question_id', '{n}.Answer');
 		foreach ($involvement['Question'] as $question) {
 			echo '<div id="question'.($q+1).'">';
-			echo $this->Form->hidden('Answer.'.$q.'.question_id', array(
-				'value' => $question['id']
+			echo $this->Form->hidden('Answer.'.$q.'.id', array(
+				'value' => $answers[$question['id']]['id']
 			));
 			echo $this->Form->input('Answer.'.$q.'.description', array(
-				'label' => $question['description'],
+				'label' => $answers[$question['id']]['description'],
 				'type' => 'textarea'
 			));
 			$q++;
@@ -86,7 +85,10 @@ if (!empty($involvement['Question'])) {
 	?>
 		</div>
 	</fieldset>
-	<?php } ?>
+	<?php 
+	} 
+	if ($fullAccess) {
+	?>
 	<fieldset>
  		<legend>Signup Options</legend>
 	<?php		
@@ -99,6 +101,7 @@ if (!empty($involvement['Question'])) {
 	</fieldset>
 	
 <?php 
+	}
 	echo $this->Js->submit('Save', $defaultSubmitOptions);
 	echo $this->Form->end();
 ?>

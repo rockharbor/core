@@ -61,7 +61,6 @@ class PaymentOptionsController extends AppController {
 			$this->PaymentOption->create();
 			if ($this->PaymentOption->save($this->data)) {
 				$this->Session->setFlash('This payment option has been created.', 'flash'.DS.'success');
-				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash('Unable to create payment option. Please try again.', 'flash'.DS.'failure');
 			}
@@ -82,7 +81,6 @@ class PaymentOptionsController extends AppController {
 		if (!empty($this->data)) {
 			if ($this->PaymentOption->save($this->data)) {
 				$this->Session->setFlash('This payment option has been saved.', 'flash'.DS.'success');
-				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash('Unable to save this payment option. Please try again.', 'flash'.DS.'failure');
 			}

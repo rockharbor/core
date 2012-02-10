@@ -293,7 +293,9 @@ class Core {
 		}
 		if (!$access) {
 			$message = "User of group $foreign_key trying to access $action without permission.";
-			CakeLog::write('auth', $message);
+			if (Configure::read('debug') > 0) {
+				CakeLog::write('auth', $message);
+			}
 		}
 		return $access;
 	}

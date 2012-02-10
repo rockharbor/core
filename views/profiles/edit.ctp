@@ -64,7 +64,9 @@ echo $this->Form->create(array(
 					))
 				));
 				echo $this->Form->input('baptism_date', array(
-					'type' => 'date'
+					'type' => 'date',
+					'minYear' => 1900,
+					'maxYear' => date('Y')
 				));
 				?>
 			</fieldset>

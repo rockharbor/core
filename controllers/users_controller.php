@@ -414,6 +414,7 @@ class UsersController extends AppController {
 			}
 		}
 		
+		$this->set('groups', $this->User->Group->findGroups($this->activeUser['Group']['id']));
 		$this->_prepareAdd();
 	}
 

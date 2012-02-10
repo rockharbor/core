@@ -31,7 +31,7 @@ $this->Js->buffer('CORE.initLogin()');
 		echo $this->Html->link('Trouble logging in?', array('action' => 'forgot_password'), array('rel' => 'modal-none'));
 		echo ' | ';
 		echo $this->Html->link('Sign Up', array('action' => 'register'), array('rel' => 'modal-none'));
-		echo $this->Form->end('Whoosh!');
+		echo $this->Form->end('Login');
 		?>
 	</div>
 	<div style="margin-top: 30px">

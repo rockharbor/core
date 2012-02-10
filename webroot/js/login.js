@@ -6,14 +6,6 @@ if (CORE == undefined) {
  * Initiates login functions
  */
 CORE.initLogin = function() {
-	$('#UserUsername, #UserPassword').keyup(function() {
-		if ($('#UserUsername').val() != '' && $('#UserPassword').val() != '') {
-			$('#UserLoginForm .submit input:hidden').fadeIn();
-		} else {
-			$('#UserLoginForm .submit input:visible').fadeOut();
-		}
-	});
-	$('#UserLoginForm .submit input').hide();
 	CORE.loadSillyPhrase();
 }
 
