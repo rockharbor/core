@@ -69,13 +69,14 @@ if (!empty($involvement['Question'])) {
 			</ul>
 	<?php
 		$q = 0;
+		$answers = Set::combine($this->data, '{n}.Answer.question_id', '{n}.Answer');
 		foreach ($involvement['Question'] as $question) {
 			echo '<div id="question'.($q+1).'">';
-			echo $this->Form->hidden('Answer.'.$q.'.question_id', array(
-				'value' => $question['id']
+			echo $this->Form->hidden('Answer.'.$q.'.id', array(
+				'value' => $answers[$question['id']]['id']
 			));
 			echo $this->Form->input('Answer.'.$q.'.description', array(
-				'label' => $question['description'],
+				'label' => $answers[$question['id']]['description'],
 				'type' => 'textarea'
 			));
 			$q++;
