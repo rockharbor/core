@@ -214,42 +214,60 @@ class AppModel extends Model {
 	}
 
 /**
- * Creates a simplistic `contain` array from post data
+ * Creates a find options array from post data. If the POSTed data has fields
+ * from this model, they will be added to this model's `fields` list. If it has
+ * other models, it will create a contain array with those models and their fields.
  *
  * Use in conjunction with Controller::postConditions() to make search forms super-quick!
  *
  * @param array $data The Cake post data
  * @param array $associated Associated models (used during recursion)
- * @return array The contain array
+ * @return array The options array
  * @access public
  */
-	function postContains($data, $Model = null) {
+	function postOptions($data, $Model = null) {
 		// get associated models
 		if (!$Model) {
 			$Model = $this;
 		}
 		$associated = $Model->getAssociated();
 
-		// clear out all post conditions
+		$options = $data;
 		foreach ($data as $model => $field) {
-			if (!array_key_exists($model, $associated)) {
-				// remove if it's not directly associated
-				unset($data[$model]);
-			} else {
+			if ($Model->hasField($model, true)) {
+				// add to fields array if it's a field
+				if (!isset($options['fields'])) {
+					$options['fields'] = array();
+				}
+				$options['fields'][] = $model;
+				unset($options[$model]);
+			} elseif ($Model->name === $model) {
+				if (!isset($options['fields'])) {
+					$options['fields'] = array();
+				}
+				foreach ($field as $f => $v) {
+					$options['fields'][] = $f;
+				}
+				unset($options[$model]);
+			} elseif (array_key_exists($model, $associated)) {
 				// check for habtm [Publication][Publication][0] = 1
 				if ($model == array_shift(array_keys($field))) {
 					$field = array();
 				}
 				// recusively check for more models to contain
-				$data[$model] = $this->postContains($field, $Model->{$model});
+				if ($Model->name === $this->name) {
+					$options['contain'][$model] = $this->postOptions($field, $Model->{$model});
+					unset($options[$model]);
+				} else {
+					$options[$model] = $this->postOptions($field, $Model->{$model});
+				}
+			} else {
+				// completely unrelated
+				unset($options[$model]);
 			}
 		}
 		
-		// don't let contain reference itself
-		unset($data[$this->name]);
-		unset($data[$this->alias]);
-		
-		return $data;
+		return $options;
 	}
 
 /**

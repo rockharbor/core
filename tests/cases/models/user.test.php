@@ -467,9 +467,17 @@ class UserTestCase extends CoreTestCase {
 		$results = $this->User->prepareSearch($this->Controller, $search);
 		$expected = array(
 			'link' => array(
-				'Profile' => array(),
+				'Profile' => array(
+					'fields' => array(
+						'age', 'gender'
+					)
+				),
 				'Roster' => array(
-					'Involvement' => array()
+					'Involvement' => array(
+						'fields' => array(
+							'name'
+						)
+					)
 				)
 			),
 			'group' => 'User.id',
@@ -499,7 +507,11 @@ class UserTestCase extends CoreTestCase {
 		$results = $this->User->prepareSearch($this->Controller, $search);
 		$expected = array(
 			'link' => array(
-				'Profile' => array()
+				'Profile' => array(
+					'fields' => array(
+						'birth_date'
+					)
+				)
 			),
 			'group' => 'User.id',
 			'conditions' => array(
@@ -523,7 +535,11 @@ class UserTestCase extends CoreTestCase {
 		$results = $this->User->prepareSearch($this->Controller, $search);
 		$expected = array(
 			'link' => array(
-				'Profile' => array()
+				'Profile' => array(
+					'fields' => array(
+						'birth_date'
+					)
+				)
 			),
 			'group' => 'User.id',
 			'conditions' => array(

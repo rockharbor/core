@@ -244,9 +244,10 @@ class SearchesController extends AppController {
 			$this->MultiSelect->startup();
 			
 			// create conditions and contain
+			$options = (array)$this->{$model}->postOptions($this->data) + array('contain' => array());;
 			$options = array(
 				'conditions' => $this->postConditions($this->data, 'LIKE'),
-				'link' => $this->{$model}->postContains($this->data)
+				'link' => $options['contain']
 			);
 
 			if (!empty($filter) && isset($this->{$model}->searchFilter[$filter])) {
@@ -303,7 +304,8 @@ class SearchesController extends AppController {
 			// remove blanks
 			$this->data = array_map('Set::filter', $this->data);
 
-			$link = array_merge_recursive($link, $this->Involvement->postContains($this->data));
+			$options = (array)$this->Involvement->postOptions($this->data) + array('contain' => array());;
+			$link = array_merge_recursive($link, $options['contain']);
 			$conditions = $this->postConditions($this->data, 'LIKE', $operator);
 
 			$this->data['Search']['operator'] = $operator;
@@ -341,7 +343,8 @@ class SearchesController extends AppController {
 			// remove blanks
 			$this->data = array_map('Set::filter', $this->data);
 
-			$contain = array_merge($contain, $this->Ministry->postContains($this->data));
+			$options = (array)$this->Ministry->postOptions($this->data) + array('contain' => array());
+			$contain = array_merge_recursive($contain, $options['contain']);
 			$conditions = $this->postConditions($this->data, 'LIKE', $operator);
 
 			$this->data['Search']['operator'] = $operator;
