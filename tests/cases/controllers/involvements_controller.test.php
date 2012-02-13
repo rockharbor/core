@@ -253,7 +253,8 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$invites = $this->Involvements->Involvement->Roster->User->Invitation->find('all');
 		$this->assertEqual(count($invites), 2);
 		$countNow = $this->Involvements->Involvement->Roster->find('count');
-		$this->assertEqual($countBefore+2, $countNow);
+		// they were both already signed up, just their roster changed to invited
+		$this->assertEqual($countBefore, $countNow);
 		$notificationCountAfter = $this->Involvements->Notifier->Notification->find('count');
 		$this->assertEqual($notificationCountAfter-$notificationCountBefore, 1);
 		
@@ -274,7 +275,8 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$invites = $this->Involvements->Involvement->Roster->User->Invitation->find('all');
 		$this->assertEqual(count($invites), 2);
 		$countNow = $this->Involvements->Involvement->Roster->find('count');
-		$this->assertEqual($countBefore+2, $countNow);
+		// one already existed, one was invited
+		$this->assertEqual($countBefore+1, $countNow);
 		$notificationCountAfter = $this->Involvements->Notifier->Notification->find('count');
 		$this->assertEqual($notificationCountAfter-$notificationCountBefore, 1);
 		
