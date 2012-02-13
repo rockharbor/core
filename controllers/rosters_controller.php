@@ -212,7 +212,6 @@ class RostersController extends AppController {
 		$conditions = array(
 			'Involvement.id' => array_values($memberOf)	
 		);
-		$private = array_key_exists($this->activeUser['Group']['id'], $this->Roster->User->Group->findGroups(Core::read('general.private_group'), 'list', '>'));
 
 		if ($this->Session->check('FilterPagination.data') && empty($this->data)) {
 			$this->data = $this->Session->read('FilterPagination.data');
@@ -222,7 +221,7 @@ class RostersController extends AppController {
 				'previous' => 0,
 				'leading' => 1,
 				'inactive' => 0,
-				'private' => $private
+				'private' => 1
 			)
 		);
 		$this->data = $search = Set::merge($_default, $this->data);
