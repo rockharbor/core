@@ -158,13 +158,18 @@ class RostersController extends AppController {
 		$involvement = $this->Roster->Involvement->read(null, $involvementId);
 		
 		$rosters =  $this->FilterPagination->paginate();
-		
-		$counts['childcare'] = count(Set::extract('/Roster[parent_id>0]', $rosters));
-		$counts['pending'] = count(Set::extract('/Roster[roster_status_id=2]', $rosters));
+		$counts['childcare'] = $this->Roster->find('count', array(
+			'conditions' => array_merge_recursive($conditions, array('Roster.parent_id >' => 0))
+		));
+		$counts['pending'] = $this->Roster->find('count', array(
+			'conditions' => array_merge_recursive($conditions, array('Roster.roster_status_id' => 2))
+		));
 		$counts['leaders'] = count($involvement['Leader']);
-		$counts['confirmed'] = count(Set::extract('/Roster[roster_status_id=1]', $rosters));
-		$counts['total'] = count($rosters);
-
+		$counts['confirmed'] = $this->Roster->find('count', array(
+			'conditions' => array_merge_recursive($conditions, array('Roster.roster_status_id' => 1))
+		));
+		$counts['total'] = $this->params['paging']['Roster']['count'];
+		
 		$roles = $this->Roster->Involvement->Ministry->Role->find('list', array(
 			'conditions' => array(
 				'Role.id' => $this->Roster->Involvement->Ministry->Role->findRoles($involvement['Involvement']['ministry_id'])
