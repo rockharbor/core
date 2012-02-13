@@ -643,6 +643,7 @@ class RostersController extends AppController {
 				)
 			)
 		));
+		$this->Roster->Involvement->contain(array('Ministry'));
 		$involvement = $this->Roster->Involvement->read(null, $thisRoster['Roster']['involvement_id']);
 		// get user info and all household info where they are the contact
 		$signedUp = Set::extract('/Roster/user_id', $involvement);
@@ -678,10 +679,10 @@ class RostersController extends AppController {
 		$rosterStatuses = $this->Roster->RosterStatus->find('list');
 		
 		$fullAccess = 
-			$this->Roster->Involvement->isLeader($this->activeUser['User']['id'], $involvementId)
+			$this->Roster->Involvement->isLeader($this->activeUser['User']['id'], $involvement['Involvement']['id'])
 			|| $this->Roster->Involvement->Ministry->isManager($this->activeUser['User']['id'], $involvement['Involvement']['ministry_id'])
 			|| $this->Roster->Involvement->Ministry->Campus->isManager($this->activeUser['User']['id'], $involvement['Ministry']['campus_id'])
-			|| $this->isAuthorized('rosters/index', array('Involvement' => $id));
+			|| $this->isAuthorized('rosters/index', array('Involvement' => $involvement['Involvement']['id']));
 		
 		$this->set(compact('involvement', 'user', 'roster', 'paymentOptions', 'householdMembers', 'rosterStatuses', 'fullAccess'));
 	}
