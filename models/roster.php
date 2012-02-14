@@ -118,6 +118,18 @@ class Roster extends AppModel {
 			'field' => 'Roster.id'
 		)
 	);
+	
+/**
+ * Remove joins from counts
+ * 
+ * @param array $conditions Array of find conditions
+ * @param array $recursive Recursive setting
+ * @param array $extra Extra find options
+ * @return integer Record count
+ */
+	function paginateCount($conditions = null, $recursive = 0, $extra = array()) {
+		return $this->find('count', compact('conditions'));
+	}
 
 /**
  * Generates a query for finding HABTM Role data

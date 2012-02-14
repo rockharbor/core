@@ -76,7 +76,8 @@ class RostersController extends AppController {
 		$involvement = $this->Roster->Involvement->find('first', array(
 			'fields' => array(
 				'roster_visible',
-				'ministry_id'
+				'ministry_id',
+				'take_payment'
 			),
 			'conditions' => array(
 				'Involvement.id' => $involvementId
@@ -133,6 +134,10 @@ class RostersController extends AppController {
 		
 		$link = array(
 			'User' => array(
+				'fields' => array(
+					'id', 
+					'username'
+				),
 				'Profile' => array(
 					'fields' => array(
 						'name',
@@ -141,14 +146,27 @@ class RostersController extends AppController {
 						'primary_email'
 					)
 				),
-				'Image'
+				'Image' => array(
+					'fields' => array(
+						'basename',
+						'dirname'
+					)
+				)
 			),
-			'RosterStatus'
+			'RosterStatus' => array(
+				'fields' => array(
+					'name'
+				)
+			)
 		);
 		$contain = array('Role');
 
 		$this->Roster->recursive = -1;
-		$this->paginate = compact('conditions','link','contain');
+		$fields = array('id', 'created');
+		if ($involvement['Involvement']['take_payment']) {
+			array_push($fields, 'amount_due', 'amount_paid', 'balance');
+		}
+		$this->paginate = compact('conditions','link','contain','fields');
 		
 		// save search for multi select actions
 		$this->MultiSelect->saveSearch($this->paginate);
