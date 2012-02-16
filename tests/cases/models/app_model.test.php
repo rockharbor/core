@@ -198,7 +198,7 @@ class AppModelTestCase extends CoreTestCase {
 			'contain' => array(
 				'Profile' => array(
 					'fields' => array(
-						'name'
+						'CONCAT(Profile.first_name, " ", Profile.last_name) AS Profile__name'
 					)
 				)
 			)
@@ -224,7 +224,7 @@ class AppModelTestCase extends CoreTestCase {
 			'contain' => array(
 				'Profile' => array(
 					'fields' => array(
-						'name'
+						'CONCAT(Profile.first_name, " ", Profile.last_name) AS Profile__name'
 					)
 				)
 			)
@@ -250,7 +250,7 @@ class AppModelTestCase extends CoreTestCase {
 			'contain' => array(
 				'Profile' => array(
 					'fields' => array(
-						'name'
+						'CONCAT(Profile.first_name, " ", Profile.last_name) AS Profile__name'
 					)
 				)
 			)
@@ -278,7 +278,7 @@ class AppModelTestCase extends CoreTestCase {
 			'contain' => array(
 				'Profile' => array(
 					'fields' => array(
-						'name'
+						'CONCAT(Profile.first_name, " ", Profile.last_name) AS Profile__name'
 					)
 				),
 				'Publication' => array()

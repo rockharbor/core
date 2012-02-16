@@ -239,7 +239,11 @@ class AppModel extends Model {
 				if (!isset($options['fields'])) {
 					$options['fields'] = array();
 				}
-				$options['fields'][] = $model;
+				if ($Model->isVirtualField($model)) {
+					$options['fields'][] = $Model->getVirtualField($model).' AS '.$Model->name.'__'.$model;
+				} else {
+					$options['fields'][] = $model;
+				}
 				unset($options[$model]);
 			} elseif ($Model->name === $model) {
 				if (!isset($options['fields'])) {
