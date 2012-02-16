@@ -340,7 +340,7 @@ class User extends AppModel {
  * @param array $data Data and related data to save
  * @param integer $householdId The id of the household for them to join. `null` creates a household for them
  * @param array $creator The person creating the user. Empty for self.
- * @param string $validate The value for the `validate` key in `saveAll()`
+ * @param string $validate The value for the `validate` key in `saveAll()`. User model will *always* be validated
  * @return boolean Success
  */
 	function createUser(&$data = array(), $householdId = null, $creator = array(), $validate = 'first') {
@@ -423,7 +423,12 @@ class User extends AppModel {
 
 		// save user and related info
 		$this->create();
-		if ($this->saveAll($data, array('validate' => $validate))) {
+		$this->set($data['User']);
+		$userValidates = $this->validates();
+		$_errors = $this->validationErrors;
+		$this->create();
+		$this->validationErrors = $_errors;
+		if ($userValidates && $this->saveAll($data, array('validate' => $validate))) {
 			// needed for creating household members
 			$data['User']['id'] = $this->id;
 

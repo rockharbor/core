@@ -354,6 +354,39 @@ class UserTestCase extends CoreTestCase {
 			)
 		);
 		$this->assertEqual($user['HouseholdMember'], $expected);
+		
+		$this->User->tmpAdded = $this->User->tmpInvited = array();
+		$user = array(
+			'User' => array(
+				'username' => 'jharris'
+			),
+			'Address' => array(
+				0 => array(
+					'zip' => 92886
+				)
+			),
+			'Profile' => array(
+				'first_name' => 'Yet Another',
+				'last_name' => 'User',
+				'primary_email' => 'another@example.com'
+			),
+			'HouseholdMember' => array(
+				0 => array(
+					'Profile' => array(
+						'first_name' => 'child',
+						'last_name' => 'user',
+						'primary_email' => 'child@example.com'
+					)
+				),
+				1 => array(
+					'User' => array(
+						'id' => 1
+					)
+				)
+			)
+		);
+		$this->assertFalse($this->User->createUser($user, null, $creator, false));
+		$this->assertTrue(isset($this->User->validationErrors['username']));
 	}
 
 	function testPrepareSearch() {
