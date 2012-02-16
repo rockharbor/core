@@ -198,6 +198,7 @@ class AppModelTestCase extends CoreTestCase {
 			'contain' => array(
 				'Profile' => array(
 					'fields' => array(
+						'user_id',
 						'CONCAT(Profile.first_name, " ", Profile.last_name) AS Profile__name'
 					)
 				)
@@ -224,6 +225,7 @@ class AppModelTestCase extends CoreTestCase {
 			'contain' => array(
 				'Profile' => array(
 					'fields' => array(
+						'user_id',
 						'CONCAT(Profile.first_name, " ", Profile.last_name) AS Profile__name'
 					)
 				)
@@ -250,6 +252,7 @@ class AppModelTestCase extends CoreTestCase {
 			'contain' => array(
 				'Profile' => array(
 					'fields' => array(
+						'user_id',
 						'CONCAT(Profile.first_name, " ", Profile.last_name) AS Profile__name'
 					)
 				)
@@ -278,6 +281,7 @@ class AppModelTestCase extends CoreTestCase {
 			'contain' => array(
 				'Profile' => array(
 					'fields' => array(
+						'user_id',
 						'CONCAT(Profile.first_name, " ", Profile.last_name) AS Profile__name'
 					)
 				),
@@ -297,6 +301,9 @@ class AppModelTestCase extends CoreTestCase {
 		$expected = array(
 			'contain' => array(
 				'Profile' => array(
+					'fields' => array(
+						'user_id', 'id', 'campus_id'
+					),
 					'Campus' => array(
 						'fields' => array(
 							'name'

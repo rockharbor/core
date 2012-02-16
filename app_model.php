@@ -221,11 +221,12 @@ class AppModel extends Model {
  * Use in conjunction with Controller::postConditions() to make search forms super-quick!
  *
  * @param array $data The Cake post data
- * @param array $associated Associated models (used during recursion)
+ * @param Model $Model The model
+ * @param string $foreignKey A foreign key for the association to include
  * @return array The options array
  * @access public
  */
-	function postOptions($data, $Model = null) {
+	function postOptions($data, $Model = null, $foreignKey = null) {
 		// get associated models
 		if (!$Model) {
 			$Model = $this;
@@ -233,12 +234,12 @@ class AppModel extends Model {
 		$associated = $Model->getAssociated();
 
 		$options = $data;
+		if ($foreignKey) {
+			$options['fields'][] = $foreignKey;
+		}
 		foreach ($data as $model => $field) {
 			if ($Model->hasField($model, true)) {
 				// add to fields array if it's a field
-				if (!isset($options['fields'])) {
-					$options['fields'] = array();
-				}
 				if ($Model->isVirtualField($model)) {
 					$options['fields'][] = $Model->getVirtualField($model).' AS '.$Model->name.'__'.$model;
 				} else {
@@ -246,9 +247,6 @@ class AppModel extends Model {
 				}
 				unset($options[$model]);
 			} elseif ($Model->name === $model) {
-				if (!isset($options['fields'])) {
-					$options['fields'] = array();
-				}
 				foreach ($field as $f => $v) {
 					$options['fields'][] = $f;
 				}
@@ -259,11 +257,18 @@ class AppModel extends Model {
 					$field = array();
 				}
 				// recusively check for more models to contain
+				$foreignKey = null;
+				if (in_array($associated[$model], array('hasOne', 'hasMany'))) {
+					$foreignKey = $Model->{$associated[$model]}[$model]['foreignKey'];
+				} elseif ($associated[$model] == 'belongsTo') {
+					$options['fields'][] = $Model->primaryKey;
+					$options['fields'][] = $Model->{$associated[$model]}[$model]['foreignKey'];
+				}
 				if ($Model->name === $this->name) {
-					$options['contain'][$model] = $this->postOptions($field, $Model->{$model});
+					$options['contain'][$model] = $this->postOptions($field, $Model->{$model}, $foreignKey);
 					unset($options[$model]);
 				} else {
-					$options[$model] = $this->postOptions($field, $Model->{$model});
+					$options[$model] = $this->postOptions($field, $Model->{$model}, $foreignKey);
 				}
 			} else {
 				// completely unrelated
