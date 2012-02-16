@@ -190,6 +190,8 @@ $this->Paginator->options(array(
 		</thead>
 	<tbody>
 	<?php
+	$addIcon = $this->element('icon', array('icon' => 'add'));
+	$canModifyRoles = $this->Permission->check(array('controller' => 'rosters', 'action' => 'roles', 'Involvement' => $involvement['Involvement']['id'], $roster['Roster']['id']));
 	$i = 0;
 	foreach ($rosters as $roster):
 		$class = null;
@@ -204,7 +206,8 @@ $this->Paginator->options(array(
 		<td><?php 
 		$name = $roster['Profile']['name'];
 		$link = array('controller' => 'profiles', 'action' => 'view', 'User' => $roster['User']['id']);
-		if ($this->Permission->check($link)) {
+		$viewProfilePermission = $this->Permission->check($link);
+		if ($viewProfilePermission) {
 			echo $this->Html->link($name, $link, array('escape' => false));
 		} else {
 			echo $this->Html->link($name, '#', array('escape' => false));
@@ -215,10 +218,14 @@ $this->Paginator->options(array(
 				$path = 's'.DS.$roster['ImageIcon']['dirname'].DS.$roster['ImageIcon']['basename'];
 				echo $this->Media->embed($path, array('restrict' => 'image'));
 			}
-			echo $this->Permission->link('Edit Info', array('controller' => 'rosters', 'action' => 'edit', $roster['Roster']['id'], 'Involvement' => $involvement['Involvement']['id'], 'User' => $roster['User']['id']), array('rel' => 'modal-roster'));
-			echo $this->Permission->link('View Profile', array('controller' => 'profiles', 'action' => 'view', 'User' => $roster['User']['id']));
-			echo $this->Permission->link('View Payments', array('controller' => 'payments', 'action' => 'index', 'User' => $roster['User']['id'], 'Involvement' => $involvement['Involvement']['id']), array('rel' => 'modal-none'));
-		?></div>
+			if ($fullAccess) {
+				echo $this->Html->link('Edit Info', array('controller' => 'rosters', 'action' => 'edit', $roster['Roster']['id'], 'Involvement' => $involvement['Involvement']['id'], 'User' => $roster['User']['id']), array('rel' => 'modal-roster'));
+				echo $this->Html->link('View Payments', array('controller' => 'payments', 'action' => 'index', 'User' => $roster['User']['id'], 'Involvement' => $involvement['Involvement']['id']), array('rel' => 'modal-none'));
+			}
+			if ($viewProfilePermission) {
+				echo $this->Html->link('View Profile', array('controller' => 'profiles', 'action' => 'view', 'User' => $roster['User']['id']));
+			}
+			?></div>
 		<?php echo $this->Formatting->flags('User', $roster); ?>
 		</td>
 		<td><?php echo $this->Formatting->email($roster['Profile']['primary_email'], $roster['User']['id']); ?>&nbsp;</td>
@@ -238,12 +245,9 @@ $this->Paginator->options(array(
 			<td><?php echo $this->Formatting->date($roster['Roster']['created']); ?>&nbsp;</td>
 		<?php endif; ?>
 		<td><?php
-		$link = array('controller' => 'rosters', 'action' => 'roles', 'Involvement' => $involvement['Involvement']['id'], $roster['Roster']['id']);
-		$canModifyRoles = $this->Permission->check($link);
 		if ($canModifyRoles) {
-			$icon = $this->element('icon', array('icon' => 'add'));
-			echo $this->Html->link($icon, $link, array('rel' => 'modal-roster', 'escape' => false, 'class' => 'no-hover'));
-			echo $this->Html->link(count($roster['Role']).' Roles', $link, array('rel' => 'modal-roster'));
+			echo $this->Html->link($addIcon, array('controller' => 'rosters', 'action' => 'roles', 'Involvement' => $involvement['Involvement']['id'], $roster['Roster']['id']), array('rel' => 'modal-roster', 'escape' => false, 'class' => 'no-hover'));
+			echo $this->Html->link(count($roster['Role']).' Roles', array('controller' => 'rosters', 'action' => 'roles', 'Involvement' => $involvement['Involvement']['id'], $roster['Roster']['id']), array('rel' => 'modal-roster'));
 		} else {
 			echo $this->Html->link(count($roster['Role']).' Roles', '#');
 		}

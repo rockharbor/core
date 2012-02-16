@@ -76,7 +76,8 @@ class RostersController extends AppController {
 		$involvement = $this->Roster->Involvement->find('first', array(
 			'fields' => array(
 				'roster_visible',
-				'ministry_id'
+				'ministry_id',
+				'take_payment'
 			),
 			'conditions' => array(
 				'Involvement.id' => $involvementId
@@ -133,6 +134,10 @@ class RostersController extends AppController {
 		
 		$link = array(
 			'User' => array(
+				'fields' => array(
+					'id', 
+					'username'
+				),
 				'Profile' => array(
 					'fields' => array(
 						'name',
@@ -141,14 +146,27 @@ class RostersController extends AppController {
 						'primary_email'
 					)
 				),
-				'Image'
+				'Image' => array(
+					'fields' => array(
+						'basename',
+						'dirname'
+					)
+				)
 			),
-			'RosterStatus'
+			'RosterStatus' => array(
+				'fields' => array(
+					'name'
+				)
+			)
 		);
 		$contain = array('Role');
 
 		$this->Roster->recursive = -1;
-		$this->paginate = compact('conditions','link','contain');
+		$fields = array('id', 'created');
+		if ($involvement['Involvement']['take_payment']) {
+			array_push($fields, 'amount_due', 'amount_paid', 'balance');
+		}
+		$this->paginate = compact('conditions','link','contain','fields');
 		
 		// save search for multi select actions
 		$this->MultiSelect->saveSearch($this->paginate);
@@ -158,13 +176,18 @@ class RostersController extends AppController {
 		$involvement = $this->Roster->Involvement->read(null, $involvementId);
 		
 		$rosters =  $this->FilterPagination->paginate();
-		
-		$counts['childcare'] = count(Set::extract('/Roster[parent_id>0]', $rosters));
-		$counts['pending'] = count(Set::extract('/Roster[roster_status_id=2]', $rosters));
+		$counts['childcare'] = $this->Roster->find('count', array(
+			'conditions' => array_merge_recursive($conditions, array('Roster.parent_id >' => 0))
+		));
+		$counts['pending'] = $this->Roster->find('count', array(
+			'conditions' => array_merge_recursive($conditions, array('Roster.roster_status_id' => 2))
+		));
 		$counts['leaders'] = count($involvement['Leader']);
-		$counts['confirmed'] = count(Set::extract('/Roster[roster_status_id=1]', $rosters));
-		$counts['total'] = count($rosters);
-
+		$counts['confirmed'] = $this->Roster->find('count', array(
+			'conditions' => array_merge_recursive($conditions, array('Roster.roster_status_id' => 1))
+		));
+		$counts['total'] = $this->params['paging']['Roster']['count'];
+		
 		$roles = $this->Roster->Involvement->Ministry->Role->find('list', array(
 			'conditions' => array(
 				'Role.id' => $this->Roster->Involvement->Ministry->Role->findRoles($involvement['Involvement']['ministry_id'])
@@ -212,7 +235,6 @@ class RostersController extends AppController {
 		$conditions = array(
 			'Involvement.id' => array_values($memberOf)	
 		);
-		$private = array_key_exists($this->activeUser['Group']['id'], $this->Roster->User->Group->findGroups(Core::read('general.private_group'), 'list', '>'));
 
 		if ($this->Session->check('FilterPagination.data') && empty($this->data)) {
 			$this->data = $this->Session->read('FilterPagination.data');
@@ -222,7 +244,7 @@ class RostersController extends AppController {
 				'previous' => 0,
 				'leading' => 1,
 				'inactive' => 0,
-				'private' => $private
+				'private' => 1
 			)
 		);
 		$this->data = $search = Set::merge($_default, $this->data);
@@ -643,6 +665,7 @@ class RostersController extends AppController {
 				)
 			)
 		));
+		$this->Roster->Involvement->contain(array('Ministry'));
 		$involvement = $this->Roster->Involvement->read(null, $thisRoster['Roster']['involvement_id']);
 		// get user info and all household info where they are the contact
 		$signedUp = Set::extract('/Roster/user_id', $involvement);
@@ -678,10 +701,10 @@ class RostersController extends AppController {
 		$rosterStatuses = $this->Roster->RosterStatus->find('list');
 		
 		$fullAccess = 
-			$this->Roster->Involvement->isLeader($this->activeUser['User']['id'], $involvementId)
+			$this->Roster->Involvement->isLeader($this->activeUser['User']['id'], $involvement['Involvement']['id'])
 			|| $this->Roster->Involvement->Ministry->isManager($this->activeUser['User']['id'], $involvement['Involvement']['ministry_id'])
 			|| $this->Roster->Involvement->Ministry->Campus->isManager($this->activeUser['User']['id'], $involvement['Ministry']['campus_id'])
-			|| $this->isAuthorized('rosters/index', array('Involvement' => $id));
+			|| $this->isAuthorized('rosters/index', array('Involvement' => $involvement['Involvement']['id']));
 		
 		$this->set(compact('involvement', 'user', 'roster', 'paymentOptions', 'householdMembers', 'rosterStatuses', 'fullAccess'));
 	}

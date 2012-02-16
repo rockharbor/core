@@ -52,6 +52,15 @@ class ReportHelper extends AppHelper {
  * @access protected
  */
 	var $_squashed = array();
+	
+/**
+ * Extra helpers needed for this helper
+ * 
+ * @var array
+ */
+	var $helpers = array(
+		'Form'
+	);
 
 /**
  * Resets the ReportHelper so it can used again
@@ -128,10 +137,18 @@ class ReportHelper extends AppHelper {
 			$this->_fields = $this->normalize($data);
 		}
 
-		$paths = array_keys(Set::flatten($this->_fields));
+		$paths = Set::flatten($this->_fields);
+		$squashed = array_keys($this->_squashed);
+		
+		foreach ($this->_squashed as $squash) {
+			foreach ($squash['fields'] as $field) {
+				unset($paths[$field]);
+			}
+		}
+		$paths = array_keys($paths);
+		
 		$allpaths = array_keys(Set::flatten($data));
 		$flat = array_intersect($paths, $allpaths);
-		$squashed = array_keys($this->_squashed);
 		$headers = array();
 
 		foreach ($flat as $path) {
@@ -164,7 +181,13 @@ class ReportHelper extends AppHelper {
 			return array();
 		}
 		$squashed = array_keys($this->_squashed);
-		$paths = array_keys(Set::flatten($this->_fields));
+		$paths = Set::flatten($this->_fields);
+		foreach ($this->_squashed as $squash) {
+			foreach ($squash['fields'] as $field) {
+				unset($paths[$field]);
+			}
+		}
+		$paths = array_keys($paths);
 		$clean = array();
 		foreach ($raw as $rawrow) {
 			$flat = Set::flatten($rawrow);
@@ -221,5 +244,23 @@ class ReportHelper extends AppHelper {
 		} else {
 			return serialize($this->_squashed);
 		}
+	}
+	
+/**
+ * Addes necessary hidden fields for export at the end of a report form
+ * 
+ * @param string $model The data model
+ * @return string 
+ */
+	function end($model = 'Export') {
+		$out = '';
+		$out .= $this->Form->hidden("$model.header_aliases", array('value' => $this->headerAliases()));
+		$out .= $this->Form->hidden("$model.squashed_fields", array('value' => $this->squashFields()));
+		foreach ($this->_squashed as $squashed) {
+			foreach ($squashed['fields'] as $field) {
+				$out .= $this->Form->hidden("$model.$field", array('value' => 1));
+			}
+		}
+		return $out;
 	}
 }

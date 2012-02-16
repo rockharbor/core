@@ -577,7 +577,8 @@ class User extends AppModel {
 			}
 		};
 		$data = array_filter($data, $callback);
-		$link = $this->postContains($data);
+		$options = (array)$this->postOptions($data) + array('contain' => array());
+		$link = $options['contain'];
 		
 		$conditions = $Controller->postConditions($data, 'LIKE', $operator);
 		// prepare for a distance search

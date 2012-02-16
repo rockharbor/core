@@ -70,7 +70,7 @@ class ProfileTestCase extends CoreTestCase {
 		$this->assertFalse($profile['Profile']['leading']);
 
 		$profile = $this->Profile->read(null, 2);
-		$this->assertFalse($profile['Profile']['managing']);
+		$this->assertEqual($profile['Profile']['managing'], 1);
 
 		$profile = $this->Profile->read(null, 2);
 		$this->assertFalse($profile['Profile']['leading']);

@@ -30,7 +30,7 @@ $this->Report->squash('Address.name', array('ActiveAddress.address_line_1', 'Act
 		</div>
 		<div class="grid_3 omega">
 			<?php
-			echo $this->Form->input('Export.JobCategory.name', array(
+			echo $this->Form->input('Export.Profile.JobCategory.name', array(
 				'type' => 'checkbox',
 				'label' => 'Job category'
 			));
@@ -40,7 +40,7 @@ $this->Report->squash('Address.name', array('ActiveAddress.address_line_1', 'Act
 			echo $this->Form->input('Export.Profile.gender', array(
 				'type' => 'checkbox'
 			));
-			echo $this->Form->input('Export.Classification.name', array(
+			echo $this->Form->input('Export.Profile.Classification.name', array(
 				'type' => 'checkbox',
 				'label' => 'Classification'
 			));

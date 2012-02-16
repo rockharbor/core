@@ -43,8 +43,8 @@ class Profile extends AppModel {
 		'name' => 'CONCAT(:ALIAS:.first_name, " ", :ALIAS:.last_name)',
 		'age' => 'DATEDIFF(CURDATE(), :ALIAS:.birth_date)/365.25',
 		'child' => 'IF (:ALIAS:.adult = 1, 0, IF (:ALIAS:.birth_date IS NULL, 1, ((DATE_FORMAT(NOW(),"%Y") - DATE_FORMAT(:ALIAS:.birth_date,"%Y")) < 18)))',
-		'leading' => 'SELECT COUNT(1) FROM leaders as LeadingLeader JOIN involvements AS LeadingInvolvement ON (LeadingInvolvement.id = LeadingLeader.model_id AND LeadingLeader.model = "Involvement") WHERE LeadingLeader.user_id = :ALIAS:.user_id AND LeadingInvolvement.active = 1',
-		'managing' => 'SELECT COUNT(1) FROM leaders as ManagingLeader JOIN ministries AS ManagingMinistry ON (ManagingMinistry.id = ManagingLeader.model_id AND ManagingLeader.model IN ("Ministry", "Campus")) WHERE ManagingLeader.user_id = :ALIAS:.user_id AND ManagingMinistry.active = 1'
+		'leading' => 'SELECT COUNT(LeadingLeader.id) FROM leaders as LeadingLeader WHERE LeadingLeader.user_id = :ALIAS:.user_id AND LeadingLeader.model = "Involvement"',
+		'managing' => 'SELECT COUNT(ManagingLeader.id) FROM leaders as ManagingLeader WHERE ManagingLeader.user_id = :ALIAS:.user_id AND (ManagingLeader.model = "Campus" OR ManagingLeader.model = "Ministry")'
 	);
 
 /**

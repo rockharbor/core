@@ -213,7 +213,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 				'header_aliases' => '',
 				'squashed_fields' => '',
 				'Ministry' => array(
-					'name'
+					'name' => 1
 				)
 			)
 		);
@@ -241,7 +241,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 				'header_aliases' => '',
 				'squashed_fields' => '',
 				'Ministry' => array(
-					'name'
+					'name' => 1
 				)
 			)
 		);
@@ -251,13 +251,53 @@ class ReportsControllerTestCase extends CoreTestCase {
 		$results = $vars['models'];
 		$expected = array(
 			'Ministry' => array(
-				'name'
+				'name' => 1
 		));
 		$this->assertEqual($results, $expected);
 
 		$results = Set::extract('/Ministry/name', $vars['results']);
 		sort($results);
 		$expected = array('All Church', 'Alpha');
+		$this->assertEqual($results, $expected);
+	}
+
+/**
+ * Tests exporting extra fields that weren't in the original conditions
+ */
+	function testExportExtraFields() {
+		$this->loadFixtures('Profile');
+		$this->Reports->Session->write('MultiSelect.testExportExtraFields', array(
+			'selected' => array(1, 2),
+			'search' => array(
+				'conditions' => array(),
+				'link' => array(
+					'User' => array(
+						'Profile' => array(
+							'fields' => array('name', 'user_id')
+						)
+					)
+				)
+			)
+		));
+		$data = array(
+			'Export' => array(
+				'type' => 'print',
+				'header_aliases' => '',
+				'squashed_fields' => '',
+				'User' => array(
+					'Profile' => array(
+						'name' => 1,
+						'first_name' => 1
+					)
+				)
+			)
+		);
+		$vars = $this->testAction('/reports/export/Roster/testExportExtraFields.print', array(
+			'data' => $data
+		));
+		$results = Set::extract('/User/Profile/first_name', $vars['results']);
+		sort($results);
+		$expected = array('ricky', 'ricky jr.');
 		$this->assertEqual($results, $expected);
 	}
 

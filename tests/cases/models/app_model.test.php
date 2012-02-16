@@ -167,7 +167,7 @@ class AppModelTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testPostContains() {
+	function testPostOptions() {
 		$this->loadFixtures('Campus');
 		
 		$data = array(
@@ -175,8 +175,12 @@ class AppModelTestCase extends CoreTestCase {
 				'username' => 'jharris'
 			)
 		);
-		$results = $this->User->postContains($data);
-		$expected = array();
+		$results = $this->User->postOptions($data);
+		$expected = array(
+			'fields' => array(
+				'username'
+			)
+		);
 		$this->assertEqual($results, $expected);
 
 		$data = array(
@@ -187,8 +191,20 @@ class AppModelTestCase extends CoreTestCase {
 				'name' => 'Jeremy'
 			)
 		);
-		$expected = array('Profile' => array());
-		$results = $this->User->postContains($data);
+		$expected = array(
+			'fields' => array(
+				'username'
+			),
+			'contain' => array(
+				'Profile' => array(
+					'fields' => array(
+						'user_id',
+						'CONCAT(Profile.first_name, " ", Profile.last_name) AS Profile__name'
+					)
+				)
+			)
+		);
+		$results = $this->User->postOptions($data);
 		$this->assertEqual($results, $expected);
 
 		$data = array(
@@ -202,8 +218,20 @@ class AppModelTestCase extends CoreTestCase {
 				'field' => 'value'
 			)
 		);
-		$expected = array('Profile' => array());
-		$results = $this->User->postContains($data);
+		$expected = array(
+			'fields' => array(
+				'username'
+			),
+			'contain' => array(
+				'Profile' => array(
+					'fields' => array(
+						'user_id',
+						'CONCAT(Profile.first_name, " ", Profile.last_name) AS Profile__name'
+					)
+				)
+			)
+		);
+		$results = $this->User->postOptions($data);
 		$this->assertEqual($results, $expected);
 
 		$data = array(
@@ -217,8 +245,20 @@ class AppModelTestCase extends CoreTestCase {
 				'field' => 'value'
 			)
 		);
-		$expected = array('Profile' => array());
-		$results = $this->User->postContains($data);
+		$expected = array(
+			'fields' => array(
+				'username'
+			),
+			'contain' => array(
+				'Profile' => array(
+					'fields' => array(
+						'user_id',
+						'CONCAT(Profile.first_name, " ", Profile.last_name) AS Profile__name'
+					)
+				)
+			)
+		);
+		$results = $this->User->postOptions($data);
 		$this->assertEqual($results, $expected);
 
 		$data = array(
@@ -235,10 +275,20 @@ class AppModelTestCase extends CoreTestCase {
 			)
 		);
 		$expected = array(
-			'Profile' => array(),
-			'Publication' => array()
+			'fields' => array(
+				'username'
+			),
+			'contain' => array(
+				'Profile' => array(
+					'fields' => array(
+						'user_id',
+						'CONCAT(Profile.first_name, " ", Profile.last_name) AS Profile__name'
+					)
+				),
+				'Publication' => array()
+			)
 		);
-		$results = $this->User->postContains($data);
+		$results = $this->User->postOptions($data);
 		$this->assertEqual($results, $expected);
 		
 		$data = array(
@@ -249,11 +299,20 @@ class AppModelTestCase extends CoreTestCase {
 			 )
 		);
 		$expected = array(
-			 'Profile' => array(
-				  'Campus' => array()
-			 )
+			'contain' => array(
+				'Profile' => array(
+					'fields' => array(
+						'user_id', 'id', 'campus_id'
+					),
+					'Campus' => array(
+						'fields' => array(
+							'name'
+						)
+					)
+				)
+			)			
 		);
-		$results = $this->User->postContains($data);
+		$results = $this->User->postOptions($data);
 		$this->assertEqual($results, $expected);
 	}
 

@@ -8,7 +8,7 @@ $this->Report->alias(array('Payer.Profile.name' => 'Payed For'));
 $this->Report->alias(array('Payment.created' => 'Date'));
 $this->Report->alias(array('Roster.Involvement.name' => 'Involvement Name'));
 $this->Report->alias(array('PaymentType.name' => 'Payment Type'));
-$this->Report->alias(array('User.Profile.name' => 'Paid For'));
+$this->Report->alias(array('User.Profile.name' => 'Paid By'));
 $this->Report->alias(array('Payment.number' => 'Card/Check Number'));
 
 echo $this->Form->input('Export.Roster.Involvement.name', array(

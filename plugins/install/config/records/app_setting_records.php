@@ -155,6 +155,20 @@ class AppSettingRecords extends Records {
 			'value' => null,
 			'type' => 'html'
 		),
+		array(
+			'id' => 21,
+			'name' => 'involvements.involvement_document_limit',
+			'description' => 'The maximum number of documents that can be uploaded to an Involvement Opportunity.',
+			'value' => 5,
+			'type' => 'integer'
+		),
+		array(
+			'id' => 22,
+			'name' => 'ministries.ministry_document_limit',
+			'description' => 'The maximum number of documents that can be uploaded to a Ministry.',
+			'value' => 5,
+			'type' => 'integer'
+		),
 	);
 
 }
