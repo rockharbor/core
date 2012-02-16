@@ -17,6 +17,6 @@
 	echo $this->Form->input('User.active');
 	echo $this->Form->input('Profile.adult');
 	echo $this->Form->input('Profile.qualified_leader');
-	echo $this->Form->input('User.group_id');
+	echo $this->Form->hidden('User.group_id', array('value' => 8));
 	?>
 </fieldset>

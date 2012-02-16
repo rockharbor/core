@@ -416,9 +416,6 @@ class UsersController extends AppController {
 				$this->Session->setFlash('Unable to create account. Please try again.', 'flash'.DS.'failure');
 			}
 		}
-		
-		$this->set('groups', $this->User->Group->findGroups($this->activeUser['Group']['id']));
-		$this->_prepareAdd();
 	}
 
 /**
