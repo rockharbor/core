@@ -502,10 +502,15 @@ class UserTestCase extends CoreTestCase {
 			'link' => array(
 				'Profile' => array(
 					'fields' => array(
-						'age', 'gender'
+						'user_id',
+						$this->User->Profile->getVirtualField('age').' AS Profile__age',
+						'gender'
 					)
 				),
 				'Roster' => array(
+					'fields' => array(
+						'user_id', 'id', 'involvement_id'
+					),
 					'Involvement' => array(
 						'fields' => array(
 							'name'
@@ -542,7 +547,7 @@ class UserTestCase extends CoreTestCase {
 			'link' => array(
 				'Profile' => array(
 					'fields' => array(
-						'birth_date'
+						'user_id', 'birth_date'
 					)
 				)
 			),
@@ -570,7 +575,7 @@ class UserTestCase extends CoreTestCase {
 			'link' => array(
 				'Profile' => array(
 					'fields' => array(
-						'birth_date'
+						'user_id', 'birth_date'
 					)
 				)
 			),
