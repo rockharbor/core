@@ -8,28 +8,58 @@ Mock::generatePartial('InvolvementLeadersController', 'MockInvolvementLeadersCon
 class InvolvementLeadersControllerTestCase extends CoreTestCase {
 
 	function startTest() {
-		$this->loadFixtures('Leader', 'User', 'Ministry', 'Role');
+		$this->loadFixtures('Leader', 'User', 'Ministry', 'Role', 'Involvement', 'Date');
 		$this->Leaders =& new MockInvolvementLeadersController;
 		$this->Leaders->__construct();
 		$this->Leaders->constructClasses();
 		$this->testController = $this->Leaders;
+		$this->Session = new CakeSession();
+		$this->Session->destroy();
 	}
 
 	function endTest() {
+		$this->Session->destroy();
 		unset($this->Leaders);
+		unset($this->Session);
 		ClassRegistry::flush();
 	}
 
 	function testDashboard() {
 		$vars = $this->testAction('involvement_leaders/dashboard/User:1');
-		$results = Set::extract('/Leader/id', $vars['leaders']);
-		sort($results);
-		$this->assertEqual($results, array(2, 5));
-
-		$vars = $this->testAction('involvement_leaders/dashboard/User:100');
-		$results = Set::extract('/Leader/id', $vars['leaders']);
+		$results = Set::extract('/Involvement/id', $vars['leaders']);
 		sort($results);
 		$this->assertEqual($results, array());
+
+		$vars = $this->testAction('involvement_leaders/dashboard/User:100');
+		$results = Set::extract('/Involvement/id', $vars['leaders']);
+		sort($results);
+		$this->assertEqual($results, array());
+		
+		$vars = $this->testAction('/involvement_leaders/dashboard/User:1', array(
+			'data' => array(
+				'Filter' => array(
+					'previous' => 1,
+					'inactive' => 0,
+					'private' => 0
+				)
+			)
+		));
+		$results = Set::extract('/Involvement/id', $vars['leaders']);
+		sort($results);
+		$this->assertEqual($results, array(1));
+		
+		$vars = $this->testAction('/involvement_leaders/dashboard/User:1', array(
+			'data' => array(
+				'Filter' => array(
+					'previous' => 1,
+					'inactive' => 1,
+					'private' => 1
+				)
+			)
+		));
+		$results = Set::extract('/Involvement/id', $vars['leaders']);
+		sort($results);
+		$this->assertEqual($results, array(1, 3));
 	}
 }
 ?>
