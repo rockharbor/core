@@ -69,6 +69,10 @@ class RostersController extends AppController {
  * @todo place user list limit into involvement()
  */ 
 	function index() {
+		if ($this->Session->check('FilterPagination.data') && empty($this->data)) {
+			$this->data = $this->Session->read('FilterPagination.data');
+		}
+		
 		$conditions = array();
 		$userConditions = array();
 		$involvementId = $this->passedArgs['Involvement'];
