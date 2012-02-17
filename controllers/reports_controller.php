@@ -298,7 +298,8 @@ class ReportsController extends AppController {
 				$options['attachment'] = $this->viewVars['title_for_layout'].'.csv';
 			}
 			// set render path (which sets response type)
-			$this->RequestHandler->renderAs($this, $this->data['Export']['type'], $options);
+			$this->RequestHandler->renderAs($this, $this->data['Export']['type']);
+			$this->RequestHandler->respondAs($this->data['Export']['type'], $options);
 			$aliases = $this->data['Export']['header_aliases'];
 			$squashed = $this->data['Export']['squashed_fields'];
 			unset($this->data['Export']['type']);

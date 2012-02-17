@@ -1,6 +1,34 @@
+<?php
+$this->Paginator->options(array(
+    'updateable' => 'parent'
+));
+?>
 <h1>Leader Dashboard</h1>
 <div class="content-box">
 	<p>Manage the involvement opportunities that you are leading.</p>
+	<?php
+		echo $this->Form->create('Filter', array(
+			'class' => 'core-filter-form update-parent',
+			'url' => $this->here,
+		));
+		echo $this->Form->input('previous', array(
+			'type' => 'checkbox',
+			'class' => 'toggle',
+			'div' => false
+		));
+		echo $this->Form->input('inactive', array(
+			'type' => 'checkbox',
+			'class' => 'toggle',
+			'div' => false
+		));
+		echo $this->Form->input('private', array(
+			'type' => 'checkbox',
+			'class' => 'toggle',
+			'div' => false
+		));
+		echo $this->Js->submit('Filter');
+		echo $this->Form->end();
+	?>
 <?php
 	echo $this->MultiSelect->create();
 ?>

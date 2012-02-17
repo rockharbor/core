@@ -1,6 +1,19 @@
 <h1>Found Multiple Matches</h1>
 <p>Multiple matches for that user were found in <?php echo Core::read('general.site_name'); ?>! Please select one below.</p>
-
+<?php
+$data = Set::flatten($this->data);
+$posteddata = '';
+foreach ($data as $field => $value) {
+	if (strstr($field, '_Token') !== false) {
+		continue;
+	}
+	$this->Form->__secure($field, $value);
+	$field = explode('.', $field);
+	$fieldname = 'data['.implode('][', $field).']';
+	$posteddata .= "<input type=\"hidden\" value=\"$value\" name=\"$fieldname\" />";
+}
+$secureFields = $this->Form->fields;
+?>
 <table cellpadding="0" cellspacing="0" class="datatable">
 	<thead>
 		<tr>
@@ -37,14 +50,8 @@
 					'url' => $url,
 					'default'=> false
 				));
-				$data = Set::flatten($this->data);
-				foreach ($data as $field => $value) {
-					// pass data along to the redirect url
-					if (strstr($field, '_Token') !== false) {
-						continue;
-					}
-					echo $this->Form->hidden($field, array('value' => $value));
-				}
+				$this->Form->fields = $secureFields;
+				echo $posteddata;
 				$defaultSubmitOptions['url'] = $url;
 				echo $this->Js->submit('Choose', $defaultSubmitOptions);
 				echo $this->Form->end();
@@ -58,14 +65,8 @@ echo $this->Form->create(null, array(
 	'url' => $return,
 	'default'=> false
 ));
-$data = Set::flatten($this->data);
-foreach ($data as $field => $value) {
-	// pass data along to the redirect url
-	if (strstr($field, '_Token') !== false) {
-		continue;
-	}
-	echo $this->Form->hidden($field, array('value' => $value));
-}
+$this->Form->fields = $secureFields;
+echo $posteddata;
 $defaultSubmitOptions['url'] = $return;
 echo $this->Js->submit('None of these match', $defaultSubmitOptions);
 echo $this->Form->end();

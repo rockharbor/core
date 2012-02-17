@@ -300,6 +300,9 @@ class UsersController extends AppController {
 		$return = trim($return, '/').'/skip_check:1';
 
 		$users = $this->User->find('all', array(
+			'fields' => array(
+				'id'
+			),
 			'conditions' => array(
 				'User.id' => $users
 			),
@@ -413,9 +416,6 @@ class UsersController extends AppController {
 				$this->Session->setFlash('Unable to create account. Please try again.', 'flash'.DS.'failure');
 			}
 		}
-		
-		$this->set('groups', $this->User->Group->findGroups($this->activeUser['Group']['id']));
-		$this->_prepareAdd();
 	}
 
 /**
