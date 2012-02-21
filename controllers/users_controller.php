@@ -326,8 +326,6 @@ class UsersController extends AppController {
  */ 
 	function request_activation($foundId, $initialRedirect = false) {		
 		if (!empty($this->data) && !$initialRedirect && $foundId) {		
-			$group = $this->User->Group->findByName('User');
-			
 			$this->data['User']['active'] = false;	
 			$this->data['Address'][0]['model'] = 'User';
 			
