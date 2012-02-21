@@ -35,7 +35,12 @@ class LeadersController extends AppController {
  *
  * @var array
  */
-	var $components = array('MultiSelect.MultiSelect');
+	var $components = array(
+		'MultiSelect.MultiSelect',
+		'FilterPagination' => array(
+			'startEmpty' => false
+		)
+	);
 	
 /**
  * Model::beforeFilter() callback
