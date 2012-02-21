@@ -286,6 +286,19 @@ class SearchesControllerTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 		$this->Searches->Session->delete('FilterPagination');
+		
+		$data = array(
+			'Profile' => array(
+				'primary_email' => 'ricky@'
+			)
+		);
+		$vars = $this->testAction('/searches/simple/User/some_element/', compact('data'));
+		$results = Set::extract('/User/username', $vars['results']);
+		$expected = array(
+			'rickyrockharbor',
+		);
+		$this->assertEqual($results, $expected);
+		$this->Searches->Session->delete('FilterPagination');
 	}
 
 	function testNotInHouseholdSearchFilter() {
