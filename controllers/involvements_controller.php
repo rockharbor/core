@@ -120,7 +120,7 @@ class InvolvementsController extends AppController {
 			'order' => 'Ministry.name ASC, Involvement.name ASC'
 		);
 
-		$involvements = $this->FilterPagination->paginate();
+		$involvements = $this->FilterPagination->paginate('Involvement');
 
 		foreach ($involvements as &$involvement) {
 			$involvement['dates'] = $this->Involvement->Date->generateDates($involvement['Involvement']['id'], array('limit' => 1));
