@@ -410,6 +410,8 @@ class UsersController extends AppController {
 				$this->Session->setFlash('Unable to create account. Please try again.', 'flash'.DS.'failure');
 			}
 		}
+		
+		$this->_prepareAdd();
 	}
 
 /**
