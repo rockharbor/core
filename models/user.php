@@ -359,30 +359,43 @@ class User extends AppModel {
 		if (!is_array($data)) {
 			$data = array($data);
 		}
-
-		$data = Set::filter($data);
-
+		
 		if (empty($data)) {
 			return array();
 		}
 		
-		// normalize data
-		$user = $profile = array();
-		if (isset($data['User'])) {
-			$user = $data['User'];
+		// normalize
+		if (isset($data['User']) && isset($data['User']['Profile'])) {
+			$data['Profile'] = $data['User']['Profile'];
+			unset($data['User']['Profile']);
 		}
-		if (isset($data['Profile'])) {
-			$profile = $data['Profile'];
-		} elseif (isset($user['Profile'])) {
-			$profile = $user['Profile'];
-			unset($user['Profile']);
-		}
+		
+		$_default = array(
+			'User' => array(
+				'username' => null,
+			),
+			'Profile' => array(
+				'first_name' => null,
+				'last_name' => null,
+				'primary_email' => null,
+				'birth_date' =>  null
+			)
+		);
+		$data = Set::merge($_default, $data);
+
 		$data = array(
 			'Search' => array(
 				'operator' => $operator
 			),
-			'User' => $user,
-			'Profile' => $profile
+			'User' => array(
+				'username' => $data['User']['username']
+			),
+			'Profile' => array(
+				'email' => $data['Profile']['primary_email'],
+				'birth_date' =>  $data['Profile']['birth_date'],
+				'first_name' => $data['Profile']['first_name'],
+				'last_name' => $data['Profile']['last_name']
+			)
 		);
 		
 		$options = $this->prepareSearch(new AppController(), $data);

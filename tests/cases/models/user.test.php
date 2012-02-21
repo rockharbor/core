@@ -198,6 +198,19 @@ class UserTestCase extends CoreTestCase {
 		$result = $this->User->findUser($data);
 		$expected = array(1);
 		$this->assertEqual($result, $expected);
+		
+		$data = array(
+			'Profile' => array(
+				'adult' => 1,
+				'somefield' => 'value'
+			),
+			'User' => array(
+				'active' => 1
+			)
+		);
+		$result = $this->User->findUser($data);
+		$expected = array();
+		$this->assertEqual($result, $expected);
 	}
 
 	function testCreateUser() {
