@@ -24,18 +24,6 @@ class Alert extends AppModel {
 	var $name = 'Alert';
 
 /**
- * Behaviors for this model
- *
- * @var array
- */
-	var $actsAs = array(
-		'Cacher.Cache' => array(
-			'duration' => '+1 day',
-			'auto' => true
-		)
-	);
-
-/**
  * Validation rules
  *
  * @var array
@@ -137,7 +125,7 @@ class Alert extends AppModel {
 				'not' => array(
 					'Alert.id' => $readAlerts
 				),
-				'Group.id' => $groups
+				'Alert.group_id' => $groups
 			),
 			'order' => 'Alert.created DESC'
 		);
@@ -148,7 +136,6 @@ class Alert extends AppModel {
 				'Alert.expires' => null
 			);
 		}
-		$this->recursive = 0;
 		$alert = $this->find('all', $search);
 		
 		return Set::extract('/Alert/id', $alert);

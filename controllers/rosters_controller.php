@@ -131,7 +131,8 @@ class RostersController extends AppController {
 		} else {
 			$this->data = array(
 				'Filter' => array(
-					'pending' => 0
+					'pending' => 0,
+					'Role' => array()
 				)
 			);
 		}

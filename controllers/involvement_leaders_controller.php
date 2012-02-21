@@ -29,17 +29,6 @@ class InvolvementLeadersController extends LeadersController {
 	var $model = 'Involvement';
 
 /**
- * Extra components for this controller
- * 
- * @var array
- */
-	var $components = array(
-		'FilterPagination' => array(
-			'startEmpty' => false
-		)
-	);
-
-/**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
