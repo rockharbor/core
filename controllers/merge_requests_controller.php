@@ -96,13 +96,7 @@ class MergeRequestsController extends AppController {
 		// get model we're merging
 		$Model = ClassRegistry::init($request['MergeRequest']['model']);
 		
-		if ($Model->merge($request['MergeRequest']['merge_id'], $request['MergeRequest']['model_id'])) {
-			if ($request['MergeRequest']['model'] == 'User') {
-				// activate if they're a user
-				$Model->id = $request['MergeRequest']['merge_id'];
-				$Model->saveField('active', true);
-			}
-			
+		if (method_exists($Model, 'merge') && $Model->merge($request['MergeRequest']['merge_id'], $request['MergeRequest']['model_id'])) {
 			$this->MergeRequest->delete($id);
 			$this->Session->setFlash('Merge was successful.', 'flash'.DS.'success');
 		} else {
