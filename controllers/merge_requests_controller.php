@@ -81,23 +81,6 @@ class MergeRequestsController extends AppController {
 	}
 
 /**
- * View a request
- *
- * @param integer $id The id of the request to view
- */ 	
-	function view($id = null) {
-		if (!$id) {
-			$this->cakeError('error404');
-		}
-		
-		$this->MergeRequest->recursive = 2;
-		$request = $this->MergeRequest->read(null, $id);
-				
-		$this->set('result', $request);
-		$this->set('model', $request['MergeRequest']['model']);
-	}
-
-/**
  * Merge a request
  *
  * @param integer $id The id of the request to merge

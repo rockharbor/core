@@ -55,13 +55,6 @@ class MergeRequestsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($vars['requests'][0]['Target']['id'], 2);
 	}
 
-	function testView() {
-		$vars = $this->testAction('/merge_requests/view/1', array(
-			'return' => 'vars'
-		));
-		$this->assertTrue(isset($vars['result']['Source']['Profile']));
-	}
-
 	function testMerge() {
 		$this->Profile =& ClassRegistry::init('Profile');
 		$this->User =& ClassRegistry::init('User');
