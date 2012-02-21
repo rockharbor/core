@@ -24,18 +24,6 @@ class Alert extends AppModel {
 	var $name = 'Alert';
 
 /**
- * Behaviors for this model
- *
- * @var array
- */
-	var $actsAs = array(
-		'Cacher.Cache' => array(
-			'duration' => '+1 day',
-			'auto' => true
-		)
-	);
-
-/**
  * Validation rules
  *
  * @var array
