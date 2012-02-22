@@ -110,8 +110,7 @@ $this->Paginator->options(array(
 						<td><?php echo $request['Request']['description']; ?></td>
 						<td><?php echo $request['Request']['ministry_name']; ?></td>
 						<td><?php echo $this->Html->link($request['Involvement']['name'], array('plugin' => null, 'controller' => 'involvements', 'action' => 'view', 'Involvement' => $request['Involvement']['id'])); ?></td>
-						<td><?php echo $request['Profile']['name']; ?></td>
-						<td><?php echo $this->Html->link($request['RequestStatus']['name'], array('action' => 'edit', $request['Request']['id']), array('rel' => 'modal-content')); ?></td>
+						<td><?php echo $this->Html->link($request['Profile']['name'], array('plugin' => null, 'controller' => 'profiles', 'action' => 'view', 'User' => $request['Profile']['id'])); ?></td>						<td><?php echo $this->Html->link($request['RequestStatus']['name'], array('action' => 'edit', $request['Request']['id']), array('rel' => 'modal-content')); ?></td>
 						<td><?php echo $this->Formatting->datetime($request['Request']['created']); ?></td>
 						<td><?php echo $this->Formatting->datetime($request['Request']['modified']); ?></td>
 					</tr>
