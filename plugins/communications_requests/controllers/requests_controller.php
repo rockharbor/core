@@ -55,7 +55,8 @@ class RequestsController extends CommunicationsRequestsAppController {
 					)
 				),
 				'RequestType',
-				'RequestStatus'
+				'RequestStatus',
+				'Involvement'
 			)
 		);
 		
@@ -77,7 +78,8 @@ class RequestsController extends CommunicationsRequestsAppController {
 		$this->paginate = array(
 			'contain' => array(
 				'RequestType',
-				'RequestStatus'
+				'RequestStatus',
+				'Involvement'
 			),
 			'conditions' => array(
 				'user_id' => $this->activeUser['User']['id']
@@ -116,6 +118,22 @@ class RequestsController extends CommunicationsRequestsAppController {
 		$requestTypes = $this->Request->RequestType->find('all');
 		$this->set('requestTypeDescriptions', Set::combine($requestTypes, '{n}.RequestType.id', '{n}.RequestType.description'));
 		$this->set('requestTypes', Set::combine($requestTypes, '{n}.RequestType.id', '{n}.RequestType.name'));
+		$leading = $this->Request->Involvement->Leader->find('all', array(
+			'fields' => array(
+				'model_id'
+			),
+			'conditions' => array(
+				'Leader.user_id' => $this->activeUser['User']['id'],
+				'Leader.model' => 'Involvement'
+			)
+		));
+		$involvements = $this->Request->Involvement->find('list', array(
+			'conditions' => array(
+				'id' => Set::extract('/Leader/model_id', $leading)
+			)
+		));
+		
+		$this->set(compact('involvements'));
 	}
 
 /**
