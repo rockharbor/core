@@ -229,6 +229,7 @@ class Household extends AppModel {
 				$this->id = $this->field('id', array('contact_id' => $user));
 			}
 			// add them to their household
+			$this->HouseholdMember->create();
 			$hmSuccess = $this->HouseholdMember->save(array(
 				'household_id' => $this->id,
 				'user_id' => $user,

@@ -222,7 +222,7 @@ class UsersController extends AppController {
 						'username' => $this->data['User']['forgotten']
 					),
 					'Profile' => array(
-						'email' => $this->data['User']['forgotten']
+						'primary_email' => $this->data['User']['forgotten']
 					)
 				);
 				$user = $this->User->findUser($searchData, 'OR');

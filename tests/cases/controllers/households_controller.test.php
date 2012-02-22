@@ -112,7 +112,7 @@ class HouseholdsControllerTestCase extends CoreTestCase {
 			'return' => 'vars'
 		));
 		$results = Set::extract('/Household/id', $vars['households']);
-		$expected = array(1);
+		$expected = array(1, 6);
 		$this->assertEqual($results, $expected);
 
 		$this->Households->Household->HouseholdMember->save(array(
@@ -124,7 +124,7 @@ class HouseholdsControllerTestCase extends CoreTestCase {
 			'return' => 'vars'
 		));
 		$results = Set::extract('/Household/id', $vars['households']);
-		$expected = array(1, 2);
+		$expected = array(1, 2, 6);
 		$this->assertEqual($results, $expected);
 	}
 

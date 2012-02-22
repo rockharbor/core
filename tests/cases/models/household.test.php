@@ -18,12 +18,12 @@ class HouseholdTestCase extends CoreTestCase {
 	function testGetMemberIds() {
 		$results = $this->Household->getMemberIds(1);
 		sort($results);
-		$expected = array(3);
+		$expected = array(3, 100);
 		$this->assertEqual($results, $expected);
 
 		$results = $this->Household->getMemberIds(1, true);
 		sort($results);
-		$expected = array(3);
+		$expected = array(3, 100);
 		$this->assertEqual($results, $expected);
 
 		$results = $this->Household->getMemberIds(3);
@@ -85,13 +85,26 @@ class HouseholdTestCase extends CoreTestCase {
 	}
 
 	function testCreateHousehold() {
-		$this->assertTrue($this->Household->createHousehold(1));
+		$this->assertTrue($this->Household->createHousehold(90));
 		$members = $this->Household->HouseholdMember->find('all', array(
 			'conditions' => array(
-				'user_id' => 1
+				'user_id' => 90
 			)
 		));
-		$this->assertEqual(count($members), 1);
+		$originalHouseholds = Set::extract('/HouseholdMember/household_id', $members);
+		$this->assertEqual(count($originalHouseholds), 1);
+		
+		$this->assertTrue($this->Household->createHousehold(91));
+		
+		$members = $this->Household->HouseholdMember->find('all', array(
+			'conditions' => array(
+				'user_id' => 90
+			)
+		));
+		$newHouseholds = Set::extract('/HouseholdMember/household_id', $members);
+		$this->assertEqual($originalHouseholds, $newHouseholds);
+			
+		$this->assertTrue($this->Household->HouseholdMember->hasAny(array('user_id' => 91)));
 	}
 
 	function testMakeHouseholdContact() {
@@ -111,7 +124,7 @@ class HouseholdTestCase extends CoreTestCase {
 				'user_id' => 1
 			)
 		));
-		$this->assertEqual(count($members), 2);
+		$this->assertEqual(count($members), 3);
 	}
 
 }
