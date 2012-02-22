@@ -292,7 +292,8 @@ class User extends AppModel {
 			),
 			'contain' => array(
 				'Profile',
-				'Address'
+				'Address',
+				'HouseholdMember'
 			)
 		));
 		
@@ -331,11 +332,41 @@ class User extends AppModel {
 			$successes[] = $this->Address->save($address, array('validate' => false));
 		}
 		
-		
 		// make new address current
 		if (!empty($updatedUser['Address']) && !empty($updatedUser['Address'][0]['address_line_1'])) {
 			$this->Address->setPrimary($updatedUser['Address'][0]['id']);
 		}
+		
+		// merge households
+		$households = $this->HouseholdMember->Household->getHouseholdIds($user['id'], true);
+		if (empty($households)) {
+			$this->HouseholdMember->Household->createHousehold($user['id']);
+			$households = $this->HouseholdMember->Household->getHouseholdIds($user['id'], true);
+		}
+		$oldHouseholdId = $household = $updatedUser['HouseholdMember'][0]['household_id'];
+		
+		if (count($households) == 1) {
+			// if the user has 1 household, merge the households, otherwise the "new" household will be copied over
+			$household = $households[0];
+			// remove extra user
+			$this->HouseholdMember->delete($updatedUser['HouseholdMember'][0]['id']);
+		} else {
+			// change to new fk
+			$successes[] = $this->HouseholdMember->Household->save(array(
+				'id' => $oldHouseholdId,
+				'contact_id' => $modelId
+			));
+			$successes[] = $this->HouseholdMember->save(array(
+				'id' => $updatedUser['HouseholdMember'][0]['id'],
+				'user_id' => $modelId
+			));
+		}
+		
+		// move other members to new household
+		$successes[] = $this->HouseholdMember->updateAll(
+			array('household_id' => $household),
+			array('household_id' => $oldHouseholdId)
+		);
 		
 		$success = !in_array(false, $successes);
 		if ($success) {
@@ -418,7 +449,7 @@ class User extends AppModel {
 				unset($options['conditions'][$operator]['Profile.last_name LIKE']);
 			}
 		}
-		
+
 		$foundUsers = $this->find('all', $options);
 		
 		return Set::extract('/User/id', $foundUsers);

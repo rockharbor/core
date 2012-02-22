@@ -21,7 +21,7 @@ class UserTestCase extends CoreTestCase {
 	}
 	
 	function testMerge() {
-		$this->loadFixtures('Profile', 'Address', 'Roster');
+		$this->loadFixtures('Profile', 'Address', 'Roster', 'Household', 'HouseholdMember');
 		
 		$this->assertFalse($this->User->merge(1));
 		$this->assertFalse($this->User->merge(1, 0));
@@ -74,6 +74,104 @@ class UserTestCase extends CoreTestCase {
 		$this->assertTrue($results['ActiveAddress']['primary']);
 		$this->assertTrue($results['ActiveAddress']['active']);
 		$this->assertTrue(!empty($results['Roster']));
+		$this->assertEqual(count($this->User->HouseholdMember->Household->getHouseholdIds($results['User']['id'])), 3);
+		
+		$user = array(
+			'User' => array(
+				'username' => 'newusername'
+			),
+			'Address' => array(
+					0 => array(
+						'name' => 'Home',
+						'address_line_1' => null,
+						'address_line_2' => '',
+						'city' => null,
+						'state' => 'CA',
+						'zip' => 92626
+					)
+			),
+			'Profile' => array(
+				'first_name' => 'Jeremy',
+				'last_name' => 'Harris',
+				'primary_email' => 'test@example.com'
+			),
+			'HouseholdMember' => array(
+				0 => array(
+					'Profile' => array(
+						'first_name' => 'child',
+						'last_name' => 'user',
+						'primary_email' => 'child@example.com'
+					)
+				),
+				1 => array(
+					'User' => array(
+						'id' => 4
+					)
+				)
+			)
+		);
+		$this->assertTrue($this->User->createUser($user));
+		$newId = $this->User->id;
+		$child = $this->User->findByUsername('childuser');
+		$childId = $child['User']['id'];
+		
+		$this->assertTrue($this->User->merge(1, $newId));
+		$this->assertFalse($this->User->read(null, $newId));
+		
+		$results = $this->User->find('first', array(
+			'conditions' => array(
+				'User.id' => 1
+			),
+			'contain' => array(
+				'Profile'
+			)
+		));
+		
+		$this->assertEqual($results['User']['id'], 1);
+		$this->assertEqual($results['Profile']['last_name'], 'Harris');
+		$this->assertTrue($this->User->HouseholdMember->Household->isMemberWith($results['User']['id'], 4));
+		$this->assertTrue($this->User->HouseholdMember->Household->isMemberWith($results['User']['id'], $childId));
+		$this->assertEqual(count($this->User->HouseholdMember->Household->getHouseholdIds($results['User']['id'])), 4);
+		
+		$user = array(
+			'User' => array(
+				'username' => 'rick'
+			),
+			'Address' => array(
+					0 => array(
+						'name' => 'Home',
+						'address_line_1' => '3095 Red hill',
+						'address_line_2' => '',
+						'city' => 'Costa Mesa',
+						'state' => 'CA',
+						'zip' => 92626
+					)
+			),
+			'Profile' => array(
+				'first_name' => 'Ricky',
+				'last_name' => 'RockHarbor'
+			)
+		);
+		$this->assertTrue($this->User->createUser($user));
+		$newId = $this->User->id;
+		
+		$this->assertTrue($this->User->merge(2, $newId));
+		$this->assertFalse($this->User->read(null, $newId));
+		
+		$results = $this->User->find('first', array(
+			'conditions' => array(
+				'User.id' => 2
+			),
+			'contain' => array(
+				'Profile',
+				'Roster'
+			)
+		));
+		$this->assertEqual($results['User']['id'], 2);
+		$this->assertEqual($results['User']['username'], 'rick');
+		$this->assertEqual($results['Profile']['first_name'], 'Ricky');
+		$this->assertEqual($results['Profile']['last_name'], 'RockHarbor');
+		$this->assertEqual(count($this->User->HouseholdMember->Household->getHouseholdIds($results['User']['id'])), 1);
 	}
 
 	function testHashPasswords() {
