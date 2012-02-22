@@ -18,7 +18,6 @@ class HouseholdTestCase extends CoreTestCase {
 	function testGetMemberIds() {
 		$results = $this->Household->getMemberIds(1);
 		sort($results);
-		debug($results);
 		$expected = array(3, 100);
 		$this->assertEqual($results, $expected);
 
