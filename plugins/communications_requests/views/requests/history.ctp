@@ -1,3 +1,8 @@
+<?php
+$this->Paginator->options(array(
+	'updateable' => 'parent'
+));
+?>
 <h1>Request History</h1>
 <table class="datatable">
 	<thead>
