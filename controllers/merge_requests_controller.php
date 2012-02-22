@@ -81,23 +81,6 @@ class MergeRequestsController extends AppController {
 	}
 
 /**
- * View a request
- *
- * @param integer $id The id of the request to view
- */ 	
-	function view($id = null) {
-		if (!$id) {
-			$this->cakeError('error404');
-		}
-		
-		$this->MergeRequest->recursive = 2;
-		$request = $this->MergeRequest->read(null, $id);
-				
-		$this->set('result', $request);
-		$this->set('model', $request['MergeRequest']['model']);
-	}
-
-/**
  * Merge a request
  *
  * @param integer $id The id of the request to merge
@@ -113,13 +96,7 @@ class MergeRequestsController extends AppController {
 		// get model we're merging
 		$Model = ClassRegistry::init($request['MergeRequest']['model']);
 		
-		if ($Model->merge($request['MergeRequest']['merge_id'], $request['MergeRequest']['model_id'])) {
-			if ($request['MergeRequest']['model'] == 'User') {
-				// activate if they're a user
-				$Model->id = $request['MergeRequest']['merge_id'];
-				$Model->saveField('active', true);
-			}
-			
+		if (method_exists($Model, 'merge') && $Model->merge($request['MergeRequest']['merge_id'], $request['MergeRequest']['model_id'])) {
 			$this->MergeRequest->delete($id);
 			$this->Session->setFlash('Merge was successful.', 'flash'.DS.'success');
 		} else {

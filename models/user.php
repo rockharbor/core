@@ -38,7 +38,6 @@ class User extends AppModel {
 	var $actsAs = array(
 		'Logable',	
 		'Containable',
-		'Merge',
 		'Linkable.AdvancedLinkable',
 		'Search.Searchable'
 	);
@@ -266,6 +265,84 @@ class User extends AppModel {
 		}
 		return $results;
 	}
+	
+/**
+ * Merges two records and deletes the newer one
+ * 
+ * @param integer $modelId The original account, to be updated
+ * @param integer $mergeId The new information to use to update
+ * @return boolean Success
+ */
+	function merge($modelId = null, $mergeId = null) {
+		if (empty($modelId) || empty($mergeId)) {
+			return false;
+		}
+		$currentUser = $this->find('first', array(
+			'conditions' => array(
+				'User.id' => $modelId
+			),
+			'contain' => array(
+				'Profile',
+				'Address'
+			)
+		));
+		$updatedUser = $this->find('first', array(
+			'conditions' => array(
+				'User.id' => $mergeId
+			),
+			'contain' => array(
+				'Profile',
+				'Address'
+			)
+		));
+		
+		// keep original fks
+		unset($updatedUser['User']['id']);
+		unset($updatedUser['Profile']['id']);
+		unset($updatedUser['Profile']['user_id']);
+		
+		// merge data
+		$user = $currentUser['User'];
+		foreach ($updatedUser['User'] as $update => $val) {
+			if ($val === null) {
+				continue;
+			}
+			$user[$update] = $val;
+		}
+		$profile = $currentUser['Profile'];
+		foreach ($updatedUser['Profile'] as $update => $val) {
+			if ($val === null) {
+				continue;
+			}
+			$profile[$update] = $val;
+		}
+		if (!empty($updatedUser['Address'])) {
+			array_push($currentUser['Address'], $updatedUser['Address'][0]);
+		}
+		
+		// activate user
+		$user['active'] = true;
+		
+		$successes = array();
+		$successes[] = $this->save($user, array('validate' => false));
+		$successes[] = $this->Profile->save($profile, array('validate' => false));
+		foreach ($currentUser['Address'] as $address) {
+			$address['foreign_key'] = $currentUser['User']['id'];
+			$successes[] = $this->Address->save($address, array('validate' => false));
+		}
+		
+		
+		// make new address current
+		if (!empty($updatedUser['Address']) && !empty($updatedUser['Address'][0]['address_line_1'])) {
+			$this->Address->setPrimary($updatedUser['Address'][0]['id']);
+		}
+		
+		$success = !in_array(false, $successes);
+		if ($success) {
+			$this->delete($mergeId);
+		}
+		return $success;
+	}
 
 /**
  * Gets a list of users that match the data provided, using distinguishable 
@@ -282,30 +359,43 @@ class User extends AppModel {
 		if (!is_array($data)) {
 			$data = array($data);
 		}
-
-		$data = Set::filter($data);
-
+		
 		if (empty($data)) {
 			return array();
 		}
 		
-		// normalize data
-		$user = $profile = array();
-		if (isset($data['User'])) {
-			$user = $data['User'];
+		// normalize
+		if (isset($data['User']) && isset($data['User']['Profile'])) {
+			$data['Profile'] = $data['User']['Profile'];
+			unset($data['User']['Profile']);
 		}
-		if (isset($data['Profile'])) {
-			$profile = $data['Profile'];
-		} elseif (isset($user['Profile'])) {
-			$profile = $user['Profile'];
-			unset($user['Profile']);
-		}
+		
+		$_default = array(
+			'User' => array(
+				'username' => null,
+			),
+			'Profile' => array(
+				'first_name' => null,
+				'last_name' => null,
+				'primary_email' => null,
+				'birth_date' =>  null
+			)
+		);
+		$data = Set::merge($_default, $data);
+
 		$data = array(
 			'Search' => array(
 				'operator' => $operator
 			),
-			'User' => $user,
-			'Profile' => $profile
+			'User' => array(
+				'username' => $data['User']['username']
+			),
+			'Profile' => array(
+				'email' => $data['Profile']['primary_email'],
+				'birth_date' =>  $data['Profile']['birth_date'],
+				'first_name' => $data['Profile']['first_name'],
+				'last_name' => $data['Profile']['last_name']
+			)
 		);
 		
 		$options = $this->prepareSearch(new AppController(), $data);

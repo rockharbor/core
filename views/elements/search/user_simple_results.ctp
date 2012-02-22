@@ -29,7 +29,10 @@ $this->MultiSelect->create();
 		?>
 			<tr<?php echo $class;?>>
 				<td><?php echo $this->MultiSelect->checkbox($result['User']['id']); ?></td>
-				<td><?php echo $result['User']['username'].$this->Formatting->flags('User', $result); ?></td>
+				<td><?php 
+				$name = $result['User']['username'].$this->Formatting->flags('User', $result); 
+				echo $this->Html->link($name, array('controller' => 'profiles', 'action' => 'view', 'User' => $result['User']['id']), array('target' => '_blank'));
+				?></td>
 				<td><?php echo $result['Profile']['first_name']; ?></td>
 				<td><?php echo $result['Profile']['last_name']; ?></td>
 				<td><?php echo $result['ActiveAddress']['city']; ?></td>

@@ -19,6 +19,62 @@ class UserTestCase extends CoreTestCase {
 		unset($this->User);
 		ClassRegistry::flush();
 	}
+	
+	function testMerge() {
+		$this->loadFixtures('Profile', 'Address', 'Roster');
+		
+		$this->assertFalse($this->User->merge(1));
+		$this->assertFalse($this->User->merge(1, 0));
+		
+		$user = array(
+			'User' => array(
+				'username' => 'jeremyharris'
+			),
+			'Address' => array(
+					0 => array(
+						'name' => 'Home',
+						'address_line_1' => '3095 Red hill',
+						'address_line_2' => '',
+						'city' => 'Costa Mesa',
+						'state' => 'CA',
+						'zip' => 92626
+					)
+			),
+			'Profile' => array(
+				'first_name' => 'Jeremy',
+				'last_name' => 'Schmarris',
+				'primary_email' => 'test@example.com'
+			)
+		);
+		$this->assertTrue($this->User->createUser($user));
+		$newId = $this->User->id;
+		
+		$this->assertTrue($this->User->merge(1, $newId));
+		$this->assertFalse($this->User->read(null, $newId));
+		
+		$results = $this->User->find('first', array(
+			'conditions' => array(
+				'User.id' => 1
+			),
+			'contain' => array(
+				'Profile',
+				'ActiveAddress',
+				'Address',
+				'Roster'
+			)
+		));
+		$this->assertEqual($results['User']['id'], 1);
+		$this->assertEqual($results['User']['username'], 'jeremyharris');
+		$this->assertEqual($results['Profile']['id'], 1);
+		$this->assertEqual($results['Profile']['first_name'], 'Jeremy');
+		$this->assertEqual($results['Profile']['last_name'], 'Schmarris');
+		$this->assertEqual($results['Profile']['user_id'], 1);
+		$this->assertEqual($results['Profile']['alternate_email_1'], 'jeremy@paxtechservices.com');
+		$this->assertEqual(count($results['Address']), 3);
+		$this->assertTrue($results['ActiveAddress']['primary']);
+		$this->assertTrue($results['ActiveAddress']['active']);
+		$this->assertTrue(!empty($results['Roster']));
+	}
 
 	function testHashPasswords() {
 		// as if sent by auth (login)
@@ -141,6 +197,19 @@ class UserTestCase extends CoreTestCase {
 		);
 		$result = $this->User->findUser($data);
 		$expected = array(1);
+		$this->assertEqual($result, $expected);
+		
+		$data = array(
+			'Profile' => array(
+				'adult' => 1,
+				'somefield' => 'value'
+			),
+			'User' => array(
+				'active' => 1
+			)
+		);
+		$result = $this->User->findUser($data);
+		$expected = array();
 		$this->assertEqual($result, $expected);
 	}
 

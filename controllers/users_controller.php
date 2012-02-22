@@ -326,17 +326,11 @@ class UsersController extends AppController {
  */ 
 	function request_activation($foundId, $initialRedirect = false) {		
 		if (!empty($this->data) && !$initialRedirect && $foundId) {		
-			$group = $this->User->Group->findByName('User');
-			
 			$this->data['User']['active'] = false;	
 			$this->data['Address'][0]['model'] = 'User';
 			
-			// remove isUnique validation for email and username
-			unset($this->User->validate['username']['isUnique']);
-			unset($this->User->Profile->validate['primary_email']['isUnique']);
-			
 			// create near-empty user for now (for merging)
-			if ($this->User->createUser($this->data, null, $this->activeUser)) {
+			if ($this->User->createUser($this->data, null, $this->activeUser, false)) {
 				// save merge request
 				$MergeRequest = ClassRegistry::init('MergeRequest');
 				$MergeRequest->save(array(
@@ -416,6 +410,8 @@ class UsersController extends AppController {
 				$this->Session->setFlash('Unable to create account. Please try again.', 'flash'.DS.'failure');
 			}
 		}
+		
+		$this->_prepareAdd();
 	}
 
 /**

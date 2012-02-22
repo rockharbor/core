@@ -16,7 +16,7 @@ class MergeRequestsControllerTestCase extends CoreTestCase {
 		$this->MergeRequests->__construct();
 		$this->MergeRequests->constructClasses();
 		// necessary fixtures
-		$this->loadFixtures('User', 'Profile', 'MergeRequest');
+		$this->loadFixtures('User', 'Profile', 'MergeRequest', 'Address');
 		$this->MergeRequests->Notifier = new MockMergeRequestsNotifierComponent();
 		$this->MergeRequests->Notifier->initialize($this->MergeRequests);
 		$this->MergeRequests->Notifier->setReturnValue('_render', 'Notification body text');
@@ -55,13 +55,6 @@ class MergeRequestsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($vars['requests'][0]['Target']['id'], 2);
 	}
 
-	function testView() {
-		$vars = $this->testAction('/merge_requests/view/1', array(
-			'return' => 'vars'
-		));
-		$this->assertTrue(isset($vars['result']['Source']['Profile']));
-	}
-
 	function testMerge() {
 		$this->Profile =& ClassRegistry::init('Profile');
 		$this->User =& ClassRegistry::init('User');
@@ -80,10 +73,10 @@ class MergeRequestsControllerTestCase extends CoreTestCase {
 		$user = $this->User->read(null, 2);
 
 		$result = $user['User']['username'];
-		$this->assertEqual($result, 'rickyrockharbor');
+		$this->assertEqual($result, 'rickyrockharborjr');
 
 		$result = $user['Profile']['primary_email'];
-		$this->assertEqual($result, 'ricky@rockharbor.org');
+		$this->assertEqual($result, 'rickyjr@rockharbor.org');
 	}
 
 	function testDelete() {
