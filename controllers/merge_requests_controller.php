@@ -99,6 +99,12 @@ class MergeRequestsController extends AppController {
 		if (method_exists($Model, 'merge') && $Model->merge($request['MergeRequest']['merge_id'], $request['MergeRequest']['model_id'])) {
 			$this->MergeRequest->delete($id);
 			$this->Session->setFlash('Merge was successful.', 'flash'.DS.'success');
+			
+			$this->Notifier->notify(array(
+				'to' => $request['MergeRequest']['merge_id'],
+				'subject' => 'Your account has been activated',
+				'template' => 'merge_requests_merge'
+			), 'email');
 		} else {
 			$this->Session->setFlash('Unable to process request. Please try again.', 'flash'.DS.'failure');
 		}	
