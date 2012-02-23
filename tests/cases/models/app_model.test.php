@@ -377,5 +377,64 @@ class AppModelTestCase extends CoreTestCase {
 		$results = $this->User->Profile->deconstruct('background_check_date', $data);
 		$this->assertEqual($results, $expected);
 	}
+	
+	function testEitherOr() {
+		$this->User->Profile->validate = array(
+			'first_name' => array(
+				array(
+					'rule' => 'notempty',
+					'message' => 'Please fill in the required field.'
+				),
+				array(
+					'rule' => 'alphaNumeric'
+				),
+				array(
+					'rule' => array('eitherOr', array('last_name' => 'harris'))
+				)
+			),
+			'last_name' => array(
+				array(
+					'rule' => 'notempty',
+					'message' => 'Please fill in the required field.'
+				)
+			)
+		);
+		
+		$this->User->Profile->validationErrors = array();
+		$this->User->Profile->set(array(
+			'first_name' => '',
+			'last_name' => ''
+		));
+		$results = array_keys($this->User->Profile->invalidFields());
+		$expected = array('first_name', 'last_name');
+		$this->assertEqual($results, $expected);
+		
+		$this->User->Profile->validationErrors = array();
+		$this->User->Profile->set(array(
+			'first_name' => 'mark',
+			'last_name' => ''
+		));
+		$results = array_keys($this->User->Profile->invalidFields());
+		$expected = array('last_name');
+		$this->assertEqual($results, $expected);
+		
+		$this->User->Profile->validationErrors = array();
+		$this->User->Profile->set(array(
+			'first_name' => 'mark',
+			'last_name' => 'harris'
+		));
+		$results = array_keys($this->User->Profile->invalidFields());
+		$expected = array();
+		$this->assertEqual($results, $expected);
+		
+		$this->User->Profile->validationErrors = array();
+		$this->User->Profile->set(array(
+			'first_name' => '',
+			'last_name' => 'harris'
+		));
+		$results = array_keys($this->User->Profile->invalidFields());
+		$expected = array();
+		$this->assertEqual($results, $expected);
+	}
 }
 ?>
