@@ -51,8 +51,8 @@ class MergeRequestsControllerTestCase extends CoreTestCase {
 			)
 		);
 		$this->assertEqual($results, $expected);
-		$this->assertEqual($vars['requests'][0]['Source']['id'], 3);
-		$this->assertEqual($vars['requests'][0]['Target']['id'], 2);
+		$this->assertEqual($vars['requests'][0]['NewModel']['id'], 3);
+		$this->assertEqual($vars['requests'][0]['OriginalModel']['id'], 2);
 	}
 
 	function testMerge() {

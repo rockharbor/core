@@ -50,8 +50,8 @@ class MergeRequestsController extends AppController {
 
 		$this->MergeRequest->recursive = 0;
 
-		$this->MergeRequest->belongsTo['Source']['className'] = $this->passedArgs['model'];
-		$this->MergeRequest->belongsTo['Target']['className'] = $this->passedArgs['model'];
+		$this->MergeRequest->belongsTo['NewModel']['className'] = $this->passedArgs['model'];
+		$this->MergeRequest->belongsTo['OriginalModel']['className'] = $this->passedArgs['model'];
 
 		switch ($this->passedArgs['model']) {
 			case 'User':
@@ -60,11 +60,11 @@ class MergeRequestsController extends AppController {
 						array('MergeRequest.model' => $this->passedArgs['model'])
 					),
 					'contain' => array(
-						'Source' => array(
+						'NewModel' => array(
 							'Address',
 							'Profile'
 						),
-						'Target' => array(
+						'OriginalModel' => array(
 							'Address',
 							'Profile'
 						)

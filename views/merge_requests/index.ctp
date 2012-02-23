@@ -12,7 +12,7 @@ $this->Paginator->options(array(
 		<div class="grid_4 omega"><h3>New Information</h3></div>
 		<div class="grid_4 alpha">
 			<div class="box">
-				<?php echo $this->element('merge'.DS.'user', array('user' => $request['Source'])); ?>
+				<?php echo $this->element('merge'.DS.'user', array('user' => $request['OriginalModel'])); ?>
 			</div>
 		</div>
 		<div class="grid_2">
@@ -27,7 +27,7 @@ $this->Paginator->options(array(
 		</div>
 		<div class="grid_4 omega">
 			<div class="box">
-				<?php echo $this->element('merge'.DS.'user', array('user' => $request['Target'])); ?>
+				<?php echo $this->element('merge'.DS.'user', array('user' => $request['NewModel'])); ?>
 			</div>
 		</div>
 	</div>
