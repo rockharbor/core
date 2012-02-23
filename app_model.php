@@ -389,6 +389,39 @@ class AppModel extends Model {
 	}
 
 /**
+ * Validation rule that invalidates the passed field _if_ other field(s) have a 
+ * correct value. This validation rule should __always__ be placed last.
+ * 
+ * #### Usage
+ * 
+ * {{{
+ * 'field_name' => array(
+ *   'myRule' => array(
+ *     'rule' => 'email'
+ *   ),
+ *   'validationRule' => array(
+ *     'rule' => array('eitherOr', array('some_field' => 'someValue'))
+ *   )
+ * )
+ * }}}
+ * 
+ * The above rule would validate if `field_name` was an email address *or*
+ * if `some_field` is equal to 'someValue'.
+ * 
+ * @param array $data Data array
+ * @param array $orFields Array of field=>values to allow this field to pass
+ * @return boolean Always true, because this function only revalidates fields
+ */
+	function eitherOr(&$data, $orFields = array()) {
+		foreach ($orFields as $orField => $orValue) {
+			if ($this->data[$this->alias][$orField] == $orValue) {
+				unset($this->validationErrors[key($data)]);
+			}
+		}
+		return true;
+	}
+
+/**
  * Deconstructs complex data (specifically here, date) and creates a partial
  * date from a Cake date array
  *

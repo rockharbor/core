@@ -72,7 +72,8 @@ class Request extends CommunicationsRequestsAppModel {
 	var $belongsTo = array(
 		'User',
 		'CommunicationsRequests.RequestType',
-		'CommunicationsRequests.RequestStatus'
+		'CommunicationsRequests.RequestStatus',
+		'Involvement'
 	);
 
 }

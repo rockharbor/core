@@ -44,6 +44,7 @@ echo $this->Form->create(array(
 					'minYear' => 1900,
 					'maxYear' => date('Y')
 				));
+				echo $this->Form->hidden('adult', array('value' => $this->data['Profile']['adult']));
 				?>
 			</fieldset>
 			<fieldset class="grid_5 omega">

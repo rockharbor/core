@@ -56,6 +56,8 @@ class MergeRequestsControllerTestCase extends CoreTestCase {
 	}
 
 	function testMerge() {
+		$this->loadFixtures('HouseholdMember', 'Household');
+		
 		$this->Profile =& ClassRegistry::init('Profile');
 		$this->User =& ClassRegistry::init('User');
 		$this->testAction('/merge_requests/merge/1');

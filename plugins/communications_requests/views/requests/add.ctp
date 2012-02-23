@@ -20,6 +20,9 @@
 			<legend>Request</legend>
 			<?php
 			echo $this->Form->input('ministry_name');
+			echo $this->Form->input('involvement_id', array(
+				'empty' => true
+			));
 			echo $this->Form->input('budget', array(
 				'between' => '$'
 			));

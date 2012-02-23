@@ -44,6 +44,7 @@ class CommunicationsRequestsSchema extends CakeSchema {
 		'description' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 1000),
 		'budget' => array('type' => 'float', 'null' => true, 'default' => NULL, 'length' => '7,2'),
 		'ministry_name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 64),
+		'involvement_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8),
 		'request_status_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8),
 		'user_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),

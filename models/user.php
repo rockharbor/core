@@ -293,7 +293,8 @@ class User extends AppModel {
 			'contain' => array(
 				'Profile',
 				'Address',
-				'HouseholdMember'
+				'HouseholdMember',
+				'Publication'
 			)
 		));
 		
@@ -326,6 +327,14 @@ class User extends AppModel {
 		
 		$successes = array();
 		$successes[] = $this->save($user, array('validate' => false));
+		if (!empty($updatedUser['Publication'])) {
+			$successes[] = $this->save(array(
+				'Publication' => $updatedUser['Publication'],
+				'User' => array(
+					'id' => $user['id']
+				)
+			));
+		}
 		$successes[] = $this->Profile->save($profile, array('validate' => false));
 		foreach ($currentUser['Address'] as $address) {
 			$address['foreign_key'] = $currentUser['User']['id'];

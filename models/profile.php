@@ -66,9 +66,14 @@ class Profile extends AppModel {
 			'allowEmpty' => true
 		),
 		'birth_date' => array(
-			'rule' => 'date',
-			'required' => false,
-			'allowEmpty' => false
+			'date' => array(
+				'rule' => 'date',
+				'required' => false,
+				'allowEmpty' => false
+			),
+			'orAdult' => array(
+				'rule' => array('eitherOr', array('adult' => 1)),
+			)
 		),
 		'job_name' => array(
 			'rule' => array('custom', '/^[a-z0-9 ]*$/i'),

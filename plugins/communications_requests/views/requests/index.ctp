@@ -88,6 +88,7 @@ $this->Paginator->options(array(
 						<th><?php echo $this->Paginator->sort('Type', 'RequestType.name'); ?></th>
 						<th><?php echo $this->Paginator->sort('description'); ?></th>
 						<th><?php echo $this->Paginator->sort('ministry_name'); ?></th>
+						<th><?php echo $this->Paginator->sort('Involvement', 'Involvement.name'); ?></th>
 						<th><?php echo $this->Paginator->sort('User', 'Profile.last_name'); ?></th>
 						<th><?php echo $this->Paginator->sort('Status', 'RequestStatus.name'); ?></th>
 						<th><?php echo $this->Paginator->sort('created'); ?></th>
@@ -108,8 +109,8 @@ $this->Paginator->options(array(
 						<td><?php echo $request['RequestType']['name']; ?></td>
 						<td><?php echo $request['Request']['description']; ?></td>
 						<td><?php echo $request['Request']['ministry_name']; ?></td>
-						<td><?php echo $request['Profile']['name']; ?></td>
-						<td><?php echo $this->Html->link($request['RequestStatus']['name'], array('action' => 'edit', $request['Request']['id']), array('rel' => 'modal-content')); ?></td>
+						<td><?php echo $this->Html->link($request['Involvement']['name'], array('plugin' => null, 'controller' => 'involvements', 'action' => 'view', 'Involvement' => $request['Involvement']['id'])); ?></td>
+						<td><?php echo $this->Html->link($request['Profile']['name'], array('plugin' => null, 'controller' => 'profiles', 'action' => 'view', 'User' => $request['Profile']['id'])); ?></td>						<td><?php echo $this->Html->link($request['RequestStatus']['name'], array('action' => 'edit', $request['Request']['id']), array('rel' => 'modal-content')); ?></td>
 						<td><?php echo $this->Formatting->datetime($request['Request']['created']); ?></td>
 						<td><?php echo $this->Formatting->datetime($request['Request']['modified']); ?></td>
 					</tr>
