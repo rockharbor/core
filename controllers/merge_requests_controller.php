@@ -147,6 +147,9 @@ class MergeRequestsController extends AppController {
 			), 'email');
 			
 			$this->MergeRequest->delete($id);
+			
+			$this->Session->setFlash('Merge request was ignored.', 'flash'.DS.'success');
+			$this->redirect(array('action'=>'index', 'model' => $request['MergeRequest']['model']));
 		} else {
 			// delete associated model target first
 			if ($Model->delete($request['MergeRequest']['model_id'])) {
