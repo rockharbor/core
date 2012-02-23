@@ -107,7 +107,12 @@ class MergeRequestsController extends AppController {
 			), 'email');
 		} else {
 			$this->Session->setFlash('Unable to process request. Please try again.', 'flash'.DS.'failure');
-		}	
+		}
+		
+		$this->redirect(array(
+			'action' => 'index',
+			'model' => $request['MergeRequest']['model']
+		));
 	}
 
 /**
