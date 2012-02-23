@@ -1,5 +1,5 @@
 <h1>Found you!</h1>
-<p>I think you're already in <?php echo Core::read('general.site_name'); ?>! Use this form to send an activation request. When it's approved, you'll get an email with your new username and a temporary password.</p>
+<p>I think you're already in <?php echo Core::read('general.site_name'); ?>! Use this form to send an activation request. When it's approved, you'll get an email with your new username.</p>
 <?php
 echo $this->Form->create('User', array(
 	'url' => array($foundId),
