@@ -52,12 +52,12 @@ class MergeRequest extends AppModel {
 			'foreignKey' => 'requester_id',
 			'dependent' => false
 		),
-		'Source' => array(
+		'NewModel' => array(
 			'className' => 'User',
 			'foreignKey' => 'model_id',
 			'dependent' => false
 		),
-		'Target' => array(
+		'OriginalModel' => array(
 			'className' => 'User',
 			'foreignKey' => 'merge_id',
 			'dependent' => false

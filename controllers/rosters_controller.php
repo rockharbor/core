@@ -663,6 +663,7 @@ class RostersController extends AppController {
 		
 		// get needed information about the user and this involvement
 		$this->Roster->Involvement->contain(array(
+			'Ministry',
 			'Question',
 			'Roster' => array(
 				'fields' => array(
@@ -670,7 +671,6 @@ class RostersController extends AppController {
 				)
 			)
 		));
-		$this->Roster->Involvement->contain(array('Ministry'));
 		$involvement = $this->Roster->Involvement->read(null, $thisRoster['Roster']['involvement_id']);
 		// get user info and all household info where they are the contact
 		$signedUp = Set::extract('/Roster/user_id', $involvement);

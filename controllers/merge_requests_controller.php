@@ -50,8 +50,8 @@ class MergeRequestsController extends AppController {
 
 		$this->MergeRequest->recursive = 0;
 
-		$this->MergeRequest->belongsTo['Source']['className'] = $this->passedArgs['model'];
-		$this->MergeRequest->belongsTo['Target']['className'] = $this->passedArgs['model'];
+		$this->MergeRequest->belongsTo['NewModel']['className'] = $this->passedArgs['model'];
+		$this->MergeRequest->belongsTo['OriginalModel']['className'] = $this->passedArgs['model'];
 
 		switch ($this->passedArgs['model']) {
 			case 'User':
@@ -60,11 +60,11 @@ class MergeRequestsController extends AppController {
 						array('MergeRequest.model' => $this->passedArgs['model'])
 					),
 					'contain' => array(
-						'Source' => array(
+						'NewModel' => array(
 							'Address',
 							'Profile'
 						),
-						'Target' => array(
+						'OriginalModel' => array(
 							'Address',
 							'Profile'
 						)
@@ -99,17 +99,30 @@ class MergeRequestsController extends AppController {
 		if (method_exists($Model, 'merge') && $Model->merge($request['MergeRequest']['merge_id'], $request['MergeRequest']['model_id'])) {
 			$this->MergeRequest->delete($id);
 			$this->Session->setFlash('Merge was successful.', 'flash'.DS.'success');
+			
+			$this->set('user', $Model->read(null, $request['MergeRequest']['merge_id']));
+			$this->Notifier->notify(array(
+				'to' => $request['MergeRequest']['merge_id'],
+				'subject' => 'Your account has been activated',
+				'template' => 'merge_requests_merge'
+			), 'email');
 		} else {
 			$this->Session->setFlash('Unable to process request. Please try again.', 'flash'.DS.'failure');
-		}	
+		}
+		
+		$this->redirect(array(
+			'action' => 'index',
+			'model' => $request['MergeRequest']['model']
+		));
 	}
 
 /**
  * Delete a request
  *
  * @param integer $id The id of the request to delete
+ * @param boolean $ignore Whether or not to just ignore it
  */
-	function delete($id = null) {		
+	function delete($id = null, $ignore = 0) {		
 		if (!$id) {
 			$this->cakeError('error404');
 		}
@@ -119,13 +132,34 @@ class MergeRequestsController extends AppController {
 		// get model we're merging
 		$Model = ClassRegistry::init($request['MergeRequest']['model']);
 		
-		// delete associated model target first
-		if ($Model->delete($request['MergeRequest']['model_id'])) {
-			// remove request
+		if ($ignore) {
+			// activate new user
+			$Model->id = $request['MergeRequest']['model_id'];
+			if ($Model->hasField('active')) {
+				$Model->saveField('active', true);
+			}
+			
+			$this->set('user', $Model->read());
+			$this->Notifier->notify(array(
+				'to' => $request['MergeRequest']['model_id'],
+				'subject' => 'Your account has been activated',
+				'template' => 'merge_requests_merge'
+			), 'email');
+			
 			$this->MergeRequest->delete($id);
-			$this->Session->setFlash('Merge request was deleted.', 'flash'.DS.'success');
+			
+			$this->Session->setFlash('Merge request was ignored.', 'flash'.DS.'success');
 			$this->redirect(array('action'=>'index', 'model' => $request['MergeRequest']['model']));
+		} else {
+			// delete associated model target first
+			if ($Model->delete($request['MergeRequest']['model_id'])) {
+				// remove request
+				$this->MergeRequest->delete($id);
+				$this->Session->setFlash('Merge request was deleted.', 'flash'.DS.'success');
+				$this->redirect(array('action'=>'index', 'model' => $request['MergeRequest']['model']));
+			}
 		}
+		
 		$this->Session->setFlash('Unable to process request. Please try again.', 'flash'.DS.'failure');
 		$this->redirect(array('action' => 'index', 'model' => $request['MergeRequest']['model']));
 	}

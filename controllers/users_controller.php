@@ -335,8 +335,8 @@ class UsersController extends AppController {
 				$MergeRequest = ClassRegistry::init('MergeRequest');
 				$MergeRequest->save(array(
 					'model' => 'User',
-					'model_id' => $foundId,
-					'merge_id' => $this->User->id,
+					'model_id' => $this->User->id,
+					'merge_id' => $foundId,
 					'requester_id' => $this->User->id
 				));
 				$this->Notifier->notify(array(

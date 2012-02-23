@@ -1,0 +1,2 @@
+<p>Your account has been updated with the information you sent us. You can now log into <?php echo Core::read('general.site_name'); ?>!</p>
+<p>In case you forgot, your username is: <strong><?php echo $user['User']['username']; ?></strong></p>

@@ -51,8 +51,8 @@ class MergeRequestsControllerTestCase extends CoreTestCase {
 			)
 		);
 		$this->assertEqual($results, $expected);
-		$this->assertEqual($vars['requests'][0]['Source']['id'], 3);
-		$this->assertEqual($vars['requests'][0]['Target']['id'], 2);
+		$this->assertEqual($vars['requests'][0]['NewModel']['id'], 3);
+		$this->assertEqual($vars['requests'][0]['OriginalModel']['id'], 2);
 	}
 
 	function testMerge() {
@@ -60,7 +60,7 @@ class MergeRequestsControllerTestCase extends CoreTestCase {
 		
 		$this->Profile =& ClassRegistry::init('Profile');
 		$this->User =& ClassRegistry::init('User');
-		$this->testAction('/merge_requests/merge/1');
+		$vars = $this->testAction('/merge_requests/merge/1');
 
 		$results = $this->MergeRequests->MergeRequest->find('all');
 		$this->assertEqual($results, array());
@@ -79,6 +79,10 @@ class MergeRequestsControllerTestCase extends CoreTestCase {
 
 		$result = $user['Profile']['primary_email'];
 		$this->assertEqual($result, 'rickyjr@rockharbor.org');
+		
+		// remember that the user was merged so he has a new username
+		$this->assertEqual($vars['user']['User']['username'], 'rickyrockharborjr');
+		$this->assertEqual($vars['user']['User']['id'], 2);
 	}
 
 	function testDelete() {
@@ -99,6 +103,24 @@ class MergeRequestsControllerTestCase extends CoreTestCase {
 
 		$result = $this->User->find('count');
 		$this->assertEqual($result, 4);
+	}
+	
+	function testIgnore() {
+		$Profile =& ClassRegistry::init('Profile');
+		$User =& ClassRegistry::init('User');
+		$vars = $this->testAction('/merge_requests/delete/1/1');
+
+		$this->assertFalse($this->MergeRequests->MergeRequest->read(null, 1));
+		
+		// activated the new user
+		$results = $User->read(null, 2);
+		$this->assertEqual($results['User']['active'], 1);
+
+		// original user remains untouched
+		$results = $User->read(null, 3);
+		$this->assertTrue(!empty($results));
+		
+		$this->assertEqual($vars['user']['User']['username'], 'rickyrockharborjr');
 	}
 
 }
