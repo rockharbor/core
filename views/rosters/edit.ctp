@@ -72,6 +72,7 @@ if (!empty($involvement['Question'])) {
 		$answers = Set::combine($this->data, '{n}.Answer.question_id', '{n}.Answer');
 		foreach ($involvement['Question'] as $question) {
 			echo '<div id="question'.($q+1).'">';
+			echo $this->Html->tag('p', $question['description']);
 			echo $this->Form->hidden('Answer.'.$q.'.id', array(
 				'value' => $answers[$question['id']]['id']
 			));
