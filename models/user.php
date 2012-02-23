@@ -269,17 +269,17 @@ class User extends AppModel {
 /**
  * Merges two records and deletes the newer one
  * 
- * @param integer $modelId The original account, to be updated
- * @param integer $mergeId The new information to use to update
+ * @param integer $mergeId The original account, to be updated
+ * @param integer $modelId The new information to use to update
  * @return boolean Success
  */
-	function merge($modelId = null, $mergeId = null) {
-		if (empty($modelId) || empty($mergeId)) {
+	function merge($mergeId = null, $modelId = null) {
+		if (empty($mergeId) || empty($modelId)) {
 			return false;
 		}
 		$currentUser = $this->find('first', array(
 			'conditions' => array(
-				'User.id' => $modelId
+				'User.id' => $mergeId
 			),
 			'contain' => array(
 				'Profile',
@@ -288,7 +288,7 @@ class User extends AppModel {
 		));
 		$updatedUser = $this->find('first', array(
 			'conditions' => array(
-				'User.id' => $mergeId
+				'User.id' => $modelId
 			),
 			'contain' => array(
 				'Profile',
@@ -363,11 +363,11 @@ class User extends AppModel {
 			// change to new fk
 			$successes[] = $this->HouseholdMember->Household->save(array(
 				'id' => $oldHouseholdId,
-				'contact_id' => $modelId
+				'contact_id' => $mergeId
 			));
 			$successes[] = $this->HouseholdMember->save(array(
 				'id' => $updatedUser['HouseholdMember'][0]['id'],
-				'user_id' => $modelId
+				'user_id' => $mergeId
 			));
 		}
 		
@@ -379,7 +379,7 @@ class User extends AppModel {
 		
 		$success = !in_array(false, $successes);
 		if ($success) {
-			$this->delete($mergeId);
+			$this->delete($modelId);
 		}
 		return $success;
 	}

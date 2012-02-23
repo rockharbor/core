@@ -318,11 +318,15 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($this->Users->Session->read('Message.flash.element'), 'flash'.DS.'success');
 		$request = $MergeRequest->find('first', array(
 			'conditions' => array(
-				'model_id' => 1
+				'merge_id' => 1
 			)
 		));
 		$result = $request['MergeRequest']['merge_id'];
-		$this->assertEqual($result, $oldCount+1);
+		$this->assertEqual($result, 1);
+		
+		$newUser = $this->Users->User->findByUsername('newusername');
+		$result = $newUser['User']['id'];
+		$this->assertEqual($request['MergeRequest']['model_id'], $result);
 	}
 
 	function testAdd() {
