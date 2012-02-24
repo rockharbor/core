@@ -49,6 +49,9 @@ class Profile extends AppModel {
 
 /**
  * Validation rules
+ * 
+ * Note: birth_date 'allowEmpty' is set to `false` in `UsersController::register()`
+ * and `UsersController::household_add()`
  *
  * @var array
  */
@@ -66,14 +69,10 @@ class Profile extends AppModel {
 			'allowEmpty' => true
 		),
 		'birth_date' => array(
-			'date' => array(
-				'rule' => 'date',
-				'required' => false,
-				'allowEmpty' => false
-			),
-			'orAdult' => array(
-				'rule' => array('eitherOr', array('adult' => 1)),
-			)
+			'rule' => 'date',
+			'required' => false,
+			'allowEmpty' => true,
+			'message' => 'Please enter a valid date.'
 		),
 		'job_name' => array(
 			'rule' => array('custom', '/^[a-z0-9 ]*$/i'),

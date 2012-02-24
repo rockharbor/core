@@ -402,14 +402,24 @@ class UsersControllerTestCase extends CoreTestCase {
 			'Profile' => array(
 				'first_name' => 'Test',
 				'last_name' => 'User',
-				'primary_email' => 'test@test.com'
+				'primary_email' => 'test@test.com',
+				'birth_date' => array(
+					'month' => 4,
+					'day' => 14,
+					'year' => 1984
+				)
 			),
 			'HouseholdMember' => array(
 				0 => array(
 					'Profile' => array(
 						'first_name' => 'child',
 						'last_name' => 'user',
-						'primary_email' => 'child@example.com'
+						'primary_email' => 'child@example.com',
+						'birth_date' => array(
+							'month' => 1,
+							'day' => 2,
+							'year' => date('Y')
+						)
 					)
 				),
 				1 => array(
@@ -484,7 +494,12 @@ class UsersControllerTestCase extends CoreTestCase {
 			'Profile' => array(
 				'first_name' => 'Jeremy',
 				'last_name' => 'Harris',
-				'primary_email' => 'test@test.com'
+				'primary_email' => 'test@test.com',
+				'birth_date' => array(
+					'month' => 4,
+					'day' => 14,
+					'year' => 1984
+				)
 			),
 			'Household' => array(
 				'id' => 2
@@ -526,6 +541,110 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, 2);
 		$result = $user['HouseholdMember'][0]['Household']['id'];
 		$this->assertEqual($result, 2);
+	}
+	
+	function testSpecialBirthdateValidation() {
+		$data = array(
+			'User' => array(
+				'username' => 'someuser'
+			),
+			'Address' => array(
+				0 => array(
+					'zip' => '12345'
+				)
+			),
+			'Profile' => array(
+				'first_name' => 'Some',
+				'last_name' => 'User',
+				'primary_email' => 'some@example.com'
+			),
+			'Household' => array(
+				'id' => 2
+			)
+		);
+		
+		$vars = $this->testAction('/users/household_add/Household:2', array(
+			'data' => $data
+		));
+		$result = array_keys($this->Users->User->Profile->validationErrors);
+		$expected = array('birth_date');
+		$this->assertEqual($result, $expected);
+		
+		$result = $this->Users->Session->read('Message.flash.element');
+		$this->assertEqual($result, 'flash'.DS.'failure');
+		
+		$vars = $this->testAction('/users/register', array(
+			'data' => $data
+		));
+		$result = array_keys($this->Users->User->Profile->validationErrors);
+		$expected = array('birth_date');
+		$this->assertEqual($result, $expected);
+		
+		$result = $this->Users->Session->read('Message.flash.element');
+		$this->assertEqual($result, 'flash'.DS.'failure');
+		
+		$vars = $this->testAction('/users/add', array(
+			'data' => $data
+		));
+		$result = array_keys($this->Users->User->Profile->validationErrors);
+		$this->assertTrue(empty($result));
+		
+		$result = $this->Users->Session->read('Message.flash.element');
+		$this->assertEqual($result, 'flash'.DS.'success');
+		
+		$data = array(
+			'User' => array(
+				'username' => 'someuseragain'
+			),
+			'Address' => array(
+				0 => array(
+					'zip' => '12345'
+				)
+			),
+			'Profile' => array(
+				'first_name' => 'Some',
+				'last_name' => 'Again',
+				'primary_email' => 'someuseragain@example.com',
+				'birth_date' => array(
+					'month' => '',
+					'day' => '',
+					'year' => ''
+				)
+			),
+			'Household' => array(
+				'id' => 2
+			)
+		);
+		
+		$vars = $this->testAction('/users/household_add/Household:2', array(
+			'data' => $data
+		));
+		$result = array_keys($this->Users->User->Profile->validationErrors);
+		$expected = array('birth_date');
+		$this->assertEqual($result, $expected);
+		
+		$result = $this->Users->Session->read('Message.flash.element');
+		$this->assertEqual($result, 'flash'.DS.'failure');
+		
+		$vars = $this->testAction('/users/register', array(
+			'data' => $data
+		));
+		$result = array_keys($this->Users->User->Profile->validationErrors);
+		$expected = array('birth_date');
+		$this->assertEqual($result, $expected);
+		
+		$result = $this->Users->Session->read('Message.flash.element');
+		$this->assertEqual($result, 'flash'.DS.'failure');
+		
+		$vars = $this->testAction('/users/add', array(
+			'data' => $data
+		));
+		$result = array_keys($this->Users->User->Profile->validationErrors);
+		$this->assertTrue(empty($result));
+
+		$result = $this->Users->Session->read('Message.flash.element');
+		$this->assertEqual($result, 'flash'.DS.'success');
+		
 	}
 
 }

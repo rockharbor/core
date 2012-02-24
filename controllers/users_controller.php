@@ -418,6 +418,10 @@ class UsersController extends AppController {
  * Creates a user account and adds it to a household
  */
 	function household_add() {
+		// require birthday
+		$this->User->Profile->validate['birth_date']['required'] = true;
+		$this->User->Profile->validate['birth_date']['allowEmpty'] = false;
+		
 		if (!empty($this->data)) {
 			// check if user exists (only use profile info to search)
 			$searchData = array('Profile' => $this->data['Profile']);
@@ -486,6 +490,10 @@ class UsersController extends AppController {
  * Registers a user
  */
 	function register() {
+		// require birthday
+		$this->User->Profile->validate['birth_date']['required'] = true;
+		$this->User->Profile->validate['birth_date']['allowEmpty'] = false;
+		
 		if (!empty($this->data)) {
 			$foundUser = array();
 			if (!isset($this->passedArgs['skip_check'])) {
