@@ -95,22 +95,20 @@ class Household extends AppModel {
  * @return array List of household ids
  */
 	function getHouseholdIds($userId, $mustBeContact = false) {
-		$conditions = array(
-			'HouseholdMember.user_id' => $userId
+		$options = array(
+			'conditions' => array(
+				'HouseholdMember.user_id' => $userId
+			)
 		);
 
 		if ($mustBeContact) {
-			$conditions['Household.contact_id'] = $userId;
+			$options['conditions']['Household.contact_id'] = $userId;
+			$options['contain'] = array('Household');
 		}
 
-		$households = $this->HouseholdMember->find('all', array(
-			'conditions' => $conditions,
-			'contain' => array(
-				'Household'
-			)
-		));
+		$households = $this->HouseholdMember->find('all', $options);
 
-		return Set::extract('/Household/id', $households);
+		return Set::extract('/HouseholdMember/household_id', $households);
 	}
 
 /**
