@@ -140,13 +140,84 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$data = array(
 			'SysEmail' => array(
 				'body' => 'Test message',
-				'subject' => 'Email'
+				'subject' => 'Email',
+				'email_users' => 'users'
 			)
 		);
 		$vars = $this->testAction('/sys_emails/compose/model:User/User:1', array(
 			'data' => $data
 		));
 		$this->assertEqual($this->SysEmails->Session->read('Message.flash.element'), 'flash'.DS.'success');
+	}
+	
+	function testEmailHouseholdContact() {
+		$this->loadFixtures('HouseholdMember', 'Household');
+		
+		$vars = $this->testAction('/sys_emails/compose/model:User/User:1', array(
+			'data' => array(
+				'SysEmail' => array(
+					'subject' => 'email to household contacts only',
+					'body' => 'Email!',
+					'email_users' => 'household_contact'
+				)
+			)
+		));
+		
+		$results = $vars['allToUsers'];
+		$expected = array(1);
+		$this->assertEqual($results, $expected);
+		
+		$vars = $this->testAction('/sys_emails/compose/model:User/User:100', array(
+			'data' => array(
+				'SysEmail' => array(
+					'subject' => 'email to household contacts only',
+					'body' => 'Email!',
+					'email_users' => 'household_contact'
+				)
+			)
+		));
+		
+		$results = $vars['allToUsers'];
+		$expected = array(1);
+		$this->assertEqual($results, $expected);
+		
+		$this->SysEmails->Session->write('MultiSelect.test', array(
+			'selected' => array(97, 98, 99, 100),
+			'search' => array()
+		));
+		$vars = $this->testAction('/sys_emails/compose/test', array(
+			'data' => array(
+				'SysEmail' => array(
+					'subject' => 'email to household contacts only',
+					'body' => 'Email!',
+					'email_users' => 'household_contact'
+				)
+			)
+		));
+		
+		$results = $vars['allToUsers'];
+		sort($results);
+		$expected = array(1, 2, 3);
+		$this->assertEqual($results, $expected);
+		
+		$this->SysEmails->Session->write('MultiSelect.test', array(
+			'selected' => array(97, 98, 99, 100),
+			'search' => array()
+		));
+		$vars = $this->testAction('/sys_emails/compose/test', array(
+			'data' => array(
+				'SysEmail' => array(
+					'subject' => 'email to both',
+					'body' => 'Email!',
+					'email_users' => 'both'
+				)
+			)
+		));
+		
+		$results = $vars['allToUsers'];
+		sort($results);
+		$expected = array(1, 2, 3, 97, 98, 99, 100);
+		$this->assertEqual($results, $expected);
 	}
 
 }

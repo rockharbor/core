@@ -235,6 +235,28 @@ class SysEmailsController extends AppController {
 			if ($this->SysEmail->validates()) {
 				$e = 0;
 				$toUsers = array_unique($toUsers);
+				
+				if (in_array($this->data['SysEmail']['email_users'], array('both', 'household_contact'))) {
+					$households = $User->HouseholdMember->Household->getHouseholdIds($toUsers);
+					$contacts = $User->HouseholdMember->Household->find('all', array(
+						'fields' => array(
+							'contact_id'
+						),
+						'conditions' => array(
+							'id' => $households
+						)
+					));
+					$extraUsers = Set::extract('/Household/contact_id', $contacts);
+					if ($this->data['SysEmail']['email_users'] == 'both') {
+						$toUsers = array_merge($toUsers, $extraUsers);
+					} else {
+						$toUsers = $extraUsers;
+					}
+				}
+				
+				$toUsers = array_unique($toUsers);
+				$this->set('allToUsers', $toUsers);
+
 				foreach ($toUsers as $toUser) {
 					if ($this->Notifier->notify(array(
 						'from' => $fromUser,
