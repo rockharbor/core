@@ -79,6 +79,27 @@ if (!isset($this->passedArgs['mstoken'])) {
 			'style' => 'width:300px'
 		));
 		echo $this->Form->input('SysEmail.body');
+		if (empty($this->data['SysEmail']['email_users'])) {
+			$this->data['SysEmail']['email_users'] = 'users';
+		}
+		echo $this->Html->tag(
+			'div',
+			$this->Form->label('Email Users') .
+			$this->Form->input('email_users', array(
+				'type' => 'radio',
+				'options' => array(
+					'users' => 'Selected Users',
+					'household_contact' => 'Household Contacts',
+					'both' => 'Both'
+				),
+				'value' => $this->data['SysEmail']['email_users']
+			)),
+			array(
+				'id' => 'SysEmailEmailUsers',
+				'class' => 'input',
+				'escape' => false
+			)
+		);
 	?>
 	</fieldset>
 <?php

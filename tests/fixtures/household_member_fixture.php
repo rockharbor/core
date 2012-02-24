@@ -70,7 +70,31 @@ class HouseholdMemberFixture extends CakeTestFixture {
 			'confirmed' => 1,
 			'created' => '2010-04-07 13:55:09',
 			'modified' => '2010-04-07 13:55:09'
-		)
+		),
+		array(
+			'id' => 8,
+			'household_id' => 2,
+			'user_id' => 99,
+			'confirmed' => 0,
+			'created' => '2010-04-07 13:55:09',
+			'modified' => '2010-04-07 13:55:09'
+		),
+		array(
+			'id' => 9,
+			'household_id' => 2,
+			'user_id' => 98,
+			'confirmed' => 0,
+			'created' => '2010-04-07 13:55:09',
+			'modified' => '2010-04-07 13:55:09'
+		),
+		array(
+			'id' => 10,
+			'household_id' => 3,
+			'user_id' => 97,
+			'confirmed' => 0,
+			'created' => '2010-04-07 13:55:09',
+			'modified' => '2010-04-07 13:55:09'
+		),
 	);
 }
 ?>
