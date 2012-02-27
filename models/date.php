@@ -223,7 +223,7 @@ class Date extends AppModel {
  * @return array Array of dates falling into that range
  * @access protected
  */
-	function _generateRecurringDates($masterDate, $range, $limit = null, $exemptions = array()) {
+	function _generateRecurringDates($masterDate, $range, $limit = 20, $exemptions = array()) {
 		$dates = array();
 		
 		if (isset($range['start']) && !is_numeric($range['start'])) {
