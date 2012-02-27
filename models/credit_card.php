@@ -46,7 +46,7 @@ class CreditCard extends AppModel {
 		),
 		'cvv' => array(
 			'type' => 'integer',
-			'length' => 3
+			'length' => 4
 		),
 		'expiration_date' => array(
 			'type' => 'date'
