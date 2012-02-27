@@ -154,8 +154,23 @@ class DateTestCase extends CoreTestCase {
 			'2010-07-31'
 		);
 		$this->assertEqual($results, $expected);
+		
+		// make it a permanent recurring exemption
+		$this->Date->save(array(
+			'Date' => array(
+				'id' => 11,
+				'recurring' => true,
+				'permanent' => true
+			)
+		));
+		
+		$results = $this->Date->generateDates(5, array(
+			'start' => mktime(0, 0, 0, 7, 17, 2010),
+			'limit' => 1
+		));
+		$this->assertEqual(count($results), 1);
 	}
-
+	
 	function testMonthlyWithExemption() {
 		$this->loadFixtures('Date');
 		

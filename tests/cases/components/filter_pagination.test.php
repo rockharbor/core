@@ -145,11 +145,11 @@ class FilterPaginationTestCase extends CoreTestCase {
 		$expected = array(
 			'A Paginated Thing'
 		);
-		$this->assertTrue($this->Controller->Session->check('FilterPagination'));
+		$this->assertTrue($this->Controller->Session->check('FilterPagination.PaginateTests_index'));
 		$this->assertEqual($results, $expected);
 
 		// simulate new page
-		$this->Controller->Session->delete('FilterPagination');
+		$this->Controller->Session->delete('FilterPagination.PaginateTests_index');
 		$this->Controller->FilterPagination->startEmpty = false;
 		$data = array('PaginateTest' => array('name' => 'CORE'));
 		$vars = $this->testAction('/paginate_tests/filter', array(
@@ -159,7 +159,7 @@ class FilterPaginationTestCase extends CoreTestCase {
 		$expected = array(
 			'The CORE Awesomeness'
 		);
-		$this->assertEqual($this->Controller->Session->read('FilterPagination.data'), $data);
+		$this->assertEqual($this->Controller->Session->read('FilterPagination.PaginateTests_filter.data'), $data);
 		$this->assertEqual($results, $expected);
 
 		// same data, different page
@@ -182,7 +182,7 @@ class FilterPaginationTestCase extends CoreTestCase {
 		$expected = array(
 			'A Paginated Thing'
 		);
-		$this->assertEqual($this->Controller->Session->read('FilterPagination.data'), $newData);
+		$this->assertEqual($this->Controller->Session->read('FilterPagination.PaginateTests_filter.data'), $newData);
 		$this->assertEqual($results, $expected);
 
 		// change page via paginator
@@ -191,7 +191,7 @@ class FilterPaginationTestCase extends CoreTestCase {
 		$expected = array(
 			'A Paginated Thing'
 		);
-		$this->assertEqual($this->Controller->Session->read('FilterPagination.data'), $newData);
+		$this->assertEqual($this->Controller->Session->read('FilterPagination.PaginateTests_filter.data'), $newData);
 		$this->assertEqual($results, $expected);
 
 		// change page
@@ -223,7 +223,7 @@ class FilterPaginationTestCase extends CoreTestCase {
 		$expected = array(
 			'A Paginated Thing'
 		);
-		$this->assertTrue($this->Controller->Session->check('FilterPagination'));
+		$this->assertTrue($this->Controller->Session->check('FilterPagination.PaginateTests_index'));
 		$this->assertEqual($results, $expected);
 
 		// check to make sure data leaves when a new pagination call is made
@@ -247,7 +247,7 @@ class FilterPaginationTestCase extends CoreTestCase {
 			'A Paginated Thing',
 			'The CORE Awesomeness'
 		);
-		$this->assertTrue($this->Controller->Session->check('FilterPagination'));
+		$this->assertTrue($this->Controller->Session->check('FilterPagination.PaginateTests_filter'));
 		$this->assertEqual($results, $expected);
 
 		// check to see that data persists when a pagination call is made
@@ -267,6 +267,50 @@ class FilterPaginationTestCase extends CoreTestCase {
 			'A Paginated Thing'
 		);
 		$this->assertEqual($results, $expected);
+	}
+	var $testMethods = array('testNoDataLeak');
+	function testNoDataLeak() {
+		$data = array(
+			'PaginateTest' => array(
+				'name' => 'a'
+			)
+		);
+		$vars = $this->testAction('/paginate_tests/filter', array(
+			'data' => $data
+		));
+		$results = Set::extract('/PaginateTest/name', $vars['results']);
+		$expected = array(
+			'A Paginated Thing',
+			'The CORE Awesomeness'
+		);
+		$this->assertTrue($this->Controller->Session->check('FilterPagination.PaginateTests_filter'));
+		$this->assertEqual($results, $expected);
+		
+		// check to see that data persists when a pagination call is made
+		$vars = $this->testAction('/paginate_tests/filter/page:1/sort:name/direction:desc');
+		$results = Set::extract('/PaginateTest/name', $vars['results']);
+		$expected = array(
+			'The CORE Awesomeness',
+			'Back to the Future'
+		);
+		$this->assertEqual($results, $expected);
+		$this->assertEqual($this->Controller->data, $data);
+		
+		$Controller = new PaginateTests2Controller();
+		$Controller->__construct();
+		$Controller->constructClasses();
+		$Controller->Component->initialize($Controller);
+		$this->testController = $Controller;
+		// try a new action and make sure no filtered data exists for it
+		$vars = $this->testAction('/paginate_tests2/filter/page:1/sort:name/direction:asc');
+		$results = Set::extract('/PaginateTest/name', $vars['results']);
+		$expected = array(
+			'A Paginated Thing',
+			'Back to the Future',
+			'The CORE Awesomeness'
+		);
+		$this->assertEqual($results, $expected);
+		$this->assertEqual($this->Controller->data, $data);
 	}
 
 }

@@ -76,32 +76,34 @@ class FilterPaginationComponent extends Object {
 		}
 		$model = ClassRegistry::init($model);
 		
+		$key = 'FilterPagination.'.$this->controller->name.'_'.$this->controller->params['action'];
+		
 		// new search, remove saved filter
 		if ($this->startEmpty) {
 			if (!empty($this->controller->data) || !isset($this->controller->params['named']['page'])) {
-				$this->Session->delete('FilterPagination');
+				$this->Session->delete($key);
 			}
 		} else {
-			if (!empty($this->controller->data) && $this->controller->data != $this->Session->read('FilterPagination.data')) {
-				$this->Session->delete('FilterPagination');
+			if (!empty($this->controller->data) && $this->controller->data != $this->Session->read($key.'.data')) {
+				$this->Session->delete($key);
 			} elseif (!isset($this->controller->params['named']['page'])) {
-				$this->Session->delete('FilterPagination');
+				$this->Session->delete($key);
 			}
 		}
 		
-		if (!$this->Session->check('FilterPagination')) {
+		if (!$this->Session->check($key)) {
 			// save data in session if it's not there
-			$this->Session->write('FilterPagination.paginate', $this->controller->paginate);
-			$this->Session->write('FilterPagination.data', $this->controller->data);
+			$this->Session->write($key.'.paginate', $this->controller->paginate);
+			$this->Session->write($key.'.data', $this->controller->data);
 			// conserve any after-the-fact model bindings
-			$this->Session->write('FilterPagination.'.$model->alias.'.hasOne', $model->hasOne);
-			$this->Session->write('FilterPagination.'.$model->alias.'.belongsTo', $model->belongsTo);
+			$this->Session->write($key.'.'.$model->alias.'.hasOne', $model->hasOne);
+			$this->Session->write($key.'.'.$model->alias.'.belongsTo', $model->belongsTo);
 		} elseif (isset($this->controller->params['named']['page']) || !$this->startEmpty) {
 			// otherwise use it for pagination and data
-			$this->controller->paginate = $this->Session->read('FilterPagination.paginate');
-			$this->controller->data = $this->Session->read('FilterPagination.data');
-			$model->hasOne = $this->Session->read('FilterPagination.'.$model->alias.'.hasOne');
-			$model->belongsTo = $this->Session->read('FilterPagination.'.$model->alias.'.belongsTo');
+			$this->controller->paginate = $this->Session->read($key.'.paginate');
+			$this->controller->data = $this->Session->read($key.'.data');
+			$model->hasOne = $this->Session->read($key.'.'.$model->alias.'.hasOne');
+			$model->belongsTo = $this->Session->read($key.'.'.$model->alias.'.belongsTo');
 		}
 		
 		// check for 'link' key
