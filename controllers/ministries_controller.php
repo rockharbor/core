@@ -187,7 +187,6 @@ class MinistriesController extends AppController {
 		if (!empty($this->data) && $this->MultiSelect->check($mstoken)) {
 			$selected = $this->MultiSelect->getSelected($mstoken);
 			$this->Ministry->Behaviors->disable('Confirm');
-			$count = 0;
 			if (!$this->data['Ministry']['move_ministry']) {
 				unset($this->data['Ministry']['parent_id']);
 			}
@@ -195,26 +194,25 @@ class MinistriesController extends AppController {
 				unset($this->data['Ministry']['campus_id']);
 			}
 			$this->data['Ministry'] = Set::filter($this->data['Ministry']);
+			if (isset($this->data['Ministry']['campus_id'])) {
+				$this->data['Ministry']['parent_id'] = 0;
+			}
+			if (isset($this->data['Ministry']['parent_id']) && $this->data['Ministry']['parent_id'] !== 0) {
+				unset($this->data['Ministry']['campus_id']);
+				$parent = $this->Ministry->read(array('campus_id'), $this->data['Ministry']['parent_id']);
+				$this->data['Ministry']['campus_id'] = $parent['Ministry']['campus_id'];
+			}
 			foreach ($selected as $id) {
 				if (!$this->isAuthorized('ministries/edit', array('Ministry' => $id))) {
 					continue;
 				}
 				$this->Ministry->create();
 				$this->Ministry->id = $id;
-				$name = $this->Ministry->field('name');
 				$this->Ministry->data = $this->data;
-				if ($this->Ministry->save()) {
-					$this->set('ministry', $this->Ministry->read());
-					$this->Notifier->notify(array(
-						'to' => Core::read('notifications.ministry_content'),
-						'template' => 'ministries_edit',
-						'subject' => 'The '.$name.' ministry has been edited'
-					));
-					$count++;
-				}
+				$this->Ministry->save();
 			}
 			$this->Ministry->clearCache();
-			$this->Session->setFlash($count.'/'.count($selected).' ministries have been bulk edited.', 'flash'.DS.'success');
+			$this->Session->setFlash('Your ministries have been bulk edited.', 'flash'.DS.'success');
 		}
 		$this->set('campuses', $this->Ministry->Campus->find('list'));
 		$this->set('parents', $this->Ministry->active('list', array(

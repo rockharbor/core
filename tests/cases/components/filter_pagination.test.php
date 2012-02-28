@@ -268,7 +268,7 @@ class FilterPaginationTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 	}
-	var $testMethods = array('testNoDataLeak');
+	
 	function testNoDataLeak() {
 		$data = array(
 			'PaginateTest' => array(

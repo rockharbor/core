@@ -29,11 +29,11 @@ class Roster extends AppModel {
  * @var array
  */
 	var $actsAs = array(
-		'Logable',
 		'Containable',
 		'Search.Searchable',
 		'Cacher.Cache',
-		'Linkable.AdvancedLinkable'
+		'Linkable.AdvancedLinkable',
+		'Logable'
 	);
 
 /**

@@ -159,20 +159,18 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$ministries = $this->Ministries->Ministry->find('all', array(
 			'conditions' => array(
 				'Ministry.id' => array(1,4,5)
-			)
+			),
+			'order' => 'id ASC'
 		));
 		$results = Set::extract('/Ministry/active', $ministries);
-		sort($results);
 		$expected = array(1,1,1);
 		$this->assertEqual($results, $expected);
 		
 		$results = Set::extract('/Ministry/private', $ministries);
-		sort($results);
 		$expected = array(0,0,1);
 		$this->assertEqual($results, $expected);
 
 		$results = Set::extract('/Ministry/campus_id', $ministries);
-		sort($results);
 		$expected = array(1,1,2);
 		$this->assertEqual($results, $expected);
 
@@ -191,11 +189,96 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$ministries = $this->Ministries->Ministry->find('all', array(
 			'conditions' => array(
 				'Ministry.id' => array(1,4,5)
-			)
+			),
+			'order' => 'id ASC'
 		));
 		$results = Set::extract('/Ministry/campus_id', $ministries);
-		sort($results);
 		$expected = array(1,1,1);
+		$this->assertEqual($results, $expected);
+		
+		$results = Set::extract('/Ministry/parent_id', $ministries);
+		$expected = array(0,0,0);
+		$this->assertEqual($results, $expected);
+		
+		// put #5 back into campus 2 to test moving to a ministry under a different campus
+		$this->Ministries->Ministry->save(array(
+			'Ministry' => array(
+				'id' => 5,
+				'campus_id' => 2
+			)
+		));
+		$vars = $this->testAction('/ministries/bulk_edit/test', array(
+			'data' => array(
+				'Ministry' => array(
+					'active' => 1,
+					'private' => '',
+					'campus_id' => 1,
+					'parent_id' => 5,
+					'move_campus' => 0,
+					'move_ministry' => 1,
+				)
+			)
+		));
+		$ministries = $this->Ministries->Ministry->find('all', array(
+			'conditions' => array(
+				'Ministry.id' => array(1,4,5)
+			),
+			'order' => 'id ASC'
+		));
+		$results = Set::extract('/Ministry/campus_id', $ministries);
+		$expected = array(2,2,2);
+		$this->assertEqual($results, $expected);
+		
+		$results = Set::extract('/Ministry/parent_id', $ministries);
+		$expected = array(5,5,null);
+		$this->assertEqual($results, $expected);
+		
+		$vars = $this->testAction('/ministries/bulk_edit/test', array(
+			'data' => array(
+				'Ministry' => array(
+					'active' => 1,
+					'private' => '',
+					'campus_id' => 1,
+					'parent_id' => 5,
+					'move_campus' => 1,
+					'move_ministry' => 1,
+				)
+			)
+		));
+		$ministries = $this->Ministries->Ministry->find('all', array(
+			'conditions' => array(
+				'Ministry.id' => array(1,4,5)
+			),
+			'order' => 'id ASC'
+		));
+		$results = Set::extract('/Ministry/campus_id', $ministries);
+		$expected = array(1,1,1);
+		$this->assertEqual($results, $expected);
+		
+		$results = Set::extract('/Ministry/parent_id', $ministries);
+		$expected = array(0,0,0);
+		$this->assertEqual($results, $expected);
+		
+		$vars = $this->testAction('/ministries/bulk_edit/test', array(
+			'data' => array(
+				'Ministry' => array(
+					'active' => 1,
+					'private' => '',
+					'campus_id' => 2,
+					'parent_id' => 5,
+					'move_campus' => 1,
+					'move_ministry' => 0,
+				)
+			)
+		));
+		$ministries = $this->Ministries->Ministry->find('all', array(
+			'conditions' => array(
+				'Ministry.id' => array(1,4,5)
+			),
+			'order' => 'id ASC'
+		));
+		$results = Set::extract('/Ministry/campus_id', $ministries);
+		$expected = array(2,2,2);
 		$this->assertEqual($results, $expected);
 	}
 

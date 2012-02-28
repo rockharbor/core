@@ -51,7 +51,6 @@ class Image extends AppModel {
 		'Media.Coupler' => array(
 			'baseDirectory' => MEDIA_TRANSFER
 		),
-		'Logable',
 		'NamedScope.NamedScope' => array(
 			'promoted' => array(
 				'conditions' => array(
@@ -62,7 +61,8 @@ class Image extends AppModel {
 				),
 				'limit' => 2
 			)
-		)
+		),
+		'Logable'
 	);
 
 /**
