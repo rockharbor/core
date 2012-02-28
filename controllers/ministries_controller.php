@@ -195,6 +195,14 @@ class MinistriesController extends AppController {
 				unset($this->data['Ministry']['campus_id']);
 			}
 			$this->data['Ministry'] = Set::filter($this->data['Ministry']);
+			if (isset($this->data['Ministry']['campus_id'])) {
+				$this->data['Ministry']['parent_id'] = 0;
+			}
+			if (isset($this->data['Ministry']['parent_id']) && $this->data['Ministry']['parent_id'] !== 0) {
+				unset($this->data['Ministry']['campus_id']);
+				$parent = $this->Ministry->read(array('campus_id'), $this->data['Ministry']['parent_id']);
+				$this->data['Ministry']['campus_id'] = $parent['Ministry']['campus_id'];
+			}
 			foreach ($selected as $id) {
 				if (!$this->isAuthorized('ministries/edit', array('Ministry' => $id))) {
 					continue;
