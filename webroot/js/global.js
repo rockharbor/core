@@ -266,6 +266,10 @@ CORE.init = function() {
 	CORE.initUI();
 	// init navigation
 	CORE.initNavigation();
+	// IE is too agressive in its caching
+	$.ajaxSetup({
+		cache: false
+	});
 }
 
 /**
