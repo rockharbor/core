@@ -28,6 +28,37 @@ class UserTestCase extends CoreTestCase {
 		
 		$user = array(
 			'User' => array(
+				'username' => 'rocky'
+			),
+			'Profile' => array(
+				'first_name' => 'Ricky',
+				'last_name' => 'Rock',
+				'primary_email' => 'test@example.com'
+			)
+		);
+		$this->assertTrue($this->User->createUser($user));
+		$newId = $this->User->id;
+		
+		$this->assertTrue($this->User->merge(2, $newId));
+		$this->assertFalse($this->User->read(null, $newId));
+		
+		$results = $this->User->find('first', array(
+			'conditions' => array(
+				'User.id' => 2
+			),
+			'contain' => array(
+				'Profile',
+				'ActiveAddress',
+				'Address',
+				'Roster',
+				'Publication'
+			)
+		));
+		$this->assertEqual($results['User']['id'], 2);
+		$this->assertEqual(count($results['Address']), 0);
+		
+		$user = array(
+			'User' => array(
 				'username' => 'jeremyharris'
 			),
 			'Address' => array(
@@ -76,6 +107,10 @@ class UserTestCase extends CoreTestCase {
 		$this->assertEqual($results['Profile']['last_name'], 'Schmarris');
 		$this->assertEqual($results['Profile']['user_id'], 1);
 		$this->assertEqual($results['Profile']['alternate_email_1'], 'jeremy@paxtechservices.com');
+		$this->assertEqual(count($results['Address']), 3);
+		$addresses = Set::extract('/Address/address_line_1', $results);
+		$expected = array('3080 Airway', '445 S. Pixley St.', '3095 Red hill');
+		$this->assertEqual($addresses, $expected);
 		$this->assertEqual(count($results['Address']), 3);
 		$this->assertTrue($results['ActiveAddress']['primary']);
 		$this->assertTrue($results['ActiveAddress']['active']);

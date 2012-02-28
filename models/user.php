@@ -318,9 +318,6 @@ class User extends AppModel {
 			}
 			$profile[$update] = $val;
 		}
-		if (!empty($updatedUser['Address'])) {
-			array_push($currentUser['Address'], $updatedUser['Address'][0]);
-		}
 		
 		// activate user
 		$user['active'] = true;
@@ -336,8 +333,9 @@ class User extends AppModel {
 			));
 		}
 		$successes[] = $this->Profile->save($profile, array('validate' => false));
-		foreach ($currentUser['Address'] as $address) {
-			$address['foreign_key'] = $currentUser['User']['id'];
+		
+		foreach ($updatedUser['Address'] as $address) {
+			$address['foreign_key'] = $user['id'];
 			$successes[] = $this->Address->save($address, array('validate' => false));
 		}
 		
