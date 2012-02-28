@@ -651,6 +651,10 @@ class User extends AppModel {
 		);
 
 		$data = Set::merge($default, $data);
+		
+		if (empty($data['Address'][0]['zip'])) {
+			unset($data['Address']);
+		}
 
 		if (!$data['User']['username']) {
 			$data['User']['username'] = $this->generateUsername($data['Profile']['first_name'], $data['Profile']['last_name']);

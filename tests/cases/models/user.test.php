@@ -451,6 +451,22 @@ class UserTestCase extends CoreTestCase {
 		$this->assertTrue($user['User']['reset_password']);
 		$user = $this->User->read('reset_password', $this->User->tmpAdded[1]['id']);
 		$this->assertTrue($user['User']['reset_password']);
+		$addresses = $this->User->Address->find('all', array(
+			'conditions' => array(
+				'Address.foreign_key' => $this->User->tmpAdded[0]['id'],
+				'Address.model' => 'User'
+			)
+		));
+		$this->assertEqual(count($addresses), 1);
+		$results = $addresses[0]['Address']['zip'];
+		$expected = 92886;
+		$this->assertEqual($results, $expected);
+		$results = $addresses[0]['Address']['primary'];
+		$expected = 1;
+		$this->assertEqual($results, $expected);
+		$results = $addresses[0]['Address']['active'];
+		$expected = 1;
+		$this->assertEqual($results, $expected);
 		
 		$this->User->tmpAdded = $this->User->tmpInvited = array();
 		$user = array(
@@ -561,6 +577,25 @@ class UserTestCase extends CoreTestCase {
 		);
 		$this->assertFalse($this->User->createUser($user, null, $creator, false));
 		$this->assertTrue(isset($this->User->validationErrors['username']));
+		
+		$user = array(
+			'User' => array(
+				'username' => 'addressless'
+			),
+			'Profile' => array(
+				'first_name' => 'I Have',
+				'last_name' => 'No Address',
+				'primary_email' => 'address@example.com'
+			)
+		);
+		$this->assertTrue($this->User->createUser($user));
+		$addresses = $this->User->Address->find('all', array(
+			'conditions' => array(
+				'Address.foreign_key' => $this->User->tmpAdded[0]['id'],
+				'Address.model' => 'User'
+			)
+		));
+		$this->assertTrue(empty($addresses));
 	}
 
 	function testPrepareSearch() {
