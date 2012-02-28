@@ -36,7 +36,6 @@ class Ministry extends AppModel {
  * @var array
  */
 	var $actsAs = array(
-		'Logable',
 		'Containable',
 		'Tree',
 		'Confirm',
@@ -51,7 +50,8 @@ class Ministry extends AppModel {
 					'active' => true
 				)
 			)
-		)
+		),
+		'Logable'
 	);
 
 /**

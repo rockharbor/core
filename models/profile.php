@@ -29,9 +29,9 @@ class Profile extends AppModel {
  * @var array
  */
 	var $actsAs = array(
-		'Logable',
 		'Containable',
-		'Search.Searchable'
+		'Search.Searchable',
+		'Logable'
 	);
 
 /**

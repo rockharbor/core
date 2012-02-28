@@ -29,12 +29,12 @@ class Campus extends AppModel {
  * @var array
  */
 	var $actsAs = array(
-		'Logable',
 		'Confirm',
 		'Containable',
 		'Cacher.Cache' => array(
 			'auto' => false
-		)
+		),
+		'Logable'
 	);
 
 /**

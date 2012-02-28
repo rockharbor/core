@@ -36,10 +36,10 @@ class User extends AppModel {
  * @var array
  */
 	var $actsAs = array(
-		'Logable',	
 		'Containable',
 		'Linkable.AdvancedLinkable',
-		'Search.Searchable'
+		'Search.Searchable',
+		'Logable'
 	);
 
 /**

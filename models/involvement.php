@@ -79,10 +79,10 @@ class Involvement extends AppModel {
  */
 	var $actsAs = array(
 		'Containable',
-		'Logable',
 		'Sanitizer.Sanitize',
 		'Search.Searchable',
-		'Linkable.AdvancedLinkable'
+		'Linkable.AdvancedLinkable',
+		'Logable'
 	);
 
 /**
