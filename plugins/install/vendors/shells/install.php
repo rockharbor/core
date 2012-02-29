@@ -663,6 +663,7 @@ class InstallShell extends Shell {
 			'controllers/Profiles/view',
 			'controllers/Payments/view',
 			'controllers/Payments/index',
+			'controllers/Payments/add',
 			'controllers/Rosters/status'
 		)
 	);

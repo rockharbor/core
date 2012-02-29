@@ -57,7 +57,7 @@ $this->Paginator->options(array(
 					$inv .= $this->Formatting->flags('Involvement', $inv_flags);
 					if (!empty($roster['Roster']) && $roster['Roster'][0]['balance'] > 0) {
 						$due = $this->Formatting->money($roster['Roster'][0]['balance']);
-						$link = $this->Html->link($due, array('controller' => 'payments', 'action' => 'add', 'Involvement' => $roster['Involvement']['id'], $roster['Roster'][0]['id']), array('rel' => 'modal-involvement', 'class' => 'balance'));
+						$link = $this->Html->link($due, array('controller' => 'payments', 'action' => 'add', 'Involvement' => $roster['Involvement']['id'], $roster['Roster'][0]['id'], 'User' => $roster['Roster'][0]['user_id']), array('rel' => 'modal-involvement', 'class' => 'balance'));
 						$inv .= ' | '.$this->Html->tag('span', $link);
 					}
 					if (!empty($roster['Involvement']['dates'])) {
