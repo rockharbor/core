@@ -28,6 +28,37 @@ class UserTestCase extends CoreTestCase {
 		
 		$user = array(
 			'User' => array(
+				'username' => 'rocky'
+			),
+			'Profile' => array(
+				'first_name' => 'Ricky',
+				'last_name' => 'Rock',
+				'primary_email' => 'test@example.com'
+			)
+		);
+		$this->assertTrue($this->User->createUser($user));
+		$newId = $this->User->id;
+		
+		$this->assertTrue($this->User->merge(2, $newId));
+		$this->assertFalse($this->User->read(null, $newId));
+		
+		$results = $this->User->find('first', array(
+			'conditions' => array(
+				'User.id' => 2
+			),
+			'contain' => array(
+				'Profile',
+				'ActiveAddress',
+				'Address',
+				'Roster',
+				'Publication'
+			)
+		));
+		$this->assertEqual($results['User']['id'], 2);
+		$this->assertEqual(count($results['Address']), 0);
+		
+		$user = array(
+			'User' => array(
 				'username' => 'jeremyharris'
 			),
 			'Address' => array(
@@ -76,6 +107,10 @@ class UserTestCase extends CoreTestCase {
 		$this->assertEqual($results['Profile']['last_name'], 'Schmarris');
 		$this->assertEqual($results['Profile']['user_id'], 1);
 		$this->assertEqual($results['Profile']['alternate_email_1'], 'jeremy@paxtechservices.com');
+		$this->assertEqual(count($results['Address']), 3);
+		$addresses = Set::extract('/Address/address_line_1', $results);
+		$expected = array('3080 Airway', '445 S. Pixley St.', '3095 Red hill');
+		$this->assertEqual($addresses, $expected);
 		$this->assertEqual(count($results['Address']), 3);
 		$this->assertTrue($results['ActiveAddress']['primary']);
 		$this->assertTrue($results['ActiveAddress']['active']);
@@ -451,6 +486,22 @@ class UserTestCase extends CoreTestCase {
 		$this->assertTrue($user['User']['reset_password']);
 		$user = $this->User->read('reset_password', $this->User->tmpAdded[1]['id']);
 		$this->assertTrue($user['User']['reset_password']);
+		$addresses = $this->User->Address->find('all', array(
+			'conditions' => array(
+				'Address.foreign_key' => $this->User->tmpAdded[0]['id'],
+				'Address.model' => 'User'
+			)
+		));
+		$this->assertEqual(count($addresses), 1);
+		$results = $addresses[0]['Address']['zip'];
+		$expected = 92886;
+		$this->assertEqual($results, $expected);
+		$results = $addresses[0]['Address']['primary'];
+		$expected = 1;
+		$this->assertEqual($results, $expected);
+		$results = $addresses[0]['Address']['active'];
+		$expected = 1;
+		$this->assertEqual($results, $expected);
 		
 		$this->User->tmpAdded = $this->User->tmpInvited = array();
 		$user = array(
@@ -561,6 +612,25 @@ class UserTestCase extends CoreTestCase {
 		);
 		$this->assertFalse($this->User->createUser($user, null, $creator, false));
 		$this->assertTrue(isset($this->User->validationErrors['username']));
+		
+		$user = array(
+			'User' => array(
+				'username' => 'addressless'
+			),
+			'Profile' => array(
+				'first_name' => 'I Have',
+				'last_name' => 'No Address',
+				'primary_email' => 'address@example.com'
+			)
+		);
+		$this->assertTrue($this->User->createUser($user));
+		$addresses = $this->User->Address->find('all', array(
+			'conditions' => array(
+				'Address.foreign_key' => $this->User->tmpAdded[0]['id'],
+				'Address.model' => 'User'
+			)
+		));
+		$this->assertTrue(empty($addresses));
 	}
 
 	function testPrepareSearch() {

@@ -103,9 +103,16 @@ class QuestionsController extends AppController {
 			$this->cakeError('error404');
 		}
 		
-		$this->Question->{'move'.$direction}($id);
+		$success = $this->Question->{'move'.$direction}($id);
+		
+		$question = $this->Question->read(null, $id);
 
-		$this->redirect(array('action' => 'index'));
+		if ($success) {
+			$this->Session->setFlash('Moved question '.$direction.'.', 'flash'.DS.'success');
+		} else {
+			$this->Session->setFlash('Could not move question '.$direction.'. Please try again.', 'flash'.DS.'failure');
+		}
+		$this->redirect(array('action' => 'index', 'Involvement' => $question['Question']['involvement_id']));
 	}
 	
 /**
