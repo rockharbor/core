@@ -1,6 +1,1 @@
-<?php 
-if ($activeUser['User']['id'] == $user['User']['id']) {
-	echo 'You have';
-} else {
-	echo $user['Profile']['name'].' has';
-}?> been removed from <strong><?php echo $involvement['Involvement']['name']; ?></strong>.
+You have been removed from <strong><?php echo $this->Html->link($involvement['Involvement']['name'], array('controllers' => 'involvements', 'action' => 'view', 'Involvement' => $involvement['Involvement']['id'])); ?></strong>.

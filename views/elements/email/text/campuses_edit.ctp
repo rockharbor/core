@@ -1,1 +1,1 @@
-The <?php echo $name; ?> description has been edited and is pending approval.
+The <?php $campus['Campus']['name']; ?> description has been edited and is pending approval.

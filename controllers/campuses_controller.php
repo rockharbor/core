@@ -103,18 +103,18 @@ class CampusesController extends AppController {
 		}
 
 		$this->Campus->id = $id;
-		$name = $this->Campus->field('name');
+		$campus = $this->Campus->read();
 		$revision = $this->Campus->revision($id);
 		
 		if (!empty($this->data)) {
 			if (!$revision) {
 				if ($this->Campus->save($this->data)) {
 					$this->Session->setFlash('Your request has been received and is pending approval.', 'flash'.DS.'success');
-					$this->set('name', $name);
+					$this->set('campus', $campus);
 					$this->Notifier->notify(array(
 						'to' => Core::read('notifications.campus_content'),
 						'template' => 'campuses_edit',
-						'subject' => 'The '.$name.' campus description has been edited'
+						'subject' => 'The '.$campus['Campus']['name'].' campus description has been edited'
 					));
 				} else {
 					$this->Campus->setFlash('Unable to save campus. Please try again.', 'flash'.DS.'failure');

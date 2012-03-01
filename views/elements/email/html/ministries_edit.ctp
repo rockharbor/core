@@ -1,3 +1,1 @@
-<p>Ministry Approval Needed</p>
-<p>The <?php echo $ministry['Ministry']['name'] ?> ministry has either been created or edited, and requires approval.</p>
-<p><?php echo Core::read('general.site_name'); ?></p>
+The <strong><?php echo $this->Html->link($ministry['Ministry']['name'], array('controller' => 'ministries', 'action' => 'edit', 'Ministry' => $ministry['Ministry']['id'])); ?></strong> ministry has been edited and is pending approval.

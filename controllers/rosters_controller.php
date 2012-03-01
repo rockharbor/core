@@ -498,18 +498,21 @@ class RostersController extends AppController {
 								$signupchild['Payment'][0]['number'] = substr($this->data['CreditCard']['credit_card_number'], -4);
 								$this->Roster->saveAll($signupchild, array('validate' => false));
 								$this->Notifier->notify(array(
-								'to' => $signupchild['Roster']['user_id'],
-								'template' => 'involvements_signup',
-								), 'notification');
+									'to' => $signupchild['Roster']['user_id'],
+									'template' => 'involvements_signup',
+								));
 							}
 						}
 						
 						$leaders = $this->Roster->Involvement->getLeaders($involvement['Involvement']['id']);
+						$this->set('signedUpUsers', implode(' and ', Set::extract('/Profile/name', $signedupUsers)));
+						$this->set('verb', $verb);
+						$this->set('amount', $amount);
 						foreach ($leaders as $leader) {
 							$this->Notifier->notify(array(
 								'to' => $leader,
 								'template' => 'involvements_signup_payment_leader'
-							), 'notification');
+							));
 						}
 						
 						$this->Notifier->notify(array(
@@ -524,6 +527,15 @@ class RostersController extends AppController {
 						$this->Session->setFlash('Unable to process payment.', 'flash'.DS.'failure');
 					}
 				} else {
+					$signedUpIds = array_merge(Set::extract('/Adult/Roster/user_id', $this->data), Set::extract('/Child/Roster/user_id', $this->data));
+					$signedupUsers = $this->Roster->User->Profile->find('all', array(
+						'conditions' => array(
+							'user_id' => $signedUpIds
+						),
+						'contain' => false
+					));
+					$verb = count($signedupUsers) > 1 ? 'have' : 'has';
+					
 					// no credit card, just save as normal
 					// save main rosters
 					foreach ($this->data['Adult'] as $signuproster) {
@@ -544,16 +556,18 @@ class RostersController extends AppController {
 							$this->Notifier->notify(array(
 								'to' => $signupchild['Roster']['user_id'],
 								'template' => 'involvements_signup',
-							), 'notification');
+							));
 						}
 					}
 					
+					$this->set('signedUpUsers', implode(' and ', Set::extract('/Profile/name', $signedupUsers)));
+					$this->set('verb', $verb);
 					$leaders = $this->Roster->Involvement->getLeaders($involvement['Involvement']['id']);
 					foreach ($leaders as $leader) {
 						$this->Notifier->notify(array(
 							'to' => $leader,
 							'template' => 'involvements_signup_leader'
-						), 'notification');
+						));
 					}
 					
 					$this->Session->setFlash('You have signed up for '.$involvement['Involvement']['name'].'.', 'flash'.DS.'success');
@@ -799,33 +813,26 @@ class RostersController extends AppController {
 				$this->Roster->Involvement->Leader->User->contain(array('Profile'));
 				$involvement = $this->Roster->Involvement->read(null, $roster['Roster']['involvement_id']);
 				$this->set('involvement', $involvement);
-				$user = $this->Roster->Involvement->Leader->User->read(null, $roster['Roster']['user_id']);
-				$this->set('user', $user);
+				$leaver = $this->Roster->Involvement->Leader->User->read(null, $roster['Roster']['user_id']);
+				$this->set('leaver', $leaver);
 				$this->set('activeUser', $this->activeUser);
 				// notify the user that they left
 				$this->Notifier->notify(array(
 					'to' => $roster['Roster']['user_id'],
 					'template' => 'rosters_delete',
-					'subject' => ($this->activeUser['User']['id'] == $user['User']['id'] ? 'You have' : $user['Profile']['name'].' has').' been removed from '.$involvement['Involvement']['name']
+					'subject' => 'You have been removed from '.$involvement['Involvement']['name']
 				));
+			
+				// notify all the leaders
+				$leaders = $this->Roster->Involvement->getLeaders($roster['Roster']['involvement_id']);
+				foreach ($leaders as $leader) {
+					$this->Notifier->notify(array(
+						'to' => $leader,
+						'template' => 'rosters_delete_leader',
+						'subject' => $leaver['Profile']['name'].' has been removed from '.$involvement['Involvement']['name']
+					));
+				}
 			}
-		}
-		// notify all the leaders
-		$leaders = $this->Roster->Involvement->Leader->find('all', array(
-			'conditions' => array(
-				'model_id' => $roster['Roster']['involvement_id'],
-				'model' => 'Involvement'
-			)
-		));
-		$involvement = $this->Roster->Involvement->read(null, $roster['Roster']['involvement_id']);
-		foreach ($leaders as $leader) {
-			$user = $this->Roster->Involvement->Leader->User->read(null, $leader['Leader']['user_id']);
-			$this->set('user', $user);
-			$this->Notifier->notify(array(
-				'to' => $leader['Leader']['user_id'],
-				'template' => 'rosters_delete',
-				'subject' => ($this->activeUser['User']['id'] == $user['User']['id'] ? 'You have' : $user['Profile']['name'].' has').' been removed from '.$involvement['Involvement']['name']
-			));
 		}
 		$this->Session->setFlash('Roster members removed.', 'flash'.DS.'success');
 		$this->redirect(array('action'=>'index'));

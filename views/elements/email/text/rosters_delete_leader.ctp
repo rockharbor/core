@@ -1,0 +1,1 @@
+<?php echo $leaver['Profile']['name']; ?> has been removed from <?php echo $involvement['Involvement']['name']; ?>.

@@ -108,28 +108,26 @@ class LeadersController extends AppController {
 			if ($this->Leader->save($data)) {
 				$this->Leader->User->contain(array('Profile'));
 				$leader = $this->Leader->User->read(null, $data['Leader']['user_id']);
-
 				$itemType = $data['Leader']['model'] == 'Involvement' ? 'Involvement Opportunities' : 'Ministry';
-				$itemName = $item[$model]['name'];
-				$name = $leader['Profile']['name'];
+				$item = $this->Leader->{$data['Leader']['model']}->read(null, $model_id);
 
-				$this->set(compact('itemType','itemName','name'));
+				$this->set(compact('model', 'leader', 'item'));
 
 				// notify this user
 				$this->Notifier->notify(array(
-					'to' => $leader['User']['id'],
+					'to' => $userId,
 					'template' => 'leaders_add'
-				), 'notification');
+				));
 
 				// notify the managers as well
 				foreach ($managers as $manager) {
 					$this->Notifier->notify(array(
 						'to' => $manager,
 						'template' => 'leaders_add'
-					), 'notification');
+					));
 				}
 
-				$this->Session->setFlash($name.' is now a leader of'.$itemName.'.', 'flash'.DS.'success');
+				$this->Session->setFlash($leader['Profile']['name'].' is now a leader of '.$item[$model]['name'].'.', 'flash'.DS.'success');
 				//$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash('Unable to process this request. Please try again.', 'flash'.DS.'failure');
@@ -183,17 +181,19 @@ class LeadersController extends AppController {
 		$leader = $this->Leader->User->read(null, $this->passedArgs['User']);
 		
 		if ($this->Leader->delete($leaderId['Leader']['id'])) {
+			$this->Leader->User->contain(array('Profile'));
+			$leader = $this->Leader->User->read(null, $this->passedArgs['User']);
 			$itemType = $this->model == 'Involvement' ? 'Involvement Opportunities' : 'Ministry';
-			$itemName = $item[$this->model]['name'];
-			$name = $leader['Profile']['name'];
-			
-			$this->set(compact('itemType','itemName','name'));
+			$item = $this->Leader->{$this->model}->read(null, $this->modelId);
+			$model = $this->model;
+
+			$this->set(compact('model', 'leader', 'item'));
 			
 			// notify this user
 			$this->Notifier->notify(array(
 					'to' => $leader['User']['id'],
 					'template' => 'leaders_delete'
-				), 'notification');
+				));
 			
 			// notify the managers as well
 			$managers = $this->Leader->getManagers($this->model, $this->modelId);
@@ -203,11 +203,11 @@ class LeadersController extends AppController {
 					$this->Notifier->notify(array(
 						'to' => $manager,
 						'template' => 'leaders_delete'
-					), 'notification');
+					));
 				}
 			}
 		
-			$this->Session->setFlash($name.' has been removed from as a leader of '.$itemName.'.', 'flash'.DS.'success');
+			$this->Session->setFlash($leader['Profile']['name'].' has been removed from leading '.$item[$model]['name'].'.', 'flash'.DS.'success');
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->Session->setFlash('Unable to process request. Please try again.', 'flash'.DS.'failure');

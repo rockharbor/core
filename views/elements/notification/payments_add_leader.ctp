@@ -1,0 +1,1 @@
+<?php echo $payer['Profile']['name']; ?> made a <?php echo $this->Formatting->money($amount); ?> payment for the <?php echo $involvement['InvolvementType']['name']; ?> <strong><?php echo $this->Html->link($involvement['Involvement']['name'], array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvement['Involvement']['id'])); ?></strong>.

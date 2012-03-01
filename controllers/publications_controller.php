@@ -117,7 +117,7 @@ class PublicationsController extends SimpleCrudsController {
 			$this->Notifier->notify(array(
 				'to' => $userId,
 				'template' => 'publications_toggle_subscribe'
-			), 'notification');
+			));
 		}
 	}
 
