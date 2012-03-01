@@ -1,5 +1,19 @@
 <h1>Edit Campus</h1>
-<div class="campuses form">
+<div class="campuses form content-box">
+<?php
+if (!empty($revision)) {
+	$changes = array_diff_assoc($revision, $this->data['Campus']);
+}
+
+if ($revision && !empty($changes)): ?>
+<div id="change" class="message change">
+	There is a pending change for this campus
+	<?php
+	echo $this->Permission->link('History', array('action' => 'history','Campus' => $this->data['Campus']['id']),array('rel' => 'modal-content', 'class' => 'button')
+	);
+	?>
+</div>
+<?php endif; ?>
 <?php 
 echo $this->Form->create('Campus', array(
 	'default' => false,
