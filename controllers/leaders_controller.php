@@ -111,7 +111,7 @@ class LeadersController extends AppController {
 				$itemType = $data['Leader']['model'] == 'Involvement' ? 'Involvement Opportunities' : 'Ministry';
 				$item = $this->Leader->{$data['Leader']['model']}->read(null, $model_id);
 
-				$this->set(compact('model', 'leader', 'item'));
+				$this->set(compact('model', 'leader', 'item', 'itemType'));
 
 				// notify this user
 				$this->Notifier->notify(array(
@@ -187,7 +187,7 @@ class LeadersController extends AppController {
 			$item = $this->Leader->{$this->model}->read(null, $this->modelId);
 			$model = $this->model;
 
-			$this->set(compact('model', 'leader', 'item'));
+			$this->set(compact('model', 'leader', 'item', 'itemType'));
 			
 			// notify this user
 			$this->Notifier->notify(array(
