@@ -20,7 +20,6 @@ class CampusesControllerTestCase extends CoreTestCase {
 		$this->Campuses->Notifier->QueueEmail->initialize($this->Campuses);
 		$this->Campuses->Notifier->QueueEmail->setReturnValue('_smtp', true);
 		$this->Campuses->Notifier->QueueEmail->setReturnValue('_mail', true);
-		$this->Campuses->setReturnValue('isAuthorized', true);
 		$this->testController = $this->Campuses;
 	}
 
@@ -64,16 +63,36 @@ class CampusesControllerTestCase extends CoreTestCase {
 	}
 
 	function testEdit() {
+		$this->Campuses->Campus->Behaviors->enable('Confirm');
+		$this->Campuses->setReturnValueAt(1, 'isAuthorized', true);
 		$data = array(
-			'id' => 1,
-			'name' => 'New name'
+			'Campus' => array(
+				'id' => 1,
+				'name' => 'New name'
+			)
 		);
 		$this->testAction('/campuses/edit/Campus:1', array(
 			'data' => $data
 		));
 		$this->Campuses->Campus->id = 1;
 		$this->assertEqual($this->Campuses->Campus->field('name'), 'New name');
-		$this->assertNotEqual($this->Campuses->Campus->field('modified'), '2010-03-11 13:34:41');
+		$modified = $this->Campuses->Campus->field('modified');
+		$this->assertNotEqual($modified, '2010-03-11 13:34:41');
+		
+		$this->Campuses->Campus->Behaviors->enable('Confirm');
+		$this->Campuses->setReturnValueAt(3, 'isAuthorized', false);
+		$data = array(
+			'Campus' => array(
+				'id' => 1,
+				'name' => 'Another edit'
+			)
+		);
+		$this->testAction('/campuses/edit/Campus:1', array(
+			'data' => $data
+		));
+		$this->Campuses->Campus->id = 1;
+		$this->assertEqual($this->Campuses->Campus->field('name'), 'New name');
+		$this->assertEqual($modified, $this->Campuses->Campus->field('modified'));
 	}
 
 	function testToggleActivity() {
