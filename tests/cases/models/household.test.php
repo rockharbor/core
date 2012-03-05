@@ -29,12 +29,12 @@ class HouseholdTestCase extends CoreTestCase {
 
 		$results = $this->Household->getMemberIds(3);
 		sort($results);
-		$expected = array(1, 2);
+		$expected = array(1, 2, 97, 98, 99);
 		$this->assertEqual($results, $expected);
 
 		$results = $this->Household->getMemberIds(3, true);
 		sort($results);
-		$expected = array();
+		$expected = array(97);
 		$this->assertEqual($results, $expected);
 
 		$results = $this->Household->getMemberIds(6);
