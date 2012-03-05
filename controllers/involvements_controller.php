@@ -265,7 +265,7 @@ class InvolvementsController extends AppController {
 						$this->Notifier->notify(array(
 							'to' => $userId,
 							'template' => 'involvements_invite_'.$status,
-							'subject' => 'You\'ve been added to '.$involvement['Involement']['name']
+							'subject' => 'You\'ve been added to '.$involvement['Involvement']['name']
 						));
 					} else {
 						$subject = $invitee['Profile']['name'].' has been invited to '.$involvement['Involvement']['name'];
@@ -330,14 +330,22 @@ class InvolvementsController extends AppController {
 				$invitee = $this->Involvement->Roster->User->Profile->findByUserId($userId);
 				$this->set('invitee', $invitee);
 				
-				$subject = $invitee['Profile']['name'].' has been invited to '.$involvement['Involvement']['name'];
-				
-				$this->Notifier->invite(array(
-					'to' => $userId,
-					'template' => 'involvements_invite_'.$status,
-					'confirm' => '/rosters/status/'.$this->Involvement->Roster->id.'/1',
-					'deny' => '/rosters/status/'.$this->Involvement->Roster->id.'/4' //status 4 = declined
-				));
+				if ($status == 1) {
+					$subject = $invitee['Profile']['name'].' has been added to '.$involvement['Involvement']['name'];
+					$this->Notifier->notify(array(
+						'to' => $userId,
+						'template' => 'involvements_invite_'.$status,
+						'subject' => 'You\'ve been added to '.$involvement['Involvement']['name']
+					));
+				} else {
+					$subject = $invitee['Profile']['name'].' has been invited to '.$involvement['Involvement']['name'];
+					$this->Notifier->invite(array(
+						'to' => $userId,
+						'template' => 'involvements_invite_'.$status,
+						'confirm' => '/rosters/status/'.$this->Involvement->Roster->id.'/1',
+						'deny' => '/rosters/status/'.$this->Involvement->Roster->id.'/4' //status 4 = declined
+					));
+				}
 				
 				foreach ($leaders as $leader) {
 					$this->Notifier->notify(array(
