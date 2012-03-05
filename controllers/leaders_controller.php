@@ -113,21 +113,25 @@ class LeadersController extends AppController {
 
 				$this->set(compact('model', 'leader', 'item', 'itemType'));
 
+				$subject = $leader['Profile']['name'].' is now a leader of '.$item[$model]['name'].'.';
+				
 				// notify this user
 				$this->Notifier->notify(array(
 					'to' => $userId,
-					'template' => 'leaders_add'
+					'template' => 'leaders_add',
+					'subject' => $subject
 				));
 
 				// notify the managers as well
 				foreach ($managers as $manager) {
 					$this->Notifier->notify(array(
 						'to' => $manager,
-						'template' => 'leaders_add'
+						'template' => 'leaders_add',
+						'subject' => $subject
 					));
 				}
 
-				$this->Session->setFlash($leader['Profile']['name'].' is now a leader of '.$item[$model]['name'].'.', 'flash'.DS.'success');
+				$this->Session->setFlash($subject, 'flash'.DS.'success');
 				//$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash('Unable to process this request. Please try again.', 'flash'.DS.'failure');
@@ -189,11 +193,14 @@ class LeadersController extends AppController {
 
 			$this->set(compact('model', 'leader', 'item', 'itemType'));
 			
+			$subject = $leader['Profile']['name'].' has been removed from leading '.$item[$model]['name'].'.';
+			
 			// notify this user
 			$this->Notifier->notify(array(
-					'to' => $leader['User']['id'],
-					'template' => 'leaders_delete'
-				));
+				'to' => $leader['User']['id'],
+				'template' => 'leaders_delete',
+				'subject' => $subject
+			));
 			
 			// notify the managers as well
 			$managers = $this->Leader->getManagers($this->model, $this->modelId);
@@ -202,12 +209,13 @@ class LeadersController extends AppController {
 				if ($manager != $this->passedArgs['User']) {
 					$this->Notifier->notify(array(
 						'to' => $manager,
-						'template' => 'leaders_delete'
+						'template' => 'leaders_delete',
+						'subject' => $subject
 					));
 				}
 			}
 		
-			$this->Session->setFlash($leader['Profile']['name'].' has been removed from leading '.$item[$model]['name'].'.', 'flash'.DS.'success');
+			$this->Session->setFlash($subject, 'flash'.DS.'success');
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->Session->setFlash('Unable to process request. Please try again.', 'flash'.DS.'failure');

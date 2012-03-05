@@ -454,7 +454,8 @@ class UsersController extends AppController {
 				$this->set('joined', $this->User->Profile->findByUserId($this->User->id));
 				$this->Notifier->notify(array(
 					'to' => $this->User->id,
-					'template' => 'households_join'
+					'template' => 'households_join',
+					'subject' => 'You have joined '.$this->activeUser['Profile']['name'].'\'s household'
 				));
 				
 				$this->redirect(array(

@@ -500,6 +500,7 @@ class RostersController extends AppController {
 								$this->Notifier->notify(array(
 									'to' => $signupchild['Roster']['user_id'],
 									'template' => 'involvements_signup',
+									'subject' => 'Signed up for '.$involvement['InvolvementType']['name']
 								));
 							}
 						}
@@ -511,7 +512,8 @@ class RostersController extends AppController {
 						foreach ($leaders as $leader) {
 							$this->Notifier->notify(array(
 								'to' => $leader,
-								'template' => 'involvements_signup_payment_leader'
+								'template' => 'involvements_signup_payment_leader',
+								'subject' => 'New user(s) signed up and paid for '.$involvement['Involvement']['name']
 							));
 						}
 						
@@ -556,6 +558,7 @@ class RostersController extends AppController {
 							$this->Notifier->notify(array(
 								'to' => $signupchild['Roster']['user_id'],
 								'template' => 'involvements_signup',
+								'subject' => 'You have signed up for '.$involvement['InvolvementType']['name'],
 							));
 						}
 					}
@@ -566,7 +569,8 @@ class RostersController extends AppController {
 					foreach ($leaders as $leader) {
 						$this->Notifier->notify(array(
 							'to' => $leader,
-							'template' => 'involvements_signup_leader'
+							'template' => 'involvements_signup_leader',
+							'subject' => 'New user(s) signed up for '.$involvement['Involvement']['name']
 						));
 					}
 					

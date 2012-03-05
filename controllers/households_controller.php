@@ -68,14 +68,14 @@ class HouseholdsController extends AppController {
 			$contact = $this->Household->HouseholdMember->User->Profile->findByUserId($joinedHousehold['Household']['contact_id']);
 			$joined = $this->Household->HouseholdMember->User->Profile->findByUserId($user);
 			$this->set(compact('contact', 'joined'));
-			$this->Notifier->notify(
-				array(
-					'to' => $user,
-					'template' => 'households_join'
-				)
-			);
+			$subject = $joined['Profile']['name'].' joined '.$contact['Profile']['name'].'\'s household.';
+			$this->Notifier->notify(array(
+				'to' => $user,
+				'template' => 'households_join',
+				'subject' => $subject
+			));
 			$success = true;
-			$this->Session->setFlash($joined['Profile']['name'].' joined '.$contact['Profile']['name'].'\'s household.', 'flash'.DS.'success');
+			$this->Session->setFlash($subject, 'flash'.DS.'success');
 		} else {
 			$success = false;
 			$this->Session->setFlash('Unable to process request. Please try again.', 'flash'.DS.'failure');
@@ -189,15 +189,15 @@ class HouseholdsController extends AppController {
 			$leaver = $this->Household->HouseholdMember->User->Profile->findByUserId($userId);
 			$contact = $this->Household->HouseholdMember->User->Profile->findByUserId($leaveHousehold['Household']['contact_id']);
 			$this->set(compact('leaver', 'contact'));
-			$this->Notifier->notify(
-				array(
-					'to' => $userId,
-					'template' => 'households_remove'
-				)
-			);
+			$subject = $user['Profile']['name'].' has left this household.';
+			$this->Notifier->notify(array(
+				'to' => $userId,
+				'template' => 'households_remove',
+				'subject' => $subject
+			));
 
 			$success = true;
-			$this->Session->setFlash($user['Profile']['name'].' has left this household.', 'flash'.DS.'success');
+			$this->Session->setFlash($subject, 'flash'.DS.'success');
 		} else {
 			$success = false;
 			$this->Session->setFlash('Unable to remove '.$user['Profile']['name'].' from this household. Pleaes try again.', 'flash'.DS.'failure');			
