@@ -1,28 +1,26 @@
 <?php
 /* Campuses Test cases generated on: 2010-07-09 14:07:25 : 1278710485 */
 App::import('Lib', 'CoreTestCase');
-App::import('Component', array('QueueEmail.QueueEmail', 'Notifier'));
+App::import('Component', array('QueueEmail.QueueEmail'));
 App::import('Controller', 'Campuses');
 
 Mock::generatePartial('QueueEmailComponent', 'MockCampusesQueueEmailComponent', array('_smtp', '_mail'));
-Mock::generatePartial('NotifierComponent', 'MockCampusesNotifierComponent', array('_render'));
 Mock::generatePartial('CampusesController', 'TestCampusesController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 
 class CampusesControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadSettings();
 		$this->loadFixtures('Campus', 'Ministry', 'Involvement', 'CampusesRev');
 		$this->Campuses =& new TestCampusesController();
 		$this->Campuses->__construct();
 		$this->Campuses->constructClasses();
-		$this->Campuses->Notifier = new MockCampusesNotifierComponent();
-		$this->Campuses->Notifier->initialize($this->Involvements);
-		$this->Campuses->Notifier->setReturnValue('_render', 'Notification body text');
 		$this->Campuses->Notifier->QueueEmail = new MockCampusesQueueEmailComponent();
+		$this->Campuses->Notifier->QueueEmail->enabled = true;
+		$this->Campuses->Notifier->QueueEmail->initialize($this->Campuses);
 		$this->Campuses->Notifier->QueueEmail->setReturnValue('_smtp', true);
 		$this->Campuses->Notifier->QueueEmail->setReturnValue('_mail', true);
-		$this->Campuses->setReturnValue('isAuthorized', true);
 		$this->testController = $this->Campuses;
 	}
 
@@ -66,16 +64,36 @@ class CampusesControllerTestCase extends CoreTestCase {
 	}
 
 	function testEdit() {
+		$this->Campuses->Campus->Behaviors->enable('Confirm');
+		$this->Campuses->setReturnValueAt(1, 'isAuthorized', true);
 		$data = array(
-			'id' => 1,
-			'name' => 'New name'
+			'Campus' => array(
+				'id' => 1,
+				'name' => 'New name'
+			)
 		);
 		$this->testAction('/campuses/edit/Campus:1', array(
 			'data' => $data
 		));
 		$this->Campuses->Campus->id = 1;
 		$this->assertEqual($this->Campuses->Campus->field('name'), 'New name');
-		$this->assertNotEqual($this->Campuses->Campus->field('modified'), '2010-03-11 13:34:41');
+		$modified = $this->Campuses->Campus->field('modified');
+		$this->assertNotEqual($modified, '2010-03-11 13:34:41');
+		
+		$this->Campuses->Campus->Behaviors->enable('Confirm');
+		$this->Campuses->setReturnValueAt(3, 'isAuthorized', false);
+		$data = array(
+			'Campus' => array(
+				'id' => 1,
+				'name' => 'Another edit'
+			)
+		);
+		$this->testAction('/campuses/edit/Campus:1', array(
+			'data' => $data
+		));
+		$this->Campuses->Campus->id = 1;
+		$this->assertEqual($this->Campuses->Campus->field('name'), 'New name');
+		$this->assertEqual($modified, $this->Campuses->Campus->field('modified'));
 	}
 
 	function testToggleActivity() {

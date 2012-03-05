@@ -108,7 +108,8 @@ class DummiesController extends AppController {
  */
 class CoreTestCaseTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->CoreTestCase =& new CoreTestCase();
 		$this->Dummies = new DummiesController();
 		$this->Dummies->constructClasses();

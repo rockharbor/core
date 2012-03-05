@@ -1,25 +1,28 @@
 <?php
 /* Reports Test cases generated on: 2010-07-19 12:07:49 : 1279566109 */
 App::import('Lib', 'CoreTestCase');
-App::import('Component', array('QueueEmail.QueueEmail', 'Notifier'));
+App::import('Component', array('QueueEmail.QueueEmail', 'RequestHandler'));
 App::import('Controller', 'Reports');
 
 Mock::generatePartial('QueueEmailComponent', 'MockReportsQueueEmailComponent', array('_smtp', '_mail'));
-Mock::generatePartial('NotifierComponent', 'MockReportsNotifierComponent', array('_render'));
+Mock::generatePartial('RequestHandlerComponent', 'MockReportsRequestHandlerComponent', array('_header'));
 Mock::generatePartial('ReportsController', 'TestReportsController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
+
 
 class ReportsControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
+		Router::parseExtensions('csv', 'print');
+		
 		// necessary fixtures
 		$this->loadFixtures('User', 'Roster', 'Ministry', 'Involvement', 'Campus', 'InvolvementType');
 		$this->Reports = new TestReportsController();
 		$this->Reports->__construct();
 		$this->Reports->constructClasses();
-		$this->Reports->Notifier = new MockReportsNotifierComponent();
-		$this->Reports->Notifier->initialize($this->Reports);
-		$this->Reports->Notifier->setReturnValue('_render', 'Notification body text');
 		$this->Reports->Notifier->QueueEmail = new MockReportsQueueEmailComponent();
+		$this->Reports->Notifier->QueueEmail->enabled = true;
+		$this->Reports->Notifier->QueueEmail->initialize($this->Reports);
 		$this->Reports->Notifier->QueueEmail->setReturnValue('_smtp', true);
 		$this->Reports->Notifier->QueueEmail->setReturnValue('_mail', true);
 		$this->Reports->setReturnValue('isAuthorized', true);
@@ -199,6 +202,8 @@ class ReportsControllerTestCase extends CoreTestCase {
 	}
 
 	function testExportCsvWithSearch() {
+		$this->Reports->RequestHandler = new MockReportsRequestHandlerComponent();
+		
 		$this->Reports->Session->write('MultiSelect.testExportCsvWithSearch', array(
 			'selected' => array(),
 		   'search' => array(

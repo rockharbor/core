@@ -1,11 +1,10 @@
 <?php
 /* Involvements Test cases generated on: 2010-07-12 11:07:51 : 1278959751 */
 App::import('Lib', 'CoreTestCase');
-App::import('Component', array('QueueEmail.QueueEmail', 'Notifier'));
+App::import('Component', array('QueueEmail.QueueEmail'));
 App::import('Controller', 'Involvements');
 
 Mock::generatePartial('QueueEmailComponent', 'MockInvolvementsQueueEmailComponent', array('_smtp', '_mail'));
-Mock::generatePartial('NotifierComponent', 'MockInvolvementsNotifierComponent', array('_render'));
 
 class TestInvolvementsController extends InvolvementsController {
 	
@@ -42,16 +41,16 @@ Mock::generatePartial('TestInvolvementsController', 'MockTestInvolvementsControl
 
 class InvolvementsControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Involvement', 'Roster', 'User', 'InvolvementType', 'Group', 'Ministry');
 		$this->loadFixtures('MinistriesRev', 'Leader');
 		$this->Involvements =& new MockTestInvolvementsController();
 		$this->Involvements->__construct();
 		$this->Involvements->constructClasses();
-		$this->Involvements->Notifier = new MockInvolvementsNotifierComponent();
-		$this->Involvements->Notifier->initialize($this->Involvements);
-		$this->Involvements->Notifier->setReturnValue('_render', 'Notification body text');
 		$this->Involvements->Notifier->QueueEmail = new MockInvolvementsQueueEmailComponent();
+		$this->Involvements->Notifier->QueueEmail->enabled = true;
+		$this->Involvements->Notifier->QueueEmail->initialize($this->Involvements);
 		$this->Involvements->Notifier->QueueEmail->setReturnValue('_smtp', true);
 		$this->Involvements->Notifier->QueueEmail->setReturnValue('_mail', true);
 		$this->testController = $this->Involvements;
@@ -247,7 +246,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 			'selected' => array(1),
 			'search' => array()
 		));
-		$notificationCountBefore = $this->Involvements->Notifier->Notification->find('count');
+		$notificationCountBefore = $this->Involvements->Involvement->Roster->User->Notification->find('count');
 		$countBefore = $this->Involvements->Involvement->Roster->find('count');
 		$vars = $this->testAction('/involvements/invite_roster/test/3/Involvement:1');
 		$invites = $this->Involvements->Involvement->Roster->User->Invitation->find('all');
@@ -255,8 +254,9 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$countNow = $this->Involvements->Involvement->Roster->find('count');
 		// they were both already signed up, just their roster changed to invited
 		$this->assertEqual($countBefore, $countNow);
-		$notificationCountAfter = $this->Involvements->Notifier->Notification->find('count');
-		$this->assertEqual($notificationCountAfter-$notificationCountBefore, 1);
+		$notificationCountAfter = $this->Involvements->Involvement->Roster->User->Notification->find('count');
+		// one for each leader for each user
+		$this->assertEqual($notificationCountAfter-$notificationCountBefore, 2);
 		
 		$newest = $this->Involvements->Involvement->Roster->read();
 		$this->assertEqual($newest['Roster']['payment_option_id'], 1);
@@ -270,18 +270,32 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 			'search' => array()
 		));
 		$countBefore = $this->Involvements->Involvement->Roster->find('count');
-		$notificationCountBefore = $this->Involvements->Notifier->Notification->find('count');
+		$notificationCountBefore = $this->Involvements->Involvement->Roster->User->Notification->find('count');
 		$vars = $this->testAction('/involvements/invite/test/3/Involvement:1');
 		$invites = $this->Involvements->Involvement->Roster->User->Invitation->find('all');
 		$this->assertEqual(count($invites), 2);
 		$countNow = $this->Involvements->Involvement->Roster->find('count');
 		// one already existed, one was invited
 		$this->assertEqual($countBefore+1, $countNow);
-		$notificationCountAfter = $this->Involvements->Notifier->Notification->find('count');
-		$this->assertEqual($notificationCountAfter-$notificationCountBefore, 1);
+		$notificationCountAfter = $this->Involvements->Involvement->Roster->User->Notification->find('count');
+		// one for each leader for each user
+		$this->assertEqual($notificationCountAfter-$notificationCountBefore, 2);
 		
 		$newest = $this->Involvements->Involvement->Roster->read();
 		$this->assertEqual($newest['Roster']['payment_option_id'], 1);
+		
+		$this->Involvements->Session->write('MultiSelect.test', array(
+			'selected' => array(4, 5),
+			'search' => array()
+		));
+		$countBefore = $this->Involvements->Involvement->Roster->find('count');
+		$notificationCountBefore = $this->Involvements->Involvement->Roster->User->Notification->find('count');
+		$vars = $this->testAction('/involvements/invite/test/1/Involvement:1');
+		$countNow = $this->Involvements->Involvement->Roster->find('count');
+		$this->assertEqual($countNow - $countBefore, 2);
+		$notificationCountAfter = $this->Involvements->Involvement->Roster->User->Notification->find('count');
+		// one for each leader for each user and one for each user (one is inactive, so only one user is notified)
+		$this->assertEqual($notificationCountAfter-$notificationCountBefore, 3);
 	}
 
 	function testAdd() {

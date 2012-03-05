@@ -7,7 +7,8 @@ Mock::generatePartial('MinistryLeadersController', 'MockMinistryLeadersControlle
 
 class MinistryLeadersControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Leader', 'User', 'Ministry', 'Role');
 		$this->Leaders =& new MockMinistryLeadersController;
 		$this->Leaders->__construct();

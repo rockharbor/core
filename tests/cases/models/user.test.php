@@ -10,7 +10,8 @@ class UsersTestController extends AppController {
 
 class UserTestCase extends CoreTestCase {
 	
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('User', 'Group');
 		$this->User =& ClassRegistry::init('User');
 	}

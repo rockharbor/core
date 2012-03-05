@@ -1,0 +1,1 @@
+<?php echo $invitee['Profile']['name']; ?> was invited to the <?php echo $involvement['InvolvementType']['name']; ?> <?php echo $involvement['Involvement']['name']; ?>.

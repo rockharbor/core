@@ -6,7 +6,8 @@ App::import('Model', array('Roster', 'CreditCard'));
 Mock::generatePartial('CreditCard', 'MockRosterCreditCard', array('save'));
 
 class RosterTestCase extends CoreTestCase {
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Roster', 'Payment', 'PaymentOption', 'Involvement', 'PaymentType', 'Role', 'RolesRoster', 'RosterStatus');
 		$CreditCard = new MockRosterCreditCard();
 		$CreditCard->setReturnValue('save', true);

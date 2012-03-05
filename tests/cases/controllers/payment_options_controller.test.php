@@ -7,7 +7,8 @@ Mock::generatePartial('PaymentOptionsController', 'TestPaymentOptionsController'
 
 class PaymentOptionsControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->PaymentOptions =& new TestPaymentOptionsController();
 		$this->PaymentOptions->__construct();
 		$this->PaymentOptions->constructClasses();

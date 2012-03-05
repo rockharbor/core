@@ -3,7 +3,8 @@ App::import('Helper', array('SelectOptions'));
 
 class SelectOptionsHelperTestCase extends CakeTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->SelectOptions = new SelectOptionsHelper();
 	}
 

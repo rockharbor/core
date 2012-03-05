@@ -34,7 +34,8 @@ class VirtualFieldModel extends AppModel {
 
 class AppModelTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('User', 'Group', 'Profile');
 		$this->User =& ClassRegistry::init('UserProxy');
 	}

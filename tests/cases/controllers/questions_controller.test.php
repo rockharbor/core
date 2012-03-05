@@ -17,7 +17,8 @@ Mock::generatePartial('TestQuestionsController', 'MockTestQuestionsController', 
 
 class QuestionsControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		// necessary fixtures
 		$this->loadFixtures('Question');
 		$this->Questions =& new MockTestQuestionsController();

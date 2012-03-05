@@ -8,7 +8,8 @@ Mock::generatePartial('AclComponent', 'CoreConfigureMockAclComponent', array('ch
 
 class CoreConfigureTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('AppSetting', 'Attachment');
 		$this->AppSetting =& ClassRegistry::init('AppSetting');
 		$this->loadSettings();

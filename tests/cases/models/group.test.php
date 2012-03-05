@@ -5,7 +5,8 @@ App::import('Model', 'Group');
 
 class GroupTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Group');
 		$this->Group =& ClassRegistry::init('Group');
 		$this->loadSettings();

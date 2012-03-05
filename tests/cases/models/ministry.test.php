@@ -4,7 +4,8 @@ App::import('Lib', 'CoreTestCase');
 App::import('Model', 'Ministry');
 
 class MinistryTestCase extends CoreTestCase {
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Ministry', 'Leader');
 		$this->Ministry =& ClassRegistry::init('Ministry');
 	}

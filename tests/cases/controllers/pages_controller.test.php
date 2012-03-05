@@ -6,7 +6,10 @@ Mock::generatePartial('PagesController', 'TestPagesController', array('isAuthori
 
 class PagesControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
+		Router::parseExtensions('json');
+		
 		$this->loadFixtures('Ministry', 'Involvement');
 		$this->Pages =& new TestPagesController();
 		$this->Pages->__construct();

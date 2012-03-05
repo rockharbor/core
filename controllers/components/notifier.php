@@ -186,7 +186,7 @@ class NotifierComponent extends Object {
 		$this->QueueEmail->reset();
 		$default = array(
 			'from' => null,
-			'subject' => '',
+			'subject' => 'New notification',
 			'template' => 'default',
 			'layout' => 'notifications',
 			'body' => null,

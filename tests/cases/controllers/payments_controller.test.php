@@ -3,23 +3,22 @@
 App::import('Lib', 'CoreTestCase');
 App::import('Controller', 'Payments');
 App::import('Model', 'CreditCard');
-App::import('Component', array('Notifier', 'QueueEmail.QueueEmail'));
+App::import('Component', array('QueueEmail.QueueEmail'));
 
 Mock::generatePartial('PaymentsController', 'TestPaymentsController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 Mock::generatePartial('CreditCard', 'MockPaymentsCreditCard', array('save', 'saveAll'));
 Mock::generatePartial('QueueEmailComponent', 'MockPaymentsQueueEmailComponent', array('_smtp', '_mail'));
-Mock::generatePartial('NotifierComponent', 'MockPaymentsNotifierComponent', array('_render'));
 
 class PaymentsControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->Payments =& new TestPaymentsController();
 		$this->Payments->__construct();
 		$this->Payments->constructClasses();
-		$this->Payments->Notifier = new MockPaymentsNotifierComponent();
-		$this->Payments->Notifier->initialize($this->Involvements);
-		$this->Payments->Notifier->setReturnValue('_render', 'Notification body text');
 		$this->Payments->Notifier->QueueEmail = new MockPaymentsQueueEmailComponent();
+		$this->Payments->Notifier->QueueEmail->enabled = true;
+		$this->Payments->Notifier->QueueEmail->initialize($this->Payments);
 		$this->Payments->Notifier->QueueEmail->setReturnValue('_smtp', true);
 		$this->Payments->Notifier->QueueEmail->setReturnValue('_mail', true);
 		$CreditCard =& new MockPaymentsCreditCard();
@@ -105,7 +104,7 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, array());
 
 		// split between 2 people
-		$notificationCountBefore = $this->Payments->Notifier->Notification->find('count');
+		$notificationCountBefore = $this->Payments->Payment->User->Notification->find('count');
 		$data['Payment']['amount'] = 10;
 		$vars = $this->testAction('/payments/add/test/Involvement:1', array(
 			'return' => 'vars',
@@ -124,7 +123,7 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($amounts, $expected);
 		$numbers = Set::extract('/Payment/number', $results);
 		$this->assertEqual($numbers, array(8888, 8888));
-		$notificationCountAfter = $this->Payments->Notifier->Notification->find('count');
+		$notificationCountAfter = $this->Payments->Payment->User->Notification->find('count');
 		$this->assertEqual($notificationCountAfter-$notificationCountBefore, 1);
 
 		// pay the rest of 1 person who only has 5 left, then the other 20 on the other

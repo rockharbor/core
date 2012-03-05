@@ -1,11 +1,10 @@
 <?php
 /* Users Test cases generated on: 2010-08-11 07:08:43 : 1281537883 */
 App::import('Lib', 'CoreTestCase');
-App::import('Component', array('QueueEmail.QueueEmail', 'Notifier', 'Cookie'));
+App::import('Component', array('QueueEmail.QueueEmail', 'Cookie'));
 App::import('Controller', 'Users');
 
 Mock::generatePartial('QueueEmailComponent', 'MockUsersQueueEmailComponent', array('_smtp', '_mail'));
-Mock::generatePartial('NotifierComponent', 'MockUsersNotifierComponent', array('_render'));
 Mock::generatePartial('CookieComponent', 'MockUsersCookieComponent', array('read', 'write', 'delete'));
 Mock::generatePartial('UsersController', 'MockUsersController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 
@@ -15,7 +14,8 @@ if (!defined('FULL_BASE_URL')) {
 
 class UsersControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('User', 'Profile', 'Group');
 		$this->loadSettings();
 		$this->Users =& new MockUsersController();
@@ -26,10 +26,8 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->Users->Cookie->enabled = true;
 		$this->Users->Cookie->setReturnValue('write', true);
 		$this->Users->Cookie->setReturnValue('delete', true);
-		$this->Users->Notifier = new MockUsersNotifierComponent();
-		$this->Users->Notifier->initialize($this->Users);
-		$this->Users->Notifier->setReturnValue('_render', 'Notification body text');
 		$this->Users->Notifier->QueueEmail = new MockUsersQueueEmailComponent();
+		$this->Users->Notifier->QueueEmail->enabled = true;
 		$this->Users->Notifier->QueueEmail->initialize($this->Users);
 		$this->Users->Notifier->QueueEmail->setReturnValue('_smtp', true);
 		$this->Users->Notifier->QueueEmail->setReturnValue('_mail', true);

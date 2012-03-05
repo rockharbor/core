@@ -1,0 +1,1 @@
+<?php echo $signedUpUsers; ?> <?php echo $verb; ?> signed up for the <?php echo $involvement['InvolvementType']['name']; ?> <?php echo $involvement['Involvement']['name']; ?>.

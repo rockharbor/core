@@ -13,7 +13,8 @@ class ProxyAppHelper extends AppHelper {
 
 class AppHelperTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->App = new ProxyAppHelper();
 	}
 

@@ -7,7 +7,8 @@ Mock::generatePartial('InvolvementLeadersController', 'MockInvolvementLeadersCon
 
 class InvolvementLeadersControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Leader', 'User', 'Ministry', 'Role', 'Involvement', 'Date');
 		$this->Leaders =& new MockInvolvementLeadersController;
 		$this->Leaders->__construct();

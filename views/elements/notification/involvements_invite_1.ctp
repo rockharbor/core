@@ -1,1 +1,1 @@
-You have been added to the <?php echo $involvement['InvolvementType']['name']; ?> <?php echo $involvement['Involvement']['name']; ?> by <?php echo $notifier['Profile']['name']; ?>.
+You have been added to the <?php echo $involvement['InvolvementType']['name']; ?> <strong><?php echo $this->Html->link($involvement['Involvement']['name'], array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvement['Involvement']['id'])); ?></strong>.

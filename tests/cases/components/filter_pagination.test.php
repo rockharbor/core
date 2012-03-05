@@ -80,7 +80,8 @@ Mock::generatePartial('PaginateTestsController', 'MockPaginateTestsController', 
 
 class FilterPaginationTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('PaginateTest');
 		$this->Controller = new PaginateTestsController();
 		$this->Controller->__construct();

@@ -1,7 +1,1 @@
-<p>Leaving <?php echo $involvement['InvolvementType']['name']; ?></p>
-<p><?php 
-if ($activeUser['User']['id'] == $user['User']['id']) {
-	echo 'You have';
-} else {
-	echo $user['Profile']['name'].' has';
-}?> left <?php echo $involvement['Involvement']['name']; ?>.</p>
+You have been removed from <strong><?php echo $this->Html->link($involvement['Involvement']['name'], array('controllers' => 'involvements', 'action' => 'view', 'Involvement' => $involvement['Involvement']['id'])); ?></strong>.

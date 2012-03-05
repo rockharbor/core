@@ -4,7 +4,8 @@ App::import('Model', 'Invitation');
 
 class InvitationTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Invitation', 'InvitationsUser');
 		$this->Invitation =& ClassRegistry::init('Invitation');
 	}

@@ -9,7 +9,8 @@ Mock::generatePartial('SearchesController', 'MockSearchesController', array('isA
 
 class SearchesControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('User', 'Ministry', 'Involvement', 'Profile', 'InvolvementType', 'Group', 'Campus');
 		$this->Searches =& new MockSearchesController();
 		$this->Searches->__construct();
@@ -17,6 +18,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$this->Searches->FilterPagination->initialize($this->Searches);
 		$this->Searches->Notifier->QueueEmail = new MockSearchesQueueEmailComponent();
 		$this->Searches->Notifier->QueueEmail->enabled = true;
+		$this->Searches->Notifier->QueueEmail->initialize($this->Searches);
 		$this->Searches->Notifier->QueueEmail->setReturnValue('_smtp', true);
 		$this->Searches->Notifier->QueueEmail->setReturnValue('_mail', true);
 		$this->Searches->setReturnValue('isAuthorized', true);

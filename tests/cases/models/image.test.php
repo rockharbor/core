@@ -4,7 +4,8 @@ App::import('Model', 'Image');
 
 class ImageTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Attachment');
 		$this->Image = ClassRegistry::init('Image');
 		$this->Image->Behaviors->detach('Media.Coupler'); // requires 'file' key, which we don't want to test

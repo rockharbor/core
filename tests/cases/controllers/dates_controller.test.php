@@ -1,24 +1,25 @@
 <?php
 /* Dates Test cases generated on: 2010-07-12 09:07:14 : 1278951854 */
 App::import('Lib', 'CoreTestCase');
-App::import('Component', array('QueueEmail.QueueEmail', 'Notifier'));
+App::import('Component', array('QueueEmail.QueueEmail'));
 App::import('Controller', 'Dates');
 
 Mock::generatePartial('QueueEmailComponent', 'MockDatesQueueEmailComponent', array('_smtp', '_mail'));
-Mock::generatePartial('NotifierComponent', 'MockDatesNotifierComponent', array('_render'));
 Mock::generatePartial('DatesController', 'TestDatesController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 
 class DatesControllerTestCase extends CoreTestCase {
 	
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
+		Router::parseExtensions('json');
+		
 		$this->loadFixtures('Involvement', 'Date');
 		$this->Dates =& new TestDatesController();
 		$this->Dates->__construct();
 		$this->Dates->constructClasses();
-		$this->Dates->Notifier = new MockDatesNotifierComponent();
-		$this->Dates->Notifier->initialize($this->Dates);
-		$this->Dates->Notifier->setReturnValue('_render', 'Notification body text');
 		$this->Dates->Notifier->QueueEmail = new MockDatesQueueEmailComponent();
+		$this->Dates->Notifier->QueueEmail->enabled = true;
+		$this->Dates->Notifier->QueueEmail->initialize($this->Dates);
 		$this->Dates->Notifier->QueueEmail->setReturnValue('_smtp', true);
 		$this->Dates->Notifier->QueueEmail->setReturnValue('_mail', true);
 		$this->Dates->setReturnValue('isAuthorized', true);

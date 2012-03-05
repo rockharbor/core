@@ -6,7 +6,8 @@ App::import('Model', 'School');
 class SchoolTestCase extends CoreTestCase {
 	var $fixtures = array('app.school');
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->School =& ClassRegistry::init('School');
 		$this->loadFixtures('School');
 	}

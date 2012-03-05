@@ -9,7 +9,8 @@ Mock::generatePartial('AppController', 'MockAppController', array('isAuthorized'
 
 class PermissionHelperTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->Permission =& new PermissionHelper();
 		$this->Permission->Html = new MockHtmlHelper();
 		$this->Permission->Js = new MockJsHelper();

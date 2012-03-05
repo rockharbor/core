@@ -393,7 +393,6 @@ class UsersController extends AppController {
 
 				foreach ($this->User->tmpInvited as $notifyUser) {
 					$this->User->contain(array('Profile'));
-					$this->set('notifier', $this->User->read(null, $this->activeUser['User']['id']));
 					$this->set('contact', $this->User->read(null, $this->User->id));
 					$this->Notifier->invite(
 						array(
@@ -452,10 +451,12 @@ class UsersController extends AppController {
 				));
 				
 				$this->set('contact', $this->activeUser);
+				$this->set('joined', $this->User->Profile->findByUserId($this->User->id));
 				$this->Notifier->notify(array(
 					'to' => $this->User->id,
-					'template' => 'households_join'
-				), 'notification');
+					'template' => 'households_join',
+					'subject' => 'You have joined '.$this->activeUser['Profile']['name'].'\'s household'
+				));
 				
 				$this->redirect(array(
 					'controller' => 'households',
@@ -532,7 +533,6 @@ class UsersController extends AppController {
 
 				foreach ($this->User->tmpInvited as $notifyUser) {
 					$this->User->contain(array('Profile'));
-					$this->set('notifier', $this->User->read(null, $this->User->id));
 					$this->set('contact', $this->User->read(null, $this->User->id));
 					$this->Notifier->invite(
 						array(

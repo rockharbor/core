@@ -228,9 +228,6 @@ class InvolvementsController extends AppController {
 		));
 		$userIds = Set::extract('/Roster/user_id', $roster);
 		
-		$this->Involvement->Roster->User->contain(array('Profile'));
-		$this->set('notifier', $this->Involvement->Roster->User->read(null, $this->activeUser['User']['id']));
-
 		$this->Involvement->contain(array('InvolvementType'));
 		$fromInvolvement = $this->Involvement->read(null, $this->passedArgs['Involvement']);
 		$toInvolvements = $this->MultiSelect->getSelected($mskey);
@@ -242,6 +239,7 @@ class InvolvementsController extends AppController {
 			} else {
 				$paymentOption = null;
 			}
+			$leaders = $this->Involvement->getLeaders($to);
 			foreach ($userIds as $userId) {
 				$roster = $this->Involvement->Roster->setDefaultData(array(
 					'roster' => array(
@@ -259,37 +257,37 @@ class InvolvementsController extends AppController {
 				$this->Involvement->Roster->create();
 				if ($this->Involvement->Roster->save($roster)) {
 					$this->set('involvement', $involvement);
+					$invitee = $this->Involvement->Roster->User->Profile->findByUserId($userId);
+					$this->set('invitee', $invitee);
+					
 					if ($status == 1) {
-						$this->Notifier->notify(
-							array(
-								'to' => $userId,
-								'template' => 'involvements_invite_'.$status,
-								'You\'ve been invited to join '.$involvement['Involement']['name']
-							)
-						);
+						$subject = $invitee['Profile']['name'].' has been added to '.$involvement['Involvement']['name'];
+						$this->Notifier->notify(array(
+							'to' => $userId,
+							'template' => 'involvements_invite_'.$status,
+							'subject' => 'You\'ve been added to '.$involvement['Involvement']['name']
+						));
 					} else {
-						$this->Notifier->invite(
-							array(
-								'to' => $userId,
-								'template' => 'involvements_invite_'.$status,
-								'confirm' => '/rosters/status/'.$this->Involvement->Roster->id.'/1',
-								'deny' => '/rosters/status/'.$this->Involvement->Roster->id.'/4' //status 4 = declined
-							)
-						);
+						$subject = $invitee['Profile']['name'].' has been invited to '.$involvement['Involvement']['name'];
+						$this->Notifier->invite(array(
+							'to' => $userId,
+							'template' => 'involvements_invite_'.$status,
+							'confirm' => '/rosters/status/'.$this->Involvement->Roster->id.'/1',
+							'deny' => '/rosters/status/'.$this->Involvement->Roster->id.'/4' //status 4 = declined
+						));
+					}
+					
+					foreach ($leaders as $leader) {
+						$this->Notifier->notify(array(
+							'to' => $leader,
+							'template' => 'involvements_invite_'.$status.'_leader',
+							'subject' => $subject
+						));
 					}
 				}
 			}
-			$leaders = $this->Involvement->getLeaders($to);
-			$this->set('toInvolvement', $involvement);
-			$this->set('fromInvolvement', $fromInvolvement);
-			foreach ($leaders as $leader) {
-				$this->Notifier->notify(array(
-					'to' => $leader,
-					'template' => 'involvements_invite_'.$status.'_leader'
-				), 'notification');
-			}
 		}
-		$this->Session->setFlash('Your invitation has been sent.', 'flash'.DS.'success');
+		$this->Session->setFlash($subject, 'flash'.DS.'success');
 		
 		$this->redirect($this->referer());
 	}
@@ -309,7 +307,7 @@ class InvolvementsController extends AppController {
 		$this->Involvement->contain(array('InvolvementType'));
 		
 		$involvement = $this->Involvement->read(null, $this->passedArgs['Involvement']);
-		$this->set('notifier', $this->Involvement->Roster->User->read(null, $this->activeUser['User']['id']));
+		$leaders = $this->Involvement->getLeaders($involvement['Involvement']['id']);
 		
 		$userIds = $this->MultiSelect->getSelected($mskey);
 		foreach ($userIds as $userId) {
@@ -329,24 +327,36 @@ class InvolvementsController extends AppController {
 			$this->Involvement->Roster->create();
 			if ($this->Involvement->Roster->save($roster)) {
 				$this->set('involvement', $involvement);
-				$this->Notifier->invite(
-					array(
+				$invitee = $this->Involvement->Roster->User->Profile->findByUserId($userId);
+				$this->set('invitee', $invitee);
+				
+				if ($status == 1) {
+					$subject = $invitee['Profile']['name'].' has been added to '.$involvement['Involvement']['name'];
+					$this->Notifier->notify(array(
+						'to' => $userId,
+						'template' => 'involvements_invite_'.$status,
+						'subject' => 'You\'ve been added to '.$involvement['Involvement']['name']
+					));
+				} else {
+					$subject = $invitee['Profile']['name'].' has been invited to '.$involvement['Involvement']['name'];
+					$this->Notifier->invite(array(
 						'to' => $userId,
 						'template' => 'involvements_invite_'.$status,
 						'confirm' => '/rosters/status/'.$this->Involvement->Roster->id.'/1',
 						'deny' => '/rosters/status/'.$this->Involvement->Roster->id.'/4' //status 4 = declined
-					)
-				);
+					));
+				}
+				
+				foreach ($leaders as $leader) {
+					$this->Notifier->notify(array(
+						'to' => $leader,
+						'template' => 'involvements_invite_'.$status.'_leader',
+						'subject' => $subject
+					));
+				}
 			}
 		}
-		$leaders = $this->Involvement->getLeaders($involvement['Involvement']['id']);
-		foreach ($leaders as $leader) {
-			$this->Notifier->notify(array(
-				'to' => $leader,
-				'template' => 'involvements_invite_'.$status.'_leader'
-			), 'notification');
-		}
-		$this->Session->setFlash('Your invitation has been sent.', 'flash'.DS.'success');
+		$this->Session->setFlash($subject, 'flash'.DS.'success');
 
 		$this->redirect($this->referer());
 	}

@@ -64,20 +64,18 @@ class HouseholdsController extends AppController {
 		$viewUser = $this->passedArgs['User'];
 		
 		if ($this->Household->join($household, $user, true)) {
-			$this->Household->contain(array('HouseholdContact' => array('Profile')));
-			$contact = $this->Household->read(null, $household);
-			$this->Household->HouseholdMember->User->contain(array('Profile'));
-			$joined = $this->Household->HouseholdMember->User->read(null, $user);
-			$this->set('contact', $contact['HouseholdContact']);
-			$this->Notifier->notify(
-				array(
-					'to' => $user,
-					'template' => 'households_join'
-				),
-				'notification'
-			);
+			$joinedHousehold = $this->Household->read(null, $household);
+			$contact = $this->Household->HouseholdMember->User->Profile->findByUserId($joinedHousehold['Household']['contact_id']);
+			$joined = $this->Household->HouseholdMember->User->Profile->findByUserId($user);
+			$this->set(compact('contact', 'joined'));
+			$subject = $joined['Profile']['name'].' joined '.$contact['Profile']['name'].'\'s household.';
+			$this->Notifier->notify(array(
+				'to' => $user,
+				'template' => 'households_join',
+				'subject' => $subject
+			));
 			$success = true;
-			$this->Session->setFlash($joined['Profile']['name'].' joined '.$contact['HouseholdContact']['Profile']['name'].'\'s household.', 'flash'.DS.'success');
+			$this->Session->setFlash($subject, 'flash'.DS.'success');
 		} else {
 			$success = false;
 			$this->Session->setFlash('Unable to process request. Please try again.', 'flash'.DS.'failure');
@@ -126,7 +124,6 @@ class HouseholdsController extends AppController {
 					'contain' => 'Profile'
 				));
 				$this->Household->HouseholdContact->contain(array('Profile'));
-				$this->set('notifier', $this->Household->HouseholdContact->read(null, $this->activeUser['User']['id']));
 
 				$success = $this->Household->join(
 					$household,
@@ -188,16 +185,19 @@ class HouseholdsController extends AppController {
 			'contain' => 'Profile'
 		));
 		if ($dSuccess && $cSuccess) {
-			$this->Notifier->notify(
-				array(
-					'to' => $userId,
-					'template' => 'households_remove'
-				), 
-				'notification'
-			);
+			$leaveHousehold = $this->Household->read(null, $household);
+			$leaver = $this->Household->HouseholdMember->User->Profile->findByUserId($userId);
+			$contact = $this->Household->HouseholdMember->User->Profile->findByUserId($leaveHousehold['Household']['contact_id']);
+			$this->set(compact('leaver', 'contact'));
+			$subject = $user['Profile']['name'].' has left this household.';
+			$this->Notifier->notify(array(
+				'to' => $userId,
+				'template' => 'households_remove',
+				'subject' => $subject
+			));
 
 			$success = true;
-			$this->Session->setFlash($user['Profile']['name'].' has left this household.', 'flash'.DS.'success');
+			$this->Session->setFlash($subject, 'flash'.DS.'success');
 		} else {
 			$success = false;
 			$this->Session->setFlash('Unable to remove '.$user['Profile']['name'].' from this household. Pleaes try again.', 'flash'.DS.'failure');			

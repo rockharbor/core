@@ -1,2 +1,1 @@
-<p>Payment Made</p>
-<p>A payment has been made for <?php echo $involvement['Involvement']['name']; ?>.</p>
+A payment has been received for <strong><?php echo $this->Html->link($involvement['Involvement']['name'], array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvement['Involvement']['id'])); ?></strong>.

@@ -1,0 +1,1 @@
+<?php echo $leader['Profile']['name']; ?> is now leading <?php echo strtolower($itemType); ?> in <?php echo $item[$model]['name']; ?>.

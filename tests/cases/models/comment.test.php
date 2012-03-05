@@ -4,7 +4,8 @@ App::import('Model', 'Comment');
 
 class CommentTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Comment', 'Group', 'User');
 		$this->Comment =& ClassRegistry::init('Comment');
 	}

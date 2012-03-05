@@ -1,0 +1,1 @@
+You have <?php echo $subscribe ? 'subscribed for' : 'unsubscribed from'; ?> <strong><?php echo $publication['Publication']['name']; ?></strong>.
