@@ -1,12 +1,11 @@
 <?php
 /* Rosters Test cases generated on: 2010-08-05 12:08:42 : 1281037602 */
 App::import('Lib', 'CoreTestCase');
-App::import('Component', array('QueueEmail.QueueEmail', 'Notifier'));
+App::import('Component', array('QueueEmail.QueueEmail'));
 App::import('Controller', 'Rosters');
 App::import('Model', 'CreditCard');
 
 Mock::generatePartial('QueueEmailComponent', 'MockRostersQueueEmailComponent', array('_smtp', '_mail'));
-Mock::generatePartial('NotifierComponent', 'MockRostersNotifierComponent', array('_render'));
 Mock::generatePartial('RostersController', 'MockRostersController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 Mock::generatePartial('CreditCard', 'MockRostersCreditCard', array('save', 'saveAll'));
 
@@ -19,10 +18,8 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->Rosters =& new MockRostersController();
 		$this->Rosters->__construct();
 		$this->Rosters->constructClasses();
-		$this->Rosters->Notifier = new MockRostersNotifierComponent();
-		$this->Rosters->Notifier->initialize($this->Rosters);
-		$this->Rosters->Notifier->setReturnValue('_render', 'Notification body text');
 		$this->Rosters->Notifier->QueueEmail = new MockRostersQueueEmailComponent();
+		$this->Rosters->Notifier->QueueEmail->enabled = true;
 		$this->Rosters->Notifier->QueueEmail->initialize($this->Rosters);
 		$this->Rosters->Notifier->QueueEmail->setReturnValue('_smtp', true);
 		$this->Rosters->Notifier->QueueEmail->setReturnValue('_mail', true);
@@ -411,7 +408,8 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($rostersAfter-$rostersBefore, -3);
 
 		$notificationsAfter = $this->Rosters->Roster->User->Notification->find('count');
-		$this->assertEqual($notificationsAfter-$notificationsBefore, 3);
+		// one for each user and one for each leader for each user
+		$this->assertEqual($notificationsAfter-$notificationsBefore, 4);
 		
 		$rostersBefore = $this->Rosters->Roster->find('count');
 		$vars = $this->testAction('/rosters/delete/testDelete/3');

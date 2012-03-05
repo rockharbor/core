@@ -1,11 +1,10 @@
 <?php
 /* SysEmails Test cases generated on: 2010-08-05 08:08:46 : 1281021586 */
 App::import('Lib', 'CoreTestCase');
-App::import('Component', array('QueueEmail.QueueEmail', 'Notifier'));
+App::import('Component', array('QueueEmail.QueueEmail'));
 App::import('Controller', 'SysEmails');
 
 Mock::generatePartial('QueueEmailComponent', 'MockSysEmailsQueueEmailComponent', array('_smtp', '_mail'));
-Mock::generatePartial('NotifierComponent', 'MockSysEmailsNotifierComponent', array('_render'));
 Mock::generatePartial('SysEmailsController', 'MockSysEmailsController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 
 class SysEmailsControllerTestCase extends CoreTestCase {
@@ -15,10 +14,8 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$this->SysEmails =& new MockSysEmailsController();
 		$this->SysEmails->__construct();
 		$this->SysEmails->constructClasses();
-		$this->SysEmails->Notifier = new MockSysEmailsNotifierComponent();
-		$this->SysEmails->Notifier->initialize($this->Involvements);
-		$this->SysEmails->Notifier->setReturnValue('_render', 'Notification body text');
 		$this->SysEmails->Notifier->QueueEmail = new MockSysEmailsQueueEmailComponent();
+		$this->SysEmails->Notifier->QueueEmail->enabled = true;
 		$this->SysEmails->Notifier->QueueEmail->initialize($this->SysEmails);
 		$this->SysEmails->Notifier->QueueEmail->setReturnValue('_smtp', true);
 		$this->SysEmails->Notifier->QueueEmail->setReturnValue('_mail', true);

@@ -1,11 +1,10 @@
 <?php
 /* Leaders Test cases generated on: 2010-07-14 12:07:47 : 1279136267 */
 App::import('Lib', 'CoreTestCase');
-App::import('Component', array('QueueEmail.QueueEmail', 'Notifier'));
+App::import('Component', array('QueueEmail.QueueEmail'));
 App::import('Controller', array('InvolvementLeaders', 'MinistryLeaders', 'CampusLeaders'));
 
 Mock::generatePartial('QueueEmailComponent', 'MockLeadersQueueEmailComponent', array('_smtp', '_mail'));
-Mock::generatePartial('NotifierComponent', 'MockLeadersNotifierComponent', array('_render'));
 Mock::generatePartial('InvolvementLeadersController', 'MockLeadersInvolvementLeadersController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 Mock::generatePartial('MinistryLeadersController', 'MockLeadersMinistryLeadersController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 Mock::generatePartial('CampusLeadersController', 'MockLeadersCampusLeadersController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
@@ -18,10 +17,9 @@ class LeadersControllerTestCase extends CoreTestCase {
 			$this->Leaders =& new $className;
 			$this->Leaders->__construct();
 			$this->Leaders->constructClasses();
-			$this->Leaders->Notifier = new MockLeadersNotifierComponent();
-			$this->Leaders->Notifier->initialize($this->Leaders);
-			$this->Leaders->Notifier->setReturnValue('_render', 'Notification body text');
 			$this->Leaders->Notifier->QueueEmail = new MockLeadersQueueEmailComponent();
+			$this->Leaders->Notifier->QueueEmail->enabled = true;
+			$this->Leaders->Notifier->QueueEmail->initialize($this->Leaders);
 			$this->Leaders->Notifier->QueueEmail->setReturnValue('_smtp', true);
 			$this->Leaders->Notifier->QueueEmail->setReturnValue('_mail', true);
 			$this->testController = $this->Leaders;

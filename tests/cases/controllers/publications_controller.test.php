@@ -1,11 +1,10 @@
 <?php
 /* Publications Test cases generated on: 2010-07-19 10:07:29 : 1279558889 */
 App::import('Lib', 'CoreTestCase');
-App::import('Component', array('QueueEmail.QueueEmail', 'Notifier'));
+App::import('Component', array('QueueEmail.QueueEmail'));
 App::import('Controller', 'Publications');
 
 Mock::generatePartial('QueueEmailComponent', 'MockPublicationsQueueEmailComponent', array('_smtp', '_mail'));
-Mock::generatePartial('NotifierComponent', 'MockPublicationsNotifierComponent', array('_render'));
 Mock::generatePartial('PublicationsController', 'TestPublicationsController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 
 class PublicationsControllerTestCase extends CoreTestCase {
@@ -16,10 +15,9 @@ class PublicationsControllerTestCase extends CoreTestCase {
 		$this->Publications->__construct();
 		$this->Publications->constructClasses();		
 		$this->Publications->Component->initialize($this->Publications);
-		$this->Publications->Notifier = new MockPublicationsNotifierComponent();
-		$this->Publications->Notifier->initialize($this->Ministries);
-		$this->Publications->Notifier->setReturnValue('_render', 'Notification body text');
 		$this->Publications->Notifier->QueueEmail = new MockPublicationsQueueEmailComponent();
+		$this->Publications->Notifier->QueueEmail->enabled = true;
+		$this->Publications->Notifier->QueueEmail->initialize($this->Publications);
 		$this->Publications->Notifier->QueueEmail->setReturnValue('_smtp', true);
 		$this->Publications->Notifier->QueueEmail->setReturnValue('_mail', true);
 		$this->testController = $this->Publications;
