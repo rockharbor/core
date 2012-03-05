@@ -4,7 +4,8 @@ App::import('Controller', 'App');
 
 class AppControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('User', 'Group', 'Notification', 'Alert', 'Household', 'HouseholdMember');
 		$this->loadFixtures('Leader', 'Campus', 'Ministry', 'Involvement');
 		$this->App =& new AppController();		

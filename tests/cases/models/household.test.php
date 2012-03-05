@@ -5,7 +5,8 @@ App::import('Model', 'Household');
 
 class HouseholdTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Household', 'HouseholdMember', 'User', 'Profile');
 		$this->Household =& ClassRegistry::init('Household');
 	}

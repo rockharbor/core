@@ -4,7 +4,8 @@ App::import('Lib', 'CoreTestCase');
 App::import('Model', 'Date');
 
 class DateTestCase extends CoreTestCase {
-	function startTest() {		
+	function startTest($method) {
+		parent::startTest($method);
 		$this->Date =& ClassRegistry::init('Date');
 	}
 

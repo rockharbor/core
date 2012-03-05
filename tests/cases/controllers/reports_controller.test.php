@@ -11,7 +11,10 @@ Mock::generatePartial('ReportsController', 'TestReportsController', array('isAut
 
 class ReportsControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
+		Router::parseExtensions('csv', 'print');
+		
 		// necessary fixtures
 		$this->loadFixtures('User', 'Roster', 'Ministry', 'Involvement', 'Campus', 'InvolvementType');
 		$this->Reports = new TestReportsController();

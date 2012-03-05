@@ -4,7 +4,8 @@ App::import('Model', 'Role');
 
 class RoleTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->Role =& ClassRegistry::init('Role');
 	}
 

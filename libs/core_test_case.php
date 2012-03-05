@@ -117,6 +117,17 @@ class CoreTestCase extends CakeTestCase {
  * @param Array of methods to test
  */
 	var $testMethods = null;
+
+/**
+ * Runs prior to running the test method
+ * 
+ * @param string $method The test method
+ * @return void
+ */
+	function startTest($method) {
+		parent::startTest($method);
+		Router::reload();
+	}
 	
 /**
  * Overrides `CakeTestCase::getTests()` to allow running a subset of tests within
@@ -204,6 +215,9 @@ class CoreTestCase extends CakeTestCase {
 		// set up the controller based on the url
 		$urlParams = Router::parse($url);
 		if (strtolower($options['method']) == 'get') {
+			if (!isset($urlParams['url'])) {
+				$urlParams['url'] = array();
+			}
 			$urlParams['url'] = array_merge($options['data'], $urlParams['url']);
 		} else {
 			$Controller->data = $options['data'];

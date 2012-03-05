@@ -6,7 +6,8 @@ class ReportHelperTestCase extends CoreTestCase {
 	
 	var $skipSetup = true;
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->Report = new ReportHelper();
 	}
 

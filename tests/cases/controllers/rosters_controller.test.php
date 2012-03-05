@@ -11,7 +11,8 @@ Mock::generatePartial('CreditCard', 'MockRostersCreditCard', array('save', 'save
 
 class RostersControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Roster', 'User', 'Involvement', 'Group', 'Date', 
 			'Payment', 'Notification', 'PaymentOption', 'PaymentType',
 			'InvolvementType', 'Role', 'RolesRoster', 'Leader', 'Ministry');

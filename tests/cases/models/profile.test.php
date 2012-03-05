@@ -5,7 +5,8 @@ App::import('Model', 'Profile');
 
 class ProfileTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Profile');
 		$this->loadFixtures('Involvement', 'Leader', 'Ministry', 'Campus');
 		$this->Profile =& ClassRegistry::init('Profile');

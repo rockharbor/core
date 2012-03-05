@@ -7,7 +7,8 @@ Mock::generatePartial('RolesController', 'MockRolesController', array('isAuthori
 
 class RolesControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Role');
 		$this->Roles =& new MockRolesController();
 		$this->Roles->__construct();

@@ -26,7 +26,8 @@ class LeadersControllerTestCase extends CoreTestCase {
 		}
 	}
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Leader', 'User', 'Profile', 'Involvement', 'Notification', 'Group', 'Ministry', 'Campus');
 		$this->_setLeaderController();
 	}

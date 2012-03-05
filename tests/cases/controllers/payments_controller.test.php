@@ -11,7 +11,8 @@ Mock::generatePartial('QueueEmailComponent', 'MockPaymentsQueueEmailComponent', 
 
 class PaymentsControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->Payments =& new TestPaymentsController();
 		$this->Payments->__construct();
 		$this->Payments->constructClasses();

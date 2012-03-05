@@ -7,7 +7,10 @@ Mock::generatePartial('AppSettingsController', 'TestAppSettingsController', arra
 
 class AppSettingsControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
+		Router::parseExtensions('json');
+		
 		$this->loadFixtures('AppSetting', 'Publication', 'User');
 		$this->AppSettings =& new TestAppSettingsController();
 		$this->AppSettings->__construct();

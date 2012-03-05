@@ -9,7 +9,8 @@ Mock::generatePartial('UserAddressesController', 'TestUserAddressesController', 
 
 class AddressesControllerTestCase extends CoreTestCase {
 	
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Address');
 		$this->Addresses =& new TestUserAddressesController();
 		$this->Addresses->__construct();

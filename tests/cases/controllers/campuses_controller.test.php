@@ -9,7 +9,8 @@ Mock::generatePartial('CampusesController', 'TestCampusesController', array('isA
 
 class CampusesControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadSettings();
 		$this->loadFixtures('Campus', 'Ministry', 'Involvement', 'CampusesRev');
 		$this->Campuses =& new TestCampusesController();

@@ -9,7 +9,8 @@ Mock::generatePartial('SearchesController', 'MockSearchesController', array('isA
 
 class SearchesControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('User', 'Ministry', 'Involvement', 'Profile', 'InvolvementType', 'Group', 'Campus');
 		$this->Searches =& new MockSearchesController();
 		$this->Searches->__construct();

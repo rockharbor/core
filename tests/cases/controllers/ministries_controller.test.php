@@ -9,7 +9,8 @@ Mock::generatePartial('MinistriesController', 'TestMinistriesController', array(
 
 class MinistriesControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		// necessary fixtures
 		$this->loadSettings();
 		$this->loadFixtures('Ministry', 'MinistriesRev');

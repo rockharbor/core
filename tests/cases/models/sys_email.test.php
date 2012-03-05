@@ -4,7 +4,8 @@ App::import('Lib', 'CoreTestCase');
 App::import('Model', array('SysEmail', 'Document'));
 
 class SysEmailTestCase extends CoreTestCase {
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Attachment');
 		$this->SysEmail =& ClassRegistry::init('SysEmail');
 		$this->Document =& ClassRegistry::init('Document');

@@ -4,7 +4,8 @@ App::import('Lib', 'CoreTestCase');
 App::import('Model', 'Alert');
 
 class AlertTestCase extends CoreTestCase {
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Alert', 'Group', 'User', 'AlertsUser');
 		$this->Alert =& ClassRegistry::init('Alert');
 	}

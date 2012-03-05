@@ -10,7 +10,8 @@ Mock::generatePartial('MergeRequestsController', 'TestMergeRequestsController', 
 
 class MergeRequestsControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->MergeRequests =& new TestMergeRequestsController();
 		$this->MergeRequests->__construct();
 		$this->MergeRequests->constructClasses();

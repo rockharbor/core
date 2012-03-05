@@ -9,7 +9,8 @@ Mock::generatePartial('UserImagesController', 'MockUserImagesController', array(
 
 class AttachmentsControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->Attachments =& new MockUserImagesController();
 		$this->Attachments->__construct();
 		$this->Attachments->constructClasses();

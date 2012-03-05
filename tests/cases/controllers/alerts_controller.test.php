@@ -9,7 +9,8 @@ Mock::generatePartial('AlertsController', 'TestAlertsController', array('render'
 
 class AlertsControllerTestCase extends CoreTestCase {
 	
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Alert', 'Group', 'AlertsUser', 'User');
 		$this->Alerts =& new TestAlertsController();
 		$this->Alerts->__construct();

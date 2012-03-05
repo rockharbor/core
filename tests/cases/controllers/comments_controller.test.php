@@ -9,7 +9,8 @@ Mock::generatePartial('CommentsController', 'TestCommentsController', array('ren
 
 class CommentsControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Comment', 'Group');
 		$this->Comments =& new TestCommentsController();
 		$this->Comments->__construct();

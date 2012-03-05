@@ -13,7 +13,8 @@ class FormattingHelperTestCase extends CoreTestCase {
 		$this->Formatting->beforeFilter();
 	}
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->Formatting = new FormattingHelper();
 		$this->Formatting->Html = new HtmlHelper();
 		$this->Formatting->Text = new TextHelper();

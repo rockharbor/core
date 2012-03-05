@@ -5,7 +5,8 @@ App::import('Model', 'Leader');
 
 class LeaderTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Leader', 'Involvement', 'Ministry', 'Campus', 'User', 'Profile');
 		$this->Leader =& ClassRegistry::init('Leader');
 	}

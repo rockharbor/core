@@ -4,7 +4,8 @@ App::import('Model', 'Address');
 
 class AddressTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Address');
 		$this->Address =& ClassRegistry::init('Address');
 	}

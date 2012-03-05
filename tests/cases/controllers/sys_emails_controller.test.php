@@ -9,7 +9,8 @@ Mock::generatePartial('SysEmailsController', 'MockSysEmailsController', array('i
 
 class SysEmailsControllerTestCase extends CoreTestCase {
 	
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('User', 'Group', 'Involvement', 'Roster', 'Profile');
 		$this->SysEmails =& new MockSysEmailsController();
 		$this->SysEmails->__construct();

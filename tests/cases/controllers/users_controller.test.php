@@ -14,7 +14,8 @@ if (!defined('FULL_BASE_URL')) {
 
 class UsersControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('User', 'Profile', 'Group');
 		$this->loadSettings();
 		$this->Users =& new MockUsersController();

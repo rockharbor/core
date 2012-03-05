@@ -9,7 +9,8 @@ Mock::generatePartial('PublicationsController', 'TestPublicationsController', ar
 
 class PublicationsControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Publication', 'PublicationsUser', 'User', 'Group');
 		$this->Publications =& new TestPublicationsController();
 		$this->Publications->__construct();

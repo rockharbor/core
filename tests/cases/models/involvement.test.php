@@ -5,7 +5,8 @@ App::import('Model', 'Involvement');
 
 class InvolvementTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Involvement', 'Leader', 'Date');
 		$this->Involvement =& ClassRegistry::init('Involvement');
 	}

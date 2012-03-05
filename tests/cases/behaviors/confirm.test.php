@@ -5,7 +5,8 @@ App::import('Model', 'Ministry');
 
 class ConfirmBehaviorTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Ministry', 'Involvement', 'MinistriesRev');
 		$this->Ministry =& ClassRegistry::init('Ministry');
 		$this->Ministry->RevisionModel->useDbConfig = 'test_suite';

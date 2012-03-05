@@ -9,7 +9,8 @@ Mock::generatePartial('NotificationsController', 'TestNotificationsController', 
 
 class NotificationsControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Notification');
 		$this->Notifications =& new TestNotificationsController();
 		$this->Notifications->__construct();

@@ -9,7 +9,10 @@ Mock::generatePartial('DatesController', 'TestDatesController', array('isAuthori
 
 class DatesControllerTestCase extends CoreTestCase {
 	
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
+		Router::parseExtensions('json');
+		
 		$this->loadFixtures('Involvement', 'Date');
 		$this->Dates =& new TestDatesController();
 		$this->Dates->__construct();

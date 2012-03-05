@@ -5,7 +5,8 @@ App::import('Behavior', 'GeoCoordinate');
 
 class GeoCoordinateBehaviorTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Address');
 		$this->Address =& ClassRegistry::init('Address');
 	}

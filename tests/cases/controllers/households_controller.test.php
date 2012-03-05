@@ -9,7 +9,8 @@ Mock::generatePartial('HouseholdsController', 'TestHouseholdsController', array(
 
 class HouseholdsControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Household', 'HouseholdMember', 'User', 'Profile', 'Group');
 		$this->Households =& new TestHouseholdsController();
 		$this->Households->__construct();

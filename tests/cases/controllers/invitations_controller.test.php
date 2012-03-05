@@ -7,7 +7,8 @@ Mock::generatePartial('InvitationsController', 'TestInvitationsController', arra
 
 class InvitationsControllerTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('Invitation', 'InvitationsUser');
 		$this->Invitations =& new TestInvitationsController();
 		$this->Invitations->__construct();

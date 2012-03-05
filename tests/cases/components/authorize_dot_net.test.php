@@ -13,7 +13,8 @@ class TestAuthorizeController extends AppController {}
 
 class AuthorizeDotNetTestCase extends CoreTestCase {
 
-	function startTest() {
+	function startTest($method) {
+		parent::startTest($method);
 		$this->loadFixtures('User', 'Profile');
 		$this->loadSettings();
 		$this->AuthorizeDotNet = new MockAuthorizeDotNetComponent();
