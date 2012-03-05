@@ -5,7 +5,9 @@ App::import('Component', array('QueueEmail.QueueEmail', 'RequestHandler'));
 App::import('Controller', 'Reports');
 
 Mock::generatePartial('QueueEmailComponent', 'MockReportsQueueEmailComponent', array('_smtp', '_mail'));
+Mock::generatePartial('RequestHandlerComponent', 'MockReportsRequestHandlerComponent', array('_header'));
 Mock::generatePartial('ReportsController', 'TestReportsController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
+
 
 class ReportsControllerTestCase extends CoreTestCase {
 
@@ -197,6 +199,8 @@ class ReportsControllerTestCase extends CoreTestCase {
 	}
 
 	function testExportCsvWithSearch() {
+		$this->Reports->RequestHandler = new MockReportsRequestHandlerComponent();
+		
 		$this->Reports->Session->write('MultiSelect.testExportCsvWithSearch', array(
 			'selected' => array(),
 		   'search' => array(
