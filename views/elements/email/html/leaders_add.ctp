@@ -1,1 +1,1 @@
-<?php echo $leader['Profile']['name']; ?> is now leading <?php echo strtolower($itemType); ?> in <strong><?php echo $this->Html->link($item[$model]['name'], array('controller' => Inflector::tableize($model), 'action' => 'view', $model => $item[$model]['id'])); ?></strong>.
+<?php echo $leader['Profile']['name']; ?> is now leading <?php echo strtolower($itemType); ?> in <strong><?php echo $this->Html->link($item[$model]['name'], array('controller' => Inflector::tableize($model), 'action' => 'view', $model => $item[$model]['id'], 'full_base' => true)); ?></strong>.
