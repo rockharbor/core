@@ -1,1 +1,1 @@
-You have been removed from <strong><?php echo $this->Html->link($involvement['Involvement']['name'], array('controllers' => 'involvements', 'action' => 'view', 'Involvement' => $involvement['Involvement']['id'])); ?></strong>.
+You have been removed from <strong><?php echo $this->Html->link($involvement['Involvement']['name'], array('controllers' => 'involvements', 'action' => 'view', 'Involvement' => $involvement['Involvement']['id'], 'full_base' => true)); ?></strong>.
