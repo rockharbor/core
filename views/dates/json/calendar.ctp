@@ -21,4 +21,8 @@ foreach ($events as $event) {
 	}
 }
 
+$orderDates = function($d1, $d2) {
+	return $d1['start'] < $d2['start'] ? -1 : 1;
+};
+usort($fcEvents, $orderDates);
 echo $this->Js->object($fcEvents);
