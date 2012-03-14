@@ -1,0 +1,1 @@
+The <?php echo $fromInvolvement['Involvement']['name']; ?> roster was added to the <?php echo $involvement['InvolvementType']['name']; ?> <?php echo $involvement['Involvement']['name']; ?>.
