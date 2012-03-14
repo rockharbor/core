@@ -255,11 +255,21 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		// they were both already signed up, just their roster changed to invited
 		$this->assertEqual($countBefore, $countNow);
 		$notificationCountAfter = $this->Involvements->Involvement->Roster->User->Notification->find('count');
-		// one for each leader for each user
-		$this->assertEqual($notificationCountAfter-$notificationCountBefore, 2);
+		// one for each leader for each roster
+		$this->assertEqual($notificationCountAfter-$notificationCountBefore, 1);
 		
 		$newest = $this->Involvements->Involvement->Roster->read();
 		$this->assertEqual($newest['Roster']['payment_option_id'], 1);
+		
+		$this->Involvements->Session->write('MultiSelect.test', array(
+			'selected' => array(1, 3),
+			'search' => array()
+		));
+		$notificationCountBefore = $this->Involvements->Involvement->Roster->User->Notification->find('count');
+		$vars = $this->testAction('/involvements/invite_roster/test/3/Involvement:1');
+		$notificationCountAfter = $this->Involvements->Involvement->Roster->User->Notification->find('count');
+		// one for each leader for each roster
+		$this->assertEqual($notificationCountAfter-$notificationCountBefore, 2);
 	}
 
 	function testInviteUser() {

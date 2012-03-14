@@ -231,6 +231,7 @@ class InvolvementsController extends AppController {
 		$this->Involvement->contain(array('InvolvementType'));
 		$fromInvolvement = $this->Involvement->read(null, $this->passedArgs['Involvement']);
 		$toInvolvements = $this->MultiSelect->getSelected($mskey);
+		$this->set('fromInvolvement', $fromInvolvement);
 		foreach ($toInvolvements as $to) {
 			$this->Involvement->contain(array('InvolvementType', 'PaymentOption'));
 			$involvement = $this->Involvement->read(null, $to);
@@ -276,15 +277,14 @@ class InvolvementsController extends AppController {
 							'deny' => '/rosters/status/'.$this->Involvement->Roster->id.'/4' //status 4 = declined
 						));
 					}
-					
-					foreach ($leaders as $leader) {
-						$this->Notifier->notify(array(
-							'to' => $leader,
-							'template' => 'involvements_invite_'.$status.'_leader',
-							'subject' => $subject
-						));
-					}
 				}
+			}
+			foreach ($leaders as $leader) {
+				$this->Notifier->notify(array(
+					'to' => $leader,
+					'template' => 'involvements_invite_roster_'.$status.'_leader',
+					'subject' => $subject
+				));
 			}
 		}
 		$this->Session->setFlash($subject, 'flash'.DS.'success');
