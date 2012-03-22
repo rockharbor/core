@@ -120,7 +120,8 @@ class CoreConfigureTestCase extends CoreTestCase {
 		Core::hook();
 		$this->assertEqual(Core::read('hooks'), array());
 		
-		Core::hook('/plugin/controller/action', 'root.new-nav', array(
+		$link1 = array('plugin' => 'plugin', 'controller' => 'controller', 'action' => 'action');
+		Core::hook($link1, 'root.new-nav', array(
 			'title' => 'My Nav Item'
 		));
 		$results = Core::read('hooks');
@@ -128,7 +129,7 @@ class CoreConfigureTestCase extends CoreTestCase {
 			'root' => array(
 				'new-nav' => array(
 					'options' => array(
-						'url' => '/plugin/controller/action',
+						'url' => $link1,
 						'title' => 'My Nav Item',
 						'element' => null,
 						'options' => array()
@@ -138,20 +139,21 @@ class CoreConfigureTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 		
-		Core::hook('/plugin/controller/new_action', 'root.new-nav.sub-item-1');
+		$link2 = array('plugin' => 'plugin', 'controller' => 'controller', 'action' => 'new_action');
+		Core::hook($link2, 'root.new-nav.sub-item-1');
 		$results = Core::read('hooks');
 		$expected = array(
 			'root' => array(
 				'new-nav' => array(
 					'options' => array(
-						'url' => '/plugin/controller/action',
+						'url' => $link1,
 						'title' => 'My Nav Item',
 						'element' => null,
 						'options' => array()
 					),					
 					'sub-item-1' => array(
 						'options' => array(
-							'url' => '/plugin/controller/new_action',
+							'url' => $link2,
 							'title' => 'New Action',
 							'element' => null,
 							'options' => array()
@@ -162,20 +164,21 @@ class CoreConfigureTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 		
-		Core::hook('/plugin/controller/sub_action', 'root.new-nav.sub-item-2');
+		$link3 = array('plugin' => 'plugin', 'controller' => 'controller', 'action' => 'sub_action');
+		Core::hook($link3, 'root.new-nav.sub-item-2');
 		$results = Core::read('hooks');
 		$expected = array(
 			'root' => array(
 				'new-nav' => array(
 					'options' => array(
-						'url' => '/plugin/controller/action',
+						'url' => $link1,
 						'title' => 'My Nav Item',
 						'element' => null,
 						'options' => array()
 					),					
 					'sub-item-1' => array(
 						'options' => array(
-							'url' => '/plugin/controller/new_action',
+							'url' => $link2,
 							'title' => 'New Action',
 							'element' => null,
 							'options' => array()
@@ -183,7 +186,7 @@ class CoreConfigureTestCase extends CoreTestCase {
 					),
 					'sub-item-2' => array(
 						'options' => array(
-							'url' => '/plugin/controller/sub_action',
+							'url' => $link3,
 							'title' => 'Sub Action',
 							'element' => null,
 							'options' => array()
@@ -203,12 +206,13 @@ class CoreConfigureTestCase extends CoreTestCase {
 		$oldHooks = isset($core->settings['hooks']) ? $core->settings['hooks'] : null;
 		unset($core->settings['hooks']);
 				
-		Core::hook('/plugin/controller/action', 'root.new-nav');
+		$link1 = array('plugin' => 'plugin', 'controller' => 'controller', 'action' => 'action');
+		Core::hook($link1, 'root.new-nav');
 		$results = Core::getHooks('root');
 		$expected = array(
 			'new-nav' => array(
 				'options' => array(
-					'url' => '/plugin/controller/action',
+					'url' => $link1,
 					'title' => 'Action',
 					'element' => null,
 					'options' => array()
@@ -217,18 +221,19 @@ class CoreConfigureTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 		
-		Core::hook('/plugin/controller/sub_action', 'root.new-nav.sub');
+		$link2 = array('plugin' => 'plugin', 'controller' => 'controller', 'action' => 'sub_action');
+		Core::hook($link2, 'root.new-nav.sub');
 		$results = Core::getHooks('root.new-nav');
 		$expected = array(
 			'options' => array(
-				'url' => '/plugin/controller/action',
+				'url' => $link1,
 				'title' => 'Action',
 				'element' => null,
 				'options' => array()
 			),
 			'sub' => array(
 				'options' => array(
-					'url' => '/plugin/controller/sub_action',
+					'url' => $link2,
 					'title' => 'Sub Action',
 					'element' => null,
 					'options' => array()
@@ -240,7 +245,7 @@ class CoreConfigureTestCase extends CoreTestCase {
 		$results = Core::getHooks('root.new-nav', array('sub'));
 		$expected = array(
 			'options' => array(
-				'url' => '/plugin/controller/action',
+				'url' => $link1,
 				'title' => 'Action',
 				'element' => null,
 				'options' => array()

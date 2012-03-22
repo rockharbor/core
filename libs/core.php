@@ -309,7 +309,7 @@ class Core {
  * - string $element The element to use instead of a link
  * - array $options Options for the link
  * 
- * @param mixed $url String or array url
+ * @param array $url Url array
  * @param string $area Dot-string representing the area of the app we want to hook
  *   into. To hook into the top-level nav, use `root`
  * @param array $options Hook options
@@ -319,16 +319,12 @@ class Core {
 		if (empty($url)) {
 			return;
 		}
-		if (is_array($url)) {
-			if (!isset($url['action'])) {
-				$last = $url['controller'];
-			} else {
-				$last = $url['action'];
-			}
+		if (!isset($url['action'])) {
+			$last = $url['controller'];
 		} else {
-			$last = explode('/', $url);
-			$last = array_pop($last);
+			$last = $url['action'];
 		}
+		
 		$_defaults = array(
 			'title' => Inflector::humanize($last),
 			'element' => null,

@@ -104,11 +104,8 @@ class PermissionHelper extends AppHelper {
 		if (empty($path)) {
 			return false;
 		}
-		$params = array();
-		if (is_array($path)) {
-			$params = array_diff_key($path, array('plugin' => null, 'controller' => null, 'action' => null));
-			$path = Router::url($path);
-		}
+		$params = array_diff_key($path, array('plugin' => null, 'controller' => null, 'action' => null));
+		
 		$view =& ClassRegistry::getObject('view');
 		if (!$this->AppController) {
 			App::import('Controller', 'App');
