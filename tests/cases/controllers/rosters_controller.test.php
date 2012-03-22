@@ -193,6 +193,56 @@ class RostersControllerTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 	}
+	
+	function testRosterLimit() {
+		$this->Rosters->Roster->Involvement->id = 1;
+		$this->Rosters->Roster->Involvement->saveField('roster_limit', 1);
+		
+		$data = array(
+			'Default' => array(
+				'payment_option_id' => 1,
+				'payment_type_id' => 1,
+				'pay_later' => false,
+				'pay_deposit_amount' => false,
+			),
+			'Adult' => array(
+				array(
+					'Roster' => array(
+						'user_id' => 1
+					)
+				)
+			),
+			'CreditCard' => array(
+				'first_name' => 'Joe',
+				'last_name' => 'Schmoe',
+				'credit_card_number' => '1234567891001234',
+				'cvv' => '123',
+				'email' => 'joe@test.com'
+			)
+		);
+		$notificationsBefore = $this->Rosters->Roster->User->Notification->find('count');
+		$vars = $this->testAction('/rosters/add/User:1/Involvement:1', array(
+			'data' => $data
+		));
+		$notificationsAfter = $this->Rosters->Roster->User->Notification->find('count');
+
+		// already full
+		$this->assertEqual($notificationsAfter-$notificationsBefore, 0);
+		$this->assertEqual($this->Rosters->Session->read('Message.flash.element'), 'flash'.DS.'failure');
+		
+		$this->Rosters->Roster->Involvement->id = 1;
+		$this->Rosters->Roster->Involvement->saveField('roster_limit', 2);
+		
+		$notificationsBefore = $this->Rosters->Roster->User->Notification->find('count');
+		$vars = $this->testAction('/rosters/add/User:1/Involvement:1', array(
+			'data' => $data
+		));
+		$notificationsAfter = $this->Rosters->Roster->User->Notification->find('count');
+
+		// last spot - one for leader, one for user signing up, one for user payment, one for leader notifying that it's filled
+		$this->assertEqual($notificationsAfter-$notificationsBefore, 4);
+		$this->assertEqual($this->Rosters->Session->read('Message.flash.element'), 'flash'.DS.'success');
+	}
 
 	function testAdd() {
 		$notificationsBefore = $this->Rosters->Roster->User->Notification->find('count');

@@ -515,6 +515,14 @@ class RostersController extends AppController {
 								'template' => 'involvements_signup_payment_leader',
 								'subject' => 'New user(s) signed up and paid for '.$involvement['Involvement']['name']
 							));
+							
+							if ($rosterCount + $childCount + $currentCount == $involvement['Involvement']['roster_limit']) {
+								$this->Notifier->notify(array(
+									'to' => $leader,
+									'template' => 'rosters_filled',
+									'subject' => $involvement['Involvement']['name'].' roster filled'
+								));
+							}
 						}
 						
 						$this->Notifier->notify(array(
@@ -572,6 +580,14 @@ class RostersController extends AppController {
 							'template' => 'involvements_signup_leader',
 							'subject' => 'New user(s) signed up for '.$involvement['Involvement']['name']
 						));
+						
+						if ($rosterCount + $childCount + $currentCount == $involvement['Involvement']['roster_limit']) {
+							$this->Notifier->notify(array(
+								'to' => $leader,
+								'template' => 'rosters_filled',
+								'subject' => $involvement['Involvement']['name'].' roster filled'
+							));
+						}
 					}
 					
 					$this->Session->setFlash('You have signed up for '.$involvement['Involvement']['name'].'.', 'flash'.DS.'success');
