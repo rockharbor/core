@@ -440,13 +440,11 @@ div.offset-background {
 }
 div#payment-details {
 	display: inline-block;
-	z-index: 1;
 	margin-left: -2px;
 }
 div.payment-options {
 	display: inline-block;
 	vertical-align: top;
-	z-index: 1;
 	max-width: 400px;
 }
 div.payment-option {
@@ -456,7 +454,6 @@ div.payment-option {
 	border: 1px solid #444445;
 	border-top: none;
 	border-right: none;
-	z-index: 1;
 	margin-right: 10px;
 }
 div.payment-option:first-child {
@@ -465,7 +462,6 @@ div.payment-option:first-child {
 div.payment-option.selected {
 	background: #f1f1f1;
 	border-right: 1px solid #f1f1f1;
-	z-index: 2;
 	position: relative;
 }
 div.payment-option .core-radio {
@@ -478,7 +474,6 @@ div.payment-option label {
 div#payment-totals {
 	border: 1px solid #444445;
 	background: #f1f1f1;
-	z-index: 1;
 	margin-left: -1px;
 }
 #deposit {

@@ -190,7 +190,7 @@ class AppController extends Controller {
 		$this->Security->blackHoleCallback = 'cakeError';
 
 		// set to log using this user (see LogBehavior)
-		if (!$this->params['plugin'] && sizeof($this->uses) && $this->{$this->modelClass}->Behaviors->attached('Logable')) { 
+		if ((!isset($this->params['plugin']) || !$this->params['plugin']) && sizeof($this->uses) && isset($this->{$this->modelClass}->Behaviors) && $this->{$this->modelClass}->Behaviors->attached('Logable')) { 
 			$this->{$this->modelClass}->setUserData($this->activeUser); 
 		}
 		

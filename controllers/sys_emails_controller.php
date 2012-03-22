@@ -183,9 +183,6 @@ class SysEmailsController extends AppController {
 					case 'Leader':
 						$toUsers = ClassRegistry::init($this->passedArgs['model'])->getLeaders($modelIds);
 					break;
-					case 'Manager':
-						$toUsers = ClassRegistry::init('Leader')->getManagers($this->passedArgs['model'], $modelIds);
-					break;
 					default:
 						$toUsers = ClassRegistry::init($this->passedArgs['model'])->getInvolved($modelIds);
 					break;

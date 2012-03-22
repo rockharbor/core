@@ -1,0 +1,1 @@
+The roster for <?php echo $involvement['Involvement']['name']; ?> has been filled.

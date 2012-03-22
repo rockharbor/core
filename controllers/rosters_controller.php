@@ -452,7 +452,14 @@ class RostersController extends AppController {
 			if ($lValidates && $rValidates && $cValidates && $pValidates) {
 				// Now that we know that the data will save, let's run the credit card
 				// get all signed up users (for their name)
-				if ($involvement['Involvement']['take_payment'] && $this->data['Default']['payment_option_id'] > 0 && !$this->data['Default']['pay_later']) {
+				
+				// calculate amount	(use array_values to reset keys)
+				$amount = Set::apply('/Payment/amount', array_values($this->data['Adult']), 'array_sum');
+				if (isset($this->data['Child'])) {
+					$amount += Set::apply('/Payment/amount', array_values($this->data['Child']), 'array_sum');
+				}
+					
+				if ($involvement['Involvement']['take_payment'] && $this->data['Default']['payment_option_id'] > 0 && !$this->data['Default']['pay_later'] && $amount > 0) {
 					$signedUpIds = array_merge(Set::extract('/Adult/Roster/user_id', $this->data), Set::extract('/Child/Roster/user_id', $this->data));
 					$signedupUsers = $this->Roster->User->Profile->find('all', array(
 						'conditions' => array(
@@ -462,11 +469,6 @@ class RostersController extends AppController {
 					));
 					$verb = count($signedupUsers) > 1 ? 'have' : 'has';
 					$description = implode(' and ', Set::extract('/Profile/name', $signedupUsers)).' '.$verb.' been signed up for '.$involvement['InvolvementType']['name'].' '.$involvement['Involvement']['name'];
-					// calculate amount	(use array_values to reset keys)
-					$amount = Set::apply('/Payment/amount', array_values($this->data['Adult']), 'array_sum');
-					if (isset($this->data['Child'])) {
-						$amount += Set::apply('/Payment/amount', array_values($this->data['Child']), 'array_sum');
-					}
 					
 					$paymentOption = $this->Roster->PaymentOption->read(null, $this->data['Default']['payment_option_id']);
 					$this->data['CreditCard']['invoice_number'] = $paymentOption['PaymentOption']['account_code'];
@@ -515,6 +517,14 @@ class RostersController extends AppController {
 								'template' => 'involvements_signup_payment_leader',
 								'subject' => 'New user(s) signed up and paid for '.$involvement['Involvement']['name']
 							));
+							
+							if ($rosterCount + $childCount + $currentCount == $involvement['Involvement']['roster_limit']) {
+								$this->Notifier->notify(array(
+									'to' => $leader,
+									'template' => 'rosters_filled',
+									'subject' => $involvement['Involvement']['name'].' roster filled'
+								));
+							}
 						}
 						
 						$this->Notifier->notify(array(
@@ -572,6 +582,14 @@ class RostersController extends AppController {
 							'template' => 'involvements_signup_leader',
 							'subject' => 'New user(s) signed up for '.$involvement['Involvement']['name']
 						));
+						
+						if ($rosterCount + $childCount + $currentCount == $involvement['Involvement']['roster_limit']) {
+							$this->Notifier->notify(array(
+								'to' => $leader,
+								'template' => 'rosters_filled',
+								'subject' => $involvement['Involvement']['name'].' roster filled'
+							));
+						}
 					}
 					
 					$this->Session->setFlash('You have signed up for '.$involvement['Involvement']['name'].'.', 'flash'.DS.'success');

@@ -139,25 +139,23 @@ class Campus extends AppModel {
 	}
 
 /**
- * Gets all leaders of all involvements within a campus
- *
- * @param integer $ministryId The ministry id
- * @param boolean $recursive Whether to pull for subministries as well
- * @return array The user ids
+ * Gets the leaders for a Campus
+ * 
+ * @param mixed $modelId Integer for single id, or array for multiple
+ * @return array Array of user ids 
  */
-	function getLeaders($campusId, $recursive = false) {
-		$ministries = $this->Ministry->find('list', array(
+	function getLeaders($modelId) {
+		$leaders = $this->Leader->find('all', array(
+			'fields' => array(
+				'user_id'
+			),
 			'conditions' => array(
-				'Ministry.campus_id' => $campusId,
-				'or' => array(
-					'Ministry.parent_id' => null,
-					'or' => array(
-						'Ministry.parent_id' => 0,
-					)
-				)
+				'Leader.model' => 'Campus',
+				'Leader.model_id' => $modelId
 			)
 		));
-		return array_unique($this->Ministry->getLeaders(array_keys($ministries), $recursive));
+		$ids = Set::extract('/Leader/user_id', $leaders);
+		return array_unique($ids);
 	}
 }
 ?>

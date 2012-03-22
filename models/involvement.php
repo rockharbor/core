@@ -280,20 +280,23 @@ class Involvement extends AppModel {
 	}
 
 /**
- * Returns a list of user ids that lead an involvement
- *
- * @param integer $involvementId The involvement id
- * @return array A list of users
+ * Gets the leaders for an Involvement
+ * 
+ * @param mixed $modelId Integer for single id, or array for multiple
+ * @return array Array of user ids 
  */
-	function getLeaders($involvementId) {
-		$results = $this->Leader->find('all', array(
-			'conditions' => array(
-				'Leader.model_id' => $involvementId,
-				'Leader.model' => 'Involvement'
+	function getLeaders($modelId) {
+		$leaders = $this->Leader->find('all', array(
+			'fields' => array(
+				'user_id'
 			),
-			'fields' => array('user_id')
+			'conditions' => array(
+				'Leader.model' => 'Involvement',
+				'Leader.model_id' => $modelId
+			)
 		));
-		return Set::extract('/Leader/user_id', $results);
+		$ids = Set::extract('/Leader/user_id', $leaders);
+		return array_unique($ids);
 	}
 }
 ?>

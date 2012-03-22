@@ -69,8 +69,8 @@ class LeadersControllerTestCase extends CoreTestCase {
 		));
 
 		$notificationsAfter = $this->Leaders->Leader->User->Notification->find('count');
-		// 6 notifications - 2 for the users, 2x2 notifying managers
-		$this->assertEqual($notificationsAfter-$notificationsBefore, 6);
+		// 2 for the users, 2x1 leader
+		$this->assertEqual($notificationsAfter-$notificationsBefore, 4);
 		
 		$this->assertTrue($this->Leaders->Leader->hasAny(array(
 			'user_id' => 1,
@@ -85,9 +85,21 @@ class LeadersControllerTestCase extends CoreTestCase {
 	}
 
 	function testDelete() {
+		$notificationsBefore =  $this->Leaders->Leader->User->Notification->find('count');
 		$vars = $this->testAction('/involvement_leaders/delete/Involvement:1/User:1');
+		$notificationsAfter = $this->Leaders->Leader->User->Notification->find('count');
+		// can't remove the only leader
+		$this->assertEqual($notificationsAfter-$notificationsBefore, 0);
+		$this->assertEqual($this->Leaders->Session->read('Message.flash.element'), 'flash'.DS.'failure');
+		
+		$this->_setLeaderController('Ministry');
+		$notificationsBefore =  $this->Leaders->Leader->User->Notification->find('count');
+		$vars = $this->testAction('/ministry_leaders/delete/Ministry:4/User:1');
+		$notificationsAfter = $this->Leaders->Leader->User->Notification->find('count');
 		$results = $this->Leaders->Leader->User->Notification->find('count');
-		$this->assertEqual($results, 6);
+		// 1 for user, 1x1 leader left
+		$this->assertEqual($notificationsAfter-$notificationsBefore, 2);
+		$this->assertEqual($this->Leaders->Session->read('Message.flash.element'), 'flash'.DS.'success');
 	}
 
 }

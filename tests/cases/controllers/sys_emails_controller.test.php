@@ -87,7 +87,7 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/sys_emails/compose/test/model:Campus/submodel:Leader');
 		$results = Set::extract('/User/id', $vars['toUsers']);
 		sort($results);
-		$this->assertEqual($results, array());
+		$this->assertEqual($results, array(1));
 
 		$this->SysEmails->Session->write('MultiSelect.test', array(
 			'selected' => array(1),
@@ -107,15 +107,6 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/User/id', $vars['toUsers']);
 		sort($results);
 		$this->assertEqual($results, array(1, 5));
-
-		$this->SysEmails->Session->write('MultiSelect.test', array(
-			'selected' => array(1, 2),
-			'search' => array()
-		));
-		$vars = $this->testAction('/sys_emails/compose/test/model:Involvement/submodel:Manager');
-		$results = Set::extract('/User/id', $vars['toUsers']);
-		sort($results);
-		$this->assertEqual($results, array(1, 2));
 	}
 
 	function testComposeToUser() {

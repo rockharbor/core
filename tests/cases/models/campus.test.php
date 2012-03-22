@@ -39,13 +39,9 @@ class CampusTestCase extends CoreTestCase {
 	}
 
 	function testGetLeaders() {
-		$this->loadFixtures('Ministry', 'Involvement', 'Leader');
+		$this->loadFixtures('Leader');
 
 		$results = $this->Campus->getLeaders(1);
-		$this->assertEqual($results, array());
-
-		$results = $this->Campus->getLeaders(1, true);
-		sort($results);
 		$this->assertEqual($results, array(1));
 	}
 

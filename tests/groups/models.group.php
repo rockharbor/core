@@ -16,7 +16,6 @@ class ModelsGroupTest extends TestSuite {
 		TestManager::addTestFile($this, APP . 'tests' . DS . 'cases' . DS . 'models' . DS . 'image');
 		TestManager::addTestFile($this, APP . 'tests' . DS . 'cases' . DS . 'models' . DS . 'invitation');
 		TestManager::addTestFile($this, APP . 'tests' . DS . 'cases' . DS . 'models' . DS . 'involvement');
-		TestManager::addTestFile($this, APP . 'tests' . DS . 'cases' . DS . 'models' . DS . 'leader');
 		TestManager::addTestFile($this, APP . 'tests' . DS . 'cases' . DS . 'models' . DS . 'ministry');
 		TestManager::addTestFile($this, APP . 'tests' . DS . 'cases' . DS . 'models' . DS . 'profile');
 		TestManager::addTestFile($this, APP . 'tests' . DS . 'cases' . DS . 'models' . DS . 'role');

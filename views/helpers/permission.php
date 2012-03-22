@@ -21,11 +21,11 @@
 class PermissionHelper extends AppHelper {
 
 /**
- * Stored app controller for PermissionHelper::check()
+ * Stored controllers for `check()`
  *
  * @var Controller
  */
-	var $AppController = null;
+	var $controllers = array();
 
 /**
  * Additional helpers needed by this helper
@@ -75,12 +75,6 @@ class PermissionHelper extends AppHelper {
 		if (is_string($url)) {
 			$url = Router::parse($url);
 		}
-		if (empty($url['controller'])) {
-			$url['controller'] = $this->params['controller'];
-		}
-		if (!isset($url['action'])) {
-			$url['action'] = 'index';
-		}
 		if ($this->check($url)) {
 			$helper = 'Html';
 			$hasJs = array_intersect(array('update', 'success', 'complete', 'beforeSend', 'error'), array_keys($options));
@@ -100,23 +94,39 @@ class PermissionHelper extends AppHelper {
  * @return boolean
  * @see AppController::isAuthorized()
  */
-	function check($path = '') {
+	function check($path = array()) {
 		if (empty($path)) {
 			return false;
 		}
-		$params = array();
-		if (is_array($path)) {
-			$params = array_diff_key($path, array('plugin' => null, 'controller' => null, 'action' => null));
-			$path = Router::url($path);
+		$params = array_diff_key($path, array('plugin' => null, 'controller' => null, 'action' => null));
+		if (empty($path['controller'])) {
+			$path['controller'] = $this->params['controller'];
 		}
+		if (!isset($path['action'])) {
+			$path['action'] = 'index';
+		}
+		if (!isset($path['plugin'])) {
+			$path['plugin'] = null;
+		}
+		
 		$view =& ClassRegistry::getObject('view');
-		if (!$this->AppController) {
-			App::import('Controller', 'App');
-			$this->AppController = new AppController();
-			$this->AppController->constructClasses();
-			$this->AppController->Auth->initialize($this->AppController, $this->AppController->components['Auth']);
+		$controller = $path['controller'];
+		if (!isset($this->controllers[$controller])) {
+			if ($path['plugin']) {
+				App::import('Controller', $path['plugin'].'.'.$controller);
+			} else {
+				App::import('Controller', $controller);
+			}
+			$classname = Inflector::camelize($controller).'Controller';
+			$this->controllers[$controller] = new $classname();
+			$this->controllers[$controller]->__construct();
+			$this->controllers[$controller]->constructClasses();
+			$this->controllers[$controller]->beforeFilter();
 		}
-		return $this->AppController->isAuthorized($path, $params, $view->viewVars['activeUser']);
+		$url = Router::url($path);
+		return 
+			in_array($path['action'], $this->controllers[$controller]->Auth->allowedActions) ||
+			$this->controllers[$controller]->isAuthorized($url, $params, $view->viewVars['activeUser']);
 	}
 	
 /**

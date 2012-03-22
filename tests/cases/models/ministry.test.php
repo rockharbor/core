@@ -47,10 +47,7 @@ class MinistryTestCase extends CoreTestCase {
 		$this->assertEqual($results, array());
 
 		$results = $this->Ministry->getLeaders(4);
-		$this->assertEqual($results, array(1));
-
-		$results = $this->Ministry->getLeaders(1, true);
-		$this->assertEqual($results, array(1));
+		$this->assertEqual($results, array(1, 2));
 	}
 
 }
