@@ -233,7 +233,7 @@ CORE.attachTabbedBehavior = function() {
  * @return boolean True
  */
 CORE.attachModalBehavior = function() {
-	$('[rel|=modal]').each(function() {
+	$('[rel|=modal]:not(.disabled)').each(function() {
 		if ($(this).attr('id') == '') {
 			$(this).attr('id', unique('link-'));
 		}

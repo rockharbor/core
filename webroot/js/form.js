@@ -186,7 +186,7 @@ CORE.noDuplicateCheckboxes = function(fieldset) {
 CORE.initFormUI = function() {
 	// create buttons on proper elements
 	$('button, input:submit, a.button, span.button').button();
-	$('button.disabled, input:submit.disabled, a.button.disabled, span.button.disabled').button({disabled:true});
+	$('button.disabled, input:submit.disabled, a.button.disabled, span.button.disabled').button({disabled:true}).removeAttr('href');
 	$('input.toggle').button();
 	$('span.toggle input, div.toggle input').button();
 	$('.toggleset').buttonset();

@@ -179,7 +179,11 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 			<div class="grid_10 alpha omega">
 				<?php 
 				if ($involvement['Involvement']['signup'] && $involvement['Involvement']['active'] && !$involvement['Involvement']['previous'] && !$inRoster) {
-					echo $this->Html->link('Sign up', array('controller' => 'rosters', 'action' => 'add', 'User' => $activeUser['User']['id'], 'Involvement' => $involvement['Involvement']['id']), array('rel' => 'modal-content', 'class' => 'button'));
+					if (!$full) {
+						echo $this->Html->link('Sign up', array('controller' => 'rosters', 'action' => 'add', 'User' => $activeUser['User']['id'], 'Involvement' => $involvement['Involvement']['id']), array('rel' => 'modal-content', 'class' => 'button'));
+					} else {
+						echo $this->Html->link('Roster full', array('controller' => 'rosters', 'action' => 'add', 'User' => $activeUser['User']['id'], 'Involvement' => $involvement['Involvement']['id']), array('rel' => 'modal-content', 'class' => 'button disabled'));
+					}
 				}
 				?>
 			</div>

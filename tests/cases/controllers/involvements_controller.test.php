@@ -65,6 +65,9 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 	
 	function testView() {
 		$this->loadSettings();
+		
+		$this->Involvements->Involvement->id = 1;
+		$this->Involvements->Involvement->saveField('roster_limit', 1);
 
 		// public, not registered
 		$this->Involvements->setAuthorized('/rosters/index', false);
@@ -75,6 +78,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/involvements/view/Involvement:1');
 		$this->assertFalse($vars['inRoster']);
 		$this->assertFalse($vars['canSeeRoster']);
+		$this->assertTrue($vars['full']);
 		
 		// inactive, not registered
 		$this->su(array(
@@ -84,6 +88,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/involvements/view/Involvement:2');
 		$this->assertFalse($vars['inRoster']);
 		$this->assertFalse($vars['canSeeRoster']);
+		$this->assertFalse($vars['full']);
 		
 		// private, not registered, but admin
 		$this->Involvements->setAuthorized('/rosters/index', true);
