@@ -18,13 +18,6 @@ CORE_roster.init = function() {
 	});
 	$('input[id^=Child]').bind('change', CORE_roster.updateAmount);
 	$('#DefaultPayLater').bind('change', function() {
-		if (this.checked) {
-			$('#billing_info input, #billing_info select').attr('disabled', 'disabled');
-			$('#credit_card_info input, #credit_card_info select').attr('disabled', 'disabled');
-		} else {
-			$('#billing_info input, #billing_info select').removeAttr('disabled');
-			$('#credit_card_info input, #credit_card_info select').removeAttr('disabled');
-		}
 		CORE_roster.updateAmount();
 	});
 
@@ -104,6 +97,12 @@ CORE_roster.updateAmount = function() {
 
 	if (payLater) {
 		totalDue = 0;
+	}
+	
+	if (totalDue == 0) {
+		$('#billing, #billing-tab').hide();
+	} else {
+		$('#billing, #billing-tab').show();
 	}
 
 	$('#total-total').html(numberChildcareSignedUp*childcareAmount + peopleAmount*numberSignedUp);

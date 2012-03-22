@@ -48,7 +48,7 @@ echo $this->Form->create('Roster', array(
 	<?php endif; ?>
 	<?php if ($involvement['Involvement']['take_payment']): ?>
 	<li class="tab" id="payment_tab"><a href="#payment">Make A Payment</a></li>
-	<li class="tab"><a href="#billing">Billing Info</a></li>
+	<li id="billing-tab" class="tab"><a href="#billing">Billing Info</a></li>
 	<?php endif; ?>
 </ul>
 
