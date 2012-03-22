@@ -270,37 +270,23 @@ class Ministry extends AppModel {
 	}
 
 /**
- * Gets all leaders of all involvements within a ministry
- *
- * @param integer $ministryId The ministry id
- * @param boolean $recursive Whether to pull for subministries as well
- * @return array The user ids
+ * Gets the leaders for a Ministry
+ * 
+ * @param mixed $modelId Integer for single id, or array for multiple
+ * @return array Array of user ids 
  */
-	function getLeaders($ministryId, $recursive = false) {
-		$options = array(
+	function getLeaders($modelId) {
+		$leaders = $this->Leader->find('all', array(
+			'fields' => array(
+				'user_id'
+			),
 			'conditions' => array(
-				'Ministry.id' => $ministryId
-			),
-			'contain' => array(
-				'Involvement' => array(
-					'fields' => array('id'),
-					'Leader' => array(
-						'fields' => array('user_id')
-					)
-				)
-			),
-			'fields' => array('id')
-		);
-		if ($recursive) {
-			$options['conditions'] = array(
-				'or' => array(
-					'Ministry.id' => $ministryId,
-					'Ministry.parent_id' => $ministryId
-				)
-			);
-		}
-		$results = $this->find('all', $options);
-		return array_unique(Set::extract('/Involvement/Leader/user_id', $results));
+				'Leader.model' => 'Ministry',
+				'Leader.model_id' => $modelId
+			)
+		));
+		$ids = Set::extract('/Leader/user_id', $leaders);
+		return array_unique($ids);
 	}
 }
 ?>

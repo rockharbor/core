@@ -92,7 +92,7 @@ class LeadersController extends AppController {
 		
 		$model = $this->passedArgs['model'];
 		$model_id = $this->passedArgs[$this->passedArgs['model']];
-		$managers = $this->Leader->getManagers($model, $model_id);
+		$leaders = $this->Leader->{$model}->getLeaders($model_id);
 		$item = $this->Leader->{$model}->read(array('name'), $model_id);
 				
 		foreach ($userIds as $userId) {
@@ -122,10 +122,10 @@ class LeadersController extends AppController {
 					'subject' => $subject
 				));
 
-				// notify the managers as well
-				foreach ($managers as $manager) {
+				// notify the leaders as well
+				foreach ($leaders as $leader) {
 					$this->Notifier->notify(array(
-						'to' => $manager,
+						'to' => $leader,
 						'template' => 'leaders_add',
 						'subject' => $subject
 					));
@@ -168,7 +168,7 @@ class LeadersController extends AppController {
 
 		if ($leaderCount <= 1) {
 			$this->Session->setFlash($item[$this->model]['name'].' cannot be without a leader.', 'flash'.DS.'failure');
-			$this->redirect(array('action'=>'index'));
+			return $this->redirect(array('action'=>'index'));
 		}
 
 		$leaderId = $this->Leader->find('first', array(
@@ -202,13 +202,12 @@ class LeadersController extends AppController {
 				'subject' => $subject
 			));
 			
-			// notify the managers as well
-			$managers = $this->Leader->getManagers($this->model, $this->modelId);
-			
-			foreach ($managers as $manager) {
-				if ($manager != $this->passedArgs['User']) {
+			// notify the remaining leaders
+			$leaders = $this->Leader->{$this->model}->getLeaders($this->modelId);
+			foreach ($leaders as $leader) {
+				if ($leader != $this->passedArgs['User']) {
 					$this->Notifier->notify(array(
-						'to' => $manager,
+						'to' => $leader,
 						'template' => 'leaders_delete',
 						'subject' => $subject
 					));
@@ -216,10 +215,10 @@ class LeadersController extends AppController {
 			}
 		
 			$this->Session->setFlash($subject, 'flash'.DS.'success');
-			$this->redirect(array('action'=>'index'));
+			return $this->redirect(array('action'=>'index'));
 		}
 		$this->Session->setFlash('Unable to process request. Please try again.', 'flash'.DS.'failure');
-		$this->redirect(array('action' => 'index'));
+		return $this->redirect(array('action' => 'index'));
 	}
 }
 ?>
