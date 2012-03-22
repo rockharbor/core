@@ -203,7 +203,20 @@ class InvolvementsController extends AppController {
 			)
 		));
 		
-		$this->set(compact('involvement', 'signedUp', 'inRoster', 'canSeeRoster'));
+		$full = false;
+		if (!empty($involvement['Involvement']['roster_limit'])) {
+			$currentCount = $this->Involvement->Roster->find('count', array(
+				'conditions' => array(
+					'Roster.involvement_id' => $involvement['Involvement']['id'],
+					'Roster.roster_status_id' => 1
+				),
+				'contain' => false
+			));
+
+			$full = $currentCount >= $involvement['Involvement']['roster_limit'];
+		}
+		
+		$this->set(compact('involvement', 'signedUp', 'inRoster', 'canSeeRoster', 'full'));
 	}
 
 /**
