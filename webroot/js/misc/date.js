@@ -293,12 +293,18 @@ CORE_date.validateDate = function(startDateModel, endDateModel) {
  */
 CORE_date.validateTime = function(startTimeModel, endTimeModel) {
 	var startTime = new Date();
-	var startHours = $('#'+startTimeModel+'Meridian').val() == 'am' ? $('#'+startTimeModel+'Hour').val()-1 : $('#'+startTimeModel+'Hour').val()-1+12;
+	var startHours = $('#'+startTimeModel+'Hour').val();
+	if ($('#'+startTimeModel+'Meridian').val() == 'pm' && startHours < 12) {
+		startHours += 12;
+	}
 	startTime.setHours(startHours);
 	startTime.setMinutes($('#'+startTimeModel+'Min').val());
 	
 	var endTime = new Date();
-	var endHours = $('#'+endTimeModel+'Meridian').val() == 'am' ? $('#'+endTimeModel+'Hour').val()-1 : $('#'+endTimeModel+'Hour').val()-1+12;
+	var endHours =  $('#'+endTimeModel+'Hour').val();
+	if ($('#'+endTimeModel+'Meridian').val() == 'pm' && endHours < 12) {
+		endHours += 12;
+	}
 	endTime.setHours(endHours);
 	endTime.setMinutes($('#'+endTimeModel+'Min').val());
 	
