@@ -41,6 +41,27 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->unloadSettings();
 		ClassRegistry::flush();
 	}
+	
+	function testRedirectOnResetPassword() {
+		// trick CoreTestCase into not setting up a user
+		$this->Users->Session->write('User', true);
+		
+		$this->Users->User->id = 1;
+		$this->Users->User->saveField('reset_password', true);
+		
+		$vars = $this->testAction('/users/login', array(
+			'data' => array(
+				'User' => array(
+					'username' => 'jharris',
+					'password' => 'password',
+					'remember_me' => false
+				)
+			)
+		));
+		$result = $this->Users->Session->read('Auth.User.id');
+		$this->assertEqual($result, 1);
+		$this->assertPattern('/reset/', $this->Users->Session->read('Message.flash.message'));
+	}
 
 	function testBoth() {
 		$data = array(

@@ -170,16 +170,6 @@ class AppController extends Controller {
 		if ($this->Auth->user() && $this->action !== 'logout') {
 			// keep user available
 			$this->activeUser = array_merge($this->Auth->user(), $this->Session->read('User'));
-
-			// force redirect if they need to reset their password
-			if ($this->activeUser['User']['reset_password'] && 
-				!($this->name == 'Users' && ($this->action == 'edit' || $this->action == 'logout')) &&
-				!isset($this->params['requested']) &&
-				!$this->RequestHandler->isAjax()
-			) {				
-				$this->Session->setFlash('Your password needs to be changed. Please reset it.');
-				$this->redirect(array('controller' => 'users', 'action' => 'edit', 'User' => $this->Auth->user('id')));
-			}
 		} else {
 			$this->layout = 'public';
 		}
