@@ -95,8 +95,13 @@ class UsersController extends AppController {
 				$this->User->contain(array('Profile', 'Group', 'Image', 'ActiveAddress'));
 				$this->Session->write('User', $this->User->read());
 				$this->User->saveField('last_logged_in', date('Y-m-d H:i:s'));
-				// go!
-				$this->redirect($this->Auth->redirect());
+				
+				// force redirect if they need to reset their password
+				if ($this->Auth->user('reset_password')) {				
+					$this->Session->setFlash('Your password needs to be changed. Please reset it.', 'flash'.DS.'failure');
+					return $this->redirect(array('controller' => 'users', 'action' => 'edit', 'User' => $this->Auth->user('id')));
+				}
+				return $this->redirect($this->Auth->redirect());
 			} else {
 				// trick into not redirecting and to highlighting fields
 				$this->Cookie->delete('Auth');
