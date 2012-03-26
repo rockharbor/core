@@ -105,7 +105,7 @@ class PermissionHelper extends AppHelper {
 		if (!isset($path['action'])) {
 			$path['action'] = 'index';
 		}
-		if (!isset($path['plugin']) || !$path['plugin']) {
+		if (!isset($path['plugin'])) {
 			$path['plugin'] = $this->plugin;
 		}
 		
