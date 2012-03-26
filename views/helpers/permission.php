@@ -106,18 +106,18 @@ class PermissionHelper extends AppHelper {
 			$path['action'] = 'index';
 		}
 		if (!isset($path['plugin'])) {
-			$path['plugin'] = null;
+			$path['plugin'] = $this->plugin;
 		}
 		
 		$view =& ClassRegistry::getObject('view');
 		$controller = $path['controller'];
 		if (!isset($this->controllers[$controller])) {
+			$import = Inflector::camelize($controller);
+			$classname = $import.'Controller';
 			if ($path['plugin']) {
-				App::import('Controller', $path['plugin'].'.'.$controller);
-			} else {
-				App::import('Controller', $controller);
+				$import = Inflector::camelize($path['plugin']).'.'.$import;
 			}
-			$classname = Inflector::camelize($controller).'Controller';
+			App::import('Controller', $import);
 			$this->controllers[$controller] = new $classname();
 			$this->controllers[$controller]->__construct();
 			$this->controllers[$controller]->constructClasses();
