@@ -279,6 +279,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		// already full
 		$this->assertEqual($notificationsAfter-$notificationsBefore, 0);
 		$this->assertEqual($this->Rosters->Session->read('Message.flash.element'), 'flash'.DS.'failure');
+		$this->assertPattern('/full/', $this->Rosters->Session->read('Message.flash.message'));
 		
 		$this->Rosters->Roster->Involvement->id = 1;
 		$this->Rosters->Roster->Involvement->saveField('roster_limit', 2);

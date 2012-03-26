@@ -596,18 +596,20 @@ class RostersController extends AppController {
 					$this->redirect(array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvementId));
 				}		
 			} else {
+				if (!$pValidates && isset($this->data['Child'])) {
+					$msg = 'Please assign a parent to this child.';
+				} elseif (!$lValidates) {
+					$msg = 'Cannot join '.$involvement['Involvement']['name'].'. The roster is full.';
+				} else {
+					$msg = 'Cannot join '.$involvement['Involvement']['name'].'. Please try again.';
+				}
+				
 				// set validation error so modal doesn't close
 				if (empty($this->Roster->validationErrors)) {
-					$this->Roster->validationErrors = array('validation' => 'failed');
+					$this->Roster->validationErrors = array('validation' => $msg);
 				}
-
-				if (!$pValidates && isset($this->data['Child'])) {
-					$this->Session->setFlash('Please assign a parent to this child.', 'flash'.DS.'failure');
-				} elseif (!$lValidates) {
-					$this->Session->setFlash('Cannot join '.$involvement['Involvement']['name'].'. The roster is full.', 'flash'.DS.'failure');
-				} else {
-					$this->Session->setFlash('Cannot join '.$involvement['Involvement']['name'].'. Please try again.', 'flash'.DS.'failure');
-				}
+				
+				$this->Session->setFlash($msg, 'flash'.DS.'failure');
 			}
 		}
 		
