@@ -67,7 +67,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		sort($results);
 		$this->assertEqual($results, array(1, 2));
 		
-		$vars = $this->testAction('/ministries/index/Campus:2', array(
+		$vars = $this->testAction('/ministries/index/Campus:1', array(
 			'data' => array(
 				'Ministry' => array(
 					'private' => true,
@@ -77,7 +77,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		));
 		$results = Set::extract('/Ministry/id', $vars['ministries']);
 		sort($results);
-		$this->assertEqual($results, array(5));
+		$this->assertEqual($results, array(1, 2, 3));
 		
 		$this->Ministries->Ministry->save(array(
 			'id' => 1,
@@ -115,6 +115,18 @@ class MinistriesControllerTestCase extends CoreTestCase {
 			)
 		);
 		$this->assertEqual($results, $expected);
+		
+		$vars = $this->testAction('/ministries/index/Ministry:1', array(
+			'data' => array(
+				'Ministry' => array(
+					'private' => true,
+					'inactive' => true
+				)
+			)
+		));
+		$results = Set::extract('/Ministry/id', $vars['ministries']);
+		sort($results);
+		$this->assertEqual($results, array(4));
 	}
 
 	function testView() {

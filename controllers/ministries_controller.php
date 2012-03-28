@@ -77,6 +77,7 @@ class MinistriesController extends AppController {
 		$private = $this->Ministry->Leader->User->Group->canSeePrivate($this->activeUser['Group']['id']);
 		if (isset($this->passedArgs['Campus'])) {
 			$conditions['Ministry']['campus_id'] = $this->passedArgs['Campus'];
+			$conditions['Ministry']['parent_id'] = null;
 		}
 		if (isset($this->passedArgs['Ministry'])) {
 			$conditions['Ministry']['parent_id'] = $this->passedArgs['Ministry'];
