@@ -1,4 +1,5 @@
-<div class="users" class="content-box">
+<h1>Edit User</h1>
+<div class="users content-box">
 <p>If you choose to change this information, you will automatically logged out and will need to log in using the new details.</p>
 <?php
 echo $this->Form->create('User', array(
