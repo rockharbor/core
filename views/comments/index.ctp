@@ -13,8 +13,8 @@ $this->Paginator->options(array(
 	<div class="comment clearfix">
 		<div class="comment-image">
 		<?php
-		if (isset($activeUser['ImageIcon'])) {
-			$path = 's'.DS.$activeUser['ImageIcon']['dirname'].DS.$activeUser['ImageIcon']['basename'];
+		if (!empty($comment['Creator']['Image'][0]['id'])) {
+			$path = 's'.DS.$comment['Creator']['Image'][0]['dirname'].DS.$comment['Creator']['Image'][0]['basename'];
 			echo $this->Media->embed($path, array('restrict' => 'image'));
 		}
 		?>

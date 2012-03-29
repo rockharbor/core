@@ -75,12 +75,9 @@ class MinistriesController extends AppController {
 			)
 		);
 		$private = $this->Ministry->Leader->User->Group->canSeePrivate($this->activeUser['Group']['id']);
-		if ($private) {
-			$conditions['Ministry']['private'] = array(1, 0);
-			$conditions['Ministry']['active'] = array(1, 0);
-		}
 		if (isset($this->passedArgs['Campus'])) {
 			$conditions['Ministry']['campus_id'] = $this->passedArgs['Campus'];
+			$conditions['Ministry']['parent_id'] = null;
 		}
 		if (isset($this->passedArgs['Ministry'])) {
 			$conditions['Ministry']['parent_id'] = $this->passedArgs['Ministry'];
@@ -100,8 +97,8 @@ class MinistriesController extends AppController {
 		} else {
 			$this->data = array(
 				'Ministry' => array(
-					'inactive' => $private,
-					'private' => $private
+					'inactive' => !$conditions['Ministry']['active'],
+					'private' => $conditions['Ministry']['private']
 				)
 			);
 		}
