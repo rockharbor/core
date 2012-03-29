@@ -78,13 +78,14 @@ if (!isset($this->passedArgs['mstoken'])) {
 			'between' => Core::read('notifications.email_subject_prefix').' ',
 			'style' => 'width:300px'
 		));
-		echo $this->Form->input('SysEmail.body');
+		echo $this->Form->input('SysEmail.body', array(
+			'label' => 'Body (All emails start by greeting the user by first name and end with the '.Core::read('general.site_name').' logo)'
+		));
 		if (empty($this->data['SysEmail']['email_users'])) {
 			$this->data['SysEmail']['email_users'] = 'users';
 		}
 		echo $this->Html->tag(
 			'div',
-			$this->Form->label('Email Users') .
 			$this->Form->input('email_users', array(
 				'type' => 'radio',
 				'options' => array(

@@ -7,9 +7,8 @@
 			color: #838383;
 			width: 440px;
 		">
-			<p>Hey <?php echo $toUser['Profile']['first_name']; ?>,</p>
+			<p>Hey <?php echo ucfirst($toUser['Profile']['first_name']); ?>,</p>
 			<?php echo $content_for_layout; ?>
-			<p>-<?php echo Core::read('general.site_name'); ?></p>
 			<p><img src="<?php echo Router::url('/', true).'img/logo-small.png'; ?>" /><br /><?php echo $this->Html->link(Router::url('/', true), Router::url('/', true)); ?></p>
 		</div>
 	</body>
