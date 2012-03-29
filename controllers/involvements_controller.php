@@ -60,7 +60,7 @@ class InvolvementsController extends AppController {
 	function index($viewStyle = 'column') {
 		$private = $this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id']);
 
-		$conditions['Involvement.ministry_id'] = $this->passedArgs['Ministry'];
+		$conditions['or']['Involvement.ministry_id'] = $this->passedArgs['Ministry'];
 		
 		if (empty($this->data)) {
 			$this->data = array(
@@ -85,22 +85,11 @@ class InvolvementsController extends AppController {
 		}
 		if (!$this->data['Involvement']['previous']) {
 			$db = $this->Involvement->getDataSource();
-			$conditions[] = $db->expression('('.$this->Involvement->getVirtualField('previous').') = 0');
-		}
-		
-		// get additional ids
-		$ids = array();
-		if (isset($this->passedArgs['User'])) {
-			$signedUp = array();
-			$signedUp = $this->Involvement->Roster->find('all', array(
-				'conditions' => array(
-					'user_id' => $this->passedArgs['User']
-				)
-			));
-			$ids = array_merge($ids, Set::extract('/Roster/involvement_id', $signedUp));
+			$conditions[] = $db->expression('NOT ('.$this->Involvement->getVirtualField('previous').')');
 		}
 		
 		// include display involvements
+		$ids = array();
 		$displayInvolvements = $this->Involvement->Ministry->find('all', array(
 			'fields' => array('id'),
 			'conditions' => array(
@@ -115,9 +104,7 @@ class InvolvementsController extends AppController {
 		$ids = array_merge($ids, Set::extract('/DisplayInvolvement/id', $displayInvolvements));
 		
 		if (!empty($ids)) {
-			$conditions['or'] = array(
-				'Involvement.id' => $ids
-			);
+			$conditions['or']['Involvement.id'] = array_unique($ids);
 		}
 
 		$this->paginate = array(
@@ -136,9 +123,9 @@ class InvolvementsController extends AppController {
 			'limit' => $viewStyle == 'column' ? 6 : 20,
 			'order' => 'Ministry.name ASC, Involvement.name ASC'
 		);
-
+		
 		$involvements = $this->FilterPagination->paginate('Involvement');
-
+		
 		foreach ($involvements as &$involvement) {
 			$involvement['dates'] = $this->Involvement->Date->generateDates($involvement['Involvement']['id'], array('limit' => 1));
 		}
