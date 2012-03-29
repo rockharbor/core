@@ -60,39 +60,51 @@ class InvolvementsController extends AppController {
 	function index($viewStyle = 'column') {
 		$private = $this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id']);
 
-		$subministries = $this->Involvement->Ministry->children($this->passedArgs['Ministry']);
-		$ids = Set::extract('/Ministry/id', $subministries);
-		array_unshift($ids, $this->passedArgs['Ministry']);
+		$conditions['Involvement.ministry_id'] = $this->passedArgs['Ministry'];
 		
-		$conditions['or']['Involvement.ministry_id'] = $ids;
-		if (empty($this->data) || !$this->data['Involvement']['inactive']) {
-			$conditions['Involvement.active'] = true;
-		}
-		if (empty($this->data) || !$this->data['Involvement']['private']) {
-			$conditions['Involvement.private'] = false;
-		} elseif (!$private) {
-			$signedUp = array();
-			if (isset($this->passedArgs['User'])) {
-				$signedUp = $this->Involvement->Roster->find('all', array(
-					'conditions' => array(
-						'user_id' => $this->passedArgs['User']
-					)
-				));
-			}
-			$conditions[]['or'] = array(
-				'Involvement.private' => false,
-				'Involvement.id' => Set::extract('/Roster/involvement_id', $signedUp)
+		if (empty($this->data)) {
+			$this->data = array(
+				'Involvement' => array(
+					'inactive' => 0,
+					'private' => 0,
+					'previous' => 0
+				)
 			);
 		}
-		if (empty($this->data) || !$this->data['Involvement']['previous']) {
+		
+		// set conditions based on filters
+		if ($this->data['Involvement']['inactive']) {
+			$conditions['Involvement.active'] = array(0, 1);
+		} else {
+			$conditions['Involvement.active'] = 1;
+		}
+		if ($this->data['Involvement']['private'] && $private) {
+			$conditions['Involvement.private'] = array(0, 1);
+		} else {
+			$conditions['Involvement.private'] = 0;
+		}
+		if (!$this->data['Involvement']['previous']) {
 			$db = $this->Involvement->getDataSource();
-			$conditions[] = $db->expression('('.$this->Involvement->getVirtualField('previous').') = false');
+			$conditions[] = $db->expression('('.$this->Involvement->getVirtualField('previous').') = 0');
 		}
 		
+		// get additional ids
+		$ids = array();
+		if (isset($this->passedArgs['User'])) {
+			$signedUp = array();
+			$signedUp = $this->Involvement->Roster->find('all', array(
+				'conditions' => array(
+					'user_id' => $this->passedArgs['User']
+				)
+			));
+			$ids = array_merge($ids, Set::extract('/Roster/involvement_id', $signedUp));
+		}
+		
+		// include display involvements
 		$displayInvolvements = $this->Involvement->Ministry->find('all', array(
 			'fields' => array('id'),
 			'conditions' => array(
-				'id' => $ids
+				'id' => $this->passedArgs['Ministry']
 			),
 			'contain' => array(
 				'DisplayInvolvement' => array(
@@ -100,8 +112,13 @@ class InvolvementsController extends AppController {
 				)
 			)
 		));
-		$ids = Set::extract('/DisplayInvolvement/id', $displayInvolvements);
-		$conditions['or']['Involvement.id'] = $ids;
+		$ids = array_merge($ids, Set::extract('/DisplayInvolvement/id', $displayInvolvements));
+		
+		if (!empty($ids)) {
+			$conditions['or'] = array(
+				'Involvement.id' => $ids
+			);
+		}
 
 		$this->paginate = array(
 			'contain' => array(

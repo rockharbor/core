@@ -194,12 +194,26 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 	
 	function testIndex() {
 		$this->loadSettings();
-		$this->loadFixtures('InvolvementsMinistry');
+		$this->loadFixtures('InvolvementsMinistry', 'Date');
 		
 		$vars = $this->testAction('/involvements/index/Ministry:1', array(
 			'data' => array(
 				'Involvement' => array(
 					'inactive' => 1,
+					'private' => 0,
+					'previous' => 1
+				)
+			)
+		));
+		$results = Set::extract('/Involvement/id', $vars['involvements']);
+		sort($results);
+		$expected = array(4, 5);
+		$this->assertEqual($results, $expected);
+		
+		$vars = $this->testAction('/involvements/index/Ministry:1', array(
+			'data' => array(
+				'Involvement' => array(
+					'inactive' => 0,
 					'private' => 0,
 					'previous' => 0
 				)
@@ -207,13 +221,10 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		));
 		$results = Set::extract('/Involvement/id', $vars['involvements']);
 		sort($results);
-		$expected = array(1, 2, 4, 5);
+		$expected = array();
 		$this->assertEqual($results, $expected);
 		
-		$this->su(array(
-			'Group' => array('id' => 8)
-		));
-		$vars = $this->testAction('/involvements/index/Ministry:1', array(
+		$vars = $this->testAction('/involvements/index/Ministry:4/User:1', array(
 			'data' => array(
 				'Involvement' => array(
 					'inactive' => 1,
@@ -224,10 +235,24 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		));
 		$results = Set::extract('/Involvement/id', $vars['involvements']);
 		sort($results);
-		$expected = array(1, 2, 4, 5);
+		$expected = array(3);
 		$this->assertEqual($results, $expected);
 		
-		$vars = $this->testAction('/involvements/index/Ministry:1/User:1', array(
+		$vars = $this->testAction('/involvements/index/Ministry:4/User:1', array(
+			'data' => array(
+				'Involvement' => array(
+					'inactive' => 1,
+					'private' => 0,
+					'previous' => 1
+				)
+			)
+		));
+		$results = Set::extract('/Involvement/id', $vars['involvements']);
+		sort($results);
+		$expected = array();
+		$this->assertEqual($results, $expected);
+		
+		$vars = $this->testAction('/involvements/index/Ministry:1/User:5', array(
 			'data' => array(
 				'Involvement' => array(
 					'inactive' => 1,
@@ -238,7 +263,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		));
 		$results = Set::extract('/Involvement/id', $vars['involvements']);
 		sort($results);
-		$expected = array(1, 2, 3, 4, 5);
+		$expected = array(5);
 		$this->assertEqual($results, $expected);
 		
 		$this->unloadSettings();
