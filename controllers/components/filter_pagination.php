@@ -49,7 +49,7 @@ class FilterPaginationComponent extends Object {
  * @var boolean
  */
 	var $startEmpty = true;
-
+	
 /**
  * Start FilterPaginationComponent for use in the controller
  *
@@ -59,6 +59,27 @@ class FilterPaginationComponent extends Object {
 	function initialize(&$controller, $settings = array()) {
 		$this->controller =& $controller;
 		$this->_set($settings);
+	}
+
+/**
+ * Startup method, populates data from previously saved filter if available
+ * and removes saved filter if it's a new session
+ * 
+ * @return void
+ */
+	function startup() {
+		// remove data if it's a new request
+		$key = $this->_key();
+		if (!isset($this->controller->params['named']['page'])) {
+			$this->Session->delete($key);
+			return;
+		}
+		
+		if (empty($this->controller->data)) {
+			if ($this->Session->check($key.'.data')) {
+				$this->controller->data = $this->Session->read($key.'.data');
+			}
+		}
 	}
 	
 /**
@@ -76,40 +97,8 @@ class FilterPaginationComponent extends Object {
 		}
 		$model = ClassRegistry::init($model);
 		
-		$key = 'FilterPagination.'.$this->controller->name.'_'.$this->controller->params['action'];
-		
-		// new search, remove saved filter
-		if ($this->startEmpty) {
-			if (!empty($this->controller->data) || !isset($this->controller->params['named']['page'])) {
-				$this->Session->delete($key);
-			}
-		} else {
-			if (!empty($this->controller->data) && $this->controller->data != $this->Session->read($key.'.data')) {
-				$this->Session->delete($key);
-			} elseif (!isset($this->controller->params['named']['page'])) {
-				$this->Session->delete($key);
-			}
-		}
-		
-		if (!$this->Session->check($key)) {
-			// save data in session if it's not there
-			$this->Session->write($key.'.paginate', $this->controller->paginate);
-			$this->Session->write($key.'.data', $this->controller->data);
-			// conserve any after-the-fact model bindings
-			$this->Session->write($key.'.'.$model->alias.'.hasOne', $model->hasOne);
-			$this->Session->write($key.'.'.$model->alias.'.belongsTo', $model->belongsTo);
-		} elseif (isset($this->controller->params['named']['page']) || !$this->startEmpty) {
-			// otherwise use it for pagination and data
-			$this->controller->paginate = $this->Session->read($key.'.paginate');
-			$this->controller->data = $this->Session->read($key.'.data');
-			$model->hasOne = $this->Session->read($key.'.'.$model->alias.'.hasOne');
-			$model->belongsTo = $this->Session->read($key.'.'.$model->alias.'.belongsTo');
-		}
-		
-		// check for 'link' key
-		if (isset($this->controller->paginate) && isset($this->controller->paginate['link'])) {
-			$this->_attachLinkedModels($model, $this->controller->paginate['link']);
-		}
+		$key = $this->_key();
+		$this->Session->write($key.'.data', $this->controller->data);
 		
 		// return empty array by default so we don't perform a search without filtering first
 		if (!empty($this->controller->data) || isset($this->controller->params['named']['page']) || !$this->startEmpty) {
@@ -120,29 +109,12 @@ class FilterPaginationComponent extends Object {
 	}
 
 /**
- * Iterates through an array and attaches those models to $Model
+ * Gets the session key
  * 
- * This function is here solely to trick `Controller::paginate()` into thinking
- * that the models in $linked are directly and should only be used if the 'link'
- * key is present
- * 
- * @param Model $Model
- * @param array $linked 
- * @see LinkableBehavior
+ * @return string
  */
-	function _attachLinkedModels(&$Model, $linked) {
-		$keys = ClassRegistry::keys();
-		$linked = Set::normalize($linked);
-		foreach ($linked as $_model => $attrs) {
-			if (in_array(Inflector::underscore($_model), $keys)) {
-				$Model->{$_model} = ClassRegistry::init($_model);
-			}
-			if (!is_array($attrs) && in_array(Inflector::underscore($attrs), $keys)) {
-				$Model->{$attrs} = ClassRegistry::init($attrs);
-			} elseif (is_array($attrs)) {
-				$this->_attachLinkedModels($Model, $attrs);
-			}
-		}
+	function _key() {
+		return 'FilterPagination.'.$this->controller->name.'_'.$this->controller->params['action'];
 	}
 	
 }
