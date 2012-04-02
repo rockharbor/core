@@ -11,11 +11,11 @@ if (!empty($ministry['ParentMinistry']['id'])) {
 		<h3>Description</h3>
 		<p class="ministry-description">
 			<?php 
-			echo $ministry['Ministry']['description'];
 			if (!empty($ministry['Image'])) {
 				$path = 'm'.DS.$ministry['Image'][0]['dirname'].DS.$ministry['Image'][0]['basename'];
 				echo $this->Media->embed($path, array('restrict' => 'image'));
 			}
+			echo $ministry['Ministry']['description'];
 			?>
 		</p>
 	</div>
