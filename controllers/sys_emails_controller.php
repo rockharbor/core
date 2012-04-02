@@ -118,6 +118,7 @@ class SysEmailsController extends AppController {
 			)
 		));
 		$this->passedArgs['model'] = 'User';
+		$this->data['SysEmail']['to'] = $user['Leader']['user_id'];
 		$this->setAction('compose');
 	}
 	
@@ -206,10 +207,14 @@ class SysEmailsController extends AppController {
 				}
 			}
 		}
+		
+		if (empty($this->data['SysEmail']['to'])) {
+			$this->data['SysEmail']['to'] = implode(',', $toUsers);
+		}
 
 		$fromUser = $this->activeUser['User']['id'];
 		
-		if (!empty($this->data)) {
+		if (!empty($this->data) && !empty($this->data['SysEmail']['to'])) {
 			// get attachments for this email
 			$Document = ClassRegistry::init('Document');
 			$Document->recursive = -1;
@@ -231,6 +236,8 @@ class SysEmailsController extends AppController {
 			// send it!
 			if ($this->SysEmail->validates()) {
 				$e = 0;
+				
+				$toUsers = explode(',', $this->data['SysEmail']['to']);
 				$toUsers = array_unique($toUsers);
 				
 				if (in_array($this->data['SysEmail']['email_users'], array('both', 'household_contact'))) {
