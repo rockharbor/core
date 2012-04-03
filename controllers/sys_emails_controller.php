@@ -250,7 +250,6 @@ class SysEmailsController extends AppController {
  */ 
 	function compose() {
 		if (empty($this->data) && (empty($this->users) && empty($this->data['SysEmail']['to']))) {
-			debug('nope');
 			$this->Session->setFlash('Invalid email list.', 'flash'.DS.'failure');
 			return $this->redirect($this->emptyPage);
 		}
