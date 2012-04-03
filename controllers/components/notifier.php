@@ -219,6 +219,10 @@ class NotifierComponent extends Object {
 			CakeLog::write('smtp', print_r($this->QueueEmail, true));
 			return false;
 		}
+		
+		// save the ids of the users this was to and from
+		$this->QueueEmail->Model->saveField('to_id', $user['User']['id']);
+		$this->QueueEmail->Model->saveField('from_id', $from['User']['id']);
 
 		return true;
 	}

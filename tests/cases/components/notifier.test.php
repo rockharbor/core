@@ -4,7 +4,7 @@ App::import('Model', array('Notification', 'Invitation'));
 App::import('Component', array('Notifier', 'QueueEmail.QueueEmail'));
 
 Mock::generatePartial('NotifierComponent', 'MockNotifierNotifierComponent', array('_render'));
-Mock::generatePartial('QueueEmailComponent', 'MockQueueEmailComponent', array('__smtp', '_db', '__mail'));
+Mock::generatePartial('QueueEmailComponent', 'MockQueueEmailComponent', array('__smtp', '__mail'));
 
 class TestNotifierController extends Controller {
 	
@@ -41,9 +41,7 @@ class NotifierTestCase extends CoreTestCase {
 	}
 	
 	function testNoQueue() {
-		$this->Notifier->QueueEmail->setReturnValue('_db', true);
 		$this->Notifier->QueueEmail->setReturnValue('__smtp', true);
-		$this->Notifier->QueueEmail->expectOnce('_db');
 		$this->Notifier->QueueEmail->expectOnce('__smtp');
 		
 		// sends now
@@ -134,7 +132,6 @@ class NotifierTestCase extends CoreTestCase {
 	}
 	
 	function testInvite() {
-		$this->Notifier->QueueEmail->setReturnValue('_db', true);
 		$this->loadFixtures('Invitation', 'InvitationsUser');
 		
 		$this->assertFalse($this->Notifier->invite(array(
@@ -190,7 +187,6 @@ class NotifierTestCase extends CoreTestCase {
 	}
 
 	function testNotify() {
-		$this->Notifier->QueueEmail->setReturnValue('_db', true);
 		$this->Controller->set('ministry', 1);
 		$this->assertTrue($this->Notifier->notify(array(
 			'to' => 1,
@@ -207,7 +203,6 @@ class NotifierTestCase extends CoreTestCase {
 	}
 
 	function testSend() {
-		$this->Notifier->QueueEmail->setReturnValue('_db', true);
 		$this->Notification->User->contain(array('Profile'));
 		$user = $this->Notification->User->read(null, 1);
 
@@ -215,10 +210,20 @@ class NotifierTestCase extends CoreTestCase {
 		$expected = 'CORE <core@rockharbor.org>';
 		$this->assertEqual($this->Notifier->QueueEmail->from, $expected);
 		$this->assertEqual($this->Notifier->Controller->viewVars['toUser'], $user);
+		
+		$queue = $this->Notifier->QueueEmail->Model->read();
+		$this->assertEqual($queue['Queue']['to_id'], 1);
+		$this->assertEqual($queue['Queue']['from_id'], 0);
+		$this->assertEqual($queue['Queue']['from'], $expected);
 
 		$this->assertTrue($this->Notifier->_send($user, array('from' => 2)));
 		$expected = 'ricky rockharbor <ricky@rockharbor.org>';
 		$this->assertEqual($this->Notifier->QueueEmail->from, $expected);
+		
+		$queue = $this->Notifier->QueueEmail->Model->read();
+		$this->assertEqual($queue['Queue']['to_id'], 1);
+		$this->assertEqual($queue['Queue']['from_id'], 2);
+		$this->assertEqual($queue['Queue']['from'], $expected);
 
 		$this->Notifier->_send($user, array(
 			'from' => 2,
@@ -231,7 +236,6 @@ class NotifierTestCase extends CoreTestCase {
 	}
 
 	function testSave() {
-		$this->Notifier->QueueEmail->setReturnValue('_db', true);
 		$this->Notification->User->contain(array('Profile'));
 		$user = $this->Notification->User->read(null, 1);
 
