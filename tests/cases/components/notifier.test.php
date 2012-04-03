@@ -63,6 +63,9 @@ class NotifierTestCase extends CoreTestCase {
 	function testNormalizeUser() {
 		$results = $this->Notifier->_normalizeUser('email@example.com');
 		$expected = array(
+			'User' => array(
+				'id' => 0
+			),
 			'Profile' => array(
 				'name' => 'email@example.com',
 				'primary_email' => 'email@example.com'
@@ -101,6 +104,9 @@ class NotifierTestCase extends CoreTestCase {
 			)
 		));
 		$expected = array(
+			'User' => array(
+				'id' => 0
+			),
 			'Profile' => array(
 				'name' => 'jeremy',
 				'primary_email' => 'jeremy@42pixels.com'
@@ -109,6 +115,9 @@ class NotifierTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 		$results = $this->Notifier->_normalizeUser();
 		$expected = array(
+			'User' => array(
+				'id' => 0
+			),
 			'Profile' => array(
 				'name' => 'CORE',
 				'primary_email' => 'core@rockharbor.org'

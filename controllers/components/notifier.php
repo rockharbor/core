@@ -279,6 +279,9 @@ class NotifierComponent extends Object {
 	function _normalizeUser($user = null) {
 		if ($user === null) {
 			$user = array(
+				'User' => array(
+					'id' => 0
+				),
 				'Profile' => array(
 					'name' => Core::read('general.site_name_tagless'),
 					'primary_email' => Core::read('notifications.site_email')
@@ -309,13 +312,21 @@ class NotifierComponent extends Object {
 			);
 		} elseif (is_string($user)) {
 			$user = array(
+				'User' => array(
+					'id' => 0
+				),
 				'Profile' => array(
 					'name' => $user,
 					'primary_email' => $user
 				)
 			);
-		
 		} else {
+			$default = array(
+				'User' => array(
+					'id' => 0
+				)
+			);
+			$user = array_merge_recursive($default, $user);
 			if (!isset($user['Profile']['name']) || !isset($user['Profile']['primary_email'])) {
 				$user = null;
 			}
