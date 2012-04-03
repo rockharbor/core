@@ -67,6 +67,16 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/User/id', $vars['toUsers']);
 		sort($results);
 		$this->assertEqual($results, array(1, 2, 3));
+		
+		// simulated expired search
+		$this->SysEmails->Session->write('MultiSelect.test', array(
+			'selected' => array(1,2),
+			'search' => array(),
+			'created' => strtotime('-1 day')
+		));
+		$vars = $this->testAction('/sys_emails/involvement/users/mstoken:test');
+		$this->assertEqual($this->SysEmails->Session->read('Message.flash.element'), 'flash'.DS.'failure');
+		$this->assertFalse(isset($vars['toUsers']));
 	}
 	
 	function testMinistry() {
@@ -85,6 +95,16 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/User/id', $vars['toUsers']);
 		sort($results);
 		$this->assertEqual($results, array(5));
+		
+		// simulated expired search
+		$this->SysEmails->Session->write('MultiSelect.test', array(
+			'selected' => array(1),
+			'search' => array(),
+			'created' => strtotime('-1 day')
+		));
+		$vars = $this->testAction('/sys_emails/ministry/users/mstoken:test');
+		$this->assertEqual($this->SysEmails->Session->read('Message.flash.element'), 'flash'.DS.'failure');
+		$this->assertFalse(isset($vars['toUsers']));
 	}
 	
 	function testRoster() {
@@ -115,6 +135,16 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/User/id', $vars['toUsers']);
 		sort($results);
 		$this->assertEqual($results, array(2, 3));
+		
+		// simulated expired search
+		$this->SysEmails->Session->write('MultiSelect.test', array(
+			'selected' => array(3,4,5),
+			'search' => array(),
+			'created' => strtotime('-1 day')
+		));
+		$vars = $this->testAction('/sys_emails/roster/mstoken:test');
+		$this->assertEqual($this->SysEmails->Session->read('Message.flash.element'), 'flash'.DS.'failure');
+		$this->assertFalse(isset($vars['toUsers']));
 	}
 
 	function testUser() {
@@ -146,6 +176,16 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 			'data' => $data
 		));
 		$this->assertEqual($this->SysEmails->Session->read('Message.flash.element'), 'flash'.DS.'success');
+		
+		// simulated expired search
+		$this->SysEmails->Session->write('MultiSelect.test', array(
+			'selected' => array(1,2),
+			'search' => array(),
+			'created' => strtotime('-1 day')
+		));
+		$vars = $this->testAction('/sys_emails/user/mstoken:test');
+		$this->assertEqual($this->SysEmails->Session->read('Message.flash.element'), 'flash'.DS.'failure');
+		$this->assertFalse(isset($vars['toUsers']));
 	}
 	
 	function testEmailHouseholdContact() {

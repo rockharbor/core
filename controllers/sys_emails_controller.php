@@ -140,6 +140,9 @@ class SysEmailsController extends AppController {
 				$ministries = $this->MultiSelect->getSelected($token);
 				if (empty($ministries)) {
 					$search = $this->MultiSelect->getSearch($token);
+					if (empty($search)) {
+						$search['conditions'] = array('id' => null);
+					}
 					$results = $this->Ministry->find('all', $search);
 					$ministries = Set::extract('/Ministry/id', $results);
 				}
@@ -168,6 +171,9 @@ class SysEmailsController extends AppController {
 				$involvements = $this->MultiSelect->getSelected($token);
 				if (empty($involvements)) {
 					$search = $this->MultiSelect->getSearch($token);
+					if (empty($search)) {
+						$search['conditions'] = array('id' => null);
+					}
 					$results = $this->Involvement->find('all', $search);
 					$involvements = Set::extract('/Involvement/id', $results);
 				}
@@ -190,6 +196,9 @@ class SysEmailsController extends AppController {
 			$rosters = $this->MultiSelect->getSelected($token);
 			if (empty($rosters)) {
 				$search = $this->MultiSelect->getSearch($token);
+				if (empty($search)) {
+					$search['conditions'] = array('id' => null);
+				}
 				if (isset($search['fields'])) {
 					$search['fields'][] = 'user_id';
 				} else {
@@ -227,6 +236,9 @@ class SysEmailsController extends AppController {
 				$this->users = $this->MultiSelect->getSelected($token);
 				if (empty($this->users)) {
 					$search = $this->MultiSelect->getSearch($token);
+					if (empty($search)) {
+						$search['conditions'] = array('id' => null);
+					}
 					$results = ClassRegistry::init('User')->find('all', $search);
 					$this->users = Set::extract('/User/id', $results);
 				}
