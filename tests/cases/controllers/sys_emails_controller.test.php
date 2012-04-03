@@ -96,6 +96,25 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/User/id', $vars['toUsers']);
 		sort($results);
 		$this->assertEqual($results, array(1, 2));
+		
+		$this->SysEmails->Session->write('MultiSelect.test', array(
+			'selected' => array(),
+			'search' => array(
+				'fields' => array(
+					'id'
+				),
+				'conditions' => array(
+					'Roster.involvement_id' => 1
+				),
+				'contain' => array(
+					'User'
+				)
+			)
+		));
+		$vars = $this->testAction('/sys_emails/roster/mstoken:test');
+		$results = Set::extract('/User/id', $vars['toUsers']);
+		sort($results);
+		$this->assertEqual($results, array(2, 3));
 	}
 
 	function testUser() {

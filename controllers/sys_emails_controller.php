@@ -190,6 +190,11 @@ class SysEmailsController extends AppController {
 			$rosters = $this->MultiSelect->getSelected($token);
 			if (empty($rosters)) {
 				$search = $this->MultiSelect->getSearch($token);
+				if (isset($search['fields'])) {
+					$search['fields'][] = 'user_id';
+				} else {
+					$search['fields'] = array('user_id');
+				}
 				$results = $this->Involvement->Roster->find('all', $search);
 			} else {
 				$results = $this->Involvement->Roster->find('all', array(
