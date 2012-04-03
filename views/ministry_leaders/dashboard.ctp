@@ -49,30 +49,30 @@
 		<tbody>
 			<?php
 			$i = 0;
-			foreach ($leaders as $leader):
+			foreach ($ministries as $ministry):
 				$class = null;
 				if ($i++ % 2 == 0) {
 					$class = ' class="altrow"';
 				}
 			?>
 			<tr<?php echo $class;?>>
-				<td><?php echo $this->MultiSelect->checkbox($leader['Ministry']['id']); ?></td>
+				<td><?php echo $this->MultiSelect->checkbox($ministry['Ministry']['id']); ?></td>
 				<td><?php 
-				echo $this->Html->link($leader['Ministry']['Campus']['name'], array('controller' => 'campuses', 'action' => 'view', 'Campus' => $leader['Ministry']['Campus']['id']), array('escape' => false));
-				if (!empty($leader['Ministry']['ParentMinistry']['id'])) {
+				echo $this->Html->link($ministry['Campus']['name'], array('controller' => 'campuses', 'action' => 'view', 'Campus' => $ministry['Campus']['id']), array('escape' => false));
+				if (!empty($ministry['ParentMinistry']['id'])) {
 					echo ' > ';
-					echo $this->Html->link($leader['Ministry']['ParentMinistry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $leader['Ministry']['ParentMinistry']['id']), array('escape' => false));
+					echo $this->Html->link($ministry['ParentMinistry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $ministry['ParentMinistry']['id']), array('escape' => false));
 				}
 				echo ' > ';
-				echo $this->Html->link($leader['Ministry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $leader['Ministry']['id'])).$this->Formatting->flags('Ministry', $leader); 
+				echo $this->Html->link($ministry['Ministry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $ministry['Ministry']['id'])).$this->Formatting->flags('Ministry', $ministry); 
 				?></td>
 				<td><?php
-				$link = array('controller' => 'roles', 'action' => 'index', 'Ministry' => $leader['Ministry']['id']);
+				$link = array('controller' => 'roles', 'action' => 'index', 'Ministry' => $ministry['Ministry']['id']);
 				$icon = $this->element('icon', array('icon' => 'add'));
 				echo $this->Html->link($icon, $link, array('rel' => 'modal', 'escape' => false, 'class' => 'no-hover'));
-				echo $this->Html->link(count($leader['Ministry']['Role']).' Roles', $link, array('rel' => 'modal-parent'));
-				if (!empty($leader['Ministry']['Role'])) {
-					echo $this->Html->tag('div', $this->Text->toList(Set::extract('/name', $leader['Ministry']['Role'])), array('class' => 'core-tooltip'));
+				echo $this->Html->link(count($ministry['Role']).' Roles', $link, array('rel' => 'modal-parent'));
+				if (!empty($ministry['Role'])) {
+					echo $this->Html->tag('div', $this->Text->toList(Set::extract('/name', $ministry['Role'])), array('class' => 'core-tooltip'));
 				}
 				?></td>
 			</tr>
