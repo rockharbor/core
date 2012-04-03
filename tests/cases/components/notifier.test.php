@@ -65,6 +65,8 @@ class NotifierTestCase extends CoreTestCase {
 				'id' => 0
 			),
 			'Profile' => array(
+				'first_name' => 'email@example.com',
+				'last_name' => '',
 				'name' => 'email@example.com',
 				'primary_email' => 'email@example.com'
 			)
@@ -77,6 +79,8 @@ class NotifierTestCase extends CoreTestCase {
 				'id' => 1
 			),
 			'Profile' => array(
+				'first_name' => 'Jeremy',
+				'last_name' => 'Harris',
 				'name' => 'Jeremy Harris',
 				'primary_email' => 'jharris@rockharbor.org'
 			)
@@ -89,6 +93,8 @@ class NotifierTestCase extends CoreTestCase {
 				'id' => 1
 			),
 			'Profile' => array(
+				'first_name' => 'Jeremy',
+				'last_name' => 'Harris',
 				'name' => 'Jeremy Harris',
 				'primary_email' => 'jharris@rockharbor.org'
 			)
@@ -106,6 +112,8 @@ class NotifierTestCase extends CoreTestCase {
 				'id' => 0
 			),
 			'Profile' => array(
+				'first_name' => 'jeremy',
+				'last_name' => '',
 				'name' => 'jeremy',
 				'primary_email' => 'jeremy@42pixels.com'
 			)
@@ -117,6 +125,8 @@ class NotifierTestCase extends CoreTestCase {
 				'id' => 0
 			),
 			'Profile' => array(
+				'first_name' => 'CORE',
+				'last_name' => '',
 				'name' => 'CORE',
 				'primary_email' => 'core@rockharbor.org'
 			)

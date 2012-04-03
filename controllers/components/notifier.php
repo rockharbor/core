@@ -83,13 +83,7 @@ class NotifierComponent extends Object {
 		if (!$this->enabled || !isset($options['to'])) {
 			return false;
 		}
-		$this->User->contain(array('Profile'));
-		$user = $this->User->find('first', array(
-			'conditions' => array(
-				'User.active' => true,
-				'User.id' => $options['to']
-			)
-		));
+		$user = $this->_normalizeUser($options['to']);
 		if (!$user) {
 			return false;
 		}
@@ -283,21 +277,20 @@ class NotifierComponent extends Object {
 	function _normalizeUser($user = null) {
 		if ($user === null) {
 			$user = array(
-				'User' => array(
-					'id' => 0
-				),
 				'Profile' => array(
 					'name' => Core::read('general.site_name_tagless'),
 					'primary_email' => Core::read('notifications.site_email')
 				)
 			);
-		} elseif (is_numeric($user)) {
+		}
+		if (is_numeric($user)) {
 			$user = $this->User->find('first', array(
 				'fields' => array(
 					'id'
 				),
 				'conditions' => array(
-					'User.id' => $user
+					'User.id' => $user,
+					'User.active' => true
 				),
 				'contain' => array(
 					'Profile' => array(
@@ -305,35 +298,35 @@ class NotifierComponent extends Object {
 					)
 				)
 			));
-			$user = array(
-				'User' => array(
-					'id' => $user['User']['id']
-				),
-				'Profile' => array(
-					'name' => $user['Profile']['first_name'].' '.$user['Profile']['last_name'],
-					'primary_email' => $user['Profile']['primary_email']
-				)
-			);
+			if (!empty($user)) {
+				$user['Profile']['name'] = $user['Profile']['first_name'].' '.$user['Profile']['last_name'];
+			}
 		} elseif (is_string($user)) {
 			$user = array(
 				'User' => array(
 					'id' => 0
 				),
 				'Profile' => array(
+					'first_name' => $user,
+					'last_name' => '',
 					'name' => $user,
 					'primary_email' => $user
 				)
 			);
 		} else {
+			if (!isset($user['Profile']['name']) || !isset($user['Profile']['primary_email'])) {
+				return null;
+			}
 			$default = array(
 				'User' => array(
 					'id' => 0
+				),
+				'Profile' => array(
+					'first_name' => $user['Profile']['name'],
+					'last_name' => ''
 				)
 			);
 			$user = array_merge_recursive($default, $user);
-			if (!isset($user['Profile']['name']) || !isset($user['Profile']['primary_email'])) {
-				$user = null;
-			}
 		}
 		return $user;
 	}
