@@ -215,8 +215,13 @@ class NotifierComponent extends Object {
 		}
 		
 		// save the ids of the users this was to and from
-		$this->QueueEmail->Model->saveField('to_id', $user['User']['id']);
-		$this->QueueEmail->Model->saveField('from_id', $from['User']['id']);
+		$this->QueueEmail->Model->save(array(
+			'Queue' => array(
+				'id' => $this->QueueEmail->Model->id,
+				'to_id' => $user['User']['id'],
+				'from_id' => $from['User']['id']
+			)
+		), array('validate' => false));
 
 		return true;
 	}
