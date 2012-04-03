@@ -36,6 +36,24 @@ class SysEmailsController extends AppController {
  * @var array
  */
 	var $components = array('MultiSelect.MultiSelect');
+	
+/**
+ * Models used by this controller
+ * 
+ * @var array
+ */
+	var $uses = array('SysEmail', 'User', 'Involvement', 'Ministry');
+	
+/**
+ * Users to email
+ * 
+ * This var is only used on the initial request, afterwhich the data value for
+ * `$this->data['SysEmail']['to']` is passed between requests. This prevents
+ * the need for looking up the user search on each request.
+ * 
+ * @var array
+ */
+	var $users = array();
 
 /**
  * Model::beforeFilter() callback
@@ -103,119 +121,171 @@ class SysEmailsController extends AppController {
 		
 		$this->render('compose');
 	}
+	
+/**
+ * Emails users or leaders from a Ministry
+ * 
+ * By passing an id to the `Ministry` passed arg, you can email a single
+ * Ministry user group (see `$group`). Or, use multiselect to select a group 
+ * of ministry ids, from which the user groups will be pulled.
+ * 
+ * @param string $group 'leaders', 'users', or 'both'
+ */		
+	function ministry($group = 'users') {
+		if (empty($this->data['SysEmail']['to'])) {
+			if (isset($this->passedArgs['Ministry'])) {
+				$ministries = array($this->passedArgs['Ministry']);
+			} else {
+				$token = $this->params['named']['mstoken'];
+				$ministries = $this->MultiSelect->getSelected($token);
+				if (empty($ministries)) {
+					$search = $this->MultiSelect->getSearch($token);
+					if (empty($search)) {
+						$search['conditions'] = array('id' => null);
+					}
+					$results = $this->Ministry->find('all', $search);
+					$ministries = Set::extract('/Ministry/id', $results);
+				}
+			}
+			
+			$this->users = $this->_getUsers('Ministry', $ministries, $group);
+		}
+		$this->setAction('compose');
+	}
+	
+/**
+ * Emails users or leaders from an Involvement
+ * 
+ * By passing an id to the `Involvement` passed arg, you can email a single
+ * Involvement user group (see `$group`). Or, use multiselect to select a group 
+ * of involvement ids, from which the user groups will be pulled.
+ * 
+ * @param string $group 'leaders', 'users', or 'both'
+ */		
+	function involvement($group = 'users') {
+		if (empty($this->data['SysEmail']['to'])) {
+			if (isset($this->passedArgs['Involvement'])) {
+				$involvements = array($this->passedArgs['Involvement']);
+			} else {
+				$token = $this->params['named']['mstoken'];
+				$involvements = $this->MultiSelect->getSelected($token);
+				if (empty($involvements)) {
+					$search = $this->MultiSelect->getSearch($token);
+					if (empty($search)) {
+						$search['conditions'] = array('id' => null);
+					}
+					$results = $this->Involvement->find('all', $search);
+					$involvements = Set::extract('/Involvement/id', $results);
+				}
+			}
+			
+			$this->users = $this->_getUsers('Involvement', $involvements, $group);
+		}
+		$this->setAction('compose');
+	}
+	
+/**
+ * Emails a user from roster record
+ * 
+ * Use multiselect to select a group of roster ids, from which the user ids will
+ * be pulled.
+ */	
+	function roster() {
+		if (empty($this->data['SysEmail']['to'])) {
+			$token = $this->params['named']['mstoken'];
+			$rosters = $this->MultiSelect->getSelected($token);
+			if (empty($rosters)) {
+				$search = $this->MultiSelect->getSearch($token);
+				if (empty($search)) {
+					$search['conditions'] = array('id' => null);
+				}
+				if (isset($search['fields'])) {
+					$search['fields'][] = 'user_id';
+				} else {
+					$search['fields'] = array('user_id');
+				}
+				$results = $this->Involvement->Roster->find('all', $search);
+			} else {
+				$results = $this->Involvement->Roster->find('all', array(
+					'fields' => array(
+						'user_id'
+					),
+					'conditions' => array(
+						'id' => $rosters
+					)
+				));
+			}
+			
+			$this->users = Set::extract('/Roster/user_id', $results);
+		}
+		$this->setAction('compose');
+	}
 
+/**
+ * Emails a user
+ * 
+ * By passing an id to the named param `User` you can email a specific user. 
+ * Or, use multiselect to select a group of user ids
+ */
+	function user() {
+		if (empty($this->data['SysEmail']['to'])) {
+			if (isset($this->passedArgs['User'])) {
+				$this->users = array($this->passedArgs['User']);
+			} else {
+				$token = $this->params['named']['mstoken'];
+				$this->users = $this->MultiSelect->getSelected($token);
+				if (empty($this->users)) {
+					$search = $this->MultiSelect->getSearch($token);
+					if (empty($search)) {
+						$search['conditions'] = array('id' => null);
+					}
+					$results = ClassRegistry::init('User')->find('all', $search);
+					$this->users = Set::extract('/User/id', $results);
+				}
+			}
+		}
+		$this->setAction('compose');
+	}
+	
 /**
  * Pass-through function to allow regular users to email leaders
  * 
  * @param integer $leaderId The leader id
  */
-	function email_leader($leaderId) {
+	function leader($leaderId) {
 		$Leader = ClassRegistry::init('Leader');
 		$user = $Leader->findById($leaderId);
-		$this->MultiSelect->saveSearch(array(
-			'conditions' => array(
-				'User.id' => $user['Leader']['user_id']
-			)
-		));
-		$this->passedArgs['model'] = 'User';
+		$this->users = array($user['Leader']['user_id']);
 		$this->setAction('compose');
 	}
 	
 /**
  * Creates a new email
- *
- * Get's list of email addresses from previously cached search results.
- * Allows for an attachment.
- *
- * There are a few different options for mass emails. The first is by simply
- * supplying two passed args, `model` and `$model`. These will run the `getInvolved()`
- * function on the passed model.
- *
- * If a `model` passed arg is sent as well as a multi-select id, all of those
- * id's for that model will be pulled.
- *
- * Additionally, you can pull the 'Leaders' or 'Managers' of specific models by
- * passing the `submodel` passed arg along with the `model` passed arg, where
- * `submodel` is Leader, Roster, Both (Leaders and Rosters), or Manager. Note: 
- * Managers are leaders who are *above* the current model, i.e., Involvement 
- * managers are leaders of that Involvement's Ministry.
- *
- * If no passed args are sent but a multi-select id is, it's assumed that the
- * selections are Users.
- *
- * ### Passed args:
- * - string $model A model to look up
- * - integer [$model] The id of the model
- * - string `submodel` A special key for mass emails, like emailing all of the
- * leaders within a set of involvements. Valid: 'Leader', 'Roster'
- *
- * @param string $uid The unique cache id of the list to pull
+ * 
+ * This action should not be used directly. It relies on `$this->users` to be 
+ * set by a preceding action.
  */ 
-	function compose($uid = null) {
-		if (!$uid) {
-			if (!isset($this->passedArgs['mstoken'])) {
-				$this->passedArgs['mstoken'] = $this->MultiSelect->_token;
-			}
-			$uid = $this->passedArgs['mstoken'];
+	function compose() {
+		if (empty($this->data) && (empty($this->users) && empty($this->data['SysEmail']['to']))) {
+			$this->Session->setFlash('Invalid email list.', 'flash'.DS.'failure');
+			return $this->redirect($this->emptyPage);
 		}
+		
 		$User = ClassRegistry::init('User');
-
-		$modelIds = $this->MultiSelect->getSelected($uid);
-		if (empty($modelIds)) {
-			// if nothing was selected, find all
-			$search = $this->MultiSelect->getSearch($uid);
-			$results = ClassRegistry::init($this->passedArgs['model'])->find('all', $search);
-			$modelIds = Set::extract('/'.$this->passedArgs['model'].'/id', $results);
-		}
-		$toUsers = $modelIds;
-		if (isset($this->passedArgs['model'])) {
-			if (isset($this->passedArgs[$this->passedArgs['model']])) {
-				$modelIds = array($this->passedArgs[$this->passedArgs['model']]);
-			}			
-			if (isset($this->passedArgs['submodel'])) {
-				switch ($this->passedArgs['submodel']) {
-					case 'Both':
-						$Model = ClassRegistry::init($this->passedArgs['model']);
-						$invLeaders = $Model->getLeaders($modelIds);
-						$invUsers = $Model->getInvolved($modelIds);
-						$toUsers = array_merge($invLeaders, $invUsers);
-					break;
-					case 'Leader':
-						$toUsers = ClassRegistry::init($this->passedArgs['model'])->getLeaders($modelIds);
-					break;
-					default:
-						$toUsers = ClassRegistry::init($this->passedArgs['model'])->getInvolved($modelIds);
-					break;
-				}
-			} else {
-				switch ($this->passedArgs['model']) {
-					case 'User':
-						$toUsers = $modelIds;
-					break;
-					case 'Roster':
-						$rosters = ClassRegistry::init('Roster')->find('all', array(
-							'conditions' => array(
-								'id' => $modelIds
-							)
-						));
-						$toUsers = Set::extract('/Roster/user_id', $rosters);
-					break;
-					default:
-						$toUsers = ClassRegistry::init($this->passedArgs['model'])->getInvolved($this->passedArgs[$this->passedArgs['model']]);
-					break;
-				}
-			}
-		}
 
 		$fromUser = $this->activeUser['User']['id'];
 		
-		if (!empty($this->data)) {
+		if (empty($this->data['SysEmail']['to'])) {
+			$this->data['SysEmail']['to'] = implode(',', $this->users);
+		}
+		
+		if (!empty($this->data) && empty($this->users)) {
 			// get attachments for this email
 			$Document = ClassRegistry::init('Document');
 			$Document->recursive = -1;
 			$documents = $Document->find('all', array(
 				'conditions' => array(
-					'foreign_key' => $uid,
+					'foreign_key' => $this->params['named']['mstoken'],
 					'model' => 'SysEmail'
 				)
 			));
@@ -231,6 +301,8 @@ class SysEmailsController extends AppController {
 			// send it!
 			if ($this->SysEmail->validates()) {
 				$e = 0;
+				
+				$toUsers = explode(',', $this->data['SysEmail']['to']);
 				$toUsers = array_unique($toUsers);
 				
 				if (in_array($this->data['SysEmail']['email_users'], array('both', 'household_contact'))) {
@@ -277,7 +349,7 @@ class SysEmailsController extends AppController {
 			// clear old attachments that people aren't using anymore
 			$this->SysEmail->gcAttachments();
 		}
-
+		
 		$User->contain(array(
 			'Profile' => array(
 				'fields' => array(
@@ -285,7 +357,7 @@ class SysEmailsController extends AppController {
 				)
 			)
 		));
-		$this->set('toUsers', $User->find('all', array('conditions'=>array('User.id'=>$toUsers))));
+		$this->set('toUsers', $User->find('all', array('conditions'=>array('User.id'=>explode(',', $this->data['SysEmail']['to'])))));
 		$User->contain(array(
 			'Profile' => array(
 				'fields' => array(
@@ -295,6 +367,34 @@ class SysEmailsController extends AppController {
 		));
 		$this->set('fromUser', $User->read(null, $fromUser));
 		$this->set('showAttachments', true);
+	}
+
+/**
+ * Gets a list of users from a particular model and user group
+ * 
+ * @param string $model The model (Involvement or Ministry)
+ * @param array $ids Array of model ids
+ * @param string $group 'leaders', 'users', or 'both'
+ * @return array Array of user ids 
+ */
+	function _getUsers($model, $ids, $group = 'users') {
+		if (empty($ids)) {
+			return array();
+		}
+		switch ($group) {
+			case 'both':
+				$leaders = $this->{$model}->getLeaders($ids);
+				$involved = $this->{$model}->getInvolved($ids);
+				$users = array_merge($involved, $leaders);
+			break;
+			case 'leaders':
+				$users = $this->{$model}->getLeaders($ids);
+			break;
+			default:
+				$users = $this->{$model}->getInvolved($ids);
+			break;
+		}
+		return $users;
 	}
 }	
 ?>

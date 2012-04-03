@@ -85,6 +85,7 @@ class CoreTestCase extends CakeTestCase {
 		'app.publication',
 		'app.publications_user',
 		'app.question',
+		'app.queue',
 		'app.region',
 		'app.role',
 		'app.roles_roster',
@@ -93,7 +94,6 @@ class CoreTestCase extends CakeTestCase {
 		'app.school',
 		'app.user',
 		'app.zipcode',
-		'plugin.queue_email.queue',
 	);
 
 /**

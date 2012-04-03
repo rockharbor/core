@@ -46,22 +46,30 @@ class MinistryLeadersController extends LeadersController {
  * @see LeadersController::dashboard()
  */
 	function dashboard() {
+		$leaders = $this->Leader->find('all', array(
+			'fields' => array(
+				'model_id'
+			),
+			'conditions' => array(
+				'Leader.model' => 'Ministry',
+				'Leader.user_id' => $this->passedArgs['User'],
+			)
+		));
+		
 		$this->viewPath = 'ministry_leaders';
 		$this->paginate = array(
 			'conditions' => array(
-				'Leader.model' => 'Ministry',
-				'Leader.user_id' => $this->passedArgs['User']
+				'Ministry.id' => Set::extract('/Leader/model_id', $leaders)
 			),
 			'contain' => array(
-				'Ministry' => array(
-					'Role',
-					'ParentMinistry',
-					'Campus'
-				)
+				'Role',
+				'ParentMinistry',
+				'Campus'
 			)
 		);
-		$leaders = $this->paginate();
-		$this->set('leaders', $leaders);
+		$this->MultiSelect->saveSearch($this->paginate);
+		$ministries = $this->paginate('Ministry');
+		$this->set('ministries', $ministries);
 		$this->set('model', $this->model);
 	}
 	
