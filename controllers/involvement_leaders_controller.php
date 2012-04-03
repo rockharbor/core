@@ -60,8 +60,6 @@ class InvolvementLeadersController extends LeadersController {
 		}
 		
 		$conditions = array(
-			'Leader.model' => 'Involvement',
-			'Leader.user_id' => $this->passedArgs['User'],
 			'Involvement.active' => true,
 			'Involvement.private' => false
 		);
@@ -76,21 +74,31 @@ class InvolvementLeadersController extends LeadersController {
 		if ($this->data['Filter']['private']) {
 			$conditions['Involvement.private'] = array(1, 0);
 		}
+		$leaders = $this->Leader->find('all', array(
+			'fields' => array(
+				'model_id'
+			),
+			'conditions' => array(
+				'Leader.model' => 'Involvement',
+				'Leader.user_id' => $this->passedArgs['User'],
+			)
+		));
+		$conditions['Involvement.id'] = Set::extract('/Leader/model_id', $leaders);
 		
 		$this->viewPath = 'involvement_leaders';
 		$this->paginate = array(
 			'conditions' => $conditions,
 			'contain' => array(
-				'Involvement' => array(
-					'Ministry' => array(
-						'ParentMinistry',
-						'Campus'
-					)
+				'Ministry' => array(
+					'ParentMinistry',
+					'Campus'
 				)
 			)
 		);
-		$leaders = $this->FilterPagination->paginate('Leader');
-		$this->set('leaders', $leaders);
+		$this->MultiSelect->saveSearch($this->paginate);
+		// paginate needs to be on Involvement model for MultiSelect to work
+		$involvements = $this->FilterPagination->paginate('Involvement');
+		$this->set('involvements', $involvements);
 		$this->set('model', $this->model);
 	}
 	

@@ -40,10 +40,8 @@ $this->Paginator->options(array(
 					'title' => 'Email Users',
 					'url' => array(
 						'controller' => 'sys_emails',
-						'action' => 'compose',
-						$this->MultiSelect->token,
-						'model' => 'Involvement',
-						'submodel' => 'Roster'
+						'action' => 'involvement',
+						'users'
 					),
 					'options' => array(
 						'rel' => 'modal-none'
@@ -54,10 +52,8 @@ $this->Paginator->options(array(
 					'title' => 'Email Leaders',
 					'url' => array(
 						'controller' => 'sys_emails',
-						'action' => 'compose',
-						$this->MultiSelect->token,
-						'model' => 'Involvement',
-						'submodel' => 'Leader'
+						'action' => 'involvement',
+						'leaders'
 					),
 					'options' => array(
 						'rel' => 'modal-none'
@@ -68,10 +64,8 @@ $this->Paginator->options(array(
 					'title' => 'Email Users &amp; Leaders',
 					'url' => array(
 						'controller' => 'sys_emails',
-						'action' => 'compose',
-						$this->MultiSelect->token,
-						'model' => 'Involvement',
-						'submodel' => 'Both'
+						'action' => 'involvement',
+						'both'
 					),
 					'options' => array(
 						'rel' => 'modal-none',
@@ -95,24 +89,24 @@ $this->Paginator->options(array(
 		<tbody>
 			<?php
 			$i = 0;
-			foreach ($leaders as $leader):
+			foreach ($involvements as $involvement):
 				$class = null;
 				if ($i++ % 2 == 0) {
 					$class = ' class="altrow"';
 				}
 			?>
 			<tr<?php echo $class;?>>
-				<td><?php echo $this->MultiSelect->checkbox($leader['Involvement']['id']); ?></td>
+				<td><?php echo $this->MultiSelect->checkbox($involvement['Involvement']['id']); ?></td>
 				<td><?php
-				echo $this->Html->link($leader['Involvement']['Ministry']['Campus']['name'], array('controller' => 'campuses', 'action' => 'view', 'Campus' => $leader['Involvement']['Ministry']['Campus']['id']), array('escape' => false));
-				if (!empty($leader['Involvement']['Ministry']['ParentMinistry']['id'])) {
+				echo $this->Html->link($involvement['Ministry']['Campus']['name'], array('controller' => 'campuses', 'action' => 'view', 'Campus' => $involvement['Ministry']['Campus']['id']), array('escape' => false));
+				if (!empty($involvement['Ministry']['ParentMinistry']['id'])) {
 					echo ' > ';
-					echo $this->Html->link($leader['Involvement']['Ministry']['ParentMinistry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $leader['Involvement']['Ministry']['ParentMinistry']['id']), array('escape' => false));
+					echo $this->Html->link($involvement['Ministry']['ParentMinistry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $involvement['Ministry']['ParentMinistry']['id']), array('escape' => false));
 				}
 				echo ' > ';
-				echo $this->Html->link($leader['Involvement']['Ministry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $leader['Involvement']['Ministry']['id'])); 
+				echo $this->Html->link($involvement['Ministry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $involvement['Ministry']['id'])); 
 				echo ' > ';
-				echo $this->Html->link($leader['Involvement']['name'], array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $leader['Involvement']['id'])).$this->Formatting->flags('Involvement', $leader); 
+				echo $this->Html->link($involvement['Involvement']['name'], array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvement['Involvement']['id'])).$this->Formatting->flags('Involvement', $involvement); 
 				?></td>
 			</tr>
 			<?php endforeach; ?>

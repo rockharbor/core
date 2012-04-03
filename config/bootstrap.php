@@ -86,6 +86,11 @@ Configure::write('Core.mediafilters.default', array(
 define('LISTENER_PATH', APP . 'libs' . DS . 'listeners');
 
 /**
+ * Set QueueEmail to save the emails in the db 
+ */
+Configure::write('QueueEmail.deleteAfter', false);
+
+/**
  * Load CORE plugin bootstraps
  */
 $plugins = Core::read('plugin');

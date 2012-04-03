@@ -23,13 +23,13 @@ class MinistryLeadersControllerTestCase extends CoreTestCase {
 
 	function testDashboard() {
 		$vars = $this->testAction('ministry_leaders/dashboard/User:2');
-		$results = Set::extract('/Leader/id', $vars['leaders']);
+		$results = Set::extract('/Ministry/id', $vars['ministries']);
 		sort($results);
 		$this->assertEqual($results, array(4));
 		
 		$this->loadFixtures('Role');
 		$vars = $this->testAction('ministry_leaders/dashboard/User:1');
-		$results = Set::extract('/Ministry/Role/id', $vars['leaders']);
+		$results = Set::extract('/Role/id', $vars['ministries']);
 		sort($results);
 		$this->assertEqual($results, array(1,2));
 	}
