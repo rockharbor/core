@@ -34,7 +34,4 @@ $this->Js->buffer('CORE.initLogin()');
 		echo $this->Form->end('Login');
 		?>
 	</div>
-	<div style="margin-top: 30px">
-		<iframe src="http://player.vimeo.com/video/36054843?title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff" width="460" height="259" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-	</div>
 </div>
