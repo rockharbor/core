@@ -56,7 +56,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 			array('span' => array('class' => 'core-icon icon-email')),
 			'Email',
 			'/span',
-			'a' => array('rel' => 'modal-none', 'href' => '/sys_emails/compose/model:User/User:1'),
+			'a' => array('rel' => 'modal-none', 'href' => '/sys_emails/user/User:1'),
 			'jeremy@42pixels.com',
 			'/a',
 		));

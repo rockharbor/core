@@ -12,10 +12,8 @@
 					'title' => 'Email Ministry Leaders',
 					'url' => array(
 						'controller' => 'sys_emails',
-						'action' => 'compose',
-						$this->MultiSelect->token,
-						'model' => 'Ministry',
-						'submodel' => 'Leader'
+						'action' => 'ministry',
+						'leaders'
 					),
 					'options' => array(
 						'rel' => 'modal-none'

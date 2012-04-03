@@ -40,7 +40,7 @@ class FormattingHelper extends AppHelper {
 		if (empty($email)) {
 			return null;
 		}
-		$url = array('controller' => 'sys_emails', 'action' => 'compose', 'model' => 'User', 'User' => $id);
+		$url = array('controller' => 'sys_emails', 'action' => 'user', 'User' => $id);
 		$icon = $this->Html->tag('span', 'Email', array('class' => 'core-icon icon-email'));
 		if ($id !== null && $this->Permission->check($url)) {
 			return $icon.$this->Html->link($email, $url, array('rel' => 'modal-none'));

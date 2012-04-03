@@ -40,10 +40,8 @@ $this->Paginator->options(array(
 					'title' => 'Email Users',
 					'url' => array(
 						'controller' => 'sys_emails',
-						'action' => 'compose',
-						$this->MultiSelect->token,
-						'model' => 'Involvement',
-						'submodel' => 'Roster'
+						'action' => 'involvement',
+						'users'
 					),
 					'options' => array(
 						'rel' => 'modal-none'
@@ -54,10 +52,8 @@ $this->Paginator->options(array(
 					'title' => 'Email Leaders',
 					'url' => array(
 						'controller' => 'sys_emails',
-						'action' => 'compose',
-						$this->MultiSelect->token,
-						'model' => 'Involvement',
-						'submodel' => 'Leader'
+						'action' => 'involvement',
+						'leaders'
 					),
 					'options' => array(
 						'rel' => 'modal-none'
@@ -68,10 +64,8 @@ $this->Paginator->options(array(
 					'title' => 'Email Users &amp; Leaders',
 					'url' => array(
 						'controller' => 'sys_emails',
-						'action' => 'compose',
-						$this->MultiSelect->token,
-						'model' => 'Involvement',
-						'submodel' => 'Both'
+						'action' => 'involvement',
+						'both'
 					),
 					'options' => array(
 						'rel' => 'modal-none',
