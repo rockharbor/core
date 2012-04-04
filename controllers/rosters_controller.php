@@ -141,7 +141,9 @@ class RostersController extends AppController {
 			'User' => array(
 				'fields' => array(
 					'id', 
-					'username'
+					'username',
+					'active',
+					'flagged'
 				),
 				'Profile' => array(
 					'fields' => array(

@@ -202,7 +202,7 @@ $this->Paginator->options(array(
 			<td><?php echo $this->MultiSelect->checkbox($roster['Roster']['id']); ?></td>
 		<?php endif; ?>
 		<td><?php 
-		$name = $roster['Profile']['name'];
+		$name = $roster['Profile']['name'].$this->Formatting->flags('User', $roster);
 		$link = array('controller' => 'profiles', 'action' => 'view', 'User' => $roster['User']['id']);
 		$viewProfilePermission = $this->Permission->check($link);
 		if ($viewProfilePermission) {
@@ -224,7 +224,6 @@ $this->Paginator->options(array(
 				echo $this->Html->link('View Profile', array('controller' => 'profiles', 'action' => 'view', 'User' => $roster['User']['id']));
 			}
 			?></div>
-		<?php echo $this->Formatting->flags('User', $roster); ?>
 		</td>
 		<td><?php echo $this->Formatting->email($roster['Profile']['primary_email'], $roster['User']['id']); ?>&nbsp;</td>
 		<?php if ($fullAccess): ?>
