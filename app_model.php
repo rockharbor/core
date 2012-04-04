@@ -154,28 +154,6 @@ class AppModel extends Model {
 	}
 
 /**
- * Creates a MATCH (...) AGAINST (...) expression from the query using the fields
- * defined in filterArgs
- *
- * @param array $data The key value pair for the filterArg's name to the query
- * @return string
- */
-	function makeFulltext($data = array()) {
-		$filterName = key($data);
-		$filter = Set::extract('/.[name='.$filterName.']', $this->filterArgs);
-		if (!isset($filter[0]['field'])) {
-			$filter[0]['field'] = $this->alias.'.'.$this->displayField;
-		}
-		$field = $filter[0]['field'];
-		$query = $data[$filterName];
-		$ds = ConnectionManager::getDataSource($this->useDbConfig);
-		if (!is_array($field)) {
-			$field = array($field);
-		}
-		return array($ds->expression('MATCH ('.implode(',',array_map(array($ds, 'name'), $field)).') AGAINST ('.$ds->value($query).' IN BOOLEAN MODE)'));
-	}
-
-/**
  * Creates a LIKE '%foo%' AND LIKE '%bar%' statement as defined in filterArgs
  *
  * ### Options:

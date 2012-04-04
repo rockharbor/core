@@ -111,29 +111,25 @@ class SearchesController extends AppController {
 
 		if (!empty($this->data)) {
 			$query = explode(' ', $search['query']);
-			$cleanQuery = $query;
 			foreach ($query as &$word) {
-				$word = '+'.$word.'*';
-				$word = trim($word);
+				$word = '%'.$word.'%';
 			}			
-			$query = implode(' ', $query);
 			// check access to results based on access to actions
 			if ((!$restrictModel || $restrictModel == 'User') && $this->isAuthorized('searches/user')) {
 				$conditions = array(
 					$this->User->scopeConditions($search)
 				);
-				if (count($cleanQuery) > 1) {
-					$firstname = array_shift($cleanQuery);
-					$lastname = implode(' ', $cleanQuery);
+				if (count($query) > 1) {
+					$firstname = array_shift($query);
+					$lastname = implode(' ', $query);
 					$conditions[] = array(
-						'Profile.first_name LIKE' => '%'.$firstname.'%',
-						'Profile.last_name LIKE' => '%'.$lastname.'%'
+						'Profile.first_name LIKE' => $firstname,
+						'Profile.last_name LIKE' => $lastname
 					);
 				} else {
-					$cleanQuery = $cleanQuery[0];
 					$conditions['or'] = array(
-						$this->User->parseCriteria(array('simple' => $cleanQuery)),
-						$this->User->Profile->parseCriteria(array('simple' => $cleanQuery)),
+						$this->User->parseCriteria(array('simple' => $query[0])),
+						$this->User->Profile->parseCriteria(array('simple' => $query[0])),
 					);
 				}
 				
@@ -177,7 +173,7 @@ class SearchesController extends AppController {
 					),
 					'conditions' => array(
 						$this->Involvement->scopeConditions($search),
-						$this->Involvement->parseCriteria(array('simple_fulltext' => $query))
+						$this->Involvement->parseCriteria(array('simple' => implode(' ', $query)))
 					),
 					'link' => array(
 						'Ministry' => array(
@@ -205,7 +201,7 @@ class SearchesController extends AppController {
 					),
 					'conditions' =>  array(
 						$this->Ministry->scopeConditions($search),
-						$this->Ministry->parseCriteria(array('simple_fulltext' => $query))
+						$this->Ministry->parseCriteria(array('simple' => implode(' ', $query)))
 					),
 					'link' => array(
 						'Image',
