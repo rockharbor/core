@@ -237,7 +237,7 @@ class SysEmailsController extends AppController {
 				if (empty($this->users)) {
 					$search = $this->MultiSelect->getSearch($token);
 					if (empty($search)) {
-						$search['conditions'] = array('id' => null);
+						$search['conditions'] = array('User.id' => null);
 					}
 					$results = ClassRegistry::init('User')->find('all', $search);
 					$this->users = Set::extract('/User/id', $results);
