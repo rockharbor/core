@@ -6,6 +6,12 @@ if (!isset($this->passedArgs['mstoken'])) {
 ?>
 <h1>Compose Email</h1>
 <div class="email">
+	<?php
+	if (empty($fromUser['Profile']['primary_email'])) {
+		$link = $this->Html->link('your account', array('controller' => 'profiles', 'action' => 'edit', 'User' => $fromUser['User']['id']));
+		echo $this->Html->tag('div', "You cannot send emails without a valid email address associated with $link.", array('class' => 'notice', 'escape' => false));
+	}
+	?>
 	<fieldset>
 	<?php
 		$toEmails = array();
@@ -109,6 +115,9 @@ if (!isset($this->passedArgs['mstoken'])) {
 <?php
 $defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals:true})';
 $defaultSubmitOptions['url'] = $this->here;
+if (empty($fromUser['Profile']['primary_email'])) {
+	$defaultSubmitOptions['class'] = 'disabled';
+}
 echo $this->Js->submit('Send', $defaultSubmitOptions);
 echo $this->Form->end();
 
