@@ -3,6 +3,7 @@ $this->Report->alias(array('JobCategory.name' => 'Job Category'));
 $this->Report->alias(array('Classification.name' => 'Classification'));
 $this->Report->alias(array('Group.name' => 'Permission Group'));
 $this->Report->squash('Address.name', array('ActiveAddress.address_line_1', 'ActiveAddress.address_line_2', 'ActiveAddress.city', 'ActiveAddress.state', 'ActiveAddress.zip'), '%s %s %s, %s %d', 'Address');
+$this->Report->squash('Profile.work_phone', array('Profile.work_phone', 'Profile.work_phone_ext'), '%d %d', 'Work Phone');
 ?>
 <div class="clearfix">
 	<fieldset class="grid_6">
@@ -61,6 +62,24 @@ $this->Report->squash('Address.name', array('ActiveAddress.address_line_1', 'Act
 			echo $this->Form->input('Export.Address.name', array(
 				'type' => 'checkbox',
 				'label' => 'Address'
+			));
+			echo $this->Form->input('Export.Profile.primary_email', array(
+				'type' => 'checkbox'
+			));
+			echo $this->Form->input('Export.Profile.alternate_email_1', array(
+				'type' => 'checkbox'
+			));
+			echo $this->Form->input('Export.Profile.alternate_email_2', array(
+				'type' => 'checkbox'
+			));
+			echo $this->Form->input('Export.Profile.cell_phone', array(
+				'type' => 'checkbox'
+			));
+			echo $this->Form->input('Export.Profile.home_phone', array(
+				'type' => 'checkbox'
+			));
+			echo $this->Form->input('Export.Profile.work_phone', array(
+				'type' => 'checkbox'
 			));
 			?>
 		</div>
