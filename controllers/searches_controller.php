@@ -111,7 +111,7 @@ class SearchesController extends AppController {
 
 		if (!empty($this->data)) {
 			$query = explode(' ', $search['query']);
-			$cleanQuery = $search['query'];
+			$cleanQuery = $query;
 			foreach ($query as &$word) {
 				$word = '+'.$word.'*';
 				$word = trim($word);
@@ -119,17 +119,29 @@ class SearchesController extends AppController {
 			$query = implode(' ', $query);
 			// check access to results based on access to actions
 			if ((!$restrictModel || $restrictModel == 'User') && $this->isAuthorized('searches/user')) {
+				$conditions = array(
+					$this->User->scopeConditions($search)
+				);
+				if (count($cleanQuery) > 1) {
+					$firstname = array_shift($cleanQuery);
+					$lastname = implode(' ', $cleanQuery);
+					$conditions[] = array(
+						'Profile.first_name LIKE' => '%'.$firstname.'%',
+						'Profile.last_name LIKE' => '%'.$lastname.'%'
+					);
+				} else {
+					$cleanQuery = $cleanQuery[0];
+					$conditions['or'] = array(
+						$this->User->parseCriteria(array('simple' => $cleanQuery)),
+						$this->User->Profile->parseCriteria(array('simple' => $cleanQuery)),
+					);
+				}
+				
 				$options = array(
 					'fields' => array(
 						'id', 'username', 'active', 'flagged'
 					),
-					'conditions' => array(
-						$this->User->scopeConditions($search),
-						'or' => array(
-							$this->User->parseCriteria(array('simple' => $cleanQuery)),
-							$this->User->Profile->parseCriteria(array('simple' => $cleanQuery)),
-						)
-					),
+					'conditions' => $conditions,
 					'link' => array(
 						'Profile' => array(
 							'fields' => array(
