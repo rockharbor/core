@@ -210,7 +210,6 @@ class NotifierComponent extends Object {
 		}
 		if (!$this->QueueEmail->send($body)) {
 			CakeLog::write('smtp', $this->QueueEmail->smtpError);
-			CakeLog::write('smtp', print_r($this->QueueEmail, true));
 			return false;
 		}
 		
