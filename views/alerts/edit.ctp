@@ -7,7 +7,9 @@
 	<?php
 		echo $this->Form->input('id');
 		echo $this->Form->input('name');
-		echo $this->Form->input('description');
+		echo $this->Form->input('description', array(
+			'type' => 'textarea'
+		));
 		echo $this->Form->input('group_id', array(
 			'label' => 'Visible for:'
 		));
