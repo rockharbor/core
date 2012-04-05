@@ -152,12 +152,6 @@ class RostersController extends AppController {
 						'allow_sponsorage',
 						'primary_email'
 					)
-				),
-				'Image' => array(
-					'fields' => array(
-						'basename',
-						'dirname'
-					)
 				)
 			),
 			'RosterStatus' => array(
