@@ -61,7 +61,7 @@ class CommentsController extends AppController {
 		$this->paginate = array(
 			'conditions' => array(
 				'Comment.user_id' => $viewUser,
-				'Comment.group_id' => array_keys($groups)
+				'Comment.group_id' => $groups
 			),
 			'contain' => array(
 				'Creator' => array(
@@ -97,7 +97,11 @@ class CommentsController extends AppController {
 				$this->Session->setFlash('Unable to create comment. Please try again.', 'flash'.DS.'failure');
 			}
 		}
-		$groups = $this->Comment->Group->findGroups(1);
+		$groups = $this->Comment->Group->find('list', array(
+			'conditions' => array(
+				'Group.conditional' => false
+			)
+		));
 		$this->set('groups', $groups);
 		$this->set('userId', $viewUser);
 	}
@@ -124,7 +128,11 @@ class CommentsController extends AppController {
 			$this->data = $this->Comment->read(null, $id);
 		}
 
-		$groups = $this->Comment->Group->findGroups(1);
+		$groups = $this->Comment->Group->find('list', array(
+			'conditions' => array(
+				'Group.conditional' => false
+			)
+		));
 		$this->set('groups', $groups);
 	}
 	

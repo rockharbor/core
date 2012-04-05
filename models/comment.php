@@ -97,7 +97,7 @@ class Comment extends AppModel {
 				'fields' => array('id', 'group_id')
 			)
 		));
-		$groups = $this->Group->findGroups($user['User']['group_id'], 'list', '<=');
+		$groups = $this->Group->findGroups($user['User']['group_id'], '<=');
 		// can delete if they are in a higher/equal group or they created it
 		$comment = $this->find('first', array(
 			'fields' => array(
@@ -106,7 +106,7 @@ class Comment extends AppModel {
 			'conditions' => array(
 				'Comment.id' => $id,
 				'or' => array(
-					'Creator.group_id' => array_keys($groups),
+					'Creator.group_id' => $groups,
 					'Creator.id' => $userId,
 				)
 			)

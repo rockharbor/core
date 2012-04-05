@@ -195,6 +195,9 @@ class Roster extends AppModel {
 		
 		if (empty($defaults['payment_option_id']) && $involvement['Involvement']['take_payment']) {
 			$firstPaymentOption = $this->PaymentOption->find('first', array(
+				'fields' => array(
+					'id'
+				),
 				'conditions' => array(
 					'involvement_id' => $involvement['Involvement']['id']
 				)

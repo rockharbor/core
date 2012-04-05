@@ -75,7 +75,7 @@ class AlertsController extends AppController {
 		$alert = $this->Alert->find('first', array(
 			'conditions' => array(
 				'Alert.id' => $id,
-				'Alert.group_id' => array_keys($groups)
+				'Alert.group_id' => $groups
 			)
 		));
 
@@ -99,7 +99,7 @@ class AlertsController extends AppController {
 			case 'unread':
 			$this->paginate = array(
 				'conditions' => array(
-					'Alert.id' => $this->Alert->getUnreadAlerts($userId, array_keys($groups))
+					'Alert.id' => $this->Alert->getUnreadAlerts($userId, $groups)
 				),
 				'order' => 'Alert.created DESC'
 			);
@@ -115,7 +115,7 @@ class AlertsController extends AppController {
 			default:
 			$this->paginate = array(
 				'conditions' => array(
-					'Alert.group_id' => array_keys($groups)
+					'Alert.group_id' => $groups
 				),
 				'order' => 'Alert.created DESC'
 			);

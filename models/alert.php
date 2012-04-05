@@ -91,6 +91,9 @@ class Alert extends AppModel {
 		
 		// get ids of alerts this user has read		
 		$readAlerts = $this->AlertsUser->find('all', array(
+			'fields' => array(
+				'alert_id'
+			),
 			'conditions' => array(
 				'user_id' => $userId
 			)
@@ -115,12 +118,15 @@ class Alert extends AppModel {
 			$groups = $this->Group->findByName('User');
 			$groups = $groups['Group']['id'];
 		} else {
-			$groups = array_keys($this->Group->findGroups($groupId));
+			$groups = $this->Group->findGroups($groupId);
 		}
 		// get ids of alerts this user has read
 		$readAlerts = $this->getReadAlerts($userId);
 		
 		$search = array(
+			'fields' => array(
+				'id'
+			),
 			'conditions' => array(
 				'not' => array(
 					'Alert.id' => $readAlerts

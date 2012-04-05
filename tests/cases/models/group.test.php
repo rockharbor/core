@@ -20,26 +20,18 @@ class GroupTestCase extends CoreTestCase {
 
 	function testFindGroups() {
 		$results = $this->Group->findGroups(7);
-		$expected = array(
-			7 => 'Developer',
-			8 => 'User'
-		);
+		$expected = array(7, 8);
 		$this->assertEqual($results, $expected);
 		
-		$results = Set::extract('/Group/id', $this->Group->findGroups(2, 'all', '>'));
+		$results = $this->Group->findGroups(2, '>');
 		$expected = array(1);
 		$this->assertEqual($results, $expected);
 
-		$results = $this->Group->findGroups(4, 'list', '>=');
-		$expected = array(
-			1 => 'Super Administrator',
-			2 => 'Administrator',
-			3 => 'Pastor',
-			4 => 'Communications Admin'
-		);
+		$results = $this->Group->findGroups(4, '>=');
+		$expected = array(1, 2, 3, 4);
 		$this->assertEqual($results, $expected);
 
-		$results = Set::extract('/Group/id', $this->Group->findGroups(5, 'all', '<='));
+		$results = $this->Group->findGroups(5, '<=');
 		$expected = array(5, 6, 7, 8);
 		$this->assertEqual($results, $expected);
 	}

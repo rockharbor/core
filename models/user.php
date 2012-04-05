@@ -727,6 +727,9 @@ class User extends AppModel {
 			
 			// get addresses within distance requirements
 			$distancedAddresses = $this->Address->find('all', array(
+				'fields' => array(
+					'id'
+				),
 				'conditions' => array(
 					$this->Address->getVirtualField('distance').' <= ' => (int)$dist['distance']
 				)
