@@ -63,7 +63,8 @@ $this->Paginator->options(array(
 		'div' => array(
 			'tag' => 'span',
 			'class' => 'toggle'
-		)
+		),
+		'options' => $roles
 	));
 	$rosterStatuses[0] = 'All';
 	if (empty($this->data['Filter']['roster_status_id'])) {
