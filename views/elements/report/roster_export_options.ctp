@@ -18,7 +18,26 @@ $this->Report->squash('User.Profile.work_phone', array('User.Profile.work_phone'
 			echo $this->Form->input('Export.User.Profile.last_name', array(
 				'type' => 'checkbox'
 			));
+			echo $this->Form->input('Export.User.Profile.birth_date', array(
+				'type' => 'checkbox'
+			));
+			echo $this->Form->input('Export.User.Profile.age', array(
+				'type' => 'checkbox'
+			));
+			?>
+		</div>
+	</fieldset>
+	<fieldset class="grid_6">
+		<legend>Contact Information</legend>
+		<div class="grid_3 omega">
+			<?php
 			echo $this->Form->input('Export.User.Profile.primary_email', array(
+				'type' => 'checkbox'
+			));
+			echo $this->Form->input('Export.User.Profile.alternate_email_1', array(
+				'type' => 'checkbox'
+			));
+			echo $this->Form->input('Export.User.Profile.alternate_email_2', array(
 				'type' => 'checkbox'
 			));
 			echo $this->Form->input('Export.User.Profile.cell_phone', array(
@@ -28,12 +47,6 @@ $this->Report->squash('User.Profile.work_phone', array('User.Profile.work_phone'
 				'type' => 'checkbox'
 			));
 			echo $this->Form->input('Export.User.Profile.work_phone', array(
-				'type' => 'checkbox'
-			));
-			echo $this->Form->input('Export.User.Profile.birth_date', array(
-				'type' => 'checkbox'
-			));
-			echo $this->Form->input('Export.User.Profile.age', array(
 				'type' => 'checkbox'
 			));
 			?>

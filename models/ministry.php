@@ -160,15 +160,6 @@ class Ministry extends AppModel {
  */
 	var $filterArgs = array(
 		array(
-			'name' => 'simple_fulltext',
-			'type' => 'query',
-			'method' => 'makeFulltext',
-			'field' => array(
-				'Ministry.name',
-				'Ministry.description',
-			)
-		),
-		array(
 			'name' => 'simple',
 			'type' => 'query',
 			'method' => 'makeLikeConditions',

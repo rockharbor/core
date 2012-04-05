@@ -70,7 +70,7 @@ echo $this->MultiSelect->create();
 		<tr<?php echo $class;?>>
 			<td><?php echo $this->MultiSelect->checkbox($result['User']['id']); ?></td>
 			<td><?php 
-			echo $this->Html->link($result['Profile']['name'], array('controller' => 'profiles', 'action' => 'view', 'User' => $result['User']['id'])); 
+			echo $this->Html->link($result['Profile']['name'], array('controller' => 'profiles', 'action' => 'view', 'User' => $result['User']['id'])).$this->Formatting->flags('User', $result); 
 			echo '<br />';
 			if (!empty($result['Image'])) {
 				$path = 's'.DS.$result['Image'][0]['dirname'].DS.$result['Image'][0]['basename'];
@@ -110,7 +110,7 @@ echo $this->MultiSelect->create();
 			?></td>
 			<td><?php
 			$contact = $result['HouseholdMember'][0]['Household']['HouseholdContact'];
-			echo $this->Html->link($contact['Profile']['name'], array('controller' => 'profiles', 'action' => 'view', 'User' => $contact['Profile']['user_id']));
+			echo $this->Html->link($contact['Profile']['name'].$this->Formatting->flags('User', array('User' => $contact)), array('controller' => 'profiles', 'action' => 'view', 'User' => $contact['Profile']['user_id']), array('escape' => false));
 			echo '<br />';
 			echo $this->Formatting->address($contact['ActiveAddress']);
 			?></td>

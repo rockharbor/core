@@ -127,7 +127,10 @@ class InvolvementsController extends AppController {
 		$involvements = $this->FilterPagination->paginate('Involvement');
 		
 		foreach ($involvements as &$involvement) {
-			$involvement['dates'] = $this->Involvement->Date->generateDates($involvement['Involvement']['id'], array('limit' => 1));
+			$involvement['dates'] = $this->Involvement->Date->generateDates($involvement['Involvement']['id'], array(
+				'limit' => 1,
+				'start' => strtotime('now')
+			));
 		}
 
 		$this->set(compact('viewStyle', 'involvements', 'private'));
@@ -168,7 +171,10 @@ class InvolvementsController extends AppController {
 			'Document'
 		));
 		$involvement = $this->Involvement->read(null, $id);
-		$involvement['Date'] = $this->Involvement->Date->generateDates($id, array('limit' => 5));
+		$involvement['Date'] = $this->Involvement->Date->generateDates($id, array(
+			'limit' => 5,
+			'start' => strtotime('now')
+		));
 
 		$roster = $this->Involvement->Roster->find('first', array(
 			'fields' => array(

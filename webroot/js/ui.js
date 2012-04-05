@@ -505,7 +505,9 @@ CORE.wysiwyg = function(id) {
 				undo: { visible : true, groupIndex: 2 },
 				redo: { visible : true, groupIndex: 2 },
 				insertOrderedList: { visible : true, groupIndex: 3 },
-				insertUnorderedList: { visible : true, groupIndex: 3 }
+				insertUnorderedList: { visible : true, groupIndex: 3 },
+				createLink: { visible : true, groupIndex: 4 },
+				unLink: { visible : true, groupIndex: 4 }
 			},
 			initialContent: '',
 			css: '/css/jquery.wysiwyg.iframe.css'

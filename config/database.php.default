@@ -3,7 +3,6 @@ class DATABASE_CONFIG {
 
 	var $default = array(
 		'driver' => 'mysql',
-		'datasource' => 'core_dbo_source',
 		'persistent' => false,
 		'host' => 'localhost',
 		'login' => 'username',
@@ -13,7 +12,6 @@ class DATABASE_CONFIG {
 	
 	var $test_suite = array(
 		'driver' => 'mysql',
-		'datasource' => 'core_dbo_source',
 		'persistent' => false,
 		'host' => 'localhost',
 		'login' => 'username',

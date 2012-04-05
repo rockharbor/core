@@ -223,15 +223,6 @@ class Involvement extends AppModel {
  */
 	var $filterArgs = array(
 		array(
-			'name' => 'simple_fulltext',
-			'type' => 'query',
-			'method' => 'makeFulltext',
-			'field' => array(
-				'Involvement.description',
-				'Involvement.name'
-			)
-		),
-		array(
 			'name' => 'simple',
 			'type' => 'query',
 			'method' => 'makeLikeConditions',

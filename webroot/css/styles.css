@@ -57,7 +57,8 @@ div.message {
 	-webkit-box-shadow:0 0 15px #999999;
 	z-index: 99999;
 }
-#authMessage, .message.error {
+#authMessage, 
+.message.error {
 	color: #e03a14;
 	background: #ffcbbf;
 	border: 1px solid #e03a14;
@@ -73,6 +74,17 @@ div.message {
 }
 div.message a {
 	color:#fff;
+}
+.notice {
+	padding: 5px;
+	color: #e03a14;
+	background: #ffcbbf;
+	border: 1px solid #e03a14;
+}
+
+.notice a {
+	color: #e03a14;
+	text-decoration: underline;
 }
 
 /*

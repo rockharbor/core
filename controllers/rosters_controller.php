@@ -141,7 +141,9 @@ class RostersController extends AppController {
 			'User' => array(
 				'fields' => array(
 					'id', 
-					'username'
+					'username',
+					'active',
+					'flagged'
 				),
 				'Profile' => array(
 					'fields' => array(
@@ -149,12 +151,6 @@ class RostersController extends AppController {
 						'cell_phone',
 						'allow_sponsorage',
 						'primary_email'
-					)
-				),
-				'Image' => array(
-					'fields' => array(
-						'basename',
-						'dirname'
 					)
 				)
 			),

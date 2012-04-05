@@ -237,7 +237,7 @@ class SysEmailsController extends AppController {
 				if (empty($this->users)) {
 					$search = $this->MultiSelect->getSearch($token);
 					if (empty($search)) {
-						$search['conditions'] = array('id' => null);
+						$search['conditions'] = array('User.id' => null);
 					}
 					$results = ClassRegistry::init('User')->find('all', $search);
 					$this->users = Set::extract('/User/id', $results);
@@ -273,7 +273,7 @@ class SysEmailsController extends AppController {
 		
 		$User = ClassRegistry::init('User');
 
-		$fromUser = $this->activeUser['User']['id'];
+		$fromUser = $this->activeUser;
 		
 		if (empty($this->data['SysEmail']['to'])) {
 			$this->data['SysEmail']['to'] = implode(',', $this->users);
@@ -328,7 +328,7 @@ class SysEmailsController extends AppController {
 
 				foreach ($toUsers as $toUser) {
 					if ($this->Notifier->notify(array(
-						'from' => $fromUser,
+						'from' => $fromUser['User']['id'],
 						'to' => $toUser,
 						'subject' => $this->data['SysEmail']['subject'],
 						'attachments' => $attachments,
@@ -365,7 +365,7 @@ class SysEmailsController extends AppController {
 				)
 			)
 		));
-		$this->set('fromUser', $User->read(null, $fromUser));
+		$this->set('fromUser', $fromUser);
 		$this->set('showAttachments', true);
 	}
 
