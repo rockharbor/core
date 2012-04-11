@@ -454,7 +454,7 @@ class RostersController extends AppController {
 				if (isset($this->data['Child'])) {
 					$amount += Set::apply('/Payment/amount', array_values($this->data['Child']), 'array_sum');
 				}
-					
+				
 				if ($involvement['Involvement']['take_payment'] && $this->data['Default']['payment_option_id'] > 0 && !$this->data['Default']['pay_later'] && $amount > 0) {
 					$signedUpIds = array_merge(Set::extract('/Adult/Roster/user_id', $this->data), Set::extract('/Child/Roster/user_id', $this->data));
 					$signedupUsers = $this->Roster->User->Profile->find('all', array(
