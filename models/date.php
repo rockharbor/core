@@ -168,13 +168,6 @@ class Date extends AppModel {
 			'Date.involvement_id' => $involvement_id
 		);
 		
-		if (isset($options['single'])) {
-			$conditions['or'] = array(
-				'DATEDIFF(Date.start_date, Date.end_date)' => 0,
-				'exemption' => true
-			);
-		}
-		
 		$this->recursive = -1;
 		$dates = $this->find('all', array(
 			'conditions' => $conditions
