@@ -499,7 +499,7 @@ class InstallSchema extends CakeSchema {
 		'message' => array('type' => 'text', 'null' => true, 'default' => NULL),
 		'header' => array('type' => 'text', 'null' => true, 'default' => NULL),
 		'attempts' => array('type' => 'integer', 'null' => true, 'length' => 4, 'default' => 0),
-		'success' => array('type' => 'integer', 'null' => true, 'length' => 1, 'default' => 0),
+		'status' => array('type' => 'integer', 'null' => true, 'length' => 2, 'default' => 0),
 		'to_id' => array('type' => 'integer', 'null' => true, 'length' => 8, 'default' => 0),
 		'from_id' => array('type' => 'integer', 'null' => true, 'length' => 8, 'default' => 0),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
