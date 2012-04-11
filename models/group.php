@@ -63,15 +63,14 @@ class Group extends AppModel {
 	}
 
 /**
- * Convenience function for getting a list of non-conditional groups
+ * Convenience function for getting a list of non-conditional group ids
  *
  * @param integer $groupId The group get groups above/below from
- * @param string $operation The find operation (see Model::find())
  * @param string $operator Find groups that are less than, greater than, less
  *		than equal, etc. Where '>' means 'of higher permission'
- * @return array Results
+ * @return array Array of ids
  */
-	function findGroups($groupId = null, $operation = 'list', $operator = '<=') {
+	function findGroups($groupId = null, $operator = '<=') {
 		if (!$groupId) {
 			return false;
 		}
@@ -84,12 +83,16 @@ class Group extends AppModel {
 			'=' => '='
 		);
 
-		return $this->find($operation, array(
+		$groups = $this->find('all', array(
+			'fields' => array(
+				'id'
+			),
 			'conditions' => array(
 				'Group.conditional' => false,
 				'Group.lft '.$operatorMap[$operator] => $groupId
 			)
 		));
+		return Set::extract('/Group/id', $groups);
 	}
 
 /**
@@ -103,9 +106,9 @@ class Group extends AppModel {
 			return false;
 		}
 
-		$groups = $this->findGroups(Core::read('general.private_group'), 'list', '>');
+		$groups = $this->findGroups(Core::read('general.private_group'), '>');
 		
-		return in_array($groupId, array_keys($groups));
+		return in_array($groupId, $groups);
 	}
 }
 ?>

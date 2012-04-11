@@ -262,6 +262,9 @@ class Involvement extends AppModel {
  */
 	function getInvolved($involvementId) {
 		$results = $this->Roster->find('all', array(
+			'fields' => array(
+				'user_id'
+			),
 			'conditions' => array(
 				'Roster.involvement_id' => $involvementId
 			),

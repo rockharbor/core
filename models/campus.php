@@ -149,6 +149,9 @@ class Campus extends AppModel {
 			'fields' => array(
 				'user_id'
 			),
+			'fields' => array(
+				'user_id'
+			),
 			'conditions' => array(
 				'Leader.model' => 'Campus',
 				'Leader.model_id' => $modelId

@@ -96,6 +96,9 @@ class Household extends AppModel {
  */
 	function getHouseholdIds($userId, $mustBeContact = false) {
 		$options = array(
+			'fields' => array(
+				'household_id'
+			),
 			'conditions' => array(
 				'HouseholdMember.user_id' => $userId
 			)
@@ -139,12 +142,7 @@ class Household extends AppModel {
  * @access public
  */ 	
 	function isMemberWith($userId, $memberId, $household = null) {
-		$households = $this->HouseholdMember->find('all', array(
-			'conditions' => array(
-				'HouseholdMember.user_id' => $userId
-			),
-			'contain' => false
-		));
+		$households = $this->getHouseholdIds($userId);
 		
 		if (!$household) {
 			$household = array();
@@ -153,20 +151,15 @@ class Household extends AppModel {
 		}
 
 		if (!empty($household)) {
-			$household = array_intersect(Set::extract('/HouseholdMember/household_id', $households), $household);
+			$household = array_intersect($households, $household);
 		} else {
-			$household = Set::extract('/HouseholdMember/household_id', $households);
+			$household = $households;
 		}
 		
-		$members = $this->HouseholdMember->find('all', array(
-			'conditions' => array(
-				'HouseholdMember.user_id' => $memberId,
-				'HouseholdMember.household_id' => $household
-			),
-			'contain' => false
+		return $this->HouseholdMember->hasAny(array(
+			'HouseholdMember.user_id' => $memberId,
+			'HouseholdMember.household_id' => $household
 		));
-		
-		return !empty($members);
 	}
 
 /**
@@ -192,7 +185,7 @@ class Household extends AppModel {
  */ 		
 	function isContactFor($contactId, $userId) {
 		// get households for the user
-		$households = $this->HouseholdMember->find('all', array(
+		$households = $this->HouseholdMember->find('count', array(
 			'conditions' => array(
 				'HouseholdMember.user_id' => $userId,
 				'HouseholdMember.confirmed' => true,
@@ -203,7 +196,7 @@ class Household extends AppModel {
 			)
 		));
 		
-		return !empty($households);
+		return $households > 0;
 	}
 
 /**

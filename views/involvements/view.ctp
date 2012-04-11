@@ -17,7 +17,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 		<li><a href="#details-tab">Details</a></li>
 		<?php 
 		if ($canSeeRoster) {
-			$link = $this->Html->link('Roster', array('controller' => 'rosters', 'Involvement' => $involvement['Involvement']['id']), array('title' => 'roster-tab'));
+			$link = $this->Html->link('Roster', '#roster-tab');
 			echo $this->Html->tag('li', $link);
 		}
 		?>
@@ -208,8 +208,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 				'named' => array(
 					'Involvement' => $involvement['Involvement']['id']
 				),
-				'return',
-				'renderAs' => 'ajax'
+				'return'
 			));
 			$this->Js->buffer('CORE.register("roster", "roster-tab", "/rosters/index/Involvement:'.$involvement['Involvement']['id'].'")');
 			?>

@@ -121,7 +121,12 @@ class ProfilesController extends AppController {
 				'User'
 			)
 		));
-		$this->set('groups', $this->Profile->User->Group->findGroups($this->activeUser['Group']['id']));
+		$groups = $this->Profile->User->Group->find('list', array(
+			'conditions' => array(
+				'Group.conditional' => false
+			)
+		));
+		$this->set('groups', $groups);
 	}
 
 }

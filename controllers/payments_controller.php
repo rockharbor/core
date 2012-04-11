@@ -299,7 +299,7 @@ class PaymentsController extends AppController {
 		
 		$paymentTypes = $this->Payment->PaymentType->find('all', array(
 			'conditions' => array(
-				'group_id' => array_keys($this->Payment->PaymentType->Group->findGroups($this->activeUser['Group']['id']))
+				'group_id' => $this->Payment->PaymentType->Group->findGroups($this->activeUser['Group']['id'])
 			)
 		));
 		$types = array_unique(Set::extract('/PaymentType/type', $paymentTypes));

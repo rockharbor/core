@@ -99,6 +99,9 @@ class SysEmail extends AppModel {
 		if (!$uid) {
 			// delete all attachments that don't have a cache file associated
 			$results =  $Document->find('all', array(
+				'fields' => array(
+					'id'
+				),
 				'conditions' => array(
 					'Document.model' => 'SysEmail',
 					'Document.created <' => date('Y-m-d')
@@ -106,6 +109,9 @@ class SysEmail extends AppModel {
 			));
 		} else {
 			$results =  $Document->find('all', array(
+				'fields' => array(
+					'id'
+				),
 				'conditions' => array(
 					'Document.foreign_key' => $uid,
 					'Document.model' => 'SysEmail'
