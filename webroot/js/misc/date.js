@@ -160,7 +160,11 @@ CORE_date.makeHumanReadable = function(settings) {
 		if (startDate == endDate && !settings.allday) {
 			readable = startDate+' from '+startTime+' to '+endTime;
 		} else if (settings.allday) {
-			readable = startDate+' all day';
+			if (startDate == endDate) {
+				readable = startDate+' all day';
+			} else {
+				readable = startDate+' to '+endDate;
+			}
 		} else {
 			readable = startDate+' @ '+startTime+' to '+endDate+' @ '+endTime;
 		}
