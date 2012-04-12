@@ -200,24 +200,13 @@ class AuthorizeDotNetComponent extends Object {
 		// check debug
 		if (Configure::read() > 0) {
 			$this->_data['x_Test_Request'] = 'TRUE';
-			$id = Core::read('development.debug_email');
+			$email = Core::read('development.debug_email');
 		} else {
 			$this->_data['x_Test_Request'] = 'FALSE';
-			$id = Core::read('notifications.credit_card_email');
+			$email = Core::read('notifications.credit_card_email');
 		}
 
-		$user = ClassRegistry::init('User')->find('first', array(
-			'conditions' => array(
-				'User.id' => $id
-			),
-			'contain' => array(
-				'Profile' => array(
-					'fields' => 'Profile.primary_email'
-				)
-			)
-		));
-
-		$this->_data['x_Merchant_Email'] = $user['Profile']['primary_email'];
+		$this->_data['x_Merchant_Email'] = $email;
 
 		/* Sets the Authorize.net account info */
 		$this->_data['x_Login'] = Configure::read('AuthorizeDotNet.username');

@@ -94,8 +94,8 @@ class AppSettingFixture extends CakeTestFixture {
 			'description' => 'The email to send debug info, including test emails.',
 			'created' => '2010-03-25 00:00:00',
 			'modified' => '2010-03-25 12:30:27',
-			'value' => '1',
-			'type' => 'User'
+			'value' => 'jharris@rockharbor.org',
+			'type' => 'string'
 		),
 		array(
 			'id' => 14,
