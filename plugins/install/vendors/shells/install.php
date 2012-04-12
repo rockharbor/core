@@ -635,6 +635,7 @@ class InstallShell extends Shell {
 			'controllers/Questions/index',
 			'controllers/Questions/move',
 			'controllers/Payments/add',
+			'controllers/Payments/index',
 			'controllers/Rosters/status',
 			'controllers/Rosters/roles'
 		),
