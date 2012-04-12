@@ -80,8 +80,6 @@ class SysEmailsController extends AppController {
 		$this->set('title_for_layout', 'Submit a bug report');
 		$User = ClassRegistry::init('User');
 		$User->contain(array('Profile'));
-		// hardcoded Jeremy Harris
-		$jeremy = $User->findByUsername('jharris');
 		
 		if (!empty($this->data)) {
 			$this->SysEmail->set($this->data);
@@ -89,10 +87,10 @@ class SysEmailsController extends AppController {
 			// send it!
 			if ($this->SysEmail->validates() && $this->Notifier->notify(array(
 				'from' => $this->activeUser['User']['id'], 
-				'to' => $jeremy['User']['id'], 
+				'to' => Configure::read('development.debug_email'), 
 				'queue' => false,
 				'subject' => $this->data['SysEmail']['subject'],
-						'body' => $this->data['SysEmail']['body']
+				'body' => $this->data['SysEmail']['body']
 			), 'email')) {
 				$this->Session->setFlash('Your email has been sent.', 'flash'.DS.'success');
 			} else {
