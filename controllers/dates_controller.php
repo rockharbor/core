@@ -147,9 +147,6 @@ class DatesController extends AppController {
 		$conditions[] = array(
 			'Date.start_date <>' => null
 		);
-		if ($size == 'mini') {
-			$options['single'] = true;
-		}
 		
 		// get all involvements and their dates within the range
 		$involvements = $this->Date->Involvement->find('all', array(

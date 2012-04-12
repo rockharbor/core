@@ -207,6 +207,7 @@ class RostersControllerTestCase extends CoreTestCase {
 			)
 		));
 		
+		$paymentsBefore = $this->Rosters->Roster->Payment->find('count');
 		$data = array(
 			'Default' => array(
 				'payment_option_id' => $this->Rosters->Roster->Involvement->PaymentOption->id,
@@ -234,14 +235,9 @@ class RostersControllerTestCase extends CoreTestCase {
 		));
 		$result = $this->Rosters->Roster->validationErrors;
 		$this->assertEqual($result, array());
-
-		$payment = $this->Rosters->Roster->Payment->read();
-		$result = $payment['Payment']['user_id'];
-		$this->assertEqual($result, 1);
-		$result = $payment['Payment']['roster_id'];
-		$this->assertEqual($result, $this->Rosters->Roster->id);
-		$result = $payment['Payment']['number'];
-		$this->assertEqual($result, 1234);
+		
+		$paymentsAfter = $this->Rosters->Roster->Payment->find('count');
+		$this->assertEqual($paymentsBefore, $paymentsAfter);
 	}
 	
 	function testRosterLimit() {

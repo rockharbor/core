@@ -91,7 +91,11 @@ class FormattingHelper extends AppHelper {
 			if ($startDate == $endDate && !$date['Date']['all_day']) {
 				$readable = $startDate.' from '.$startTime.' to '.$endTime;
 			} else if ($date['Date']['all_day']) {
-				$readable = $startDate.' all day';
+				if ($startDate == $endDate) {
+					$readable = $startDate.' all day';
+				} else {
+					$readable = $startDate.' to '.$endDate;
+				}
 			} else {
 				$readable = $startDate.' @ '.$startTime.' to '.$endDate.' @ '.$endTime;
 			}

@@ -5,12 +5,10 @@
 	<ul>
 		<?php
 		if ($activeUser['Profile']['leading'] > 0) {
-			$link = $this->Permission->link('Involvement', array('controller' => 'involvement_leaders', 'action' => 'dashboard', 'User' => $activeUser['User']['id']), array('title' => 'involvement-dashboard'));
-			echo $link ? $this->Html->tag('li', $link) : null;
+			echo $this->Html->tag('li', $this->Html->link('Involvement', '#involvement-dashboard'));
 		}
 		if ($activeUser['Profile']['managing'] > 0) {
-			$link = $this->Permission->link('Ministry', array('controller' => 'ministry_leaders', 'action' => 'dashboard', 'User' => $activeUser['User']['id']), array('title' => 'ministry-dashboard'));
-			echo $link ? $this->Html->tag('li', $link) : null;
+			echo $this->Html->tag('li', $this->Html->link('Ministry', '#ministry-dashboard'));
 		}
 		?>
 	</ul>
@@ -23,7 +21,8 @@
 					'return',
 					'named' => array(
 						'User' => $activeUser['User']['id']
-					)
+					),
+					'renderAs' => 'ajax'
 				));
 			}
 			?>
@@ -35,7 +34,8 @@
 					'return',
 					'named' => array(
 						'User' => $activeUser['User']['id']
-					)
+					),
+					'renderAs' => 'ajax'
 				));
 			}
 			?>

@@ -246,18 +246,20 @@ class Roster extends AppModel {
 				$amount = $paymentOption['PaymentOption']['childcare'];
 			}
 
-			// add payment record to be saved (transaction id to be added later)
-			$roster['Payment'] = array(
-				'0' => array(
-					'user_id' => $roster['Roster']['user_id'],
-					'amount' => $amount,
-					'payment_type_id' => $paymentType['PaymentType']['id'],
-					'number' => substr($creditCard['CreditCard']['credit_card_number'], -4),
-					'payment_placed_by' => $payer['User']['id'],
-					'payment_option_id' => $paymentOption['PaymentOption']['id'],
-					'comment' => $creditCard['CreditCard']['first_name'].' '.$creditCard['CreditCard']['last_name'].'\'s card processed by '.$payer['Profile']['name'].'.'
-				)
-			);
+			if ($amount > 0) {
+				// add payment record to be saved (transaction id to be added later)
+				$roster['Payment'] = array(
+					'0' => array(
+						'user_id' => $roster['Roster']['user_id'],
+						'amount' => $amount,
+						'payment_type_id' => $paymentType['PaymentType']['id'],
+						'number' => substr($creditCard['CreditCard']['credit_card_number'], -4),
+						'payment_placed_by' => $payer['User']['id'],
+						'payment_option_id' => $paymentOption['PaymentOption']['id'],
+						'comment' => $creditCard['CreditCard']['first_name'].' '.$creditCard['CreditCard']['last_name'].'\'s card processed by '.$payer['Profile']['name'].'.'
+					)
+				);
+			}
 		}
 
 		return $roster;

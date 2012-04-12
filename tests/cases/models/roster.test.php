@@ -103,6 +103,117 @@ class RosterTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 	
+	function testSetDefaultDataEmptyPayment() {
+		$this->Roster->Involvement->PaymentOption->create();
+		$this->Roster->Involvement->PaymentOption->save(array(
+			'PaymentOption' => array(
+				'involvement_id' => 3,
+				'name' => 'Cheap as Free',
+				'total' => 0,
+				'deposit' => 0,
+				'childcare' => null,
+				'account_code' => '123',
+				'tax_deductible' => 0
+			)
+		));
+		$defaults = array(
+			'payment_option_id' => $this->Roster->Involvement->PaymentOption->id,
+			'payment_type_id' => 1,
+			'pay_later' => false,
+			'pay_deposit_amount' => false
+		);
+		$involvement = $this->Roster->Involvement->read(null, 3);
+		$roster = array(
+			'Roster' => array(
+				'user_id' => 1
+			)
+		);
+
+		$newRoster = $this->Roster->setDefaultData(compact(
+			'roster', 'involvement', 'defaults'
+		));
+
+		$result = $newRoster;
+		$expected = array(
+			'Roster' => array(
+				'id' => 5, // this user is already signed up, so it just gets modified
+				'user_id' => 1,
+				'involvement_id' => 3,
+				'roster_status_id' => 1,
+				'parent' => null,
+				'payment_option_id' => 5,
+			)
+		);
+		$this->assertEqual($result, $expected);
+		
+		$this->Roster->Involvement->PaymentOption->create();
+		$this->Roster->Involvement->PaymentOption->save(array(
+			'PaymentOption' => array(
+				'involvement_id' => 3,
+				'name' => 'Cheap as Free',
+				'total' => 0,
+				'deposit' => NULL,
+				'childcare' => 10,
+				'account_code' => '123',
+				'tax_deductible' => 0
+			)
+		));
+		$defaults = array(
+			'payment_option_id' => $this->Roster->Involvement->PaymentOption->id,
+			'payment_type_id' => 1,
+			'pay_later' => false,
+			'pay_deposit_amount' => false
+		);
+		$involvement = $this->Roster->Involvement->read(null, 3);
+		$roster = array(
+			'Roster' => array(
+				'user_id' => 1
+			)
+		);
+
+		$parent = 2;
+		$creditCard = array(
+			'CreditCard' => array(
+				'first_name' => 'Joe',
+				'last_name' => 'Schmoe',
+				'credit_card_number' => '1234567891001234'
+			)
+		);
+		$payer = array(
+			'User' => array(
+				'id' => 1
+			),
+			'Profile' => array(
+				'name' => 'Some guy'
+			)
+		);
+		$result = $this->Roster->setDefaultData(compact(
+			'roster', 'involvement', 'defaults', 'parent', 'creditCard', 'payer'
+		));
+		$expected = array(
+			'Roster' => array(
+				'id' => 5, // this user is already signed up, so it just gets modified
+				'user_id' => 1,
+				'involvement_id' => 3,
+				'roster_status_id' => 1,
+				'parent' => 2,
+				'payment_option_id' => 6,
+			),
+			'Payment' => array(
+				0 => array(
+					'user_id' => 1,
+					'amount' => 10,
+					'payment_type_id' => 1,
+					'number' => 1234,
+					'payment_placed_by' => 1,
+					'payment_option_id' => 6
+				)
+			)
+		);
+		unset($result['Payment'][0]['comment']);
+		$this->assertEqual($result, $expected);
+	}
+	
 	function testSetDefaultChildcare() {
 		$involvement = $this->Roster->Involvement->read(null, 1);
 		$parent = 1;
