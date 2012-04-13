@@ -47,9 +47,9 @@
 		// setup
 		$this->Js->buffer('CORE.init();');
 		$this->Js->buffer('CORE.register("notifications", "nav-notifications", "/notifications/quick")');
-		echo $this->Js->writeBuffer();
 		echo $this->AssetCompress->includeAssets(Configure::read('debug') == 0);
 		echo $scripts_for_layout;
+		echo $this->Js->writeBuffer();
 		
 		// analytics
 		$trackingcode = Core::read('general.tracking_code');

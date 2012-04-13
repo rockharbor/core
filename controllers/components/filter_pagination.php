@@ -49,7 +49,7 @@ class FilterPaginationComponent extends Object {
  * @var boolean
  */
 	var $startEmpty = true;
-	
+
 /**
  * Start FilterPaginationComponent for use in the controller
  *
@@ -60,7 +60,7 @@ class FilterPaginationComponent extends Object {
 		$this->controller =& $controller;
 		$this->_set($settings);
 	}
-
+	
 /**
  * Startup method, populates data from previously saved filter if available
  * and removes saved filter if it's a new session
@@ -100,6 +100,11 @@ class FilterPaginationComponent extends Object {
 		$key = $this->_key();
 		$this->Session->write($key.'.data', $this->controller->data);
 		
+		// check for 'link' key
+		if (isset($this->controller->paginate) && isset($this->controller->paginate['link'])) {
+			$this->_attachLinkedModels($model, $this->controller->paginate['link']);
+		}
+		
 		// return empty array by default so we don't perform a search without filtering first
 		if (!empty($this->controller->data) || isset($this->controller->params['named']['page']) || !$this->startEmpty) {
 			return $this->controller->paginate($model);
@@ -108,6 +113,32 @@ class FilterPaginationComponent extends Object {
 		}
 	}
 
+/**
+ * Iterates through an array and attaches those models to $Model
+ * 
+ * This function is here solely to trick `Controller::paginate()` into thinking
+ * that the models in $linked are directly and should only be used if the 'link'
+ * key is present
+ * 
+ * @param Model $Model
+ * @param array $linked 
+ * @see LinkableBehavior
+ */
+	function _attachLinkedModels(&$Model, $linked) {
+		$keys = ClassRegistry::keys();
+		$linked = Set::normalize($linked);
+		foreach ($linked as $_model => $attrs) {
+			if (in_array(Inflector::underscore($_model), $keys)) {
+				$Model->{$_model} = ClassRegistry::init($_model);
+			}
+			if (!is_array($attrs) && in_array(Inflector::underscore($attrs), $keys)) {
+				$Model->{$attrs} = ClassRegistry::init($attrs);
+			} elseif (is_array($attrs)) {
+				$this->_attachLinkedModels($Model, $attrs);
+			}
+		}
+	}
+	
 /**
  * Gets the session key
  * 

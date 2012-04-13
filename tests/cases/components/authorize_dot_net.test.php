@@ -44,14 +44,10 @@ class AuthorizeDotNetTestCase extends CoreTestCase {
 		$User->contain(array('Profile'));
 		$AppSetting = ClassRegistry::init('AppSetting');
 
-		$id = Core::read('development.debug_email');
-
-		$debugUser = $User->findById($id);
-		$email = $debugUser['Profile']['primary_email'];
-
 		$this->AuthorizeDotNet->_init();
 		$result = $this->AuthorizeDotNet->_data['x_Merchant_Email'];
-		$this->assertEqual($result, $email);
+		$expected = Core::read('development.debug_email');
+		$this->assertEqual($result, $expected);
 	}
 
 	function testRequest() {
