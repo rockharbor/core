@@ -507,7 +507,7 @@ class InstallShell extends Shell {
 			'controllers/Payments/add',
 			'controllers/Payments/index',
 			'controllers/Searches/user',
-			'controllers/Reports/map',
+			'controllers/Reports/user_map',
 			'controllers/Reports/index',
 			'controllers/Reports/payments',
 			'controllers/SysEmails/leader',
@@ -574,7 +574,7 @@ class InstallShell extends Shell {
 			'controllers/CoreDebugPanels',
 			'controllers/MultiSelect',
 			'controllers/Reports/export',
-			'controllers/Reports/map',
+			'controllers/Reports/involvement_map',
 			'controllers/Leaders/dashboard',
 			'controllers/InvolvementLeaders/dashboard',
 			'controllers/MinistryLeaders/dashboard',
@@ -637,7 +637,8 @@ class InstallShell extends Shell {
 			'controllers/Payments/add',
 			'controllers/Payments/index',
 			'controllers/Rosters/status',
-			'controllers/Rosters/roles'
+			'controllers/Rosters/roles',
+			'controllers/Reports/user_map',
 		),
 		'Owner' => array(
 			'controllers/Users/edit',			
@@ -675,7 +676,8 @@ class InstallShell extends Shell {
 			'controllers/Payments/view',
 			'controllers/Payments/index',
 			'controllers/Payments/add',
-			'controllers/Rosters/status'
+			'controllers/Rosters/status',
+			'controllers/Reports/user_map',
 		)
 	);
 	

@@ -170,8 +170,20 @@ class ReportsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 	
-	function testMap() {
-		$this->loadFixtures('Profile');
+	function testInvolvementMap() {
+		$this->loadFixtures('Address');
+		
+		$vars = $this->testAction('/reports/involvement_map/Involvement:1');
+		$results = Set::extract('/Address/name', $vars['results']);
+		sort($results);
+		$expected = array(
+			'Central Mini-lab 1'
+		);
+		$this->assertEqual($results, $expected);
+	}
+	
+	function testUserMap() {
+		$this->loadFixtures('Profile', 'Address');
 		
 		$this->Reports->Session->write('MultiSelect.testMap', array(
 			'selected' => array(1),
@@ -181,21 +193,22 @@ class ReportsControllerTestCase extends CoreTestCase {
 				)
 			)
 		));
-		$vars = $this->testAction('/reports/map/User/testMap');
+		$vars = $this->testAction('/reports/user_map/User/testMap');
 		$results = Set::extract('/Profile/name', $vars['results']);
 		$expected = array('Jeremy Harris');
 		$this->assertEqual($results, $expected);
 
 		$this->Reports->Session->write('MultiSelect.testMap', array(
-			'selected' => array(1),
+			'selected' => array(1, 3),
 			'search' => array()
 		));
-		$vars = $this->testAction('/reports/map/Involvement/testMap');
-		$results = Set::extract('/Involvement/name', $vars['results']);
-		$expected = array('CORE 2.0 testing');
+		$vars = $this->testAction('/reports/user_map/Roster/testMap');
+		$results = Set::extract('/User/id', $vars['results']);
+		sort($results);
+		$expected = array(1, 3);
 		$this->assertEqual($results, $expected);
 
-		$vars = $this->testAction('/reports/map/User/User:2');
+		$vars = $this->testAction('/reports/user_map/User/User:2');
 		$results = Set::extract('/User/username', $vars['results']);
 		$expected = array('rickyrockharbor');
 		$this->assertEqual($results, $expected);

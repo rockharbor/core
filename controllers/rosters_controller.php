@@ -159,7 +159,7 @@ class RostersController extends AppController {
 		$contain = array('Role');
 
 		$this->Roster->recursive = -1;
-		$fields = array('id', 'created');
+		$fields = array('id', 'created', 'user_id');
 		if ($involvement['Involvement']['take_payment']) {
 			array_push($fields, 'amount_due', 'amount_paid', 'balance');
 		}

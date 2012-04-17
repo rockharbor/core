@@ -111,7 +111,7 @@ $this->Paginator->options(array(
 					'title' => 'View Map Results',
 					'url' => array(
 						'controller' => 'reports',
-						'action' => 'map',
+						'action' => 'user_map',
 						'Roster',
 						$this->MultiSelect->token
 					),

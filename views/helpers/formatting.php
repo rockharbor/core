@@ -61,7 +61,8 @@ class FormattingHelper extends AppHelper {
 		}
 		$address .= '<br />'.$data['city'].', '.$data['state'].' '.$data['zip'];
 
-		$url = array('controller' => 'reports', 'action' => 'map', $data['model'], $data['model'] => $data['foreign_key']);
+		$prefix = strtolower($data['model']);
+		$url = array('controller' => 'reports', 'action' => $prefix.'_map', $data['model'] => $data['foreign_key']);
 		$icon = $this->Html->tag('span', 'Map', array('class' => 'core-icon icon-address'));
 		if ($link && $this->Permission->check($url)) {
 			return $icon.$this->Html->link($address, $url, array('rel' => 'modal-none', 'escape' => false));
