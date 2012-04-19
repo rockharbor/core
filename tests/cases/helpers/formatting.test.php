@@ -94,7 +94,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 			'span' => array('class' => 'core-icon icon-address'),
 			'Map',
 			'/span',
-			'a' => array('rel' => 'modal-none', 'href' => '/reports/user_map/User/User:1'),
+			'a' => array('rel' => 'modal-none', 'href' => '/reports/user_map/User:1'),
 			'123 Main',
 			'br' => array(),
 			'Somewhere, CA ',
