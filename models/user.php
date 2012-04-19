@@ -468,10 +468,9 @@ class User extends AppModel {
  * @param array $data Data and related data to save
  * @param integer $householdId The id of the household for them to join. `null` creates a household for them
  * @param array $creator The person creating the user. Empty for self.
- * @param string $validate The value for the `validate` key in `saveAll()`. User model will *always* be validated
  * @return boolean Success
  */
-	function createUser(&$data = array(), $householdId = null, $creator = array(), $validate = 'first') {
+	function createUser(&$data = array(), $householdId = null, $creator = array()) {
 		if (!isset($this->tmpAdded)) {
 			$this->tmpAdded = array();
 		}
@@ -551,12 +550,7 @@ class User extends AppModel {
 
 		// save user and related info
 		$this->create();
-		$this->set($data['User']);
-		$userValidates = $this->validates();
-		$_errors = $this->validationErrors;
-		$this->create();
-		$this->validationErrors = $_errors;
-		if ($userValidates && $this->saveAll($data, array('validate' => $validate))) {
+		if ($this->saveAll($data)) {
 			// needed for creating household members
 			$data['User']['id'] = $this->id;
 
@@ -587,7 +581,7 @@ class User extends AppModel {
 					$householdMember['Profile']['created_by_type'] = $creator['User']['group_id'];
 
 					$this->create();
-					if ($this->saveAll($householdMember, array('validate' => $validate))) {
+					if ($this->saveAll($householdMember)) {
 						$this->HouseholdMember->Household->join($householdId, $this->id, true);
 						$this->tmpAdded[] = array(
 							'id' => $this->id,

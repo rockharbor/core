@@ -385,7 +385,7 @@ class UsersController extends AppController {
 				}
 			}
 
-			if ($this->User->createUser($this->data, null, $this->activeUser, false)) {
+			if ($this->User->createUser($this->data, null, $this->activeUser)) {
 				foreach ($this->User->tmpAdded as $notifyUser) {
 					$this->set('username', $notifyUser['username']);
 					$this->set('password', $notifyUser['password']);

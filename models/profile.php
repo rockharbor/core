@@ -81,19 +81,19 @@ class Profile extends AppModel {
 			'message' => 'Please use alpha and numeric characters only.'
 		),
 		'cell_phone' => array(
-			'rule' => array('phone', null, 'us'),
+			'rule' => '/^[0-9]{7,10}$/',
 			'required' => false,
 			'allowEmpty' => true,
 			'message' => 'Please enter a valid phone number.'
 		),
 		'home_phone' => array(
-			'rule' => array('phone', null, 'us'),
+			'rule' => '/^[0-9]{7,10}$/',
 			'required' => false,
 			'allowEmpty' => true,
 			'message' => 'Pleaes enter a valid phone number.'
 		),
 		'work_phone' => array(
-			'rule' => array('phone', null, 'us'),
+			'rule' => '/^[0-9]{7,10}$/',
 			'required' => false,
 			'allowEmpty' => true,
 			'message' => 'Please enter a valid phone number.'

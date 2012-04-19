@@ -563,6 +563,8 @@ class UsersControllerTestCase extends CoreTestCase {
 	}
 	
 	function testSpecialBirthdateValidation() {
+		$origValidation = $this->Users->User->Profile->validate;
+		
 		$data = array(
 			'User' => array(
 				'username' => 'someuser'
@@ -592,6 +594,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$result = $this->Users->Session->read('Message.flash.element');
 		$this->assertEqual($result, 'flash'.DS.'failure');
 		
+		$this->Users->User->Profile->validate = $origValidation;
 		$vars = $this->testAction('/users/register', array(
 			'data' => $data
 		));
@@ -602,6 +605,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$result = $this->Users->Session->read('Message.flash.element');
 		$this->assertEqual($result, 'flash'.DS.'failure');
 		
+		$this->Users->User->Profile->validate = $origValidation;
 		$vars = $this->testAction('/users/add', array(
 			'data' => $data
 		));
@@ -635,6 +639,7 @@ class UsersControllerTestCase extends CoreTestCase {
 			)
 		);
 		
+		$this->Users->User->Profile->validate = $origValidation;
 		$vars = $this->testAction('/users/household_add/Household:2', array(
 			'data' => $data
 		));
@@ -645,6 +650,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$result = $this->Users->Session->read('Message.flash.element');
 		$this->assertEqual($result, 'flash'.DS.'failure');
 		
+		$this->Users->User->Profile->validate = $origValidation;
 		$vars = $this->testAction('/users/register', array(
 			'data' => $data
 		));
@@ -655,6 +661,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$result = $this->Users->Session->read('Message.flash.element');
 		$this->assertEqual($result, 'flash'.DS.'failure');
 		
+		$this->Users->User->Profile->validate = $origValidation;
 		$vars = $this->testAction('/users/add', array(
 			'data' => $data
 		));
