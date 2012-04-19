@@ -328,50 +328,81 @@ class ReportsController extends AppController {
 	}
 
 /**
- * Shows a map from a list of results. You can also pass a model's id to map a
- * single model
+ * Shows a map for an involvement
  *
  * ### Passed args:
- * - $model The model name as the key, the id as the value to show a single model
+ * - `Involvement` The Involvement id
  *
- * @param string $model The name of the model to search
- * @param string $uid The MultiSelect cache key to get results from
+ * @param string $involvementId The name of the model to search
  */
-	function map($model, $uid = null) {
+	function involvement_map() {
+		if (!isset($this->passedArgs['Involvement'])) {
+			$this->cakeError('error404');
+		}
+		
+		$results = $this->Involvement->find('all', array(
+			'conditions' => array(
+				'Involvement.id' => $this->passedArgs['Involvement']
+			),
+			'contain' => array(
+				'Address'
+			)
+		));
+		
+		$this->set(compact('results'));
+	}
+
+/**
+ * Shows a map for a user or a group of users
+ * 
+ * If a User id is passed through the passed args, it will be the sole user
+ * placed on the map. Otherwise, it looks for a multi-select search and pulls
+ * all the users that qualify in that search.
+ *
+ * ### Passed args:
+ * - `User` The User id (optional)
+ *
+ * @param string $model The name of the model to search (User or related model)
+ * @param string $uid The multi-select id
+ */	
+	function user_map($model = 'User', $uid = null) {
 		$search = $this->MultiSelect->getSearch($uid);
 		$selected = $this->MultiSelect->getSelected($uid);
+		
+		if (empty($model) || (empty($search) && !isset($this->passedArgs[$model]))) {
+			$this->cakeError('error404');
+		}
+		
 		if (isset($this->passedArgs[$model])) {
 			$search = array();
 			$selected = $this->passedArgs[$model];
 		}
-		// assume they want all if they didn't select any
 		if (!empty($selected)) {
 			$search['conditions'][$model.'.id'] = $selected;
 		}
+
+		// find users
+		$results = $this->{$model}->find('all', $search);
+		if ($model == 'User') {
+			$ids = Set::extract('/User/id', $results);
+		} else {
+			$ids = Set::extract('/'.$model.'/user_id', $results);
+		}
 		
 		// only need name, picture and address
-		$search['contain'] = array();
-		$contain = array(
-			'Address' => array(
-				'conditions' => array(
-					'Address.primary' => true,
-					'Address.model' => $model
-				)
-			)
-		);
-		if ($model !== 'User') {
-			$search['contain'] = $contain;
-			$results = $this->{$model}->find('all', $search);
-		} else {
-			$search['contain'] = array_merge($contain, array(
+		$results = $this->User->find('all', array(
+			'conditions' => array(
+				'User.id' => $ids
+			),
+			'contain' => array(
+				'Address',
 				'ActiveAddress',
 				'Profile' => array(
 					'fields' => array('name')
 				),
 				'Image'
-			));
-			$results = $this->User->find('all', $search);
-		}
+			)
+		));
 		$this->set(compact('results', 'model'));
 	}
 }

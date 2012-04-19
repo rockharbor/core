@@ -32,7 +32,7 @@ foreach ($addresses as $address):
 				'zip' => $address['Address']['zip'],
 			));
 			$this->GoogleMap->zoom = 15;
-			echo $this->Html->link($this->GoogleMap->image(150, 150), array('controller' => 'reports', 'action' => 'map', $model, $model => $modelId) , array('escape' => false, 'rel' => 'modal-none'));
+			echo $this->Html->link($this->GoogleMap->image(150, 150), array('controller' => 'reports', 'action' => strtolower($model).'_map', $model => $modelId) , array('escape' => false, 'rel' => 'modal-none'));
 			?>
 		</div>
 		<div id="address_<?php echo $address['Address']['id']; ?>" class="address core-iconable">
