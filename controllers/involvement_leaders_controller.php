@@ -54,7 +54,8 @@ class InvolvementLeadersController extends LeadersController {
 				'Filter' => array(
 					'previous' => 0,
 					'inactive' => 0,
-					'private' => 1
+					'private' => 1,
+					'affiliated' => 0
 				)
 			);
 		}
@@ -83,7 +84,16 @@ class InvolvementLeadersController extends LeadersController {
 				'Leader.user_id' => $this->passedArgs['User'],
 			)
 		));
-		$conditions['Involvement.id'] = Set::extract('/Leader/model_id', $leaders);
+		
+		$inherited = array();
+		if ($this->data['Filter']['affiliated']) {
+			$ministries = $this->Leader->Ministry->getLeading($this->passedArgs['User'], true);
+			$conditions['or']['Involvement.ministry_id'] = $ministries;
+			$conditions['or']['Involvement.id'] = Set::extract('/Leader/model_id', $leaders);
+		} else {
+			$conditions['Involvement.id'] = Set::extract('/Leader/model_id', $leaders);
+		}
+		
 		
 		$this->viewPath = 'involvement_leaders';
 		$this->paginate = array(

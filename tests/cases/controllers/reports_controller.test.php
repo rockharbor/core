@@ -44,7 +44,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 		$results = $vars['involvementCounts']['Event']['involved'];
 		$this->assertEqual($results, 3);
 		$results = $vars['involvementCounts']['Group']['total'];
-		$this->assertEqual($results, 2);
+		$this->assertEqual($results, 3);
 
 		$vars = $this->testAction('/reports/index', array(
 			'data' => array(

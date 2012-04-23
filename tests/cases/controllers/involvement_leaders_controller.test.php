@@ -41,7 +41,8 @@ class InvolvementLeadersControllerTestCase extends CoreTestCase {
 				'Filter' => array(
 					'previous' => 1,
 					'inactive' => 0,
-					'private' => 0
+					'private' => 0,
+					'affiliated' => 0
 				)
 			)
 		));
@@ -54,13 +55,28 @@ class InvolvementLeadersControllerTestCase extends CoreTestCase {
 				'Filter' => array(
 					'previous' => 1,
 					'inactive' => 1,
-					'private' => 1
+					'private' => 1,
+					'affiliated' => 0
 				)
 			)
 		));
 		$results = Set::extract('/Involvement/id', $vars['involvements']);
 		sort($results);
 		$this->assertEqual($results, array(1, 3));
+		
+		$vars = $this->testAction('/involvement_leaders/dashboard/User:1', array(
+			'data' => array(
+				'Filter' => array(
+					'previous' => 1,
+					'inactive' => 1,
+					'private' => 1,
+					'affiliated' => 1
+				)
+			)
+		));
+		$results = Set::extract('/Involvement/id', $vars['involvements']);
+		sort($results);
+		$this->assertEqual($results, array(1, 3, 7));
 	}
 }
 ?>

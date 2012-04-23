@@ -26,6 +26,11 @@ $this->Paginator->options(array(
 			'class' => 'toggle',
 			'div' => false
 		));
+		echo $this->Form->input('affiliated', array(
+			'type' => 'checkbox',
+			'class' => 'toggle',
+			'div' => false
+		));
 		echo $this->Js->submit('Filter');
 		echo $this->Form->end();
 	?>
