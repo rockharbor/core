@@ -279,5 +279,41 @@ class Ministry extends AppModel {
 		$ids = Set::extract('/Leader/user_id', $leaders);
 		return array_unique($ids);
 	}
+
+/**
+ * Gets all ministries a user is leading
+ * 
+ * @param mixed $userId Array of user ids or a single one
+ * @param boolean $recursive Include subministries of items the user isn't directly leading?
+ * @return array Array of ids
+ */
+	function getLeading($userId, $recursive = false) {
+		$leaders = $this->Leader->find('all', array(
+			'fields' => array(
+				'model_id'
+			),
+			'conditions' => array(
+				'Leader.model' => 'Ministry',
+				'Leader.user_id' => $userId
+			)
+		));
+		$ids = Set::extract('/Leader/model_id', $leaders);
+		if ($recursive) {
+			$ministries = $this->find('all', array(
+				'fields' => array(
+					'id'
+				),
+				'conditions' => array(
+					'or' => array(
+						'Ministry.id' => $ids,
+						'Ministry.parent_id' => $ids
+					)
+				)
+			));
+			$ids = Set::extract('/Ministry/id', $ministries);
+		}
+		
+		return $ids;
+	}
 }
 ?>
