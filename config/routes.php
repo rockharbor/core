@@ -30,17 +30,27 @@
  * Custom routes
  */
 	Router::connectNamed(array('User', 'Ministry', 'Involvement', 'Campus', 'model'), array('defaults' => true));
-	$controllers = App::objects('controller');
-	$controllers = array_map('Inflector::underscore', $controllers);
-	Router::connect('/:controller/:action/*',
-		array(),
-		array(
-			'routeClass' => 'SluggableRoute',
-			'models' => array('User', 'Ministry', 'Involvement', 'Campus'),
-			'controller' => implode('|', $controllers),
-			'prependPk' => true
-		)
-	);
+	Router::connect('/involvements/:action/*', array('controller' => 'involvements'), array(
+		'routeClass' => 'SluggableRoute',
+		'models' => array('Involvement'),
+		'prependPk' => true
+	));
+	Router::connect('/ministries/:action/*', array('controller' => 'ministries'), array(
+		'routeClass' => 'SluggableRoute',
+		'models' => array('Ministry'),
+		'prependPk' => true
+	));
+	Router::connect('/campuses/:action/*', array('controller' => 'campuses'), array(
+		'routeClass' => 'SluggableRoute',
+		'models' => array('Campus'),
+		'prependPk' => true
+	));
+	Router::connect('/:controller/:action/*', array(), array(
+		'routeClass' => 'SluggableRoute',
+		'models' => array('User'),
+		'controller' => 'users|profiles',
+		'prependPk' => true
+	));
 	
 /*
  * Asset Compress
