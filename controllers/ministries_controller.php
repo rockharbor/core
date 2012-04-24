@@ -230,9 +230,8 @@ class MinistriesController extends AppController {
 		}
 
 		// if they can confirm a revision, there's no need to go through the confirmation process
-		$authorized = false;
-		if ($this->isAuthorized('ministries/revise')) {
-			$authorized = true;
+		$authorized = $this->isAuthorized('ministries/revise');
+		if ($authorized) {
 			$this->Ministry->Behaviors->disable('Confirm');
 		}
 		
@@ -243,7 +242,7 @@ class MinistriesController extends AppController {
 		if (!empty($this->data)) {
 			if (!$revision) {
 				if ($this->Ministry->save($this->data)) {
-					if ($authorized) {
+					if ($authorized || !$this->Ministry->changed()) {
 						$this->Session->setFlash('This ministry has been saved.', 'flash'.DS.'success');
 					} else {
 						$this->Session->setFlash('Your changes are pending review.', 'flash'.DS.'success');

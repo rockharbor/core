@@ -98,7 +98,8 @@ class CampusesController extends AppController {
 		}
 
 		// if they can confirm a revision, there's no need to go through the confirmation process
-		if ($this->isAuthorized('campuses/revise')) {
+		$authorized = $this->isAuthorized('campuses/revise');
+		if ($authorized) {
 			$this->Campus->Behaviors->disable('Confirm');
 		}
 
@@ -107,7 +108,12 @@ class CampusesController extends AppController {
 		if (!empty($this->data)) {
 			if (!$revision) {
 				if ($this->Campus->save($this->data)) {
-					$this->Session->setFlash('Your request has been received and is pending approval.', 'flash'.DS.'success');
+					if ($authorized || !$this->Campus->changed()) {
+						$this->Session->setFlash('This campus has been saved.', 'flash'.DS.'success');
+					} else {
+						$this->Session->setFlash('Your changes are pending review.', 'flash'.DS.'success');
+					}
+					
 					$this->set('campus', $this->data);
 					$this->Notifier->notify(array(
 						'to' => Core::read('notifications.campus_content'),
