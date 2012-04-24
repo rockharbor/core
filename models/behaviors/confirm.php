@@ -11,7 +11,12 @@
 /**
  * Confirm Behavior
  *
- * Saves a revision instead of the actual record.
+ * Saves a revision instead of the actual record. Only saves a revision if a 
+ * change is detected.
+ * 
+ * ### Options:
+ * - `fields` An array of fields to check for changes. If blank, all fields
+ * will be checked. 
  *
  * @package       core
  * @subpackage    core.app.models.behaviors
@@ -24,13 +29,19 @@ class ConfirmBehavior extends ModelBehavior {
  *
  * @param object $Model The calling model
  */
-	function setup(&$Model) {		
+	function setup(&$Model, $settings = array()) {		
 		$Model->RevisionModel = new Model(array(
 			'table' => Inflector::tableize($Model->name).'_revs',
 			'name' => 'Revision',
 			'ds' => $Model->useDbConfig
 		));
 		$Model->RevisionModel->primaryKey = 'version_id';
+		
+		$default = array(
+			'fields' => array()
+		);
+		
+		$this->settings[$Model->alias] = array_merge_recursive($default, $settings);
 	}
 
 /**
@@ -54,14 +65,16 @@ class ConfirmBehavior extends ModelBehavior {
 		}
 		
 		$original = $Model->read();
-		$Model->data = $data;
+		$Model->set($data);
 		
 		// compare fields to see if anything changed
 		$changed = false;
 		foreach ($original[$Model->alias] as $field => $value) {
-			if (isset($data[$field]) && $data[$field] != $value) {
-				$changed = true;
-				break;
+			if (empty($this->settings[$Model->alias]['fields']) || (in_array($field, $this->settings[$Model->alias]['fields']))) {
+				if (isset($data[$field]) && $data[$field] != $value) {
+					$changed = true;
+					break;
+				}
 			}
 		}
 		

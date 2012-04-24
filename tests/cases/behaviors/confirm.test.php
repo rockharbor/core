@@ -9,6 +9,7 @@ class ConfirmBehaviorTestCase extends CoreTestCase {
 		parent::startTest($method);
 		$this->loadFixtures('Ministry', 'Involvement', 'MinistriesRev');
 		$this->Ministry =& ClassRegistry::init('Ministry');
+		$this->Ministry->Behaviors->Confirm->settings['Ministry']['fields'] = array();
 		$this->Ministry->RevisionModel->useDbConfig = 'test_suite';
 		$this->Ministry->Involvement->RevisionModel->useDbConfig = 'test_suite';
 	}
@@ -20,6 +21,28 @@ class ConfirmBehaviorTestCase extends CoreTestCase {
 
 	function testSetup() {
 		$this->assertIsA($this->Ministry->RevisionModel, 'Model');
+		$this->assertIsA($this->Ministry->Behaviors->Confirm->settings['Ministry'], 'array');
+		$this->assertIsA($this->Ministry->Behaviors->Confirm->settings['Ministry']['fields'], 'array');
+	}
+	
+	function testFieldsSetting() {
+		$this->Ministry->Behaviors->attach('Confirm', array(
+			'fields' => array(
+				'description'
+			)
+		));
+		
+		$this->Ministry->id = 1;
+		$this->Ministry->saveField('name', 'Not communications');
+		$results = $this->Ministry->field('name');
+		$expected = 'Not communications';
+		$this->assertEqual($results, $expected);
+		
+		$this->Ministry->id = 1;
+		$this->Ministry->saveField('description', 'A new description');
+		$results = $this->Ministry->field('description');
+		$expected = 'Description';
+		$this->assertEqual($results, $expected);
 	}
 	
 	function testNoChange() {
