@@ -23,6 +23,13 @@
  * @todo Refactor and wrap in a plugin, generally clean it up, use an actual model
  */
 class ConfirmBehavior extends ModelBehavior {
+	
+/**
+ * Stores status of the last save attempt
+ * 
+ * @var boolean
+ */
+	var $_changed = false;
 
 /**
  * Setup function
@@ -68,20 +75,20 @@ class ConfirmBehavior extends ModelBehavior {
 		$Model->set($data);
 		
 		// compare fields to see if anything changed
-		$changed = false;
+		$this->_changed = false;
 		foreach ($original[$Model->alias] as $field => $value) {
 			if (empty($this->settings[$Model->alias]['fields']) || (in_array($field, $this->settings[$Model->alias]['fields']))) {
 				if (isset($data[$field]) && $data[$field] != $value) {
-					$changed = true;
+					$this->_changed = true;
 					break;
 				}
 			}
 		}
 		
-		if (!$changed) {
+		if (!$this->_changed) {
 			return true;
 		}
-
+		
 		// save to revision table
 		$data['id'] = $Model->id;
 		$data['version_created'] = date('Y-m-d H:i:s');
@@ -94,6 +101,16 @@ class ConfirmBehavior extends ModelBehavior {
 		}
 
 		return $Model->RevisionModel->save($data);
+	}
+
+/**
+ * Returns `true` if the last save created a revision
+ * 
+ * @param type $Model
+ * @return type 
+ */
+	function changed(&$Model) {
+		return $this->_changed;
 	}
 
 /**

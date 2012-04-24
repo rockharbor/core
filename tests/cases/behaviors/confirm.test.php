@@ -58,6 +58,8 @@ class ConfirmBehaviorTestCase extends CoreTestCase {
 			)
 		));
 		$this->assertTrue(empty($rev));
+		
+		$this->assertFalse($this->Ministry->changed());
 	}
 
 	function testConfirm() {
@@ -73,6 +75,8 @@ class ConfirmBehaviorTestCase extends CoreTestCase {
 			)
 		));
 		$this->assertEqual($rev['Revision']['name'], 'Revised Name');
+		
+		$this->assertTrue($this->Ministry->changed());
 	}
 	
 	function testConfirmDisabled() {
