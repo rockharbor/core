@@ -52,6 +52,22 @@ class ConfirmBehavior extends ModelBehavior {
 		if (!$Model->id && isset($data['id'])) {
 			$Model->id = $data['id'];
 		}
+		
+		$original = $Model->read();
+		$Model->data = $data;
+		
+		// compare fields to see if anything changed
+		$changed = false;
+		foreach ($original[$Model->alias] as $field => $value) {
+			if (isset($data[$field]) && $data[$field] != $value) {
+				$changed = true;
+				break;
+			}
+		}
+		
+		if (!$changed) {
+			return true;
+		}
 
 		// save to revision table
 		$data['id'] = $Model->id;

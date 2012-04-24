@@ -21,6 +21,21 @@ class ConfirmBehaviorTestCase extends CoreTestCase {
 	function testSetup() {
 		$this->assertIsA($this->Ministry->RevisionModel, 'Model');
 	}
+	
+	function testNoChange() {
+		$this->Ministry->id = 1;
+		$this->Ministry->saveField('name', 'Communications');
+		$results = $this->Ministry->field('name');
+		$expected = 'Communications';
+		$this->assertEqual($results, $expected);
+
+		$rev = $this->Ministry->RevisionModel->find('first', array(
+			'conditions' => array(
+				'id' => 1
+			)
+		));
+		$this->assertTrue(empty($rev));
+	}
 
 	function testConfirm() {
 		$this->Ministry->id = 1;
