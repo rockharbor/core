@@ -79,22 +79,6 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		sort($results);
 		$this->assertEqual($results, array(1, 2, 3));
 		
-		$this->Ministries->Ministry->save(array(
-			'id' => 1,
-			'private' => 1
-		));
-		$vars = $this->testAction('/ministries/index/Campus:1', array(
-			'data' => array(
-				'Ministry' => array(
-					'private' => true,
-					'inactive' => false
-				)
-			)
-		));
-		$results = Set::extract('/Ministry/id', $vars['ministries']);
-		sort($results);
-		$this->assertEqual($results, array(1, 2));
-		
 		$this->su(array('Group' => 8));
 		
 		$vars = $this->testAction('/ministries/index/Campus:1');
@@ -127,6 +111,23 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Ministry/id', $vars['ministries']);
 		sort($results);
 		$this->assertEqual($results, array(4));
+		
+		
+		$this->Ministries->Ministry->save(array(
+			'id' => 1,
+			'private' => 1
+		));
+		$vars = $this->testAction('/ministries/index/Campus:1', array(
+			'data' => array(
+				'Ministry' => array(
+					'private' => true,
+					'inactive' => false
+				)
+			)
+		));
+		$results = Set::extract('/Ministry/id', $vars['ministries']);
+		sort($results);
+		$this->assertEqual($results, array(1, 2));
 	}
 
 	function testView() {
