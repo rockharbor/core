@@ -38,7 +38,12 @@ class Ministry extends AppModel {
 	var $actsAs = array(
 		'Containable',
 		'Tree',
-		'Confirm',
+		'Confirm' => array(
+			'fields' => array(
+				'name',
+				'description'
+			)
+		),
 		'Cacher.Cache' => array(
 			'auto' => false
 		),

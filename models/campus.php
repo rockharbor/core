@@ -29,7 +29,12 @@ class Campus extends AppModel {
  * @var array
  */
 	var $actsAs = array(
-		'Confirm',
+		'Confirm' => array(
+			'fields' => array(
+				'name',
+				'description'
+			)
+		),
 		'Containable',
 		'Cacher.Cache' => array(
 			'auto' => false
