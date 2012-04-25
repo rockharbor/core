@@ -122,6 +122,23 @@ class CoreTestCaseTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 	
+	function testGetTests() {
+		$this->testMethods = array('testGetTests');
+		ob_start();
+		$result = array_values($this->getTests());
+		ob_clean();
+		$expected = array(
+			'start',
+			'startCase',
+			'testGetTests',
+			'endCase',
+			'end'
+		);
+		$this->assertEqual($result, $expected);
+		
+		unset($this->testMethods);
+	}
+	
 	function testSingleLine() {
 		$text = <<<TEXT
 Something 
