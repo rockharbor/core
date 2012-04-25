@@ -21,6 +21,18 @@ class PagesControllerTestCase extends CoreTestCase {
 		unset($this->Pages);
 		ClassRegistry::flush();
 	}
+	
+	function testDisplay() {
+		$vars = $this->testAction('/pages/display/test');
+		
+		$result = $vars['page'];
+		$expected = 'test';
+		$this->assertEqual($result, $expected);
+		
+		$result = $vars['title_for_layout'];
+		$expected = 'Test';
+		$this->assertEqual($result, $expected);
+	}
 
 	function testPhrase() {
 		$vars = $this->testAction('/pages/phrase/1.json', array(

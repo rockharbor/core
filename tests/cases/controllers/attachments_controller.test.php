@@ -34,6 +34,45 @@ class AttachmentsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($vars['model'], 'User');
 		$this->assertEqual($vars['modelId'], '1');
 	}
+	
+	function testDownload() {
+		$this->loadFixtures('Attachment');
+		
+		$vars = $this->testAction('/user_images/download/4');
+		
+		$result = $vars['name'];
+		$expected = 'Profile photo';
+		$this->assertEqual($result, $expected);
+		
+		$result = $vars['download'];
+		$expected = true;
+		$this->assertEqual($result, $expected);
+		
+		$result = $vars['extension'];
+		$expected = 'jpg';
+		$this->assertEqual($result, $expected);
+		
+		$result = $vars['mimeType'];
+		$expected = array(
+			'jpg' => 'image/jpeg'
+		);
+		$this->assertEqual($result, $expected);
+		
+		$result = $vars['path'];
+		$expected = '/'.addslashes(MEDIA_TRANSFER).'/';
+		$this->assertPattern($expected, $result);
+	}
+	
+	function testUpload() {
+		$this->loadFixtures('Attachment');
+		
+		$vars = $this->testAction('/user_images/upload/User:1');
+		
+		$result = Set::extract('/Image/id', $vars['attachments']);
+		sort($result);
+		$expected = array(4);
+		$this->assertEqual($result, $expected);
+	}
 
 	function testApprove() {
 		$this->testAction('/user_images/approve/4/1');
