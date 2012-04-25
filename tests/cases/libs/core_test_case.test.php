@@ -121,6 +121,18 @@ class CoreTestCaseTestCase extends CoreTestCase {
 		unset($this->Dummies);
 		ClassRegistry::flush();
 	}
+	
+	function testSingleLine() {
+		$text = <<<TEXT
+Something 
+	with 
+		tabs 
+		and   extra spacing
+TEXT;
+		$result = $this->singleLine($text);
+		$expected = 'Something with tabs and extra spacing';
+		$this->assertEqual($result, $expected);
+	}
 
 	function testTestActionVars() {
 		$vars = $this->CoreTestCase->testAction('/dummies/dummy_action/3');

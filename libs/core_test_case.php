@@ -325,6 +325,18 @@ class CoreTestCase extends CakeTestCase {
 		
 		return $auth && $sess;
 	}
+	
+/**
+ * Helper function for stripping tabs, newlines and extra whitespace from strings
+ * 
+ * @param string $str
+ * @return string
+ */
+	function singleLine($str = '') {
+		$str = str_replace(array("\t", PHP_EOL), '', $str);
+		$str = preg_replace('/\s\s+/', ' ', $str);
+		return $str;
+	}
 
 }
 
