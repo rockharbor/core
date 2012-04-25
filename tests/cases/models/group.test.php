@@ -34,6 +34,8 @@ class GroupTestCase extends CoreTestCase {
 		$results = $this->Group->findGroups(5, '<=');
 		$expected = array(5, 6, 7, 8);
 		$this->assertEqual($results, $expected);
+		
+		$this->assertFalse($this->Group->findGroups());
 	}
 
 	function testCanSeePrivate() {
@@ -48,6 +50,8 @@ class GroupTestCase extends CoreTestCase {
 
 		$result = $this->Group->canSeePrivate(3);
 		$this->assertTrue($result);
+		
+		$this->assertFalse($this->Group->canSeePrivate());
 	}
 
 }

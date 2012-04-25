@@ -20,6 +20,46 @@ class RosterTestCase extends CoreTestCase {
 		unset($this->Roster);		
 		ClassRegistry::flush();
 	}
+	
+	function testFindByRoles() {
+		$data = array(
+			'roles' => array(1)
+		);
+		$results = $this->Roster->findByRoles($data);
+		$expected = "SELECT `RolesRoster`.`roster_id` 
+			FROM `roles_rosters` AS `RolesRoster` 
+			LEFT JOIN `roles` AS `Role` ON (`RolesRoster`.`role_id` = `Role`.`id`) 
+			WHERE EXISTS 
+			(SELECT 1 FROM roles_rosters WHERE role_id = 1 AND roster_id = `RolesRoster`.`roster_id`) ";
+		$this->assertEqual($this->singleLine($results), $this->singleLine($expected));
+		
+		$data = array(
+			'roles' => array(1, 2)
+		);
+		$results = $this->Roster->findByRoles($data);
+		$expected = "SELECT `RolesRoster`.`roster_id` 
+			FROM `roles_rosters` AS `RolesRoster` 
+			LEFT JOIN `roles` AS `Role` ON (`RolesRoster`.`role_id` = `Role`.`id`) 
+			WHERE 
+			EXISTS (SELECT 1 FROM roles_rosters WHERE role_id = 1 AND roster_id = `RolesRoster`.`roster_id`) 
+			AND 
+			EXISTS (SELECT 1 FROM roles_rosters WHERE role_id = 2 AND roster_id = `RolesRoster`.`roster_id`) ";
+		$this->assertEqual($this->singleLine($results), $this->singleLine($expected));
+	}
+	
+	function testPaginateCount() {
+		$conditions = array(
+			'Roster.involvement_id' => 1
+		);
+		$recursive = 1;
+		$extra = array(
+			'contain' => array(
+				'Involvement'
+			)
+		);
+		$results = $this->Roster->paginateCount($conditions, $recursive, $extra);
+		$this->assertEqual($results, 2);
+	}
 
 	function testSetDefaultAlreadySignedUp() {
 		$involvement = $this->Roster->Involvement->read(null, 1);

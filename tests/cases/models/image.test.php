@@ -15,6 +15,30 @@ class ImageTestCase extends CoreTestCase {
 		unset($this->Image);
 		ClassRegistry::flush();
 	}
+	
+	function testTransferTo() {
+		$this->Image->model = 'User';
+		$uuidReg = "[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}";
+		
+		$file = array(
+			'file' => 'image.jpg',
+			'mimeType' => null
+		);
+		$result = $this->Image->transferTo(array(), $file);
+		$pattern = '/img\\'.DS.'user\\'.DS.$uuidReg.'\.jpg/';
+		$this->assertPattern($pattern, $result);
+		
+		$this->Image->model = 'Involvement';
+		$uuidReg = "[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}";
+		
+		$file = array(
+			'file' => 'image.mpg',
+			'mimeType' => 'video/mpeg'
+		);
+		$result = $this->Image->transferTo(array(), $file);
+		$pattern = '/vid\\'.DS.'involvement\\'.DS.$uuidReg.'\.mpeg/';
+		$this->assertPattern($pattern, $result);
+	}
 
 	function testCustomImageSizes() {
 		$default = Configure::read('Core.mediafilters.default');
