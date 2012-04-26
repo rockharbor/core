@@ -112,7 +112,7 @@ class AppSettingFixture extends CakeTestFixture {
 			'description' => 'The email address to send credit card payment receipts.',
 			'created' => '0000-00-00 00:00:00',
 			'modified' => '0000-00-00 00:00:00',
-			'value' => 'jharris@rockharbor.org',
+			'value' => 'cc@example.com',
 			'type' => 'string'
 		),
 		array(

@@ -79,7 +79,10 @@ class AuthorizeDotNetComponent extends Object {
  * @param array $customer
  * @access public
  */ 
-	function setCustomer($customer = array()) {		
+	function setCustomer($customer = array()) {
+		if (empty($customer)) {
+			return;
+		}
 		// customer's info
 		$this->_data['x_First_Name'] = $customer['first_name'];
 		$this->_data['x_Last_Name'] = $customer['last_name'];
@@ -101,7 +104,7 @@ class AuthorizeDotNetComponent extends Object {
  */
 	function setInvoiceNumber($invoiceNumber) {
 		// according to the documentation, invoice number can only be 20 characters, no symbols
-		$this->_data['x_invoice_num'] = substr(preg_replace("/[^-a-zA-Z0-9]/", '', $invoiceNumber), 0, 20); 
+		$this->_data['x_invoice_num'] = substr(preg_replace("/[^a-zA-Z0-9]/", '', $invoiceNumber), 0, 20); 
 	}
 
 /**
@@ -114,7 +117,8 @@ class AuthorizeDotNetComponent extends Object {
 		// 255 characters, no symbols. helpfully, they don't tell us what
 		// they define to be a "symbol".
 		$desc = trim($desc);
-		$desc = preg_replace("/[^-a-zA-Z0-9. '\"\/\[\]!@#$%&*\(\)_+=<>?\:\/]/", '', $desc);
+		$desc = strip_tags($desc);
+		$desc = preg_replace("/[^a-zA-Z0-9 ]/", '', $desc);
 		$this->_data['x_description'] = substr($desc, 0, 255);
 	}
 			
