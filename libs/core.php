@@ -31,7 +31,7 @@ class Core {
  * @var string
  * @access protected
  */
-	var $_version = '2.0.0-alpha';
+	var $_version = '2.0.0';
 	
 /**
  * Loaded flag
