@@ -75,8 +75,26 @@ class ConfirmBehaviorTestCase extends CoreTestCase {
 			)
 		));
 		$this->assertEqual($rev['Revision']['name'], 'Revised Name');
+		$this->Ministry->RevisionModel->delete($rev['Revision']['id']);
 		
 		$this->assertTrue($this->Ministry->changed());
+		
+		$this->Ministry->id = null;
+		$this->Ministry->data = null;
+		$this->Ministry->save(array(
+			'id' => 1,
+			'name' => 'Another change'
+		));
+		$results = $this->Ministry->field('name');
+		$expected = 'Communications';
+		$this->assertEqual($results, $expected);
+		
+		$rev = $this->Ministry->RevisionModel->find('first', array(
+			'conditions' => array(
+				'id' => 1
+			)
+		));
+		$this->assertEqual($rev['Revision']['name'], 'Another change');
 	}
 	
 	function testConfirmDisabled() {
@@ -118,6 +136,8 @@ class ConfirmBehaviorTestCase extends CoreTestCase {
 		);
 		unset($results['Revision']['version_created']);
 		$this->assertEqual($results, $expected);
+		
+		$this->assertFalse($this->Ministry->revision());
 	}
 
 	function testConfirmRevision() {
