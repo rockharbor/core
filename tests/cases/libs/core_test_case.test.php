@@ -101,6 +101,15 @@ class DummiesController extends AppController {
 }
 
 /**
+ * Dummy reporter to ignore painting results 
+ */
+class DummyReporter extends SimpleReporter {
+	function paintSkip() {
+		return;
+	}
+}
+
+/**
  * CoreTestCase test case
  *
  * @package       core
@@ -123,10 +132,11 @@ class CoreTestCaseTestCase extends CoreTestCase {
 	}
 	
 	function testGetTests() {
+		$_reporter = $this->_reporter;
+		$this->_reporter = new DummyReporter();
+		
 		$this->testMethods = array('testGetTests');
-		ob_start();
 		$result = array_values($this->getTests());
-		ob_clean();
 		$expected = array(
 			'start',
 			'startCase',
@@ -137,6 +147,7 @@ class CoreTestCaseTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 		
 		unset($this->testMethods);
+		$this->_reporter = $_reporter;
 	}
 	
 	function testSingleLine() {
