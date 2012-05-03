@@ -219,12 +219,12 @@ class AppModel extends Model {
 			if ($Model->hasField($model, true)) {
 				// add to fields array if it's a field
 				if ($Model->isVirtualField($model)) {
-					$options['fields'][] = $Model->getVirtualField($model).' AS '.$Model->name.'__'.$model;
+					$options['fields'][] = $Model->getVirtualField($model).' AS '.$Model->alias.'__'.$model;
 				} else {
 					$options['fields'][] = $model;
 				}
 				unset($options[$model]);
-			} elseif ($Model->name === $model) {
+			} elseif ($Model->alias === $model) {
 				foreach ($field as $f => $v) {
 					$options['fields'][] = $f;
 				}
@@ -232,7 +232,7 @@ class AppModel extends Model {
 			} elseif (array_key_exists($model, $associated)) {
 				// check for habtm [Publication][Publication][0] = 1
 				if ($model == array_shift(array_keys($field))) {
-					$field = array();
+		 			$field = array();
 				}
 				// recusively check for more models to contain
 				$foreignKey = null;
@@ -242,7 +242,7 @@ class AppModel extends Model {
 					$options['fields'][] = $Model->primaryKey;
 					$options['fields'][] = $Model->{$associated[$model]}[$model]['foreignKey'];
 				}
-				if ($Model->name === $this->name) {
+				if ($Model->alias === $this->alias) {
 					$options['contain'][$model] = $this->postOptions($field, $Model->{$model}, $foreignKey);
 					unset($options[$model]);
 				} else {
