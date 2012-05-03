@@ -305,6 +305,41 @@ class AppModelTestCase extends CoreTestCase {
 		);
 		$results = $this->User->postOptions($data);
 		$this->assertEqual($results, $expected);
+		
+		$data = array(
+			'HouseholdMember' => array(
+				'Household' => array(
+					'HouseholdContact' => array(
+						'Profile' => array(
+							'primary_email' => 1
+						)
+					)
+				)
+			)
+		);
+		$expected = array(
+			'contain' => array(
+				'HouseholdMember' => array(
+					'Household' => array(
+						'HouseholdContact' => array(
+							'Profile' => array(
+								'fields' => array(
+									'user_id', 'primary_email'
+								)
+							)
+						),
+						'fields' => array(
+							'id', 'contact_id'
+						)
+					),
+					'fields' => array(
+						'user_id', 'id', 'household_id'
+					)
+				)
+			)
+		);
+		$results = $this->User->postOptions($data);
+		$this->assertEqual($results, $expected);
 	}
 
 	function testOwnedBy() {
