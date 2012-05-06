@@ -32,7 +32,7 @@
 		<div class="report clearfix">
 			<div class="chart">
 			<?php
-			$d1 = floor($ministryCounts['active']/$ministryCounts['total']*100);
+			$d1 = ( $ministryCounts['total'] != 0 ) ? floor($ministryCounts['active']/$ministryCounts['total']*100) : 0;
 			$d2 = 100-$d1;
 			echo $this->Charts->draw('pie', array(
 				'data' => array($d1, $d2),
@@ -54,7 +54,7 @@
 		<div class="report clearfix">
 			<div class="chart">
 			<?php
-			$d1 = floor($ministryCounts['private']/$ministryCounts['total']*100);
+			$d1 = ( $ministryCounts['total'] != 0 ) ? floor($ministryCounts['private']/$ministryCounts['total']*100) : 0;
 			$d2 = 100-$d1;
 			echo $this->Charts->draw('pie', array(
 				'data' => array($d1, $d2),
@@ -79,7 +79,7 @@
 		<div class="report clearfix">
 			<div class="chart">
 			<?php
-			$d1 = floor($userCounts['active']/$userCounts['total']*100);
+			$d1 = ( $userCounts['total'] != 0 ) ? floor($userCounts['active']/$userCounts['total']*100) : 0;
 			$d2 = 100-$d1;
 			echo $this->Charts->draw('pie', array(
 				'data' => array($d1, $d2),
@@ -122,9 +122,9 @@
 			$total += $involvementCounts[$type]['total'];
 		}
 		foreach ($involvementTypes as $type) {
-			$data[] = floor($involvementCounts[$type]['total']/$total*100);
+			$data[] = ( $total != 0 ) ? floor($involvementCounts[$type]['total']/$total*100) : 0;
 		}
-		echo $this->Charts->draw('bar', array(
+		echo ( $total == 0 ) ? '<p>No involvement opportunities found</p>' : $this->Charts->draw('bar', array(
 			'spacing' => array(
 				'width' => 30,
 				'padding' => 5
