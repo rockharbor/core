@@ -233,6 +233,53 @@ class ReportHelperTestCase extends CoreTestCase {
 		$results = $this->Report->createHeaders($headers);
 		$expected = array('Primary Email 1', 'Primary Email 2');
 		$this->assertEqual($results, $expected);
+		
+		$headers = array(
+			'Roster' => array(
+				'RosterStatus' => array(
+					'name' => 1
+				)
+			),
+			'Answer' => array(
+				'description' => 1
+			)
+		);
+		$data = array(
+			array(
+				'Roster' => array(
+					'RosterStatus' => array(
+						'name' => 'Confirmed'
+					)
+				),
+				'Answer' => array(
+					array(
+						'description' => 'I only answered one question'
+					)
+				)
+			),
+			array(
+				'Roster' => array(
+					'RosterStatus' => array(
+						'name' => 'Pending'
+					)
+				),
+				'Answer' => array(
+					array(
+						'description' => 'Answer to question 1'
+					),
+					array(
+						'description' => 'Answer to question 2'
+					)
+				)
+			)
+		);
+		
+		$this->Report->reset();
+		$this->Report->set($data);
+		$this->Report->multiple('Answer.description', 'expand');
+		$results = $this->Report->createHeaders($headers);
+		$expected = array('Name', 'Description 1', 'Description 2');
+		$this->assertEqual($results, $expected);
 	}
 
 	function testGetResults() {
@@ -326,6 +373,7 @@ class ReportHelperTestCase extends CoreTestCase {
 				)
 			)
 		);
+		$this->Report->reset();
 		$this->Report->set($data);
 		$this->Report->multiple('HouseholdMember.Household.HouseholdContact.Profile.primary_email');
 		$this->Report->createHeaders($headers);
@@ -335,6 +383,7 @@ class ReportHelperTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 		
+		$this->Report->reset();
 		$this->Report->set($data);
 		$this->Report->multiple('HouseholdMember.Household.HouseholdContact.Profile.primary_email', 'concat');
 		$this->Report->createHeaders($headers);
@@ -344,12 +393,63 @@ class ReportHelperTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 		
+		$this->Report->reset();
 		$this->Report->set($data);
 		$this->Report->multiple('HouseholdMember.Household.HouseholdContact.Profile.primary_email', 'expand');
 		$this->Report->createHeaders($headers);
 		$results = $this->Report->getResults();
 		$expected = array(
 			array('jharris@rockharbor.org', 'contact@example.com')
+		);
+		$this->assertEqual($results, $expected);
+		
+		$headers = array(
+			'Roster' => array(
+				'RosterStatus' => array(
+					'name' => 1
+				)
+			),
+			'Answer' => array(
+				'description' => 1
+			)
+		);
+		$data = array(
+			array(
+				'Roster' => array(
+					'RosterStatus' => array(
+						'name' => 'Confirmed'
+					)
+				),
+				'Answer' => array(
+					array(
+						'description' => 'I only answered one question'
+					)
+				)
+			),
+			array(
+				'Roster' => array(
+					'RosterStatus' => array(
+						'name' => 'Pending'
+					)
+				),
+				'Answer' => array(
+					array(
+						'description' => 'Answer to question 1'
+					),
+					array(
+						'description' => 'Answer to question 2'
+					)
+				)
+			)
+		);
+		$this->Report->reset();
+		$this->Report->set($data);
+		$this->Report->multiple('Answer.description', 'expand');
+		$this->Report->createHeaders($headers);
+		$results = $this->Report->getResults();
+		$expected = array(
+			array('Confirmed', 'I only answered one question', null),
+			array('Pending', 'Answer to question 1', 'Answer to question 2')
 		);
 		$this->assertEqual($results, $expected);
 	}
