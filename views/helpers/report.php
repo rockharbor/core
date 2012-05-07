@@ -194,7 +194,7 @@ class ReportHelper extends AppHelper {
 			$name = $exp[count($exp)-1];
 			
 			if (array_key_exists($path, $this->_multiples) && !empty($this->data)) {
-				if (is_null($this->_multiples[$path]['max'])) {
+				if (is_null($this->_multiples[$path]['max']) && $this->_multiples[$path]['expand'] == 'expand') {
 					$max = 0;
 					foreach ($this->data as $record) {
 						$count = Set::extract('/'.implode('/', $exp), $record);
@@ -205,13 +205,25 @@ class ReportHelper extends AppHelper {
 					$this->_multiples[$path]['max'] = $max;
 				}
 				
-				for ($c = 0; $c < $this->_multiples[$path]['max']; $c++) {
-					if (array_key_exists($path, $this->_aliases)) {
-						$headers[] = $this->_aliases[$path].' '.($c+1);
-					} else {
-						$headers[] = Inflector::humanize($name).' '.($c+1);
-					}
+				switch ($this->_multiples[$path]['expand']) {
+					case 'expand':
+						for ($c = 0; $c < $this->_multiples[$path]['max']; $c++) {
+							if (array_key_exists($path, $this->_aliases)) {
+								$headers[] = $this->_aliases[$path].' '.($c+1);
+							} else {
+								$headers[] = Inflector::humanize($name).' '.($c+1);
+							}
+						}
+					break;
+					default:
+						if (array_key_exists($path, $this->_aliases)) {
+							$headers[] = $this->_aliases[$path];
+						} else {
+							$headers[] = Inflector::humanize($name);
+						}
+					break;
 				}
+				
 				continue;
 			}
 			
