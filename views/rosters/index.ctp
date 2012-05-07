@@ -211,8 +211,8 @@ $this->Paginator->options(array(
 		} else {
 			echo $this->Html->link($name, '#', array('escape' => false));
 		}
-                $tooltipWrapper = ( $fullAccess || $viewProfilePermission );
-                if ( $tooltipWrapper ) : ?>
+                $tooltipWrapper = ($fullAccess || $viewProfilePermission);
+                if ($tooltipWrapper): ?>
                 &nbsp;<div class="core-tooltip"><?php
                 endif;
 			if ($fullAccess) {
@@ -222,7 +222,9 @@ $this->Paginator->options(array(
 			if ($viewProfilePermission) {
 				echo $this->Html->link('View Profile', array('controller' => 'profiles', 'action' => 'view', 'User' => $roster['User']['id']));
 			}
-                if ( $tooltipWrapper) echo '</div>';
+                if ($tooltipWrapper) {
+                    echo '</div>';
+                }
 			?>
 		</td>
 		<td><?php echo $this->Formatting->email($roster['Profile']['primary_email'], $roster['User']['id']); ?>&nbsp;</td>
