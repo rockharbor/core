@@ -206,7 +206,9 @@ class AppModel extends Model {
  */
 	function postOptions($data, $Model = null, $foreignKey = null) {
 		// get associated models
+		$first = false;
 		if (!$Model) {
+			$first = true;
 			$Model = $this;
 		}
 		$associated = $Model->getAssociated();
@@ -242,7 +244,7 @@ class AppModel extends Model {
 					$options['fields'][] = $Model->primaryKey;
 					$options['fields'][] = $Model->{$associated[$model]}[$model]['foreignKey'];
 				}
-				if ($Model->alias === $this->alias) {
+				if ($first) {
 					$options['contain'][$model] = $this->postOptions($field, $Model->{$model}, $foreignKey);
 					unset($options[$model]);
 				} else {

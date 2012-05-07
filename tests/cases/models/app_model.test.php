@@ -159,8 +159,6 @@ class AppModelTestCase extends CoreTestCase {
 	}
 
 	function testPostOptions() {
-		$this->loadFixtures('Campus');
-		
 		$data = array(
 			'User' => array(
 				'username' => 'jharris'
@@ -339,6 +337,46 @@ class AppModelTestCase extends CoreTestCase {
 			)
 		);
 		$results = $this->User->postOptions($data);
+		$this->assertEqual($results, $expected);
+		
+		$data = array(
+			'User' => array(
+				'Profile' => array(
+					'primary_email' => 1
+				),
+				'Roster' => array(
+					'RosterStatus' => array(
+						'name' => 1
+					)
+				)
+			)
+		);
+		$expected = array(
+			'fields' => array(
+				'id',
+				'user_id'
+			),
+			'contain' => array(
+				'User' => array(
+					'Profile' => array(
+						'fields' => array(
+							'user_id', 'primary_email'
+						)
+					),
+					'Roster' => array(
+						'fields' => array(
+							'user_id', 'id', 'roster_status_id'
+						),
+						'RosterStatus' => array(
+							'fields' => array(
+								'name'
+							)
+						)
+					)
+				)
+			)
+		);
+		$results = $this->User->Roster->postOptions($data);
 		$this->assertEqual($results, $expected);
 	}
 
