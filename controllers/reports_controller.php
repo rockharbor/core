@@ -302,9 +302,11 @@ class ReportsController extends AppController {
 			$this->RequestHandler->respondAs($this->data['Export']['type'], $options);
 			$aliases = $this->data['Export']['header_aliases'];
 			$squashed = $this->data['Export']['squashed_fields'];
+			$multiples = $this->data['Export']['multiple_records'];
 			unset($this->data['Export']['type']);
 			unset($this->data['Export']['header_aliases']);
 			unset($this->data['Export']['squashed_fields']);
+			unset($this->data['Export']['multiple_records']);
 			
 			$search = $this->MultiSelect->getSearch($uid);
 			$selected = $this->MultiSelect->getSelected($uid);
@@ -321,7 +323,7 @@ class ReportsController extends AppController {
 			$results = $this->{$model}->find('all', $options);
 			
 			$this->set('models', $this->data['Export']);
-			$this->set(compact('results', 'aliases', 'squashed'));
+			$this->set(compact('results', 'aliases', 'squashed', 'multiples'));
 		}
 		
 		$this->set(compact('uid', 'model'));
