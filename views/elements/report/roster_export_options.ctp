@@ -1,5 +1,8 @@
 <?php
 $this->Report->squash('User.Profile.work_phone', array('User.Profile.work_phone', 'User.Profile.work_phone_ext'), '%d %d', 'Work Phone');
+$this->Report->multiple('Answer.description', 'expand');
+$this->Report->alias(array('RosterStatus.name' => 'Roster Status'));
+$this->Report->alias(array('Answer.description' => 'Answer'));
 ?>
 <div class="clearfix">
 	<fieldset class="grid_6">
@@ -48,6 +51,21 @@ $this->Report->squash('User.Profile.work_phone', array('User.Profile.work_phone'
 			));
 			echo $this->Form->input('Export.User.Profile.work_phone', array(
 				'type' => 'checkbox'
+			));
+			?>
+		</div>
+	</fieldset>
+	<fieldset class="grid_6">
+		<legend>Roster Information</legend>
+		<div class="grid_3 omega">
+			<?php
+			echo $this->Form->input('Export.Answer.description', array(
+				'type' => 'checkbox',
+				'label' => 'Answers to Questions'
+			));
+			echo $this->Form->input('Export.RosterStatus.name', array(
+				'type' => 'checkbox',
+				'label' => 'Roster Status'
 			));
 			?>
 		</div>
