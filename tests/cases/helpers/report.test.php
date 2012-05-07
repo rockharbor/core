@@ -228,7 +228,7 @@ class ReportHelperTestCase extends CoreTestCase {
 		);
 		
 		$this->Report->set($data);
-		$this->Report->multiple('HouseholdMember.Household.HouseholdContact.Profile.primary_email');
+		$this->Report->multiple('HouseholdMember.Household.HouseholdContact.Profile.primary_email', 'expand');
 		
 		$results = $this->Report->createHeaders($headers);
 		$expected = array('Primary Email 1', 'Primary Email 2');
@@ -279,6 +279,53 @@ class ReportHelperTestCase extends CoreTestCase {
 		$this->Report->multiple('Answer.description', 'expand');
 		$results = $this->Report->createHeaders($headers);
 		$expected = array('Name', 'Description 1', 'Description 2');
+		$this->assertEqual($results, $expected);
+		
+		$headers = array(
+			'Roster' => array(
+				'RosterStatus' => array(
+					'name' => 1
+				)
+			),
+			'Answer' => array(
+				'description' => 1
+			)
+		);
+		$data = array(
+			array(
+				'Roster' => array(
+					'RosterStatus' => array(
+						'name' => 'Confirmed'
+					)
+				),
+				'Answer' => array(
+					array(
+						'description' => 'I only answered one question'
+					)
+				)
+			),
+			array(
+				'Roster' => array(
+					'RosterStatus' => array(
+						'name' => 'Pending'
+					)
+				),
+				'Answer' => array(
+					array(
+						'description' => 'Answer to question 1'
+					),
+					array(
+						'description' => 'Answer to question 2'
+					)
+				)
+			)
+		);
+		
+		$this->Report->reset();
+		$this->Report->set($data);
+		$this->Report->multiple('Answer.description', 'concat');
+		$results = $this->Report->createHeaders($headers);
+		$expected = array('Name', 'Description');
 		$this->assertEqual($results, $expected);
 	}
 
