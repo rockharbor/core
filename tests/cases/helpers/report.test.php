@@ -191,6 +191,49 @@ class ReportHelperTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($this->Report->_fields, $expected);
 	}
+	
+	function testCreateHeadersWithMultipleRecords() {
+		$headers = array(
+			'HouseholdMember' => array(
+				'Household' => array(
+					'HouseholdContact' => array(
+						'Profile' => array(
+							'primary_email' => 1
+						)
+					)
+				)
+			)
+		);
+		$data = array(
+			array(
+				'HouseholdMember' => array(
+					'Household' => array(
+						array(
+							'HouseholdContact' => array(
+								'Profile' => array(
+									'primary_email' => 'jharris@rockharbor.org'
+								)
+							)
+						),
+						array(
+							'HouseholdContact' => array(
+								'Profile' => array(
+									'primary_email' => 'contact@example.com'
+								)
+							)
+						)
+					)
+				)
+			)
+		);
+		
+		$this->Report->set($data);
+		$this->Report->multiple('HouseholdMember.Household.HouseholdContact.Profile.primary_email');
+		
+		$results = $this->Report->createHeaders($headers);
+		$expected = array('Primary Email 1', 'Primary Email 2');
+		$this->assertEqual($results, $expected);
+	}
 
 	function testGetResults() {
 		$headers = array(
@@ -249,6 +292,68 @@ class ReportHelperTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 	
+	function testGetResultsWithMultipleRecords() {
+		$headers = array(
+			'HouseholdMember' => array(
+				'Household' => array(
+					'HouseholdContact' => array(
+						'Profile' => array(
+							'primary_email' => 1
+						)
+					)
+				)
+			)
+		);
+		$data = array(
+			array(
+				'HouseholdMember' => array(
+					'Household' => array(
+						array(
+							'HouseholdContact' => array(
+								'Profile' => array(
+									'primary_email' => 'jharris@rockharbor.org'
+								)
+							)
+						),
+						array(
+							'HouseholdContact' => array(
+								'Profile' => array(
+									'primary_email' => 'contact@example.com'
+								)
+							)
+						)
+					)
+				)
+			)
+		);
+		$this->Report->set($data);
+		$this->Report->multiple('HouseholdMember.Household.HouseholdContact.Profile.primary_email');
+		$this->Report->createHeaders($headers);
+		$results = $this->Report->getResults();
+		$expected = array(
+			array('jharris@rockharbor.org')
+		);
+		$this->assertEqual($results, $expected);
+		
+		$this->Report->set($data);
+		$this->Report->multiple('HouseholdMember.Household.HouseholdContact.Profile.primary_email', 'concat');
+		$this->Report->createHeaders($headers);
+		$results = $this->Report->getResults();
+		$expected = array(
+			array('jharris@rockharbor.org, contact@example.com')
+		);
+		$this->assertEqual($results, $expected);
+		
+		$this->Report->set($data);
+		$this->Report->multiple('HouseholdMember.Household.HouseholdContact.Profile.primary_email', 'expand');
+		$this->Report->createHeaders($headers);
+		$results = $this->Report->getResults();
+		$expected = array(
+			array('jharris@rockharbor.org', 'contact@example.com')
+		);
+		$this->assertEqual($results, $expected);
+	}
+	 
 	function testSet() {
 		$data = array(
 			array(

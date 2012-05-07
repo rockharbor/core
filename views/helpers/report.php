@@ -61,6 +61,17 @@ class ReportHelper extends AppHelper {
 	var $_squashed = array();
 	
 /**
+ * Array of fields that can contain multiple records
+ * 
+ * This is useful for relationships that may return an undetermined amount of
+ * records, like hasMany records. When a "multiple" field is defined, the number
+ * of records is pulled from the 
+ * 
+ * @var array
+ */
+	var $_multiples = array();
+	
+/**
  * Extra helpers needed for this helper
  * 
  * @var array
@@ -76,6 +87,7 @@ class ReportHelper extends AppHelper {
 		$this->_fields = array();
 		$this->_aliases = array();
 		$this->_squashed = array();
+		$this->_multiple = array();
 	}
 
 /**
@@ -170,6 +182,19 @@ class ReportHelper extends AppHelper {
 		foreach ($flat as $path) {
 			$exp = explode('.', $path);
 			$name = $exp[count($exp)-1];
+			
+			if (array_key_exists($path, $this->_multiples) && !empty($this->data)) {
+				$max = Set::extract('/'.implode('/', $exp), $this->data[0]);
+				foreach ($max as $key => $col) {
+					if (array_key_exists($path, $this->_aliases)) {
+						$headers[] = $this->_aliases[$path].' '.($key+1);
+					} else {
+						$headers[] = Inflector::humanize($name).' '.($key+1);
+					}
+				}
+				continue;
+			}
+			
 			if (in_array($squashed, $this->_squashed)) {
 				$headers[] = $this->_squashed[$squashed]['alias'];
 			} elseif (array_key_exists($path, $this->_aliases)) {
@@ -223,6 +248,21 @@ class ReportHelper extends AppHelper {
 					$cleanrow[] = call_user_func_array('sprintf', $params);
 				} elseif (array_key_exists($path, $flat)) {
 					$cleanrow[] = $flat[$path];
+				} elseif (array_key_exists($path, $this->_multiples)) {
+					$records = Set::extract('/'.str_replace('.', '/', $path), $rawrow);
+					switch ($this->_multiples[$path]) {
+						case 'expand':
+							foreach ($records as $record) {
+								$cleanrow[] = $record;
+							}
+						break;
+						case 'concat':
+							$cleanrow[] = implode(', ', $records);
+						break;
+						default:
+							$cleanrow[] = $records[0];
+						break;
+					}
 				} else {
 					$cleanrow[] = null;
 				}
@@ -230,6 +270,37 @@ class ReportHelper extends AppHelper {
 			$clean[] = $cleanrow;
 		}
 		return $clean;
+	}
+
+/**
+ * Marks a field (i.e., User.Roster.Involvement.name) as having multiple records
+ * per single record
+ * 
+ * ### Column Expansion (`$expand`):
+ * - 'expand' : Count the number of records for a multi-record result and create
+ * columns for each record (checks the first record)
+ * - 'concat' : Concatenate the row values into a single column (comma-delimited)
+ * - 'none' : Just use the first record's value
+ * 
+ * @param string $path Field dot-path
+ * @param boolean $expand Column expansion type (see options above)
+ */
+	function multiple($path = null, $expand = 'none') {
+		$this->_multiples[$path] = $expand;
+	}
+	
+/**
+ * Gets or sets multiple record models. If setting, make sure they are set _before_
+ * `createHeaders()` is called to ensure they make it into the headers
+ * 
+ * @param string $str The models that can have multiple records
+ */
+	function multipleRecords($str = '') {
+		if (!empty($str)) {
+			$this->_multiples = unserialize($str);
+		} else {
+			return serialize($this->_multiples);
+		}
 	}
 	
 /**
@@ -273,6 +344,7 @@ class ReportHelper extends AppHelper {
 		$out = '';
 		$out .= $this->Form->hidden("$model.header_aliases", array('value' => $this->headerAliases()));
 		$out .= $this->Form->hidden("$model.squashed_fields", array('value' => $this->squashFields()));
+		$out .= $this->Form->hidden("$model.multiple_records", array('value' => $this->multipleRecords()));
 		foreach ($this->_squashed as $squashed) {
 			foreach ($squashed['fields'] as $field) {
 				$out .= $this->Form->hidden("$model.$field", array('value' => 1));
