@@ -81,7 +81,8 @@ class ReportHelperTestCase extends CoreTestCase {
 			'Username', 'Address'
 		);
 		
-		$results = $this->Report->getResults($data);
+		$this->Report->set($data);
+		$results = $this->Report->getResults();
 		$expected = array(
 			array('jeremy', '123 Main Somewhere, CA 12345'),
 			array('rickyrockharbor', '456 Main Anywhere, CA 78910'),
@@ -235,15 +236,49 @@ class ReportHelperTestCase extends CoreTestCase {
 			)
 		);
 		$this->assertEqual($this->Report->getResults(), array());
-		$this->assertEqual($this->Report->getResults($data), array());
+		$this->Report->set($data);
+		$this->assertEqual($this->Report->getResults(), array());
 
+		$this->Report->set($data);
 		$this->Report->createHeaders($headers);
-		$results = $this->Report->getResults($data);
+		$results = $this->Report->getResults();
 		$expected = array(
 			array('jeremy', 'Jeremy'),
 			array('rickyrockharbor', 'Ricky'),
 		);
 		$this->assertEqual($results, $expected);
+	}
+	
+	function testSet() {
+		$data = array(
+			array(
+				'User' => array(
+					'username' => 'jeremy',
+				),
+				'Address' => array(
+					'name' => 'Home',
+					'address_line_1' => '123 Main',
+					'city' => 'Somewhere',
+					'state' => 'CA',
+					'zip' => 12345
+				)
+			),
+			array(
+				'User' => array(
+					'username' => 'rickyrockharbor',
+				),
+				'Address' => array(
+					'name' => 'Home',
+					'address_line_1' => '456 Main',
+					'city' => 'Anywhere',
+					'state' => 'CA',
+					'zip' => 78910
+				)
+			)
+		);
+		
+		$this->Report->set($data);
+		$this->assertEqual($this->Report->data, $data);
 	}
 
 }

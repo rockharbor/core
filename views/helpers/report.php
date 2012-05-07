@@ -19,6 +19,13 @@
 class ReportHelper extends AppHelper {
 
 /**
+ * The active data
+ * 
+ * @var array 
+ */
+	var $data = array();
+	
+/**
  * List of field name aliases so printed headers are the same as field labels
  *
  * @var array
@@ -69,6 +76,15 @@ class ReportHelper extends AppHelper {
 		$this->_fields = array();
 		$this->_aliases = array();
 		$this->_squashed = array();
+	}
+
+/**
+ * Sets active data
+ * 
+ * @param array $data Cake find results
+ */
+	function set($data = array()) {
+		$this->data = $data;
 	}
 
 /**
@@ -168,16 +184,17 @@ class ReportHelper extends AppHelper {
 
 /**
  * Takes Cake data and pulls out just the information based on the headers. Useful
- * for HtmlHelper::tableCells() and similar functions
+ * for HtmlHelper::tableCells() and similar functions.
+ * 
+ * Uses `$this->data` to generate rows. See `ReportHelper::set()`
  *
  * Note: `ReportHelper::createHeaders()` needs to be run before this function so
  * `ReportHelper::getResults()` knows what data to pull
  *
- * @param array $raw Data as given by a Cake find
  * @return array An array of the data based on the headers
  */
-	function getResults($raw = array()) {
-		if (empty($this->_fields) || empty($raw)) {
+	function getResults() {
+		if (empty($this->_fields) || empty($this->data)) {
 			return array();
 		}
 		$squashed = array_keys($this->_squashed);
@@ -189,7 +206,7 @@ class ReportHelper extends AppHelper {
 		}
 		$paths = array_keys($paths);
 		$clean = array();
-		foreach ($raw as $rawrow) {
+		foreach ($this->data as $rawrow) {
 			$flat = Set::flatten($rawrow);
 			$cleanrow = array();
 			foreach ($paths as $path) {

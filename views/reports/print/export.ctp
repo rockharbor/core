@@ -1,4 +1,5 @@
 <?php
+$this->Report->set($results);
 $this->Report->squashFields($squashed);
 $this->Report->headerAliases($aliases);
 ?>
@@ -8,7 +9,7 @@ $this->Report->headerAliases($aliases);
 	</thead>
 	<tbody>
 		<?php
-		$rows = $this->Report->getResults($results);
+		$rows = $this->Report->getResults();
 		foreach ($rows as $row) {
 			echo $this->Html->tableCells($row);
 		}
