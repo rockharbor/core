@@ -211,8 +211,10 @@ $this->Paginator->options(array(
 		} else {
 			echo $this->Html->link($name, '#', array('escape' => false));
 		}
-		?>&nbsp;
-		<div class="core-tooltip"><?php
+                $tooltipWrapper = ($fullAccess || $viewProfilePermission);
+                if ($tooltipWrapper): ?>
+                &nbsp;<div class="core-tooltip"><?php
+                endif;
 			if ($fullAccess) {
 				echo $this->Html->link('Edit Info', array('controller' => 'rosters', 'action' => 'edit', $roster['Roster']['id'], 'Involvement' => $involvement['Involvement']['id'], 'User' => $roster['User']['id']), array('rel' => 'modal-roster'));
 				echo $this->Html->link('View Payments', array('controller' => 'payments', 'action' => 'index', 'User' => $roster['User']['id'], 'Involvement' => $involvement['Involvement']['id']), array('rel' => 'modal-none'));
@@ -220,7 +222,10 @@ $this->Paginator->options(array(
 			if ($viewProfilePermission) {
 				echo $this->Html->link('View Profile', array('controller' => 'profiles', 'action' => 'view', 'User' => $roster['User']['id']));
 			}
-			?></div>
+                if ($tooltipWrapper) {
+                    echo '</div>';
+                }
+			?>
 		</td>
 		<td><?php echo $this->Formatting->email($roster['Profile']['primary_email'], $roster['User']['id']); ?>&nbsp;</td>
 		<?php if ($fullAccess): ?>
