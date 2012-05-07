@@ -65,9 +65,19 @@ class ReportHelper extends AppHelper {
  * 
  * This is useful for relationships that may return an undetermined amount of
  * records, like hasMany records. When a "multiple" field is defined, the number
- * of records is pulled from the 
+ * of records is pulled from the highest count of that path in the records
+ *  
+ * {{{
+ * array(
+ *   path => array(
+ *     'max' => // maximum number of columns to expand to, or none for auto
+ *     'expand' => // type of column expansion to use
+ *   )
+ * );
+ * }}}
  * 
  * @var array
+ * @see ReportHelper::multiple()
  */
 	var $_multiples = array();
 	
@@ -178,18 +188,28 @@ class ReportHelper extends AppHelper {
 		$allpaths = array_keys(Set::flatten($data));
 		$flat = array_intersect($paths, $allpaths);
 		$headers = array();
-
+		
 		foreach ($flat as $path) {
 			$exp = explode('.', $path);
 			$name = $exp[count($exp)-1];
 			
 			if (array_key_exists($path, $this->_multiples) && !empty($this->data)) {
-				$max = Set::extract('/'.implode('/', $exp), $this->data[0]);
-				foreach ($max as $key => $col) {
+				if (is_null($this->_multiples[$path]['max'])) {
+					$max = 0;
+					foreach ($this->data as $record) {
+						$count = Set::extract('/'.implode('/', $exp), $record);
+						if (count($count) > $max) {
+							$max = count($count);
+						}
+					}
+					$this->_multiples[$path]['max'] = $max;
+				}
+				
+				for ($c = 0; $c < $this->_multiples[$path]['max']; $c++) {
 					if (array_key_exists($path, $this->_aliases)) {
-						$headers[] = $this->_aliases[$path].' '.($key+1);
+						$headers[] = $this->_aliases[$path].' '.($c+1);
 					} else {
-						$headers[] = Inflector::humanize($name).' '.($key+1);
+						$headers[] = Inflector::humanize($name).' '.($c+1);
 					}
 				}
 				continue;
@@ -250,10 +270,14 @@ class ReportHelper extends AppHelper {
 					$cleanrow[] = $flat[$path];
 				} elseif (array_key_exists($path, $this->_multiples)) {
 					$records = Set::extract('/'.str_replace('.', '/', $path), $rawrow);
-					switch ($this->_multiples[$path]) {
+					switch ($this->_multiples[$path]['expand']) {
 						case 'expand':
-							foreach ($records as $record) {
-								$cleanrow[] = $record;
+							for ($c = 0; $c < $this->_multiples[$path]['max']; $c++) {
+								if (isset($records[$c])) {
+									$cleanrow[] = $records[$c];
+								} else {
+									$cleanrow[] = null;
+								}
 							}
 						break;
 						case 'concat':
@@ -282,11 +306,16 @@ class ReportHelper extends AppHelper {
  * - 'concat' : Concatenate the row values into a single column (comma-delimited)
  * - 'none' : Just use the first record's value
  * 
+ * The `max` key is used internally when generating headers and row results.
+ * 
  * @param string $path Field dot-path
  * @param boolean $expand Column expansion type (see options above)
  */
 	function multiple($path = null, $expand = 'none') {
-		$this->_multiples[$path] = $expand;
+		$this->_multiples[$path] = array(
+			'expand' => $expand,
+			'max' => null
+		);
 	}
 	
 /**
