@@ -4,6 +4,20 @@ $this->Report->alias(array('Classification.name' => 'Classification'));
 $this->Report->alias(array('Group.name' => 'Permission Group'));
 $this->Report->squash('Address.name', array('ActiveAddress.address_line_1', 'ActiveAddress.address_line_2', 'ActiveAddress.city', 'ActiveAddress.state', 'ActiveAddress.zip'), '%s %s %s, %s %d', 'Address');
 $this->Report->squash('Profile.work_phone', array('Profile.work_phone', 'Profile.work_phone_ext'), '%d %d', 'Work Phone');
+$this->Report->multiple('HouseholdMember.Household.HouseholdContact.Profile.primary_email', 'expand');
+$this->Report->multiple('HouseholdMember.Household.HouseholdContact.Profile.alternate_email_1', 'expand');
+$this->Report->multiple('HouseholdMember.Household.HouseholdContact.Profile.alternate_email_2', 'expand');
+$this->Report->multiple('HouseholdMember.Household.HouseholdContact.Profile.cell_phone', 'expand');
+$this->Report->multiple('HouseholdMember.Household.HouseholdContact.Profile.home_phone', 'expand');
+$this->Report->multiple('HouseholdMember.Household.HouseholdContact.Profile.work_phone', 'expand');
+$this->Report->multiple('HouseholdMember.Household.HouseholdContact.Profile.name', 'expand');
+$this->Report->alias(array('HouseholdMember.Household.HouseholdContact.Profile.name' => 'Household Contact'));
+$this->Report->alias(array('HouseholdMember.Household.HouseholdContact.Profile.primary_email' => 'Household Contact Email'));
+$this->Report->alias(array('HouseholdMember.Household.HouseholdContact.Profile.alternate_email_1' => 'Household Contact Alternate Email'));
+$this->Report->alias(array('HouseholdMember.Household.HouseholdContact.Profile.alternate_email_2' => 'Household Contact Alternate Email'));
+$this->Report->alias(array('HouseholdMember.Household.HouseholdContact.Profile.cell_phone' => 'Household Contact Cell Phone'));
+$this->Report->alias(array('HouseholdMember.Household.HouseholdContact.Profile.home_phone' => 'Household Contact Home Phone'));
+$this->Report->alias(array('HouseholdMember.Household.HouseholdContact.Profile.work_phone' => 'Household Contact Work Phone'));
 ?>
 <div class="clearfix">
 	<fieldset class="grid_6">
@@ -55,9 +69,8 @@ $this->Report->squash('Profile.work_phone', array('Profile.work_phone', 'Profile
 			?>
 		</div>
 	</fieldset>
-	<fieldset class="grid_6">
+	<fieldset class="grid_3">
 		<legend>Contact Information</legend>
-		<div class="grid_3 alpha">
 			<?php
 			echo $this->Form->input('Export.Address.name', array(
 				'type' => 'checkbox',
@@ -82,9 +95,33 @@ $this->Report->squash('Profile.work_phone', array('Profile.work_phone', 'Profile
 				'type' => 'checkbox'
 			));
 			?>
-		</div>
-		<div class="grid_3 omega">
-			
-		</div>
+	</fieldset>
+	<fieldset class="grid_3">
+		<legend>Household Contact</legend>
+			<?php
+			echo $this->Form->input('Export.HouseholdMember.Household.HouseholdContact.Profile.name', array(
+				'type' => 'checkbox',
+				'label' => 'Name'
+			));
+			echo $this->Form->input('Export.HouseholdMember.Household.HouseholdContact.Profile.primary_email', array(
+				'type' => 'checkbox',
+				'label' => 'Email'
+			));
+			echo $this->Form->input('Export.HouseholdMember.Household.HouseholdContact.Profile.alternate_email_1', array(
+				'type' => 'checkbox'
+			));
+			echo $this->Form->input('Export.HouseholdMember.Household.HouseholdContact.Profile.alternate_email_2', array(
+				'type' => 'checkbox'
+			));
+			echo $this->Form->input('Export.HouseholdMember.Household.HouseholdContact.Profile.cell_phone', array(
+				'type' => 'checkbox'
+			));
+			echo $this->Form->input('Export.HouseholdMember.Household.HouseholdContact.Profile.home_phone', array(
+				'type' => 'checkbox'
+			));
+			echo $this->Form->input('Export.HouseholdMember.Household.HouseholdContact.Profile.work_phone', array(
+				'type' => 'checkbox'
+			));
+			?>
 	</fieldset>
 </div>

@@ -2,6 +2,7 @@
 $this->Report->set($results);
 $this->Report->squashFields($squashed);
 $this->Report->headerAliases($aliases);
+$this->Report->multipleRecords($multiples);
 ?>
 <table>
 	<thead>
