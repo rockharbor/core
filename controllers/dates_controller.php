@@ -92,36 +92,12 @@ class DatesController extends AppController {
 				$ids = explode(',', $this->passedArgs[$model]);
 				switch ($model) {
 					case 'User':
-						$leaderOf = $this->Date->Involvement->Roster->Involvement->Leader->find('all', array(
-							'fields' => array(
-								'Leader.id',
-								'Leader.model_id'				
-							),
-							'conditions' => array(
-								'Leader.model' => 'Involvement',
-								'Leader.user_id' => $ids
-							)
-						));
-						$leaderIds = Set::extract('/Leader/model_id', $leaderOf);
-						$memberOf = $this->Date->Involvement->Roster->find('all', array(
-							'fields' => array(
-								'Roster.id',
-								'Roster.involvement_id'
-							),
-							'conditions' => array(
-								'Roster.user_id' => $ids
-							)
-						));
-						$memberIds = Set::extract('/Roster/involvement_id', $memberOf);
-						$involvementIds = array_merge($involvementIds, $leaderIds, $memberIds);
-						if (empty($involvementIds)) {
-							$events = array();
-							$this->set($events);
-							return;
-						}
+						$conditions['and']['or']['and']['Leader.user_id'] = $ids;
+						$conditions['and']['or']['and']['Leader.model'] = 'Involvement';
+						$conditions['and']['or']['Roster.user_id'] = $ids;
 					break;
 					case 'Involvement':
-						$involvementIds = array_merge($involvementIds, $ids);
+						$conditions['and']['or']['Involvement.id'] = $ids;
 					break;
 					case 'Ministry':
 						$conditions['and']['or']['Involvement.ministry_id'] = $ids;
@@ -144,9 +120,7 @@ class DatesController extends AppController {
 		// currently we're grabbing this event. we want to grab all public and published
 		// events, then pair them with their dates
 		$events = array();
-		if (!empty($involvementIds)) {
-			$conditions['and']['or']['Involvement.id'] = $involvementIds;
-		}
+
 		$conditions['Involvement.active'] = true;
 		$conditions['Involvement.private'] = false;
 		$conditions[] = array(
@@ -162,6 +136,12 @@ class DatesController extends AppController {
 				), 
 				'Ministry' => array(
 					'fields' => array('campus_id')
+				),
+				'Leader' => array(
+					'fields' => array('user_id', 'model')
+				),
+				'Roster' => array(
+					'fields' => array('user_id')
 				)
 			),
 			'conditions' => $conditions,
