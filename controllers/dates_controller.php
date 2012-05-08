@@ -114,6 +114,11 @@ class DatesController extends AppController {
 						));
 						$memberIds = Set::extract('/Roster/involvement_id', $memberOf);
 						$involvementIds = array_merge($involvementIds, $leaderIds, $memberIds);
+						if (empty($involvementIds)) {
+							$events = array();
+							$this->set($events);
+							return;
+						}
 					break;
 					case 'Involvement':
 						$involvementIds = array_merge($involvementIds, $ids);
