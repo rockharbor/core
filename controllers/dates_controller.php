@@ -92,7 +92,8 @@ class DatesController extends AppController {
 				$ids = explode(',', $this->passedArgs[$model]);
 				switch ($model) {
 					case 'User':
-						$conditions['and']['or']['Leader.user_id'] = $ids;
+						$conditions['and']['or']['and']['Leader.user_id'] = $ids;
+						$conditions['and']['or']['and']['Leader.model'] = 'Involvement';
 						$conditions['and']['or']['Roster.user_id'] = $ids;
 					break;
 					case 'Involvement':
@@ -137,7 +138,7 @@ class DatesController extends AppController {
 					'fields' => array('campus_id')
 				),
 				'Leader' => array(
-					'fields' => array('user_id')
+					'fields' => array('user_id', 'model')
 				),
 				'Roster' => array(
 					'fields' => array('user_id')
