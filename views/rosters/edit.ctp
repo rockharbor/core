@@ -97,7 +97,8 @@ if (!empty($involvement['Question'])) {
 		
 		if ($involvement['Involvement']['take_payment']) {
 			echo $this->Form->input('Roster.payment_option_id', array(
-				'empty' => 'No payment'
+				'empty' => 'No Payment Option',
+				'label' => "Payment Option<br/>Changing a user's payment option will affect their balance"
 			));
 		}
 	?>
