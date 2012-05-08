@@ -59,7 +59,7 @@ class AttachmentsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 		
 		$result = $vars['path'];
-		$expected = '/'.addslashes(MEDIA_TRANSFER).'/';
+		$expected = '#'.addslashes(MEDIA_TRANSFER).'#';
 		$this->assertPattern($expected, $result);
 	}
 	
