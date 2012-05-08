@@ -697,17 +697,7 @@ class User extends AppModel {
 		unset($data['User']['password']);
 		unset($data['User']['confirm_password']);
 
-		// remove blank
-		$callback = function(&$item) use (&$callback) {
-			if (is_array($item)) {
-				$item = array_filter($item, $callback);
-				return !empty($item);
-			}
-			if (!empty($item)) {
-				return $item;
-			}
-		};
-		$data = array_filter($data, $callback);
+		$data = array_filter_recursive($data);
 		$options = (array)$this->postOptions($data) + array('contain' => array());
 		$link = $options['contain'];
 		

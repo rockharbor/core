@@ -110,4 +110,29 @@ if (!empty($plugins)) {
 function br2nl($input) {
 	return preg_replace('/<br(\s+)?\/?>/i', PHP_EOL, $input);
 }
-?>
+
+/**
+ * Recusively runs `array_filter` on an array, removing empty keys
+ * 
+ * @param array $data
+ * @return array 
+ */
+function array_filter_recursive($data = array()) {
+	return array_filter($data, '_array_filter_recursive_callback');
+}
+
+/**
+ * Callback for `array_filter_recursive
+ * `
+ * @param mixed $item
+ * @return mixed 
+ */
+function _array_filter_recursive_callback(&$item) {
+	if (is_array($item)) {
+		$item = array_filter($item, '_array_filter_recursive_callback');
+		return !empty($item);
+	}
+	if (!empty($item)) {
+		return true;
+	}
+}
