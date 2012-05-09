@@ -410,7 +410,13 @@ class SearchesController extends AppController {
 				'order' => 'Profile.first_name ASC, Profile.last_name ASC'
 			);
 
-			$this->MultiSelect->saveSearch($this->paginate);
+			// minimal containment needed for multiselect actions
+			$search = $this->paginate;
+			unset($search['contain']);
+			$search['link'] = array('Profile' => array(
+				'fields' => array('id')
+			));
+			$this->MultiSelect->saveSearch($search);
 		}
 
 		$results = $this->FilterPagination->paginate();
