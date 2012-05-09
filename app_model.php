@@ -210,6 +210,7 @@ class AppModel extends Model {
 		if (!$Model) {
 			$first = true;
 			$Model = $this;
+			$data = array_filter_recursive($data);
 		}
 		$associated = $Model->getAssociated();
 
