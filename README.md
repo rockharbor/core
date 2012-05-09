@@ -1,6 +1,6 @@
 # CORE
 
-CORE is in-depth church member and event management software.
+CORE is in-depth church member and event management software built on [CakePHP][1].
 
 ## Features
 
@@ -15,15 +15,7 @@ Documentation is located in the [CORE documentation repository][3].
 
 ## Maintenance
 
-CORE uses the rapid development framework [CakePHP][1] and is
-currently maintained by ROCKHARBOR church in Costa Mesa, CA.
-
-ROCKHARBOR - the church maintaining CORE
-[http://www.rockharbor.org][2]
-
-CORE is currently in a major refactoring process after being developed
-originally in CakePHP 1.1 and not maintained, after which it will be released
-as open source.
+CORE is regularly maintained by [ROCKHARBOR][2] church in Costa Mesa, CA.
 
 # License 
 
