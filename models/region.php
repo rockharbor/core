@@ -22,6 +22,13 @@ class Region extends AppModel {
  * @var string
  */
 	var $name = 'Region';
+	
+/**
+ * Default order
+ *
+ * @var string
+ */
+	var $order = ':ALIAS:.name ASC';
 
 /**
  * Validation rules

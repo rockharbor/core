@@ -24,6 +24,13 @@ class JobCategory extends AppModel {
 	var $name = 'JobCategory';
 
 /**
+ * Default order
+ *
+ * @var string
+ */	
+	var $order = ':ALIAS:.name ASC';
+
+/**
  * Validation rules
  *
  * @var array

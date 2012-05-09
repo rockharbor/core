@@ -1,6 +1,6 @@
 <?php
 /**
- * Involvement type class.
+ * Classification model class.
  *
  * @copyright     Copyright 2010, *ROCK*HARBOR
  * @link          http://rockharbor.org *ROCK*HARBOR
@@ -9,38 +9,36 @@
  */
 
 /**
- * InvolvementType model
+ * Classification model
  *
  * @package       core
  * @subpackage    core.app.models
- * @todo Move into Involvement model as a variable instead
  */
-class InvolvementType extends AppModel {
+class Classification extends AppModel {
 
 /**
  * The name of the model
  *
  * @var string
  */
-	var $name = 'InvolvementType';
-	
+	var $name = 'Classification';
+
 /**
  * Default order
  *
  * @var string
- */
+ */	
 	var $order = ':ALIAS:.name ASC';
 
 /**
- * HasMany association link
+ * Validation rules
  *
  * @var array
  */
-	var $hasMany = array(
-		'Involvement' => array(
-			'className' => 'Involvement',
-			'foreignKey' => 'involvement_type_id',
-			'dependent' => false
+	var $validate = array(
+		'name' => array(
+			'rule' => 'notempty',
+			'message' => 'Please fill in the required field.'
 		)
 	);
 

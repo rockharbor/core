@@ -24,6 +24,13 @@ class School extends AppModel {
  * @var string
  */
 	var $name = 'School';
+	
+/**
+ * Default order
+ *
+ * @var string
+ */
+	var $order = ':ALIAS:.name ASC';
 
 /**
  * Types of schools

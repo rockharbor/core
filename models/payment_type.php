@@ -22,6 +22,13 @@ class PaymentType extends AppModel {
  * @var string
  */
 	var $name = 'PaymentType';
+	
+/**
+ * Default order
+ *
+ * @var string
+ */
+	var $order = ':ALIAS:.name ASC';
 
 /**
  * HasMany association link
