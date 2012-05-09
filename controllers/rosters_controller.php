@@ -33,14 +33,18 @@ class RostersController extends AppController {
 			'startEmpty' => false
 		),
 		'AuthorizeDotNet',
-		'MultiSelect.MultiSelect');
+		'MultiSelect.MultiSelect'
+	);
 
 /**
  * Extra helpers for this controller
  *
  * @var array
  */
-	var $helpers = array('Formatting', 'MultiSelect.MultiSelect');
+	var $helpers = array(
+		'Formatting', 
+		'MultiSelect.MultiSelect'
+	);
 	
 /**
  * Model::beforeFilter() callback
