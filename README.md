@@ -4,9 +4,14 @@ CORE is in-depth church member and event management software built on [CakePHP][
 
 ## Features
 
-* User management, including household grouping, full profiles, address history
+* User management, including household grouping, full profiles, address history,
+group-level comments
 * Campus and ministry management
-* Involvement management, including recurring dates, rosters
+* Involvement management, including recurring dates, rosters, payments
+* Robust permission system, allowing ministry and involvement opportunity leaders
+to manage their teams and events
+* Calendar feeds split by campus, ministry, user
+* User, payment, roster and ministry reports
 * Much more
 
 ## Documentation
