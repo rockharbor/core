@@ -230,6 +230,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 				'type' => 'csv',
 				'header_aliases' => '',
 				'squashed_fields' => '',
+				'multiple_records' => '',
 				'Ministry' => array(
 					'name' => 1
 				)
@@ -258,6 +259,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 				'type' => 'print',
 				'header_aliases' => '',
 				'squashed_fields' => '',
+				'multiple_records' => '',
 				'Ministry' => array(
 					'name' => 1
 				)
@@ -302,6 +304,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 				'type' => 'print',
 				'header_aliases' => '',
 				'squashed_fields' => '',
+				'multiple_records' => '',
 				'User' => array(
 					'Profile' => array(
 						'name' => 1,
