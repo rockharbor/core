@@ -17,35 +17,23 @@ class ClassificationRecords extends Records {
 	var $records = array(
 		array(
 			'id' => 1,
-			'name' => 'Weekend Attender At Fullerton'
+			'name' => 'Weekend Attender'
 		),
 		array(
 			'id' => 2,
-			'name' => 'Weekend Attender At South County'
-		),
-		array(
-			'id' => 3,
-			'name' => 'Weekend Attender At Central'
-		),
-		array(
-			'id' => 4,
 			'name' => 'I Listen To The Podcasts'
 		),
 		array(
-			'id' => 5,
-			'name' => 'I\'m Curious About ROCKHARBOR'
+			'id' => 3,
+			'name' => 'I\'m Curious'
 		),
 		array(
-			'id' => 6,
+			'id' => 4,
 			'name' => 'I\'m A Friend But Don\'t Attend'
 		),
 		array(
-			'id' => 7,
-			'name' => 'Weekend Attender At Huntington Beach'
-		),
-		array(
-			'id' => 8,
-			'name' => 'Weekend Attender At Orange'
+			'id' => 5,
+			'name' => 'I\'m A Visitor'
 		)
 	);
 

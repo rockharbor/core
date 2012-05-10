@@ -17,7 +17,7 @@ class CampusRecords extends Records {
 	var $records = array(
 		array(
 			'id' => 1,
-			'name' => 'Main',
+			'name' => 'Main Campus',
 			'description' => 'The main campus.',
 			'active' => true
 		)

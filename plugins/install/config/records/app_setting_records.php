@@ -18,15 +18,15 @@ class AppSettingRecords extends Records {
 		array(
 			'id' => 1,
 			'name' => 'general.church_name',
-			'description' => 'The name of your church. Wrap it in a span tag with your own class for easy customization.',
-			'value' => '<span class=\"churchname\"><b>ROCK</b>HARBOR</span>',
+			'description' => 'The name of your church.',
+			'value' => 'Church',
 			'type' => 'html'
 		),
 		array(
 			'id' => 2,
 			'name' => 'general.church_site_url',
 			'description' => 'The church website url.',
-			'value' => 'http://www.rockharbor.org',
+			'value' => 'http://example.com',
 			'type' => 'string'
 		),
 		array(
@@ -54,7 +54,7 @@ class AppSettingRecords extends Records {
 			'id' => 6,
 			'name' => 'notifications.site_email',
 			'description' => 'The system email address. Used as a fallback for any non-customized email addresses.',
-			'value' => 'core@rockharbor.org',
+			'value' => 'core@example.com',
 			'type' => 'string'
 		),
 		array(
@@ -68,7 +68,7 @@ class AppSettingRecords extends Records {
 			'id' => 8,
 			'name' => 'development.debug_email',
 			'description' => 'The email to send debug info, including test emails.',
-			'value' => 'jharris@rockharbor.org',
+			'value' => 'debug@example.com',
 			'type' => 'string'
 		),
 		array(
@@ -82,14 +82,14 @@ class AppSettingRecords extends Records {
 			'id' => 10,
 			'name' => 'notifications.credit_card_email',
 			'description' => 'The email address to send credit card payment receipts.',
-			'value' => 'jharris@rockharbor.org',
+			'value' => 'payments@example.com',
 			'type' => 'string'
 		),
 		array(
 			'id' => 11,
 			'name' => 'notifications.email_subject_prefix',
 			'description' => 'A prefix to put in front of the subject of each email sent through the app.',
-			'value' => 'CORE: ',
+			'value' => '[CORE] ',
 			'type' => 'string'
 		),
 		array(
@@ -110,7 +110,7 @@ class AppSettingRecords extends Records {
 			'id' => 14,
 			'name' => 'notifications.support_email',
 			'description' => 'The address to send support email.',
-			'value' => 'jharris@rockharbor.org',
+			'value' => 'support@example.com',
 			'type' => 'string'
 		),
 		array(
