@@ -203,6 +203,27 @@ class InstallSchema extends CakeSchema {
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'involvement_key' => array('column' => 'involvement_id', 'unique' => 0), 'passed_key' => array('column' => array('end_date', 'end_time', 'permanent', 'involvement_id', 'exemption'), 'unique' => 0)),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
+	var $errors = array(
+		'id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
+		'level' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),
+		'file' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 255),
+		'line' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 4),
+		'class' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),
+		'function' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),
+		'args' => array('type' => 'text', 'null' => true, 'default' => NULL),
+		'type' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 8),
+		'message' => array('type' => 'text', 'null' => true, 'default' => NULL),
+		'trace' => array('type' => 'text', 'null' => true, 'default' => NULL),
+		'request_method' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 6),
+		'request_plugin' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),
+		'request_controller' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),
+		'request_action' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),
+		'request_ext' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 8),
+		'request_parameters' => array('type' => 'text', 'null' => true, 'default' => NULL),
+		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
+		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
+	);
 	var $groups = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 45, 'key' => 'unique'),
