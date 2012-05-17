@@ -45,17 +45,24 @@ class NotifierTestCase extends CoreTestCase {
 		$this->Notifier->QueueEmail->expectOnce('__smtp');
 		
 		// sends now
+		$countBefore = $this->Notifier->QueueEmail->Model->find('count');
 		$this->Controller->set('ministry', 1);
 		$this->assertTrue($this->Notifier->notify(array(
 			'to' => 1,
 			'template' => 'ministries_edit',
 			'queue' => false
 		)), 'email');
+		$countAfter = $this->Notifier->QueueEmail->Model->find('count');
+		$this->assertEqual($countBefore, $countAfter);
+		
 		// queues
+		$countBefore = $this->Notifier->QueueEmail->Model->find('count');
 		$this->assertTrue($this->Notifier->notify(array(
 			'to' => 1,
 			'template' => 'ministries_edit'
 		)), 'email');
+		$countAfter = $this->Notifier->QueueEmail->Model->find('count');
+		$this->assertEqual($countAfter-$countBefore, 1);
 	}
 	
 	function testNormalizeUser() {

@@ -213,14 +213,16 @@ class NotifierComponent extends Object {
 			return false;
 		}
 		
-		// save the ids of the users this was to and from
-		$this->QueueEmail->Model->save(array(
-			'Queue' => array(
-				'id' => $this->QueueEmail->Model->id,
-				'to_id' => $user['User']['id'],
-				'from_id' => $from['User']['id']
-			)
-		), array('validate' => false));
+		if ($queue && $this->QueueEmail->Model->id) {
+			// save the ids of the users this was to and from
+			$this->QueueEmail->Model->save(array(
+				'Queue' => array(
+					'id' => $this->QueueEmail->Model->id,
+					'to_id' => $user['User']['id'],
+					'from_id' => $from['User']['id']
+				)
+			), array('validate' => false));
+		}
 
 		return true;
 	}
