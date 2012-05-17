@@ -1,1 +1,0 @@
-A <?php echo $type; ?> request has been submitted for your approval

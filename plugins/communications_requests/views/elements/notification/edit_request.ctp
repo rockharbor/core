@@ -1,1 +1,0 @@
-Your <strong><?php echo $type; ?></strong> request's status has been changed to <strong><?php echo $status; ?></strong>.
