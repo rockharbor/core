@@ -856,7 +856,7 @@ class User extends AppModel {
  * @todo Add more nouns and verbs
  */
 	function generatePassword() {
-		$nouns = array('jesus', 'core', 'rockharbor', 'php', 'cake', 'pie');
+		$nouns = array('jesus', 'core', 'church', 'php', 'cake', 'pie');
 		// 'is' is added in the middle		
 		$verbs = array('awesome', 'swell', 'hilarious', 'thebest', 'socool');
 		
