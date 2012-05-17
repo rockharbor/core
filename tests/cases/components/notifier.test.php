@@ -40,6 +40,94 @@ class NotifierTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 	
+	function testEmailConfigStandard() {
+		$config = new EmailConfig();
+		$config->default = array(
+			'transport' => 'Mail',
+			'queue' => false
+		);
+		$config->debug = array(
+			'transport' => 'Mail'
+		);
+		$this->Notifier->Config = $config;
+		
+		Configure::write('debug', 0);
+		$countBefore = $this->Notifier->QueueEmail->Model->find('count');
+		$this->Notifier->QueueEmail->expectNever('__smtp');
+		$this->Notifier->QueueEmail->setReturnValueAt(0, '__mail', true);
+		$this->Controller->set('ministry', 1);
+		$this->assertTrue($this->Notifier->notify(array(
+			'to' => 1,
+			'template' => 'ministries_edit'
+		)), 'email');
+		$countAfter = $this->Notifier->QueueEmail->Model->find('count');
+		$this->assertEqual($countBefore, $countAfter);
+		Configure::write('debug', 2);
+		
+		$countBefore = $this->Notifier->QueueEmail->Model->find('count');
+		$this->assertTrue($this->Notifier->notify(array(
+			'to' => 1,
+			'template' => 'ministries_edit'
+		)), 'email');
+		$countAfter = $this->Notifier->QueueEmail->Model->find('count');
+		$this->assertEqual($countAfter-$countBefore, 1);
+	}
+	
+	function testEmailConfigSmtp() {
+		$config = new EmailConfig();
+		$config->debug = array(
+			'transport' => 'Smtp',
+			'host' => 'smtp.example.com'
+		);
+		$this->Notifier->Config = $config;
+		
+		$this->Notifier->QueueEmail->expectNever('__mail');
+		$this->Notifier->QueueEmail->setReturnValueAt(0, '__smtp', true);
+		$this->Controller->set('ministry', 1);
+		$this->assertTrue($this->Notifier->notify(array(
+			'to' => 1,
+			'template' => 'ministries_edit'
+		)), 'email');
+		$countAfter = $this->Notifier->QueueEmail->Model->find('count');
+		
+		$expected = array(
+			'host' => 'smtp.example.com',
+			'port' => 25,
+			'timeout' => 30
+		);
+		$results = $this->Notifier->QueueEmail->smtpOptions;
+		$this->assertEqual($results, $expected);
+		
+		$config = new EmailConfig();
+		$config->debug = array(
+			'transport' => 'Smtp',
+			'host' => 'smtp2.example.com',
+			'timeout' => 42,
+			'username' => 'test',
+			'password' => 'pass',
+			'some' => 'value'
+		);
+		$this->Notifier->Config = $config;
+		
+		$this->Notifier->QueueEmail->setReturnValueAt(1, '__smtp', true);
+		$this->Controller->set('ministry', 1);
+		$this->assertTrue($this->Notifier->notify(array(
+			'to' => 1,
+			'template' => 'ministries_edit'
+		)), 'email');
+		$countAfter = $this->Notifier->QueueEmail->Model->find('count');
+		
+		$expected = array(
+			'host' => 'smtp2.example.com',
+			'port' => 25,
+			'timeout' => 42,
+			'username' => 'test',
+			'password' => 'pass'
+		);
+		$results = $this->Notifier->QueueEmail->smtpOptions;
+		$this->assertEqual($results, $expected);
+	}
+	
 	function testNoQueue() {
 		$this->Notifier->QueueEmail->setReturnValue('__smtp', true);
 		$this->Notifier->QueueEmail->expectOnce('__smtp');

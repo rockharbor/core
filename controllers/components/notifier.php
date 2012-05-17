@@ -12,6 +12,7 @@
  * Includes
  */
 App::import('View', 'view');
+require_once CONFIGS . 'email.php';
 
 /**
  * Notifier Component
@@ -33,17 +34,6 @@ class NotifierComponent extends Object {
 	var $components = array('QueueEmail.QueueEmail');
 
 /**
- * Smtp settings
- *
- * @var array
- */
-	var $smtp = array(
-		'port'=>'25',
-		'timeout'=>'30',
-		'host' => 'mail.rockharbor.org'
-	);
-
-/**
  * Whether or not the component is enabled
  *
  * @var boolean
@@ -58,6 +48,7 @@ class NotifierComponent extends Object {
  * @access public
  */
 	function initialize(&$controller, $settings = array()) {
+		$this->Config = new EmailConfig();
 		$this->Controller =& $controller;
 		$this->User = ClassRegistry::init('User');
 		$this->Notification = ClassRegistry::init('Notification');
@@ -177,6 +168,8 @@ class NotifierComponent extends Object {
  * @access protected
  */
 	function _send($user, $options = array()) {
+		$config = Configure::read('debug') == 0 ? $this->Config->default : $this->Config->debug;
+		
 		$this->QueueEmail->reset();
 		$default = array(
 			'from' => null,
@@ -187,15 +180,25 @@ class NotifierComponent extends Object {
 			'attachments' => array(),
 			'queue' => true
 		);
-		$options = array_merge($default, $options);
+		$options = array_merge($default, $options, $config);
 		extract($options);
 
 		// set system defaults if no 'from' user
 		$from = $this->_normalizeUser($from);
 	
 		$this->Controller->set('toUser', $user);
-		$this->QueueEmail->smtpOptions = $this->smtp;
-		$this->QueueEmail->delivery = 'smtp';
+		
+		if ($config['transport'] == 'Smtp') {
+			$default = array(
+				'host' => 'localhost',
+				'port' => 25,
+				'timeout' => 30
+			);
+			$config = array_merge($default, $config);
+			$smtp = array_intersect_key($config, array('host' => null, 'port' => null, 'timeout' => null, 'username' => null, 'password' => null));
+			$this->QueueEmail->smtpOptions = $smtp;
+		}
+		$this->QueueEmail->delivery = strtolower($config['transport']);
 		$this->QueueEmail->sendAs = 'html';
 		$this->QueueEmail->layout = $layout;
 		$this->QueueEmail->template = $template;
