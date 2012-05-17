@@ -37,6 +37,30 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		return parent::testAction($url, $options);
 	}
 	
+	function testBugCompose() {
+		$this->loadSettings();
+		
+		$this->su();
+		$this->su(array(
+			'User' => array(
+				'active' => 1
+			),
+			'Profile' => array(
+				'child' => 0
+			)
+		), false);
+		
+		$vars = $this->testAction('/sys_emails/bug_compose');
+		$results = Set::extract('/Profile/primary_email', $vars['toUsers']);
+		$expected = array(Core::read('development.debug_email'));
+		$this->assertEqual($results, $expected);
+		
+		$this->assertIsA($this->SysEmails->data['SysEmail']['body'], 'string');
+		$this->assertIsA($this->SysEmails->data['SysEmail']['subject'], 'string');
+		
+		$this->unloadSettings();
+	}
+	
 	function testLeader() {
 		$this->loadFixtures('Leader');
 		

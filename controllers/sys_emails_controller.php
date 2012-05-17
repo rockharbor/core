@@ -78,8 +78,6 @@ class SysEmailsController extends AppController {
  */ 
 	function bug_compose() {
 		$this->set('title_for_layout', 'Submit a bug report');
-		$User = ClassRegistry::init('User');
-		$User->contain(array('Profile'));
 		
 		if (!empty($this->data)) {
 			$this->SysEmail->set($this->data);
@@ -87,8 +85,7 @@ class SysEmailsController extends AppController {
 			// send it!
 			if ($this->SysEmail->validates() && $this->Notifier->notify(array(
 				'from' => $this->activeUser['User']['id'], 
-				'to' => Configure::read('development.debug_email'), 
-				'queue' => false,
+				'to' => Core::read('development.debug_email'), 
 				'subject' => $this->data['SysEmail']['subject'],
 				'body' => $this->data['SysEmail']['body']
 			), 'email')) {
@@ -99,7 +96,12 @@ class SysEmailsController extends AppController {
 		}
 		
 		$this->set('visitHistory', array_reverse($this->Session->read('CoreDebugPanels.visitHistory')));
-		$this->set('toUsers', array($jeremy));
+		$this->set('toUsers', array(array(
+			'Profile' => array(
+				'name' => Core::read('development.debug_email'),
+				'primary_email' => Core::read('development.debug_email')
+			)
+		)));
 		$this->set('fromUser', $this->activeUser);
 		$this->set('cacheuid', false);
 		$this->set('showAttachments', false);
