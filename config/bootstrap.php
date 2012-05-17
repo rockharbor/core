@@ -81,9 +81,9 @@ Configure::write('Core.mediafilters.default', array(
 ));
 
 /**
- * Referee plugin constant to define path
+ * Referee plugin constant to define dynamic path
  */
-define('LISTENER_PATH', APP . 'libs' . DS . 'listeners');
+define('EMAIL_LISTENER_PATH', APP . 'libs' . DS . 'listeners' . DS . 'email.php');
 
 /**
  * Set QueueEmail to save the emails in the db 

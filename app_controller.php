@@ -64,21 +64,11 @@ class AppController extends Controller {
 			)
 		),
 		'Referee.Whistle' => array(
-			'paths' => array(
-				LISTENER_PATH
-			),
 			'listeners' => array(
-				'DbLog',
-				'Screen',
-				'Email' => array(
-					'mailerConfig' => array(
-						'to' => 'jharris@rockharbor.org',
-						'smtpOptions' => array(
-							'port'=>'25',
-							'timeout'=>'30',
-							'host' => 'mail.rockharbor.org'
-						)
-					)
+				'Db',
+				'EmailListener' => array(
+					'class' => 'EmailListener',
+					'file' => EMAIL_LISTENER_PATH
 				)
 			)
 		),
