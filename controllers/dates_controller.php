@@ -85,6 +85,7 @@ class DatesController extends AppController {
 				
 		// check for filtering and add extra conditions
 		$conditions = array();
+		$link = array('Date');
 		$involvementIds = array();
 		foreach (array('User', 'Ministry', 'Involvement', 'Campus') as $model) {
 			if (isset($this->passedArgs[$model])) {
@@ -95,6 +96,8 @@ class DatesController extends AppController {
 						$conditions['and']['or']['and']['Leader.user_id'] = $ids;
 						$conditions['and']['or']['and']['Leader.model'] = 'Involvement';
 						$conditions['and']['or']['Roster.user_id'] = $ids;
+						$link[] = 'Roster';
+						$link[] = 'Leader';
 					break;
 					case 'Involvement':
 						$conditions['and']['or']['Involvement.id'] = $ids;
@@ -104,6 +107,7 @@ class DatesController extends AppController {
 					break;
 					case 'Campus':
 						$conditions['and']['or']['Ministry.campus_id'] = $ids;
+						$link[] = 'Ministry';
 					break;
 				}			
 			}
@@ -117,10 +121,6 @@ class DatesController extends AppController {
 			$options['end'] = $this->params['url']['end'];
 		}
 		
-		// currently we're grabbing this event. we want to grab all public and published
-		// events, then pair them with their dates
-		$events = array();
-
 		$conditions['Involvement.active'] = true;
 		$conditions['Involvement.private'] = false;
 		$conditions[] = array(
@@ -130,24 +130,12 @@ class DatesController extends AppController {
 		// get all involvements and their dates within the range
 		$involvements = $this->Date->Involvement->find('all', array(
 			'fields' => array('id', 'name'),
-			'link' => array(
-				'Date' => array(
-					'fields' => array('id', 'start_date')
-				), 
-				'Ministry' => array(
-					'fields' => array('campus_id')
-				),
-				'Leader' => array(
-					'fields' => array('user_id', 'model')
-				),
-				'Roster' => array(
-					'fields' => array('user_id')
-				)
-			),
+			'link' => $link,
 			'conditions' => $conditions,
 			'group' => 'Involvement.id'
 		));
-
+		
+		$events = array();
 		foreach ($involvements as $involvement) {
 			$involvement_dates = $this->Date->generateDates($involvement['Involvement']['id'], $options);
 
