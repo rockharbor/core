@@ -13,8 +13,10 @@ CORE.initLogin = function() {
  * Loads a phrase to show above the logo
  */
 CORE.loadSillyPhrase = function() {
+	var models = ['Involvement', 'Ministry'];
+	var model = models[Math.floor(Math.random()*models.length)];
 	$.ajax({
-		url: '/pages/phrase.json',
+		url: '/pages/phrase/'+model+'.json',
 		success: function(data) {
 			CORE.showSillyPhrase(data.phrase);
 			setTimeout('CORE.hideSillyPhrase()', 7000);

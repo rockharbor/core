@@ -35,13 +35,29 @@ class PagesControllerTestCase extends CoreTestCase {
 	}
 
 	function testPhrase() {
-		$vars = $this->testAction('/pages/phrase/1.json', array(
+		$vars = $this->testAction('/pages/phrase/Involvement.json', array(
 			'return' => 'vars'
 		));
-		$this->assertTrue(in_array($vars['model'], array('Involvement', 'Ministry')));
+		$this->assertEqual($vars['model'], 'Involvement');
 		$Model = ClassRegistry::init($vars['model']);
 		$this->assertTrue($Model->exists($vars['result'][$vars['model']]['id']));
 		$this->assertTrue($vars['result'][$vars['model']]['active']);
+		$this->assertFalse($vars['result'][$vars['model']]['private']);
+		$this->assertFalse($vars['result'][$vars['model']]['previous']);
+		
+		$vars = $this->testAction('/pages/phrase/Ministry.json', array(
+			'return' => 'vars'
+		));
+		$this->assertEqual($vars['model'], 'Ministry');
+		$Model = ClassRegistry::init($vars['model']);
+		$this->assertTrue($Model->exists($vars['result'][$vars['model']]['id']));
+		$this->assertTrue($vars['result'][$vars['model']]['active']);
+		$this->assertFalse($vars['result'][$vars['model']]['private']);
+		
+		$this->assertNoErrors();
+		$vars = $this->testAction('/pages/phrase.json', array(
+			'return' => 'vars'
+		));
 	}
 
 }

@@ -90,23 +90,24 @@ class PagesController extends AppController {
 /**
  * Generates a phrase
  *
- * @param boolean $skipRand Skip randomness between phrase/model phrase, and just
- *		do a model phrase
+ * @param string $model Name of the model to use. If empty, a generic
+ *		phrase will be used instead
  */
-	function phrase($skipRand = 0) {
-		Configure::write('debug', 0);
-		$rand = rand(0,1);
+	function phrase($model = null) {
 		$result = null;
-		$model = null;
 
-		if ($rand || $skipRand) {
+		if (!empty($model)) {
 			$rand = rand(0,1);
-			$model = $rand ? 'Ministry' : 'Involvement';
 			$Model = ClassRegistry::init($model);
+			$conditions = array(
+				$model.'.active' => true,
+				$model.'.private' => false
+			);
+			if ($model == 'Involvement') {
+				$conditions[$model.'.previous'] = false;
+			}
 			$models = $Model->find('list', array(
-				'conditions' => array(
-					$model.'.active' => true
-				)
+				'conditions' => $conditions
 			));
 			$ids = array_keys($models);
 			$randModelId = $ids[rand(0,count($ids)-1)];
