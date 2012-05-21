@@ -10,7 +10,6 @@ class PagesControllerTestCase extends CoreTestCase {
 		parent::startTest($method);
 		Router::parseExtensions('json');
 		
-		$this->loadFixtures('Ministry', 'Involvement');
 		$this->Pages =& new TestPagesController();
 		$this->Pages->__construct();
 		$this->Pages->constructClasses();
@@ -35,6 +34,8 @@ class PagesControllerTestCase extends CoreTestCase {
 	}
 
 	function testPhrase() {
+		$this->loadFixtures('Ministry', 'Involvement');
+		
 		$vars = $this->testAction('/pages/phrase/Involvement.json', array(
 			'return' => 'vars'
 		));
@@ -58,6 +59,14 @@ class PagesControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/pages/phrase.json', array(
 			'return' => 'vars'
 		));
+	}
+	
+	function testPhraseNoRecords() {
+		$this->assertNoErrors();
+		$vars = $this->testAction('/pages/phrase/Involvement.json', array(
+			'return' => 'vars'
+		));
+		$this->assertEqual($vars['model'], null);
 	}
 
 }

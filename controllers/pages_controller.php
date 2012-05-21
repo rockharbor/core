@@ -110,8 +110,12 @@ class PagesController extends AppController {
 				'conditions' => $conditions
 			));
 			$ids = array_keys($models);
-			$randModelId = $ids[rand(0,count($ids)-1)];
-			$result = $Model->read(null, $randModelId);
+			if (!empty($ids)) {
+				$randModelId = $ids[rand(0,count($ids)-1)];
+				$result = $Model->read(null, $randModelId);
+			} else {
+				$model = null;
+			}
 		}
 		$this->set(compact('result', 'model'));
 	}
