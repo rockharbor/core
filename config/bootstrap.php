@@ -118,7 +118,8 @@ function br2nl($input) {
  * @return array 
  */
 function array_filter_recursive($data = array()) {
-	return array_filter($data, '_array_filter_recursive_callback');
+	$item = $data + array();
+	return array_filter($item, '_array_filter_recursive_callback');
 }
 
 /**

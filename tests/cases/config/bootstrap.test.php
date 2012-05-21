@@ -47,6 +47,8 @@ TEXT;
 			)
 		);
 		$this->assertEqual($result, $expected);
+		
+		$this->assertEqual($array['User']['Profile']['user_id'], null);
 	}
 	
 }
