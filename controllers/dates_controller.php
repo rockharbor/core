@@ -53,7 +53,7 @@ class DatesController extends AppController {
 
 /**
  * Displays a calendar
- *
+ * 
  * ### Params:
  *
  *	- `start` The start timestamp
@@ -71,8 +71,14 @@ class DatesController extends AppController {
  * }}}
  * The above would pull all involvements for users 1, 2 and 3, include all 
  * involvements for ministry 1 and include the two involvements 5 and 6.
+ * 
+ * For BC purposes, the 'User' parameter acts differently than the other two in
+ * that it forces the calendar to return *only* events that user is involved in,
+ * while specifying 'Ministry' or 'Involvement' will include the specified ids
+ * in addition to the original search.
  *
  * @param string $size A mini or full-size calendar
+ * @todo Make all parameters act the same (may require special action for User calendar)
  */ 
 	function calendar($size = 'mini') {
 		$this->set(compact('size'));
@@ -85,7 +91,13 @@ class DatesController extends AppController {
 				
 		// check for filtering and add extra conditions
 		$conditions = array();
-		$link = array('Date');
+		$link = array(
+			'Date' => array(
+				'fields' => array(
+					'id'
+				)
+			)
+		);
 		$involvementIds = array();
 		foreach (array('User', 'Ministry', 'Involvement', 'Campus') as $model) {
 			if (isset($this->passedArgs[$model])) {
@@ -93,20 +105,34 @@ class DatesController extends AppController {
 				$ids = explode(',', $this->passedArgs[$model]);
 				switch ($model) {
 					case 'User':
-						$conditions['and']['or']['and']['Leader.user_id'] = $ids;
-						$conditions['and']['or']['and']['Leader.model'] = 'Involvement';
-						$conditions['and']['or']['Roster.user_id'] = $ids;
-						$link[] = 'Roster';
-						$link[] = 'Leader';
+						// get involvements user is involved with first
+						$rosters = $this->Date->Involvement->Roster->find('all', array(
+							'conditions' => array(
+								'Roster.user_id' => $ids
+							)
+						));
+						$leaders = $this->Date->Involvement->Leader->find('all', array(
+							'conditions' => array(
+								'Leader.user_id' => $ids,
+								'Leader.model' => 'Involvement'
+							)
+						));
+						$rosterIds = Set::extract('/Roster/involvement_id', $rosters);
+						$leaderIds = Set::extract('/Leader/model_id', $leaders);
+						$involvementIds = array_merge($involvementIds, $rosterIds, $leaderIds);
+						// if user has none, make sure no involvements show
+						if (empty($involvementIds)) {
+							$involvementIds = array(0);
+						}
 					break;
 					case 'Involvement':
-						$conditions['and']['or']['Involvement.id'] = $ids;
+						$conditions['or']['Involvement.id'] = $ids;
 					break;
 					case 'Ministry':
-						$conditions['and']['or']['Involvement.ministry_id'] = $ids;
+						$conditions['or']['Involvement.ministry_id'] = $ids;
 					break;
 					case 'Campus':
-						$conditions['and']['or']['Ministry.campus_id'] = $ids;
+						$conditions['or']['Ministry.campus_id'] = $ids;
 						$link[] = 'Ministry';
 					break;
 				}			
@@ -121,11 +147,12 @@ class DatesController extends AppController {
 			$options['end'] = $this->params['url']['end'];
 		}
 		
+		if (!empty($involvementIds)) {
+			$conditions['Involvement.id'] = array_unique($involvementIds);
+		}
 		$conditions['Involvement.active'] = true;
 		$conditions['Involvement.private'] = false;
-		$conditions[] = array(
-			'Date.start_date <>' => null
-		);
+		$conditions['Date.start_date <>'] = null;
 		
 		// get all involvements and their dates within the range
 		$involvements = $this->Date->Involvement->find('all', array(

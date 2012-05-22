@@ -91,10 +91,10 @@ class DatesControllerTestCase extends CoreTestCase {
 			)
 		));
 		$results = Set::extract('/Involvement/id', $vars['events']);
-		$expected = array(1, 5);
+		$expected = array();
 		$this->assertEqual($results, $expected);
 		
-		$vars = $this->testAction('/dates/calendar/Ministry:4/User:5/full.json', array(
+		$vars = $this->testAction('/dates/calendar/User:5/Involvement:5/full.json', array(
 			'return' => 'vars',
 			'method' => 'get',
 			'data' => array(
@@ -103,7 +103,7 @@ class DatesControllerTestCase extends CoreTestCase {
 			)
 		));
 		$results = Set::extract('/Involvement/id', $vars['events']);
-		$expected = array(1, 5);
+		$expected = array(5);
 		$this->assertEqual($results, $expected);
 		
 		$vars = $this->testAction('/dates/calendar/Involvement:1,4/full.json', array(
