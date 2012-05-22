@@ -39,9 +39,7 @@ class SearchesController extends AppController {
 		'FilterPagination', 
 		'MultiSelect.MultiSelect',
 		'Security' => array(
-			'disabledFields' => array(
-				'Profile.age'
-			)
+			'enabled' => false
 		)
 	);
 
@@ -74,10 +72,15 @@ class SearchesController extends AppController {
 		if (empty($this->data['Search']['Campus']['id'])) {
 			$this->data['Search']['Campus']['id'] = array_keys($campuses);
 		}
-
+		
+		if (isset($this->data['Search']['q'])) {
+			$this->params['url']['q'] = $this->data['Search']['q'];
+			unset($this->data['Search']['q']);
+		}
+		
 		$_default = array(
 			'Search' => array(
-				'query' => '',
+				'query' => $this->params['url']['q'],
 				'private' => $private,
 				'active' => !$inactive,
 				'previous' => 0
@@ -109,7 +112,7 @@ class SearchesController extends AppController {
 			$restrictModel = false;
 		}
 
-		if (!empty($this->data)) {
+		if (!empty($this->data['Search']['query'])) {
 			$query = explode(' ', $search['query']);
 			foreach ($query as &$word) {
 				$word = '%'.$word.'%';

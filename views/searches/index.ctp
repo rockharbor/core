@@ -1,6 +1,6 @@
 <?php
 if (!empty($this->data['Search']['query'])) {
-	echo $this->Html->tag('span', 'Results for "'.$this->data['Search']['query'].'"', array('class' => 'breadcrumb'));
+	echo $this->Html->tag('span', 'Results for "'.$this->params['url']['q'].'"', array('class' => 'breadcrumb'));
 }
 ?>
 <h1>Search</h1>
@@ -10,7 +10,7 @@ if (!empty($this->data['Search']['query'])) {
 	<?php
 		echo $this->Form->create('Search', array(
 			'class' => 'core-filter-form update-content',
-			'url' => $this->passedArgs,
+			'url' => $this->here.'?q='.$this->params['url']['q'],
 			'id' => 'SearchFilterForm'
 		));
 
@@ -46,9 +46,6 @@ if (!empty($this->data['Search']['query'])) {
 				'id' => 'SearchFilterPrivate'
 			));
 		}
-		echo $this->Form->hidden('query', array(
-			'id' => 'SearchFilterQuery'
-		));
 		echo $this->Js->submit('Filter');
 		echo $this->Form->end();
 	?>
