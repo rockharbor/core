@@ -39,6 +39,7 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 	
 	function testBugCompose() {
 		$this->loadSettings();
+		$_SERVER['HTTP_USER_AGENT'] = 'cli';
 		
 		$this->su();
 		$this->su(array(
