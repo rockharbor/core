@@ -259,9 +259,6 @@ class SearchesControllerTestCase extends CoreTestCase {
 
 	function testMinistry() {
 		$search = array(
-			'Search' => array(
-				'operator' => 'AND'
-			),
 			'Ministry' => array(
 				'name' => 'web'
 			)
@@ -274,6 +271,38 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$expected = array(
 			'Child Web', 'Web'
 		);
+		$this->assertEqual($results, $expected);
+		
+		$search = array(
+			'Ministry' => array(
+				'name' => '',
+				'private' => 0
+			)
+		);
+		$vars = $this->testAction('/searches/ministry', array(
+			'data' => $search
+		));
+		$results = Set::extract('/Ministry/id', $vars['results']);
+		sort($results);
+		$expected = array(1, 2, 3, 4, 6);
+		$this->assertEqual($results, $expected);
+		
+		// as a regular user
+		$this->su(array(
+			'Group' => array('id' => 8)
+		));
+		
+		$search = array(
+			'Ministry' => array(
+				'name' => ''
+			)
+		);
+		$vars = $this->testAction('/searches/ministry', array(
+			'data' => $search
+		));
+		$results = Set::extract('/Ministry/id', $vars['results']);
+		sort($results);
+		$expected = array(1, 2);
 		$this->assertEqual($results, $expected);
 	}
 

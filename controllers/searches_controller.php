@@ -354,6 +354,8 @@ class SearchesController extends AppController {
  * Performs an advanced search on Ministries
  */
 	function ministry() {
+		$private = $this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id']);
+		$inactive = $private;
 		$results = array();
 
 		// at the very least, we want:
@@ -361,24 +363,34 @@ class SearchesController extends AppController {
 		$this->paginate = compact('contain');
 
 		if (!empty($this->data)) {
-			$operator = $this->data['Search']['operator'];
-			unset($this->data['Search']);
-
-			// remove blanks
-			$this->data = array_map('Set::filter', $this->data);
-
-			$options = (array)$this->Ministry->postOptions($this->data) + array('contain' => array());
+			$_default = array(
+				'Ministry' => array(
+					'private' => $private ? 1 : 0,
+					'inactive' => $inactive ? 1 : 0
+				)
+			);
+			$search = Set::merge($_default, $this->data);
+			
+			if ($search['Ministry']['private']) {
+				$search['Ministry']['private'] = array(0,1);
+			}
+			if ($search['Ministry']['inactive']) {
+				$search['Ministry']['active'] = array(0,1);
+			} else {
+				$search['Ministry']['active'] = 1;
+			}
+			unset($search['Ministry']['inactive']);
+			
+			$options = (array)$this->Ministry->postOptions($search) + array('contain' => array());
 			$contain = array_merge_recursive($contain, $options['contain']);
-			$conditions = $this->postConditions($this->data, 'LIKE', $operator);
-
-			$this->data['Search']['operator'] = $operator;
+			$conditions = $this->postConditions($search, 'LIKE');
 
 			$this->paginate = compact('conditions', 'contain', 'limit');
 		}
 
 		$results = $this->FilterPagination->paginate('Ministry');
 		$campuses = $this->Ministry->Campus->find('list');
-		$this->set(compact('results', 'campuses'));
+		$this->set(compact('results', 'campuses', 'inactive', 'private'));
 
 		// pagination request
 		if (!empty($this->data) || isset($this->params['named']['page'])) {

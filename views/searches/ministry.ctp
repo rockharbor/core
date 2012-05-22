@@ -7,18 +7,19 @@
 	<fieldset>
  		<legend>Search Ministries</legend>
 	<?php
-		echo $this->Form->input('Search.operator', array(
-			'type' => 'select',
-			'options' => array(
-				'AND' => 'Match all',
-				'OR' => 'Match any'
-			)
-		));
 		echo $this->Form->input('Ministry.name');
 		echo $this->Form->input('Ministry.description');
 		echo $this->Form->input('Ministry.campus_id', array(
 			'empty' => true
 		));
+		if ($inactive) {
+			echo $this->Form->input('Ministry.inactive', array(
+				'type' => 'checkbox'
+			));
+		}
+		if ($private) {
+			echo $this->Form->input('Ministry.private');
+		}
 	?>
 	</fieldset>
 <?php
