@@ -143,7 +143,7 @@ class InvolvementsController extends AppController {
 		$id = $this->passedArgs['Involvement'];
 		
 		if (!$id) {
-			$this->cakeError('error404');
+			return $this->cakeError('error404');
 		}
 		
 		$this->Involvement->contain(array(
@@ -193,8 +193,12 @@ class InvolvementsController extends AppController {
 			|| $this->Involvement->Ministry->Campus->isManager($this->activeUser['User']['id'], $involvement['Ministry']['campus_id'])
 			|| $this->isAuthorized('rosters/index', array('Involvement' => $id));
 		
-		if ($involvement['Involvement']['private'] && !$this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id']) && !$inRoster) {
-			$this->cakeError('privateItem', array('type' => 'Involvement'));
+		if ($involvement['Involvement']['private'] 
+			&& !$this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id']) 
+			&& !$inRoster 
+			&& !$this->Involvement->isLeader($this->activeUser['User']['id'], $id)
+		) {
+			return $this->cakeError('privateItem', array('type' => 'Involvement'));
 		}
 
 		$householdMembers = $this->Involvement->Roster->User->HouseholdMember->Household->getMemberIds($this->activeUser['User']['id']);

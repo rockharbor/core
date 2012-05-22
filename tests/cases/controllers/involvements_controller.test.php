@@ -99,6 +99,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/involvements/view/Involvement:3');
 		$this->assertFalse($vars['inRoster']);
 		$this->assertTrue($vars['canSeeRoster']);
+		$this->assertTrue(isset($vars['full']));
 		
 		// private, not registered, but campus leader
 		$this->Involvements->setAuthorized('/rosters/index', false);
@@ -109,6 +110,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/involvements/view/Involvement:5');
 		$this->assertFalse($vars['inRoster']);
 		$this->assertTrue($vars['canSeeRoster']);
+		$this->assertTrue(isset($vars['full']));
 		
 		// private, not registered, but ministry leader
 		$Leader = ClassRegistry::init('Leader');
@@ -124,6 +126,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/involvements/view/Involvement:1');
 		$this->assertFalse($vars['inRoster']);
 		$this->assertTrue($vars['canSeeRoster']);
+		$this->assertTrue(isset($vars['full']));
 		
 		// private, not registered, but involvement leader
 		$Leader->save(array(
@@ -138,6 +141,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/involvements/view/Involvement:3');
 		$this->assertFalse($vars['inRoster']);
 		$this->assertTrue($vars['canSeeRoster']);
+		$this->assertTrue(isset($vars['full']));
 		
 		// private, but registered, but not confirmed
 		$Roster = ClassRegistry::init('Roster');
@@ -154,6 +158,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/involvements/view/Involvement:3');
 		$this->assertTrue($vars['inRoster']);
 		$this->assertFalse($vars['canSeeRoster']);
+		$this->assertTrue(isset($vars['full']));
 		
 		// private, but registered and confirmed
 		$Roster = ClassRegistry::init('Roster');
@@ -168,6 +173,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/involvements/view/Involvement:3');
 		$this->assertTrue($vars['inRoster']);
 		$this->assertTrue($vars['canSeeRoster']);
+		$this->assertTrue(isset($vars['full']));
 		
 		// private, but registered and confirmed but roster invisible
 		$this->Involvements->expectAt(0, 'cakeError', array('privateItem', '*'));
@@ -180,6 +186,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/involvements/view/Involvement:3');
 		$this->assertTrue($vars['inRoster']);
 		$this->assertFalse($vars['canSeeRoster']);
+		$this->assertTrue(isset($vars['full']));
 		
 		// private, not registered
 		$this->Involvements->expectAt(1, 'cakeError', array('privateItem', '*'));
@@ -188,6 +195,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 			'Group' => array('id' => 8)
 		));
 		$vars = $this->testAction('/involvements/view/Involvement:3');
+		$this->assertFalse(isset($vars['full']));
 		
 		$this->unloadSettings();
 	}
