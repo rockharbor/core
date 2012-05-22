@@ -95,7 +95,6 @@ if (!empty($this->data['Search']['query'])) {
 		echo '</div>';
 	}
 	?>
-	<?php echo $this->Permission->link('Advanced Search', array('action' => 'user'), array('class' => 'button')); ?>
 	<hr />
 <?php }
 
@@ -119,7 +118,6 @@ foreach ($ministries as $ministry):
 endforeach;
 ?>
 	</div>
-	<?php echo $this->Permission->link('Advanced Search', array('action' => 'ministry'), array('class' => 'button')); ?>
 	<hr />
 <?php }
 
@@ -135,7 +133,6 @@ if (!empty($involvements)) { ?>
 	endforeach;
 	?>
 	</div>
-	<?php echo $this->Permission->link('Advanced Search', array('action' => 'involvement'), array('class' => 'button')); ?>
 	<hr />
 <?php }
 	
@@ -146,4 +143,20 @@ if (empty($users) && empty($ministries) && empty($involvements)) { ?>
 <?php
 echo $this->element('search');
 } ?>
+	<ul class="core-admin-tabs">
+		<?php 
+		$link = $this->Permission->link('User Search', array('action' => 'user'), array('class' => 'button')); 
+		if ($link) {
+			echo $this->Html->tag('li', $link);
+		}
+		$link = $this->Permission->link('Ministry Search', array('action' => 'ministry'), array('class' => 'button'));
+		if ($link) {
+			echo $this->Html->tag('li', $link);
+		}
+		$link = $this->Permission->link('Involvement Search', array('action' => 'involvement'), array('class' => 'button'));
+		if ($link) {
+			echo $this->Html->tag('li', $link);
+		}
+		?>
+	</ul>
 </div>
