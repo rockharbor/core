@@ -213,11 +213,13 @@ class CoreTestCase extends CakeTestCase {
 		$options = array_merge($default, $options);
 
 		// set up the controller based on the url
+		parse_str(parse_url($url, PHP_URL_QUERY), $queryParams);
 		$urlParams = Router::parse($url);
+		if (!isset($urlParams['url'])) {
+			$urlParams['url'] = array();
+		}
+		$urlParams['url'] = array_merge($urlParams['url'], $queryParams);
 		if (strtolower($options['method']) == 'get') {
-			if (!isset($urlParams['url'])) {
-				$urlParams['url'] = array();
-			}
 			$urlParams['url'] = array_merge($options['data'], $urlParams['url']);
 		} else {
 			$Controller->data = $options['data'];

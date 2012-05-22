@@ -181,6 +181,20 @@ TEXT;
 		));
 		$this->assertEqual($vars['query'], 'This is my query');
 	}
+	
+	function testQueryStringParams() {
+		$vars = $this->CoreTestCase->testAction('/dummies/dummy_action/pass?with=querystring');
+		$this->assertEqual($this->Dummies->params['url']['with'], 'querystring');
+		
+		$vars = $this->CoreTestCase->testAction('/dummies/get_me?with=querystring', array(
+			'method' => 'get',
+			'data' => array(
+				'query' => 'This is my query'
+			)
+		));
+		$this->assertEqual($this->Dummies->params['url']['with'], 'querystring');
+		$this->assertEqual($this->Dummies->params['url']['query'], 'This is my query');
+	}
 
 	function testExtension() {
 		Router::parseExtensions('csv');
