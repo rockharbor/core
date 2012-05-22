@@ -8,18 +8,19 @@
 		<fieldset class="grid_5 alpha">
 			<legend>Search Involvement Opportunities</legend>
 		<?php
-			echo $this->Form->input('Search.operator', array(
-				'type' => 'select',
-				'options' => array(
-					'AND' => 'Match all',
-					'OR' => 'Match any'
-				)
-			));
 			echo $this->Form->input('Involvement.name');
 			echo $this->Form->input('Involvement.description');
-			echo $this->Form->hidden('Involvement.private', array('value' => 0));
-			echo $this->Form->hidden('Involvement.active', array('value' => 1));
-			echo $this->Form->hidden('Involvement.previous', array('value' => 0));
+			if ($inactive) {
+				echo $this->Form->input('Involvement.inactive', array(
+					'type' => 'checkbox'
+				));
+				echo $this->Form->input('Involvement.previous', array(
+					'type' => 'checkbox'
+				));
+			}
+			if ($private) {
+				echo $this->Form->input('Involvement.private');
+			}
 		?>
 		</fieldset>
 		<fieldset class="grid_5 omega">

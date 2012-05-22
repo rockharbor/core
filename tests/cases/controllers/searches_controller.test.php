@@ -176,9 +176,6 @@ class SearchesControllerTestCase extends CoreTestCase {
 
 	function testInvolvement() {
 		$search = array(
-			'Search' => array(
-				'operator' => 'AND'
-			),
 			'Involvement' => array(
 				'name' => 'core'
 			)
@@ -194,11 +191,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 
 		$search = array(
-			'Search' => array(
-				'operator' => 'OR'
-			),
 			'Involvement' => array(
-				'name' => 'climbing',
 				'description' => 'core'
 			)
 		);
@@ -207,8 +200,59 @@ class SearchesControllerTestCase extends CoreTestCase {
 		));
 		$results = Set::extract('/Involvement/name', $vars['results']);
 		$expected = array(
-			'Team CORE',
-			'Rock Climbing'
+			'Team CORE'
+		);
+		$this->assertEqual($results, $expected);
+		
+		$search = array(
+			'Involvement' => array(
+				'name' => 'core',
+				'inactive' => 1,
+				'private' => 0
+			)
+		);
+		$vars = $this->testAction('/searches/involvement', array(
+			'data' => $search
+		));
+		$results = Set::extract('/Involvement/name', $vars['results']);
+		$expected = array(
+			'CORE 2.0 testing'
+		);
+		$this->assertEqual($results, $expected);
+		
+		$search = array(
+			'Involvement' => array(
+				'name' => 'core',
+				'inactive' => 1,
+				'private' => 1
+			)
+		);
+		$vars = $this->testAction('/searches/involvement', array(
+			'data' => $search
+		));
+		$results = Set::extract('/Involvement/name', $vars['results']);
+		$expected = array(
+			'CORE 2.0 testing',
+			'Team CORE'
+		);
+		$this->assertEqual($results, $expected);
+		
+		// as a regular user
+		$this->su(array(
+			'Group' => array('id' => 8)
+		));
+		
+		$search = array(
+			'Involvement' => array(
+				'name' => 'core'
+			)
+		);
+		$vars = $this->testAction('/searches/involvement', array(
+			'data' => $search
+		));
+		$results = Set::extract('/Involvement/name', $vars['results']);
+		$expected = array(
+			'CORE 2.0 testing'
 		);
 		$this->assertEqual($results, $expected);
 	}

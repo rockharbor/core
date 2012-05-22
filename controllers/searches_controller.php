@@ -294,6 +294,8 @@ class SearchesController extends AppController {
  * Performs an advanced search on Involvements
  */
 	function involvement() {
+		$private = $this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id']);
+		$inactive = $private;
 		$results = array();
 
 		// at the very least, we want:
@@ -306,24 +308,38 @@ class SearchesController extends AppController {
 		$this->paginate = compact('link');
 
 		if (!empty($this->data)) {
-			$operator = $this->data['Search']['operator'];
-			unset($this->data['Search']);
-
-			// remove blanks
-			$this->data = array_map('Set::filter', $this->data);
-
-			$options = (array)$this->Involvement->postOptions($this->data) + array('contain' => array());;
+			$_default = array(
+				'Involvement' => array(
+					'private' => $private ? 1 : 0,
+					'inactive' => $inactive ? 1 : 0,
+					'previous' => 0
+				)
+			);
+			$search = Set::merge($_default, $this->data);
+			
+			if ($search['Involvement']['private']) {
+				$search['Involvement']['private'] = array(0,1);
+			}
+			if ($search['Involvement']['inactive']) {
+				$search['Involvement']['active'] = array(0,1);
+			} else {
+				$search['Involvement']['active'] = 1;
+			}
+			unset($search['Involvement']['inactive']);
+			if ($search['Involvement']['previous']) {
+				unset($search['Involvement']['previous']);
+			}
+			
+			$options = (array)$this->Involvement->postOptions($search) + array('contain' => array());
 			$link = array_merge_recursive($link, $options['contain']);
-			$conditions = $this->postConditions($this->data, 'LIKE', $operator);
-
-			$this->data['Search']['operator'] = $operator;
+			$conditions = $this->postConditions($search, 'LIKE');
 
 			$this->paginate = compact('conditions', 'link', 'limit');
 		}
 
 		$results = $this->FilterPagination->paginate('Involvement');
 		$involvementTypes = $this->Involvement->InvolvementType->find('list');
-		$this->set(compact('results', 'involvementTypes'));
+		$this->set(compact('results', 'involvementTypes', 'private', 'inactive'));
 
 		// pagination request
 		if (!empty($this->data) || isset($this->params['named']['page'])) {
