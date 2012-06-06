@@ -1,5 +1,6 @@
 <?php
 $this->Report->squash('User.Profile.work_phone', array('User.Profile.work_phone', 'User.Profile.work_phone_ext'), '%d %d', 'Work Phone');
+$this->Report->squash('User.Address.name', array('User.ActiveAddress.address_line_1', 'User.ActiveAddress.address_line_2', 'User.ActiveAddress.city', 'User.ActiveAddress.state', 'User.ActiveAddress.zip'), '%s %s %s, %s %d', 'Address');
 $this->Report->multiple('Answer.description', 'expand');
 $this->Report->alias(array('RosterStatus.name' => 'Roster Status'));
 $this->Report->alias(array('Answer.description' => 'Answer'));
@@ -34,6 +35,10 @@ $this->Report->alias(array('Answer.description' => 'Answer'));
 		<legend>Contact Information</legend>
 		<div class="grid_3 omega">
 			<?php
+			echo $this->Form->input('Export.User.Address.name', array(
+				'type' => 'checkbox',
+				'label' => 'Address'
+			));
 			echo $this->Form->input('Export.User.Profile.primary_email', array(
 				'type' => 'checkbox'
 			));
