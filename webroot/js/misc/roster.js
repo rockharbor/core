@@ -14,7 +14,7 @@ CORE_roster.init = function() {
 	$('#RosterAddressId').change();
 	// by default, click the first available tab under answers
 	$('#questions_tab a').bind('click', function() {
-		$('#questions ul.tabs li:visible:first a').click()
+		$('#question_tabs > ul:not(.admin) li:visible:first a').click()
 	});
 	$('input[id^=Child]').bind('change', CORE_roster.updateAmount);
 	$('#DefaultPayLater').bind('change', function() {
