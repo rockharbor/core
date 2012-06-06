@@ -12,7 +12,7 @@ $this->Paginator->options(array(
 		<?php
 		echo $this->Html->tag('strong', $this->Html->link($alert['Alert']['name'], array('action' => 'view', $alert['Alert']['id']), array('rel' => 'modal-none')));
 		echo '<br />';
-		echo $this->Html->tag('p', $this->Text->truncate($alert['Alert']['description'], 500));
+		echo $this->Html->tag('p', $this->Text->truncate($alert['Alert']['description'], 500, array('html' => true)));
 		?>
 		<div class="core-icon-container">
 			<?php
