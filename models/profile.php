@@ -101,7 +101,7 @@ class Profile extends AppModel {
 		'primary_email' => array(
 			'email' => array(
 				'rule' => 'email',
-				'message' => 'Pleae enter a valid email address.',
+				'message' => 'Please enter a valid email address.',
 				'required' => false,
 				'allowEmpty' => true
 			),
