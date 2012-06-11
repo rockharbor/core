@@ -315,12 +315,9 @@ CORE.tabs = function(id, taboptions, options) {
 			}
 			
 			$('#'+options.next).bind('click', function(event, ui) {
-				var btn = $(this);
-				var length = tabbed.tabs('length');
 				var selected = tabbed.tabs('option', 'selected');
-				if (selected+1 < length) {
-					tabbed.tabs('select', selected+1);
-				}
+				// select next visible tab
+				tabbed.children('ul').children('li:nth-child('+(selected+1)+')').nextAll(':visible').eq(0).children('a').click();
 			});
 		}
 		
@@ -331,13 +328,9 @@ CORE.tabs = function(id, taboptions, options) {
 			}
 			
 			$('#'+options.previous).bind('click', function(event, ui) {
-				var btn = $(this);
-				var length = tabbed.tabs('length');
 				var selected = tabbed.tabs('option', 'selected');
-				
-				if (selected > 0) {
-					tabbed.tabs('select', selected-1);
-				}
+				// select previous visible tab
+				tabbed.children('ul').children('li:nth-child('+(selected+1)+')').prevAll(':visible').eq(0).children('a').click();
 			});
 		}
 		
@@ -357,9 +350,12 @@ CORE.tabs = function(id, taboptions, options) {
 				var next = $('#'+options.next);
 				var previous = $('#'+options.previous);
 				var submit = $('#'+options.submit);
-				var length = tabbed.tabs('length');
 				var selected = ui.index;
-				if (selected+1 == length) {
+				
+				var nextTab = tabbed.children('ul').children('li:nth-child('+(selected+1)+')').nextAll(':visible').eq(0);
+				var prevTab = tabbed.children('ul').children('li:nth-child('+(selected+1)+')').prevAll(':visible').eq(0);
+				
+				if (nextTab.length == 0) {
 					next.hide();
 					submit.show();
 					previous.show();
@@ -370,7 +366,7 @@ CORE.tabs = function(id, taboptions, options) {
 					}
 					previous.show();
 					
-					if (selected == 0) {
+					if (prevTab.length == 0) {
 						previous.hide();
 					}
 				}
