@@ -94,8 +94,7 @@ class PaymentsController extends AppController {
 		$this->paginate = array(
 			'conditions' => array(
 				'or' => array(
-					'Payment.user_id' => $userId,
-					'Payment.payment_placed_by' => $userId
+					'Payment.user_id' => $userId
 				)
 			),
 			'contain' => array(

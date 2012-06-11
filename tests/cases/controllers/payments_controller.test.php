@@ -46,7 +46,7 @@ class PaymentsControllerTestCase extends CoreTestCase {
 			'return' => 'vars'
 		));
 		$results = Set::extract('/Payment/id', $vars['payments']);
-		$expected = array(1, 2);
+		$expected = array(1);
 		$this->assertEqual($results, $expected);
 
 		$vars = $this->testAction('/payments/index/User:2', array(
