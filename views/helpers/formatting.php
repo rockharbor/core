@@ -384,6 +384,9 @@ class FormattingHelper extends AppHelper {
 			'User' => array(
 				'flagged' => false,
 				'active' => true
+			),
+			'Profile' => array(
+				'background_check_complete' => false
 			)
 		);
 		
@@ -398,14 +401,21 @@ class FormattingHelper extends AppHelper {
 		
 		$user = Set::merge($_defaults, $user);
 		
-		if ($user['User']['flagged']) {
-			if ($this->Permission->canSeePrivate()) {
+		if ($this->Permission->canSeePrivate()) {
+			if ($user['User']['flagged']) {
 				$output .= $this->Html->tag('span', '', array(
 					'class' => 'core-icon icon-flagged',
 					'title' => 'Flagged User'
 				));
 			}
+			if ($user['Profile']['background_check_complete']) {
+				$output .= $this->Html->tag('span', '', array(
+					'class' => 'core-icon icon-background-check',
+					'title' => 'Background Check Complete'
+				));
+			}
 		}
+		
 		
 		if (!$user['User']['active']) {
 			$output .= $this->Html->tag('span', '', array(

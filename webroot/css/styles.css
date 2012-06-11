@@ -944,6 +944,9 @@ Custom Icons
 .icon-deny {
 	background-position: -96px -64px;
 }
+.icon-background-check {
+	background-position: -80px -80px;
+}
 
 /* large "icons" */
 h1 .core-icon {
@@ -963,4 +966,7 @@ h1 .icon-passed {
 }
 h1 .icon-flagged {
 	background: url('../img/flag.png') no-repeat;
+}
+h1 .icon-background-check {
+	background: url('../img/background-check.png') no-repeat;
 }
