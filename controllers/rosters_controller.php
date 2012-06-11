@@ -333,8 +333,6 @@ class RostersController extends AppController {
 		));
 		$user = $this->Roster->User->read(null, $userId);
 
-		$members = $this->Roster->User->HouseholdMember->Household->getMemberIds($userId, true);
-		
 		// they're submitting the form
 		if (!empty($this->data)) {
 			// first thing we'll do is validate all the data. if it all validates, we'll try to
@@ -372,29 +370,29 @@ class RostersController extends AppController {
 				}
 			}
 			
-			// find the signed up parent for this child. by default, it's this user. then it's household contact.
-			$pValidates = true;
-			// get signed up users
-			$possibleParents = Set::extract('/Adult/Roster/user_id', $this->data);
-			// get household contacts found that are signed up
-			$contacts = array_intersect(Set::extract('/HouseholdMember/Household/contact_id'), $possibleParents);
-			if (in_array($user['User']['id'], $possibleParents)) {
-				$parent = $user['User']['id'];
-			} elseif (count($contacts) > 0) {
-				$parent = $contacts[0];
-			} elseif (count($possibleParents) > 0) {
-				$parent = $possibleParents[0];
-			} else {
-				$pValidates = false;
-			}			
-			
 			// extract info to check/save for childcare
+			$pValidates = true;
 			$cValidates = true;
-			if (isset($this->data['Child']) && $pValidates) {
+			if (isset($this->data['Child'])) {
+				$possibleParents = Set::extract('/Adult/Roster/user_id', $this->data);
+				
 				foreach ($this->data['Child'] as $roster => &$child) {
 					if ($child['Roster']['user_id'] == 0) {
 						unset($this->data['Child'][$roster]);
 						continue;
+					}
+					
+					// try to find the parent
+					$parent = null;
+					foreach ($possibleParents as $possibleParent) {
+						if ($this->Roster->User->HouseholdMember->Household->isContactFor($possibleParent, $child['Roster']['user_id'])) {
+							$parent = $possibleParent;
+							break;
+						}
+					}
+					
+					if (empty($parent)) {
+						$cValidates = $pValidates = false;
 					}
 
 					$child = $this->Roster->setDefaultData(array(
@@ -414,8 +412,6 @@ class RostersController extends AppController {
 						$this->Roster->saveAll($child, array('validate' => 'only'));
 					}
 				}
-			} else {
-				$cValidates = true;
 			}
 
 			// check to make sure this doesn't exceed the roster limit

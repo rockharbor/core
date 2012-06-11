@@ -180,7 +180,7 @@ class RosterTestCase extends CoreTestCase {
 				'user_id' => 1,
 				'involvement_id' => 3,
 				'roster_status_id' => 1,
-				'parent' => null,
+				'parent_id' => null,
 				'payment_option_id' => 5,
 			)
 		);
@@ -236,7 +236,7 @@ class RosterTestCase extends CoreTestCase {
 				'user_id' => 1,
 				'involvement_id' => 3,
 				'roster_status_id' => 1,
-				'parent' => 2,
+				'parent_id' => 2,
 				'payment_option_id' => 6,
 			),
 			'Payment' => array(
@@ -306,7 +306,7 @@ class RosterTestCase extends CoreTestCase {
 			'user_id' => 12,
 			'involvement_id' => 1,
 			'roster_status_id' => 4,
-			'parent' => 1,
+			'parent_id' => 1,
 			'payment_option_id' => 2,
 		);
 		$this->assertEqual($result, $expected);
@@ -330,7 +330,7 @@ class RosterTestCase extends CoreTestCase {
 				'user_id' => 1,
 				'involvement_id' => 5,
 				'roster_status_id' => 1,
-				'parent' => null,
+				'parent_id' => null,
 				'payment_option_id' => null,
 			)
 		);
@@ -439,7 +439,7 @@ class RosterTestCase extends CoreTestCase {
 				'user_id' => 1,
 				'involvement_id' => 1,
 				'roster_status_id' => 4,
-				'parent' => null,
+				'parent_id' => null,
 				'payment_option_id' => 1
 			)
 		);

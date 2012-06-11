@@ -290,6 +290,89 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($notificationsAfter-$notificationsBefore, 4);
 		$this->assertEqual($this->Rosters->Session->read('Message.flash.element'), 'flash'.DS.'success');
 	}
+	
+	function testAddChildcare() {
+		$this->loadFixtures('Household', 'HouseholdMember');
+		
+		
+		$data = array(
+			'Default' => array(
+				'pay_later' => 1
+			),
+			'Adult' => array(),
+			'Child' => array(
+				array(
+					'Roster' => array(
+						'user_id' => 3
+					)
+				)
+			)
+		);
+		$vars = $this->testAction('/rosters/add/User:1/Involvement:2', array(
+			'data' => $data
+		));
+		$result = $this->Rosters->Roster->validationErrors;
+		$this->assertTrue(!empty($result));
+		
+		$data = array(
+			'Default' => array(
+				'pay_later' => 1
+			),
+			'Adult' => array(
+				array(
+					'Roster' => array(
+						'user_id' => 4
+					)
+				)
+			),
+			'Child' => array(
+				array(
+					'Roster' => array(
+						'user_id' => 3
+					)
+				)
+			)
+		);
+		$vars = $this->testAction('/rosters/add/User:1/Involvement:2', array(
+			'data' => $data
+		));
+		$result = $this->Rosters->Roster->validationErrors;
+		$this->assertTrue(!empty($result));
+		
+		$data = array(
+			'Default' => array(
+				'pay_later' => 1
+			),
+			'Adult' => array(
+				array(
+					'Roster' => array(
+						'user_id' => 1
+					)
+				)
+			),
+			'Child' => array(
+				array(
+					'Roster' => array(
+						'user_id' => 3
+					)
+				)
+			)
+		);
+		$vars = $this->testAction('/rosters/add/User:1/Involvement:2', array(
+			'data' => $data
+		));
+		$result = $this->Rosters->Roster->validationErrors;
+		$this->assertEqual($result, array());
+		
+		$roster = $this->Rosters->Roster->find('first', array(
+			'conditions' => array(
+				'involvement_id' => 2,
+				'user_id' => 3
+			)
+		));
+		$result = $roster['Roster']['parent_id'];
+		$this->assertEqual($result, 1);
+	}
 
 	function testAdd() {
 		$notificationsBefore = $this->Rosters->Roster->User->Notification->find('count');
