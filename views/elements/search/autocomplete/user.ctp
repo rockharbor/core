@@ -6,7 +6,7 @@ if (isset($user['ImageIcon'])) {
 ?>
 <div class="autocomplete-row">
 <?php
-echo $this->Html->tag('p', $this->Text->highlight($user['Profile']['name'], $query).$this->Formatting->flags('User', array('User' => $user)));
+echo $this->Html->tag('p', $this->Text->highlight($user['Profile']['name'], $query).$this->Formatting->flags('User', $user));
 $icon = $this->Html->tag('span', 'Email', array('class' => 'core-icon icon-email'));
 $email = $this->Text->highlight($user['Profile']['primary_email'], $query);
 if (!empty($user['Profile']['primary_email'])) {
