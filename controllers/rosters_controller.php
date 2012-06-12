@@ -150,7 +150,8 @@ class RostersController extends AppController {
 						'name',
 						'cell_phone',
 						'allow_sponsorage',
-						'primary_email'
+						'primary_email',
+						'background_check_complete'
 					)
 				)
 			),

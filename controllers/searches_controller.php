@@ -146,7 +146,8 @@ class SearchesController extends AppController {
 							'fields' => array(
 								'name', 'primary_email',
 								'alternate_email_1', 'alternate_email_2',
-								'cell_phone'
+								'cell_phone', 
+								'background_check_complete'
 							),
 							'Campus' => array(
 								'fields' => array('id', 'name')
