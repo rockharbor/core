@@ -292,6 +292,13 @@ class AppController extends Controller {
 			);
 			$this->set('campusesMenu', $Campus->find('all', $options));
 		}
+		
+		// increase security form timeout
+		if ($this->Session->read('_Token')) {
+			$token = unserialize($this->Session->read('_Token'));
+			$token['expires'] = strtotime('+30 minutes');
+			$this->Session->write('_Token', serialize($token));
+		}
 	}
 	
 /**
