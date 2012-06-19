@@ -61,7 +61,7 @@ if (!empty($ministry['ParentMinistry']['id'])) {
 	$link = $this->Permission->link('Add Involvement Opportunity', array('controller' => 'involvements', 'action' => 'add', 'Ministry' => $ministry['Ministry']['id']));
 	echo $link ? $this->Html->tag('li', $link) : null;
 	if (empty($ministry['ParentMinistry']['id'])) {
-		$link = $this->Permission->link('Add Subministry', array('controller' => 'ministries', 'action' => 'add', 'Ministry' => $ministry['Ministry']['id'], 'Campus' => $ministry['Campus']['id']), array('rel' => 'modal-none'));
+		$link = $this->Permission->link('Add Subministry', array('controller' => 'ministries', 'action' => 'add', 'Ministry' => $ministry['Ministry']['id'], 'Campus' => $ministry['Campus']['id']));
 		echo $link ? $this->Html->tag('li', $link) : null;
 	}
 	$link = $this->Permission->link('Delete', array('action' => 'delete', 'Ministry' => $ministry['Ministry']['id']), array('id' => 'delete_btn'));

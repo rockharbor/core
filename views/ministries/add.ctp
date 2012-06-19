@@ -1,5 +1,5 @@
 <h1>Add Ministry</h1>
-<div class="ministries form">
+<div class="ministries form content-box">
 <?php echo $this->Form->create('Ministry', array(
 	'default' => false
 ));?>
@@ -18,7 +18,6 @@
 	?>
 	</fieldset>
 <?php
-$defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals:true});CORE.showFlash(data);';
 echo $this->Js->submit('Submit', $defaultSubmitOptions);
 echo $this->Form->end();
 ?>

@@ -162,7 +162,7 @@ class MinistriesController extends AppController {
 			$this->Ministry->create();
 			if ($this->Ministry->save($this->data)) {
 				$this->Session->setFlash('This ministry has been created.', 'flash'.DS.'success');
-				$this->redirect(array('action' => 'view', 'Ministry' => $this->Ministry->id));
+				$this->redirect(array('action' => 'edit', 'Ministry' => $this->Ministry->id));
 			} else {
 				$this->Session->setFlash('Unable to create this ministry. Please try again.', 'flash'.DS.'failure');
 			}
