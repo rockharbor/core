@@ -30,6 +30,14 @@ class QuestionFixture extends CakeTestFixture {
 			'description' => 'another question!',
 			'created' => '2010-04-09 13:05:40',
 			'modified' => '2010-04-09 13:16:14'
+		),
+		array(
+			'id' => 3,
+			'involvement_id' => 5,
+			'order' => 1,
+			'description' => 'Who was the all time leader in sports?',
+			'created' => '2010-04-09 13:05:40',
+			'modified' => '2010-04-09 13:16:14'
 		)
 	);
 }

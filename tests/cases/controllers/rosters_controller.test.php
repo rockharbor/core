@@ -569,6 +569,47 @@ class RostersControllerTestCase extends CoreTestCase {
 		$result = $this->Rosters->Session->read('Message.flash.element');
 		$this->assertEqual($result, 'flash'.DS.'success');
 	}
+	
+	function testEditAnswerValidation() {
+		$data = array(
+			'Roster' => array(
+				'id' => 6
+			),
+			'Answer' => array(
+				array(
+					'roster_id' => 6,
+					'question_id' => 3,
+					'description' => ''
+				)
+			)
+		);
+		
+		$this->su(array(
+			'User' => array('id' => 5),
+			'Group' => array('id' => 1)
+		));
+		$vars = $this->testAction('/rosters/edit/6', array(
+			'data' => $data
+		));
+		$result = $this->Rosters->Session->read('Message.flash.element');
+		$this->assertEqual($result, 'flash'.DS.'failure');
+		$result = $this->Rosters->Roster->Answer->validationErrors;
+		$this->assertTrue(!empty($result));
+		$result = $this->Rosters->Roster->Answer->validationErrors[0];
+		$this->assertTrue(array_key_exists('description', $result));
+		
+		$this->su(array(
+			'User' => array('id' => 1),
+			'Group' => array('id' => 8)
+		));
+		$vars = $this->testAction('/rosters/edit/6', array(
+			'data' => $data
+		));
+		$result = $this->Rosters->Session->read('Message.flash.element');
+		$this->assertEqual($result, 'flash'.DS.'success');
+		$result = $this->Rosters->Roster->Answer->validationErrors;
+		$this->assertTrue(empty($result));
+	}
 
 	function testDelete() {
 		$this->loadFixtures('Leader');		

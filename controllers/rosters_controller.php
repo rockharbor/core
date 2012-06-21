@@ -648,7 +648,26 @@ class RostersController extends AppController {
 		// get roster ids for comparison (to see if they're signed up)
 		$thisRoster = $this->Roster->read(null, $id);
 		
+		// get needed information about the user and this involvement
+		$this->Roster->Involvement->contain(array(
+			'Ministry',
+			'Question',
+			'Roster' => array(
+				'fields' => array(
+					'user_id'
+				)
+			)
+		));
+		$involvement = $this->Roster->Involvement->read(null, $thisRoster['Roster']['involvement_id']);
+		
 		if (!empty($this->data)) {
+			if ($this->Roster->Involvement->isLeader($this->activeUser['User']['id'], $involvement['Involvement']['id'])
+			|| $this->Roster->Involvement->Ministry->isManager($this->activeUser['User']['id'], $involvement['Ministry']['id'])
+			|| $this->Roster->Involvement->Ministry->Campus->isManager($this->activeUser['User']['id'], $involvement['Ministry']['campus_id'])
+			) {
+				$this->Roster->Answer->validate = array();
+			}
+			
 			if (isset($this->data['Child'])) {
 				foreach ($this->data['Child'] as $key => &$child) {
 					if ($child['user_id'] == 0) {
@@ -692,17 +711,6 @@ class RostersController extends AppController {
 			}
 		}
 		
-		// get needed information about the user and this involvement
-		$this->Roster->Involvement->contain(array(
-			'Ministry',
-			'Question',
-			'Roster' => array(
-				'fields' => array(
-					'user_id'
-				)
-			)
-		));
-		$involvement = $this->Roster->Involvement->read(null, $thisRoster['Roster']['involvement_id']);
 		// get user info and all household info where they are the contact
 		$signedUp = Set::extract('/Roster/user_id', $involvement);
 		$householdMemberIds = $this->Roster->User->HouseholdMember->Household->getMemberIds($thisRoster['Roster']['user_id'], true);
