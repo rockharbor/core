@@ -51,6 +51,7 @@ echo $this->Form->create('User', array(
 </div>
 <?php
 $defaultSubmitOptions['id'] = uniqid('submit_button');
+$defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals:true, showFlash: true});';
 echo $this->Form->button('Previous', array('id' => 'previous_button', 'class' => 'button', 'type' => 'button'));
 echo $this->Form->button('Next', array('id' => 'next_button', 'class' => 'button', 'type' => 'button'));
 echo $this->Js->submit('Sign up', $defaultSubmitOptions);

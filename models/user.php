@@ -536,6 +536,8 @@ class User extends AppModel {
 							);
 							$return = false;
 						}
+					} else {
+						$member = array();
 					}
 				}
 			}
@@ -576,12 +578,15 @@ class User extends AppModel {
 			}
 
 			foreach ($householdMembers as $householdMember) {
+				if (empty($householdMember)) {
+					continue;
+				}
 				if (!isset($householdMember['User']['id'])) {
 					$householdMember['Profile']['created_by'] = $creator['User']['id'];
 					$householdMember['Profile']['created_by_type'] = $creator['User']['group_id'];
 
 					$this->create();
-					if ($this->saveAll($householdMember)) {
+					if ($this->saveAll($householdMember, array('validate' => false))) {
 						$this->HouseholdMember->Household->join($householdId, $this->id, true);
 						$this->tmpAdded[] = array(
 							'id' => $this->id,
