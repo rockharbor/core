@@ -84,6 +84,7 @@ CORE.completeForm = function(event, XMLHttpRequest, textStatus) {
 *		- function failure Callback for an unsuccessful form (Default none)
 *		- boolean autoUpdate Whether to update the content (Default true)
 *		- boolean closeModals Whether to close the modal (Default false)
+*		- boolean showFlash Whether or not to show flash message if modal is closed
 *
 * @param object event The event for the click
 * @param object data The returned data
@@ -95,7 +96,8 @@ CORE.successForm = function(event, data, textStatus, options) {
 		success: false,
 		failure: false,
 		autoUpdate: true,
-		closeModals: false
+		closeModals: false,
+		showFlash: false
 	};
 	
 	options = $.extend(_defaultOptions, options);
@@ -136,6 +138,9 @@ CORE.successForm = function(event, data, textStatus, options) {
 		} 
 		if (options.closeModals) {
 			CORE.closeModals();
+			if (options.showFlash) {
+				CORE.showFlash(data);
+			}
 		}
 	} else {
 		if (options.failure != false) {
