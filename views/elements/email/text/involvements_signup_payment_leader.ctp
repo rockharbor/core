@@ -1,1 +1,0 @@
-<?php echo $signedUpUsers; ?> <?php echo $verb; ?> signed up and made a <?php echo $this->Formatting->money($amount); ?> payment for the <?php echo $involvement['InvolvementType']['name']; ?> <?php echo $involvement['Involvement']['name']; ?>.

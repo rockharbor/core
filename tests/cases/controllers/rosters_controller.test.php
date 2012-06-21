@@ -460,6 +460,13 @@ class RostersControllerTestCase extends CoreTestCase {
 	}
 	
 	function testAddMultiple() {
+		$this->su(array(
+			'User' => array(
+				'id' => 1
+			)
+		));
+		
+		$this->loadFixtures('Profile');
 		$notificationsBefore = $this->Rosters->Roster->User->Notification->find('count');
 		$rostersBefore = $this->Rosters->Roster->find('count');
 		$paymentsBefore = $this->Rosters->Roster->Payment->find('count');
@@ -507,10 +514,11 @@ class RostersControllerTestCase extends CoreTestCase {
 		$paymentsNow = $this->Rosters->Roster->Payment->find('count');
 		$this->assertEqual($paymentsNow-$paymentsBefore, 2);
 
+		// one for each user, one for the payment, one for the leader, child doesn't exist
 		$notificationsNow = $this->Rosters->Roster->User->Notification->find('count');
 		$this->assertEqual($notificationsNow-$notificationsBefore, 4);
 
-		// added one for the child, saved over the one for the person already signed up
+		// added one for user 1, saved over user 2 (already signed up)
 		$rostersNow = $this->Rosters->Roster->find('count');
 		$this->assertEqual($rostersNow-$rostersBefore, 1);
 		
@@ -524,6 +532,13 @@ class RostersControllerTestCase extends CoreTestCase {
 		));
 		$results = Set::extract('/Payment/number', $payments);
 		$this->assertEqual($results, array(1234, 1234));
+		
+		$results = Set::extract('/Profile/name', $vars['signedupUsers']);
+		$expected = array(
+			'Jeremy Harris',
+			'ricky rockharbor'
+		);
+		$this->assertEqual($results, $expected);
 	}
 
 	function testEdit() {

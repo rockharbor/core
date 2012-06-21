@@ -452,15 +452,18 @@ class RostersController extends AppController {
 					$amount += Set::apply('/Payment/amount', array_values($this->data['Child']), 'array_sum');
 				}
 				
+				$signedUpIds = array_merge(Set::extract('/Adult/Roster/user_id', $this->data), Set::extract('/Child/Roster/user_id', $this->data));
+				$signedupUsers = $this->Roster->User->Profile->find('all', array(
+					'conditions' => array(
+						'user_id' => $signedUpIds
+					),
+					'contain' => false
+				));
+				$verb = count($signedupUsers) > 1 ? 'have' : 'has';
+				
+				$this->set(compact('verb', 'signedupUsers'));
+				
 				if ($involvement['Involvement']['take_payment'] && $this->data['Default']['payment_option_id'] > 0 && !$this->data['Default']['pay_later'] && $amount > 0) {
-					$signedUpIds = array_merge(Set::extract('/Adult/Roster/user_id', $this->data), Set::extract('/Child/Roster/user_id', $this->data));
-					$signedupUsers = $this->Roster->User->Profile->find('all', array(
-						'conditions' => array(
-							'user_id' => $signedUpIds
-						),
-						'contain' => false
-					));
-					$verb = count($signedupUsers) > 1 ? 'have' : 'has';
 					$description = implode(' and ', Set::extract('/Profile/name', $signedupUsers)).' '.$verb.' been signed up for '.$involvement['InvolvementType']['name'].' '.$involvement['Involvement']['name'];
 					
 					$paymentOption = $this->Roster->PaymentOption->read(null, $this->data['Default']['payment_option_id']);
@@ -501,13 +504,12 @@ class RostersController extends AppController {
 						}
 						
 						$leaders = $this->Roster->Involvement->getLeaders($involvement['Involvement']['id']);
-						$this->set('signedUpUsers', implode(' and ', Set::extract('/Profile/name', $signedupUsers)));
-						$this->set('verb', $verb);
 						$this->set('amount', $amount);
+						
 						foreach ($leaders as $leader) {
 							$this->Notifier->notify(array(
 								'to' => $leader,
-								'template' => 'involvements_signup_payment_leader',
+								'template' => 'involvements_signup_leader',
 								'subject' => 'New user(s) signed up and paid for '.$involvement['Involvement']['name']
 							));
 							
@@ -532,15 +534,6 @@ class RostersController extends AppController {
 						$this->Session->setFlash('Unable to process payment.', 'flash'.DS.'failure');
 					}
 				} else {
-					$signedUpIds = array_merge(Set::extract('/Adult/Roster/user_id', $this->data), Set::extract('/Child/Roster/user_id', $this->data));
-					$signedupUsers = $this->Roster->User->Profile->find('all', array(
-						'conditions' => array(
-							'user_id' => $signedUpIds
-						),
-						'contain' => false
-					));
-					$verb = count($signedupUsers) > 1 ? 'have' : 'has';
-					
 					// no credit card, just save as normal
 					// save main rosters
 					foreach ($this->data['Adult'] as $signuproster) {
@@ -566,8 +559,6 @@ class RostersController extends AppController {
 						}
 					}
 					
-					$this->set('signedUpUsers', implode(' and ', Set::extract('/Profile/name', $signedupUsers)));
-					$this->set('verb', $verb);
 					$leaders = $this->Roster->Involvement->getLeaders($involvement['Involvement']['id']);
 					foreach ($leaders as $leader) {
 						$this->Notifier->notify(array(
