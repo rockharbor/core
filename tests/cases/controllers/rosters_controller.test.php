@@ -540,7 +540,77 @@ class RostersControllerTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 	}
-
+	
+	function testAddWithAnswers() {
+		$this->loadFixtures('Profile', 'Question');
+		
+		$data = array(
+			'Default' => array(
+				'payment_option_id' => 1,
+				'payment_type_id' => 1,
+				'pay_later' => false,
+				'pay_deposit_amount' => false,
+			),
+			'Adult' => array(
+				array(
+					'Roster' => array(
+						'user_id' => 1
+					),
+					'Answer' => array(
+						array(
+							'question_id' => 1,
+							'description' => 'Purple'
+						),
+						array(
+							'question_id' => 2,
+							'description' => 'Another answer!'
+						)
+					)
+				),
+				array(
+					'Roster' => array(
+						'user_id' => 2
+					),
+					'Answer' => array(
+						array(
+							'question_id' => 1,
+							'description' => 'Blue'
+						),
+						array(
+							'question_id' => 2,
+							'description' => 'I do not understand'
+						)
+					)
+				)
+			),
+			'CreditCard' => array(
+				'first_name' => 'Joe',
+				'last_name' => 'Schmoe',
+				'credit_card_number' => '1234567891001234',
+				'cvv' => '123',
+				'email' => 'joe@test.com'
+			)
+		);
+		$vars = $this->testAction('/rosters/add/User:1/Involvement:1', array(
+			'data' => $data
+		));
+		$results = Set::extract('/answers/Answer/description', $vars['signedupUsers']);
+		$expected = array(
+			'Purple', 
+			'Another answer!',
+			'Blue', 
+			'I do not understand'
+		);
+		$this->assertEqual($results, $expected);
+		
+		$results = Set::extract('/Profile/name', $vars['signedupUsers']);
+		$expected = array(
+			'Jeremy Harris',
+			'ricky rockharbor'
+		);
+		$this->assertEqual($results, $expected);
+	}
+	
 	function testEdit() {
 		$this->Rosters->Roster->contain(array('Role'));
 		$data = $this->Rosters->Roster->read(null, 5);

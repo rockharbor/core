@@ -461,6 +461,10 @@ class RostersController extends AppController {
 				));
 				$verb = count($signedupUsers) > 1 ? 'have' : 'has';
 				
+				foreach ($signedupUsers as &$signedupUser) {
+					$signedupUser['answers'] = Set::extract('/Adult/Roster[user_id='.$signedupUser['Profile']['user_id'].']/../Answer', $this->data);
+				}
+				
 				$this->set(compact('verb', 'signedupUsers'));
 				
 				if ($involvement['Involvement']['take_payment'] && $this->data['Default']['payment_option_id'] > 0 && !$this->data['Default']['pay_later'] && $amount > 0) {
