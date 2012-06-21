@@ -256,29 +256,29 @@ $this->Js->buffer('CORE.wysiwyg("InvolvementDescription");');
 $this->Js->buffer('$("#InvolvementTakePayment").bind("change", function() {
 	if (this.checked) {
 		if ($(this).parent().css("display") != "none") {
-			$("#InvolvementForcePayment").parent().show();
+			$("#InvolvementForcePayment").closest("div.input").show();
 		} else {
-			$("#InvolvementForcePayment").parent().hide();
+			$("#InvolvementForcePayment").closest("div.input").hide();
 		}
 		$("#payment_options_tab").show();
 	} else {
-		$("#InvolvementForcePayment").parent().hide();
+		$("#InvolvementForcePayment").closest("div.input").hide();
 		$("#payment_options_tab").hide();
 	}
 });');
 $this->Js->buffer('$("#InvolvementTakePayment").change();');
 $this->Js->buffer('$("#InvolvementSignup").bind("change", function() {
 	if (this.checked) {
-		$("#InvolvementRosterVisible").parent().show();
-		$("#InvolvementTakePayment").parent().show();
-		$("#InvolvementRosterLimit").parent().show();
-		$("#InvolvementOfferChildcare").parent().show();
+		$("#InvolvementRosterVisible").closest("div.input").show();
+		$("#InvolvementTakePayment").closest("div.input").show();
+		$("#InvolvementRosterLimit").closest("div.input").show();
+		$("#InvolvementOfferChildcare").closest("div.input").show();
 		$("#questions_tab").show();
 	} else {
-		$("#InvolvementRosterVisible").parent().hide();
-		$("#InvolvementTakePayment").parent().hide();
-		$("#InvolvementRosterLimit").parent().hide();
-		$("#InvolvementOfferChildcare").parent().hide();
+		$("#InvolvementRosterVisible").closest("div.input").hide();
+		$("#InvolvementTakePayment").closest("div.input").hide();
+		$("#InvolvementRosterLimit").closest("div.input").hide();
+		$("#InvolvementOfferChildcare").closest("div.input").hide();
 		$("#questions_tab").hide();
 	}
 	$("#InvolvementTakePayment").change();
