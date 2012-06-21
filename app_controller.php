@@ -102,7 +102,6 @@ class AppController extends Controller {
 		'before' => 'CORE.beforeForm(event, XMLHttpRequest);',
 		'complete' => 'CORE.completeForm(event, XMLHttpRequest, textStatus);',
 		'success' => 'CORE.successForm(event, data, textStatus);',
-		'error' => 'CORE.errorForm(event, XMLHttpRequest, textStatus, errorThrown);',
 		'evalScripts' =>  true
 	);
 	

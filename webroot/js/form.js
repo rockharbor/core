@@ -150,18 +150,6 @@ CORE.successForm = function(event, data, textStatus, options) {
 }
 
 /**
-* Handles actions after failed form submission
-* 
-* @param object event The event for the click
-* @param object XMLHttpRequest The XMLHttpRequest
-* @param object textStatus The error settings
-* @param object errorThrown The error
-*/
-CORE.errorForm = function(event, XMLHttpRequest, textStatus, errorThrown) {
-	redirect('/pages/form_error');
-}
-
-/**
 * Only allows one checkbox per value to be checked.
 *
 * This will iterate through all radio and checkboxes and automatically

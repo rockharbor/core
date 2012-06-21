@@ -268,7 +268,12 @@ CORE.init = function() {
 	CORE.initNavigation();
 	// IE is too agressive in its caching
 	$.ajaxSetup({
-		cache: false
+		cache: false,
+		error: function(XMLHttpRequest) {
+			if (XMLHttpRequest.status == '403') {
+				redirect('/login');
+			}
+		}
 	});
 }
 

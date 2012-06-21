@@ -287,7 +287,15 @@ CORE.attachModalBehavior = function() {
  */
 CORE.tabs = function(id, taboptions, options) {
 	// use user defined options if defined
-	var useOptions = {};
+	var useOptions = {
+		ajaxOptions: {
+			error: function(XMLHttpRequest) {
+				if (XMLHttpRequest.status == '403') {
+					redirect('/login');
+				}
+			}
+		}
+	};
 	if (taboptions != undefined) {
 		useOptions = $.extend(useOptions, taboptions);
 	}
