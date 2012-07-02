@@ -18,6 +18,16 @@
 			'label' => 'Ministry',
 			'options' => $ministries
 		));
+		echo $this->Form->input('Involvement.previous', array(
+			'type' => 'select',
+			'label' => 'Include Past Items',
+			'options' => array(
+				'both' => 'both',
+				'current' => 'current only',
+				'previous' => 'past only'
+			),
+			'empty' => false
+		));
 		?>
 	</fieldset>
 	<?php

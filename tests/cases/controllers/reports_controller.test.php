@@ -49,11 +49,42 @@ class ReportsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, 1);
 		$results = $vars['involvementCounts']['Group']['total'];
 		$this->assertEqual($results, 1);
+		
+		$vars = $this->testAction('/reports/index', array(
+			'data' => array(
+				'Ministry' => array(
+					'campus_id' => null,
+					'id' => null
+				),
+				'Involvement' => array(
+					'previous' => 'both'
+				)
+			)
+		));
+		$results = $vars['involvementCounts']['Group']['total'];
+		$this->assertEqual($results, 3);
+		
+		$vars = $this->testAction('/reports/index', array(
+			'data' => array(
+				'Ministry' => array(
+					'campus_id' => null,
+					'id' => null
+				),
+				'Involvement' => array(
+					'previous' => 'previous'
+				)
+			)
+		));
+		$results = $vars['involvementCounts']['Group']['total'];
+		$this->assertEqual($results, 2);
 
 		$vars = $this->testAction('/reports/index', array(
 			'data' => array(
 				'Ministry' => array(
 					'id' => 2
+				),
+				'Involvement' => array(
+					'previous' => 'current'
 				)
 			)
 		));

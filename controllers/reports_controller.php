@@ -73,6 +73,19 @@ class ReportsController extends AppController {
 
 		$conditions = array();
 		$involvedUsers = array();
+		
+		if (empty($this->data)) {
+			$this->data = array(
+				'Ministry' => array(
+					'campus_id' => null,
+					'id' => null
+				),
+				'Involvement' => array(
+					'previous' => 'current'
+				)
+			);
+		}
+		
 		if (!empty($this->data)) {
 			if (!empty($this->data['Ministry']['campus_id'])) {
 				// campus takes precedence
@@ -91,11 +104,8 @@ class ReportsController extends AppController {
 				);
 			} else {
 				// blank search
-				$this->data = array();
+				$involvedUsers = $this->Campus->getInvolved(array_keys($campuses), true);
 			}
-		}
-		if (empty($this->data)) {
-			$involvedUsers = array_merge($involvedUsers, $this->Campus->getInvolved(array_keys($campuses), true));
 		}
 
 		$ministryCounts = array();
@@ -134,10 +144,17 @@ class ReportsController extends AppController {
 			$options = array(
 				'conditions' => array(
 					'Involvement.involvement_type_id' => $id,
-					'Involvement.ministry_id' => $filteredMinistries,
-					$ds->expression('NOT ('.$this->Involvement->getVirtualField('previous').')')
+					'Involvement.ministry_id' => $filteredMinistries
 				)
 			);
+			switch ($this->data['Involvement']['previous']) {
+				case 'current':
+					$options['conditions'][] = $ds->expression('NOT ('.$this->Involvement->getVirtualField('previous').')');
+				break;
+				case 'previous':
+					$options['conditions'][] = $ds->expression('('.$this->Involvement->getVirtualField('previous').')');
+				break;
+			}
 			
 			$involvementCounts[$type]['total'] = $this->Involvement->find('count', $options);
 			
