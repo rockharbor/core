@@ -36,15 +36,19 @@ class ReportsControllerTestCase extends CoreTestCase {
 	}
 
 	function testIndex() {
+		$this->loadFixtures('Date');
+		
 		$vars = $this->testAction('/reports/index');
 		$results = $vars['userCounts']['involved'];
 		$this->assertEqual($results, 4);
 		$results = $vars['ministryCounts']['active'];
 		$this->assertEqual($results, 3);
 		$results = $vars['involvementCounts']['Event']['involved'];
-		$this->assertEqual($results, 3);
+		$this->assertEqual($results, 1);
+		$results = $vars['involvementCounts']['Event']['total'];
+		$this->assertEqual($results, 1);
 		$results = $vars['involvementCounts']['Group']['total'];
-		$this->assertEqual($results, 3);
+		$this->assertEqual($results, 1);
 
 		$vars = $this->testAction('/reports/index', array(
 			'data' => array(

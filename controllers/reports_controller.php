@@ -128,38 +128,33 @@ class ReportsController extends AppController {
 
 		$filteredMinistries = array_flip($filteredMinistries);
 		$involvementTypes = $this->Involvement->InvolvementType->find('list');
+		$ds = $this->Involvement->getDatasource();
 		$involvementCounts = array();
 		foreach ($involvementTypes as $id => $type) {
-			$involvementCounts[$type]['total'] = $this->Involvement->find('count', array(
+			$options = array(
 				'conditions' => array(
 					'Involvement.involvement_type_id' => $id,
-					'Involvement.ministry_id' => $filteredMinistries
+					'Involvement.ministry_id' => $filteredMinistries,
+					$ds->expression('NOT ('.$this->Involvement->getVirtualField('previous').')')
 				)
-			));
-			$involvementCounts[$type]['active'] = $this->Involvement->find('count', array(
-				'conditions' => array(
-					'Involvement.active' => true,
-					'Involvement.involvement_type_id' => $id,
-					'Involvement.ministry_id' => $filteredMinistries
-				)
-			));
-			$involvementCounts[$type]['leaders'] = $this->Involvement->Leader->find('count', array(
-				'conditions' => array(
-					'Involvement.active' => true,
-					'Involvement.involvement_type_id' => $id,
-					'Involvement.ministry_id' => $filteredMinistries
-				),
-				'contain' => array(
-					'Involvement'
-				)
-			));
+			);
+			
+			$involvementCounts[$type]['total'] = $this->Involvement->find('count', $options);
+			
+			$options['conditions']['Involvement.active'] = true;
+			$involvementCounts[$type]['active'] = $this->Involvement->find('count', $options);
+			
+			$options['contain'] = array('Involvement');
+			$involvementCounts[$type]['leaders'] = $this->Involvement->Leader->find('count', $options);
+			
 			$involved = $this->Roster->find('all', array(
 				'fields' => array(
 					'Roster.id'
 				),
 				'conditions' => array(
 					'Involvement.involvement_type_id' => $id,
-					'Involvement.ministry_id' => $filteredMinistries
+					'Involvement.ministry_id' => $filteredMinistries,
+					$ds->expression('NOT ('.$this->Involvement->getVirtualField('previous').')')
 				),
 				'group' => 'Roster.user_id',
 				'contain' => array(
