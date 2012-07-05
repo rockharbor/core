@@ -93,9 +93,7 @@ class PaymentsController extends AppController {
 
 		$this->paginate = array(
 			'conditions' => array(
-				'or' => array(
-					'Payment.user_id' => $userId
-				)
+				'Payment.user_id' => $userId
 			),
 			'contain' => array(
 				'Roster' => array(	
