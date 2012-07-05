@@ -410,6 +410,11 @@ class UsersController extends AppController {
 				}
 
 				$this->Session->setFlash('An account has been created for '.$this->data['Profile']['first_name'].' '.$this->data['Profile']['last_name'].'.', 'flash'.DS.'success');
+				
+				$this->redirect(array(
+					'controller' => 'pages',
+					'action' => 'message'
+				));
 			} else {		
 				$this->Session->setFlash('Unable to create account. Please try again.', 'flash'.DS.'failure');
 			}
