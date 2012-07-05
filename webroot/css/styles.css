@@ -610,9 +610,8 @@ ul.core-admin-tabs a:hover {
 	text-decoration: none;
 }
 .ui-dialog ul.core-admin-tabs {
-	bottom:0px;
-	position:relative;
-	right:0px;
+	bottom: -20px;
+	right: 0px;
 }
 
 /*
