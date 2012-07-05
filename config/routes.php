@@ -25,6 +25,7 @@
 	Router::connect('/login', array('controller' => 'users', 'action' => 'login'));
 	Router::connect('/logout', array('controller' => 'users', 'action' => 'logout'));
 	Router::connect('/pages/phrase/*', array('controller' => 'pages', 'action' => 'phrase'));
+	Router::connect('/pages/message/*', array('controller' => 'pages', 'action' => 'message'));
 
 /**
  * Custom routes

@@ -1,32 +1,21 @@
 <?php
 /**
- * Static content controller.
+ * Pages controller class.
  *
- * This file will render views from views/pages/
- *
- * PHP versions 4 and 5
- *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
- *
- * Licensed under The MIT License
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
- * @package       cake
- * @subpackage    cake.cake.libs.controller
- * @since         CakePHP(tm) v 0.2.9
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @link          http://rockharbor.org *ROCK*HARBOR
+ * @package       core
+ * @subpackage    core.app.controllers
  */
 
 /**
- * Static content controller
+ * Pages Controller
+ * 
+ * There is a greedy route for pages that will prevent extra actions from being
+ * used automatically. A route for each new method is necessary.
  *
- * Override this controller by placing a copy in controllers directory of an application
- *
- * @package       cake
- * @subpackage    cake.cake.libs.controller
+ * @package       core
+ * @subpackage    core.app.controllers
  */
 class PagesController extends AppController {
 
@@ -55,8 +44,25 @@ class PagesController extends AppController {
 	var $uses = array();
 
 	function beforeFilter() {
-		$this->Auth->allow('display', 'phrase');
+		$this->Auth->allow('display', 'phrase', 'message');
 		parent::beforeFilter();
+	}
+	
+/**
+ * Generic view for displaying flash messages in the HTML body instead of using
+ * the typical flash elements. This is useful for when an action needs to
+ * redirect to a generic page but still notify the user of something
+ */
+	function message() {
+		$this->set('title_for_layout', 'Message');
+		
+		$auth = $this->Session->read('Message.auth');
+		$flash = $this->Session->read('Message.flash');
+		
+		$this->Session->delete('Message.auth');
+		$this->Session->delete('Message.flash');
+		
+		$this->set(compact('auth', 'flash'));
 	}
 
 /**
