@@ -92,6 +92,12 @@ $this->Paginator->options(array(
 				'rel' => 'modal-none'
 			)
 		);
+		if (isset($this->passedArgs['Roster'])) {
+			$link = $this->Permission->link('Add', array('controller' => 'payments', 'action' => 'add', $this->passedArgs['Roster']), array('rel' => 'modal-none'));
+			if ($link) {
+				echo $this->Html->tag('li', $link);
+			}
+		}
 		?>
 		</li>
 	</ul>

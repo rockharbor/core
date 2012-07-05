@@ -115,10 +115,8 @@ class PaymentsController extends AppController {
 			)
 		);
 
-		if (isset($this->passedArgs['Involvement'])) {
-			$this->paginate['conditions'] += array(
-				'Roster.involvement_id' => $this->passedArgs['Involvement']
-			);
+		if (isset($this->passedArgs['Roster'])) {
+			$this->paginate['conditions']['Roster.id'] = $this->passedArgs['Roster'];
 		}
 
 		$this->MultiSelect->saveSearch($this->paginate);

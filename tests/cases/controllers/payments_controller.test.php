@@ -56,14 +56,14 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		$expected = array(2, 3);
 		$this->assertEqual($results, $expected);
 
-		$vars = $this->testAction('/payments/index/User:2/Involvement:1', array(
+		$vars = $this->testAction('/payments/index/User:2/Roster:5', array(
 			'return' => 'vars'
 		));
 		$results = Set::extract('/Payment/id', $vars['payments']);
 		$expected = array();
 		$this->assertEqual($results, $expected);
 
-		$vars = $this->testAction('/payments/index/User:2/Involvement:3', array(
+		$vars = $this->testAction('/payments/index/User:2/Roster:4', array(
 			'return' => 'vars'
 		));
 		$results = Set::extract('/Payment/id', $vars['payments']);
