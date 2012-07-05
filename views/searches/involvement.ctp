@@ -21,11 +21,6 @@
 			if ($private) {
 				echo $this->Form->input('Involvement.private');
 			}
-		?>
-		</fieldset>
-		<fieldset class="grid_5 omega">
-			<legend></legend>
-			<?php
 			echo $this->Form->input('Ministry.name', array(
 				'label' => 'Ministry'
 			));
@@ -33,6 +28,30 @@
 				'multiple' => 'checkbox'
 			));
 			?>
+		</fieldset>
+		<fieldset class="grid_5 alpha">
+				<legend>Location</legend>
+		<?php
+			echo $this->Form->input('Address.city');
+			echo $this->Form->input('Address.state', array(
+				'options' => $this->SelectOptions->states,
+				'empty' => true
+			));
+			echo $this->Form->input('Address.zip');
+			echo $this->Form->input('Distance.distance_from', array(
+				'after' => '<p>(try: orange, ca)</p>'
+			));
+			echo $this->Form->input('Distance.distance', array(
+				'type' => 'select',
+				'options' => array(	
+					'5' => '5 miles',
+					'10' => '10 miles',
+					'15' => '15 miles',
+					'25' => '25 miles'
+				),
+				'empty' => false
+			));
+		?>
 		</fieldset>
 	</div>
 <?php

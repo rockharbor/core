@@ -146,6 +146,8 @@ class SearchesControllerTestCase extends CoreTestCase {
 	}
 
 	function testInvolvement() {
+		$this->loadFixtures('Address');
+		
 		$search = array(
 			'Involvement' => array(
 				'name' => 'core'
@@ -225,6 +227,56 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$expected = array(
 			'CORE 2.0 testing'
 		);
+		$this->assertEqual($results, $expected);
+		
+		$search = array(
+			'Involvement' => array(
+				'name' => 'core'
+			),
+			'Address' => array(
+				'zip' => ''
+			)
+		);
+		$vars = $this->testAction('/searches/involvement', array(
+			'data' => $search
+		));
+		$results = Set::extract('/Involvement/name', $vars['results']);
+		$expected = array(
+			'CORE 2.0 testing'
+		);
+		$this->assertEqual($results, $expected);
+		
+		$search = array(
+			'Involvement' => array(
+				'previous' => 1
+			),
+			'Distance' => array(
+				'distance_from' => 'new york, new york',
+				'distance' => 10
+			)
+		);
+		$vars = $this->testAction('/searches/involvement', array(
+			'data' => $search
+		));
+		$results = Set::extract('/Involvement/id', $vars['results']);
+		$expected = array();
+		$this->assertEqual($results, $expected);
+		
+		$search['Distance']['distance_from'] = 'costa mesa, ca';
+		$vars = $this->testAction('/searches/involvement', array(
+			'data' => $search
+		));
+		$results = Set::extract('/Involvement/id', $vars['results']);
+		$expected = array(1);
+		$this->assertEqual($results, $expected);
+		
+		$search['Involvement']['name'] = 'nurture';
+		$search['Distance']['distance_from'] = 'costa mesa, ca';
+		$vars = $this->testAction('/searches/involvement', array(
+			'data' => $search
+		));
+		$results = Set::extract('/Involvement/id', $vars['results']);
+		$expected = array();
 		$this->assertEqual($results, $expected);
 	}
 

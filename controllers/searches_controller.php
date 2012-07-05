@@ -317,12 +317,42 @@ class SearchesController extends AppController {
 					'private' => $private ? 1 : 0,
 					'inactive' => $inactive ? 1 : 0,
 					'previous' => 0
+				),
+				'Distance' => array(
+					'distance_from' => null
 				)
 			);
 			$search = Set::merge($_default, $this->data);
 			
+			$dist = $search['Distance'];
+			unset($search['Distance']);
+			if (!empty($dist['distance_from'])) {
+				$coords = $this->Involvement->Address->geoCoordinates($dist['distance_from']);
+				$this->Involvement->Address->virtualFields['distance'] = $this->Involvement->Address->distance($coords['lat'], $coords['lng']);
+
+				// get addresses within distance requirements
+				$distancedAddresses = $this->Involvement->Address->find('all', array(
+					'fields' => array(
+						'id'
+					),
+					'conditions' => array(
+						$this->Involvement->Address->getVirtualField('distance').' <= ' => (int)$dist['distance'],
+						'model' => 'Involvement'
+					)
+				));
+				$link['Address'] = array();
+				$addresses = array_values(Set::extract('/Address/id', $distancedAddresses));
+				if (empty($addresses)) {
+					// no addresses found, so no results should be found
+					$addresses = 0;
+				}
+				$search['Address']['id'] = $addresses;
+			}
+			
 			if ($search['Involvement']['private']) {
 				$search['Involvement']['private'] = array(0,1);
+			} else {
+				$search['Involvement']['private'] = 0;
 			}
 			if ($search['Involvement']['inactive']) {
 				$search['Involvement']['active'] = array(0,1);
@@ -334,6 +364,7 @@ class SearchesController extends AppController {
 				unset($search['Involvement']['previous']);
 			}
 			
+			$search = Set::filter($search);
 			$options = (array)$this->Involvement->postOptions($search) + array('contain' => array());
 			$link = array_merge_recursive($link, $options['contain']);
 			$conditions = $this->postConditions($search, 'LIKE');
