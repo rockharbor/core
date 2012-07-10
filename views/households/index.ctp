@@ -84,7 +84,7 @@
 					<?php
 					echo $this->Permission->link('Edit Profile', array('controller' => 'profiles', 'action' => 'edit', 'User' => $user['id']));
 					echo $this->Permission->link('View Involvement', array('controller' => 'profiles', 'action' => 'view', 'User' => $user['id']));
-					if ($class != 'household-contact') {
+					if ($class != 'household-contact' || count($households) > 1) {
 						echo $this->Permission->link('Remove', array('controller' => 'households', 'action' => 'delete', $user['id'], $household['Household']['id'], 'User' => $user['id']), array('id' => 'household_remove_'.$m));
 						$this->Js->buffer('CORE.confirmation("household_remove_'.$m.'","Are you sure you want to remove '.$user['Profile']['name'].' from this household?", {update:"households"});');
 					}

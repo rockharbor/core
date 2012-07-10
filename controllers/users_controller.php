@@ -469,8 +469,8 @@ class UsersController extends AppController {
 				));
 				
 				$this->redirect(array(
-					'controller' => 'households',
-					'action' => 'index'
+					'controller' => 'pages',
+					'action' => 'message'
 				));
 			} else {
 				$this->Session->setFlash('Oops, validation errors...', 'flash'.DS.'failure');

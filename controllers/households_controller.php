@@ -156,7 +156,10 @@ class HouseholdsController extends AppController {
 			return $success;
 		}
 		
-		$this->redirect(array('action' => 'index'));
+		$this->redirect(array(
+			'controller' => 'pages',
+			'action' => 'message'
+		));
 	}
 
 /**
@@ -203,7 +206,10 @@ class HouseholdsController extends AppController {
 			$this->Session->setFlash('Unable to remove '.$user['Profile']['name'].' from this household. Pleaes try again.', 'flash'.DS.'failure');			
 		}
 		
-		$this->redirect(array('action' => 'index'));
+		$this->redirect(array(
+			'controller' => 'pages',
+			'action' => 'message'
+		));
 	}
 
 /**
