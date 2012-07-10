@@ -64,6 +64,12 @@ class HouseholdsControllerTestCase extends CoreTestCase {
 		// deleting from last household will not work
 		$this->testAction('/households/delete/3/3');
 		$this->assertTrue($this->Households->Household->isMember(3, 3));
+		
+		// only remove if they are confirmed somewhere else
+		$this->testAction('/households/delete/97/5');
+		// they were removed but a new confirmed household was created
+		$this->assertNotNull($this->Households->Household->id);
+		$this->assertTrue($this->Households->Household->isMember(97, $this->Households->Household->id));
 	}
 
 	function testMakeHouseholdContact() {

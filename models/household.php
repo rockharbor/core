@@ -203,14 +203,17 @@ class Household extends AppModel {
  * Creates a household for a user
  *
  * Only creates a household if they don't currently belong to a household
- * (including their own)
+ * (including their own) that they are confirmed in
  *
  * @param integer $user User id
  * @return boolean True on success, false on failure
  * @access public
  */ 
 	function createHousehold($user) {
-		if (!$this->HouseholdMember->hasAny(array('user_id' => $user))) {
+		if (!$this->HouseholdMember->hasAny(array(
+			'user_id' => $user,
+			'confirmed' => true
+		))) {
 			// create household			
 			if (!$this->hasAny(array('contact_id' => $user))) {
 				$this->create();

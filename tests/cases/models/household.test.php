@@ -106,6 +106,34 @@ class HouseholdTestCase extends CoreTestCase {
 		$this->assertEqual($originalHouseholds, $newHouseholds);
 			
 		$this->assertTrue($this->Household->HouseholdMember->hasAny(array('user_id' => 91)));
+		
+		// doesn't have their own confirmed household, so create one
+		$origCount = $this->Household->HouseholdMember->find('count', array(
+			'conditions' => array(
+				'user_id' => 97
+			)
+		));
+		$this->assertTrue($this->Household->createHousehold(97));
+		$newCount = $this->Household->HouseholdMember->find('count', array(
+			'conditions' => array(
+				'user_id' => 97
+			)
+		));
+		$this->assertEqual($newCount-$origCount, 1);
+		
+		// already belongs to a household where they are confirmed
+		$origCount = $this->Household->HouseholdMember->find('count', array(
+			'conditions' => array(
+				'user_id' => 97
+			)
+		));
+		$this->assertTrue($this->Household->createHousehold(97));
+		$newCount = $this->Household->HouseholdMember->find('count', array(
+			'conditions' => array(
+				'user_id' => 97
+			)
+		));
+		$this->assertEqual($newCount, $origCount);
 	}
 
 	function testMakeHouseholdContact() {
