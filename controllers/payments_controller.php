@@ -303,6 +303,34 @@ class PaymentsController extends AppController {
 		$this->set(compact('involvement', 'users', 'userAddresses', 'addresses', 'paymentTypes', 'types', 'mskey'));
 		
 	}
+	
+/**
+ * Edits a payment
+ *
+ * @param integer $id The id of the payment to edit
+ */
+	function edit($id = null) {
+		if (!$id) {
+			$this->cakeError('error404');
+		}
+		debug($this->data);
+		if (!empty($this->data)) {
+			if ($this->Payment->save($this->data)) {
+				$this->Session->setFlash('This payment has been saved.', 'flash'.DS.'success');
+			} else {
+				$this->Session->setFlash('Unable to edit this payment. Please, try again.', 'flash'.DS.'failure');
+			}
+		}
+		if (empty($this->data)) {
+			$this->data = $this->Payment->read(null, $id);
+		}
+		$paymentTypes = $this->Payment->PaymentType->find('list', array(
+			'conditions' => array(
+				'group_id' => $this->Payment->PaymentType->Group->findGroups($this->activeUser['Group']['id'])
+			)
+		));
+		$this->set(compact('paymentTypes'));
+	}
 
 /**
  * Deletes a payment
@@ -315,10 +343,16 @@ class PaymentsController extends AppController {
 		}
 		if ($this->Payment->delete($id)) {
 			$this->Session->setFlash('This payment has been deleted.', 'flash'.DS.'success');
-			$this->redirect(array('action'=>'index'));
+			$this->redirect(array(
+					'controller' => 'pages',
+					'action' => 'message'
+				));
 		}
 		$this->Session->setFlash('Unable to delete this payment. Please try again.', 'flash'.DS.'failure');
-		$this->redirect(array('action' => 'index'));
+		$this->redirect(array(
+			'controller' => 'pages',
+			'action' => 'message'
+		));
 	}
 }
 ?>

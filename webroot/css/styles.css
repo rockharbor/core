@@ -795,6 +795,10 @@ div.input.error .error-message {
 div.submit {
 	display: inline-block;
 }
+input:disabled {
+	background-color: #ffffff;
+	border: 1px solid #f1f1f1;
+}
 
 /*
 Definition lists

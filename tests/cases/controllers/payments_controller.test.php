@@ -162,6 +162,27 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		$expected = array(5, 5, 5, 20);
 		$this->assertEqual($results, $expected);
 	}
+	
+	function testEdit() {
+		$this->loadFixtures('Group');
+		
+		$data = array(
+			'Payment' => array(
+				'id' => 1,
+				'comment' => 'test'
+			)
+		);
+		$vars = $this->testAction('/payments/edit/1', array(
+			'return' => 'vars',
+			'data' => $data
+		));
+		$payment = $this->Payments->Payment->read(null, 1);
+		$result = $payment['Payment']['comment'];
+		$expected = 'test';
+		$this->assertEqual($result, $expected);
+		$this->assertTrue(empty($this->Payments->Payment->validationErrors));
+		$this->assertTrue(!empty($vars['paymentTypes']));
+	}
 
 	function testDelete() {
 		$this->testAction('/payments/delete/1');

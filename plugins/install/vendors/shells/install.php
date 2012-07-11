@@ -506,6 +506,8 @@ class InstallShell extends Shell {
 			'controllers/Publications/toggle_subscribe',			
 			'controllers/Payments/add',
 			'controllers/Payments/index',
+			'controllers/Payments/edit',
+			'controllers/Payments/delete',
 			'controllers/Searches/user',
 			'controllers/Reports/user_map',
 			'controllers/Reports/index',

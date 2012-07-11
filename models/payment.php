@@ -40,7 +40,7 @@ class Payment extends AppModel {
 	var $validate = array(
 		'amount' => array(
 			'rule' => 'notEmpty',
-			'required' => true,
+			'required' => false,
 			'message' => 'Please enter a valid amount.'
 		)
 	);

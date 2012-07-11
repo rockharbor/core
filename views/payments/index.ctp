@@ -25,11 +25,21 @@ $this->Paginator->options(array(
 		?>
 		<div class="grid_5 <?php echo $alphaomega; ?>">
 			<div class="receipt">
-				<div class="receipt-title">
+				<div class="receipt-title core-iconable">
 					<?php
 					echo $payment['Roster']['Involvement']['name'];
-					echo $this->Html->link('Print', array('controller' => 'payments', 'action' => 'view', 'User' => $user['User']['id'], $payment['Payment']['id'], 'ext' => 'print'), array('class' => 'core-icon icon-print', 'style' => 'float:right;', 'target' => '_blank'));
 					?>
+					<div class="core-icon-container">
+						<?php
+						$icon = $this->element('icon', array('icon' => 'edit'));
+						echo $this->Permission->link($icon, array('controller' => 'payments', 'action' => 'edit', $payment['Payment']['id']), array('escape' => false, 'rel' => 'modal', 'class' => 'no-hover'));
+						$icon = $this->element('icon', array('icon' => 'print'));
+						echo $this->Permission->link($icon, array('controller' => 'payments', 'action' => 'view', 'User' => $user['User']['id'], $payment['Payment']['id'], 'ext' => 'print'), array('target' => '_blank', 'escape' => false, 'class' => 'no-hover'));
+						$icon = $this->element('icon', array('icon' => 'delete'));
+						echo $this->Permission->link($icon, array('controller' => 'payments', 'action' => 'delete', $payment['Payment']['id']), array('escape' => false, 'id' => 'delete_btn_'.$i, 'class' => 'no-hover'));
+						$this->Js->buffer('CORE.confirmation("delete_btn_'.$i.'","Are you sure you want to remove this payment for '.$this->Formatting->money($payment['Payment']['amount']).'?", {update:"parent"});');
+						?>
+					</div>
 				</div>
 				<div class="receipt-body">
 					<dl>
