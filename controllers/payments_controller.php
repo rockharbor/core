@@ -313,7 +313,7 @@ class PaymentsController extends AppController {
 		if (!$id) {
 			$this->cakeError('error404');
 		}
-		debug($this->data);
+		
 		if (!empty($this->data)) {
 			if ($this->Payment->save($this->data)) {
 				$this->Session->setFlash('This payment has been saved.', 'flash'.DS.'success');
