@@ -44,7 +44,7 @@ class UsersControllerTestCase extends CoreTestCase {
 	
 	function testRedirectOnResetPassword() {
 		// trick CoreTestCase into not setting up a user
-		$this->Users->Session->write('User', true);
+		$this->Users->Session->write('User', array());
 		
 		$this->Users->User->id = 1;
 		$this->Users->User->saveField('reset_password', true);
@@ -197,7 +197,7 @@ class UsersControllerTestCase extends CoreTestCase {
 
 	function testRestrictLogin() {
 		// trick CoreTestCase into not setting up a user
-		$this->Users->Session->write('User', true);
+		$this->Users->Session->write('User', array());
 		$this->Users->Cookie->setReturnValue('read', null);
 		
 		// children can't log in
@@ -233,7 +233,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$lastLoggedIn = $this->Users->User->read('last_logged_in', 1);
 
 		// trick CoreTestCase into not setting up a user
-		$this->Users->Session->write('User', true);
+		$this->Users->Session->write('User', array());
 		
 		$this->Users->Cookie->setReturnValueAt(0, 'read', null);
 		$vars = $this->testAction('/users/login', array(
@@ -259,7 +259,7 @@ class UsersControllerTestCase extends CoreTestCase {
 
 		// logout and try with cookie
 		$this->Users->Session->destroy();
-		$this->Users->Session->write('User', true);
+		$this->Users->Session->write('User', array());
 		$this->Users->Cookie->setReturnValueAt(1, 'read', array(
 			'username' => 'jharris',
 			'password' => '005b8f6046bb2039063d9dde0678f9f28ae38827'
@@ -271,7 +271,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		
 		// logout fail with cookie (because of password change)
 		$this->Users->Session->destroy();
-		$this->Users->Session->write('User', true);
+		$this->Users->Session->write('User', array());
 		
 		$this->Users->Cookie->setReturnValueAt(2, 'read', array(
 			'username' => 'no',
