@@ -98,18 +98,18 @@ class PaymentsController extends AppController {
 			'contain' => array(
 				'Roster' => array(	
 					'Involvement' => array(
-						'fields' => array('name')
+						'fields' => array('id', 'name')
 					)
 				),
 				'PaymentType',
 				'User' => array(
 					'Profile' => array(
-						'fields' => array('name')
+						'fields' => array('user_id', 'name')
 					)
 				),
 				'Payer' => array(
 					'Profile' => array(
-						'fields' => array('name')
+						'fields' => array('user_id', 'name')
 					)
 				),
 			)

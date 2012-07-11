@@ -27,7 +27,7 @@ $this->Paginator->options(array(
 			<div class="receipt">
 				<div class="receipt-title core-iconable">
 					<?php
-					echo $payment['Roster']['Involvement']['name'];
+					echo $this->Html->link($payment['Roster']['Involvement']['name'], array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $payment['Roster']['Involvement']['id']));
 					?>
 					<div class="core-icon-container">
 						<?php
@@ -45,9 +45,19 @@ $this->Paginator->options(array(
 					<dl>
 						<?php
 						echo $this->Html->tag('dt', 'Paid By:');
-						echo $this->Html->tag('dd', $payment['Payer']['Profile']['name'].'&nbsp;');
+						if ($this->Permission->check(array('controller' => 'profiles', 'action' => 'view', 'User' => $payment['Payer']['Profile']['user_id']))) {
+							$link = $this->Html->link($payment['Payer']['Profile']['name'], array('controller' => 'profiles', 'action' => 'view', 'User' => $payment['Payer']['Profile']['user_id']));
+						} else {
+							$link = $payment['Payer']['Profile']['name'];
+						}
+						echo $this->Html->tag('dd', $link.'&nbsp;');
 						echo $this->Html->tag('dt', 'Paid For:');
-						echo $this->Html->tag('dd', $payment['User']['Profile']['name'].'&nbsp;');
+						if ($this->Permission->check(array('controller' => 'profiles', 'action' => 'view', 'User' => $payment['User']['Profile']['user_id']))) {
+							$link = $this->Html->link($payment['User']['Profile']['name'], array('controller' => 'profiles', 'action' => 'view', 'User' => $payment['User']['Profile']['user_id']));
+						} else {
+							$link = $payment['User']['Profile']['name'];
+						}
+						echo $this->Html->tag('dd', $link.'&nbsp;');
 						echo $this->Html->tag('dt', 'Date:');
 						echo $this->Html->tag('dd', $payment['Payment']['created'].'&nbsp;');
 						?>
@@ -69,8 +79,8 @@ $this->Paginator->options(array(
 								echo $this->Html->tag('dd', 'xxxxxxxxxxxx'.$payment['Payment']['number']);
 							break;
 						}
-						$this->Html->tag('dt', 'ID:');
-						$this->Html->tag('dd', $payment['Payment']['transaction_id'].'&nbsp;');
+						echo $this->Html->tag('dt', 'ID: ');
+						echo $this->Html->tag('dd', $payment['Payment']['transaction_id'].'&nbsp;');
 						?>
 					</div>
 					<br clear="all" />
