@@ -10,13 +10,6 @@ echo $this->Form->input('id');
 echo $this->Form->input('amount');
 echo $this->Form->input('payment_type_id');
 echo $this->Form->input('number');
-if ($this->data['Payment']['payment_type_id'] == 1) {
-	echo $this->Form->input('transaction_id', array(
-		'label' => 'Transaction ID',
-		'disabled' => true,
-		'type' => 'text'
-	));
-}
 echo $this->Form->input('comment', array(
 	'size' => 100
 ));
