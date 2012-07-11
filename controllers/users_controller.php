@@ -72,18 +72,17 @@ class UsersController extends AppController {
 	function login($username = null) {
 		// don't cache login page so _Tokens don't expire and blackhole
 		$this->disableCache();
-		
-		// check for remember me checkbox
-		if (!empty($this->data) && $this->data['User']['remember_me']) {
-			unset($this->data['User']['remember_me']);
-			$this->Session->delete('Message.auth');
-			$this->Cookie->write('Auth.User', $this->data['User'], true, '+2 weeks');
-		}
 
 		// check for remember me cookie and use that data and reset the cookie
 		$cookie = $this->Cookie->read('Auth.User');
 		if (empty($this->data) && !is_null($cookie)) {
+			$this->Session->delete('Message.auth');
 			$this->data['User'] = $cookie;
+			$this->data['User']['remember_me'] = true;
+		}
+		
+		// check for remember me checkbox
+		if (!empty($this->data) && $this->data['User']['remember_me']) {
 			$this->Cookie->write('Auth.User', $this->data['User'], true, '+2 weeks');
 		}
 		

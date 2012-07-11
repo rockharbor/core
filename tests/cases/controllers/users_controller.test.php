@@ -267,6 +267,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/users/login');
 		$result = $this->Users->Session->read('Auth.User.id');
 		$this->assertEqual($result, 1);
+		$this->assertNull($this->Users->Session->read('Message.auth'));
 		
 		// logout fail with cookie (because of password change)
 		$this->Users->Session->destroy();
@@ -279,6 +280,9 @@ class UsersControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/users/login');
 		$this->assertNull($this->Users->Session->read('Auth'));
 		$this->assertTrue(!empty($this->Users->User->validationErrors));
+		
+		$vars = $this->testAction('/users/dashboard');
+		$this->assertNotNull($this->Users->Session->read('Message.auth'));
 		
 		$this->Users->Session->destroy();
 	}
