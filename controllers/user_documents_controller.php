@@ -41,4 +41,3 @@ class UserDocumentsController extends DocumentsController {
 	}
 	
 }
-?>

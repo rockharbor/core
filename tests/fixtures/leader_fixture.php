@@ -57,4 +57,3 @@ class LeaderFixture extends CakeTestFixture {
 		)
 	);
 }
-?>

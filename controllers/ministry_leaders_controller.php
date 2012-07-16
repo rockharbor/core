@@ -74,4 +74,3 @@ class MinistryLeadersController extends LeadersController {
 	}
 	
 }
-?>

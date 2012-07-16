@@ -51,4 +51,3 @@ if (isset($model)) {
 		$("#AppSettingValue").val(item.id);
 	})');
 }
-?>

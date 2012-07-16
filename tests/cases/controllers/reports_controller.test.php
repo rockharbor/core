@@ -358,4 +358,3 @@ class ReportsControllerTestCase extends CoreTestCase {
 	}
 
 }
-?>

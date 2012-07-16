@@ -316,4 +316,3 @@ class FilterPaginationTestCase extends CoreTestCase {
 
 }
 
-?>

@@ -37,4 +37,3 @@ class ErrorsPanel extends DebugPanel {
 
 }
 
-?>

@@ -66,4 +66,3 @@ class RolesControllerTestCase extends CoreTestCase {
 	}
 
 }
-?>

@@ -80,4 +80,3 @@ $this->Js->buffer('$("#InvolvementSignup").bind("change", function() {
 });');
 $this->Js->buffer('$("#InvolvementTakePayment").change();');
 $this->Js->buffer('$("#InvolvementSignup").change();');
-?>

@@ -52,4 +52,3 @@ class Leader extends AppModel {
 		)
 	);
 }
-?>

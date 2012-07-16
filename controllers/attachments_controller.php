@@ -254,4 +254,3 @@ class AttachmentsController extends AppController {
 	}
 }
 
-?>

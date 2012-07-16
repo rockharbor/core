@@ -29,4 +29,3 @@ class CdpErrorsController extends CoreDebugPanelsAppController {
 
 }
 
-?>

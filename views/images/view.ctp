@@ -5,4 +5,3 @@ if (!empty($image)) {
 	echo $this->Media->embed($path, array('restrict' => 'image'));
 }
 
-?>

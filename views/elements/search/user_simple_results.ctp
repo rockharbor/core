@@ -43,4 +43,3 @@ $this->MultiSelect->create();
 <?php 
 echo $this->element('pagination');
 echo $this->MultiSelect->end();
-?>

@@ -632,4 +632,3 @@ class DateTestCase extends CoreTestCase {
 	}
 
 }
-?>

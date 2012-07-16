@@ -190,4 +190,3 @@ class PaymentsControllerTestCase extends CoreTestCase {
 	}
 
 }
-?>

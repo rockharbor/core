@@ -6,4 +6,4 @@
 Username: <strong><?php echo $username; ?></strong><br />
 Password: <strong><?php echo $password; ?></strong>
 </p>
-<?php endif; ?>
+<?php endif; 

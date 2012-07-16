@@ -42,4 +42,3 @@ class LogsController extends AppController {
 		$this->set('logs', $this->paginate());
 	}
 }
-?>

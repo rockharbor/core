@@ -232,4 +232,3 @@ class AddressesController extends AppController {
 		$this->redirect(array('action' => 'index', $this->model => $this->modelId));
 	}
 }
-?>

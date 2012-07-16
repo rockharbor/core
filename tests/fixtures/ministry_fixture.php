@@ -101,4 +101,3 @@ class MinistryFixture extends CakeTestFixture {
 		return $success;
 	}
 }
-?>

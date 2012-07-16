@@ -40,4 +40,3 @@ $icon = $this->Html->tag('span', '&nbsp;', array('class' => 'core-icon icon-uplo
 echo $this->Form->end($icon.$title);
 
 $this->Js->buffer('CORE.ajaxUpload("Upload'.$model.'Form'.$uid.'", "'.$update.'");');
-?>

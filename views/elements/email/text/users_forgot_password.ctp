@@ -4,4 +4,4 @@ Here's your new password:
 <?php echo $password; ?>
 
 In case you forgot, your username is:
-<?php echo $username; ?>
+<?php echo $username; 

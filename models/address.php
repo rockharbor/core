@@ -165,4 +165,3 @@ class Address extends AppModel {
 		$this->saveField('primary', true);
 	}
 }
-?>

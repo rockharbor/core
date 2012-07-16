@@ -79,4 +79,3 @@ class PaymentFixture extends CakeTestFixture {
 		),
 	);
 }
-?>

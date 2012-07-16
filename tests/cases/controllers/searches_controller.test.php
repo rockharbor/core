@@ -539,4 +539,3 @@ class SearchesControllerTestCase extends CoreTestCase {
 	}
 
 }
-?>

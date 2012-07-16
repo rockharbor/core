@@ -50,4 +50,3 @@ class PaymentTypeRecords extends Records {
 
 }
 
-?>

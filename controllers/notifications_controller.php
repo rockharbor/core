@@ -186,4 +186,3 @@ class NotificationsController extends AppController {
 		$this->redirect(array('action' => 'index'));
 	}
 }
-?>

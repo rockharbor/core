@@ -280,4 +280,3 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 	}
 	
 }
-?>

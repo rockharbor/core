@@ -44,4 +44,3 @@ class InvolvementTypeFixture extends CakeTestFixture {
 		),
 	);
 }
-?>

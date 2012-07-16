@@ -44,4 +44,3 @@ class SchoolFixture extends CakeTestFixture {
 		),
 	);
 }
-?>

@@ -123,4 +123,3 @@ class MergeRequestsControllerTestCase extends CoreTestCase {
 	}
 
 }
-?>

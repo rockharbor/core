@@ -352,4 +352,3 @@ document.body.appendChild(script);
 	}
 }
 
-?>

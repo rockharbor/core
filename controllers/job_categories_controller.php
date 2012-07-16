@@ -40,4 +40,3 @@ class JobCategoriesController extends SimpleCrudsController {
 	}
 
 }
-?>

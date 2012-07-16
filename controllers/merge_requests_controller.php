@@ -165,4 +165,3 @@ class MergeRequestsController extends AppController {
 	}
 
 }
-?>

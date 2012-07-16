@@ -36,4 +36,3 @@ class InvolvementTypeRecords extends Records {
 
 }
 
-?>

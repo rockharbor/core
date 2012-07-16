@@ -1002,4 +1002,3 @@ class User extends AppModel {
 		return trim($unencrypted_data);
 	}
 }
-?>

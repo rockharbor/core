@@ -79,4 +79,3 @@ class InvolvementLeadersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, array(1, 3, 7));
 	}
 }
-?>

@@ -134,4 +134,3 @@ class Comment extends AppModel {
 		return $this->canDelete($userId, $id);
 	}
 }
-?>

@@ -12,4 +12,3 @@ foreach ($results as $result) {
 }
 echo $this->Js->object($acResults);
 
-?>

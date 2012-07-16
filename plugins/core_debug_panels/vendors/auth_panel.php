@@ -129,4 +129,3 @@ class AuthPanel extends DebugPanel {
 
 }
 
-?>

@@ -71,4 +71,3 @@ class PagesControllerTestCase extends CoreTestCase {
 
 }
 
-?>

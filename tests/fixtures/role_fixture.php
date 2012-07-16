@@ -41,4 +41,3 @@ class RoleFixture extends CakeTestFixture {
 		),
 	);
 }
-?>

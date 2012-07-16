@@ -12,4 +12,3 @@ foreach ($rows as $row) {
 
 echo $this->Csv->render(false);
 
-?>

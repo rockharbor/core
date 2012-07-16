@@ -55,4 +55,3 @@ class GroupTestCase extends CoreTestCase {
 	}
 
 }
-?>

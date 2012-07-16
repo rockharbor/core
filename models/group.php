@@ -111,4 +111,3 @@ class Group extends AppModel {
 		return in_array($groupId, $groups);
 	}
 }
-?>

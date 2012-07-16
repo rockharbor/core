@@ -65,4 +65,3 @@ class MergeRequest extends AppModel {
 	);
 
 }
-?>

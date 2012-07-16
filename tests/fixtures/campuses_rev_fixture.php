@@ -16,4 +16,3 @@ class CampusesRevFixture extends CakeTestFixture {
 	var $records = array(
 	);
 }
-?>

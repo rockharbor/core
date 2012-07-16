@@ -46,4 +46,3 @@ $this->GoogleMap->zoom = 8;
 $this->GoogleMap->addAddresses($addresses);
 echo $this->GoogleMap->end();
 
-?>

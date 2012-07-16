@@ -375,4 +375,3 @@ class FormattingHelperTestCase extends CoreTestCase {
 	}
 
 }
-?>

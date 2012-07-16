@@ -58,4 +58,4 @@ $this->Paginator->options(array(
 	</table>
 	<?php echo $this->element('pagination'); ?>
 </div>
-<?php echo $this->Html->link('New Region', array('action' => 'add'), array('rel' => 'modal-parent', 'class' => 'button')); ?>
+<?php echo $this->Html->link('New Region', array('action' => 'add'), array('rel' => 'modal-parent', 'class' => 'button')); 

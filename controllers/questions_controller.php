@@ -133,4 +133,3 @@ class QuestionsController extends AppController {
 		$this->redirect(array('action' => 'index'));
 	}
 }
-?>

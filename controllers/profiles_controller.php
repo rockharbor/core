@@ -130,4 +130,3 @@ class ProfilesController extends AppController {
 	}
 
 }
-?>

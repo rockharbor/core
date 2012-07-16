@@ -47,4 +47,3 @@ $this->Js->buffer('CORE.tabs("profile_tabs",
 		alwaysAllowSubmit: true
 	}
 );');
-?>

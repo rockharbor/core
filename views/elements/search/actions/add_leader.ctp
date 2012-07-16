@@ -35,4 +35,3 @@ if ($named['leader_model'] == 'Involvement') {
 
 echo $this->element('multiselect', compact('links', 'colCount'));
 
-?>

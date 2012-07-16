@@ -125,4 +125,3 @@ class SysEmail extends AppModel {
 		}
 	}
 }
-?>

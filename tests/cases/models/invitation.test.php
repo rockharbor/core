@@ -30,4 +30,3 @@ class InvitationTestCase extends CoreTestCase {
 	}
 
 }
-?>

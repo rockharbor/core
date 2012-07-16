@@ -169,4 +169,3 @@ class ConfirmBehaviorTestCase extends CoreTestCase {
 
 
 }
-?>

@@ -36,4 +36,3 @@ if (!$model) {
 
 echo $this->Js->object(compact('phrase'));
 
-?>

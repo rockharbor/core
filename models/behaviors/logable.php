@@ -503,4 +503,3 @@ class LogableBehavior extends ModelBehavior
     	$this->Log->save(null, array('validate'=>false, 'callbacks' => false)); 	
     }
 }
-?>

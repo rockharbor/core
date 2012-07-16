@@ -461,4 +461,3 @@ class RosterTestCase extends CoreTestCase {
 	}
 
 }
-?>

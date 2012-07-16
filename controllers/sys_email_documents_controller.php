@@ -41,4 +41,3 @@ class SysEmailDocumentsController extends DocumentsController {
 	}
 	
 }
-?>

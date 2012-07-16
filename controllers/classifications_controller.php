@@ -41,4 +41,3 @@ class ClassificationsController extends SimpleCrudsController {
 	}
 
 }
-?>

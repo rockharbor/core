@@ -163,4 +163,3 @@ class AlertsControllerTestCase extends CoreTestCase {
 	}
 	
 }
-?>

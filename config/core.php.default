@@ -307,4 +307,3 @@
 		'duration' => 3600,
 		'serialize' => true
 	));
-?>

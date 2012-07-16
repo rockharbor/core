@@ -41,4 +41,3 @@ class PaymentTypesController extends SimpleCrudsController {
 	}
 
 }
-?>

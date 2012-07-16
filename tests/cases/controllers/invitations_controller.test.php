@@ -69,4 +69,3 @@ class InvitationsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($userInvitesBefore-$userInvitesAfter, 1);
 	}
 }
-?>

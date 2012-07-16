@@ -219,4 +219,3 @@ class CreditCard extends AppModel {
 		return false;
 	}
 }
-?>

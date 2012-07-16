@@ -42,4 +42,3 @@ class CampusLeadersController extends LeadersController {
 	
 }
 
-?>

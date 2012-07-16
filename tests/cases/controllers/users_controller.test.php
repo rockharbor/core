@@ -678,4 +678,3 @@ class UsersControllerTestCase extends CoreTestCase {
 	}
 
 }
-?>

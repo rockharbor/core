@@ -256,4 +256,3 @@ $this->Js->buffer('CORE.tabs("roster_tabs",
 	}
 );');
 $this->Js->buffer('CORE_roster.init()');
-?>

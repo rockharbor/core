@@ -397,4 +397,3 @@ class SysEmailsController extends AppController {
 		return $users;
 	}
 }	
-?>

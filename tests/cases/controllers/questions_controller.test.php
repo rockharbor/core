@@ -118,4 +118,3 @@ class QuestionsControllerTestCase extends CoreTestCase {
 	}
 
 }
-?>

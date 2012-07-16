@@ -28,4 +28,3 @@ class RolesRosterFixture extends CakeTestFixture {
 		)
 	);
 }
-?>

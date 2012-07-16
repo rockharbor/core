@@ -78,4 +78,3 @@ class UserFixture extends CakeTestFixture {
 		)
 	);
 }
-?>

@@ -41,4 +41,3 @@ class QuestionFixture extends CakeTestFixture {
 		)
 	);
 }
-?>

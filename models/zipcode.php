@@ -15,4 +15,3 @@ class Zipcode extends AppModel {
 	);
 
 }
-?>

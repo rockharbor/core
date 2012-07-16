@@ -154,4 +154,3 @@ class CommentsController extends AppController {
 		$this->redirect(array('action' => 'index', 'User' => $viewUser));
 	}
 }
-?>

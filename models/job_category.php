@@ -43,4 +43,3 @@ class JobCategory extends AppModel {
 	);
 
 }
-?>

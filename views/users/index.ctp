@@ -78,4 +78,3 @@ while ($i > 0) {
 
 echo $this->Html->scriptEnd();
 
-?>

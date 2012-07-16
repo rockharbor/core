@@ -140,4 +140,3 @@ class AttachmentFixture extends CakeTestFixture {
 		)
 	);
 }
-?>

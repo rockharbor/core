@@ -866,4 +866,3 @@ class UserTestCase extends CoreTestCase {
 	}
 
 }
-?>

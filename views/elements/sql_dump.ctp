@@ -51,4 +51,4 @@ foreach ($sqlLogs as $source => $logInfo):
 	endforeach;
 ?>
 </tbody></table>
-<?php endforeach; ?>
+<?php endforeach; 

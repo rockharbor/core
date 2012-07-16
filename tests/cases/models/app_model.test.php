@@ -501,4 +501,3 @@ class AppModelTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 }
-?>

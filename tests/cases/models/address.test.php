@@ -85,4 +85,3 @@ class AddressTestCase extends CoreTestCase {
 	}
 
 }
-?>

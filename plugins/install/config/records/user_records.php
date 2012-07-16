@@ -29,4 +29,3 @@ class UserRecords extends Records {
 	}
 }
 
-?>

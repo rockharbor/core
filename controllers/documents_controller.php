@@ -54,4 +54,3 @@ class DocumentsController extends AttachmentsController {
 	}
 
 }
-?>

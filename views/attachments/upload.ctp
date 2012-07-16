@@ -10,4 +10,3 @@ if (count($attachments) < (Core::read($settingName) !== null ? Core::read($setti
 		'type' => $attachmentModel
 	));
 }
-?>

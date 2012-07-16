@@ -50,4 +50,3 @@ class RegionsController extends SimpleCrudsController {
 	}
 
 }
-?>

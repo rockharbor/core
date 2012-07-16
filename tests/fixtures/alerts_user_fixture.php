@@ -19,4 +19,3 @@ class AlertsUserFixture extends CakeTestFixture {
 		)
 	);
 }
-?>

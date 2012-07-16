@@ -39,4 +39,3 @@ class ClassificationRecords extends Records {
 
 }
 
-?>

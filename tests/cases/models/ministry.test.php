@@ -63,4 +63,3 @@ class MinistryTestCase extends CoreTestCase {
 	}
 
 }
-?>

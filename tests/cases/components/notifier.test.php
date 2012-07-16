@@ -374,4 +374,3 @@ class NotifierTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 }
-?>

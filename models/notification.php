@@ -48,4 +48,3 @@ class Notification extends AppModel {
 		'body' => 'stripScripts'
 	);
 }
-?>

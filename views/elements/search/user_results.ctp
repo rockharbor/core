@@ -130,4 +130,3 @@ echo $this->MultiSelect->end();
 <p>No results</p>
 <?php 
 }
-?>

@@ -102,4 +102,3 @@ class PaymentOptionsControllerTestCase extends CoreTestCase {
 	}
 
 }
-?>

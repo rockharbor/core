@@ -41,4 +41,3 @@ class UserAddressesController extends AddressesController {
 	}
 
 }
-?>

@@ -122,4 +122,3 @@ class GroupRecords extends Records {
 	);
 
 }
-?>

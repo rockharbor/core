@@ -420,4 +420,3 @@ class ReportsController extends AppController {
 		$this->set(compact('results', 'model'));
 	}
 }
-?>

@@ -94,4 +94,3 @@ class ImagesController extends AttachmentsController {
 	}
 
 }
-?>

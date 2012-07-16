@@ -321,4 +321,3 @@ class Ministry extends AppModel {
 		return $ids;
 	}
 }
-?>

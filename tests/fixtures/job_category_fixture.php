@@ -33,4 +33,3 @@ class JobCategoryFixture extends CakeTestFixture {
 		),
 	);
 }
-?>

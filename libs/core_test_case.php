@@ -342,4 +342,3 @@ class CoreTestCase extends CakeTestCase {
 
 }
 
-?>

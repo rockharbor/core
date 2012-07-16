@@ -125,4 +125,3 @@ class AddressesControllerTestCase extends CoreTestCase {
 	}
 
 }
-?>

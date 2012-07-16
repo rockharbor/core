@@ -31,4 +31,3 @@ class CommentTestCase extends CoreTestCase {
 	}
 
 }
-?>

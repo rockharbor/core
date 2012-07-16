@@ -54,4 +54,3 @@ class CommentFixture extends CakeTestFixture {
 		)
 	);
 }
-?>

@@ -91,4 +91,3 @@ class QueueFixture extends CakeTestFixture {
 		),
 	);
 }
-?>

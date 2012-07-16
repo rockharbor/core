@@ -535,4 +535,3 @@ class FormattingHelper extends AppHelper {
 
 }
 
-?>

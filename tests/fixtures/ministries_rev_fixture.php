@@ -20,4 +20,3 @@ class MinistriesRevFixture extends CakeTestFixture {
 	var $records = array(
 	);
 }
-?>

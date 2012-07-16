@@ -508,4 +508,3 @@ class InvolvementsController extends AppController {
 		$this->redirect(array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $ministry['Involvement']['ministry_id']));
 	}
 }
-?>

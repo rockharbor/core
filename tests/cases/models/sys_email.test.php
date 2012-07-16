@@ -58,4 +58,3 @@ class SysEmailTestCase extends CoreTestCase {
 	}
 
 }
-?>

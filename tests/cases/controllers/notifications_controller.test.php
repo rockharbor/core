@@ -124,4 +124,3 @@ class NotificationsControllerTestCase extends CoreTestCase {
 	}
 
 }
-?>

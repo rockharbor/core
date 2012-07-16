@@ -149,4 +149,3 @@ class GroupFixture extends CakeTestFixture {
 		)
 	);
 }
-?>

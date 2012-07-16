@@ -69,4 +69,3 @@ class InvolvementTestCase extends CoreTestCase {
 	}
 
 }
-?>

@@ -70,4 +70,3 @@ class School extends AppModel {
 		return $queryData;
 	}
 }
-?>

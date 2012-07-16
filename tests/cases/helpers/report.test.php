@@ -534,4 +534,3 @@ class ReportHelperTestCase extends CoreTestCase {
 	}
 
 }
-?>

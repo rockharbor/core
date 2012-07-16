@@ -40,4 +40,3 @@ class InvolvementTypesController extends SimpleCrudsController {
 	}
 
 }
-?>

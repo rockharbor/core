@@ -294,4 +294,3 @@ class Household extends AppModel {
 		return $success;
 	}
 }
-?>

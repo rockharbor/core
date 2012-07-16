@@ -157,4 +157,3 @@ class HouseholdTestCase extends CoreTestCase {
 	}
 
 }
-?>

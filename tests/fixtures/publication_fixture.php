@@ -33,4 +33,3 @@ class PublicationFixture extends CakeTestFixture {
 		),
 	);
 }
-?>

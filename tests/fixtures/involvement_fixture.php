@@ -153,4 +153,3 @@ class InvolvementFixture extends CakeTestFixture {
 		),
 	);
 }
-?>

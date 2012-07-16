@@ -74,4 +74,3 @@ class Question extends AppModel {
 	);
 
 }
-?>

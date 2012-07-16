@@ -398,4 +398,3 @@ class MinistriesController extends AppController {
 		}
 	}
 }
-?>

@@ -40,4 +40,3 @@ if (isset($addresses)) {
 
 	$this->Js->buffer('$("#DefaultAddressId").change();');
 }
-?>

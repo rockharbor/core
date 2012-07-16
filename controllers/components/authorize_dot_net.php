@@ -236,4 +236,3 @@ class AuthorizeDotNetComponent extends Object {
 	}
 }
 
-?>

@@ -26,4 +26,3 @@ if (!empty($results)) {
 <p>No results</p>
 <?php 
 }
-?>

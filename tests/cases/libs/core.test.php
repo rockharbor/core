@@ -336,4 +336,3 @@ class CoreConfigureTestCase extends CoreTestCase {
 	}
 }
 
-?>

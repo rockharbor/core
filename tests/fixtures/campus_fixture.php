@@ -33,4 +33,3 @@ class CampusFixture extends CakeTestFixture {
 		),
 	);
 }
-?>

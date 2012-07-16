@@ -51,4 +51,4 @@ echo $this->Form->end('Filter');
 	</table>
 </div>
 <?php echo $this->element('pagination'); ?>
-<?php echo $this->Html->link('New School', array('action' => 'add'), array('rel' => 'modal-parent', 'class' => 'button')); ?>
+<?php echo $this->Html->link('New School', array('action' => 'add'), array('rel' => 'modal-parent', 'class' => 'button')); 

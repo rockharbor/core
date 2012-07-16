@@ -37,4 +37,3 @@ class PaginateTestFixture extends CakeTestFixture {
 		)
 	);
 }
-?>

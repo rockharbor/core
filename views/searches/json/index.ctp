@@ -29,4 +29,3 @@ foreach ($involvements as $involvement) {
 }
 echo json_encode($acResults);
 
-?>

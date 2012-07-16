@@ -44,4 +44,3 @@ class HouseholdMember extends AppModel {
 	);
 
 }
-?>

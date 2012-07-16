@@ -166,4 +166,3 @@ class Campus extends AppModel {
 		return array_unique($ids);
 	}
 }
-?>

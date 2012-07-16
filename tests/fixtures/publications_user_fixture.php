@@ -29,4 +29,3 @@ class PublicationsUserFixture extends CakeTestFixture {
 		)
 	);
 }
-?>

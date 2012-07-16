@@ -92,4 +92,3 @@ class Invitation extends AppModel {
 		return Set::extract('/Invitation/id', $invitations);
 	}
 }
-?>

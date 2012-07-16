@@ -265,4 +265,3 @@ class Roster extends AppModel {
 		return $roster;
 	}
 }
-?>

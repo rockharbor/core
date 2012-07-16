@@ -353,4 +353,3 @@
 <?php
 $this->Js->buffer('CORE.register("households", "household", "'.Router::url(array('controller' => 'households', 'User' => $profile['User']['id'])).'");');
 $this->Js->buffer('CORE.register("payments", "payments", "'.Router::url(array('controller' => 'payments', 'User' => $profile['User']['id'])).'");');
-?>

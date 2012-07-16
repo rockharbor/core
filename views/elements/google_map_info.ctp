@@ -28,4 +28,3 @@ echo '<br>';
 echo $street;
 echo '<br>';
 echo $city.', '.$state.' '.$zip;
-?>

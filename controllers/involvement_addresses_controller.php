@@ -41,4 +41,3 @@ class InvolvementAddressesController extends AddressesController {
 	}
 
 }
-?>

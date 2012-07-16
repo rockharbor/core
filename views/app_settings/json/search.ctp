@@ -11,4 +11,3 @@ foreach ($results as $id => $label) {
 }
 echo json_encode($acResults);
 
-?>

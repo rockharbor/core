@@ -149,4 +149,3 @@ class Document extends MediaAppModel {
 		return $path;
 	}
 }
-?>

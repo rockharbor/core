@@ -226,4 +226,3 @@ class DatesControllerTestCase extends CoreTestCase {
 	}
 
 }
-?>

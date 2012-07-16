@@ -340,4 +340,3 @@ class Date extends AppModel {
 		return $dates;
 	}
 }
-?>

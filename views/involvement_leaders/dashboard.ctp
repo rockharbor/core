@@ -127,4 +127,3 @@ $this->Paginator->options(array(
 </div>
 <?php
 $this->MultiSelect->end();
-?>

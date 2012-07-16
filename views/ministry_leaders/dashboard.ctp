@@ -89,4 +89,3 @@
 </div>
 <?php
 $this->MultiSelect->end();
-?>

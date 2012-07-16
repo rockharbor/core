@@ -355,4 +355,3 @@ class PaymentsController extends AppController {
 		));
 	}
 }
-?>

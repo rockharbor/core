@@ -406,4 +406,3 @@ class MinistriesControllerTestCase extends CoreTestCase {
 	}
 
 }
-?>

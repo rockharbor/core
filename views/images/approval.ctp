@@ -23,4 +23,4 @@ foreach ($images as $image):
 	</div>
 <?php endforeach; ?>
 </div>
-<?php echo $this->element('pagination'); ?>
+<?php echo $this->element('pagination'); 

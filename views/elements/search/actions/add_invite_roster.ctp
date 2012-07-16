@@ -30,4 +30,3 @@ $links = array(
 );
 
 echo $this->element('multiselect', compact('links', 'colCount'));
-?>

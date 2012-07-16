@@ -78,4 +78,3 @@ class ProfileTestCase extends CoreTestCase {
 	}
 
 }
-?>

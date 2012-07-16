@@ -67,4 +67,3 @@ class VisitHistoryPanel extends DebugPanel {
 
 }
 
-?>

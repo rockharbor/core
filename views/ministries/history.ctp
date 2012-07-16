@@ -75,4 +75,3 @@ echo $this->Js->link('Deny',
 
 <?php
 }
-?>

@@ -26,4 +26,3 @@ class CampusRecords extends Records {
 
 }
 
-?>

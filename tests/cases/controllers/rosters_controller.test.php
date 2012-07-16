@@ -749,4 +749,3 @@ class RostersControllerTestCase extends CoreTestCase {
 	}
 
 }
-?>

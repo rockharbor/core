@@ -66,4 +66,3 @@ class AppSetting extends AppModel {
  */
 	var $sanitize = false;
 }
-?>

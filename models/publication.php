@@ -52,4 +52,3 @@ class Publication extends AppModel {
 		'User'
 	);
 }
-?>

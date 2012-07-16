@@ -41,4 +41,3 @@ class InvolvementDocumentsController extends DocumentsController {
 	}
 	
 }
-?>

@@ -2,4 +2,3 @@
 class CoreDebugPanelsAppController extends AppController {
 	
 }
-?>

@@ -2,4 +2,3 @@
 
 echo $this->Js->value($response);
 
-?>

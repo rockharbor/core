@@ -220,4 +220,3 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 
 <?php
 $this->Js->buffer('CORE_involvement.setup()');
-?>

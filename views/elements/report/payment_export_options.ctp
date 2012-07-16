@@ -34,4 +34,3 @@ echo $this->Form->input('Export.Payment.transaction_id', array(
 	'type' => 'checkbox',
 	'label' => 'Transaction Id'
 ));
-?>

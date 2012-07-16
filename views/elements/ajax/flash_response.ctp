@@ -30,4 +30,3 @@ if (isset($errors) && count($errors) > 0) {
 	));	
 }
 
-?>

@@ -180,4 +180,3 @@ class Image extends AppModel {
 		return $path;
 	}
 }
-?>

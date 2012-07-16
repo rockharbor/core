@@ -14,4 +14,3 @@ echo $this->Form->input('forgotten', array(
 ));
 echo $this->Js->submit('Submit', $defaultSubmitOptions);
 echo $this->Form->end();
-?>

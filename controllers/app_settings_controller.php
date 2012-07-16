@@ -168,4 +168,3 @@ class AppSettingsController extends AppController {
 }
 
 
-?>

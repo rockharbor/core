@@ -34,4 +34,3 @@ class MinistryLeadersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, array(1,2));
 	}
 }
-?>

@@ -164,4 +164,3 @@ class GeoCoordinateBehavior extends ModelBehavior {
 		return $data;
 	}
 }
-?>

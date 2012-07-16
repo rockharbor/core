@@ -23,4 +23,3 @@ class InvitationsUserFixture extends CakeTestFixture {
 		)
 	);
 }
-?>

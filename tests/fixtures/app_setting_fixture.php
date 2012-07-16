@@ -198,4 +198,3 @@ class AppSettingFixture extends CakeTestFixture {
 		),
 	);
 }
-?>

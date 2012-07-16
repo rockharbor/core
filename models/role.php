@@ -97,4 +97,3 @@ class Role extends AppModel {
 		return Set::extract('/Role/id', $roles);
 	}
 }
-?>

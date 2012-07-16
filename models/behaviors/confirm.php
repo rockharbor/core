@@ -188,4 +188,3 @@ class ConfirmBehavior extends ModelBehavior {
 	}
 
 }
-?>

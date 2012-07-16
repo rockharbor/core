@@ -60,4 +60,3 @@ class SchoolTestCase extends CoreTestCase {
 	}
 
 }
-?>

@@ -88,4 +88,3 @@ class InvitationsController extends AppController {
 		$this->redirect(array('action' => 'index'));
 	}
 }
-?>

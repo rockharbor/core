@@ -55,4 +55,3 @@ echo $this->Js->link('Add comment',
 		)
 );
 
-?>

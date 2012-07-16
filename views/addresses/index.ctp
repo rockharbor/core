@@ -79,4 +79,3 @@ if (count($addresses) == 0 || $model == 'User') {
 	echo $this->Html->link('Add address', array('action' => 'add', $model => $modelId), array('class' => 'button', 'rel' => 'modal'));
 }
 
-?>

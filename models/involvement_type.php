@@ -45,4 +45,3 @@ class InvolvementType extends AppModel {
 	);
 
 }
-?>

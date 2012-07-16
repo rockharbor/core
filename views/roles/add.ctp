@@ -15,4 +15,3 @@ echo $this->Js->submit('Add', $defaultSubmitOptions);
 </fieldset>
 <?php
 echo $this->Form->end();
-?>

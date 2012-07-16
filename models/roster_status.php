@@ -41,4 +41,3 @@ class RosterStatus extends AppModel {
 		'Roster'
 	);
 }
-?>

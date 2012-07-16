@@ -97,4 +97,3 @@ class AppSettingsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($this->AppSettings->AppSetting->field('value'), 1);
 	}
 }
-?>

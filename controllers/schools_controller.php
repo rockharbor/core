@@ -62,4 +62,3 @@ class SchoolsController extends SimpleCrudsController {
 		$this->set('schools', $this->FilterPagination->paginate());
 	}
 }
-?>

@@ -66,4 +66,3 @@ class Payment extends AppModel {
 		'PaymentType'
 	);
 }
-?>

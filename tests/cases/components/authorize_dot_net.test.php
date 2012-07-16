@@ -157,4 +157,3 @@ class AuthorizeDotNetTestCase extends CoreTestCase {
 	}
 
 }
-?>

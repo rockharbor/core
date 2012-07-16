@@ -502,4 +502,3 @@ class SearchesController extends AppController {
 		}
 	}
 }
-?>

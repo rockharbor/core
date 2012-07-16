@@ -248,4 +248,3 @@ class CampusesController extends AppController {
 	}
 
 }
-?>

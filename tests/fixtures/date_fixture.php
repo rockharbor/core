@@ -294,4 +294,3 @@ class DateFixture extends CakeTestFixture {
 		)
 	);
 }
-?>
