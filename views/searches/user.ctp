@@ -40,12 +40,6 @@
 			echo $this->Form->input('Profile.first_name');
 			echo $this->Form->input('Profile.last_name');
 			echo $this->Form->input('Profile.email');
-			echo $this->Form->input('Publication', array(
-				'multiple' => 'checkbox',
-				'options' => $publications,
-				'label' => 'Subscribed to (These will always match any.)',
-				'empty' => false
-			));
 			echo $this->Form->input('Profile.classification_id');
 			echo $this->Form->input('Profile.gender', array(
 				'type' => 'select',

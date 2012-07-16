@@ -53,15 +53,6 @@ class AppSettingFixture extends CakeTestFixture {
 			'type' => 'html'
 		),
 		array(
-			'id' => 9,
-			'name' => 'general.ebulletin',
-			'description' => 'The publication that is the main church ebulletin.',
-			'created' => '2010-03-18 00:00:00',
-			'modified' => '2010-06-02 12:25:22',
-			'value' => '1',
-			'type' => 'Publication'
-		),
-		array(
 			'id' => 10,
 			'name' => 'development.core_developer',
 			'description' => 'The main CORE developer. (App Setting test.)',

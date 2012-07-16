@@ -483,7 +483,6 @@ class SearchesController extends AppController {
 		}
 
 		$results = $this->FilterPagination->paginate();
-		$publications = $this->User->Publication->find('list');
 		$campuses = $this->User->Profile->Campus->find('list');
 		$regions = $this->User->Address->Zipcode->Region->find('list');
 		$classifications = $this->User->Profile->Classification->find('list');
@@ -491,7 +490,7 @@ class SearchesController extends AppController {
 		$this->set('middleSchools', $this->User->Profile->MiddleSchool->find('list'));
 		$this->set('highSchools', $this->User->Profile->HighSchool->find('list'));
 		$this->set('colleges', $this->User->Profile->College->find('list'));
-		$this->set(compact('results', 'publications', 'regions', 'classifications', 'campuses'));
+		$this->set(compact('results', 'regions', 'classifications', 'campuses'));
 
 		// pagination request
 		if (!empty($this->data) || isset($this->params['named']['page'])) {

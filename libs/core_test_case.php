@@ -82,8 +82,6 @@ class CoreTestCase extends CakeTestCase {
 		'app.payment_option',
 		'app.payment_type',
 		'app.profile',
-		'app.publication',
-		'app.publications_user',
 		'app.question',
 		'app.queue',
 		'app.region',

@@ -11,7 +11,7 @@ class AppSettingsControllerTestCase extends CoreTestCase {
 		parent::startTest($method);
 		Router::parseExtensions('json');
 		
-		$this->loadFixtures('AppSetting', 'Publication', 'User');
+		$this->loadFixtures('AppSetting', 'User');
 		$this->AppSettings =& new TestAppSettingsController();
 		$this->AppSettings->__construct();
 		$this->AppSettings->constructClasses();

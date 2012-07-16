@@ -44,13 +44,6 @@ class AppSettingRecords extends Records {
 			'type' => 'html'
 		),
 		array(
-			'id' => 5,
-			'name' => 'general.ebulletin',
-			'description' => 'The publication that is the main church ebulletin.',
-			'value' => '1',
-			'type' => 'Publication'
-		),
-		array(
 			'id' => 6,
 			'name' => 'notifications.site_email',
 			'description' => 'The system email address. Used as a fallback for any non-customized email addresses.',
