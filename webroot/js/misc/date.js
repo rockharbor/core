@@ -43,6 +43,11 @@ CORE_date.setup = function() {
 
 	$('#DatePermanent').bind('change', function() {
 		this.checked ? $('#end_date').hide() : $('#end_date').show();
+		if (this.checked) {
+			$('#DateEndDateYear').val($('#DateStartDateYear').val());
+			$('#DateEndDateMonth').val($('#DateStartDateMonth').val());
+			$('#DateEndDateDay').val($('#DateStartDateDay').val());
+		}
 	});
 
 	$('#DateAllDay').bind('change', function() {
