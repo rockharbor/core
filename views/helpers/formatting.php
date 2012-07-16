@@ -90,7 +90,11 @@ class FormattingHelper extends AppHelper {
 		// if not recurring, return simple!
 		if (!$date['Date']['recurring']) {
 			if ($startDate == $endDate && !$date['Date']['all_day']) {
-				$readable = $startDate.' from '.$startTime.' to '.$endTime;
+				if ($startTime == $endTime) {
+					$readable = $startDate.' @ '.$startTime;
+				} else {
+					$readable = $startDate.' from '.$startTime.' to '.$endTime;
+				}
 			} else if ($date['Date']['all_day']) {
 				if ($startDate == $endDate) {
 					$readable = $startDate.' all day';
@@ -145,56 +149,46 @@ class FormattingHelper extends AppHelper {
 			if (empty($date['Date']['frequency'])) {
 				$freq = '';
 			}
-			$readable = 'Every '.$freq.$type.' ';
+			$readable = 'Every '.$freq.$type;
 
 			if ($on != '') {
-				$readable .= 'on '.$on.' ';
+				$readable .= ' on '.$on;
 			}
 
 			if (!$date['Date']['all_day'] && $date['Date']['recurrance_type'] != 'h') {
-				$readable .= 'from '.$startTime.' to '.$endTime.' ';
+				$readable .= ' from '.$startTime.' to '.$endTime;
 			}
 
 			if ($date['Date']['recurrance_type'] != 'y') {
-				$readable .= 'starting ';
+				$readable .= ' starting';
 			} else {
-				$readable .= 'on ';
+				$readable .= ' on';
 			}
 		}
 
-		$readable .= $startDate.' ';
+		$readable .= ' '.$startDate;
 
 		$fromorat = '';
-
-		($startDate == $endDate && !$date['Date']['permanent']) ? $fromorat = 'from' : $fromorat = '@';
+		($startDate !== $endDate && $startTime !== $endTime && !$date['Date']['permanent']) ? $fromorat = 'from' : $fromorat = '@';
 
 		if (!$date['Date']['all_day'] && (!$date['Date']['recurring'] || $date['Date']['recurrance_type'] == 'h')) {
-			$readable .= $fromorat.' '.$startTime.' ';
-		} else if ($date['Date']['all_day']) {
-			//$readable .= 'all day';
+			$readable .= ' '.$fromorat.' '.$startTime.' ';
 		}
 
-		$between = ($startDate == $endDate) ? '' : 'until ';
+		if ($startDate != $endDate) {
+			$readable .= ' until '.$endDate;
+		}
 
 		if (!$date['Date']['all_day']) {
 			if ($fromorat == 'from') {
-				$fromorat = 'to ';
-			}
-			$readable .= $between;
-
-			if ($startDate != $endDate) {
-				$readable .= $endDate;
+				$fromorat = ' to';
 			}
 
 			if (!$date['Date']['all_day'] && (!$date['Date']['recurring'] || $date['Date']['recurrance_type'] == 'h')) {
 				$readable .= ' '.$fromorat.' '.$endTime;
 			}
 		} else {
-			$readable .= $between;
-			if ($startDate != $endDate) {
-				$readable .= $endDate.' ';
-			}
-			$readable .= 'all day';
+			$readable .= ' all day';
 		}
 
 		return $readable;

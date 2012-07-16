@@ -136,7 +136,7 @@ CORE_date.setup = function() {
 CORE_date.makeHumanReadable = function(settings) {	
 	var months = new Array('','January','February','March','April','May','June','July','August','September','October','November','December');
 	var weekdays = new Array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
-	var types = {h:'hourly', d:'daily', w:'weekly', m:'monthly', y:'yearly'};
+	var types = {h:'hour', d:'day', w:'week', md:'month', mw:'month', y:'year'};
 	
 	var readable = '';
 	settings.startDate = settings.startDate.split('-');	
@@ -163,7 +163,11 @@ CORE_date.makeHumanReadable = function(settings) {
 	// if not recurring, return simple!
 	if (!settings.recurring) {
 		if (startDate == endDate && !settings.allday) {
-			readable = startDate+' from '+startTime+' to '+endTime;
+			if (startTime == endTime) {
+				readable = startDate+' @ '+startTime;
+			} else {
+				readable = startDate+' from '+startTime+' to '+endTime;
+			}
 		} else if (settings.allday) {
 			if (startDate == endDate) {
 				readable = startDate+' all day';
@@ -177,25 +181,7 @@ CORE_date.makeHumanReadable = function(settings) {
 		return readable;
 	}	
 	
-	var type = '';
-	switch(settings.type) {
-		case 'h':
-		type = 'hour';
-		break;
-		case 'd':
-		type = 'day';
-		break;
-		case 'w':
-		type = 'week';
-		break;
-		case 'md':
-		case 'mw':
-		type = 'month';
-		break;
-		case 'y':
-		type = 'year';
-		break;
-	}
+	var type = types[settings.type];
 	
 	if (settings.frequency > 1) {
 		type += 's';
@@ -225,51 +211,46 @@ CORE_date.makeHumanReadable = function(settings) {
 	}
 	
 	if (settings.recurring) {
-		readable = 'Recurs every '+settings.frequency+' '+type+' ';	
+		readable = 'Recurs every '+settings.frequency+' '+type;	
 		
 		if (on != '') {
-			readable += 'on '+on+' ';
+			readable += ' on '+on;
 		}
 		
 		if (!settings.allday && type.indexOf('hour') == -1) {
-			readable += 'from '+startTime+' to '+endTime+' ';
+			readable += ' from '+startTime+' to '+endTime;
 		}
 		
 		if (type.indexOf('year') == -1) {
-			readable += 'starting ';
+			readable += ' starting';
 		} else {
-			readable += 'on ';
+			readable += ' on';
 		}
 	}
 		
-	readable += startDate+' ';
+	readable += ' '+startDate;
 	
 	var fromorat = '';
-	
-	(startDate == endDate && !settings.permanent) ? fromorat = 'from' : fromorat = '@';
+	(startDate !== endDate && startTime !== endTime && !settings.permanent) ? fromorat = 'from' : fromorat = '@';
 	
 	if (!settings.allday && (!settings.recurring || type.indexOf('hour') != -1)) {
-		readable += fromorat+' '+startTime+' ';
-	} else if (settings.allday) {
-		readable += ' all day';
+		readable += ' '+fromorat+' '+startTime;
 	}
 	
-	var between = (startDate == endDate) ? '' : 'until ';
+	if (startDate != endDate) {
+		readable += ' until '+endDate;
+	}
 	
 	if (!settings.allday) {	
 		if (fromorat == 'from') {
-			fromorat = 'to ';
-		}
-		
-		readable += between;
-		
-		if (startDate != endDate) {
-			readable += endDate+' ';
+			fromorat = ' to';
 		}
 		
 		if (!settings.allday && (!settings.recurring || type.indexOf('hour') != -1)) {
-			readable += fromorat+' '+endTime+' ';
+			readable += ' '+fromorat+' '+endTime;
 		}
+	} else {
+		readable += ' all day';
 	}
 
 	return readable;
