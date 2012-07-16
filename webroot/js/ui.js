@@ -44,6 +44,11 @@ CORE.modal = function(id, options) {
 			CORE.update($('#modal').dialog('option', 'update'));
 		}
 		$('#modal').empty();
+		var xhr = $('#modal').data('xhr');
+		if (xhr) {
+			xhr.onreadystatechange = function() {};
+			xhr.abort();
+		}
 	};
 	
 	useOptions.open = function(event, ui) {
@@ -82,13 +87,18 @@ CORE.modal = function(id, options) {
 			at: 'center',
 			of: window
 		});
-		$('#content').load(this.href, function() {
-			$("#content").parent().position({
-				my: 'center',
-				at: 'center',
-				of: window
-			});
+		var xhr = $.ajax({
+			url: this.href,
+			success: function(data, textStatus, xhr) {
+				$("#content").html(data);
+				$("#content").parent().position({
+					my: 'center',
+					at: 'center',
+					of: window
+				});
+			}
 		});
+		$("#content").data('xhr', xhr);
 		
 		// stop href
 		return false;
