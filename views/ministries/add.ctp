@@ -23,6 +23,4 @@ echo $this->Form->end();
 ?>
 </div>
 <?php
-echo $this->Html->script('jquery.plugins/jquery.wysiwyg');
-echo $this->Html->css('jquery.wysiwyg');
 $this->Js->buffer('CORE.wysiwyg("MinistryDescription");');

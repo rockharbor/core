@@ -45,10 +45,7 @@ echo $this->Form->end('Submit');
 ?>
 </div>
 <?php
-echo $this->Html->script('jquery.plugins/jquery.wysiwyg', array('inline' => false, 'once' => true));
-echo $this->Html->css('jquery.wysiwyg', array('inline' => false, 'once' => true));
 $this->Js->buffer('CORE.wysiwyg("InvolvementDescription");');
-
 
 $this->Js->buffer('$("#InvolvementTakePayment").bind("change", function() {
 	if ($(this).is(":checked")) {

@@ -42,8 +42,6 @@ else: ?>
 
 <?php
 if ($this->data['AppSetting']['type'] == 'html') {
-	echo $this->Html->script('jquery.plugins/jquery.wysiwyg');
-	echo $this->Html->css('jquery.wysiwyg');
 	$this->Js->buffer('CORE.wysiwyg("AppSettingValue");');
 }
 if (isset($model)) {

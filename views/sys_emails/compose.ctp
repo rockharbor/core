@@ -121,8 +121,6 @@ if (empty($fromUser['Profile']['primary_email'])) {
 echo $this->Js->submit('Send', $defaultSubmitOptions);
 echo $this->Form->end();
 
-echo $this->Html->script('jquery.plugins/jquery.wysiwyg');
-echo $this->Html->css('jquery.wysiwyg');
 $this->Js->buffer('CORE.wysiwyg("SysEmailBody");');
 ?>
 </div>

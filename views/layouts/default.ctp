@@ -8,8 +8,6 @@
 	<?php
 		echo $this->Html->meta('icon');
 
-		// vendor css
-		$this->AssetCompress->css('jquery.wysiwyg');
 		$this->AssetCompress->css('fullcalendar');
 
 		// CORE css
@@ -21,6 +19,7 @@
 		$this->AssetCompress->css('jquery-ui');
 		$this->AssetCompress->css('styles');
 		$this->AssetCompress->css('tables');
+		$this->AssetCompress->css('wysiwyg');
 
 		$this->AssetCompress->css('calendar');
 		echo '<!--[if lt IE 9]>'.$this->Html->css('ie').'<![endif]-->';
@@ -33,10 +32,11 @@
 		// vendor scripts
 		$this->AssetCompress->script('jquery.plugins/jquery.form');
 		$this->AssetCompress->script('jquery.plugins/jquery.qtip');
-		$this->AssetCompress->script('jquery.plugins/jquery.wysiwyg');
 		$this->AssetCompress->script('jquery.plugins/jquery.equalheights');
 		$this->AssetCompress->script('jquery.plugins/jquery.fullcalendar');
-		
+		$this->AssetCompress->script('wysiwyg/advanced');
+		$this->AssetCompress->script('wysiwyg/wysihtml5-0.3.0.min');
+	
 		// CORE scripts
 		$this->AssetCompress->script('functions');
 		$this->AssetCompress->script('global');
@@ -47,6 +47,8 @@
 		// setup
 		$this->Js->buffer('CORE.init();');
 		$this->Js->buffer('CORE.register("notifications", "nav-notifications", "/notifications/quick")');
+		$element = addslashes(str_replace(array("\r", "\r\n", "\n"), '', $this->element('wysiwyg_toolbar')));
+		$this->Js->buffer("CORE.wysiwygToolbar = '$element';", true);
 		echo $this->AssetCompress->includeAssets(Configure::read('debug') == 0);
 		echo $scripts_for_layout;
 		echo $this->Js->writeBuffer();

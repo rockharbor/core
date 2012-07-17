@@ -22,8 +22,6 @@
 echo $this->Js->submit('Submit', $defaultSubmitOptions);
 echo $this->Form->end();
 
-echo $this->Html->script('jquery.plugins/jquery.wysiwyg');
-echo $this->Html->css('jquery.wysiwyg');
 $this->Js->buffer('CORE.wysiwyg("AlertDescription");');
 ?>
 </div>

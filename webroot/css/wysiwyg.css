@@ -1,0 +1,81 @@
+.wysihtml5-toolbar {
+	padding: 5px;
+	
+	border: 1px solid #838383;
+	border-bottom: none;
+}
+
+.wysihtml5-toolbar .input div,
+.wysihtml5-toolbar div {
+	margin: 0;
+	padding: 0;
+}
+
+.wysihtml5-toolbar .dialogs div[data-wysihtml5-dialog] {
+	padding-top: 10px;
+}
+
+.wysihtml5-toolbar .dialogs label {
+	display: inline;
+}
+
+.wysihtml5-toolbar .separator {
+	display: block; 
+	width: 1px; 
+	height: 16px;
+	float: left;
+	margin: 0 5px;
+	
+	border-right: 1px solid #838383;
+}
+
+.wysihtml5-toolbar .tools a {
+	display: block; 
+	width: 16px; 
+	height: 16px;
+	float: left;
+	margin: 0 3px;
+	
+	text-indent: -5000px;
+	color: #838383;
+	
+	background-color: #ffffff;
+	background-image:  url('../assets/jquery.wysiwyg.gif');
+}
+
+.wysihtml5-toolbar .tools a:first-child {
+	margin-left: 0;
+}
+
+.wysihtml5-toolbar .tools a.wysihtml5-command-active,
+.wysihtml5-toolbar .tools a:hover {
+	background-color: #f1f1f1;
+}
+
+.wysihtml5-toolbar .tools a[data-wysihtml5-command="bold"] {
+	background-position: 0 -16px;
+}
+
+.wysihtml5-toolbar .tools a[data-wysihtml5-command="italic"] {
+	background-position: -16px -16px;
+}
+
+.wysihtml5-toolbar .tools a[data-wysihtml5-command="underline"] {
+	background-position: -48px -16px;
+}
+
+.wysihtml5-toolbar .tools a[data-wysihtml5-command="insertOrderedList"] {
+	background-position: -32px -48px;
+}
+
+.wysihtml5-toolbar .tools a[data-wysihtml5-command="insertUnorderedList"] {
+	background-position: -16px -48px;
+}
+
+.wysihtml5-toolbar .tools a[data-wysihtml5-command="createLink"] {
+	background-position: -80px -48px;
+}
+
+.wysihtml5-toolbar .tools a[data-wysihtml5-action="change_view"] {
+	background-position: -48px -48px;
+}

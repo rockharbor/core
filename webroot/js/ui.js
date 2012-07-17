@@ -500,41 +500,15 @@ CORE.confirmation = function(id, message, options) {
  * @return boolean True
  */
 CORE.wysiwyg = function(id) {
-	delayWysiwyg = function() {
-		if ($('#'+id).css('width') != 'auto') {
-			var parent = $('#'+id).closest('fieldset');
-			if (parent.length == 0) {
-				parent = $('#'+id).closest('form');
-			}
-			$('#'+id).width(parent.width() - 20);
-		}
-		$('#'+id).wysiwyg({
-			rmUnusedControls: true,
-			controls: {
-				html: { visible : true, groupIndex: 0 },
-				strikeThrough: { visible : true, groupIndex: 1 },
-				underline: { visible : true, groupIndex: 1 },
-				bold: { visible : true, groupIndex: 1 },
-				italic: { visible : true, groupIndex: 1 },
-				undo: { visible : true, groupIndex: 2 },
-				redo: { visible : true, groupIndex: 2 },
-				insertOrderedList: { visible : true, groupIndex: 3 },
-				insertUnorderedList: { visible : true, groupIndex: 3 },
-				createLink: { visible : true, groupIndex: 4 },
-				unLink: { visible : true, groupIndex: 4 }
-			},
-			initialContent: '',
-			css: '/css/jquery.wysiwyg.iframe.css'
-		});
-		// fix some display issues
-		var width = $('div.wysiwyg').width();
-		$('div.wysiwyg ul.panel').css({width: (width-8)});
-		$('div.wysiwyg iframe').css({width: '100% !important'});
-	}
+	var toolbar = $(CORE.wysiwygToolbar);
+	var toolbarId = unique('wysihtml5-toolbar-');
+	toolbar.wrap('div').attr('id', toolbarId);
+	$('#'+id).before(toolbar);
 	
-	// delay applying the wysiwyg for a bit
-	// in case of ajax, tabs, etc.
-	setTimeout('delayWysiwyg()', 10);
+	var editor = new wysihtml5.Editor(id, {
+		toolbar: toolbarId,
+		parserRules: wysihtml5ParserRules
+	});
 
 	return true;	
 }

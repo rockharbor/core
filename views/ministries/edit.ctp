@@ -113,8 +113,6 @@ if ($revision && !empty($changes)): ?>
 	</div>
 
 <?php
-echo $this->Html->script('jquery.plugins/jquery.wysiwyg', array('once' => true));
-echo $this->Html->css('jquery.wysiwyg', array('once' => true));
 $this->Js->buffer('CORE.wysiwyg("MinistryDescription");');
 ?>
 </div>
