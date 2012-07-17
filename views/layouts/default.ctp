@@ -8,8 +8,6 @@
 	<?php
 		echo $this->Html->meta('icon');
 
-		$this->AssetCompress->css('fullcalendar');
-
 		// CORE css
 		$this->AssetCompress->css('reset');
 		$this->AssetCompress->css('960');
@@ -21,7 +19,9 @@
 		$this->AssetCompress->css('tables');
 		$this->AssetCompress->css('wysiwyg');
 
+		$this->AssetCompress->css('fullcalendar');
 		$this->AssetCompress->css('calendar');
+		
 		echo '<!--[if lt IE 9]>'.$this->Html->css('ie').'<![endif]-->';
 
 		// google cdn scripts
