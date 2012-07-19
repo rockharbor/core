@@ -56,7 +56,7 @@ CORE_date.setup = function() {
 
 	$('#DateExemption').bind('change', function() {
 		if (this.checked) {
-			$('#DateAllDay').attr('checked', 'checked');
+			$('#DateAllDay').prop('checked', true);
 			$('#DateAllDay').closest('div').hide();
 			$('#DateAllDay').change();
 		} else {

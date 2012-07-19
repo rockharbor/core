@@ -22,8 +22,9 @@ CORE.showValidationErrors = function(form) {
 		.each(function() {
 			// check if this tab panel has an error
 			if ($(this).find('div.error').length > 0) {
+				var id = $(this).prop('id');
 				$(this).siblings('.ui-tabs-nav')
-					.find('a[href*="'+$(this).attr('id')+'"], a[title*="'+$(this).attr('id')+'"]').each(function() {
+					.find('a[href*="'+id+'"], a[title*="'+id+'"]').each(function() {
 						if ($(this).children().length == 0) {
 							$(this).prepend('<span class="core-icon icon-error"></span>');
 						}
@@ -108,27 +109,30 @@ CORE.successForm = function(event, data, textStatus, options) {
 	var validates = CORE.showValidationErrors('temp');
 	$('#temp').remove();
 
-	if ($(event.currentTarget).closest('form').attr('id') == '') {
-		$(event.currentTarget).closest('form').attr('id', unique('form-'));
+	if (!$(event.currentTarget).closest('form').prop('id')) {
+		$(event.currentTarget).closest('form').prop('id', unique('form-'));
 	}
+	
+	var id = $(event.currentTarget).closest('form').prop('id');
+	
 	// update the content
-	var parent = CORE.getUpdateableParent($(event.currentTarget).closest('form').attr('id'), true);
+	var parent = CORE.getUpdateableParent(id, true);
 	switch (options.autoUpdate) {
 		case 'failure':		
 			if (!validates) {
 				parent.html(data);
-				CORE.showValidationErrors($(event.currentTarget).closest('form').attr('id'));
+				CORE.showValidationErrors(id);
 			}
 		break;
 		case 'success':
 			if (validates) {
 				parent.html(data);
-				CORE.showValidationErrors($(event.currentTarget).closest('form').attr('id'));
+				CORE.showValidationErrors(id);
 			}
 		break;
 		default:
 			parent.html(data);
-			CORE.showValidationErrors($(event.currentTarget).closest('form').attr('id'));
+			CORE.showValidationErrors(id);
 		break;
 	} 
 	
@@ -164,10 +168,10 @@ CORE.noDuplicateCheckboxes = function(fieldset) {
 		$(this).bind('change', function() {
 			var matching = $('input[value='+this.value+']:checkbox, input[value='+this.value+']:radio', $('#'+fieldset));
 			if (this.checked) {
-				matching.attr('disabled', 'disabled').removeAttr('checked').parent('.core-checkbox, .core-radio').addClass('disabled').removeClass('selected');
-				$(this).removeAttr('disabled').attr('checked', 'checked').parent('.core-checkbox, .core-radio').removeClass('disabled');
+				matching.prop('disabled', true).prop('checked', false).parent('.core-checkbox, .core-radio').addClass('disabled').removeClass('selected');
+				$(this).prop('disabled', false).prop('checked', true).parent('.core-checkbox, .core-radio').removeClass('disabled');
 			} else {
-				matching.removeAttr('disabled').parent('.core-checkbox, .core-radio').removeClass('disabled');
+				matching.prop('disabled', false).parent('.core-checkbox, .core-radio').removeClass('disabled');
 			}			
 		});
 	});
@@ -199,7 +203,7 @@ CORE.initFormUI = function() {
 			return ($(this).is(':checked')) ? '<span class="core-radio selected" />' : '<span class="core-radio" />';
 		});
 	}).change(function () {
-		$('.core-radio input[name="'+$(this).attr('name')+'"]').each(function() { $(this).parent().removeClass('selected') });
+		$('.core-radio input[name="'+$(this).prop('name')+'"]').each(function() { $(this).parent().removeClass('selected') });
 		this.checked ?	$(this).parent().addClass('selected') : $(this).parent().removeClass('selected');
 	});
 
@@ -230,15 +234,15 @@ CORE.initFormUI = function() {
 
 	// set up filter forms
 	$('.core-filter-form').each(function() {
-		if ($(this).attr('id') == '') {
-			$(this).attr('id', unique('form-'));
+		if (!$(this).prop('id')) {
+			$(this).prop('id', unique('form-'));
 		}
 		if ($(this).data('configured') == true) {
 			return;
 		}
 		$(this).data('configured', true);
 		$('input:submit', this).hide();
-		var classList = $(this).attr('class').split(/\s+/);
+		var classList = $(this).prop('class').split(/\s+/);
 		var updateable;
 		for (var c in classList) {
 			if (classList[c].indexOf('update-') != -1) {
@@ -255,12 +259,12 @@ CORE.initFormUI = function() {
 			}
 		}
 		if (updateable == 'parent') {
-			var parent = CORE.getUpdateableParent($(this).attr('id'), true);
-			options = {updateHtml: parent.attr('id')};
+			var parent = CORE.getUpdateableParent($(this).prop('id'), true);
+			options = {updateHtml: parent.prop('id')};
 		}
 		var form = $(this);
 		$('input, select', form).change(function() {
-			CORE.request(form.attr('action'), options, form.serialize());
+			CORE.request(form.prop('action'), options, form.serialize());
 		});
 	});
 
@@ -268,8 +272,8 @@ CORE.initFormUI = function() {
 	
 	// search forms
 	$('.search-form input[type="text"]').each(function() {
-		var id = $(this).attr('id');
-		CORE.autoComplete(id, $(this).closest('form').attr('action')+'.json', function(item) {
+		var id = $(this).prop('id');
+		CORE.autoComplete(id, $(this).closest('form').prop('action')+'.json', function(item) {
 			redirect(item.action);
 		});
 		$(this)
@@ -278,14 +282,14 @@ CORE.initFormUI = function() {
 				var self = $(this);
 				if (self.val() == self.data('defaultSearchText')) {
 					self.val('');
-					self.attr('class', 'search-over');
+					self.prop('class', 'search-over');
 				}
 			})
 			.blur(function() {
 				var self = $(this);
 				if (self.val() == '') {
 					self.val(self.data('defaultSearchText'));
-					self.attr('class', 'search-out');
+					self.prop('class', 'search-out');
 				}
 			});
 	});

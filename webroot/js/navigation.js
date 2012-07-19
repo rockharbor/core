@@ -12,7 +12,7 @@ CORE.initNavigation = function() {
 	$('#nav-campuses .campuses input:radio:first').change();
 
 	$('#nav-notifications ul li.notification').live('mouseenter', function() {
-		var name = $(this).attr('id').split('-');
+		var name = $(this).prop('id').split('-');
 		var id = name[1];
 		if ($(this).hasClass('unread')) {
 			CORE.readNotification(id, this);
@@ -73,7 +73,7 @@ CORE.decrementCount = function() {
  */
 CORE.eventAfterLoad = function(ele) {
 	$('#'+ele+' .fc-event').each(function() {
-		var classes = $(this).attr('class').split(/\s+/);
+		var classes = $(this).prop('class').split(/\s+/);
 		for (var c in classes) {
 			if (classes[c].match(/(\d{4})-(\d{1,2})-(\d{1,2})/)) {
 				var html = $(this).html();

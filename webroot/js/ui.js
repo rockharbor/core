@@ -34,8 +34,8 @@ CORE.modal = function(id, options) {
 
 	useOptions.close = function(event, ui) {
 		// rewrite the id's
-		$('#content').attr('id', 'modal');		
-		$('#content-reserved').attr('id', 'content');
+		$('#content').prop('id', 'modal');		
+		$('#content-reserved').prop('id', 'content');
 		// re-register original content updateable
 		CORE.unregister('content');
 		CORE.updateables['content'] = CORE._tmpcontent;
@@ -53,12 +53,12 @@ CORE.modal = function(id, options) {
 	
 	useOptions.open = function(event, ui) {
 		// rename content so ajax updates will update content in modal
-		$('#content').attr('id', 'content-reserved');
-		$('#modal').attr('id', 'content');
+		$('#content').prop('id', 'content-reserved');
+		$('#modal').prop('id', 'content');
 		// register this new ajax url as the content updateable, so scripts within
 		// the window that update the content updateable update with this url instead
 		CORE._tmpcontent = CORE.unregister('content');
-		CORE.register('content', 'content', $('#'+id).attr('href'));
+		CORE.register('content', 'content', $('#'+id).prop('href'));
 	}
 	
 	$('#'+id).click(function(event) {
@@ -159,7 +159,7 @@ CORE.tooltip = function(ele, content, options) {
 
 	var _content = content;
 	if (typeof content != 'string') {
-		_content = $(content).clone(true).removeClass('core-tooltip').attr('id', '');
+		_content = $(content).clone(true).removeClass('core-tooltip').removeAttr('id');
 	}
 
 	$(ele).qtip({
@@ -210,7 +210,7 @@ CORE.tooltip = function(ele, content, options) {
 /**
  * Attaches tab behavior to appropriate elements
  *
- * Makes everything with a `rel` property "tabs" a tabbed list. Pulls attached
+ * Makes everything with the `.core-tabs` class a tabbed list. Pulls attached
  * jQuery data 'cookie' for cookie option
  *
  * @return boolean True
@@ -223,10 +223,10 @@ CORE.attachTabbedBehavior = function() {
 			if ($(this).data('cookie') != undefined) {
 				options.cookie = $(this).data('cookie');
 			}
-			if ($(this).attr('id') == '') {
-				$(this).attr('id', unique('link-'));
+			if (!$(this).prop('id')) {
+				$(this).prop('id', unique('link-'));
 			}
-			CORE.tabs($(this).attr('id'), options);
+			CORE.tabs($(this).prop('id'), options);
 			$(this).data('hasTabs', true);
 		}
 	});
@@ -244,8 +244,8 @@ CORE.attachTabbedBehavior = function() {
  */
 CORE.attachModalBehavior = function() {
 	$('[rel|=modal]:not(.disabled)').each(function() {
-		if ($(this).attr('id') == '') {
-			$(this).attr('id', unique('link-'));
+		if (!$(this).prop('id')) {
+			$(this).prop('id', unique('link-'));
 		}
 
 		// regular ajax call if it's already in a modal
@@ -256,22 +256,22 @@ CORE.attachModalBehavior = function() {
 					success: function (data) {
 						$('#content').html(data);
 					},
-					url: $(this).attr('href')
+					url: $(this).prop('href')
 				});
 				return false;
 			});
 			return;
 		}
 
-		if ($(this).data('hasModal') == undefined) {	
+		if (!$(this).data('hasModal')) {	
 			// get updateable, if any
-			var rel = $(this).attr("rel");
+			var rel = $(this).prop("rel");
 			var update = rel.split("-");
 
 			if (update[1] != undefined) {
-				CORE.modal($(this).attr('id'), {update:update[1]});
+				CORE.modal($(this).prop('id'), {update:update[1]});
 			} else {
-				CORE.modal($(this).attr('id'));
+				CORE.modal($(this).prop('id'));
 			}
 			
 			$(this).data('hasModal', true);			
@@ -426,7 +426,7 @@ CORE.confirmation = function(id, message, options) {
 	var el = $('#'+id);	
 	
 	// extract controller from url 
-	var href = el.attr('href');
+	var href = el.prop('href');
 	
 	var _defaultOptions = {
 		update: '',
@@ -451,7 +451,7 @@ CORE.confirmation = function(id, message, options) {
 	}
 	if (useOptions.updateHtml == 'parent') {
 		var parent = CORE.getUpdateableParent(id, true);
-		useOptions.updateHtml = parent.attr('id');
+		useOptions.updateHtml = parent.prop('id');
 	}
 
 	if (useOptions.update != '') {
@@ -502,7 +502,7 @@ CORE.confirmation = function(id, message, options) {
 CORE.wysiwyg = function(id) {
 	var toolbar = $(CORE.wysiwygToolbar);
 	var toolbarId = unique('wysihtml5-toolbar-');
-	toolbar.wrap('div').attr('id', toolbarId);
+	toolbar.wrap('div').prop('id', toolbarId);
 	$('#'+id).before(toolbar);
 	
 	var editor = new wysihtml5.Editor(id, {
@@ -530,7 +530,7 @@ CORE.autoComplete = function(id, datasource, onSelect) {
 		var self = this;
 		this.element
 			.addClass("ui-menu ui-widget ui-widget-content ui-corner-all")
-			.attr({
+			.prop({
 				role: "listbox",
 				"aria-activedescendant": "ui-active-menuitem"
 			})
@@ -550,11 +550,11 @@ CORE.autoComplete = function(id, datasource, onSelect) {
 		// don't refresh list items that are already adapted
 		var items = this.element.children("li:not(.ui-menu-item):has(div)")
 			.addClass("ui-menu-item")
-			.attr("role", "menuitem");
+			.prop("role", "menuitem");
 
 		items.children("div")
 			.addClass("ui-corner-all")
-			.attr("tabindex", -1)
+			.prop("tabindex", -1)
 			// mouseenter doesn't work with event delegation
 			.mouseenter(function( event ) {
 				self.activate( event, $(this).parent() );
@@ -569,18 +569,18 @@ CORE.autoComplete = function(id, datasource, onSelect) {
 		this.deactivate();
 		if (this.hasScroll()) {
 			var offset = item.offset().top - this.element.offset().top,
-				scroll = this.element.attr("scrollTop"),
+				scroll = this.element.prop("scrollTop"),
 				elementHeight = this.element.height();
 			if (offset < 0) {
-				this.element.attr("scrollTop", scroll + offset);
+				this.element.prop("scrollTop", scroll + offset);
 			} else if (offset >= elementHeight) {
-				this.element.attr("scrollTop", scroll + offset - elementHeight + item.height());
+				this.element.prop("scrollTop", scroll + offset - elementHeight + item.height());
 			}
 		}
 		this.active = item.eq(0)
 			.children("div")
 				.addClass("ui-state-hover")
-				.attr("id", "ui-active-menuitem")
+				.prop("id", "ui-active-menuitem")
 			.end();
 		this._trigger("focus", event, { item: item });
 	};
@@ -603,7 +603,7 @@ CORE.autoComplete = function(id, datasource, onSelect) {
 					response(data);
 				},
 				data: $('#'+id).closest('form').serializeArray(),
-				type: $('#'+id).closest('form').attr('method'),
+				type: $('#'+id).closest('form').prop('method'),
 				dataType: 'json'
 			});
 		},
@@ -631,8 +631,8 @@ CORE.autoComplete = function(id, datasource, onSelect) {
  */
 CORE.ajaxUpload = function(id, updateable) {
 	var submit = $('#'+id+' div.submit');
-	var input = $('#'+id+' input[type=file]').attr('multiple', 'multiple');
-	var button = $('<button id="'+id+'_button">'+submit.children('input').attr('value')+'</button>').button();
+	var input = $('#'+id+' input[type=file]').prop('multiple', true);
+	var button = $('<button id="'+id+'_button">'+submit.children('input').prop('value')+'</button>').button();
 	// attach/remove to dom to get the width so we don't end up with a 0 width form
 	$('body').append(button);
 	var width = $('#'+id+'_button').width();
@@ -649,7 +649,7 @@ CORE.ajaxUpload = function(id, updateable) {
 		textAlign:'center',
 		cursor: 'pointer'
 	});
-	form.attr('action', form.attr('action')+'.json');
+	form.prop('action', form.prop('action')+'.json');
 
 	button.css({
 		width:'100%',
@@ -703,7 +703,8 @@ CORE.ajaxUpload = function(id, updateable) {
 				e.text(msg);
 				e.addClass("error-message upload-error");
 			} else {
-				var model = input.attr('name').substring(input.attr('name').indexOf('[')+1, input.attr('name').indexOf(']'));
+				var name = input.prop('name');
+				var model = name.substring(name.indexOf('[')+1, name.indexOf(']'));
 				msg = response[model]['file'];
 				CORE.confirmation(id+'_error', msg, {
 					yesTitle: false,
