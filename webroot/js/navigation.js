@@ -11,14 +11,14 @@ CORE.initNavigation = function() {
 	});
 	$('#nav-campuses .campuses input:radio:first').change();
 
-	$('#nav-notifications ul li.notification').live('mouseenter', function() {
+	$(document).on('mouseenter', '#nav-notifications ul li.notification', function() {
 		var name = $(this).prop('id').split('-');
 		var id = name[1];
 		if ($(this).hasClass('unread')) {
 			CORE.readNotification(id, this);
 		}
 	});
-	$('#nav-notifications ul').find('a.delete, a.confirm, a.deny').live('click', function(event) {
+	$(document).on('click', '#nav-notifications ul li.notification a', function(event) {
 		event.preventDefault();
 		var ele = $(this);
 		CORE.request(this.href, {

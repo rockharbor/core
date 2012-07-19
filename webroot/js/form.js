@@ -165,7 +165,7 @@ CORE.successForm = function(event, data, textStatus, options) {
 */
 CORE.noDuplicateCheckboxes = function(fieldset) {
 	$('input:checkbox, input:radio', $('#'+fieldset)).each(function() {
-		$(this).bind('change', function() {
+		$(this).on('change', function() {
 			var matching = $('input[value='+this.value+']:checkbox, input[value='+this.value+']:radio', $('#'+fieldset));
 			if (this.checked) {
 				matching.prop('disabled', true).prop('checked', false).parent('.core-checkbox, .core-radio').addClass('disabled').removeClass('selected');

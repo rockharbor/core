@@ -253,7 +253,7 @@ echo $this->Html->link($icon, array('action' => 'view', 'Involvement' => $this->
 
 $this->Js->buffer('CORE.wysiwyg("InvolvementDescription");');
 
-$this->Js->buffer('$("#InvolvementTakePayment").bind("change", function() {
+$this->Js->buffer('$("#InvolvementTakePayment").on("change", function() {
 	if (this.checked) {
 		if ($(this).parent().css("display") != "none") {
 			$("#InvolvementForcePayment").closest("div.input").show();
@@ -267,7 +267,7 @@ $this->Js->buffer('$("#InvolvementTakePayment").bind("change", function() {
 	}
 });');
 $this->Js->buffer('$("#InvolvementTakePayment").change();');
-$this->Js->buffer('$("#InvolvementSignup").bind("change", function() {
+$this->Js->buffer('$("#InvolvementSignup").on("change", function() {
 	if (this.checked) {
 		$("#InvolvementRosterVisible").closest("div.input").show();
 		$("#InvolvementTakePayment").closest("div.input").show();

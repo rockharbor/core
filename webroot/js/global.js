@@ -121,8 +121,8 @@ CORE.updateablePagination = function(updateable, id) {
 		}
 	}
 	$('a[href*="page:"]', $(div))
-		.unbind('click')
-		.bind('click', function() {
+		.off('click')
+		.on('click', function() {
 			if (!$(this).prop('id')) {
 				$(this).prop('id', unique('pagination-link-'));
 			}

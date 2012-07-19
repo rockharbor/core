@@ -4,7 +4,7 @@
 var CORE_date = {};
 
 CORE_date.setup = function() {
-	$('#DateRecurranceType').bind('change', function() {
+	$('#DateRecurranceType').on('change', function() {
 		var label = $('#frequency_label');
 
 		$('#day').hide();
@@ -37,11 +37,11 @@ CORE_date.setup = function() {
 		}
 	});
 
-	$('#DateRecurring').bind('change', function() {
+	$('#DateRecurring').on('change', function() {
 		this.checked ? $('#pattern').show() : $('#pattern').hide();
 	});
 
-	$('#DatePermanent').bind('change', function() {
+	$('#DatePermanent').on('change', function() {
 		this.checked ? $('#end_date').hide() : $('#end_date').show();
 		if (this.checked) {
 			$('#DateEndDateYear').val($('#DateStartDateYear').val());
@@ -50,11 +50,11 @@ CORE_date.setup = function() {
 		}
 	});
 
-	$('#DateAllDay').bind('change', function() {
+	$('#DateAllDay').on('change', function() {
 		this.checked ? $('#start_time, #end_time').hide() : $('#start_time, #end_time').show();
 	});
 
-	$('#DateExemption').bind('change', function() {
+	$('#DateExemption').on('change', function() {
 		if (this.checked) {
 			$('#DateAllDay').prop('checked', true);
 			$('#DateAllDay').closest('div').hide();
@@ -66,23 +66,23 @@ CORE_date.setup = function() {
 	});
 
 	// date validation (forcing end dates to be greater than start)
-	$('#DateStartDateMonth').bind('change', function() { CORE_date.validateDate('DateStartDate', 'DateEndDate'); });
-	$('#DateStartDateDay').bind('change', function() { CORE_date.validateDate('DateStartDate', 'DateEndDate'); });
-	$('#DateStartDateYear').bind('change', function() { CORE_date.validateDate('DateStartDate', 'DateEndDate'); });
-	$('#DateEndDateMonth').bind('change', function() { CORE_date.validateDate('DateStartDate', 'DateEndDate'); });
-	$('#DateEndDateDay').bind('change', function() { CORE_date.validateDate('DateStartDate', 'DateEndDate'); });
-	$('#DateEndDateYear').bind('change', function() { CORE_date.validateDate('DateStartDate', 'DateEndDate'); });
+	$('#DateStartDateMonth').on('change', function() { CORE_date.validateDate('DateStartDate', 'DateEndDate'); });
+	$('#DateStartDateDay').on('change', function() { CORE_date.validateDate('DateStartDate', 'DateEndDate'); });
+	$('#DateStartDateYear').on('change', function() { CORE_date.validateDate('DateStartDate', 'DateEndDate'); });
+	$('#DateEndDateMonth').on('change', function() { CORE_date.validateDate('DateStartDate', 'DateEndDate'); });
+	$('#DateEndDateDay').on('change', function() { CORE_date.validateDate('DateStartDate', 'DateEndDate'); });
+	$('#DateEndDateYear').on('change', function() { CORE_date.validateDate('DateStartDate', 'DateEndDate'); });
 
 	// time validation (forcing end times to be greater than start)
-	$('#DateStartTimeHour').bind('change', function() { CORE_date.validateTime('DateStartTime', 'DateEndTime'); });
-	$('#DateStartTimeMin').bind('change', function() { CORE_date.validateTime('DateStartTime', 'DateEndTime'); });
-	$('#DateStartTimeMeridian').bind('change', function() { CORE_date.validateTime('DateStartTime', 'DateEndTime'); });
-	$('#DateEndTimeHour').bind('change', function() { CORE_date.validateTime('DateStartTime', 'DateEndTime'); });
-	$('#DateEndTimeMin').bind('change', function() { CORE_date.validateTime('DateStartTime', 'DateEndTime'); });
-	$('#DateEndTimeMeridian').bind('change', function() { CORE_date.validateTime('DateStartTime', 'DateEndTime'); });
+	$('#DateStartTimeHour').on('change', function() { CORE_date.validateTime('DateStartTime', 'DateEndTime'); });
+	$('#DateStartTimeMin').on('change', function() { CORE_date.validateTime('DateStartTime', 'DateEndTime'); });
+	$('#DateStartTimeMeridian').on('change', function() { CORE_date.validateTime('DateStartTime', 'DateEndTime'); });
+	$('#DateEndTimeHour').on('change', function() { CORE_date.validateTime('DateStartTime', 'DateEndTime'); });
+	$('#DateEndTimeMin').on('change', function() { CORE_date.validateTime('DateStartTime', 'DateEndTime'); });
+	$('#DateEndTimeMeridian').on('change', function() { CORE_date.validateTime('DateStartTime', 'DateEndTime'); });
 
 	// finally, make everything update the humanized version
-	$('select, input').bind('change', function() { 
+	$('select, input').on('change', function() { 
 		var hr = CORE_date.makeHumanReadable({
 			recurring: $('#DateRecurring').is(':checked'),
 			type: $('#DateRecurranceType').val(),

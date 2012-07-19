@@ -47,7 +47,7 @@ echo $this->Form->end('Submit');
 <?php
 $this->Js->buffer('CORE.wysiwyg("InvolvementDescription");');
 
-$this->Js->buffer('$("#InvolvementTakePayment").bind("change", function() {
+$this->Js->buffer('$("#InvolvementTakePayment").on("change", function() {
 	if ($(this).is(":checked")) {
 		if ($(this).parent().parent().css("display") != "none") {
 			$("#InvolvementForcePayment").closest("div.checkbox").show();
@@ -59,7 +59,7 @@ $this->Js->buffer('$("#InvolvementTakePayment").bind("change", function() {
 	}
 });');
 $this->Js->buffer('$("#InvolvementTakePayment").change();');
-$this->Js->buffer('$("#InvolvementSignup").bind("change", function() {
+$this->Js->buffer('$("#InvolvementSignup").on("change", function() {
 	if ($(this).is(":checked")) {
 		$("#InvolvementRosterVisible").closest("div.checkbox").show();
 		$("#InvolvementTakePayment").closest("div.checkbox").show();

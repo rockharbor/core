@@ -9,19 +9,19 @@ var CORE_roster = {};
 CORE_roster.init = function() {
 	CORE.noDuplicateCheckboxes('members');
 	$('#members input[type=checkbox]').change();
-	$('#DefaultPayDepositAmount').bind('change', CORE_roster.updateAmount);
+	$('#DefaultPayDepositAmount').on('change', CORE_roster.updateAmount);
 	$('#DefaultPaymentOptionId').change();
 	$('#RosterAddressId').change();
 	// by default, click the first available tab under answers
-	$('#questions_tab a').bind('click', function() {
+	$('#questions_tab a').on('click', function() {
 		$('#question_tabs > ul:not(.admin) li:visible:first a').click()
 	});
-	$('input[id^=Child]').bind('change', CORE_roster.updateAmount);
-	$('#DefaultPayLater').bind('change', function() {
+	$('input[id^=Child]').on('change', CORE_roster.updateAmount);
+	$('#DefaultPayLater').on('change', function() {
 		CORE_roster.updateAmount();
 	});
 
-	$('#DefaultAddressId').bind('change', function() {
+	$('#DefaultAddressId').on('change', function() {
 		if ($(this).val() == 0) {
 			$('#AddressAddressLine1').val('');
 			$('#AddressAddressLine2').val('');
@@ -37,7 +37,7 @@ CORE_roster.init = function() {
 			$('#AddressZip').val(selected.zip);
 		}
 	});
-	$('#members input[id^=Adult]:checkbox').bind('change', function() {
+	$('#members input[id^=Adult]:checkbox').on('change', function() {
 		// only show the answer tabs for members that are checked
 		if (this.checked) {
 			$('a[href=#answers_'+$(this).val()+']').parent().show();
@@ -48,7 +48,7 @@ CORE_roster.init = function() {
 		CORE_roster.updateAmount();
 	});
 
-	$('.payment-option input:radio').bind('change', function() {
+	$('.payment-option input:radio').on('change', function() {
 		$('.payment-option').removeClass('selected');
 		$(this).closest('.payment-option').addClass('selected');
 		CORE_roster.updateAmount();

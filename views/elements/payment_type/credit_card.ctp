@@ -35,7 +35,7 @@
 if (isset($addresses)) {
 	$this->Js->buffer('addresses = '.$this->Js->object(Set::combine($addresses, '/Address/id', '/Address')));
 
-	$this->Js->buffer('$("#DefaultAddressId").bind("change", function() {
+	$this->Js->buffer('$("#DefaultAddressId").on("change", function() {
 		if ($(this).val() == 0) {
 			$("#AddressAddressLine1").val("");
 			$("#AddressAddressLine2").val("");

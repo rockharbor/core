@@ -250,7 +250,7 @@ CORE.attachModalBehavior = function() {
 
 		// regular ajax call if it's already in a modal
 		if ($(this).parents('.ui-dialog').length > 0) {
-			$(this).bind('click', function () {
+			$(this).on('click', function () {
 				$.ajax({
 					dataType: 'html',
 					success: function (data) {
@@ -332,7 +332,7 @@ CORE.tabs = function(id, taboptions, options) {
 				$('#'+options.next).hide();
 			}
 			
-			$('#'+options.next).bind('click', function(event, ui) {
+			$('#'+options.next).on('click', function(event, ui) {
 				var selected = tabbed.tabs('option', 'selected');
 				// select next visible tab
 				tabbed.children('ul').children('li:nth-child('+(selected+1)+')').nextAll(':visible').eq(0).children('a').click();
@@ -345,7 +345,7 @@ CORE.tabs = function(id, taboptions, options) {
 				$('#'+options.previous).hide();
 			}
 			
-			$('#'+options.previous).bind('click', function(event, ui) {
+			$('#'+options.previous).on('click', function(event, ui) {
 				var selected = tabbed.tabs('option', 'selected');
 				// select previous visible tab
 				tabbed.children('ul').children('li:nth-child('+(selected+1)+')').prevAll(':visible').eq(0).children('a').click();
@@ -364,7 +364,7 @@ CORE.tabs = function(id, taboptions, options) {
 		
 		// bind all button actions to one select event
 		if (options.next != undefined || options.previous != undefined || options.submit != undefined) {
-			tabbed.bind('tabsselect', function(event, ui) {
+			tabbed.on('tabsselect', function(event, ui) {
 				var next = $('#'+options.next);
 				var previous = $('#'+options.previous);
 				var submit = $('#'+options.submit);
