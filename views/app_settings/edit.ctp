@@ -23,6 +23,11 @@ else: ?>
 			$appSettingName = explode('.', $this->data['AppSetting']['name']);
 			$appSettingName = $appSettingName[1];
 			echo Inflector::humanize($appSettingName).'<br />';
+			$options = array();
+			if ($this->data['AppSetting']['type'] == 'html') {
+				$options['type'] = 'textarea';
+				$this->Js->buffer('CORE.wysiwyg("AppSettingValue");');
+			}
 			?></legend>
 			<p><?php echo $this->data['AppSetting']['description']; ?></p>
 		<?php
@@ -30,7 +35,7 @@ else: ?>
 			echo $this->Form->hidden('type');
 			echo $this->Form->hidden('name');
 			echo $this->Form->hidden('description');
-			echo $this->Form->input('value');
+			echo $this->Form->input('value', $options);
 		?>
 		</fieldset>
 	<?php
@@ -41,9 +46,6 @@ else: ?>
 </div>
 
 <?php
-if ($this->data['AppSetting']['type'] == 'html') {
-	$this->Js->buffer('CORE.wysiwyg("AppSettingValue");');
-}
 if (isset($model)) {
 	$this->Js->buffer('CORE.autoComplete("AppSettingValue", "/app_settings/search/'.$model.'.json", function(item) {
 		$("#AppSettingValue").val(item.id);
