@@ -68,24 +68,36 @@ CORE.decrementCount = function() {
 
 /**
  * Called after the ajax event is complete
+ * 
+ * Aggregates all events into a single area and attaches tooltips to event dates
  *
  * @param ele Element The id attribute of the calendar
  */
 CORE.eventAfterLoad = function(ele) {
+	// aggregate all events into one area
 	$('#'+ele+' .fc-event').each(function() {
 		var classes = $(this).prop('class').split(/\s+/);
 		for (var c in classes) {
 			if (classes[c].match(/(\d{4})-(\d{1,2})-(\d{1,2})/)) {
-				var html = $(this).html();
-				$('#'+ele+' .event:not(.fc-other-month).'+classes[c]).children('.fc-day-content').children('div').filter(function() {
+				// get html for the event and remove all fc-specific classes
+				var html = $('<p>').append($(this).eq(0).clone().removeClass().removeAttr('style'));
+				html.find('*').each(function() {
+					$(this).removeClass();
+				});
+				html = html.html();
+				$('#'+ele+' .event:not(.fc-other-month).'+classes[c]+' .fc-day-content').filter(function() {
 					// don't add duplicate events
 					return $(this).html().indexOf(html) == -1;
 				}).append(html);
 			}
 		}
 	});
+	// turn it into a tooltip
 	$('#'+ele+' .event:not(.fc-other-month)').each(function() {
-		CORE.tooltip(this, $(this).children('.fc-day-content').children('div'), {
+		var td = $(this);
+		var content = td.find('.fc-day-content').html();
+		td.find('.fc-day-content').empty();
+		CORE.tooltip(td, content, {
 			detachAfter: false,
 			container: $('#'+ele)
 		});
@@ -93,28 +105,29 @@ CORE.eventAfterLoad = function(ele) {
 }
 
 /**
- * Called after an event is rendered
- *
- * Attaches tooltips to event dates
+ * Called after an event is rendered. Makes days with events easier to find by 
+ * adding an `event` and `yyyy-mm-dd` class to the event within the calendar, and
+ * keeps track of them for removing special classes later in `CORE.eventLoading()`
  *
  * @param ele Element The id attribute of the calendar
  */
 CORE.eventRender = function(cal, event, element, view) {
-	var currentMonth = $('#'+cal).fullCalendar('getDate').getMonth();
 	var currentDate = event.start;
-	var dates = [];
-	//var td;
-	while(currentDate < event.end) {
-		var dayClass = currentDate.getFullYear() + '-' + (currentDate.getMonth()+1) + '-' + currentDate.getDate();
-		dates.push(dayClass);
-		if (currentDate.getMonth() == currentMonth) {
-			$('#'+cal+' .fc-day-number').filter(function() {
-				return $(this).text() == Number(currentDate.getDate());
-			}).parent().addClass('event '+dayClass).data('dates', dates);			
-		}
-		currentDate = new Date(currentDate.getTime() + 86400000);
-		element.addClass(dayClass);
-	}
+	var dayClass = currentDate.getFullYear() + '-' + (currentDate.getMonth()+1) + '-' + currentDate.getDate();
+	var dates = $('#'+cal).data('dates') || [];
+	
+	// mark the calendar date as having events and empty out the ones 
+	// `$.fullcalendar()` generates
+	$('#'+cal+' .fc-widget-content:not(.fc-other-month, .event).fc-day'+(currentDate.getDate()-1))
+		.addClass('event')
+		.addClass(dayClass)
+		.find('.fc-day-content')
+			.empty()
+	
+	// remember which days have events so we can remove extra classes
+	dates.push(dayClass);
+	element.addClass(dayClass);
+	$('#'+cal).data('dates', dates);
 }
 
 /**

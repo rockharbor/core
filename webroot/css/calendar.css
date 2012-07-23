@@ -98,10 +98,10 @@
 	color:#000000;
 }
 
-.fc-event-skin,
-.full-calendar .fc-event, 
-.fc-agenda .fc-event-time, 
-.full-calendar .fc-event a {
+.fc-content .fc-event-skin,
+.fc-content .full-calendar .fc-event, 
+.fc-content .fc-agenda .fc-event-time, 
+.fc-content .full-calendar .fc-event a {
 	background-color: #B5FFDC;
 	border-color: #16B96D;
 	border-style: solid;
