@@ -55,11 +55,22 @@ class FormattingHelper extends AppHelper {
  * @param integer $link Whether or not to make a link
  */
 	function address($data, $link = true) {
-		$address = $data['address_line_1'];
-		if (!empty($data['address_line_2'])) {
-			$address .= '<br />'.$data['address_line_2'];
+		$address = array();
+		if (!empty($data['address_line_1'])) {
+			$address[] = $data['address_line_1'];
 		}
-		$address .= '<br />'.$data['city'].', '.$data['state'].' '.$data['zip'];
+		if (!empty($data['address_line_2'])) {
+			$address[] = $data['address_line_2'];
+		}
+		if (!empty($data['city']) || !empty($data['state']) || !empty($data['zip'])) {
+			$address[] = $data['city'].', '.$data['state'].' '.$data['zip'];
+		}
+		
+		$address = implode('<br />', $address);
+		
+		if (empty($address)) {
+			return null;
+		}
 
 		$prefix = strtolower($data['model']);
 		$url = array('controller' => 'reports', 'action' => $prefix.'_map', $data['model'] => $data['foreign_key']);

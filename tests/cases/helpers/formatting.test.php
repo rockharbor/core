@@ -61,7 +61,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 			'/a',
 		));
 	}
-
+	
 	function testAddress() {
 		$address = array(
 			'address_line_1' => '123 Main',
@@ -100,6 +100,17 @@ class FormattingHelperTestCase extends CoreTestCase {
 			'Somewhere, CA ',
 			'/a'
 		));
+		
+		$address = array(
+			'address_line_1' => '',
+			'address_line_2' => '',
+			'city' => '',
+			'state' => '',
+			'zip' => '',
+			'model' => 'User',
+			'foreign_key' => 1
+		);
+		$this->assertNull($this->Formatting->address($address, false));
 	}
 
 	function testReadableDate() {

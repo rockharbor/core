@@ -252,6 +252,7 @@ div.content-box .content-box, .ui-dialog .content-box {
 }
 .core-iconable {
 	position:relative;
+	min-height: 10px;
 }
 .core-iconable .core-icon-container {
 	position: absolute;
