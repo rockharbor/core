@@ -157,7 +157,22 @@ CORE.getUpdateableParent = function(id, elementOnly) {
 	if (parent.length == 0) {
 		parent = $('#'+id).closest('.ui-tabs-panel');
 	}
-	if (parent.length == 0) {
+	
+	tab = parent.closest('.ui-tabs').find('a[href="#'+parent.prop('id')+'"]');
+	url = tab.data('load.tabs');
+
+	if (url == undefined) {
+		if (elementOnly) {
+			return $('#content');
+		}
+		return {
+			url: CORE.updateables['content']['content'],
+			id: 'content',
+			updateable: 'content'
+		};
+	}
+	
+	if (parent.length == 0 || url == undefined) {
 		if (elementOnly) {
 			return $('#content');
 		}
@@ -173,12 +188,8 @@ CORE.getUpdateableParent = function(id, elementOnly) {
 	if (elementOnly) {
 		return parent;
 	}
-	tab = parent.closest('.ui-tabs').find('a[href="#'+parent.prop('id')+'"]');
+	
 	alias = unique('parent-');
-	url = tab.data('load.tabs');
-	if (tab.data('load.tabs') == undefined) {
-		url = '/';
-	}
 	CORE.register(alias, parent.prop('id'), url);
 	return {
 		url: tab.data('load.tabs'),
