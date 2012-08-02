@@ -516,85 +516,12 @@ CORE.wysiwyg = function(id) {
 /**
  * Attaches AutoComplete behavior to text field
  *
- * The jQuery menu widget was monkey patched to support using a `div` tag as the
- * item element instead of an `a`. This allows us to include other links inside
- * the auto complete menu items.
- *
  * @param string id The Id of the element to attach it to
  * @param string datasource A url to a json datasource
  * @param function onSelect The JavaScript function to call when an item is selected. Item is passed as the first argument.
  * @return Element Element returned by autocomplete creation
  */
 CORE.autoComplete = function(id, datasource, onSelect) {
-	$.ui.menu.prototype._create = function() {
-		var self = this;
-		this.element
-			.addClass("ui-menu ui-widget ui-widget-content ui-corner-all")
-			.prop({
-				role: "listbox",
-				"aria-activedescendant": "ui-active-menuitem"
-			})
-			.click(function( event ) {
-				self.select( event );
-			});
-		this.element.find('a')
-			.click(function(event) {
-				event.stopPropagation();
-			});
-		this.refresh();
-	}
-
-	$.ui.menu.prototype.refresh = function() {
-		var self = this;
-
-		// don't refresh list items that are already adapted
-		var items = this.element.children("li:not(.ui-menu-item):has(div)")
-			.addClass("ui-menu-item")
-			.prop("role", "menuitem");
-
-		items.children("div")
-			.addClass("ui-corner-all")
-			.prop("tabindex", -1)
-			// mouseenter doesn't work with event delegation
-			.mouseenter(function( event ) {
-				self.activate( event, $(this).parent() );
-			})
-			.mouseleave(function() {
-				self.deactivate();
-			});
-		CORE.attachModalBehavior();
-	};
-
-	$.ui.menu.prototype.activate = function(event, item) {
-		this.deactivate();
-		if (this.hasScroll()) {
-			var offset = item.offset().top - this.element.offset().top,
-				scroll = this.element.prop("scrollTop"),
-				elementHeight = this.element.height();
-			if (offset < 0) {
-				this.element.prop("scrollTop", scroll + offset);
-			} else if (offset >= elementHeight) {
-				this.element.prop("scrollTop", scroll + offset - elementHeight + item.height());
-			}
-		}
-		this.active = item.eq(0)
-			.children("div")
-				.addClass("ui-state-hover")
-				.prop("id", "ui-active-menuitem")
-			.end();
-		this._trigger("focus", event, { item: item });
-	};
-
-	$.ui.menu.prototype.deactivate = function() {
-		if (!this.active) { return; }
-
-		this.active.children("div")
-			.removeClass("ui-state-hover")
-			.removeAttr("id");
-		this._trigger("blur");
-		this.active = null;
-	};
-
 	return $('#'+id).autocomplete({
 		source: function(request, response) {
 			$.ajax({
@@ -617,7 +544,7 @@ CORE.autoComplete = function(id, datasource, onSelect) {
 	}).data('autocomplete')._renderItem = function(ul, item) {
 		return $('<li></li>')
 			.data('item.autocomplete', item)
-			.append($('<div></div>').html(stripslashes(item.label)))
+			.append($('<a style="display:block" class="clearfix"></a>').html(stripslashes(item.label)))
 			.appendTo(ul);
 	};
 }
