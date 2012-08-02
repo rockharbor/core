@@ -8,8 +8,6 @@
 	<?php
 		echo $this->Html->meta('icon');
 
-		$this->AssetCompress->css('fullcalendar');
-
 		// CORE css
 		$this->AssetCompress->css('reset');
 		$this->AssetCompress->css('960');
@@ -21,13 +19,15 @@
 		$this->AssetCompress->css('tables');
 		$this->AssetCompress->css('wysiwyg');
 
+		$this->AssetCompress->css('fullcalendar');
 		$this->AssetCompress->css('calendar');
+		
 		echo '<!--[if lt IE 9]>'.$this->Html->css('ie').'<![endif]-->';
 
 		// google cdn scripts
 		$min = Configure::read('debug') == 0 ? '.min' : null;
-		echo $this->Html->script('https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery'.$min.'.js');
-		echo $this->Html->script('https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui'.$min.'.js');
+		echo $this->Html->script('https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery'.$min.'.js');
+		echo $this->Html->script('https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/jquery-ui'.$min.'.js');
 		
 		// vendor scripts
 		$this->AssetCompress->script('jquery.plugins/jquery.form');

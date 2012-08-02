@@ -121,13 +121,13 @@ CORE.updateablePagination = function(updateable, id) {
 		}
 	}
 	$('a[href*="page:"]', $(div))
-		.unbind('click')
-		.bind('click', function() {
-			if ($(this).attr('id') == '') {
-				$(this).attr('id', unique('pagination-link-'));
+		.off('click')
+		.on('click', function() {
+			if (!$(this).prop('id')) {
+				$(this).prop('id', unique('pagination-link-'));
 			}
-			CORE.request($(this).attr('href'), {
-				updateHtml: $(div).attr('id')
+			CORE.request($(this).prop('href'), {
+				updateHtml: $(div).prop('id')
 			});
 			return false;
 		});
@@ -167,22 +167,22 @@ CORE.getUpdateableParent = function(id, elementOnly) {
 			updateable: 'content'
 		};
 	}
-	if (parent.attr('id') == '') {
-		parent.attr('id', unique());
+	if (!parent.prop('id')) {
+		parent.prop('id', unique());
 	}
 	if (elementOnly) {
 		return parent;
 	}
-	tab = parent.closest('.ui-tabs').find('a[href="#'+parent.attr('id')+'"]');
+	tab = parent.closest('.ui-tabs').find('a[href="#'+parent.prop('id')+'"]');
 	alias = unique('parent-');
 	url = tab.data('load.tabs');
 	if (tab.data('load.tabs') == undefined) {
 		url = '/';
 	}
-	CORE.register(alias, parent.attr('id'), url);
+	CORE.register(alias, parent.prop('id'), url);
 	return {
 		url: tab.data('load.tabs'),
-		id: parent.attr('id'),
+		id: parent.prop('id'),
 		updateable: alias
 	};
 }

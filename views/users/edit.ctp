@@ -41,7 +41,7 @@ if ($this->data['User']['id'] == $activeUser['User']['id']) {
 }
 echo $this->Js->submit('Submit', $defaultSubmitOptions);
 echo $this->Form->end();
-$this->Js->buffer('$("#UserReset").bind("change", function() {
+$this->Js->buffer('$("#UserReset").on("change", function() {
 	switch ($(this).val()) {
 		case "password":
 		$("#UserUsername").parent().hide();

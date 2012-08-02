@@ -11,7 +11,7 @@ CORE_involvement.setup = function() {
 		$('#involvement-dates .pagination a span').removeClass('selected');
 		$(this).children('span').addClass('selected');
 		$('#involvement-dates .date').hide();
-		var n = Number($(this).attr('target'));
+		var n = Number($(this).prop('target'));
 		$('#involvement-dates .date:nth-child('+(n+1)+')').show();
 		e.preventDefault();
 		return false;

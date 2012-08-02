@@ -5,19 +5,16 @@
 	margin-bottom: 0;
 }
 
-.fc table, .fc td {
-	border:none;
-}
 .fc tr {
 	height:auto;
 	line-height: 1;
 }
 .fc-header {
-	border: 1px solid #cccccc !important;
-	border-bottom: none !important;
+	border: 1px solid #cccccc;
+	border-bottom: none;
 }
 #nav-calendar .fc-header {
-	border:none !important;
+	border:none;
 }
 .fc-header .fc-state-default, .fc-header .fc-state-default a, .fc-header .fc-state-default span {
 	border: none;
@@ -25,19 +22,19 @@
 	padding:0;
 }
 .fc-state-hover {
-	color: #cccccc !important;
+	color: #cccccc;
 }
 .fc-button-prev, .fc-button-next {
 	background:none;
 	padding: 0;
-	margin: 0 !important;
+	margin: 0;
 }
 .fc-button-prev a:hover, .fc-button-next a:hover {
 	color:#cccccc;
 }
 .fc-header-title {
 	font-size: 16px;
-	margin:0;
+	margin: 5px 0;
 }
 .fc-header-left table {
 	width:auto;
@@ -56,10 +53,10 @@
 }
 .fc-content th {
 	font-family: Lucida Sans,Helvetica,Arial,sans-serif;
-	color:#cccccc !important;
-	background:none !important;
+	color:#cccccc;
+	background:none;
 	font-size:11px;
-	border:none !important;
+	border:none;
 	text-transform: none;
 }
 .mini-calendar .fc-day-content div {
@@ -68,11 +65,20 @@
 .fc-content tr:hover, .fc-header tr:hover {
 	background:none;
 }
+.fc-grid thead th {
+	border-bottom: 1px solid #cccccc;
+}
+.fc-grid thead th.fc-first {
+	border-left: 1px solid #cccccc;
+}
+.fc-grid thead th.fc-last {
+	border-right: 1px solid #cccccc;
+}
 .fc-grid .fc-other-month .fc-day-number, .fc-grid .fc-other-month .fc-day-content {
 	visibility: hidden;
 }
 .fc-grid .fc-other-month {
-	background:none !important;
+	background:none;
 }
 .mini-calendar .fc-event {
 	display:none;
@@ -81,18 +87,21 @@
 	background:#d0f4e4;
 }
 .fc-grid .fc-day-number {
+	padding: 5px;
+	
 	font-family: LeagueGothicRegular,Lucida Sans,Helvetica,Arial,sans-serif;
 	font-size: 14px;
-	padding: 5px;
+	color:#666666;
 	text-align: center;
 }
-.fc-grid .fc-not-today .fc-day-number {	
-	color:#666666;
-}
-.fc-grid .fc-day-number {
+.fc-grid .fc-today .fc-day-number {
 	color:#000000;
 }
-.full-calendar .fc-event, .fc-agenda .fc-event-time, .full-calendar .fc-event a {
+
+.fc-content .fc-event-skin,
+.fc-content .full-calendar .fc-event, 
+.fc-content .fc-agenda .fc-event-time, 
+.fc-content .full-calendar .fc-event a {
 	background-color: #B5FFDC;
 	border-color: #16B96D;
 	border-style: solid;

@@ -21,7 +21,7 @@ echo $this->Form->input('Address.0.zip');
 if (isset($addresses)) {
 	$this->Js->buffer('var addresses = '.$this->Js->object(Set::combine($addresses, '/Address/id', '/Address')));
 
-	$this->Js->buffer('$("#DefaultAddressId").bind("change", function() {
+	$this->Js->buffer('$("#DefaultAddressId").on("change", function() {
 		if ($(this).val() == 0) {
 			$("#Address0AddressLine1").val("");
 			$("#Address0AddressLine2").val("");

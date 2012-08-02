@@ -24,14 +24,14 @@ CORE_user.element = '';
  */
 CORE_user.init = function(id) {
 	var submit = $('#'+id).find(':submit');
-	if (submit.attr('id') == '') {
-		submit.attr('id', unique('submit-'));
+	if (!submit.prop('id')) {
+		submit.prop('id', unique('submit-'));
 	}
 	
 	CORE.tabs(id, {cookie:false}, {
 		next: "next_button",
 		previous: "previous_button",
-		submit: submit.attr('id'),
+		submit: submit.prop('id'),
 		alwaysAllowSubmit: true
 	});
 	

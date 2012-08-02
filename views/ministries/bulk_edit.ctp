@@ -38,10 +38,10 @@ echo $this->Form->create(array(
 <?php
 $this->Js->buffer('$("#MinistryParentId").parent().hide();');
 $this->Js->buffer('$("#MinistryCampusId").parent().hide();');
-$this->Js->buffer('$("#MinistryMoveMinistry").bind("change", function() {
+$this->Js->buffer('$("#MinistryMoveMinistry").on("change", function() {
 	$(this).is(":checked") ? $("#MinistryParentId").parent().show() : $("#MinistryParentId").parent().hide();
 })');
-$this->Js->buffer('$("#MinistryMoveCampus").bind("change", function() {
+$this->Js->buffer('$("#MinistryMoveCampus").on("change", function() {
 	$(this).is(":checked") ? $("#MinistryCampusId").parent().show() : $("#MinistryCampusId").parent().hide();
 })');
 echo $this->Js->submit('Save', $defaultSubmitOptions);
