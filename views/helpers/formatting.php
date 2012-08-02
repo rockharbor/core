@@ -335,15 +335,15 @@ class FormattingHelper extends AppHelper {
 		if (!empty($month)) {
 			$out[] = date('F', strtotime($month.'/1/2000'));
 		}
-		// Saturday; April 14
-		if (!empty($day)) {
-			$out[] = empty($month) ? date('l', strtotime('1/'.$day.'/2000')) : date('j', strtotime('1/'.$day.'/2000'));
+		// April 14
+		if (!empty($day) && !empty($month)) {
+			$out[] = $day;
 		}
 		// April 1984; 1984
 		if (!empty($year)) {
 			$out[] = date('Y', strtotime('1/1/'.$year));
 		}
-		$out = implode(' ', $out);
+		$out = count($out) > 0 ? implode(' ', $out) : null;
 		// if we have all the info, so replace it with 4/14/1984
 		if (!empty($day) && !empty($month) && !empty($year)) {
 			$out = date('n/j/Y', strtotime($date));

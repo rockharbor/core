@@ -365,8 +365,25 @@ class FormattingHelperTestCase extends CoreTestCase {
 	}
 
 	function testDate() {
-		$this->assertEqual('2/24/2010', $this->Formatting->date('2010-02-24 09:55:30'));
+		$result = $this->Formatting->date('2010-02-24 09:55:30');
+		$expected = '2/24/2010';
+		$this->assertEqual($result, $expected);
+		
 		$this->assertNull($this->Formatting->date());
+		
+		$this->assertNull($this->Formatting->date('0000-00-00'));
+		
+		$result = $this->Formatting->date('2012-07-00');
+		$expected = 'July 2012';
+		$this->assertEqual($result, $expected);
+		
+		$result = $this->Formatting->date('2012-00-00');
+		$expected = '2012';
+		$this->assertEqual($result, $expected);
+		
+		$result = $this->Formatting->date('2012-00-01');
+		$expected = '2012';
+		$this->assertEqual($result, $expected);
 	}
 
 	function testTime() {
