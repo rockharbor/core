@@ -222,6 +222,12 @@ CORE.register = function(alias, div, url) {
 		CORE.updateables[alias] = [];
 	}
 	
+	// assume we want to retain any FilterPagination filters when closing
+	// models on the first page
+	if (!url.match(/page:/)) {
+		url += '/page:1';
+	}
+	
 	// if this exact one exists, don't duplicate
 	CORE.updateables[alias][div] = url;
 	
