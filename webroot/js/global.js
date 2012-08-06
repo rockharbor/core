@@ -116,7 +116,7 @@ CORE.updateablePagination = function(updateable, id) {
 	} else {
 		// get first div in the updateable
 		for (var d in CORE.updateables[updateable]) {
-			div = d;
+			div = '#'+d;
 			break;
 		}
 	}

@@ -1,6 +1,6 @@
 <?php
 $this->Paginator->options(array(
-    'updateable' => 'parent'
+    'updateable' => 'roster'
 ));
 ?>
 <div id="roster-index">
