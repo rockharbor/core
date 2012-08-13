@@ -256,11 +256,6 @@ class AppModelTestCase extends CoreTestCase {
 			),
 			'Profile' => array(
 				'name' => 'Jeremy'
-			),
-			'Publication' => array(
-				'Publication' => array(
-					0 => true
-				)
 			)
 		);
 		$expected = array(
@@ -273,8 +268,7 @@ class AppModelTestCase extends CoreTestCase {
 						'user_id',
 						'CONCAT(Profile.first_name, " ", Profile.last_name) AS Profile__name'
 					)
-				),
-				'Publication' => array()
+				)
 			)
 		);
 		$results = $this->User->postOptions($data);

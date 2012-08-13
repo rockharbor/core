@@ -20,7 +20,6 @@ echo $this->Form->create(array(
 		<li><a href="#child-information">Child Needs</a></li>
 		<?php endif; ?>
 		<li><a href="#school-information">School</a></li>
-		<li><?php echo $this->Html->link('Subscriptions', array('controller' => 'publications', 'action' => 'subscriptions', 'User' => $this->data['Profile']['user_id']), array('title' => 'subscriptions')); ?></li>
 	</ul>
 
 	<div class="content-box clearfix">
@@ -87,17 +86,6 @@ echo $this->Form->create(array(
 		<div id="school-information">
 			<?php echo $this->element('register'.DS.'school'); ?>
 			<div style="clear:both"><?php echo $this->Js->submit('Save', $defaultSubmitOptions); ?></div>
-		</div>
-		<div id="subscriptions">
-			<?php
-			echo $this->requestAction('/publications/subscriptions', array(
-				'named' => array(
-					'User' => $this->data['Profile']['user_id']
-				),
-				'return',
-				'renderAs' => 'ajax'
-			));
-			?>
 		</div>
 	</div>
 <?php

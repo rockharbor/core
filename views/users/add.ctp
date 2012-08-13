@@ -20,7 +20,6 @@ echo $this->Form->create('User', array(
 		<li id="childinfo-tab"><a href="#add-childinfo">Child Information</a></li>
 		<li><a href="#add-contact">Contact Information</a></li>
 		<li><a href="#add-household">Household</a></li>
-		<li><a href="#add-subscriptions">Subscriptions</a></li>
 		<li><a href="#add-admin">Admin</a></li>
 	</ul>
 
@@ -41,9 +40,6 @@ echo $this->Form->create('User', array(
 	</div>
 	<div id="add-household" class="clearfix">
 	<?php echo $this->element('register'.DS.'household'); ?>
-	</div>
-	<div id="add-subscriptions">
-		<?php echo $this->element('register'.DS.'subscriptions'); ?>
 	</div>
 	<div id="add-admin">
 		<?php echo $this->element('register'.DS.'admin'); ?>

@@ -1,1 +1,0 @@
-<div class="publications"><h2>Subscriptions</h2><p>You have been <?php echo $subscribe ? 'subscribed' : 'unsubscribed'; ?> from <?php echo $publication['Publication']['name']; ?>.</div>

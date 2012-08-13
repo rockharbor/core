@@ -164,21 +164,6 @@ class User extends AppModel {
 	);
 
 /**
- * HasAndBelongsToMany association link
- *
- * @var array
- */
-	var $hasAndBelongsToMany = array(
-		'Publication' => array(
-			'className' => 'Publication',
-			'joinTable' => 'publications_users',
-			'foreignKey' => 'user_id',
-			'associationForeignKey' => 'publication_id',
-			'dependent' => true
-		)
-	);
-
-/**
  * Array of search filters for SearchesController::simple().
  * 
  * They are merged with any existing conditions and parameters sent to
@@ -293,8 +278,7 @@ class User extends AppModel {
 			'contain' => array(
 				'Profile',
 				'Address',
-				'HouseholdMember',
-				'Publication'
+				'HouseholdMember'
 			)
 		));
 		
@@ -324,14 +308,6 @@ class User extends AppModel {
 		
 		$successes = array();
 		$successes[] = $this->save($user, array('validate' => false));
-		if (!empty($updatedUser['Publication'])) {
-			$successes[] = $this->save(array(
-				'Publication' => $updatedUser['Publication'],
-				'User' => array(
-					'id' => $user['id']
-				)
-			));
-		}
 		$successes[] = $this->Profile->save($profile, array('validate' => false));
 		
 		foreach ($updatedUser['Address'] as $address) {

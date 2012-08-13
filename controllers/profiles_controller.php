@@ -89,7 +89,6 @@ class ProfilesController extends AppController {
 			)
 		));
 
-		$this->set('publications', $this->Profile->User->Publication->find('list'));
 		$this->set('campuses', $this->Profile->Campus->find('list'));
 		$this->set('jobCategories', $this->Profile->JobCategory->find('list'));
 		$this->set('elementarySchools', $this->Profile->ElementarySchool->find('list'));

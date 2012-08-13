@@ -574,7 +574,6 @@ class UsersController extends AppController {
 		$this->set('middleSchools', $this->User->Profile->MiddleSchool->find('list'));
 		$this->set('highSchools', $this->User->Profile->HighSchool->find('list'));
 		$this->set('colleges', $this->User->Profile->College->find('list'));
-		$this->set('publications', $this->User->Publication->find('list'));
 		$this->set('jobCategories', $this->User->Profile->JobCategory->find('list'));
 		$this->set('classifications', $this->User->Profile->Classification->find('list'));
 		$this->set('campuses', $this->User->Profile->Campus->find('list'));
@@ -584,7 +583,7 @@ class UsersController extends AppController {
  * Admin dashboard
  */
 	function dashboard() {
-		$controllers = array('job_categories', 'schools', 'regions', 'classifications', 'payment_types', 'involvement_types', 'roster_statuses', 'publications');
+		$controllers = array('job_categories', 'schools', 'regions', 'classifications', 'payment_types', 'involvement_types', 'roster_statuses');
 		$this->set(compact('controllers'));
 	}
 

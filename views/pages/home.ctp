@@ -9,7 +9,6 @@ Admin-y sort of things
 	<li><?php echo $this->Html->link('Payment Types', array('controller' => 'payment_types')); ?></li>
 	<li><?php echo $this->Html->link('Permission Groups', array('controller' => 'groups')); ?></li>
 	<li><?php echo $this->Html->link('Profiles', array('controller' => 'profiles')); ?></li>
-	<li><?php echo $this->Html->link('Publications', array('controller' => 'publications')); ?></li>
 	<li><?php echo $this->Html->link('Users', array('controller' => 'users')); ?></li>
 </ul>
 <br />

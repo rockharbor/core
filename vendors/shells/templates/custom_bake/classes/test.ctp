@@ -42,9 +42,8 @@ if ($mock and strtolower($type) == 'controller') {
 	'app.roster_status',	'app.answer', 'app.payment', 'app.payment_type',
 	'app.leader', 'app.comment', 'app.comment_type', 'app.comments',
 	'app.notification', 'app.image', 'plugin.media.document',
-	'app.household_member',	'app.household', 'app.publication',
-	'app.publications_user', 'app.log', 'app.app_setting', 'app.alert',
-	'app.alerts_user', 'app.aro',	'app.aco', 'app.aros_aco',
+	'app.household_member',	'app.household', 'app.log', 'app.app_setting', 
+	'app.alert', 'app.alerts_user', 'app.aro',	'app.aco', 'app.aros_aco',
 	'app.ministries_rev', 'app.involvements_rev', 'app.error');
 }
 $fixtures[] = 'app.log';

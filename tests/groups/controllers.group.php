@@ -25,7 +25,6 @@ class ControllersGroupTest extends TestSuite {
 		TestManager::addTestFile($this, APP . 'tests' . DS . 'cases' . DS . 'controllers' . DS . 'pages_controller');
 		TestManager::addTestFile($this, APP . 'tests' . DS . 'cases' . DS . 'controllers' . DS . 'payment_options_controller');
 		TestManager::addTestFile($this, APP . 'tests' . DS . 'cases' . DS . 'controllers' . DS . 'payments_controller');
-		TestManager::addTestFile($this, APP . 'tests' . DS . 'cases' . DS . 'controllers' . DS . 'publications_controller');
 		TestManager::addTestFile($this, APP . 'tests' . DS . 'cases' . DS . 'controllers' . DS . 'reports_controller');
 		TestManager::addTestFile($this, APP . 'tests' . DS . 'cases' . DS . 'controllers' . DS . 'roles_controller');
 		TestManager::addTestFile($this, APP . 'tests' . DS . 'cases' . DS . 'controllers' . DS . 'rosters_controller');

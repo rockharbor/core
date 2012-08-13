@@ -22,7 +22,7 @@ class UserTestCase extends CoreTestCase {
 	}
 	
 	function testMerge() {
-		$this->loadFixtures('Profile', 'Address', 'Roster', 'Household', 'HouseholdMember', 'Publication', 'PublicationsUser');
+		$this->loadFixtures('Profile', 'Address', 'Roster', 'Household', 'HouseholdMember');
 		
 		$this->assertFalse($this->User->merge(1));
 		$this->assertFalse($this->User->merge(1, 0));
@@ -51,8 +51,7 @@ class UserTestCase extends CoreTestCase {
 				'Profile',
 				'ActiveAddress',
 				'Address',
-				'Roster',
-				'Publication'
+				'Roster'
 			)
 		));
 		$this->assertEqual($results['User']['id'], 2);
@@ -76,11 +75,6 @@ class UserTestCase extends CoreTestCase {
 				'first_name' => 'Jeremy',
 				'last_name' => 'Schmarris',
 				'primary_email' => 'test@example.com'
-			),
-			'Publication' => array(
-				'Publication' => array(
-					1
-				)
 			)
 		);
 		$this->assertTrue($this->User->createUser($user));
@@ -97,8 +91,7 @@ class UserTestCase extends CoreTestCase {
 				'Profile',
 				'ActiveAddress',
 				'Address',
-				'Roster',
-				'Publication'
+				'Roster'
 			)
 		));
 		$this->assertEqual($results['User']['id'], 1);
@@ -116,7 +109,6 @@ class UserTestCase extends CoreTestCase {
 		$this->assertTrue($results['ActiveAddress']['primary']);
 		$this->assertTrue($results['ActiveAddress']['active']);
 		$this->assertTrue(!empty($results['Roster']));
-		$this->assertEqual(count($results['Publication']), 1);
 		$this->assertEqual(count($this->User->HouseholdMember->Household->getHouseholdIds($results['User']['id'])), 3);
 		
 		$user = array(
