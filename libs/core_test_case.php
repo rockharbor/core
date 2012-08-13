@@ -211,8 +211,11 @@ class CoreTestCase extends CakeTestCase {
 		$options = array_merge($default, $options);
 
 		// set up the controller based on the url
-		parse_str(parse_url($url, PHP_URL_QUERY), $queryParams);
 		$urlParams = Router::parse($url);
+		if (stripos('http', $url) === false) {
+			$url = 'http://localhost/'.ltrim($url, '/');
+		}
+		parse_str(parse_url($url, PHP_URL_QUERY), $queryParams);
 		if (!isset($urlParams['url'])) {
 			$urlParams['url'] = array();
 		}
