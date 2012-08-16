@@ -110,7 +110,12 @@ CORE.modal = function(id, options) {
 		useOptions.update =  parent.updateable;
 	}
 	$('#'+id).data('update', useOptions.update);
-	$('#modal').dialog({autoOpen:false});
+	$('#modal')
+		.dialog({autoOpen:false})
+		.css({
+			'max-height' : ($(window).height() - 80)+'px',
+			'overflow': 'auto'
+		});
 }
 
 /**
