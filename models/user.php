@@ -775,6 +775,27 @@ class User extends AppModel {
 			unset($conditions['Roster.Involvement.Ministry']);
 		}
 		
+		// check for "currently leading" (can't use `Profile.leading` because it doesn't check for previous dates)
+		if (isset($data['Profile']['currently_leading'])) {
+			$ds = $this->getDatasource();
+			$currentInvolvements = $this->Roster->Involvement->find('all', array(
+				'fields' => array(
+					'Involvement.id'
+				),
+				'conditions' => array(
+					'Involvement.active' => true,
+					$ds->expression('('.$this->Roster->Involvement->getVirtualField('previous').' = 0)')
+				)
+			));
+			$conditions[$operator][] = array(
+				'Leader.id <>' => null,
+				'Leader.model_id' => Set::extract('/Involvement/id', $currentInvolvements),
+				'Leader.model' => 'Involvement'
+			);
+			$link['Leader'] = array();
+			unset($conditions['Profile.currently_leading']);
+		}
+		
 		if (strtolower($operator) == 'and' && isset($conditions[$operator])) {
 			$conditions = array_merge($conditions, $conditions[$operator]);
 			unset($conditions[$operator]);

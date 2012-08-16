@@ -53,6 +53,11 @@
 				'type' => 'select',
 				'options' => $this->SelectOptions->booleans
 			));
+			echo $this->Form->input('Profile.currently_leading', array(
+				'type' => 'checkbox',
+				'label' => 'Currently Leading',
+				'hiddenField' => false
+			));
 		?>
 			</fieldset>
 		</div>
