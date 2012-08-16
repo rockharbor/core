@@ -510,6 +510,8 @@ class UsersController extends AppController {
 				// check if user exists (only use profile info to search)
 				$searchData = array('Profile' => $this->data['Profile']);
 				$searchData['Profile']['email'] = $searchData['Profile']['primary_email'];
+				// don't compare usernames
+				unset($searchData['User']['username']);
 				$foundUser = $this->User->findUser($searchData, 'OR');
 			}
 

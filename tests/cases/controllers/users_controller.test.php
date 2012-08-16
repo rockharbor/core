@@ -483,6 +483,38 @@ class UsersControllerTestCase extends CoreTestCase {
 		$results = $invitation['Invitation']['deny_action'];
 		$expected = '/households/delete/1/'.$lastHousehold['id'];
 		$this->assertEqual($results, $expected);
+		
+		// test for no fuzzy username search
+		$data = array(
+			'User' => array(
+				'username' => 'newuserna'
+			),
+			'Address' => array(
+				0 => array(
+					'address_line_1' => '123 Main',
+					'city' => 'Anytown',
+					'state' => 'CA',
+					'zip' => '12345'
+				)
+			),
+			'Profile' => array(
+				'first_name' => 'Another',
+				'last_name' => 'User',
+				'primary_email' => 'test2@test.com',
+				'birth_date' => array(
+					'month' => 4,
+					'day' => 14,
+					'year' => 1984
+				)
+			)
+		);
+		$vars = $this->testAction('/users/register', array(
+			'data' => $data
+		));
+		$this->Users->User->contain(array('Profile'));
+		$user = $this->Users->User->findByUsername('newuserna');
+		$result = $user['Profile']['name'];
+		$this->assertEqual($result, 'Another User');
 	}
 	
 	function testChooseUser() {
