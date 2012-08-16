@@ -18,7 +18,7 @@ CORE.initNavigation = function() {
 			CORE.readNotification(id, this);
 		}
 	});
-	$(document).on('click', '#nav-notifications ul li.notification a', function(event) {
+	$(document).on('click', '#nav-notifications ul li.notification .actions a', function(event) {
 		event.preventDefault();
 		var ele = $(this);
 		CORE.request(this.href, {
