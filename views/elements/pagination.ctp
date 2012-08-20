@@ -1,9 +1,4 @@
 <?php
-$updateable = false;
-if (isset($this->Paginator->options['updateable'])) {
-	$updateable = $this->Paginator->options['updateable'];
-	unset($this->Paginator->options['updateable']);
-}
 $id = uniqid('pagination-');
 ?>
 <div class="pagination clearfix" id="<?php echo $id; ?>">
@@ -27,6 +22,4 @@ $id = uniqid('pagination-');
 	?>
 </div>
 <?php
-if ($updateable) {
-	$this->Js->buffer("CORE.updateablePagination('$updateable', '$id')");
-}
+$this->Js->buffer("CORE.updateablePagination('$id')");

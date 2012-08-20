@@ -15,77 +15,39 @@ if (CORE == undefined) {
 CORE.updateables = [];
 
 /**
- * Wraps Ajax update to use an "updateable" alias
+ * Wraps Ajax request. If a url is not defined, it will find the closest
+ * `data-core-update-url` element to update.
  *
- * If url is defined and the updateable doesn't exist, the function will call a 
- * regular $.ajax update. If the url is defined and the updateable exists, it treats
- * it as a regular html update using the updateable div(s). Otherwise, it will 
- * look for and update a CORE.updateable
+ * ### Extra options:
+ * - `update` Boolean. Whether or not to update the container with the results
  *
- * @param string updateable Either the name of an updateable alias or a div to update.
- * @param string url The url to open if it's a div to update.
- * @see CORE.updateables
- */
-CORE.update = function(updateable, url) {
-	if (updateable != undefined && url != undefined) {
-		if (CORE.updateables[updateable] == undefined) {
-			$('#'+updateable).load(url);
-		} else {
-			for (var div in CORE.updateables[updateable]) {
-				$('#'+div).html(url);
-			}
-		}
-		return;
-	}
-	
-	if (CORE.updateables[updateable] == undefined && !(updateable == 'none' || updateable == '')) {
-		updateable = 'content';
-	}
-
-	if (updateable != 'none' && updateable != '') {
-		// check to see if it's an "updateable"
-		for (var div in CORE.updateables[updateable]) {
-			$('#'+div).load(CORE.updateables[updateable][div]);
-		}
-	}
-}
-
-/**
- * Wraps Ajax request
- *
- * ### Options:
- * - `update` An updateable to update on success
- * - `updateHtml` A div to update with the returned contents on success
- *
- * @param string url The url to request
+ * @param Element element The element calling the request
  * @param object options Ajax options
  * @param object data Data to POST
  * @return object The Ajax object
  */
-CORE.request = function(url, options, data) {
+CORE.request = function(element, options, data) {
 	// use user defined options if defined
 	var useOptions = {
-		url: url
+		url: null,
+		update: false
 	};
 	
-	if (options != undefined) {
-		useOptions = $.extend(useOptions, options);
+	useOptions = $.extend(useOptions, options || {});
+	
+	var container = $(element).closest('[data-core-update-url]');
+	
+	if (useOptions.url == null) {
+		useOptions.url = container.data('core-update-url');
 	}
 	
-	if (useOptions.update !== undefined) {
-		var update = useOptions.update;
-		useOptions.success = function() {
-			CORE.update(update);
+	container.data('core-update-url', useOptions.url)
+	
+	if (useOptions.update !== false) {
+		useOptions.success = function(data) {
+			container.html(data);
 		}		
 		delete useOptions.update;
-	}
-
-	if (useOptions.updateHtml !== undefined) {
-		var update = useOptions.updateHtml;
-		useOptions.success = function(data) {
-			$('#'+update).html(data);
-		}
-		delete useOptions.updateHtml;
 	}
 
 	if (data != undefined) {
@@ -99,103 +61,19 @@ CORE.request = function(url, options, data) {
  * Removes CakePHP pagination and replaces it with a request that replaces the
  * updateable, or the closest updateable parent
  *
- * @param string id The pagination container's id
  * @param string id The id of the div containing the pagination links
- * @see CORE.getUpdateableParent
  */
-CORE.updateablePagination = function(updateable, id) {
-	if (id == undefined) {
-		return;
-	}
-	if (updateable == undefined) {
-		updateable = 'parent';
-	}
-	var div;
-	if (updateable == 'parent') {
-		var div = CORE.getUpdateableParent(id, true);
-	} else {
-		// get first div in the updateable
-		for (var d in CORE.updateables[updateable]) {
-			div = '#'+d;
-			break;
-		}
-	}
-	$('a[href*="page:"]', $(div))
+CORE.updateablePagination = function(id) {
+	$('a[href*="page:"]', $('#'+id))
 		.off('click')
 		.on('click', function() {
-			if (!$(this).prop('id')) {
-				$(this).prop('id', unique('pagination-link-'));
-			}
-			CORE.request($(this).prop('href'), {
-				updateHtml: $(div).prop('id')
+			console.log(this);
+			CORE.request(this, {
+				url: this.href,
+				update: true
 			});
 			return false;
 		});
-}
-
-/**
- * Gets the closet tab and returns the url and id. If no tab is found, returns
- * content and the content's updateable url. Useful for modals that want to
- * update a tab it may or may not be in. Also creates a unique updateable for
- * this pair.
- *
- * @param string id The element id
- * @param boolean elementOnly Return the element id only
- * @return mixed Hash containing `updateable`, `url` and `id` keys, or the element
- *   if `elementOnly = true`
- */
-CORE.getUpdateableParent = function(id, elementOnly) {
-	var parent, tab, alias, url;
-	parent = { length: 0 };
-	if (elementOnly == undefined) {
-		elementOnly = false;
-	}
-	// this isn't looking for an updateable, so look for just paginatable boxes first
-	if (elementOnly) {
-		parent = $('#'+id).closest('.parent');
-	}
-	if (parent.length == 0) {
-		parent = $('#'+id).closest('.ui-tabs-panel');
-	}
-	
-	tab = parent.closest('.ui-tabs').find('a[href="#'+parent.prop('id')+'"]');
-	url = tab.data('load.tabs');
-
-	if (url == undefined) {
-		if (elementOnly) {
-			return $('#content');
-		}
-		return {
-			url: CORE.updateables['content']['content'],
-			id: 'content',
-			updateable: 'content'
-		};
-	}
-	
-	if (parent.length == 0 || url == undefined) {
-		if (elementOnly) {
-			return $('#content');
-		}
-		return {
-			url: CORE.updateables['content']['content'],
-			id: 'content',
-			updateable: 'content'
-		};
-	}
-	if (!parent.prop('id')) {
-		parent.prop('id', unique());
-	}
-	if (elementOnly) {
-		return parent;
-	}
-	
-	alias = unique('parent-');
-	CORE.register(alias, parent.prop('id'), url);
-	return {
-		url: tab.data('load.tabs'),
-		id: parent.prop('id'),
-		updateable: alias
-	};
 }
 
 /**

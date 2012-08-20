@@ -31,7 +31,7 @@ $this->Paginator->options(array(
 				echo $this->Js->link(
 					$icon,
 					array('controller' => 'zipcodes', 'action' => 'delete', $zipcode['id']),
-					array('complete' => 'CORE.update(CORE.getUpdateableParent("regions-index").updateable)', 'escape' => false, 'class' => 'no-hover')
+					array('complete' => 'CORE.request(this)', 'escape' => false, 'class' => 'no-hover')
 				);
 				echo '</div>';
 				echo '</div>';
