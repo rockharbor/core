@@ -21,7 +21,8 @@ CORE.initNavigation = function() {
 	$(document).on('click', '#nav-notifications ul li.notification .actions a', function(event) {
 		event.preventDefault();
 		var ele = $(this);
-		CORE.request(this.href, {
+		CORE.request(this, {
+			url: this.href,
 			success: function() {
 				$(ele).closest('.notification').fadeOut('fast');
 				CORE.decrementCount();
@@ -43,7 +44,8 @@ CORE.initNavigation = function() {
  * @param ele Element The notification element
  */
 CORE.readNotification = function(id, ele) {
-	CORE.request('/notifications/read/'+id, {
+	CORE.request(ele, {
+		url: '/notifications/read/'+id,
 		success: function() {
 			$(ele).animate({borderLeftColor:'transparent'}, {
 				duration: 'slow',
