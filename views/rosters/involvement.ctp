@@ -8,7 +8,7 @@ $this->Paginator->options(array(
 	<div class="content-box">
 		<?php
 		echo $this->Form->create(null, array(
-			'class' => 'core-filter-form update-roster-involvement',
+			'class' => 'core-filter-form',
 			'url' => $this->passedArgs,
 		));
 		echo $this->Form->input('previous', array(

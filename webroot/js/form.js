@@ -242,29 +242,13 @@ CORE.initFormUI = function() {
 		}
 		$(this).data('configured', true);
 		$('input:submit', this).hide();
-		var classList = $(this).prop('class').split(/\s+/);
-		var updateable;
-		for (var c in classList) {
-			if (classList[c].indexOf('update-') != -1) {
-				var updateSplit = classList[c].split('-');
-				updateSplit.shift();
-				updateable = updateSplit.join('-');
-				break;
-			}
-		}
-		var options = {updateHtml: updateable};
-		if (CORE.updateables[updateable] != undefined) {
-			for (var div in CORE.updateables[updateable]) {
-				options = {updateHtml: div};
-			}
-		}
-		if (updateable == 'parent') {
-			var parent = CORE.getUpdateableParent($(this).prop('id'), true);
-			options = {updateHtml: parent.prop('id')};
-		}
 		var form = $(this);
 		$('input, select', form).change(function() {
-			CORE.request(form.prop('action'), options, form.serialize());
+			CORE.request(form, {
+				url: form.prop('action'),
+				update: true,
+				data: form.serialize()
+			});
 		});
 	});
 

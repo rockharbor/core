@@ -11,7 +11,7 @@ $this->Paginator->options(array(
 		<div class="grid_5 alpha">
 			<?php
 			echo $this->Form->create(null, array(
-				'class' => 'core-filter-form update-involvement',
+				'class' => 'core-filter-form',
 				'url' => $this->passedArgs,
 			));
 			echo $this->Form->input('inactive', array(

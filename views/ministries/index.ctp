@@ -9,7 +9,7 @@ $this->Paginator->options(array(
 		<div class="grid_5 alpha">
 			<?php
 			echo $this->Form->create(null, array(
-				'class' => 'core-filter-form update-parent',
+				'class' => 'core-filter-form',
 				'url' => $this->here,
 			));
 			echo $this->Form->input('inactive', array(

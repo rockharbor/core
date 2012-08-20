@@ -3,7 +3,7 @@
 Jump to:&nbsp;
 <?php
 echo $this->Form->create(null, array(
-	'class' => 'core-filter-form update-calendar'
+	'class' => 'core-filter-form'
 ));
 echo $this->Form->select('Jump.month', $this->SelectOptions->generateOptions('month'));
 echo '&nbsp;';

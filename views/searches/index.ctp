@@ -9,7 +9,7 @@ if (!empty($this->data['Search']['query'])) {
 	<div>
 	<?php
 		echo $this->Form->create('Search', array(
-			'class' => 'core-filter-form update-content',
+			'class' => 'core-filter-form',
 			'url' => $this->here.'?q='.$this->params['url']['q'],
 			'id' => 'SearchFilterForm'
 		));

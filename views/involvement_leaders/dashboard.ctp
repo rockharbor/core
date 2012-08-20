@@ -8,7 +8,7 @@ $this->Paginator->options(array(
 	<p>Manage the involvement opportunities that you are leading.</p>
 	<?php
 		echo $this->Form->create('Filter', array(
-			'class' => 'core-filter-form update-parent',
+			'class' => 'core-filter-form',
 			'url' => $this->here,
 		));
 		echo $this->Form->input('previous', array(

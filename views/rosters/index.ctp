@@ -47,7 +47,7 @@ $this->Paginator->options(array(
 <div>
 	<?php
 	echo $this->Form->create('Roster', array(
-		'class' => 'core-filter-form update-roster-index',
+		'class' => 'core-filter-form',
 		'url' => array(
 			'controller' => 'rosters',
 			'action'=> 'index',

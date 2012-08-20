@@ -7,7 +7,7 @@ $this->Paginator->options(array(
 <?php
 echo $this->Form->create(array(
 	'default' => false,
-	'class' => 'core-filter-form update-parent'
+	'class' => 'core-filter-form'
 ));
 echo '<span class="toggleset">';
 echo $this->Form->radio('type',
