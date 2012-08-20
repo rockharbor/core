@@ -42,10 +42,9 @@ CORE.update = function(element, html) {
  *
  * @param Element element The element calling the request
  * @param object options Ajax options
- * @param object data Data to POST
  * @return object The Ajax object
  */
-CORE.request = function(element, options, data) {
+CORE.request = function(element, options) {
 	// use user defined options if defined
 	var useOptions = {
 		url: null,
@@ -69,9 +68,8 @@ CORE.request = function(element, options, data) {
 		delete useOptions.update;
 	}
 
-	if (data != undefined) {
+	if (useOptions.data != undefined) {
 		useOptions.type = 'post';
-		useOptions.data = data;
 	}
 	return $.ajax(useOptions);
 }
