@@ -116,25 +116,24 @@ CORE.successForm = function(event, data, textStatus, options) {
 	var id = $(event.currentTarget).closest('form').prop('id');
 	
 	// update the content
-	var parent = CORE.getUpdateableParent(id, true);
 	switch (options.autoUpdate) {
 		case 'failure':		
 			if (!validates) {
-				parent.html(data);
+				CORE.update(event.currentTarget, data)
 				CORE.showValidationErrors(id);
 			}
 		break;
 		case 'success':
 			if (validates) {
-				parent.html(data);
+				CORE.update(event.currentTarget, data)
 				CORE.showValidationErrors(id);
 			}
 		break;
 		default:
-			parent.html(data);
+			CORE.update(event.currentTarget, data)
 			CORE.showValidationErrors(id);
 		break;
-	} 
+	}
 	
 	if (validates) {
 		if (options.success != false) {
