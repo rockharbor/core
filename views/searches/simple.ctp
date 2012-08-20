@@ -1,5 +1,5 @@
 <h1>Simple Search</h1>
-<div class="searches parent">
+<div class="searches" data-core-update-url="<?php echo $this->here; ?>">
 <?php echo $this->Form->create(null, array(
 	'default' => false,
 	'url' => $this->passedArgs

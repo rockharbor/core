@@ -24,14 +24,16 @@ if (!empty($ministry['ParentMinistry']['id'])) {
 		<h3>Get Involved!</h3>
 	</div>
 	<div class="grid_10 alpha omega">
-		<div id="involvement" class="parent">
 		<?php
-			$url = Router::url(array(
-				'controller' => 'involvements',
-				'action' => 'index',
-				'column',
-				'Ministry' => $ministry['Ministry']['id']
-			));
+		$url = Router::url(array(
+			'controller' => 'involvements',
+			'action' => 'index',
+			'column',
+			'Ministry' => $ministry['Ministry']['id']
+		));
+		?>
+		<div id="involvement" data-core-update-url="<?php echo $url; ?>">
+		<?php
 			$this->Js->buffer('CORE.register("involvement", "involvement", "'.$url.'")');
 			echo $this->requestAction($url, array('renderAs' => 'ajax', 'return', 'bare' => false));
 		?>
@@ -41,13 +43,15 @@ if (!empty($ministry['ParentMinistry']['id'])) {
 	<?php if (empty($ministry['Ministry']['parent_id'])): ?>
 	<div class="grid_10 alpha omega">
 		<h3>Sub Ministries</h3>
-		<div class="subministries parent">
+		<?php
+		$url = Router::url(array(
+			'controller' => 'ministries',
+			'action' => 'index',
+			'Ministry' => $ministry['Ministry']['id']
+		));
+		?>
+		<div class="subministries" data-core-update-url="<?php echo $url; ?>">
 			<?php
-			$url = Router::url(array(
-				'controller' => 'ministries',
-				'action' => 'index',
-				'Ministry' => $ministry['Ministry']['id']
-			));
 			echo $this->requestAction($url, array('renderAs' => 'ajax', 'return', 'bare' => false));
 			?>
 		</div>

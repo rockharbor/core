@@ -95,16 +95,20 @@
 			</div>
 			<div class="grid_10 alpha omega">
 				<div class="grid_7 alpha">
-					<div id="involvement" class="parent box">
+					<?php
+					$url = Router::url(array(
+						'controller' => 'rosters',
+						'action' => 'involvement',
+						'User' => $profile['User']['id']
+					));
+					?>
+					<div id="involvement" class="box" data-core-update-url="<?php echo $url; ?>">
 						<?php
 						$this->Js->buffer('CORE.register("involvement", "involvement", "/rosters/involvement/User:'.$profile['User']['id'].'")');
-						echo $this->requestAction('/rosters/involvement', array(
+						echo $this->requestAction($url, array(
 							'renderAs' => 'ajax',
 							'bare' => false,
 							'return',
-							'named' => array(
-								'User' => $profile['User']['id']
-							),
 							'data' => null,
 							'form' => array('data' => null)
 							));

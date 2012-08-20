@@ -172,6 +172,6 @@ echo $this->Form->end();
 $url = $this->here; // doesn't matter, as the updateable is only needed for the div (pagination)
 $this->Js->buffer('CORE.register("results", "user-results", "'.$url.'");');
 ?>
-	<div id="user-results" class="parent">
+	<div id="user-results" data-core-update-url="<?php echo $this->here; ?>">
 	</div>
 </div>

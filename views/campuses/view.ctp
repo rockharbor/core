@@ -12,13 +12,15 @@
 	?>
 	<div class="grid_10 alpha omega">
 		<h3>Ministries</h3>
-		<div class="subministries parent">
+		<?php
+		$url = Router::url(array(
+			'controller' => 'ministries',
+			'action' => 'index',
+			'Campus' => $campus['Campus']['id']
+		));
+		?>
+		<div class="subministries" data-core-update-url="<?php echo $url; ?>">
 			<?php
-			$url = Router::url(array(
-				'controller' => 'ministries',
-				'action' => 'index',
-				'Campus' => $campus['Campus']['id']
-			));
 			echo $this->requestAction($url, array('renderAs' => 'ajax', 'return', 'bare' => false));
 			?>
 		</div>
