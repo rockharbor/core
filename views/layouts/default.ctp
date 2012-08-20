@@ -75,7 +75,7 @@
 			</div>
 		</div>
 		<div id="content-container" class="container_12 clearfix">
-			<div id="content" class="grid_10 prefix_1 suffix_1">
+			<div id="content" class="grid_10 prefix_1 suffix_1" data-core-update-url="<?php echo $this->here; ?>">
 				<?php echo $this->Session->flash('auth'); ?>
 				<?php echo $this->Session->flash(); ?>
 
