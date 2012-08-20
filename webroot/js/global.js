@@ -292,6 +292,17 @@ CORE.init = function() {
 			}
 		}
 	});
+	// extend `$.data()` to update the dom as well
+	var origDataFn = $.fn.data;
+	$.fn.data = function() {
+		if (arguments[0] == 'core-update-url' && typeof arguments[1] !== undefined) {
+			if (!arguments[1].match(/page:/)) {
+				arguments[1] += '/page:1';
+			}
+			$(this).attr('data-core-update-url', arguments[1]);
+		}
+		return origDataFn.apply(this, arguments);
+	}
 }
 
 /**
