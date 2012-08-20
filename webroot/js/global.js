@@ -15,6 +15,25 @@ if (CORE == undefined) {
 CORE.updateables = [];
 
 /**
+ * Convenience method for updating an element's update container with html. If
+ * `html` is not defined, a new request will be made
+ *
+ * @param Element element The element calling the update
+ * @param string html The html to update the container with
+ * @return object The Ajax object
+ */
+CORE.update = function(element, html) {
+	if (typeof html === undefined) {
+		CORE.request(element, {
+			update: true
+		});
+	} else {
+		var container = $(element).closest('[data-core-update-url]');
+		container.html(html);
+	}
+}
+
+/**
  * Wraps Ajax request. If a url is not defined, it will find the closest
  * `data-core-update-url` element to update.
  *
