@@ -309,6 +309,16 @@ CORE.tabs = function(id, taboptions, options) {
 					redirect('/login');
 				}
 			}
+		},
+		load: function(event, ui) {
+			var url = $(ui.tab).data('load.tabs');
+			$(ui.panel).data('core-update-url', url);
+		},
+		create: function(event) {
+			$(event.target).find('.ui-tabs-nav li a').each(function() {
+				var hash = $(this).attr('href');
+				$(hash).data('core-update-url', $(this).data('load.tabs'))
+			})
 		}
 	};
 	if (taboptions != undefined) {
