@@ -60,9 +60,8 @@ CORE.request = function(element, options) {
 		useOptions.url = container.data('core-update-url');
 	}
 	
-	container.data('core-update-url', useOptions.url)
-	
 	if (useOptions.update !== false) {
+		container.data('core-update-url', useOptions.url)
 		var success = useOptions.success;
 		useOptions.success = function(data) {
 			container.html(data);
