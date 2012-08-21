@@ -140,7 +140,15 @@ var origDataFn = $.fn.data;
 $.fn.data = function() {
 	if (arguments[0] == 'core-update-url' && arguments[1] != undefined) {
 		if (arguments[1] !== '' && !arguments[1].match(/page:/)) {
-			arguments[1] += '/page:1';
+			var parsed = document.createElement('a');
+			parsed.href = arguments[1];
+			var path = parsed.pathname.replace(/^\/|\/$/g, '');
+			var pieces = path.split('/');
+			if (pieces.length == 1) {
+				pieces.push('index');
+			}
+			pieces.push('page:1');
+			arguments[1] = '/'+pieces.join('/');
 		}
 		$(this).attr('data-core-update-url', arguments[1]);
 	}
