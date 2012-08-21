@@ -83,11 +83,10 @@ CORE.request = function(element, options) {
  *
  * @param string id The id of the div containing the pagination links
  */
-CORE.updateablePagination = function(id) {
+CORE.ajaxPagination = function(id) {
 	$('a[href*="page:"]', $('#'+id))
 		.off('click')
 		.on('click', function() {
-			console.log(this);
 			CORE.request(this, {
 				url: this.href,
 				update: true

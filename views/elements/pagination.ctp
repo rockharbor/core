@@ -22,4 +22,4 @@ $id = uniqid('pagination-');
 	?>
 </div>
 <?php
-$this->Js->buffer("CORE.updateablePagination('$id')");
+$this->Js->buffer("CORE.ajaxPagination('$id')");
