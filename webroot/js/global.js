@@ -214,7 +214,6 @@ CORE.initUI = function() {
 var origDataFn = $.fn.data;
 $.fn.data = function() {
 	if (arguments[0] == 'core-update-url' && arguments[1] != undefined) {
-		console.log(arguments);
 		if (arguments[1] !== '' && !arguments[1].match(/page:/)) {
 			arguments[1] += '/page:1';
 		}
