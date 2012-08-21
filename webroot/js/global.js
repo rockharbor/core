@@ -48,7 +48,8 @@ CORE.request = function(element, options) {
 	// use user defined options if defined
 	var useOptions = {
 		url: null,
-		update: false
+		update: false,
+		success: function() {}
 	};
 	
 	useOptions = $.extend(useOptions, options || {});
@@ -62,8 +63,10 @@ CORE.request = function(element, options) {
 	container.data('core-update-url', useOptions.url)
 	
 	if (useOptions.update !== false) {
+		var success = useOptions.success;
 		useOptions.success = function(data) {
 			container.html(data);
+			success(data);
 		}		
 		delete useOptions.update;
 	}
