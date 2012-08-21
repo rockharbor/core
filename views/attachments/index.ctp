@@ -44,7 +44,7 @@
 					$delete = ' | '.$delete;
 				}
 				echo $this->Html->tag('dd', $size.$delete);
-				$this->Js->buffer('CORE.confirmation("delete_btn_'.$item['id'].'","Are you sure you want to delete this '.Inflector::humanize($attachmentModel).'?", {update:"'.$attachmentModel.'Attachments"});');
+				$this->Js->buffer('CORE.confirmation("delete_btn_'.$item['id'].'","Are you sure you want to delete this '.Inflector::humanize($attachmentModel).'?", {update:true});');
 				$i++;
 				?>
 			</dl>

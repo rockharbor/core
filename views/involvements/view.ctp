@@ -122,7 +122,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 								$icon = $this->element('icon', array('icon' => 'delete'));
 								$link = $this->Permission->link($icon, array('controller' => 'involvement_leaders', 'action' => 'delete', 'Involvement' => $involvement['Involvement']['id'], 'User' => $leader['User']['id']), array('id' => 'remove-leader-'.$leader['User']['id'], 'escape' => false, 'class' => 'no-hover'));
 								if ($link) {
-									$this->Js->buffer('CORE.confirmation("remove-leader-'.$leader['User']['id'].'", "Are you sure you want to remove '.$leader['User']['Profile']['name'].' from leading?", {update:"content"})');
+									$this->Js->buffer('CORE.confirmation("remove-leader-'.$leader['User']['id'].'", "Are you sure you want to remove '.$leader['User']['Profile']['name'].' from leading?", {update:true})');
 									echo $this->Html->tag('div', $link, array('class' => 'core-icon-container'));
 								}
 							}
@@ -152,7 +152,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 							$link = $this->Permission->link($icon, array('controller' => 'rosters', 'action' => 'delete', $householdMember['Roster']['id'], 'User' => $householdMember['User']['id']), array('class' => 'no-hover', 'escape' => false, 'id' => 'remove-'.$householdMember['Roster']['id']));
 							if ($link) {
 								$links[] = $link;
-								$this->Js->buffer('CORE.confirmation("remove-'.$householdMember['Roster']['id'].'", "Are you sure you want to remove '.$householdMember['User']['Profile']['name'].'?", {update:"content"})');
+								$this->Js->buffer('CORE.confirmation("remove-'.$householdMember['Roster']['id'].'", "Are you sure you want to remove '.$householdMember['User']['Profile']['name'].'?", {update:true})');
 							}
 							if (!empty($links)) {
 								echo $this->Html->tag('div', implode('', $links), array('class' => 'core-icon-container'));
@@ -195,7 +195,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 				}
 				$link = $this->Permission->link('Delete', array('action' => 'delete', 'Involvement' => $involvement['Involvement']['id']), array('id' => 'delete_btn'));
 				if ($link) {
-					$this->Js->buffer('CORE.confirmation("delete_btn", "Are you sure you want to delete this '.$involvement['InvolvementType']['name'].' and all it\'s related content?", {updateHtml:"content"});');
+					$this->Js->buffer('CORE.confirmation("delete_btn", "Are you sure you want to delete this '.$involvement['InvolvementType']['name'].' and all it\'s related content?", {update:true});');
 					echo $this->Html->tag('li', $link);
 				}
 				?>

@@ -20,7 +20,7 @@ $this->Paginator->options(array(
 			echo $this->Html->link($icon, array('action' => 'edit', $alert['Alert']['id']), array('rel' => 'modal-content', 'escape' => false, 'class' => 'no-hover'));
 			$icon = $this->element('icon', array('icon' => 'delete'));
 			echo $this->Html->link($icon, array('action' => 'delete', $alert['Alert']['id']), array('id' => 'delete-btn-'.$alert['Alert']['id'], 'escape' => false, 'class' => 'no-hover'));
-			$this->Js->buffer('CORE.confirmation("delete-btn-'.$alert['Alert']['id'].'", "Are you sure you want to delete this alert?", {update:"content"})');
+			$this->Js->buffer('CORE.confirmation("delete-btn-'.$alert['Alert']['id'].'", "Are you sure you want to delete this alert?", {update:true})');
 			?>
 		</div>
 	</div>

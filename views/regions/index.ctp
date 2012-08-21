@@ -49,7 +49,7 @@ $this->Paginator->options(array(
 				echo $this->Html->link($icon, array('action' => 'edit', $region['Region']['id']), array('rel' => 'modal-parent', 'title' => 'Edit Region', 'escape' => false, 'class' => 'no-hover'));
 				$icon = $this->element('icon', array('icon' => 'delete'));
 				echo $this->Html->link($icon, array('action' => 'delete', $region['Region']['id']), array('title' => 'Delete Region', 'id' => 'delete-region-'.$region['Region']['id'], 'escape' => false, 'class' => 'no-hover'));
-				$this->Js->buffer('CORE.confirmation("delete-region-'.$region['Region']['id'].'", "Are you sure you want to delete this region and all its zipcodes?", {update:"parent"})');
+				$this->Js->buffer('CORE.confirmation("delete-region-'.$region['Region']['id'].'", "Are you sure you want to delete this region and all its zipcodes?", {update:true})');
 				?>
 			</span>
 		</td>

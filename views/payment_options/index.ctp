@@ -37,7 +37,7 @@ $this->Paginator->options(array(
 					<?php echo $this->Permission->link($this->element('icon', array('icon' => 'edit')), array('action' => 'edit', $paymentOption['PaymentOption']['id'], 'Involvement' => $involvementId), array('rel' => 'modal-parent', 'escape' => false, 'class' => 'no-hover')); ?>
 					<?php 
 					echo $this->Permission->link($this->element('icon', array('icon' => 'delete')), array('action' => 'delete', $paymentOption['PaymentOption']['id'], 'Involvement' => $involvementId), array('id' => 'delete_btn_'.$paymentOption['PaymentOption']['id'], 'escape' => false, 'class' => 'no-hover'));
-					$this->Js->buffer('CORE.confirmation("delete_btn_'.$paymentOption['PaymentOption']['id'].'","Are you sure you want to delete this payment option?", {update:"parent"});');
+					$this->Js->buffer('CORE.confirmation("delete_btn_'.$paymentOption['PaymentOption']['id'].'","Are you sure you want to delete this payment option?", {update:true});');
 					?>
 				</div>
 			</td>

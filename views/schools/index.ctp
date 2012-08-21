@@ -44,7 +44,7 @@ echo $this->Form->end('Filter');
 			echo $this->Html->link($icon, array('action' => 'edit', $school['School']['id']), array('rel' => 'modal-parent', 'escape' => false, 'class' => 'no-hover'));
 			$icon = $this->element('icon', array('icon' => 'delete'));
 			echo $this->Html->link($icon, array('action' => 'delete', $school['School']['id']), array('id' => 'delete-school-'.$school['School']['id'], 'escape' => false, 'class' => 'no-hover'));
-			$this->Js->buffer('CORE.confirmation("delete-school-'.$school['School']['id'].'", "Are you sure you want to delete this school?", {update:"parent"})');
+			$this->Js->buffer('CORE.confirmation("delete-school-'.$school['School']['id'].'", "Are you sure you want to delete this school?", {update:true})');
 		?></span></td>
 	</tr>
 	<?php endforeach; ?>

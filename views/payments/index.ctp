@@ -37,7 +37,7 @@ $this->Paginator->options(array(
 						echo $this->Permission->link($icon, array('controller' => 'payments', 'action' => 'view', 'User' => $user['User']['id'], $payment['Payment']['id'], 'ext' => 'print'), array('target' => '_blank', 'escape' => false, 'class' => 'no-hover'));
 						$icon = $this->element('icon', array('icon' => 'delete'));
 						echo $this->Permission->link($icon, array('controller' => 'payments', 'action' => 'delete', $payment['Payment']['id']), array('escape' => false, 'id' => 'delete_btn_'.$i, 'class' => 'no-hover'));
-						$this->Js->buffer('CORE.confirmation("delete_btn_'.$i.'","Are you sure you want to remove this payment for '.$this->Formatting->money($payment['Payment']['amount']).'?", {update:"parent"});');
+						$this->Js->buffer('CORE.confirmation("delete_btn_'.$i.'","Are you sure you want to remove this payment for '.$this->Formatting->money($payment['Payment']['amount']).'?", {update:true});');
 						?>
 					</div>
 				</div>

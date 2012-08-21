@@ -416,13 +416,13 @@ CORE.tabs = function(id, taboptions, options) {
  *
  * #### Options:
  *
- * - `update` An "updateable" to automatically update on close
- * - `updateHtml` If a string, replaces this id element with the returned content.
- *		`update` takes priority over this option
- * - `onYes` Js function to call on confirmation, in addition to calling the href
- * - `yesTitle` Yes button title
+ * - `update` Boolean. True to update the originator's `core-update-url` 
+ *		container with the HTML results of this link after the confirmation is 
+ *		closed, False to perform a request and auto-update on close.
+ * - `onYes` Js function to call on confirmation
+ * - `yesTitle` Yes button title, `false` for no button
  * - `onNo` Js function to call on cancellation
- * - `noTitle` No button title
+ * - `noTitle` No button title, `false` for no button
  *
  * @param string id The id of the element to attach the behavior to
  * @param string message The message to display
@@ -444,49 +444,50 @@ CORE.confirmation = function(id, message, options) {
 	var href = el.prop('href');
 	
 	var _defaultOptions = {
-		update: '',
-		updateHtml: false,
+		update: true,
 		yesTitle: 'Yes',
-		onNo: 'CORE.closeModals("confirmation-modal");',
+		onNo: false,
 		noTitle: 'Cancel',
-		onYes: '',
+		onYes: false,
 		title: 'Confirmation'
 	};
 		
-	var useOptions;
-	if (options != undefined) {
-		useOptions = $.extend(_defaultOptions, options);
-	} else {
-		useOptions = _defaultOptions;
+	var useOptions = $.extend(_defaultOptions, options || {});
+	
+	if (useOptions.onYes === false) {
+		useOptions.onYes =  function(useOptions) {
+			var callingElement = $('#confirmation-modal').data('core-modal-originator');
+			CORE.request($(callingElement), {
+				url: href,
+				success: function(data) {
+					// only update with the request's response if 
+					// `useOptions.update = true`, otherwise perform auto-update
+					if (!useOptions.update) {
+						data = undefined;
+					}
+					CORE.update($(callingElement), data);
+					CORE.closeModals('confirmation-modal');
+				}
+			});
+		};
 	}
-
-	if (useOptions.update == 'parent') {
-		var parent = CORE.getUpdateableParent(id);
-		useOptions.update = parent.updateable;
+	
+	if (useOptions.onNo === false) {
+		useOptions.onNo = function() {
+			CORE.closeModals("confirmation-modal");
+		}
 	}
-	if (useOptions.updateHtml == 'parent') {
-		var parent = CORE.getUpdateableParent(id, true);
-		useOptions.updateHtml = parent.prop('id');
-	}
-
-	if (useOptions.update != '') {
-		useOptions.onYes = 'CORE.request("'+href+'", {update:"'+useOptions.update+'"});CORE.closeModals("confirmation-modal");'+useOptions.onYes;
-	} else if (useOptions.updateHtml !== false) {
-		useOptions.onYes = 'CORE.request("'+href+'", {updateHtml:"'+useOptions.updateHtml+'"});CORE.closeModals("confirmation-modal");'+useOptions.onYes
-	} else {
-		useOptions.onYes = 'CORE.request("'+href+'");CORE.closeModals("confirmation-modal");'+useOptions.onYes
-	}
-
+	
 	el.click(function(event) {
 		// stop href
 		event.preventDefault();
 		
 		var extraButtons = {};
 		if (useOptions.yesTitle !== false) {
-			extraButtons[useOptions.yesTitle] = function () {eval(useOptions.onYes)};
+			extraButtons[useOptions.yesTitle] = useOptions.onYes;
 		}
 		if (useOptions.noTitle !== false) {
-			extraButtons[useOptions.noTitle] = function () {eval(useOptions.onNo)};
+			extraButtons[useOptions.noTitle] = useOptions.onNo;
 		}
 
 		$('#confirmation-modal').dialog({
@@ -497,6 +498,7 @@ CORE.confirmation = function(id, message, options) {
 		});
 		$('#confirmation-modal').html('<p>'+message+'</p>');
 		$('#confirmation-modal').dialog('open');
+		$('#confirmation-modal').data('core-modal-originator', el);
 		
 		// stop href
 		return false;

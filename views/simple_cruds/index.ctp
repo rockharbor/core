@@ -49,7 +49,7 @@ $this->Paginator->options(array(
 					echo $this->Html->link($icon, array('action' => 'edit', $result[$model]['id']), array('rel' => 'modal-parent', 'class' => 'no-hover', 'escape' => false));
 					$icon = $this->element('icon', array('icon' => 'delete'));
 					echo $this->Html->link($icon, array('action' => 'delete', $result[$model]['id']), array('id' => 'delete-btn-'.$result[$model]['id'], 'class' => 'no-hover', 'escape' => false));
-					$this->Js->buffer('CORE.confirmation("delete-btn-'.$result[$model]['id'].'", "Are you sure you want to delete this '.Inflector::humanize($modelKey).'?", {update:"parent"});');
+					$this->Js->buffer('CORE.confirmation("delete-btn-'.$result[$model]['id'].'", "Are you sure you want to delete this '.Inflector::humanize($modelKey).'?", {update:true});');
 					?>
 					</span>
 				</td>

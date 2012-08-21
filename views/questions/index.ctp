@@ -75,7 +75,7 @@
 <?php
 
 while ($i > 0) {
-	$this->Js->buffer('CORE.confirmation("delete_btn_'.$i.'","Are you sure you want to delete this question?", {update:"questions"});');
+	$this->Js->buffer('CORE.confirmation("delete_btn_'.$i.'","Are you sure you want to delete this question?", {update:true});');
 	$i--;
 }
 

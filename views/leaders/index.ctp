@@ -34,7 +34,7 @@ $this->Paginator->options(array(
 						<?php
 						$icon = $this->Html->tag('span', '&nbsp;', array('class' => 'core-icon icon-delete'));
 						echo $this->Permission->link($icon, array('action' => 'delete', 'User' => $leader['Leader']['user_id'], 'model' => $model, $model => $modelId), array('id' => 'delete_btn_'.$i, 'escape' => false, 'class' => 'no-hover'));
-						$this->Js->buffer('CORE.confirmation("delete_btn_'.$i.'","Are you sure you want to remove '.$leader['User']['Profile']['name'].'?", {update:"leaders"});');
+						$this->Js->buffer('CORE.confirmation("delete_btn_'.$i.'","Are you sure you want to remove '.$leader['User']['Profile']['name'].'?", {update:true});');
 						?>
 					</span>
 				</td>

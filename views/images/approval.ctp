@@ -16,9 +16,9 @@ foreach ($images as $image):
 		$path = 'm'.DS.$image['Image']['dirname'].DS.$image['Image']['basename'];
 		echo $this->Html->tag('div', $this->Media->embed($path, array('restrict' => 'image')), array('style' => 'margin-bottom: 5px;'));
 		echo $this->Html->link('Approve', array('controller' => $controller, 'action' => 'approve', $image['Image']['id'], true), array('class' => 'flat-button green', 'id' => 'approve_btn_'.$image['Image']['id']));
-		$this->Js->buffer('CORE.confirmation("approve_btn_'.$image['Image']['id'].'", "Are you sure you want to approve this image?", {updateHtml: "parent"})');
+		$this->Js->buffer('CORE.confirmation("approve_btn_'.$image['Image']['id'].'", "Are you sure you want to approve this image?", {update: true})');
 		echo $this->Html->link('Deny', array('controller' => $controller, 'action' => 'approve', $image['Image']['id'], false), array('class' => 'flat-button red', 'id' => 'delete_btn_'.$image['Image']['id']));
-		$this->Js->buffer('CORE.confirmation("delete_btn_'.$image['Image']['id'].'", "Are you sure you want to delete this image?", {updateHtml: "parent"})');
+		$this->Js->buffer('CORE.confirmation("delete_btn_'.$image['Image']['id'].'", "Are you sure you want to delete this image?", {update: true})');
 		?>
 	</div>
 <?php endforeach; ?>

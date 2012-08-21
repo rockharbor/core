@@ -72,7 +72,7 @@ $this->Paginator->options(array(
 $this->Html->scriptStart(array('inline' => true));
 
 while ($i > 0) {
-	echo 'CORE.confirmation(\'delete_user_btn_'.$i.'\',\'Are you sure you want to delete this user?\', {update:\'users\'});';
+	echo 'CORE.confirmation(\'delete_user_btn_'.$i.'\',\'Are you sure you want to delete this user?\', {update:true});';
 	$i--;
 }
 

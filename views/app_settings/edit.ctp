@@ -8,7 +8,7 @@
 		echo $this->Media->embed($this->data['Image']['dirname'].DS.$this->data['Image']['basename'], array('restrict' => 'image'));
 		echo '<br />';
 		echo $this->Html->link('Delete', array('controller' => 'app_setting_images', 'action' => 'delete', $this->data['Image']['id']), array('id' => 'delete_appsetting_image_'.$this->data['AppSetting']['id'], 'class' => 'button'));
-		$this->Js->buffer('CORE.confirmation("delete_appsetting_image_'.$this->data['AppSetting']['id'].'", "Are you sure you want to delete this image?", {update:"content"})');
+		$this->Js->buffer('CORE.confirmation("delete_appsetting_image_'.$this->data['AppSetting']['id'].'", "Are you sure you want to delete this image?")');
 	} else {
 		echo $this->element('upload', array(
 			'model' => 'AppSetting',

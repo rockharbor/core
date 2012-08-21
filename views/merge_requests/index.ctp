@@ -19,13 +19,13 @@ $this->Paginator->options(array(
 			<?php
 			$link = $this->Html->link('Merge', array('controller' => 'merge_requests', 'action' => 'merge', $request['MergeRequest']['id']), array('class' => 'flat-button green', 'id' => 'merge_btn_'.$request['MergeRequest']['id']));
 			echo $this->Html->tag('div', $link);
-			$this->Js->buffer('CORE.confirmation("merge_btn_'.$request['MergeRequest']['id'].'", "Are you sure you want to update the current user with the new information?", {updateHtml:"parent"})');
+			$this->Js->buffer('CORE.confirmation("merge_btn_'.$request['MergeRequest']['id'].'", "Are you sure you want to update the current user with the new information?", {update:true})');
 			$link = $this->Html->link('Ignore', array('controller' => 'merge_requests', 'action' => 'delete', $request['MergeRequest']['id'], 1), array('class' => 'flat-button', 'id' => 'ignore_btn_'.$request['MergeRequest']['id']));
 			echo $this->Html->tag('div', $link);
-			$this->Js->buffer('CORE.confirmation("ignore_btn_'.$request['MergeRequest']['id'].'", "Are you sure you want to ignore this merge request? The new user will be activated and the request will be deleted. The original user will remain untouched.", {updateHtml:"parent"})');
+			$this->Js->buffer('CORE.confirmation("ignore_btn_'.$request['MergeRequest']['id'].'", "Are you sure you want to ignore this merge request? The new user will be activated and the request will be deleted. The original user will remain untouched.", {update:true})');
 			$link = $this->Html->link('Deny', array('controller' => 'merge_requests', 'action' => 'delete', $request['MergeRequest']['id']), array('class' => 'flat-button red', 'id' => 'delete_btn_'.$request['MergeRequest']['id']));
 			echo $this->Html->tag('div', $link);
-			$this->Js->buffer('CORE.confirmation("delete_btn_'.$request['MergeRequest']['id'].'", "Are you sure you want to deny this merge request? The new user will be deleted!", {updateHtml:"parent"})');
+			$this->Js->buffer('CORE.confirmation("delete_btn_'.$request['MergeRequest']['id'].'", "Are you sure you want to deny this merge request? The new user will be deleted!", {update:true})');
 			?>
 		</div>
 		<div class="grid_4 omega">

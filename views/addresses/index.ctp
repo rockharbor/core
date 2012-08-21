@@ -46,11 +46,11 @@ foreach ($addresses as $address):
 				if (!$address['Address']['primary'] || $address['Address']['model'] == 'User') {
 					if ($address['Address']['active']) {
 						echo $this->Permission->link('Make Primary', array('action' => 'primary', 'Address' => $address['Address']['id'], $model => $modelId, $address['Address']['model'] => $address['Address']['foreign_key']), array('id' => 'address_primary_'.$i)).'<br />';
-						$this->Js->buffer('CORE.confirmation("address_primary_'.$i.'","Are you sure you want to make this address the primary address?", {update:"addresses"});');
+						$this->Js->buffer('CORE.confirmation("address_primary_'.$i.'","Are you sure you want to make this address the primary address?", {update:true});');
 						echo $this->Permission->link('Deactivate', array('action' => 'toggle_activity', 0, 'Address' => $address['Address']['id'], $model => $modelId, $address['Address']['model'] => $address['Address']['foreign_key']), array('success' => 'CORE.update("addresses", data)'));
 					} else {
 						echo $this->Permission->link('Delete', array('action' => 'delete', $address['Address']['id'], $model => $modelId, $address['Address']['model'] => $address['Address']['foreign_key']), array('id' => 'delete_address_'.$i)).'<br />';
-						$this->Js->buffer('CORE.confirmation("delete_address_'.$i.'","Are you sure you want to delete this address?", {update:"addresses"});');
+						$this->Js->buffer('CORE.confirmation("delete_address_'.$i.'","Are you sure you want to delete this address?", {update:true});');
 						echo $this->Permission->link('Reactivate', array('action' => 'toggle_activity', 1, 'Address' => $address['Address']['id'], $model => $modelId, $address['Address']['model'] => $address['Address']['foreign_key']), array('success' => 'CORE.update("addresses", data)'));
 					}
 				}
@@ -64,7 +64,7 @@ foreach ($addresses as $address):
 			if ($address['Address']['model'] != 'User') {
 				$icon = $this->element('icon', array('icon' => 'delete'));
 				echo $this->Permission->link($icon, array('action' => 'delete', $address['Address']['id'], $model => $modelId), array('id' => 'delete_address_'.$i, 'class' => 'no-hover', 'escape' => false));
-				$this->Js->buffer('CORE.confirmation("delete_address_'.$i.'","Are you sure you want to delete this address?", {update:"addresses"});');
+				$this->Js->buffer('CORE.confirmation("delete_address_'.$i.'","Are you sure you want to delete this address?", {update:true});');
 			}
 			?>
 			</span>

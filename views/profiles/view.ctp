@@ -48,7 +48,7 @@
 					));
 					if ($link) {
 						echo $this->Html->tag('div', $link, array('class' => 'core-icon-container'));
-						$this->Js->buffer('CORE.confirmation("remove-promoted-'.$image['Image']['id'].'", "Are you sure you want to remove this from the promoted items?", {updateHtml:"content"});');
+						$this->Js->buffer('CORE.confirmation("remove-promoted-'.$image['Image']['id'].'", "Are you sure you want to remove this from the promoted items?", {update:true});');
 					}
 					?>
 				</div>

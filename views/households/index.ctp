@@ -86,15 +86,15 @@
 					echo $this->Permission->link('View Involvement', array('controller' => 'profiles', 'action' => 'view', 'User' => $user['id']));
 					if ($class != 'household-contact' || count($households) > 1) {
 						echo $this->Permission->link('Remove', array('controller' => 'households', 'action' => 'delete', $user['id'], $household['Household']['id'], 'User' => $user['id']), array('id' => 'household_remove_'.$m));
-						$this->Js->buffer('CORE.confirmation("household_remove_'.$m.'","Are you sure you want to remove '.$user['Profile']['name'].' from this household?", {update:"households"});');
+						$this->Js->buffer('CORE.confirmation("household_remove_'.$m.'","Are you sure you want to remove '.$user['Profile']['name'].' from this household?", {update:true});');
 					}
 					if ($class != 'household-contact' && !$user['Profile']['child']) {
 						echo $this->Permission->link('Make Household Contact', array('controller' => 'households', 'action' => 'make_household_contact', $user['id'], $household['Household']['id'], 'User' => $user['id']), array('id' => 'household_contact_'.$m));
-						$this->Js->buffer('CORE.confirmation("household_contact_'.$m.'","Are you sure you want to make '.$user['Profile']['name'].' the household contact?", {update:"households"});');
+						$this->Js->buffer('CORE.confirmation("household_contact_'.$m.'","Are you sure you want to make '.$user['Profile']['name'].' the household contact?", {update:true});');
 					}
 					if (!$householdMember['confirmed']) {
 						echo $this->Permission->link('Confirm', array('controller' => 'households', 'action' => 'confirm', $user['id'], $household['Household']['id'], 'User' => $user['id']), array('id' => 'household_confirm_'.$m));
-						$this->Js->buffer('CORE.confirmation("household_confirm_'.$m.'","Are you sure you want to confirm '.$user['Profile']['name'].' to this household?", {update:"households"});');
+						$this->Js->buffer('CORE.confirmation("household_confirm_'.$m.'","Are you sure you want to confirm '.$user['Profile']['name'].' to this household?", {update:true});');
 					}
 					?>
 					</p>

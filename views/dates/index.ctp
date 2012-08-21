@@ -29,7 +29,7 @@ $dates = Set::extract('/Date[exemption=0]', $dates);
 			echo $this->Permission->link($icon, array('action' => 'edit', $date['Date']['id'], 'Involvement' => $involvementId), array('rel' => 'modal-dates', 'class' => 'no-hover', 'escape' => false));
 			$icon = $this->element('icon', array('icon' => 'delete'));
 			echo $this->Permission->link($icon, array('action' => 'delete', $date['Date']['id'], 'Involvement' => $involvementId), array('id' => 'delete-date-btn-'.$date['Date']['id'], 'class' => 'no-hover', 'escape' => false)); 
-			$this->Js->buffer('CORE.confirmation("delete-date-btn-'.$date['Date']['id'].'","Are you sure you want to delete this date?", {update:"dates"});');
+			$this->Js->buffer('CORE.confirmation("delete-date-btn-'.$date['Date']['id'].'","Are you sure you want to delete this date?", {update:true});');
 			?></div>
 			</td>
 		</tr>
@@ -59,7 +59,7 @@ $dates = Set::extract('/Date[exemption=0]', $dates);
 			echo $this->Permission->link($icon, array('action' => 'edit', $date['Date']['id'], 'Involvement' => $involvementId), array('rel' => 'modal-dates', 'class' => 'no-hover', 'escape' => false));
 			$icon = $this->element('icon', array('icon' => 'delete'));
 			echo $this->Permission->link($icon, array('action' => 'delete', $date['Date']['id'], 'Involvement' => $involvementId), array('id' => 'delete-date-btn-'.$date['Date']['id'], 'class' => 'no-hover', 'escape' => false)); 
-			$this->Js->buffer('CORE.confirmation("delete-date-btn-'.$date['Date']['id'].'","Are you sure you want to delete this date?", {update:"dates"});');
+			$this->Js->buffer('CORE.confirmation("delete-date-btn-'.$date['Date']['id'].'","Are you sure you want to delete this date?", {update:true});');
 			?></div>
 			</td>
 		</tr>
