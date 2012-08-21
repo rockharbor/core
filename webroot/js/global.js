@@ -23,7 +23,7 @@ CORE.updateables = [];
  * @return object The Ajax object
  */
 CORE.update = function(element, html) {
-	if (typeof html === undefined) {
+	if (html === undefined) {
 		CORE.request(element, {
 			update: true
 		});
