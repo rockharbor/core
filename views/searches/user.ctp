@@ -169,8 +169,6 @@ $submitOptions['success'] = '$("#user-results").html(data);';
 echo $this->Js->submit('Search!', $submitOptions);
 // DOES NOT RESET CHECKBOXES because onchange doesn't fire ..... //echo $this->Form->button('Clear fields', array('type' => 'reset')); 
 echo $this->Form->end();
-$url = $this->here; // doesn't matter, as the updateable is only needed for the div (pagination)
-$this->Js->buffer('CORE.register("results", "user-results", "'.$url.'");');
 ?>
 	<div id="user-results" data-core-update-url="<?php echo $this->here; ?>">
 	</div>

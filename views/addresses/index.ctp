@@ -2,7 +2,6 @@
 $this->Paginator->options(array(
     'updateable' => 'parent'
 ));
-$this->Js->buffer('CORE.fallbackRegister("addresses");');
 ?>
 <h1>Addresses</h1>
 <div class="address_list clearfix">

@@ -46,7 +46,6 @@
 		
 		// setup
 		$this->Js->buffer('CORE.init();');
-		$this->Js->buffer('CORE.register("notifications", "nav-notifications", "/notifications/quick")');
 		$element = addslashes(str_replace(array("\r", "\r\n", "\n"), '', $this->element('wysiwyg_toolbar')));
 		$this->Js->buffer("CORE.wysiwygToolbar = '$element';", true);
 		echo $this->AssetCompress->includeAssets(Configure::read('debug') == 0);

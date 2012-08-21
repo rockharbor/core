@@ -104,7 +104,6 @@
 					?>
 					<div id="involvement" class="box" data-core-update-url="<?php echo $url; ?>">
 						<?php
-						$this->Js->buffer('CORE.register("involvement", "involvement", "/rosters/involvement/User:'.$profile['User']['id'].'")');
 						echo $this->requestAction($url, array(
 							'renderAs' => 'ajax',
 							'bare' => false,
@@ -320,7 +319,6 @@
 
 		<div id="household">
 			<?php
-			$this->Js->buffer('CORE.register("household", "household", "/households/index/User:'.$profile['User']['id'].'")');
 			echo $this->requestAction('/households/index', array(
 				'renderAs' => 'ajax',
 				'bare' => false,
@@ -335,7 +333,6 @@
 		</div>
 		<div id="payments">
 			<?php
-			$this->Js->buffer('CORE.register("payments", "payments", "/payments/index/User:'.$profile['User']['id'].'")');
 			echo $this->requestAction('/payments/index', array(
 				'renderAs' => 'ajax',
 				'bare' => false,
@@ -352,7 +349,3 @@
 
 	</div>
 </div>
-
-<?php
-$this->Js->buffer('CORE.register("households", "household", "'.Router::url(array('controller' => 'households', 'User' => $profile['User']['id'])).'");');
-$this->Js->buffer('CORE.register("payments", "payments", "'.Router::url(array('controller' => 'payments', 'User' => $profile['User']['id'])).'");');

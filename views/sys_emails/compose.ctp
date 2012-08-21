@@ -41,29 +41,26 @@ if (!isset($this->passedArgs['mstoken'])) {
 		);
 		?>
 	</fieldset>
-	<?php if ($showAttachments && $this->Permission->check(array('controller' => 'sys_email_documents', 'action' => 'index'))): ?>
-	<div id="document_attachments">
+	<?php 
+	if ($showAttachments && $this->Permission->check(array('controller' => 'sys_email_documents', 'action' => 'index'))): 
+		$url = Router::url(array(
+			'controller' => 'sys_email_documents',
+			'action' => 'index',
+			'SysEmail' => $this->MultiSelect->token,
+			'mstoken' => $this->MultiSelect->token
+		));
+	?>
+	<div id="document_attachments" data-core-update-url="<?php echo $url; ?>">
 		<?php
 		/*
 		we're going to use the attachment uploader here. after the email has been sent, the attachments will
 		be removed from the server
 		*/
 		if ($showAttachments) {
-			$url = '';
-			$this->Js->buffer('CORE.register(
-				"DocumentAttachments",
-				"document_attachments",
-				"/sys_email_documents/index/SysEmail:'.$this->MultiSelect->token.'/mstoken:'.$this->MultiSelect->token.'"
-			);');
-
-			echo $this->requestAction('/sys_email_documents/index', array(
+			echo $this->requestAction($url, array(
 				'return',
 				'bare' => false,
-				'renderAs' => 'ajax',
-				'named' => array(
-					'SysEmail' => $this->MultiSelect->token,
-					'mstoken' => $this->MultiSelect->token
-				)
+				'renderAs' => 'ajax'
 			));
 		}
 		?>

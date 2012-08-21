@@ -26,8 +26,6 @@
 $defaultSubmitOptions['success'] = '$("#ministry-results").html(data);';
 echo $this->Js->submit('Search!', $defaultSubmitOptions);
 echo $this->Form->end();
-$url = $this->here; // doesn't matter, as the updateable is only needed for the div (pagination)
-$this->Js->buffer('CORE.register("results", "ministry-results", "'.$url.'");');
 ?>
 	<div id="ministry-results" data-core-update-url="<?php echo $this->here; ?>">
 	</div>

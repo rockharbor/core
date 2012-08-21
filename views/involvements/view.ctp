@@ -202,16 +202,19 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 			</ul>
 		</div>
 		<?php if ($canSeeRoster): ?>
-		<div id="roster-tab">
+		<?php
+		$url = Router::url(array(
+			'controller' => 'rosters',
+			'action' => 'index',
+			'Involvement' => $involvement['Involvement']['id']
+		));
+		?>
+		<div id="roster-tab" data-core-update-url="<?php echo $url; ?>">
 			<?php 
-			echo $this->requestAction('/rosters/index', array(
-				'named' => array(
-					'Involvement' => $involvement['Involvement']['id']
-				),
+			echo $this->requestAction($url, array(
 				'return',
 				'renderAs' => 'ajax'
 			));
-			$this->Js->buffer('CORE.register("roster", "roster-tab", "/rosters/index/Involvement:'.$involvement['Involvement']['id'].'")');
 			?>
 		</div>
 		<?php endif; ?>

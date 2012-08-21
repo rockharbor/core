@@ -1,6 +1,4 @@
 <?php
-
-$this->Js->buffer('CORE.fallbackRegister("involvement");');
 $this->Paginator->options(array(
     'updateable' => 'parent'
 ));

@@ -62,22 +62,22 @@ echo $this->Html->link($icon, array('action' => 'view', 'Involvement' => $this->
 				</fieldset>
 				<fieldset class="grid_5 omega">
 					<legend>Location</legend>
-					<div id="addresses">
 					<?php
-					echo $this->requestAction('/involvement_addresses/index', array(
+					$url = Router::url(array(
+						'controller' => 'involvement_addresses',
+						'action' => 'index',
+						'Involvement' => $this->data['Involvement']['id']
+					))
+					?>
+					<div id="addresses" data-core-update-url="<?php echo $url; ?>">
+					<?php
+					echo $this->requestAction($url, array(
 						'renderAs' => 'ajax',
 						'bare' => false,
 						'return',
-						'named' => array(
-							'Involvement' => $this->data['Involvement']['id']
-						),
 						'data' => null,
 						'form' => array('data' => null)
 					));
-					$this->Js->buffer('CORE.register("addresses", "addresses", "'.Router::url(array(
-					'controller' => 'involvement_addresses',
-					'Involvement' => $this->data['Involvement']['id']
-					)).'")');
 					?>
 					</div>
 				</fieldset>
@@ -131,42 +131,40 @@ echo $this->Html->link($icon, array('action' => 'view', 'Involvement' => $this->
 
 		<div id="media">
 			<h3>Images</h3>
-			<div id="image_upload">
 			<?php
-				echo $this->requestAction('/involvement_images/index', array(
+			$url = Router::url(array(
+				'controller' => 'involvement_images',
+				'action' => 'index',
+				'Involvement' => $this->data['Involvement']['id']
+			));
+			?>
+			<div id="image_upload" data-core-update-url="<?php echo $url; ?>">
+			<?php
+				echo $this->requestAction($url, array(
 					'renderAs' => 'ajax',
 					'bare' => false,
 					'return',
-					'named' => array(
-						'Involvement' => $this->data['Involvement']['id']
-					),
 					'data' => null,
 					'form' => array('data' => null)
 				));
-				$this->Js->buffer('CORE.register(\'ImageAttachments\', \'image_upload\', \''.Router::url(array(
-					'controller' => 'involvement_images',
-					'action' => 'index',
-					'Involvement' => $this->data['Involvement']['id']
-				)).'\')');
 			?></div>
 			<h3>Documents</h3>
-			<div id="documents_upload">
 			<?php
-				echo $this->requestAction('/involvement_documents/index', array(
+			$url = Router::url(array(
+				'controller' => 'involvement_documents',
+				'action' => 'index',
+				'Involvement' => $this->data['Involvement']['id']
+			));
+			?>
+			<div id="documents_upload" data-core-update-url="<?php echo $url; ?>">
+			<?php
+				echo $this->requestAction($url, array(
 					'renderAs' => 'ajax',
 					'bare' => false,
 					'return',
-					'named' => array(
-						'Involvement' => $this->data['Involvement']['id']
-					),
 					'data' => null,
 					'form' => array('data' => null)
 				));
-				$this->Js->buffer('CORE.register(\'DocumentAttachments\', \'documents_upload\', \''.Router::url(array(
-					'controller' => 'involvement_documents',
-					'action' => 'index',
-					'Involvement' => $this->data['Involvement']['id']
-				)).'\')');
 			?></div>
 		</div>
 
@@ -182,10 +180,6 @@ echo $this->Html->link($icon, array('action' => 'view', 'Involvement' => $this->
 				'data' => null,
 				'form' => array('data' => null)
 			));
-			$this->Js->buffer('CORE.register("dates", "dates", "'.Router::url(array(
-				'controller' => 'dates',
-				'Involvement' => $this->data['Involvement']['id']
-			)).'")');
 			?>
 		</div>
 
@@ -201,10 +195,6 @@ echo $this->Html->link($icon, array('action' => 'view', 'Involvement' => $this->
 				'data' => null,
 				'form' => array('data' => null)
 			));
-			$this->Js->buffer('CORE.register("questions", "questions", "'.Router::url(array(
-				'controller' => 'questions',
-				'Involvement' => $this->data['Involvement']['id']
-			)).'")');
 			?>
 		</div>
 
@@ -220,10 +210,6 @@ echo $this->Html->link($icon, array('action' => 'view', 'Involvement' => $this->
 				'data' => null,
 				'form' => array('data' => null)
 			));
-			$this->Js->buffer('CORE.register("paymentOptions", "payment_options", "'.Router::url(array(
-				'controller' => 'payment_options',
-				'Involvement' => $this->data['Involvement']['id']
-			)).'")');
 			?>
 		</div>
 
@@ -239,11 +225,6 @@ echo $this->Html->link($icon, array('action' => 'view', 'Involvement' => $this->
 				'data' => null,
 				'form' => array('data' => null)
 			));
-			// register this div as 'updateable'
-			$this->Js->buffer('CORE.register("leaders", "leaders", "'.Router::url(array(
-				'controller' => 'involvement_leaders',
-				'Involvement' => $this->data['Involvement']['id']
-			)).'")');
 			?>
 		</div>
 	</div>

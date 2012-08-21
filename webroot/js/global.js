@@ -8,13 +8,6 @@ if (CORE == undefined) {
 }
 
 /**
- * Registered updateable divs
- *
- * @var array Array containing an alias object, which contains a div and url
- */
-CORE.updateables = [];
-
-/**
  * Convenience method for updating an element's update container with html. If
  * `html` is not defined, a new request will be made
  *
@@ -95,58 +88,6 @@ CORE.ajaxPagination = function(id) {
 }
 
 /**
- * Registers a div as an "updateable"
- *
- * By registering a div as an updateable and linking it to a url,
- * we can call CORE.update(alias) to quickly update that div
- * without having to remember the url or div id. An alias can 
- * also update more than one div (pass the same alias to CORE.register
- * with a new div and url).
- *
- * @param string alias The quick reference alias name
- * @param string div The element div to update
- * @param string url The url to load
- * @return boolean
- * @see CORE.updateables
- */
-CORE.register = function(alias, div, url) {
-	if (alias == undefined || div == undefined || url == undefined) {
-		return false;
-	}
-
-	if (CORE.updateables[alias] == undefined) {
-		CORE.updateables[alias] = [];
-	}
-	
-	// assume we want to retain any FilterPagination filters when closing
-	// models on the first page
-	if (!url.match(/page:/)) {
-		url += '/page:1';
-	}
-	
-	// if this exact one exists, don't duplicate
-	CORE.updateables[alias][div] = url;
-	
-	return true;
-}
-
-/**
- * Unregisters an updateable and returns the updateable that was removed
- *
- * @param alias string The alias for the updateable
- * @return hash The updateable that was removed
- * @see CORE.register
- */
-CORE.unregister = function(alias) {
-	if (alias == undefined) {
-		return false;
-	}
-	var old = CORE.updateables[alias];
-	delete CORE.updateables[alias];
-	return old;
-}
-
-/**
  * Extracts the flash message from a response and displays it
  * 
  * @param data string The html response
@@ -155,20 +96,6 @@ CORE.unregister = function(alias) {
 CORE.showFlash = function(data) {
 	var msg = $('div[id^=flash], div#authMessage', '<div>'+data+'</div>');
 	$(msg).appendTo('#wrapper').hide().delay(100).slideDown().delay(5000).slideUp(function() { $(this).remove(); });
-}
-
-/**
- * Registers the alias with the `content` updateable's data, so if there's a
- * call to an undefined alias it will load it in content's div instead. Useful
- * for pages that may or may not be loaded in ajax windows.
- *
- * @param alias string The alias to check for
- * @return void;
- */
-CORE.fallbackRegister = function(alias) {
-	if (CORE.updateables[alias] == undefined) {
-		CORE.updateables[alias] = CORE.updateables['content'];
-	}
 }
 
 /**
@@ -219,5 +146,3 @@ $.fn.data = function() {
 	}
 	return origDataFn.apply(this, arguments);
 }
-
-CORE.register('content', 'content', location.href);

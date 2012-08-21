@@ -61,49 +61,58 @@ if ($revision && !empty($changes)): ?>
 			<div style="clear:both"><?php echo $this->Js->submit('Save', $defaultSubmitOptions); ?></div>
 			<?php echo $this->Form->end(); ?>
 		</div>
-		<div id="ministry-leaders">
+		<?php
+		$url = Router::url(array(
+			'controller' => 'ministry_leaders',
+			'action' => 'index',
+			'Ministry' => $this->data['Ministry']['id'],
+			'User' => $activeUser['User']['id']
+		));
+		?>
+		<div id="ministry-leaders" data-core-update-url="<?php echo $url; ?>">
 			<?php
-			$this->Js->buffer('CORE.register("leaders", "ministry-leaders", "/ministry_leaders/index/Ministry:'.$this->data['Ministry']['id'].'");');
-			echo $this->requestAction('/ministry_leaders/index', array(
+			echo $this->requestAction($url, array(
 				'renderAs' => 'ajax',
 				'bare' => false,
 				'return',
-				'named' => array(
-					'Ministry' => $this->data['Ministry']['id'],
-					'User' => $activeUser['User']['id']
-				),
 				'data' => null,
 				'form' => array('data' => null)
 			));
 			?>
 		</div>
-		<div id="ministry-roles">
+		<?php
+		$url = Router::url(array(
+			'controller' => 'roles',
+			'action' => 'index',
+			'Ministry' => $this->data['Ministry']['id'],
+			'User' => $activeUser['User']['id']
+		));
+		?>
+		<div id="ministry-roles" data-core-update-url="<?php echo $url; ?>">
 			<?php
-				echo $this->Js->buffer('CORE.register("roles", "ministry-roles", "/roles/index/Ministry:'.$this->data['Ministry']['id'].'/User:'.$activeUser['User']['id'].'");');
-				echo $this->requestAction('/roles/index', array(
+				echo $this->requestAction($url, array(
 					'renderAs' => 'ajax',
 					'return',
-					'named' => array(
-						'Ministry' => $this->data['Ministry']['id'],
-						'User' => $activeUser['User']['id']
-					),
 					'data' => null,
 					'form' => array('data' => null)
 				));
 				?>
 		</div>
 		<div id="ministry-attachments">
-			<div id="ministry-images">
+			<?php
+			$url = Router::url(array(
+				'controller' => 'ministry_images',
+				'action' => 'index',
+				'Ministry' => $this->data['Ministry']['id'],
+				'User' => $activeUser['User']['id']
+			));
+			?>
+			<div id="ministry-images" data-core-update-url="<?php echo $url; ?>">
 				<?php
-				echo $this->Js->buffer('CORE.register("ImageAttachments", "ministry-images", "/ministry_images/index/Ministry:'.$this->data['Ministry']['id'].'");');
-				echo $this->requestAction('/ministry_images/index', array(
+				echo $this->requestAction($url, array(
 					'renderAs' => 'ajax',
 					'bare' => false,
 					'return',
-					'named' => array(
-						'Ministry' => $this->data['Ministry']['id'],
-						'User' => $activeUser['User']['id']
-					),
 					'data' => null,
 					'form' => array('data' => null)
 				));

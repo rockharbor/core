@@ -34,7 +34,6 @@ if (!empty($ministry['ParentMinistry']['id'])) {
 		?>
 		<div id="involvement" data-core-update-url="<?php echo $url; ?>">
 		<?php
-			$this->Js->buffer('CORE.register("involvement", "involvement", "'.$url.'")');
 			echo $this->requestAction($url, array('renderAs' => 'ajax', 'return', 'bare' => false));
 		?>
 		</div>

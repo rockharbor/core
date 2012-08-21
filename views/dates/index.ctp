@@ -1,6 +1,4 @@
 <?php
-$this->Js->buffer('CORE.fallbackRegister("dates");');
-
 $exemptions = Set::extract('/Date[exemption=1]', $dates);
 $dates = Set::extract('/Date[exemption=0]', $dates);
 ?>

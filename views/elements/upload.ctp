@@ -4,9 +4,6 @@ if (!isset($model) || !isset(${$model}) || !isset($type)) {
 }
 echo $this->Html->script('jquery.plugins/jquery.form', array('inline' => false, 'once' => true));
 
-if (!isset($update)) {
-	$update = $type.'Attachments';
-}
 if (!isset($title)) {
 	$title = 'Upload';
 }
