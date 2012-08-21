@@ -43,7 +43,7 @@ class FormattingHelper extends AppHelper {
 		$url = array('controller' => 'sys_emails', 'action' => 'user', 'User' => $id);
 		$icon = $this->Html->tag('span', 'Email', array('class' => 'core-icon icon-email'));
 		if ($id !== null && $this->Permission->check($url)) {
-			return $icon.$this->Html->link($email, $url, array('rel' => 'modal-none'));
+			return $icon.$this->Html->link($email, $url, array('data-core-modal' => '{"update":false}'));
 		}
 		return $this->Html->tag('span', $email);
 	}
@@ -76,7 +76,7 @@ class FormattingHelper extends AppHelper {
 		$url = array('controller' => 'reports', 'action' => $prefix.'_map', $data['model'] => $data['foreign_key']);
 		$icon = $this->Html->tag('span', 'Map', array('class' => 'core-icon icon-address'));
 		if ($link && $this->Permission->check($url)) {
-			return $icon.$this->Html->link($address, $url, array('rel' => 'modal-none', 'escape' => false));
+			return $icon.$this->Html->link($address, $url, array('data-core-modal' => '{"update":false}', 'escape' => false));
 		}
 		return $this->Html->tag('span', $address);
 	}

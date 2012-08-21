@@ -66,7 +66,7 @@
 							'Involvement',
 							'promote_items',
 							'canBePromoted'
-						), array('rel' => 'modal', 'class' => 'button')));
+						), array('data-core-modal' => 'true', 'class' => 'button')));
 					}
 					if ($this->Permission->check(array(
 						'controller' => 'involvement_images',
@@ -78,7 +78,7 @@
 							'Ministry',
 							'promote_items',
 							'canBePromoted'
-						), array('rel' => 'modal', 'class' => 'button')));
+						), array('data-core-modal' => 'true', 'class' => 'button')));
 					}
 					?>
 				</div>
@@ -168,7 +168,7 @@
 					?>
 					<span class="core-icon-container">
 					<?php
-					echo $this->Permission->link('Edit', array('controller' => 'users', 'action' => 'edit', 'User' => $profile['User']['id']), array('class' => 'core-icon icon-edit', 'rel' => 'modal-content', 'title' => 'Edit Username and Password'));
+					echo $this->Permission->link('Edit', array('controller' => 'users', 'action' => 'edit', 'User' => $profile['User']['id']), array('class' => 'core-icon icon-edit', 'data-core-modal' => 'true', 'title' => 'Edit Username and Password'));
 					?>
 					</span>
 					</dl>
@@ -179,7 +179,7 @@
 					?>
 						<span class="core-icon-container">
 						<?php
-						echo $this->Permission->link('Edit', array('controller' => 'user_addresses', 'action' => 'index', 'User' => $profile['User']['id']), array('class' => 'core-icon icon-edit', 'rel' => 'modal-content', 'title' => 'View Addresses'));
+						echo $this->Permission->link('Edit', array('controller' => 'user_addresses', 'action' => 'index', 'User' => $profile['User']['id']), array('class' => 'core-icon icon-edit', 'data-core-modal' => 'true', 'title' => 'View Addresses'));
 						?>
 						</span>
 					</p>
@@ -309,9 +309,9 @@
 			</div>
 
 			<ul class="core-admin-tabs">
-				<li><?php echo $this->Permission->link('Administration', array('controller' => 'profiles', 'action' => 'admin', 'User' => $profile['User']['id']), array('rel' => 'modal-none')); ?></li>
-				<li><?php echo $this->Permission->link('Documents', array('controller' => 'user_documents', 'User' => $profile['User']['id']), array('rel' => 'modal-none')); ?></li>
-				<li><?php echo $this->Permission->link('Comments', array('controller' => 'comments', 'User' => $profile['User']['id']), array('rel' => 'modal-none')); ?></li>
+				<li><?php echo $this->Permission->link('Administration', array('controller' => 'profiles', 'action' => 'admin', 'User' => $profile['User']['id']), array('data-core-modal' => '{"update":false}')); ?></li>
+				<li><?php echo $this->Permission->link('Documents', array('controller' => 'user_documents', 'User' => $profile['User']['id']), array('data-core-modal' => '{"update":false}')); ?></li>
+				<li><?php echo $this->Permission->link('Comments', array('controller' => 'comments', 'User' => $profile['User']['id']), array('data-core-modal' => '{"update":false}')); ?></li>
 				<li><?php echo $this->Permission->link('Edit', array('controller' => 'profiles', 'action' => 'edit', 'User' => $profile['User']['id'])); ?></li>
 			</ul>
 

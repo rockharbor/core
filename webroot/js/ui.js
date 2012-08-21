@@ -6,6 +6,9 @@ if (CORE == undefined) {
  * Attaches modal behavior. 
  *
  * Modal will not open until the link is clicked.
+ * 
+ * ### Extra options:
+ * - `update` Boolean. Whether or not to auto update when the modal is closed
  *
  * @param string id The id of the element
  * @param object options Options for creating the Modal Window.
@@ -20,69 +23,53 @@ CORE.modal = function(id, options) {
 	var _defaultOptions = {
 		modal: true,
 		width: 700,
-		autoOpen: false,
-		height: 'auto'
+		height: 'auto',
+		buttons: {},
+		update: true,
+		title: 'Loading'
 	}
 	
 	// use user defined options if defined
-	var useOptions;
-	if (options != undefined) {
-		useOptions = $.extend(_defaultOptions, options);
-	} else {
-		useOptions = _defaultOptions;
-	}
+	var useOptions = $.extend(_defaultOptions, options || {});
 
-	useOptions.close = function(event, ui) {
-		// rewrite the id's
-		$('#content').prop('id', 'modal');		
-		$('#content-reserved').prop('id', 'content');
-		// re-register original content updateable
-		CORE.unregister('content');
-		CORE.updateables['content'] = CORE._tmpcontent;
-		delete CORE._tmpcontent;
-		if ($('#modal').dialog('option', 'update') != undefined) {
-			CORE.update($('#modal').dialog('option', 'update'));
-		}
-		$('#modal').empty();
-		var xhr = $('#modal').data('xhr');
-		if (xhr) {
-			xhr.onreadystatechange = function() {};
-			xhr.abort();
-		}
-	};
-	
-	useOptions.open = function(event, ui) {
-		// rename content so ajax updates will update content in modal
-		$('#content').prop('id', 'content-reserved');
-		$('#modal').prop('id', 'content');
-		// register this new ajax url as the content updateable, so scripts within
-		// the window that update the content updateable update with this url instead
-		CORE._tmpcontent = CORE.unregister('content');
-		CORE.register('content', 'content', $('#'+id).prop('href'));
-	}
-	
 	$('#'+id).click(function(event) {
-		// set to update what this links says to
-		$('#modal').dialog('option', 'update', $(this).data('update'))
-		
-		// remove old settings (from confirmation, other modals, etc
-		$('#modal').dialog('option', 'buttons', {});
-		$('#modal').dialog('option', 'width', 700);
-		$('#modal').dialog('option', 'height', 'auto');
-		
-		// set options
-		var modalOptions = $(this).data('modalOptions');
-		for (var o in modalOptions) {
-			$('#modal').dialog('option', modalOptions, modalOptions[o]);
-		}
-		
 		// stop link
 		event.preventDefault();
 		
+		// get options
+		var options = $(this).data('core-modal-options');
+		
+		// close callback
+		options.close = function(event, ui) {
+			if ($('#modal').dialog('option', 'update')) {
+				var originator = $('#modal').data('core-modal-originator');
+				CORE.update(originator);
+			}
+			$('#modal').empty();
+			// stop the request if closed prematurely
+			var xhr = $('#modal').data('xhr');
+			if (xhr) {
+				xhr.onreadystatechange = function() {};
+				xhr.abort();
+			}
+		};
+		
+		// open modal
+		$('#modal')
+			.dialog(options)
+			.css({
+				'max-height' : ($(window).height() - 80)+'px',
+				'overflow': 'auto'
+			});
+		
+		// remember where the modal originated from
+		$('#modal').data('core-modal-originator', $('#'+id));
+		
+		// set modal as an auto update area
+		$('#modal').data('core-update-url', this.href);
+		
 		// load the link into the modal
-		$('#modal').dialog('open');
-		$('#content').dialog('option', 'title', 'Loading');
-		$("#content").parent().position({
+		$("#modal").parent().position({
 			my: 'center',
 			at: 'center',
 			of: window
@@ -90,32 +77,20 @@ CORE.modal = function(id, options) {
 		var xhr = $.ajax({
 			url: this.href,
 			success: function(data, textStatus, xhr) {
-				$("#content").html(data);
-				$("#content").parent().position({
+				$("#modal").html(data);
+				$("#modal").parent().position({
 					my: 'center',
 					at: 'center',
 					of: window
 				});
 			}
 		});
-		$("#content").data('xhr', xhr);
+		$("#modal").data('xhr', xhr);
 		
-		// stop href
 		return false;
 	});
 	
-	$('#'+id).data('modalOptions', useOptions);
-	if (useOptions.update == 'parent') {
-		var parent = CORE.getUpdateableParent(id);
-		useOptions.update =  parent.updateable;
-	}
-	$('#'+id).data('update', useOptions.update);
-	$('#modal')
-		.dialog({autoOpen:false})
-		.css({
-			'max-height' : ($(window).height() - 80)+'px',
-			'overflow': 'auto'
-		});
+	$('#'+id).data('core-modal-options', useOptions);
 }
 
 /**
@@ -242,13 +217,19 @@ CORE.attachTabbedBehavior = function() {
 /**
  * Attaches modal behaviors to appropriate elements
  *
- * Makes everything with a `rel` property "modal-X" a modal
- * where the X is the to-be-updated registered updateable (optional)
+ * Makes everything with a the data attribute `data-core-modal` a modal. If the
+ * data attribute is a json object, those options will be passed to `CORE.modal`
+ * 
+ * {{{
+ * // when clicked, the link opens in a modal and *does not* update its
+ * // originating container on close
+ * <a href='/some/link' data-core-modal='{"update":false}'>Link</a>
+ * }}}
  *
  * @return boolean True
  */
 CORE.attachModalBehavior = function() {
-	$('[rel|=modal]:not(.disabled)').each(function() {
+	$('[data-core-modal]').each(function() {
 		if (!$(this).prop('id')) {
 			$(this).prop('id', unique('link-'));
 		}
@@ -268,19 +249,14 @@ CORE.attachModalBehavior = function() {
 			return;
 		}
 
-		if (!$(this).data('hasModal')) {	
-			// get updateable, if any
-			var rel = $(this).prop("rel");
-			var update = rel.split("-");
-
-			if (update[1] != undefined) {
-				CORE.modal($(this).prop('id'), {update:update[1]});
-			} else {
-				CORE.modal($(this).prop('id'));
-			}
-			
-			$(this).data('hasModal', true);			
+		var opts = {};
+		if ($(this).data('core-modal') != true) {
+			opts = $(this).data('core-modal');
 		}
+
+		CORE.modal($(this).prop('id'), opts);
+		// don't double attach modals
+		$(this).removeAttr('data-core-modal');
 	});
 	
 	return true;

@@ -95,7 +95,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 							?>
 						</div>
 						<?php
-						$link = $this->Html->link('See all dates', array('controller' => 'dates', 'Involvement' => $involvement['Involvement']['id']), array('rel' => 'modal-none'));
+						$link = $this->Html->link('See all dates', array('controller' => 'dates', 'Involvement' => $involvement['Involvement']['id']), array('data-core-modal' => '{"update":false}'));
 						echo $this->Html->tag('small', $link);
 						?>
 					</div>
@@ -117,7 +117,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 						foreach ($involvement['Leader'] as $leader) {
 							echo '<div class="core-iconable">';
 							$icon = $this->Html->tag('span', 'Email', array('class' => 'core-icon icon-email'));
-							echo $icon.$this->Html->link($leader['User']['Profile']['name'], array('controller' => 'sys_emails', 'action' => 'leader', $leader['id']), array('rel' => 'modal-none'));
+							echo $icon.$this->Html->link($leader['User']['Profile']['name'], array('controller' => 'sys_emails', 'action' => 'leader', $leader['id']), array('data-core-modal' => '{"update":false}'));
 							if (!empty($leader)) {
 								$icon = $this->element('icon', array('icon' => 'delete'));
 								$link = $this->Permission->link($icon, array('controller' => 'involvement_leaders', 'action' => 'delete', 'Involvement' => $involvement['Involvement']['id'], 'User' => $leader['User']['id']), array('id' => 'remove-leader-'.$leader['User']['id'], 'escape' => false, 'class' => 'no-hover'));
@@ -144,7 +144,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 							echo $this->Html->link($householdMember['User']['Profile']['name'], array('controller' => 'profiles', 'action' => 'view', 'User' => $householdMember['User']['id']), array('style' => 'display:block'));
 							$links = array();
 							$icon = $this->element('icon', array('icon' => 'edit'));
-							$link = $this->Permission->link($icon, array('controller' => 'rosters', 'action' => 'edit', $householdMember['Roster']['id'], 'User' => $householdMember['User']['id']), array('rel' => 'modal-none', 'class' => 'no-hover', 'escape' => false));
+							$link = $this->Permission->link($icon, array('controller' => 'rosters', 'action' => 'edit', $householdMember['Roster']['id'], 'User' => $householdMember['User']['id']), array('data-core-modal' => '{"update":false}', 'class' => 'no-hover', 'escape' => false));
 							if ($link) {
 								$links[] = $link;
 							}
@@ -180,9 +180,9 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 				<?php 
 				if ($involvement['Involvement']['signup'] && $involvement['Involvement']['active'] && !$involvement['Involvement']['previous'] && !$inRoster) {
 					if (!$full) {
-						echo $this->Html->link('Sign up', array('controller' => 'rosters', 'action' => 'add', 'User' => $activeUser['User']['id'], 'Involvement' => $involvement['Involvement']['id']), array('rel' => 'modal-content', 'class' => 'button'));
+						echo $this->Html->link('Sign up', array('controller' => 'rosters', 'action' => 'add', 'User' => $activeUser['User']['id'], 'Involvement' => $involvement['Involvement']['id']), array('data-core-modal' => 'true', 'class' => 'button'));
 					} else {
-						echo $this->Html->link('Roster full', array('controller' => 'rosters', 'action' => 'add', 'User' => $activeUser['User']['id'], 'Involvement' => $involvement['Involvement']['id']), array('rel' => 'modal-content', 'class' => 'button disabled'));
+						echo $this->Html->link('Roster full', array('controller' => 'rosters', 'action' => 'add', 'User' => $activeUser['User']['id'], 'Involvement' => $involvement['Involvement']['id']), array('data-core-modal' => 'true', 'class' => 'button disabled'));
 					}
 				}
 				?>

@@ -63,7 +63,7 @@ $this->Paginator->options(array(
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
 		<li><?php echo $this->Js->link('New User', array('action' => 'add'), array(
-			'rel' => 'modal-users'
+			'data-core-modal' => 'true'
 		)); ?></li>
 	</ul>
 </div>

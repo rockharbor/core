@@ -34,7 +34,7 @@
 			<dt><?php echo Inflector::humanize($appSettingName); ?>:</dt>
 			<dd><?php echo $appSetting['AppSetting']['description']; ?></dd>
 			<dt>Last Modified:</dt>
-			<dd><?php echo $this->Formatting->date($appSetting['AppSetting']['modified']); ?> | <?php echo $this->Html->link('Edit', array('action' => 'edit', $appSetting['AppSetting']['id']),array('rel' => 'modal-content'));?></dd>
+			<dd><?php echo $this->Formatting->date($appSetting['AppSetting']['modified']); ?> | <?php echo $this->Html->link('Edit', array('action' => 'edit', $appSetting['AppSetting']['id']),array('data-core-modal' => 'true'));?></dd>
 			<dd><?php
 			if (isset($appSetting['AppSetting']['readable_value'])) {
 				echo $appSetting['AppSetting']['readable_value'];

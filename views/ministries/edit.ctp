@@ -14,7 +14,7 @@ if ($revision && !empty($changes)): ?>
 <div id="change" class="message change">
 	There is a pending change for this ministry
 	<?php
-	echo $this->Permission->link('History', array('action' => 'history','Ministry' => $this->data['Ministry']['id']),array('rel' => 'modal-content', 'class' => 'button')
+	echo $this->Permission->link('History', array('action' => 'history','Ministry' => $this->data['Ministry']['id']),array('data-core-modal' => 'true', 'class' => 'button')
 	);
 	?>
 </div>

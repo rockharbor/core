@@ -92,7 +92,7 @@ $this->Paginator->options(array(
 						'action' => 'roster'
 					),
 					'options' => array(
-						'rel' => 'modal-none'
+						'data-core-modal' => '{"update":false}'
 					)
 				),
 				array(
@@ -104,7 +104,7 @@ $this->Paginator->options(array(
 						$this->MultiSelect->token
 					),
 					'options' => array(
-						'rel' => 'modal-none'
+						'data-core-modal' => '{"update":false}'
 					)
 				),				
 				array(
@@ -116,7 +116,7 @@ $this->Paginator->options(array(
 						$this->MultiSelect->token
 					),
 					'options' => array(
-						'rel' => 'modal-none'
+						'data-core-modal' => '{"update":false}'
 					)
 				),
 				array(
@@ -155,7 +155,7 @@ $this->Paginator->options(array(
 						$this->MultiSelect->token
 					),
 					'options' => array(
-						'rel' => 'modal-roster'
+						'data-core-modal' => 'true'
 					)
 				);
 			} else {
@@ -216,8 +216,8 @@ $this->Paginator->options(array(
                 &nbsp;<div class="core-tooltip"><?php
                 endif;
 			if ($fullAccess) {
-				echo $this->Html->link('Edit Info', array('controller' => 'rosters', 'action' => 'edit', $roster['Roster']['id'], 'Involvement' => $involvement['Involvement']['id'], 'User' => $roster['User']['id']), array('rel' => 'modal-roster'));
-				echo $this->Html->link('View Payments', array('controller' => 'payments', 'action' => 'index', 'User' => $roster['User']['id'], 'Roster' => $roster['Roster']['id']), array('rel' => 'modal-none'));
+				echo $this->Html->link('Edit Info', array('controller' => 'rosters', 'action' => 'edit', $roster['Roster']['id'], 'Involvement' => $involvement['Involvement']['id'], 'User' => $roster['User']['id']), array('data-core-modal' => 'true'));
+				echo $this->Html->link('View Payments', array('controller' => 'payments', 'action' => 'index', 'User' => $roster['User']['id'], 'Roster' => $roster['Roster']['id']), array('data-core-modal' => '{"update":false}'));
 			}
 			if ($viewProfilePermission) {
 				echo $this->Html->link('View Profile', array('controller' => 'profiles', 'action' => 'view', 'User' => $roster['User']['id']));
@@ -233,7 +233,7 @@ $this->Paginator->options(array(
 			<td><?php 
 			$link = array('controller' => 'rosters', 'action' => 'edit', $roster['Roster']['id'], 'Involvement' => $involvement['Involvement']['id'], 'User' => $roster['User']['id']);
 			if ($this->Permission->check($link)) {
-				echo $this->Html->link($roster['RosterStatus']['name'], $link, array('rel' => 'modal-roster')); 
+				echo $this->Html->link($roster['RosterStatus']['name'], $link, array('data-core-modal' => 'true')); 
 			} else {
 				echo $roster['RosterStatus']['name'];
 			}
@@ -245,8 +245,8 @@ $this->Paginator->options(array(
 		<?php endif; ?>
 		<td><?php
 		if ($canModifyRoles) {
-			echo $this->Html->link($addIcon, array('controller' => 'rosters', 'action' => 'roles', 'Involvement' => $involvement['Involvement']['id'], $roster['Roster']['id']), array('rel' => 'modal-roster', 'escape' => false, 'class' => 'no-hover'));
-			echo $this->Html->link(count($roster['Role']).' Roles', array('controller' => 'rosters', 'action' => 'roles', 'Involvement' => $involvement['Involvement']['id'], $roster['Roster']['id']), array('rel' => 'modal-roster'));
+			echo $this->Html->link($addIcon, array('controller' => 'rosters', 'action' => 'roles', 'Involvement' => $involvement['Involvement']['id'], $roster['Roster']['id']), array('data-core-modal' => 'true', 'escape' => false, 'class' => 'no-hover'));
+			echo $this->Html->link(count($roster['Role']).' Roles', array('controller' => 'rosters', 'action' => 'roles', 'Involvement' => $involvement['Involvement']['id'], $roster['Roster']['id']), array('data-core-modal' => 'true'));
 		} else {
 			echo $this->Html->link(count($roster['Role']).' Roles', '#');
 		}
@@ -279,7 +279,7 @@ $this->Paginator->options(array(
 			'Involvement' => $involvement['Involvement']['id'],
 		),
 		array(
-			'rel' => 'modal-roster'
+			'data-core-modal' => 'true'
 		)
 	);
 	?>
@@ -299,7 +299,7 @@ $this->Paginator->options(array(
 			'Involvement' => $involvement['Involvement']['id'],
 		),
 		array(
-			'rel' => 'modal-roster'
+			'data-core-modal' => 'true'
 		)
 	);
 	?>

@@ -132,7 +132,7 @@
 				'Household' => $household['Household']['id']
 			),
 			array(
-				'rel' => 'modal-households'
+				'data-core-modal' => 'true'
 			)
 		);
 		?>

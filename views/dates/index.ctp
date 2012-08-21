@@ -24,7 +24,7 @@ $dates = Set::extract('/Date[exemption=0]', $dates);
 			<td><?php echo $this->Formatting->readableDate($date); ?></td>
 			<td width="40px"><div class="core-icon-container"><?php 
 			$icon = $this->element('icon', array('icon' => 'edit'));
-			echo $this->Permission->link($icon, array('action' => 'edit', $date['Date']['id'], 'Involvement' => $involvementId), array('rel' => 'modal-dates', 'class' => 'no-hover', 'escape' => false));
+			echo $this->Permission->link($icon, array('action' => 'edit', $date['Date']['id'], 'Involvement' => $involvementId), array('data-core-modal' => 'true', 'class' => 'no-hover', 'escape' => false));
 			$icon = $this->element('icon', array('icon' => 'delete'));
 			echo $this->Permission->link($icon, array('action' => 'delete', $date['Date']['id'], 'Involvement' => $involvementId), array('id' => 'delete-date-btn-'.$date['Date']['id'], 'class' => 'no-hover', 'escape' => false)); 
 			$this->Js->buffer('CORE.confirmation("delete-date-btn-'.$date['Date']['id'].'","Are you sure you want to delete this date?", {update:true});');
@@ -54,7 +54,7 @@ $dates = Set::extract('/Date[exemption=0]', $dates);
 			<td><?php echo $this->Formatting->readableDate($date); ?></td>
 			<td width="40px"><div class="core-icon-container"><?php 
 			$icon = $this->element('icon', array('icon' => 'edit'));
-			echo $this->Permission->link($icon, array('action' => 'edit', $date['Date']['id'], 'Involvement' => $involvementId), array('rel' => 'modal-dates', 'class' => 'no-hover', 'escape' => false));
+			echo $this->Permission->link($icon, array('action' => 'edit', $date['Date']['id'], 'Involvement' => $involvementId), array('data-core-modal' => 'true', 'class' => 'no-hover', 'escape' => false));
 			$icon = $this->element('icon', array('icon' => 'delete'));
 			echo $this->Permission->link($icon, array('action' => 'delete', $date['Date']['id'], 'Involvement' => $involvementId), array('id' => 'delete-date-btn-'.$date['Date']['id'], 'class' => 'no-hover', 'escape' => false)); 
 			$this->Js->buffer('CORE.confirmation("delete-date-btn-'.$date['Date']['id'].'","Are you sure you want to delete this date?", {update:true});');
@@ -65,6 +65,6 @@ $dates = Set::extract('/Date[exemption=0]', $dates);
 		</tbody>
 	</table>
 	<p>
-	<?php echo $this->Permission->link('New Date', array('action'=>'add', 'Involvement' => $involvementId), array('rel'=>'modal-dates','class'=>'button')); ?>
+	<?php echo $this->Permission->link('New Date', array('action'=>'add', 'Involvement' => $involvementId), array('data-core-modal' => 'true', 'class'=>'button')); ?>
 	</p>
 </div>

@@ -31,7 +31,7 @@ foreach ($addresses as $address):
 				'zip' => $address['Address']['zip'],
 			));
 			$this->GoogleMap->zoom = 15;
-			echo $this->Html->link($this->GoogleMap->image(150, 150), array('controller' => 'reports', 'action' => strtolower($model).'_map', $model => $modelId) , array('escape' => false, 'rel' => 'modal-none'));
+			echo $this->Html->link($this->GoogleMap->image(150, 150), array('controller' => 'reports', 'action' => strtolower($model).'_map', $model => $modelId) , array('escape' => false, 'data-core-modal' => '{"update":false}'));
 			?>
 		</div>
 		<div id="address_<?php echo $address['Address']['id']; ?>" class="address core-iconable">
@@ -59,7 +59,7 @@ foreach ($addresses as $address):
 			<span class="core-icon-container">
 			<?php
 			$icon = $this->element('icon', array('icon' => 'edit'));
-			echo $this->Permission->link($icon, array('action' => 'edit', $address['Address']['id'], $model => $modelId), array('class' => 'no-hover', 'rel' => 'modal-addresses', 'escape' => false));
+			echo $this->Permission->link($icon, array('action' => 'edit', $address['Address']['id'], $model => $modelId), array('class' => 'no-hover', 'data-core-modal' => 'true', 'escape' => false));
 			if ($address['Address']['model'] != 'User') {
 				$icon = $this->element('icon', array('icon' => 'delete'));
 				echo $this->Permission->link($icon, array('action' => 'delete', $address['Address']['id'], $model => $modelId), array('id' => 'delete_address_'.$i, 'class' => 'no-hover', 'escape' => false));
@@ -75,6 +75,6 @@ foreach ($addresses as $address):
 </div>
 	<?php
 if (count($addresses) == 0 || $model == 'User') {
-	echo $this->Html->link('Add address', array('action' => 'add', $model => $modelId), array('class' => 'button', 'rel' => 'modal'));
+	echo $this->Html->link('Add address', array('action' => 'add', $model => $modelId), array('class' => 'button', 'data-core-modal' => 'true'));
 }
 

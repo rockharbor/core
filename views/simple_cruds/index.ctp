@@ -46,7 +46,7 @@ $this->Paginator->options(array(
 					<span class="core-icon-container">
 					<?php
 					$icon = $this->element('icon', array('icon' => 'edit'));
-					echo $this->Html->link($icon, array('action' => 'edit', $result[$model]['id']), array('rel' => 'modal-parent', 'class' => 'no-hover', 'escape' => false));
+					echo $this->Html->link($icon, array('action' => 'edit', $result[$model]['id']), array('data-core-modal' => 'true', 'class' => 'no-hover', 'escape' => false));
 					$icon = $this->element('icon', array('icon' => 'delete'));
 					echo $this->Html->link($icon, array('action' => 'delete', $result[$model]['id']), array('id' => 'delete-btn-'.$result[$model]['id'], 'class' => 'no-hover', 'escape' => false));
 					$this->Js->buffer('CORE.confirmation("delete-btn-'.$result[$model]['id'].'", "Are you sure you want to delete this '.Inflector::humanize($modelKey).'?", {update:true});');
@@ -58,5 +58,5 @@ $this->Paginator->options(array(
 		</tbody>
 	</table>
 <?php echo $this->element('pagination'); ?>
-<?php echo $this->Html->link('New '.Inflector::humanize($modelKey), array('action' => 'add'), array('rel' => 'modal-parent', 'class' => 'button')); ?>
+<?php echo $this->Html->link('New '.Inflector::humanize($modelKey), array('action' => 'add'), array('data-core-modal' => 'true', 'class' => 'button')); ?>
 </div>

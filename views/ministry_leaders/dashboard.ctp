@@ -16,7 +16,7 @@
 						'leaders'
 					),
 					'options' => array(
-						'rel' => 'modal-none'
+						'data-core-modal' => '{"update":false}'
 					),
 					'permission' => true
 				),
@@ -28,7 +28,7 @@
 						$this->MultiSelect->token,
 					),
 					'options' => array(
-						'rel' => 'modal-none'
+						'data-core-modal' => '{"update":false}'
 					),
 					'permission' => true
 				)
@@ -69,8 +69,8 @@
 				<td><?php
 				$link = array('controller' => 'roles', 'action' => 'index', 'Ministry' => $ministry['Ministry']['id']);
 				$icon = $this->element('icon', array('icon' => 'add'));
-				echo $this->Html->link($icon, $link, array('rel' => 'modal', 'escape' => false, 'class' => 'no-hover'));
-				echo $this->Html->link(count($ministry['Role']).' Roles', $link, array('rel' => 'modal-parent'));
+				echo $this->Html->link($icon, $link, array('data-core-modal' => 'true', 'escape' => false, 'class' => 'no-hover'));
+				echo $this->Html->link(count($ministry['Role']).' Roles', $link, array('data-core-modal' => 'true'));
 				if (!empty($ministry['Role'])) {
 					echo $this->Html->tag('div', $this->Text->toList(Set::extract('/name', $ministry['Role'])), array('class' => 'core-tooltip'));
 				}

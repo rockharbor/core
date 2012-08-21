@@ -49,7 +49,7 @@ $this->Paginator->options(array(
 						'users'
 					),
 					'options' => array(
-						'rel' => 'modal-none'
+						'data-core-modal' => '{"update":false}'
 					),
 					'permission' => true
 				),
@@ -61,7 +61,7 @@ $this->Paginator->options(array(
 						'leaders'
 					),
 					'options' => array(
-						'rel' => 'modal-none'
+						'data-core-modal' => '{"update":false}'
 					),
 					'permission' => true
 				),
@@ -73,7 +73,7 @@ $this->Paginator->options(array(
 						'both'
 					),
 					'options' => array(
-						'rel' => 'modal-none',
+						'data-core-modal' => '{"update":false}',
 						'escape' => false
 					),
 					'permission' => true

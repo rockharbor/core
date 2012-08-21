@@ -32,7 +32,7 @@ $this->Paginator->options(array(
 					<div class="core-icon-container">
 						<?php
 						$icon = $this->element('icon', array('icon' => 'edit'));
-						echo $this->Permission->link($icon, array('controller' => 'payments', 'action' => 'edit', $payment['Payment']['id']), array('escape' => false, 'rel' => 'modal', 'class' => 'no-hover'));
+						echo $this->Permission->link($icon, array('controller' => 'payments', 'action' => 'edit', $payment['Payment']['id']), array('escape' => false, 'data-core-modal' => 'true', 'class' => 'no-hover'));
 						$icon = $this->element('icon', array('icon' => 'print'));
 						echo $this->Permission->link($icon, array('controller' => 'payments', 'action' => 'view', 'User' => $user['User']['id'], $payment['Payment']['id'], 'ext' => 'print'), array('target' => '_blank', 'escape' => false, 'class' => 'no-hover'));
 						$icon = $this->element('icon', array('icon' => 'delete'));
@@ -109,11 +109,11 @@ $this->Paginator->options(array(
 				$this->MultiSelect->token
 			),
 			array(
-				'rel' => 'modal-none'
+				'data-core-modal' => '{"update":false}'
 			)
 		);
 		if (isset($this->passedArgs['Roster'])) {
-			$link = $this->Permission->link('Add', array('controller' => 'payments', 'action' => 'add', $this->passedArgs['Roster']), array('rel' => 'modal-none'));
+			$link = $this->Permission->link('Add', array('controller' => 'payments', 'action' => 'add', $this->passedArgs['Roster']), array('data-core-modal' => '{"update":false}'));
 			if ($link) {
 				echo $this->Html->tag('li', $link);
 			}

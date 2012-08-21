@@ -18,7 +18,7 @@ echo $this->MultiSelect->create();
 						'action' => 'user'
 					),
 					'options' => array(
-						'rel' => 'modal-none'
+						'data-core-modal' => '{"update":false}'
 					)
 				 ),
 				 array(
@@ -30,7 +30,7 @@ echo $this->MultiSelect->create();
 						$this->MultiSelect->token
 					),
 					'options' => array(
-						'rel' => 'modal-none'
+						'data-core-modal' => '{"update":false}'
 					)
 				),
 				array(
@@ -42,7 +42,7 @@ echo $this->MultiSelect->create();
 						$this->MultiSelect->token
 					),
 					'options' => array(
-						'rel' => 'modal-none'
+						'data-core-modal' => '{"update":false}'
 					)
 				)
 			);

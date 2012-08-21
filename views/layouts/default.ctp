@@ -67,7 +67,7 @@
 			</div>
 			<div class="grid_2" id="secondary">
 				<?php
-				echo $this->Html->link('Report a bug', array('plugin' => false, 'controller' => 'sys_emails', 'action' => 'bug_compose'), array('rel' => 'modal-none'));
+				echo $this->Html->link('Report a bug', array('plugin' => false, 'controller' => 'sys_emails', 'action' => 'bug_compose'), array('data-core-modal' => '{"update":false}'));
 				echo ' / ';
 				echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout', 'plugin' => false));
 				?>

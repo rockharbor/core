@@ -22,8 +22,8 @@
 			<td><?php
 				$link = array('controller' => 'campus_leaders', 'action' => 'index', 'Campus' => $campus['Campus']['id']);
 				$icon = $this->element('icon', array('icon' => 'add'));
-				echo $this->Html->link($icon, $link, array('rel' => 'modal-parent', 'escape' => false, 'class' => 'no-hover'));
-				echo $this->Html->link(count($campus['Leader']).' Leaders', $link, array('rel' => 'modal-parent'));
+				echo $this->Html->link($icon, $link, array('data-core-modal' => 'true', 'escape' => false, 'class' => 'no-hover'));
+				echo $this->Html->link(count($campus['Leader']).' Leaders', $link, array('data-core-modal' => 'true'));
 			?></td>
 			<td><?php echo $this->SelectOptions->boolean($campus['Campus']['active']); ?>&nbsp;</td>
 			<td><?php echo $this->Formatting->datetime($campus['Campus']['modified']); ?>&nbsp;</td>
@@ -31,7 +31,7 @@
 				<span class="core-icon-container">
 					<?php 
 					$icon = $this->element('icon', array('icon' => 'edit'));
-					echo $this->Permission->link($icon, array('action' => 'edit', 'Campus' => $campus['Campus']['id']), array('rel' => 'modal-parent', 'class' => 'no-hover', 'escape' => false));
+					echo $this->Permission->link($icon, array('action' => 'edit', 'Campus' => $campus['Campus']['id']), array('data-core-modal' => 'true', 'class' => 'no-hover', 'escape' => false));
 					?>
 				</span>
 			</td>
@@ -39,5 +39,5 @@
 		<?php endforeach; ?>
 	</table>
 <?php echo $this->element('pagination'); ?>
-<?php echo $this->Permission->link('New Campus', array('action' => 'add'), array('rel' => 'modal-parent', 'class' => 'button')); ?>
+<?php echo $this->Permission->link('New Campus', array('action' => 'add'), array('data-core-modal' => 'true', 'class' => 'button')); ?>
 </div>

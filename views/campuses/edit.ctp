@@ -9,7 +9,7 @@ if ($revision && !empty($changes)): ?>
 <div id="change" class="message change">
 	There is a pending change for this campus
 	<?php
-	echo $this->Permission->link('History', array('action' => 'history','Campus' => $this->data['Campus']['id']),array('rel' => 'modal-content', 'class' => 'button')
+	echo $this->Permission->link('History', array('action' => 'history','Campus' => $this->data['Campus']['id']),array('data-core-modal' => 'true', 'class' => 'button')
 	);
 	?>
 </div>

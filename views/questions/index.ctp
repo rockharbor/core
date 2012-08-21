@@ -54,7 +54,7 @@
 					<div class="core-icon-container">
 					<?php
 					$icon = $this->Html->tag('span', '&nbsp;', array('class' => 'core-icon icon-edit'));
-					echo $this->Permission->link($icon, array('action' => 'edit', $question['Question']['id'], 'Involvement' => $involvementId), array('rel'=>'modal-questions', 'escape' => false, 'class' => 'no-hover'));
+					echo $this->Permission->link($icon, array('action' => 'edit', $question['Question']['id'], 'Involvement' => $involvementId), array('data-core-modal' => 'true', 'escape' => false, 'class' => 'no-hover'));
 					$icon = $this->Html->tag('span', '&nbsp;', array('class' => 'core-icon icon-delete'));
 					echo $this->Permission->link($icon, array('action' => 'delete', $question['Question']['id'], 'Involvement' => $involvementId), array('id' => 'delete_btn_'.$i, 'escape' => false, 'class' => 'no-hover'));
 					?>
@@ -68,7 +68,7 @@
 </div>
 <?php if (Core::read('involvements.question_limit') > $i): ?>
 <p>
-<?php echo $this->Permission->link('Add Question', array('action' => 'add', 'Involvement' => $involvementId), array('rel'=>'modal-questions','class'=>'button')); ?>
+<?php echo $this->Permission->link('Add Question', array('action' => 'add', 'Involvement' => $involvementId), array('data-core-modal' => 'true','class'=>'button')); ?>
 </p>
 <?php endif; ?>
 

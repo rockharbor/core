@@ -1,5 +1,5 @@
 <?php
-echo $this->Html->link('Notifications', array('controller' => 'notifications', 'action' => 'index'), array('rel' => 'modal-notifications'));
+echo $this->Html->link('Notifications', array('controller' => 'notifications', 'action' => 'index'), array('data-core-modal' => 'true'));
 if ($new > 0) {
 	$count = $this->Html->tag('span', $new, array('class' => 'notification-count'));
 	$bottom = $this->Html->tag('span', $this->Html->image('../assets/images/notification-flag-bottom.png'), array('class' => 'notification-flag'));
@@ -9,7 +9,7 @@ if ($new > 0) {
 <ul>
 	<?php
 		foreach ($alerts as $alert) {
-			$title = $this->Html->link($alert['Alert']['name'], array('controller' => 'alerts', 'action' => 'view', $alert['Alert']['id']), array('rel' => 'modal-notifications'));
+			$title = $this->Html->link($alert['Alert']['name'], array('controller' => 'alerts', 'action' => 'view', $alert['Alert']['id']), array('data-core-modal' => 'true'));
 			$title = $this->Html->tag('strong', $title);
 			echo $this->Html->tag('li', $title, array('class' => 'notification alert'));
 		}
@@ -52,11 +52,11 @@ if ($new > 0) {
 			echo '</li>';
 		}
 		echo '<li class="bottom-link">';
-		echo $this->Html->link('View All Notifications', array('controller' => 'notifications', 'action' => 'index'), array('rel' => 'modal-notifications'));
+		echo $this->Html->link('View All Notifications', array('controller' => 'notifications', 'action' => 'index'), array('data-core-modal' => 'true'));
 		echo ' / ';
-		echo $this->Html->link('Invitations', array('controller' => 'invitations', 'action' => 'index'), array('rel' => 'modal-notifications'));
+		echo $this->Html->link('Invitations', array('controller' => 'invitations', 'action' => 'index'), array('data-core-modal' => 'true'));
 		echo ' / ';
-		echo $this->Html->link('Alerts', array('controller' => 'alerts', 'action' => 'history'), array('rel' => 'modal-notifications'));
+		echo $this->Html->link('Alerts', array('controller' => 'alerts', 'action' => 'history'), array('data-core-modal' => 'true'));
 		echo '</li>';
 	?>
 </ul>

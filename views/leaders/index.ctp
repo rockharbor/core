@@ -65,7 +65,7 @@ $this->Paginator->options(array(
 			'leader_model' => $model,
 			'leader_model_id' => $modelId
 		), array (
-			'rel' => 'modal-leaders'
+			'data-core-modal' => 'true'
 		));
 		if ($link) {
 			echo $this->Html->tag('li', $link);
