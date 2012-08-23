@@ -14,27 +14,35 @@
 	</ul>
 	
 	<div class="content-box">
-		<div id="involvement-dashboard">
+		<?php
+		$url = Router::url(array(
+			'controller' => 'involvement_leaders',
+			'action' => 'dashboard',
+			'User' => $activeUser['User']['id']
+		));
+		?>
+		<div id="involvement-dashboard" data-core-update-url="<?php echo $url; ?>">
 			<?php 
 			if ($activeUser['Profile']['leading'] > 0) {
-				echo $this->requestAction('/involvement_leaders/dashboard', array(
+				echo $this->requestAction($url, array(
 					'return',
-					'named' => array(
-						'User' => $activeUser['User']['id']
-					),
 					'renderAs' => 'ajax'
 				));
 			}
 			?>
 		</div>
-		<div id="ministry-dashboard">
+		<?php
+		$url = Router::url(array(
+			'controller' => 'ministry_leaders',
+			'action' => 'dashboard',
+			'User' => $activeUser['User']['id']
+		));
+		?>
+		<div id="ministry-dashboard" data-core-update-url="<?php echo $url; ?>">
 			<?php 
 			if ($activeUser['Profile']['managing'] > 0) {
-				echo $this->requestAction('/ministry_leaders/dashboard', array(
+				echo $this->requestAction($url, array(
 					'return',
-					'named' => array(
-						'User' => $activeUser['User']['id']
-					),
 					'renderAs' => 'ajax'
 				));
 			}
