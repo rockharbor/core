@@ -1,9 +1,6 @@
 <?php
 if (!empty($results)) {
 
-$this->Paginator->options(array(
-    'updateable' => 'parent'
-));
 echo $this->MultiSelect->create();
 ?>
 <h3>Results</h3>

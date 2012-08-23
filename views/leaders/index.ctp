@@ -1,8 +1,3 @@
-<?php
-$this->Paginator->options(array(
-    'updateable' => 'parent'
-));
-?>
 <h1>Leaders</h1>
 <div class="clearfix">
 	<table cellpadding="0" cellspacing="0" class="datatable">

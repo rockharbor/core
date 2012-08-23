@@ -1,8 +1,3 @@
-<?php
-$this->Paginator->options(array(
-    'updateable' => 'parent'
-));
-?>
 <h1>Ministries</h1>
 <div class="content-box clearfix">
 	<div class="grid_10 alpha omega">

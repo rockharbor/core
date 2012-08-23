@@ -1,9 +1,3 @@
-<?php
-$this->Paginator->options(array(
-    'updateable' => 'parent'
-));
-?>
-
 <div class="logs">
 	<h2><?php __('Logs');?></h2>
 	<table cellpadding="0" cellspacing="0">

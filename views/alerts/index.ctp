@@ -1,8 +1,3 @@
-<?php
-$this->Paginator->options(array(
-    'updateable' => 'parent'
-));
-?>
 <h1>Alerts</h1>
 <div class="alerts index">
 	<?php

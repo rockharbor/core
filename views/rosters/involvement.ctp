@@ -1,8 +1,3 @@
-<?php
-$this->Paginator->options(array(
-    'updateable' => 'parent'
-));
-?>
 <div id="roster-involvement">
 	<h1>My Involvement</h1>
 	<div class="content-box">

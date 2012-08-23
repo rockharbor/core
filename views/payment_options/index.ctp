@@ -1,8 +1,3 @@
-<?php
-$this->Paginator->options(array(
-    'updateable' => 'parent'
-));
-?>
 <h1><?php __('Payment Options');?></h1>
 <div class="paymentOptions">
 	<table cellpadding="0" cellspacing="0" class="datatable">

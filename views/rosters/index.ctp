@@ -1,8 +1,3 @@
-<?php
-$this->Paginator->options(array(
-    'updateable' => 'roster'
-));
-?>
 <div id="roster-index">
 <h1><?php echo $involvement['Involvement']['name']; ?> Roster</h1>
 <div id="columns" class="clearfix">

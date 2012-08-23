@@ -8,9 +8,6 @@ if (!empty($results)) {
 	</p>
 	<div class="clearfix">
 <?php	
-	$this->Paginator->options(array(
-		 'updateable' => 'parent'
-	));
 	$i = 0;
 	foreach ($results as $result):
 		$class = ($i % 2 == 0) ? 'alpha' : 'omega';

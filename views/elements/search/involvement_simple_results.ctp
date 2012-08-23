@@ -1,7 +1,4 @@
 <?php
-$this->Paginator->options(array(
-    'updateable' => 'parent'
-));
 $this->MultiSelect->create();
 ?>
 <table cellpadding="0" cellspacing="0" class="datatable">

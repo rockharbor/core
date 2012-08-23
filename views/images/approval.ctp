@@ -1,9 +1,4 @@
 <h1>Image Approval</h1>
-<?php
-$this->Paginator->options(array(
-    'updateable' => 'parent'
-));
-?>
 <div class="clearfix">
 <?php
 foreach ($images as $image):

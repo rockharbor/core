@@ -1,9 +1,4 @@
 <h1>Payments</h1>
-<?php
-$this->Paginator->options(array(
-    'updateable' => 'parent'
-));
-?>
 <div class="payments">
 	<div class="grid_10 alpha omega equal-height" style="margin-bottom:10px">
 		Sort By:

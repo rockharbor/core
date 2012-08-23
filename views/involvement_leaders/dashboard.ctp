@@ -1,8 +1,3 @@
-<?php
-$this->Paginator->options(array(
-    'updateable' => 'parent'
-));
-?>
 <h1>Leader Dashboard</h1>
 <div class="content-box">
 	<p>Manage the involvement opportunities that you are leading.</p>

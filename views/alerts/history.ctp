@@ -1,7 +1,4 @@
 <?php
-$this->Paginator->options(array(
-    'updateable' => 'parent'
-));
 echo $this->MultiSelect->create();
 ?>
 <h1>Alerts</h1>

@@ -12,9 +12,6 @@ if (!empty($results)) {
 		</thead>
 		<tbody>
 <?php
-	$this->Paginator->options(array(
-		 'updateable' => 'parent'
-	));
 	$i = 0;
 	foreach ($results as $result):
 		$class = null;

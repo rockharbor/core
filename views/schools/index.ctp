@@ -1,8 +1,3 @@
-<?php
-$this->Paginator->options(array(
-    'updateable' => 'parent'
-));
-?>
 <h1>Schools</h1>
 <?php
 echo $this->Form->create(array(

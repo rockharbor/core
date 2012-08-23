@@ -1,8 +1,3 @@
-<?php
-$this->Paginator->options(array(
-    'updateable' => 'parent'
-));
-?>
 <h1>Regions</h1>
 <div id="regions-index" class="regions index">
 	<table class="datatable">

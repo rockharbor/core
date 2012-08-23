@@ -1,8 +1,3 @@
-<?php
-$this->Paginator->options(array(
-    'updateable' => 'parent'
-));
-?>
 <h1><?php echo Inflector::pluralize(Inflector::humanize($modelKey)); ?></h1>
 <div class="simple_lists index">
 	<table class="datatable">

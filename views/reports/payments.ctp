@@ -1,7 +1,4 @@
 <?php
-$this->Paginator->options(array(
-    'updateable' => 'parent'
-));
 if (empty($this->data)):
 ?>
 <h1>Payments Report</h1>

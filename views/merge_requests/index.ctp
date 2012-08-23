@@ -1,8 +1,3 @@
-<?php
-$this->Paginator->options(array(
-    'updateable' => 'parent'
-));
-?>
 <h1>Merge Requests</h1>
 <div class="merge_requests">
 	<?php foreach ($requests as $request): ?>

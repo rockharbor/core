@@ -1,8 +1,3 @@
-<?php
-$this->Paginator->options(array(
-    'updateable' => 'parent'
-));
-?>
 <h1>Addresses</h1>
 <div class="address_list clearfix">
 <?php
