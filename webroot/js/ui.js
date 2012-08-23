@@ -404,7 +404,6 @@ CORE.tabs = function(id, taboptions, options) {
  * @param string message The message to display
  * @param object options Customizable options
  * @return boolean
- * @see CORE.updateables
  */ 
 CORE.confirmation = function(id, message, options) {
 	if ($('#confirmation-modal').length == 0) {
