@@ -72,11 +72,9 @@ CORE.request = function(element, options) {
 /**
  * Removes CakePHP pagination and replaces it with a request that replaces the
  * updateable, or the closest updateable parent
- *
- * @param string id The id of the div containing the pagination links
  */
-CORE.ajaxPagination = function(id) {
-	$('a[href*="page:"]', $('#'+id))
+CORE.ajaxPagination = function() {
+	$('a[href*="page:"]')
 		.off('click')
 		.on('click', function() {
 			CORE.request(this, {
@@ -133,6 +131,8 @@ CORE.initUI = function() {
 	CORE.attachTooltipBehavior();
 	// form elements
 	CORE.initFormUI();
+	// pagination
+	CORE.ajaxPagination();
 }
 
 // extend `$.data()` to update the dom as well

@@ -1,7 +1,4 @@
-<?php
-$id = uniqid('pagination-');
-?>
-<div class="pagination clearfix" id="<?php echo $id; ?>">
+<div class="pagination clearfix">
 	<?php
 	if ($this->Paginator->counter(array('format' => '%pages%')) == 1) {
 		if ($this->Paginator->counter(array('format' => '%count%')) == 0) {
@@ -21,5 +18,3 @@ $id = uniqid('pagination-');
 	}
 	?>
 </div>
-<?php
-$this->Js->buffer("CORE.ajaxPagination('$id')");
