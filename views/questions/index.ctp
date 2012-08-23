@@ -19,14 +19,14 @@
 						if ($question['Question']['order'] == 1) {
 							$icon = $this->Html->tag('span', '&nbsp;', array('class' => 'core-icon icon-arrow2-s'));
 							echo $this->Permission->link($icon, array('action' => 'move', $question['Question']['id'], 'down', 'Involvement' => $involvementId), array(
-								'complete' => 'CORE.update("questions")',
+								'complete' => 'CORE.update($(".questions"))',
 								'escape' => false,
 								'class' => 'no-hover'
 							));
 						} elseif ($question['Question']['order'] == count($questions)) {
 							$icon = $this->Html->tag('span', '&nbsp;', array('class' => 'core-icon icon-arrow2-n'));
 							echo $this->Permission->link($icon, array('action' => 'move', $question['Question']['id'], 'up', 'Involvement' => $involvementId), array(
-								'complete' => 'CORE.update("questions")',
+								'complete' => 'CORE.update($(".questions"))',
 								'escape' => false,
 								'alt' => 'Move Up',
 								'class' => 'no-hover'
@@ -34,13 +34,13 @@
 						} else {
 							$icon = $this->Html->tag('span', '&nbsp;', array('class' => 'core-icon icon-arrow2-s'));
 							echo $this->Permission->link($icon, array('action' => 'move', $question['Question']['id'], 'down', 'Involvement' => $involvementId), array(
-								'success' => 'CORE.update("questions")',
+								'success' => 'CORE.update($(".questions"))',
 								'escape' => false,
 								'class' => 'no-hover'
 							));
 							$icon = $this->Html->tag('span', '&nbsp;', array('class' => 'core-icon icon-arrow2-n'));
 							echo $this->Permission->link($icon, array('action' => 'move', $question['Question']['id'], 'up', 'Involvement' => $involvementId), array(
-								'complete' => 'CORE.update("questions")',
+								'complete' => 'CORE.update($(".questions"))',
 								'escape' => false,
 								'class' => 'no-hover'
 							));

@@ -36,7 +36,7 @@ $this->Paginator->options(array(
 				'User'=>$user['User']['id']
 			), 
 			array(
-				'complete' => 'CORE.update(\'users\');'
+				'complete' => 'CORE.update($("users"));'
 			)); ?>
 			<?php echo $this->Html->link('Delete', array('controller' => 'users', 'action' => 'delete', $user['User']['id']), array(
 					'id'=>'delete_user_btn_'.$i
