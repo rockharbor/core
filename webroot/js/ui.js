@@ -547,9 +547,8 @@ CORE.autoComplete = function(id, datasource, onSelect) {
  * for upload fields. Only works for single file upload forms.
  *
  * @param string id The id of form
- * @param string updateable An updateable to update after success
  */
-CORE.ajaxUpload = function(id, updateable) {
+CORE.ajaxUpload = function(id) {
 	var submit = $('#'+id+' div.submit');
 	var input = $('#'+id+' input[type=file]').prop('multiple', true);
 	var button = $('<button id="'+id+'_button">'+submit.children('input').prop('value')+'</button>').button();
@@ -615,9 +614,7 @@ CORE.ajaxUpload = function(id, updateable) {
 			var e = $('#'+id+'_error');
 			var msg = '';
 			if (response.length == 0) {
-				if (updateable != undefined) {
-					CORE.update(updateable);
-				}
+				CORE.update($('#'+id));
 			} else if (response == null) {
 				msg = "Unknown error."
 				e.text(msg);
