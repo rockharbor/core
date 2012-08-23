@@ -55,12 +55,7 @@ CORE.modal = function(id, options) {
 		};
 		
 		// open modal
-		$('#modal')
-			.dialog(options)
-			.css({
-				'max-height' : ($(window).height() - 80)+'px',
-				'overflow': 'auto'
-			});
+		$('#modal').dialog(options);
 		
 		// remember where the modal originated from
 		$('#modal').data('core-modal-originator', $('#'+id));
@@ -78,11 +73,15 @@ CORE.modal = function(id, options) {
 			url: this.href,
 			success: function(data, textStatus, xhr) {
 				$("#modal").html(data);
-				$("#modal").parent().position({
-					my: 'center',
-					at: 'center',
-					of: window
-				});
+				if ($('#modal').height() < $(window).height()-50) {
+					$("#modal").parent().position({
+						my: 'center',
+						at: 'center',
+						of: window
+					});
+				} else {
+					$("#modal").parent().css({top: '10px'})
+				}
 			}
 		});
 		$("#modal").data('xhr', xhr);
