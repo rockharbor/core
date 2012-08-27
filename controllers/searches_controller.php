@@ -375,14 +375,6 @@ class SearchesController extends AppController {
 		$results = $this->FilterPagination->paginate('Involvement');
 		$involvementTypes = $this->Involvement->InvolvementType->find('list');
 		$this->set(compact('results', 'involvementTypes', 'private', 'inactive'));
-
-		// pagination request
-		if (!empty($this->data) || isset($this->params['named']['page'])) {
-			// just render the results
-			$this->autoRender = false;
-			$this->viewPath = 'elements';
-			$this->render('search'.DS.'involvement_results');
-		}
 	}
 
 /**
@@ -426,14 +418,6 @@ class SearchesController extends AppController {
 		$results = $this->FilterPagination->paginate('Ministry');
 		$campuses = $this->Ministry->Campus->find('list');
 		$this->set(compact('results', 'campuses', 'inactive', 'private'));
-
-		// pagination request
-		if (!empty($this->data) || isset($this->params['named']['page'])) {
-			// just render the results
-			$this->autoRender = false;
-			$this->viewPath = 'elements';
-			$this->render('search'.DS.'ministry_results');
-		}
 	}
 
 /**
@@ -491,13 +475,5 @@ class SearchesController extends AppController {
 		$this->set('highSchools', $this->User->Profile->HighSchool->find('list'));
 		$this->set('colleges', $this->User->Profile->College->find('list'));
 		$this->set(compact('results', 'regions', 'classifications', 'campuses'));
-
-		// pagination request
-		if (!empty($this->data) || isset($this->params['named']['page'])) {
-			// just render the results
-			$this->autoRender = false;
-			$this->viewPath = 'elements';
-			$this->render('search'.DS.'user_results');
-		}
 	}
 }
