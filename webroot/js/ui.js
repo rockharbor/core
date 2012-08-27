@@ -82,7 +82,8 @@ CORE.modal = function(id, options) {
 				} else {
 					$("#modal").parent().css({top: '10px'})
 				}
-			}
+			},
+			context: $("#modal")
 		});
 		$("#modal").data('xhr', xhr);
 		
@@ -239,9 +240,10 @@ CORE.attachModalBehavior = function() {
 				$.ajax({
 					dataType: 'html',
 					success: function (data) {
-						$('#content').html(data);
+						$('#modal').html(data);
 					},
-					url: $(this).prop('href')
+					url: $(this).prop('href'),
+					context: $('#modal')
 				});
 				return false;
 			});
@@ -284,6 +286,10 @@ CORE.tabs = function(id, taboptions, options) {
 					redirect('/login');
 				}
 			}
+		},
+		select: function(event, ui) {
+			// set appropriate xhr context
+			$(event.target).tabs('option', 'ajaxOptions', {context: ui.panel});
 		},
 		load: function(event, ui) {
 			var url = $(ui.tab).data('load.tabs');

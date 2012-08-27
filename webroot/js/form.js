@@ -49,6 +49,8 @@ CORE.beforeForm = function(event, XMLHttpRequest) {
 		return false;
 	}
 	
+	CORE.setLoading($(event.currentTarget).closest('[data-core-update-url]'));
+	
 	XMLHttpRequest.async = false;
 	
 	$('div.error-message').each(function(i) {$(this).fadeOut()});

@@ -156,6 +156,17 @@ li{
 	color: #444445;
 }
 
+.loading {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	
+	background: url('../assets/indicator.gif') no-repeat 50% 50% #ffffff;
+	opacity: 0.7;
+}
+
 /*
 Links
 */

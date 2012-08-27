@@ -38,16 +38,17 @@ CORE.update = function(element, html) {
  * @return object The Ajax object
  */
 CORE.request = function(element, options) {
+	var container = $(element).closest('[data-core-update-url]');
+	
 	// use user defined options if defined
 	var useOptions = {
 		url: null,
 		update: false,
-		success: function() {}
+		success: function() {},
+		context: container
 	};
 	
 	useOptions = $.extend(useOptions, options || {});
-	
-	var container = $(element).closest('[data-core-update-url]');
 	
 	if (useOptions.url == null) {
 		useOptions.url = container.data('core-update-url');
@@ -97,6 +98,25 @@ CORE.showFlash = function(data) {
 }
 
 /**
+ * Creates a "loading" overlay on top of the container
+ * 
+ * @param Element container The container that has loading content
+ */
+CORE.setLoading = function(container) {
+	container = $(container);
+	if (!container.data('core-update-url')) {
+		return;
+	}
+	container
+		.append('<div class="loading"></div>')
+		.css({
+			position: 'relative',
+			'min-height': '50px'
+		})
+		.addClass('clearfix'); // just in case it was missed
+}
+
+/**
  * Inits CORE js
  */
 CORE.init = function() {	
@@ -111,6 +131,11 @@ CORE.init = function() {
 			if (XMLHttpRequest.status == '403') {
 				redirect('/login');
 			}
+		},
+		beforeSend: function() {
+			// if the XHR's context is not set correctly, the loading spinner
+			// will not show
+			CORE.setLoading(this);
 		}
 	});
 }
