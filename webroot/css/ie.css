@@ -38,6 +38,10 @@ div#payment-details,
 	display: inline-block;
 }
 
+.loading {
+	filter:Alpha(Opacity=70);
+}
+
 /*
 jquery-ui.css
 */
