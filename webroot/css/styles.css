@@ -716,7 +716,7 @@ div.checkbox, div.checkbox label, div.radio, div.radio label {
 	display: block;
 }
 .toggle div.checkbox, .toggle div.radio {
-	display: inline-block !important;
+	display: inline-block;
 }
 label {
 	color: #acacac;

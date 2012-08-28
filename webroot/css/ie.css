@@ -30,8 +30,10 @@ div.subministry {
 /* inline-block fix */
 span.breadcrumb.editing,
 div#payment-details,
+div.payment-options,
 .toggle div.checkbox, 
 .toggle div.radio,
+div.submit,
 .core-icon-container,
 .core-icon {
 	zoom:1;	
