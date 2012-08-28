@@ -350,7 +350,6 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/searches/user/page:2', array(
 			'data' => $search
 		));
-		$this->assertEqual($this->Searches->viewPath, 'elements');
 	}
 
 	function testSimpleSearch() {
