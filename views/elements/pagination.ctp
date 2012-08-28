@@ -1,8 +1,9 @@
 <div class="pagination clearfix">
+	&nbsp;
 	<?php
 	if ($this->Paginator->counter(array('format' => '%pages%')) == 1) {
 		if ($this->Paginator->counter(array('format' => '%count%')) == 0) {
-			echo $this->Html->tag('p', 'No records found.');
+			echo $this->Html->tag('p', 'No records found.', array('style' => 'float:left'));
 		}
 	} else {
 	?>
