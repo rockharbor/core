@@ -56,7 +56,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 			array('span' => array('class' => 'core-icon icon-email')),
 			'Email',
 			'/span',
-			'a' => array('data-core-modal' => '{"update":false}', 'href' => '/sys_emails/user/User:1'),
+			'a' => array('data-core-modal' => '{&quot;update&quot;:false}', 'href' => '/sys_emails/user/User:1'),
 			'jeremy@42pixels.com',
 			'/a',
 		));
@@ -94,7 +94,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 			'span' => array('class' => 'core-icon icon-address'),
 			'Map',
 			'/span',
-			'a' => array('data-core-modal' => '{"update":false}', 'href' => '/reports/user_map/User:1'),
+			'a' => array('data-core-modal' => '{&quot;update&quot;:false}', 'href' => '/reports/user_map/User:1'),
 			'123 Main',
 			'br' => array(),
 			'Somewhere, CA ',

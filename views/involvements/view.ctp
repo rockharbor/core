@@ -144,7 +144,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 							echo $this->Html->link($householdMember['User']['Profile']['name'], array('controller' => 'profiles', 'action' => 'view', 'User' => $householdMember['User']['id']), array('style' => 'display:block'));
 							$links = array();
 							$icon = $this->element('icon', array('icon' => 'edit'));
-							$link = $this->Permission->link($icon, array('controller' => 'rosters', 'action' => 'edit', $householdMember['Roster']['id'], 'User' => $householdMember['User']['id']), array('data-core-modal' => '{"update":false}', 'class' => 'no-hover', 'escape' => false));
+							$link = $this->Permission->link($icon, array('controller' => 'rosters', 'action' => 'edit', $householdMember['Roster']['id'], 'User' => $householdMember['User']['id']), array('data-core-modal' => '{&quot;update&quot;:false}', 'class' => 'no-hover', 'escape' => false));
 							if ($link) {
 								$links[] = $link;
 							}

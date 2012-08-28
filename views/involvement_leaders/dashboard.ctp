@@ -68,7 +68,7 @@
 						'both'
 					),
 					'options' => array(
-						'data-core-modal' => '{"update":false}',
+						'data-core-modal' => '{&quot;update&quot;:false}',
 						'escape' => false
 					),
 					'permission' => true
