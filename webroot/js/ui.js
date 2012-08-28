@@ -309,10 +309,6 @@ CORE.tabs = function(id, taboptions, options) {
 	var tabbed = $('#'+id);
 	tabbed.tabs(useOptions);
 
-	// pull admin tabs out
-	tabbed.append('<ul class="admin ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all"></ul>');
-	$('.ui-tabs-nav li.admin').appendTo($('ul.admin'));
-	
 	// check to see if this is a "wizard"
 	if (options != undefined) {
 		tabbed.children('ul').children('li').each(function() {
@@ -387,6 +383,9 @@ CORE.tabs = function(id, taboptions, options) {
 			});
 		}
 	}
+	
+	// just in case it was missed
+	tabbed.find('.ui-tabs-panel').addClass('clearfix');
 	
 	return tabbed;
 }

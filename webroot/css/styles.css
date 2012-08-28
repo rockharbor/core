@@ -167,6 +167,10 @@ li{
 	opacity: 0.7;
 }
 
+[data-core-update-url] {
+	position: relative;
+}
+
 /*
 Links
 */
@@ -621,6 +625,22 @@ ul.core-admin-tabs a:hover {
 	color:#212121;
 	text-decoration: none;
 }
+
+.ui-dialog ul.core-admin-tabs {
+	bottom: -20px;
+	right: 0px;
+}
+
+.ui-tabs-panel {
+	position: relative;
+}
+
+/* account for padding */
+.ui-tabs-panel ul.core-admin-tabs {
+	bottom: -40px;
+	right: -20px;
+}
+
 .ui-dialog ul.core-admin-tabs {
 	bottom: -20px;
 	right: 0px;

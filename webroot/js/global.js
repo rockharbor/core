@@ -110,10 +110,8 @@ CORE.setLoading = function(container) {
 	container
 		.append('<div class="loading"></div>')
 		.css({
-			position: 'relative',
 			'min-height': '50px'
-		})
-		.addClass('clearfix'); // just in case it was missed
+		});
 }
 
 /**
