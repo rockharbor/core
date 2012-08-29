@@ -559,6 +559,10 @@ div#report-form div.input, div#report-form div.submit {
 	margin-right: 10px;
 }
 
+#members {
+	margin-bottom: 10px;
+}
+
 /*
 Small Tabs
 */

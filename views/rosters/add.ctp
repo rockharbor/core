@@ -52,50 +52,55 @@ echo $this->Form->create('Roster', array(
 	<?php endif; ?>
 </ul>
 
-	<div id="members">
-		<p>Choose everyone you wish to sign up</p>
-<?php
-		
-	echo $this->Form->hidden('Default.involvement_id', array('value' => $involvement['Involvement']['id']));
-	
-	// CORE.successForm(true, ...) relies on a validation error in the dom, so add one here if there's an issue
-	if (!empty($this->validationErrors) && isset($this->validationErrors['Roster']['validation'])) {
-		echo '<div class="input error"><div class="error-message">'.$this->validationErrors['Roster']['validation'].'</div></div>';
-	}
-	
-	$i = 0;
-	foreach ($householdMembers as $householdMember) {
-		echo $this->Form->input('Adult.'.$i.'.Roster.user_id', array(
-			'type' => 'checkbox',
-			'value' => $householdMember['User']['Profile']['user_id'],
-			'label' => $householdMember['User']['Profile']['name']
-		));
-				
-		$i++;
-	}
+	<div id="members" class="clearfix">
+		<div class="grid_6 alpha">
+			<p>Check everyone who is coming<?php
+				if ($involvement['Involvement']['offer_childcare'] && !empty($children)) {
+					echo ', not including those you want in childcare';
+				}
+				?>.
+			</p>
+			<div>
+			<?php
+			echo $this->Form->hidden('Default.involvement_id', array('value' => $involvement['Involvement']['id']));
 
-	// if this involvement offers childcare and this is the user we're signing up (i.e., the household contact)
-	if ($involvement['Involvement']['offer_childcare'] && !empty($children)) {
-?>
-		<fieldset>
-			<legend>Childcare Signups</legend>
-			<p>This <?php echo $involvement['InvolvementType']['name']; ?> offers childcare. Select children below to sign up for childcare.</p>
-	<?php 
-			$c = 0;
-			foreach ($children as $child) {
-				echo $this->Form->input('Child.'.$c.'.Roster.user_id', array(
-					'type' => 'checkbox',
-					'value' => $child['Profile']['user_id'],
-					'label' => $child['Profile']['name']
-				));
-				
-				$c++;
+			// CORE.successForm(true, ...) relies on a validation error in the dom, so add one here if there's an issue
+			if (!empty($this->validationErrors) && isset($this->validationErrors['Roster']['validation'])) {
+				echo '<div class="input error"><div class="error-message">'.$this->validationErrors['Roster']['validation'].'</div></div>';
 			}
-	?>
-		</fieldset>
-<?php
-	}		
-?>
+
+			$i = 0;
+			foreach ($householdMembers as $householdMember) {
+				echo $this->Form->input('Adult.'.$i.'.Roster.user_id', array(
+					'type' => 'checkbox',
+					'value' => $householdMember['User']['Profile']['user_id'],
+					'label' => $householdMember['User']['Profile']['name']
+				));
+
+				$i++;
+			}
+			?>	
+			</div>
+		</div>
+		<?php if ($involvement['Involvement']['offer_childcare'] && !empty($children)): ?>
+		<div class="grid_6 omega">
+			<p>This <?php echo $involvement['InvolvementType']['name']; ?> offers childcare. Select children below to sign up for childcare.</p>
+			<div>
+				<?php
+				$c = 0;
+				foreach ($children as $child) {
+					echo $this->Form->input('Child.'.$c.'.Roster.user_id', array(
+						'type' => 'checkbox',
+						'value' => $child['Profile']['user_id'],
+						'label' => $child['Profile']['name']
+					));
+
+					$c++;
+				}
+				?>
+			</div>
+		</div>
+		<?php endif; ?>
 	</div>
 	<?php if (!empty($involvement['Question'])) {
 	?>
