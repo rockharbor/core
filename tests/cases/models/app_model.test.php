@@ -434,6 +434,11 @@ class AppModelTestCase extends CoreTestCase {
 		$expected = '1984-4-00';
 		$results = $this->User->Profile->deconstruct('background_check_date', $data);
 		$this->assertEqual($results, $expected);
+		
+		$data = '1984-04-14';
+		$expected = '1984-04-14';
+		$results = $this->User->Profile->deconstruct('background_check_date', $data);
+		$this->assertEqual($results, $expected);
 	}
 	
 	function testEitherOr() {

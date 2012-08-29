@@ -418,7 +418,7 @@ class AppModel extends Model {
  * @see FormHelper::dateTime()
  */
 	function deconstruct($field, $value) {
-		if ($this->getColumnType($field) == 'string') {
+		if ($this->getColumnType($field) == 'string' && is_array($value)) {
 			if (isset($value['month']) && empty($value['month'])) {
 				$value['month'] = '00';
 			}
