@@ -275,11 +275,13 @@ class SysEmailsController extends AppController {
 
 		$fromUser = $this->activeUser;
 		
+		$isPost = !empty($this->data);
 		if (empty($this->data['SysEmail']['to'])) {
 			$this->data['SysEmail']['to'] = implode(',', $this->users);
+			$isPost = $isPost || false;
 		}
 		
-		if (!empty($this->data) && empty($this->users)) {
+		if ($isPost) {
 			// get attachments for this email
 			$Document = ClassRegistry::init('Document');
 			$Document->recursive = -1;

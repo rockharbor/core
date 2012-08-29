@@ -37,6 +37,49 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		return parent::testAction($url, $options);
 	}
 	
+	function testComposeValidation() {
+		$vars = $this->testAction('/sys_emails/user/User:1');
+		$results = $this->SysEmails->SysEmail->validationErrors;
+		$this->assertTrue(empty($results));
+		
+		$vars = $this->testAction('/sys_emails/user/User:1', array(
+			'data' => array(
+				'SysEmail' => array(
+					'subject' => '',
+					'body' => 'Email!',
+					'email_users' => 'users',
+					'include_signoff' => true,
+					'include_greeting' => true
+				)
+			)
+		));
+		$this->assertTrue(array_key_exists('subject', $this->SysEmails->SysEmail->validationErrors));
+		$results = Set::extract('/User/id', $vars['toUsers']);
+		$expected = array(1);
+		$this->assertEqual($results, $expected);
+		$this->assertTrue(array_key_exists('to', $this->SysEmails->SysEmail->data['SysEmail']));
+		$results = $this->SysEmails->Session->read('Message.flash.element');
+		$expected = 'flash'.DS.'failure';
+		$this->assertEqual($results, $expected);
+		
+		$vars = $this->testAction('/sys_emails/user/User:1', array(
+			'data' => array(
+				'SysEmail' => array(
+					'subject' => 'This will send',
+					'body' => 'Email!',
+					'email_users' => 'users',
+					'include_signoff' => true,
+					'include_greeting' => true
+				)
+			)
+		));
+		$results = $this->SysEmails->SysEmail->validationErrors;
+		$this->assertTrue(empty($results));
+		$results = $this->SysEmails->Session->read('Message.flash.element');
+		$expected = 'flash'.DS.'success';
+		$this->assertEqual($results, $expected);
+	}
+	
 	function testBugCompose() {
 		$this->loadSettings();
 		$_SERVER['HTTP_USER_AGENT'] = 'cli';
