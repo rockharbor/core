@@ -315,6 +315,7 @@ class NotifierTestCase extends CoreTestCase {
 		$expected = 'CORE <core@rockharbor.org>';
 		$this->assertEqual($this->Notifier->QueueEmail->from, $expected);
 		$this->assertEqual($this->Notifier->Controller->viewVars['toUser'], $user);
+		$this->assertEqual($this->Notifier->Controller->viewVars['include_greeting'], true);
 		
 		$queue = $this->Notifier->QueueEmail->Model->read();
 		$this->assertEqual($queue['Queue']['to_id'], 1);

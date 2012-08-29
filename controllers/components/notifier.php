@@ -185,6 +185,14 @@ class NotifierComponent extends Object {
 
 		// set system defaults if no 'from' user
 		$from = $this->_normalizeUser($from);
+		
+		// set default preferences
+		if (!isset($this->Controller->viewVars['include_greeting'])) {
+			$this->Controller->set('include_greeting', true);
+		}
+		if (!isset($this->Controller->viewVars['include_signoff'])) {
+			$this->Controller->set('include_signoff', true);
+		}
 	
 		$this->Controller->set('toUser', $user);
 		

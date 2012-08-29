@@ -69,7 +69,7 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 					'body' => 'Email!',
 					'email_users' => 'users',
 					'include_signoff' => true,
-					'include_greeting' => true
+					'include_greeting' => false
 				)
 			)
 		));
@@ -77,6 +77,10 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$this->assertTrue(empty($results));
 		$results = $this->SysEmails->Session->read('Message.flash.element');
 		$expected = 'flash'.DS.'success';
+		$this->assertEqual($results, $expected);
+		// ensure it doesn't get overwritten by the notifier's defaults
+		$results = $this->SysEmails->viewVars['include_greeting'];
+		$expected = false;
 		$this->assertEqual($results, $expected);
 	}
 	
