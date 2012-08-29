@@ -88,7 +88,10 @@ class FormattingHelper extends AppHelper {
  * @param object $date The Date model
  * @return string Human readable recurring date
  */
-	function readableDate($date) {
+	function readableDate($date = array()) {
+		if (empty($date) || empty($date['Date'])) {
+			return null;
+		}
 		$types = array('h' => 'hour', 'd' => 'day', 'w' => 'week', 'md' => 'month', 'mw' => 'month', 'y' => 'year');
 		$weekdays = array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
 
@@ -97,6 +100,12 @@ class FormattingHelper extends AppHelper {
 		$endDate = date('F j, Y', strtotime($date['Date']['end_date']));
 		$startTime = date('g:ia', strtotime($date['Date']['start_time']));
 		$endTime = date('g:ia', strtotime($date['Date']['end_time']));
+		
+		// trim off extra 0's if it was sent as a string
+		$date['Date']['frequency'] = (int)$date['Date']['frequency'];
+		$date['Date']['weekday'] = (int)$date['Date']['weekday'];
+		$date['Date']['offset'] = (int)$date['Date']['offset'];
+		$date['Date']['day'] = (int)$date['Date']['day'];
 
 		// if not recurring, return simple!
 		if (!$date['Date']['recurring']) {

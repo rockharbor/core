@@ -114,6 +114,14 @@ class FormattingHelperTestCase extends CoreTestCase {
 	}
 
 	function testReadableDate() {
+		$result = $this->Formatting->readableDate();
+		$expected = null;
+		$this->assertEqual($result, $expected);
+		
+		$result = $this->Formatting->readableDate(array());
+		$expected = null;
+		$this->assertEqual($result, $expected);
+		
 		$date = array(
 			'Date' => array(
 				'start_date' => '2010-03-16',
@@ -212,6 +220,126 @@ class FormattingHelperTestCase extends CoreTestCase {
 		);
 		$result = $this->Formatting->readableDate($date);
 		$expected = 'Every month on the 12th starting March 1, 2010 until March 31, 2010 all day';
+		$this->assertEqual($result, $expected);
+
+		$date = array(
+			'Date' => array(
+				'start_date' => '2010-03-01',
+				'end_date' => '2010-03-31',
+				'start_time' => '06:00:00',
+				'end_time' => '18:00:00',
+				'all_day' => 1,
+				'permanent' => 0,
+				'recurring' => 1,
+				'recurrance_type' => 'md',
+				'frequency' => 1,
+				'weekday' => 3,
+				'day' => '01',
+				'offset' => 3
+			)
+		);
+		$result = $this->Formatting->readableDate($date);
+		$expected = 'Every month on the 1st starting March 1, 2010 until March 31, 2010 all day';
+		$this->assertEqual($result, $expected);
+
+		$date = array(
+			'Date' => array(
+				'start_date' => '2010-03-01',
+				'end_date' => '2010-03-31',
+				'start_time' => '06:00:00',
+				'end_time' => '18:00:00',
+				'all_day' => 1,
+				'permanent' => 0,
+				'recurring' => 1,
+				'recurrance_type' => 'w',
+				'frequency' => 1,
+				'weekday' => '03',
+				'day' => '01',
+				'offset' => 3
+			)
+		);
+		$result = $this->Formatting->readableDate($date);
+		$expected = 'Every week on Wednesday starting March 1, 2010 until March 31, 2010 all day';
+		$this->assertEqual($result, $expected);
+		
+		$date = array(
+			'Date' => array(
+				'start_date' => '2010-03-16',
+				'end_date' => '2010-03-20',
+				'start_time' => '16:00:00',
+				'end_time' => '18:00:00',
+				'all_day' => 0,
+				'permanent' => 0,
+				'recurring' => 1,
+				'recurrance_type' => 'd',
+				'frequency' => '02',
+				'weekday' => '03',
+				'day' => '01',
+				'offset' => '03'
+			)
+		);
+		$result = $this->Formatting->readableDate($date);
+		$expected = 'Every 2 days from 4:00pm to 6:00pm starting March 16, 2010 until March 20, 2010';
+		$this->assertEqual($result, $expected);
+		
+		$date = array(
+			'Date' => array(
+				'start_date' => '2010-03-16',
+				'end_date' => '2010-03-16',
+				'start_time' => '16:00:00',
+				'end_time' => '18:00:00',
+				'all_day' => 0,
+				'permanent' => 0,
+				'recurring' => 0,
+				'recurrance_type' => 'mw',
+				'frequency' => 1,
+				'weekday' => '03',
+				'day' => '01',
+				'offset' => '03'
+			)
+		);
+		$result = $this->Formatting->readableDate($date);
+		$expected = 'March 16, 2010 from 4:00pm to 6:00pm';
+		$this->assertEqual($result, $expected);
+		
+		$date = array(
+			'Date' => array(
+				'start_date' => '2010-03-16',
+				'end_date' => '2010-05-16',
+				'start_time' => '16:00:00',
+				'end_time' => '18:00:00',
+				'all_day' => 0,
+				'permanent' => 0,
+				'recurring' => 0,
+				'recurrance_type' => 'mw',
+				'frequency' => 1,
+				'weekday' => '03',
+				'day' => '01',
+				'offset' => '03'
+			)
+		);
+		$result = $this->Formatting->readableDate($date);
+		$expected = 'March 16, 2010 @ 4:00pm to May 16, 2010 @ 6:00pm';
+		$this->assertEqual($result, $expected);
+		
+		$date = array(
+			'Date' => array(
+				'start_date' => '2010-03-16',
+				'end_date' => '2010-03-16',
+				'start_time' => '00:00:00',
+				'end_time' => '11:59:00',
+				'all_day' => 1,
+				'permanent' => 1,
+				'recurring' => 1,
+				'recurrance_type' => 'mw',
+				'frequency' => 1,
+				'weekday' => '03',
+				'day' => '01',
+				'offset' => '03'
+			)
+		);
+		$result = $this->Formatting->readableDate($date);
+		$expected = 'Every month on the 3rd Wednesday starting March 16, 2010 all day';
 		$this->assertEqual($result, $expected);
 	}
 
