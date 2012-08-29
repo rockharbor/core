@@ -85,30 +85,47 @@ if (!isset($this->passedArgs['mstoken'])) {
 			'style' => 'width:300px'
 		));
 		echo $this->Form->input('SysEmail.body', array(
-			'label' => 'Body (All emails start by greeting the user by first name and end with the '.Core::read('general.site_name').' logo)'
+			'label' => 'Body'
 		));
 		if (empty($this->data['SysEmail']['email_users'])) {
 			$this->data['SysEmail']['email_users'] = 'users';
 		}
-		echo $this->Html->tag(
-			'div',
-			$this->Form->input('email_users', array(
-				'type' => 'radio',
-				'options' => array(
-					'users' => 'Selected Users',
-					'household_contact' => 'Household Contacts',
-					'both' => 'Both'
-				),
-				'value' => $this->data['SysEmail']['email_users']
-			)),
-			array(
-				'id' => 'SysEmailEmailUsers',
-				'class' => 'input',
-				'escape' => false
-			)
-		);
+		if ($showPreferences) {
+			echo $this->Html->tag(
+				'div',
+				$this->Form->input('email_users', array(
+					'type' => 'radio',
+					'options' => array(
+						'users' => 'Selected Users',
+						'household_contact' => 'Household Contacts',
+						'both' => 'Both'
+					),
+					'value' => $this->data['SysEmail']['email_users']
+				)),
+				array(
+					'id' => 'SysEmailEmailUsers',
+					'class' => 'input',
+					'escape' => false
+				)
+			);
+		}
 	?>
 	</fieldset>
+	<?php if ($showPreferences): ?>
+	<fieldset>
+		<legend>Preferences</legend>
+		<?php
+		echo $this->Form->input('SysEmail.include_greeting', array(
+			'type' => 'checkbox',
+			'label' => 'Include automatic greeting by the user\'s first name'
+		));
+		echo $this->Form->input('SysEmail.include_signoff', array(
+			'type' => 'checkbox',
+			'label' => 'Include '.Core::read('general.site_name').' signoff'
+		));
+		?>
+	</fieldset>
+	<?php endif; ?>
 <?php
 $defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals:true})';
 $defaultSubmitOptions['url'] = $this->here;

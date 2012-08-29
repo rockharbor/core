@@ -81,6 +81,8 @@ class SysEmailsController extends AppController {
 		
 		if (!empty($this->data)) {
 			$this->SysEmail->set($this->data);
+			$this->set('include_greeting', $this->data['SysEmail']['include_greeting']);
+			$this->set('include_signoff', $this->data['SysEmail']['include_signoff']);
 			
 			// send it!
 			if ($this->SysEmail->validates() && $this->Notifier->notify(array(
@@ -104,6 +106,7 @@ class SysEmailsController extends AppController {
 		)));
 		$this->set('fromUser', $this->activeUser);
 		$this->set('cacheuid', false);
+		$this->set('showPreferences', false);
 		$this->set('showAttachments', false);
 		// needed for element
 		$this->set('activeUser', $this->activeUser);
@@ -327,6 +330,8 @@ class SysEmailsController extends AppController {
 				
 				$toUsers = array_unique($toUsers);
 				$this->set('allToUsers', $toUsers);
+				$this->set('include_greeting', $this->data['SysEmail']['include_greeting']);
+				$this->set('include_signoff', $this->data['SysEmail']['include_signoff']);
 
 				foreach ($toUsers as $toUser) {
 					if ($this->Notifier->notify(array(
@@ -369,6 +374,7 @@ class SysEmailsController extends AppController {
 		));
 		$this->set('fromUser', $fromUser);
 		$this->set('showAttachments', true);
+		$this->set('showPreferences', true);
 	}
 
 /**

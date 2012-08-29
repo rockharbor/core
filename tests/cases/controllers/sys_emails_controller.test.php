@@ -237,7 +237,9 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 				'body' => 'Test message',
 				'subject' => 'Email',
 				'email_users' => 'users',
-				'to' => 1
+				'to' => 1,
+				'include_signoff' => true,
+				'include_greeting' => true
 			)
 		);
 		$vars = $this->testAction('/sys_emails/user/User:1', array(
@@ -265,7 +267,9 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 					'subject' => 'email to household contacts only',
 					'body' => 'Email!',
 					'email_users' => 'household_contact',
-					'to' => 1
+					'to' => 1,
+					'include_signoff' => true,
+					'include_greeting' => true
 				)
 			)
 		));
@@ -280,7 +284,9 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 					'subject' => 'email to household contacts only',
 					'body' => 'Email!',
 					'email_users' => 'household_contact',
-					'to' => 100
+					'to' => 100,
+					'include_signoff' => true,
+					'include_greeting' => true
 				)
 			)
 		));
@@ -295,7 +301,9 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 					'subject' => 'email to household contacts only',
 					'body' => 'Email!',
 					'email_users' => 'household_contact',
-					'to' => '97, 98, 99, 100'
+					'to' => '97, 98, 99, 100',
+					'include_signoff' => true,
+					'include_greeting' => true
 				)
 			)
 		));
@@ -311,7 +319,9 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 					'subject' => 'email to both',
 					'body' => 'Email!',
 					'email_users' => 'both',
-					'to' => '97, 98, 99, 100'
+					'to' => '97, 98, 99, 100',
+					'include_signoff' => true,
+					'include_greeting' => true
 				)
 			)
 		));
