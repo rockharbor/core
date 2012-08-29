@@ -341,6 +341,86 @@ class FormattingHelperTestCase extends CoreTestCase {
 		$result = $this->Formatting->readableDate($date);
 		$expected = 'Every month on the 3rd Wednesday starting March 16, 2010 all day';
 		$this->assertEqual($result, $expected);
+		
+		$date = array(
+			'Date' => array(
+				'start_date' => '2012-03-16',
+				'end_date' => '2012-03-18',
+				'start_time' => '00:00:00',
+				'end_time' => '00:00:00',
+				'all_day' => 0,
+				'permanent' => 1,
+				'recurring' => 0,
+				'recurrance_type' => 'mw',
+				'frequency' => 1,
+				'weekday' => 1,
+				'day' => 1,
+				'offset' => 1
+			)
+		);
+		$result = $this->Formatting->readableDate($date);
+		$expected = 'March 16, 2012 @ 12:00am';
+		$this->assertEqual($result, $expected);
+		
+		$date = array(
+			'Date' => array(
+				'start_date' => '2012-03-16',
+				'end_date' => '2012-03-18',
+				'start_time' => '00:00:00',
+				'end_time' => '00:00:00',
+				'all_day' => 1,
+				'permanent' => 1,
+				'recurring' => 0,
+				'recurrance_type' => 'mw',
+				'frequency' => 1,
+				'weekday' => 1,
+				'day' => 1,
+				'offset' => 1
+			)
+		);
+		$result = $this->Formatting->readableDate($date);
+		$expected = 'March 16, 2012 all day';
+		$this->assertEqual($result, $expected);
+		
+		$date = array(
+			'Date' => array(
+				'start_date' => '2012-03-16',
+				'end_date' => '2012-03-18',
+				'start_time' => '00:00:00',
+				'end_time' => '00:00:00',
+				'all_day' => 1,
+				'permanent' => 1,
+				'recurring' => 1,
+				'recurrance_type' => 'w',
+				'frequency' => 1,
+				'weekday' => 1,
+				'day' => 1,
+				'offset' => 1
+			)
+		);
+		$result = $this->Formatting->readableDate($date);
+		$expected = 'Every week on Monday starting March 16, 2012 all day';
+		$this->assertEqual($result, $expected);
+		
+		$date = array(
+			'Date' => array(
+				'start_date' => '2012-03-16',
+				'end_date' => '2012-03-18',
+				'start_time' => '06:00:00',
+				'end_time' => '08:00:00',
+				'all_day' => 0,
+				'permanent' => 1,
+				'recurring' => 1,
+				'recurrance_type' => 'w',
+				'frequency' => 1,
+				'weekday' => 1,
+				'day' => 1,
+				'offset' => 1
+			)
+		);
+		$result = $this->Formatting->readableDate($date);
+		$expected = 'Every week on Monday from 6:00am to 8:00am starting March 16, 2012';
+		$this->assertEqual($result, $expected);
 	}
 
 	function testAge() {

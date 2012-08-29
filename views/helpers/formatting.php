@@ -109,14 +109,14 @@ class FormattingHelper extends AppHelper {
 
 		// if not recurring, return simple!
 		if (!$date['Date']['recurring']) {
-			if ($startDate == $endDate && !$date['Date']['all_day']) {
+			if (($startDate == $endDate || $date['Date']['permanent']) && !$date['Date']['all_day']) {
 				if ($startTime == $endTime) {
 					$readable = $startDate.' @ '.$startTime;
 				} else {
 					$readable = $startDate.' from '.$startTime.' to '.$endTime;
 				}
 			} else if ($date['Date']['all_day']) {
-				if ($startDate == $endDate) {
+				if ($startDate == $endDate || $date['Date']['permanent']) {
 					$readable = $startDate.' all day';
 				} else {
 					$readable = $startDate.' to '.$endDate;
@@ -195,7 +195,7 @@ class FormattingHelper extends AppHelper {
 			$readable .= ' '.$fromorat.' '.$startTime.' ';
 		}
 
-		if ($startDate != $endDate) {
+		if ($startDate != $endDate && !$date['Date']['permanent']) {
 			$readable .= ' until '.$endDate;
 		}
 
