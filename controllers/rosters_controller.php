@@ -442,7 +442,7 @@ class RostersController extends AppController {
 			));
 			$Adult->validationErrors = $this->Roster->_validationErrors;
 			// check all validation before continuing with save
-			if ($lValidates && $rValidates && $cValidates && $pValidates) {
+			if ($rosterCount > 0 && $lValidates && $rValidates && $cValidates && $pValidates) {
 				// Now that we know that the data will save, let's run the credit card
 				// get all signed up users (for their name)
 				
@@ -588,6 +588,8 @@ class RostersController extends AppController {
 					$msg = 'Please assign a parent to this child.';
 				} elseif (!$lValidates) {
 					$msg = 'Cannot join '.$involvement['Involvement']['name'].'. The roster is full.';
+				} elseif ($rosterCount == 0) {
+					$msg = 'Please choose everyone who is attending.';
 				} else {
 					$msg = 'Cannot join '.$involvement['Involvement']['name'].'. Please try again.';
 				}

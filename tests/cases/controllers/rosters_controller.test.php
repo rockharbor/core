@@ -375,6 +375,28 @@ class RostersControllerTestCase extends CoreTestCase {
 	}
 
 	function testAdd() {
+		$vars = $this->testAction('/rosters/add/User:1/Involvement:1', array(
+			'data' => array(
+				'Default' => array(
+					'payment_option_id' => 1,
+					'payment_type_id' => 1,
+					'pay_later' => false,
+					'pay_deposit_amount' => false,
+				),
+				'Adult' => array(),
+				'CreditCard' => array(
+					'first_name' => 'Joe',
+					'last_name' => 'Schmoe',
+					'credit_card_number' => '1234567891001234',
+					'cvv' => '123',
+					'email' => 'joe@test.com'
+				)
+			)
+		));
+		$result = $this->Rosters->Session->read('Message.flash.element');
+		$expected = 'flash'.DS.'failure';
+		$this->assertEqual($result, $expected);
+		
 		$notificationsBefore = $this->Rosters->Roster->User->Notification->find('count');
 
 		$data = array(
