@@ -38,7 +38,7 @@ class DatesController extends AppController {
  * @access private
  */ 
 	function beforeFilter() {
-		$this->Auth->allow('calendar');
+		$this->Auth->allow('calendar', 'readable');
 		parent::beforeFilter();
 	}
 
@@ -49,6 +49,23 @@ class DatesController extends AppController {
 		parent::beforeRender();
 		
 		$this->set('recurranceTypes', $this->Date->recurranceTypes);
+	}
+
+/**
+ * Simply spits out a readable date using the Formatting helper.
+ * 
+ * Helps reduce code duplication when needing JS to display human readable
+ * dates when a user is creating a date. Instead, an ajax request to this
+ * method should be used
+ */
+	function readable() {
+		if (!empty($this->data['Date'])) {
+			// format the data as if it were pulled from the db
+			foreach ($this->data['Date'] as $field => $value) {
+				$this->data['Date'][$field] = $this->Date->deconstruct($field, $value);
+			}
+		}
+		$this->set('date', $this->data);
 	}
 
 /**

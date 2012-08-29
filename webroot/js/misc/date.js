@@ -82,23 +82,22 @@ CORE_date.setup = function() {
 	$('#DateEndTimeMeridian').on('change', function() { CORE_date.validateTime('DateStartTime', 'DateEndTime'); });
 
 	// finally, make everything update the humanized version
-	$('select, input').on('change', function() { 
-		var hr = CORE_date.makeHumanReadable({
-			recurring: $('#DateRecurring').is(':checked'),
-			type: $('#DateRecurranceType').val(),
-			frequency: $('#DateFrequency').val(),
-			allday: $('#DateAllDay').is(':checked'),
-			day:$('#DateDay').val(),
-			weekday: $('#DateWeekday').val(),
-			offset: $('#DateOffset').val(),
-			permanent: $('#DatePermanent').is(':checked'),
-			startDate: $('#DateStartDateYear').val()+'-'+$('#DateStartDateMonth').val()+'-'+$('#DateStartDateDay').val(),
-			endDate: $('#DateEndDateYear').val()+'-'+$('#DateEndDateMonth').val()+'-'+$('#DateEndDateDay').val(),
-			startTime: (Number($('#DateStartTimeHour').val()) + ($('#DateStartTimeMeridian').val() == 'pm' ? 12 : 0))+':'+$('#DateStartTimeMin').val(),
-			endTime: (Number($('#DateEndTimeHour').val()) + ($('#DateEndTimeMeridian').val() == 'pm' ? 12 : 0))+':'+$('#DateEndTimeMin').val()
+	$('select, input').on('change', function() {
+		// only post one request at a time
+		if (CORE_date.xhr) {
+			CORE_date.xhr.abort();
+		}
+		CORE_date.xhr = $.ajax({
+			type: 'POST',
+			url: '/dates/readable.json',
+			data: $('#DateStartDateMonth').closest('form').serialize(),
+			dataType: 'json',
+			success: function(data) {
+				if (data.readable) {
+					$('#humanized').text(data.readable);
+				}
+			}
 		});
-
-		$('#humanized').text(hr);
 	});
 
 	// initial setup
@@ -110,152 +109,6 @@ CORE_date.setup = function() {
 	$('#DateStartTimeHour').change();
 	$('#DateExemption').change();
 }
-
-/**
- * Makes a human readable date. Supports recurring, all day
- * permanent, etc. Pretty fancy, eh?
- *
- * #### Settings:
- * - boolean recurring True for recurring date
- * - boolean type Recurrance type (h:hourly, d:daily, w:weekly, m:monthly, y:yearly)
- * - integer frequency Recurrance frequency
- * - integer weekday Day of the week it recurs (for type:w)
- * - integer offset Week offset (for type:mw)
- * - integer day Day it recurs (for type:md)
- * - boolean allday True for all day event
- * - boolean permanent True for a never ending date
- * - string startDate Start date (Y-m-d)
- * - string endDate End date (Y-m-d)
- * - string startTime Start time (h:m)
- * - string endTime End time (h:m)
- *
- * @author Jeremy Harris <jharris@rockharbor.org>
- * @param object settings Recursion and date settings
- * @return string Human readable date string
- */
-CORE_date.makeHumanReadable = function(settings) {	
-	var months = new Array('','January','February','March','April','May','June','July','August','September','October','November','December');
-	var weekdays = new Array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
-	var types = {h:'hour', d:'day', w:'week', md:'month', mw:'month', y:'year'};
-	
-	var readable = '';
-	settings.startDate = settings.startDate.split('-');	
-	var startDate = months[Number(settings.startDate[1])]+' '+Number(settings.startDate[2])+', '+settings.startDate[0];
-	settings.endDate = settings.endDate.split('-');
-	var endDate = months[Number(settings.endDate[1])]+' '+Number(settings.endDate[2])+', '+settings.endDate[0];
-	settings.startTime = settings.startTime.split(':');
-	if (settings.startTime[0] > 12) {
-		settings.startTime[0] -= 12;
-		settings.startTime[2] = 'p';
-	} else {
-		settings.startTime[2] = 'a';
-	}
-	var startTime = settings.startTime[0]+':'+settings.startTime[1]+settings.startTime[2];
-	settings.endTime = settings.endTime.split(':');
-	if (settings.endTime[0] > 12) {
-		settings.endTime[0] -= 12;
-		settings.endTime[2] = 'p';
-	} else {
-		settings.endTime[2] = 'a';
-	}
-	var endTime = settings.endTime[0]+':'+settings.endTime[1]+settings.endTime[2];
-	
-	// if not recurring, return simple!
-	if (!settings.recurring) {
-		if (startDate == endDate && !settings.allday) {
-			if (startTime == endTime) {
-				readable = startDate+' @ '+startTime;
-			} else {
-				readable = startDate+' from '+startTime+' to '+endTime;
-			}
-		} else if (settings.allday) {
-			if (startDate == endDate) {
-				readable = startDate+' all day';
-			} else {
-				readable = startDate+' to '+endDate;
-			}
-		} else {
-			readable = startDate+' @ '+startTime+' to '+endDate+' @ '+endTime;
-		}
-		
-		return readable;
-	}	
-	
-	var type = types[settings.type];
-	
-	if (settings.frequency > 1) {
-		type += 's';
-	} else {
-		settings.frequency = '';
-	}
-	
-	var on = '';
-	if (settings.type == 'w') {
-		on = weekdays[Number(settings.weekday)];
-	} else if (settings.type == 'mw') {
-		on = Number(settings.offset);
-		
-		var sfx = ["th","st","nd","rd"];
-		var val = on%100;
-		on += (sfx[(val-20)%10] || sfx[val] || sfx[0]);
-		
-		on = 'the '+on+' '+weekdays[Number(settings.weekday)];
-	} else if (type.indexOf('month') != -1) {
-		on = Number(settings.day);
-		
-		var sfx = ["th","st","nd","rd"];
-		var val = on%100;
-		on += (sfx[(val-20)%10] || sfx[val] || sfx[0]);
-		
-		on = 'the '+on; 
-	}
-	
-	if (settings.recurring) {
-		readable = 'Recurs every '+settings.frequency+' '+type;	
-		
-		if (on != '') {
-			readable += ' on '+on;
-		}
-		
-		if (!settings.allday && type.indexOf('hour') == -1) {
-			readable += ' from '+startTime+' to '+endTime;
-		}
-		
-		if (type.indexOf('year') == -1) {
-			readable += ' starting';
-		} else {
-			readable += ' on';
-		}
-	}
-		
-	readable += ' '+startDate;
-	
-	var fromorat = '';
-	(startDate !== endDate && startTime !== endTime && !settings.permanent) ? fromorat = 'from' : fromorat = '@';
-	
-	if (!settings.allday && (!settings.recurring || type.indexOf('hour') != -1)) {
-		readable += ' '+fromorat+' '+startTime;
-	}
-	
-	if (startDate != endDate) {
-		readable += ' until '+endDate;
-	}
-	
-	if (!settings.allday) {	
-		if (fromorat == 'from') {
-			fromorat = ' to';
-		}
-		
-		if (!settings.allday && (!settings.recurring || type.indexOf('hour') != -1)) {
-			readable += ' '+fromorat+' '+endTime;
-		}
-	} else {
-		readable += ' all day';
-	}
-
-	return readable;
-};
-
 
 /**
  * Forces an end date to be greater or equal to it's start date

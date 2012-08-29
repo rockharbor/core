@@ -30,6 +30,89 @@ class DatesControllerTestCase extends CoreTestCase {
 		unset($this->Dates);		
 		ClassRegistry::flush();
 	}
+	
+	function testReadable() {
+		$vars = $this->testAction('/dates/readable');
+		$results = $vars['date'];
+		$expected = array();
+		$this->assertEqual($results, $expected);
+		
+		$data = array(
+			'Date' => array(
+				'start_date' => '2010-03-16',
+				'end_date' => '2010-03-16',
+				'start_time' => '07:05:00',
+				'end_time' => '10:00:00',
+				'all_day' => 1,
+				'permanent' => 0,
+				'recurring' => 0,
+				'recurrance_type' => 'mw',
+				'frequency' => 1,
+				'weekday' => 0,
+				'day' => 0,
+				'exemption' => 1,
+				'offset' => 0
+			)
+		);
+		$vars = $this->testAction('/dates/readable', compact('data'));
+		$results = $vars['date'];
+		$expected = $data;
+		$this->assertEqual($results, $expected);
+		
+		$data = array(
+			'Date' => array(
+				'start_date' => array(
+					'year' => '2012',
+					'month' => '8',
+					'day' => '1'
+				),
+				'end_date' => array(
+					'year' => '2012',
+					'month' => '8',
+					'day' => '5'
+				),
+				'start_time' => array(
+					'hour' => '6',
+					'min' => '15',
+					'meridian' => 'am'
+				),
+				'end_time' => array(
+					'hour' => '6',
+					'min' => '15',
+					'meridian' => 'pm'
+				),
+				'all_day' => 1,
+				'permanent' => 0,
+				'recurring' => 0,
+				'recurrance_type' => 'mw',
+				'frequency' => 1,
+				'weekday' => 0,
+				'day' => 0,
+				'exemption' => 1,
+				'offset' => 0
+			)
+		);
+		$vars = $this->testAction('/dates/readable.json', compact('data'));
+		$results = $vars['date'];
+		$expected = array(
+			'Date' => array(
+				'start_date' => '2012-8-1',
+				'end_date' => '2012-8-5',
+				'start_time' => '06:15:00',
+				'end_time' => '18:15:00',
+				'all_day' => 1,
+				'permanent' => 0,
+				'recurring' => 0,
+				'recurrance_type' => 'mw',
+				'frequency' => 1,
+				'weekday' => 0,
+				'day' => 0,
+				'exemption' => 1,
+				'offset' => 0
+			)
+		);
+		$this->assertEqual($results, $expected);
+	}
 
 	function testCalendar() {
 		$this->loadFixtures('Roster', 'Leader', 'Ministry');
