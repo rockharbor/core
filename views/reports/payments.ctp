@@ -1,6 +1,3 @@
-<?php
-if (empty($this->data)):
-?>
 <h1>Payments Report</h1>
 <div class="clearfix">
 <?php
@@ -39,16 +36,37 @@ if (empty($this->data)):
 		?>
 	</fieldset>
 	<?php
-	$defaultSubmitOptions['update'] = '#report';
 	echo $this->Js->submit('Get Report', $defaultSubmitOptions);
 	echo $this->Form->end();
 	?>
 </div>
-<?php endif;?>
-<div id="report">
+<div id="report" style="margin-top: 10px">
+	<?php echo $this->MultiSelect->create(); ?>
 	<table class="datatable">
 		<thead>
 			<tr>
+			<?php
+			$links = array(
+				 array(
+					'title' => 'Export',
+					'url' => array(
+						'controller' => 'reports',
+						'action' => 'export',
+						'Payment',
+						$this->MultiSelect->token
+					),
+					'options' => array(
+						'data-core-modal' => '{"update":false}'
+					)
+				)
+			);
+			$colCount = 10;
+			$checkAll = true;
+			echo $this->element('multiselect', compact('links', 'colCount', 'checkAll')); 
+			?>
+			</tr>
+			<tr>
+				<th>&nbsp;</th>
 				<th>Involvement</th>
 				<th>User</th>
 				<th>Payment Placed By</th>
@@ -69,6 +87,7 @@ if (empty($this->data)):
 			}
 		?>
 		<tr<?php echo $class;?>>
+			<td><?php echo $this->MultiSelect->checkbox($payment['Payment']['id']); ?></td>
 			<td><?php echo $this->Html->link($payment['Roster']['Involvement']['name'], array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $payment['Roster']['Involvement']['id'])); ?></td>
 			<td><?php echo $this->Html->link($payment['User']['Profile']['name'], array('controller' => 'profiles', 'action' => 'view', 'User' => $payment['User']['id'])); ?></td>
 			<td><?php echo empty($payment['Payer']['id']) ? 'System' : $this->Html->link($payment['Payer']['Profile']['name'], array('controller' => 'profiles', 'action' => 'view', 'User' => $payment['Payer']['id'])); ?></td>
@@ -90,5 +109,8 @@ if (empty($this->data)):
 		</tr>
 		<?php endforeach; ?>
 	</table>
-	<?php echo $this->element('pagination'); ?>
+	<?php 
+	echo $this->element('pagination'); 
+	echo $this->MultiSelect->end();
+	?>
 </div>

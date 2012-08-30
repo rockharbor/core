@@ -40,7 +40,8 @@ class ReportsController extends AppController {
 		'Media.Media',
 		'Report',
 		'Charts.Charts' => array('Charts.GoogleStatic'),
-		'Formatting'
+		'Formatting',
+		'MultiSelect.MultiSelect'
 	);
 
 /**
@@ -285,6 +286,7 @@ class ReportsController extends AppController {
 					'Payment.roster_id' => array_keys($rosters)
 			))
 		);
+		$this->MultiSelect->saveSearch($this->paginate);
 		$this->FilterPagination->startEmpty = false;
 		$payments = $this->FilterPagination->paginate('Payment');
 
