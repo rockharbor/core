@@ -451,13 +451,13 @@ class RosterTestCase extends CoreTestCase {
 		$roster = $this->Roster->read(null, 6);
 
 		$result = $roster['Roster']['amount_paid'];
-		$this->assertEqual($result, 20);
+		$this->assertIdentical($result, '20.00');
 
 		$result = $roster['Roster']['amount_due'];
-		$this->assertEqual($result, 100);
+		$this->assertIdentical($result, '100.00');
 
 		$result = $roster['Roster']['balance'];
-		$this->assertEqual($result, 80);
+		$this->assertIdentical($result, '80.00');
 	}
-
+	
 }
