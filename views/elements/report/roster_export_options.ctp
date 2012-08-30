@@ -9,18 +9,17 @@ $this->Report->alias(array('Answer.description' => 'Answer'));
 	<fieldset class="grid_6">
 		<legend>User Information</legend>
 		<div class="grid_3 alpha">
-			<p>(Full name is included by default)</p>
 			<?php
-			// at the very least include name in the report
-			echo $this->Form->hidden('Export.User.Profile.name');
 			echo $this->Form->input('Export.User.username', array(
 				'type' => 'checkbox'
 			));
 			echo $this->Form->input('Export.User.Profile.first_name', array(
-				'type' => 'checkbox'
+				'type' => 'checkbox',
+				'checked' => true
 			));
 			echo $this->Form->input('Export.User.Profile.last_name', array(
-				'type' => 'checkbox'
+				'type' => 'checkbox',
+				'checked' => true
 			));
 			echo $this->Form->input('Export.User.Profile.birth_date', array(
 				'type' => 'checkbox'

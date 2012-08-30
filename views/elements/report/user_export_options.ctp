@@ -24,16 +24,13 @@ $this->Report->alias(array('HouseholdMember.Household.HouseholdContact.Profile.w
 		<legend>User Information</legend>
 		<div class="grid_3 alpha">
 			<?php
-			echo $this->Form->hidden('Export.User.username');
-			echo $this->Form->input('Export.Profile.name', array(
-				'type' => 'checkbox',
-				'label' => 'Full name'
-			));
 			echo $this->Form->input('Export.Profile.first_name', array(
-				'type' => 'checkbox'
+				'type' => 'checkbox',
+				'checked' => true
 			));
 			echo $this->Form->input('Export.Profile.last_name', array(
-				'type' => 'checkbox'
+				'type' => 'checkbox',
+				'checked' => true
 			));
 			echo $this->Form->input('Export.Profile.birth_date', array(
 				'type' => 'checkbox'
