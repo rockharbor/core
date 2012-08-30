@@ -216,25 +216,6 @@ class Involvement extends AppModel {
 	);
 
 /**
- * Filter args for the Search.Searchable behavior
- *
- * @var array
- * @see Search.Searchable::parseCriteria()
- */
-	var $filterArgs = array(
-		array(
-			'name' => 'simple',
-			'type' => 'query',
-			'method' => 'makeLikeConditions',
-			'operator' => 'OR',
-			'field' => array(
-				'Involvement.name',
-				'Involvement.description',
-			)
-		)
-	);
-	
-/**
  * Checks if a user is a leader for an involvement
  *
  * @param integer $userId The user id

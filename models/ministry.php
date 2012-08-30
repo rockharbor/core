@@ -158,25 +158,6 @@ class Ministry extends AppModel {
 	);
 
 /**
- * Filter args for the Search.Searchable behavior
- *
- * @var array
- * @see Search.Searchable::parseCriteria()
- */
-	var $filterArgs = array(
-		array(
-			'name' => 'simple',
-			'type' => 'query',
-			'method' => 'makeLikeConditions',
-			'operator' => 'OR',
-			'field' => array(
-				'Ministry.name',
-				'Ministry.description',
-			)
-		)
-	);
-
-/**
  * Array of search filters for SearchesController::simple().
  *
  * They are merged with any existing conditions and parameters sent to

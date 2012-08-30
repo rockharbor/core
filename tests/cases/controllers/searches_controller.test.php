@@ -51,7 +51,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 
-		$vars = $this->testAction('/searches/index?q=core%20test');
+		$vars = $this->testAction('/searches/index?q=core+2.0+test');
 		$results = Set::extract('/Involvement/name', $vars['involvements']);
 		$expected = array(
 			'CORE 2.0 testing'

@@ -113,26 +113,25 @@ class SearchesController extends AppController {
 		}
 
 		if (!empty($this->data['Search']['query'])) {
-			$query = explode(' ', $search['query']);
-			foreach ($query as &$word) {
-				$word = '%'.$word.'%';
-			}			
+			$query = $search['query'];
 			// check access to results based on access to actions
 			if ((!$restrictModel || $restrictModel == 'User') && $this->isAuthorized('searches/user')) {
 				$conditions = array(
 					$this->User->scopeConditions($search)
 				);
-				if (count($query) > 1) {
-					$firstname = array_shift($query);
-					$lastname = implode(' ', $query);
+				$exp = explode(' ', $query);
+				if (count($exp) > 1) {
+					$firstname = array_shift($exp);
+					$lastname = implode(' ', $exp);
 					$conditions[] = array(
-						'Profile.first_name LIKE' => $firstname,
-						'Profile.last_name LIKE' => $lastname
+						'Profile.first_name LIKE' => $firstname.'%',
+						'Profile.last_name LIKE' => $lastname.'%'
 					);
 				} else {
 					$conditions['or'] = array(
-						$this->User->parseCriteria(array('simple' => $query[0])),
-						$this->User->Profile->parseCriteria(array('simple' => $query[0])),
+						'User.username LIKE' => '%'.$query.'%',
+						'Profile.first_name LIKE' => '%'.$query.'%',
+						'Profile.last_name LIKE' => '%'.$query.'%',
 					);
 				}
 				
@@ -177,7 +176,7 @@ class SearchesController extends AppController {
 					),
 					'conditions' => array(
 						$this->Involvement->scopeConditions($search),
-						$this->Involvement->parseCriteria(array('simple' => implode(' ', $query)))
+						'Involvement.name LIKE' => '%'.$query.'%'
 					),
 					'link' => array(
 						'Ministry' => array(
@@ -205,7 +204,7 @@ class SearchesController extends AppController {
 					),
 					'conditions' =>  array(
 						$this->Ministry->scopeConditions($search),
-						$this->Ministry->parseCriteria(array('simple' => implode(' ', $query)))
+						'Ministry.name LIKE' => '%'.$query.'%'
 					),
 					'link' => array(
 						'Image',

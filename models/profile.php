@@ -183,25 +183,6 @@ class Profile extends AppModel {
 	);
 
 /**
- * Filter args for the Search.Searchable behavior
- *
- * @var array
- * @see Search.Searchable::parseCriteria()
- */
-	var $filterArgs = array(
-		array(
-			'name' => 'simple',
-			'type' => 'query',
-			'method' => 'makeLikeConditions',
-			'operator' => 'OR',
-			'field' => array(
-				'Profile.first_name',
-				'Profile.last_name',
-			)
-		)
-	);
-
-/**
  * Model::beforeValidate callback
  *
  * @return true Continue with save

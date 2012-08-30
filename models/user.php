@@ -218,23 +218,6 @@ class User extends AppModel {
 	);
 
 /**
- * Filter args for the Search.Searchable behavior
- *
- * @var array
- * @see Search.Searchable::parseCriteria()
- */
-	var $filterArgs = array(
-		array(
-			'name' => 'simple',
-			'type' => 'query',
-			'method' => 'makeLikeConditions',
-			'field' => array(
-				'User.username',
-			)
-		)
-	);
-
-/**
  * Checks to see if an image was included in the find. If so, and one is not
  * found, it will automatically pull the default image
  *
