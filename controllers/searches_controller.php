@@ -297,6 +297,11 @@ class SearchesController extends AppController {
  * Performs an advanced search on Involvements
  */
 	function involvement() {
+		if (isset($this->params['url']['q'])) {
+			$this->data['Involvement']['name'] = $this->params['url']['q'];
+			unset($this->params['url']['q']);
+		}
+		
 		$private = $this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id']);
 		$inactive = $private;
 		$results = array();
@@ -321,7 +326,7 @@ class SearchesController extends AppController {
 					'distance_from' => null
 				)
 			);
-			$search = Set::merge($_default, $this->data);
+			$this->data = $search = Set::merge($_default, $this->data);
 			
 			$dist = $search['Distance'];
 			unset($search['Distance']);
@@ -380,6 +385,11 @@ class SearchesController extends AppController {
  * Performs an advanced search on Ministries
  */
 	function ministry() {
+		if (isset($this->params['url']['q'])) {
+			$this->data['Ministry']['name'] = $this->params['url']['q'];
+			unset($this->params['url']['q']);
+		}
+		
 		$private = $this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id']);
 		$inactive = $private;
 		$results = array();
@@ -395,7 +405,7 @@ class SearchesController extends AppController {
 					'inactive' => $inactive ? 1 : 0
 				)
 			);
-			$search = Set::merge($_default, $this->data);
+			$this->data = $search = Set::merge($_default, $this->data);
 			
 			if ($search['Ministry']['private']) {
 				$search['Ministry']['private'] = array(0,1);

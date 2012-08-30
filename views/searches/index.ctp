@@ -146,11 +146,11 @@ echo $this->element('search');
 		if ($link) {
 			echo $this->Html->tag('li', $link);
 		}
-		$link = $this->Permission->link('Ministry Search', array('action' => 'ministry'), array('class' => 'button'));
+		$link = $this->Permission->link('Ministry Search', array('action' => 'ministry', '?' => array('q' => $this->params['url']['q'])), array('class' => 'button'));
 		if ($link) {
 			echo $this->Html->tag('li', $link);
 		}
-		$link = $this->Permission->link('Involvement Search', array('action' => 'involvement'), array('class' => 'button'));
+		$link = $this->Permission->link('Involvement Search', array('action' => 'involvement', '?' => array('q' => $this->params['url']['q'])), array('class' => 'button'));
 		if ($link) {
 			echo $this->Html->tag('li', $link);
 		}

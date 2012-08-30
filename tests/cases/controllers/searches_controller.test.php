@@ -148,6 +148,14 @@ class SearchesControllerTestCase extends CoreTestCase {
 	function testInvolvement() {
 		$this->loadFixtures('Address');
 		
+		$vars = $this->testAction('/searches/involvement?q=core');
+		$results = Set::extract('/Involvement/name', $vars['results']);
+		$expected = array(
+			'CORE 2.0 testing',
+			'Team CORE'
+		);
+		$this->assertEqual($results, $expected);
+		
 		$search = array(
 			'Involvement' => array(
 				'name' => 'core'
@@ -281,6 +289,14 @@ class SearchesControllerTestCase extends CoreTestCase {
 	}
 
 	function testMinistry() {
+		$vars = $this->testAction('/searches/ministry?q=web');
+		$results = Set::extract('/Ministry/name', $vars['results']);
+		sort($results);
+		$expected = array(
+			'Child Web', 'Web'
+		);
+		$this->assertEqual($results, $expected);
+		
 		$search = array(
 			'Ministry' => array(
 				'name' => 'web'
