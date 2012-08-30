@@ -45,9 +45,9 @@ class CampusesController extends AppController {
 	}
 
 /**
- * Shows a list of campuses
+ * Admin dashboard for editing campuses
  */ 
-	function index() {
+	function admin() {
 		$this->Campus->recursive = 0;
 		$this->paginate = array(
 			'contain' => array(
