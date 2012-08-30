@@ -321,23 +321,57 @@ class MinistriesControllerTestCase extends CoreTestCase {
 	}
 
 	function testEdit() {
+		$this->loadFixtures('User');
+		
 		$data = $this->Ministries->Ministry->read(null, 1);
 		$data['Ministry']['name'] = 'New name';
 
+		$this->Ministries->Ministry->Behaviors->enable('Confirm');
+		$this->Ministries->setReturnValueAt(0, 'isAuthorized', true);
+		$this->Ministries->setReturnValueAt(1, 'isAuthorized', true);
+		
+		$notificationsBefore = ClassRegistry::init('Notification')->find('count');
 		$vars = $this->testAction('/ministries/edit/Ministry:1', array(
 			'return' => 'vars',
 			'data' => $data
 		));
+		$notificationsAfter = ClassRegistry::init('Notification')->find('count');
 
 		$result = $vars['ministries'];
 		$expected = array(
 			2 => 'Alpha'
 		);
 		$this->assertEqual($result, $expected);
+		
+		$result = $notificationsAfter-$notificationsBefore;
+		$expected = 0;
+		$this->assertEqual($result, $expected);
 
 		$this->Ministries->Ministry->id = 1;
 		$result = $this->Ministries->Ministry->field('name');
 		$this->assertEqual($result, 'New name');
+		
+		$this->Ministries->Ministry->Behaviors->enable('Confirm');
+		$this->Ministries->setReturnValueAt(2, 'isAuthorized', true);
+		$this->Ministries->setReturnValueAt(3, 'isAuthorized', false);
+		
+		$data = $this->Ministries->Ministry->read(null, 1);
+		$data['Ministry']['name'] = 'This change should end up pending';
+		
+		$notificationsBefore = ClassRegistry::init('Notification')->find('count');
+		$vars = $this->testAction('/ministries/edit/Ministry:1', array(
+			'return' => 'vars',
+			'data' => $data
+		));
+		$notificationsAfter = ClassRegistry::init('Notification')->find('count');
+		
+		$result = $this->Ministries->Ministry->RevisionModel->field('name');
+		$expected = 'This change should end up pending';
+		$this->assertEqual($result, $expected);
+		
+		$result = $notificationsAfter-$notificationsBefore;
+		$expected = 1;
+		$this->assertEqual($result, $expected);
 	}
 
 	function testToggleActivity() {

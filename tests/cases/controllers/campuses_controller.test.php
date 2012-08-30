@@ -64,6 +64,8 @@ class CampusesControllerTestCase extends CoreTestCase {
 	}
 
 	function testEdit() {
+		$this->loadFixtures('User');
+		
 		$this->Campuses->Campus->Behaviors->enable('Confirm');
 		$this->Campuses->setReturnValueAt(1, 'isAuthorized', true);
 		$data = array(
@@ -88,12 +90,19 @@ class CampusesControllerTestCase extends CoreTestCase {
 				'name' => 'Another edit'
 			)
 		);
+		$notificationsBefore= ClassRegistry::init('Notification')->find('count');
 		$this->testAction('/campuses/edit/Campus:1', array(
 			'data' => $data
 		));
+		$notificationsAfter = ClassRegistry::init('Notification')->find('count');
+		
 		$this->Campuses->Campus->id = 1;
 		$this->assertEqual($this->Campuses->Campus->field('name'), 'New name');
 		$this->assertEqual($modified, $this->Campuses->Campus->field('modified'));
+		
+		$result = $notificationsAfter-$notificationsBefore;
+		$expected = 1;
+		$this->assertEqual($result, $expected);
 	}
 
 	function testToggleActivity() {

@@ -246,14 +246,13 @@ class MinistriesController extends AppController {
 						$this->Session->setFlash('This ministry has been saved.', 'flash'.DS.'success');
 					} else {
 						$this->Session->setFlash('Your changes are pending review.', 'flash'.DS.'success');
+						$this->set('ministry', $this->Ministry->read(null, $id));
+						$this->Notifier->notify(array(
+							'to' => Core::read('notifications.ministry_content'),
+							'template' => 'ministries_edit',
+							'subject' => 'The '.$name.' ministry has been edited'
+						));
 					}
-
-					$this->set('ministry', $this->Ministry->read(null, $id));
-					$this->Notifier->notify(array(
-						'to' => Core::read('notifications.ministry_content'),
-						'template' => 'ministries_edit',
-						'subject' => 'The '.$name.' ministry has been edited'
-					));
 				} else {
 					$this->Session->setFlash('Unable to save this ministry. Please try again.', 'flash'.DS.'failure');
 				}
