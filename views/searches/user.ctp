@@ -223,7 +223,7 @@ echo $this->MultiSelect->create();
 				<th>Household Contact</th>
 			</tr>
 		</thead>
-		<body>
+		<tbody>
 <?php	
 	$i = 0;
 	foreach ($results as $result):
@@ -283,7 +283,7 @@ echo $this->MultiSelect->create();
 <?php	
 	endforeach;
 ?>
-		</body>
+		</tbody>
 	</table>
 <?php
 echo $this->element('pagination');
