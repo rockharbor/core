@@ -179,6 +179,33 @@ CORE.noDuplicateCheckboxes = function(fieldset) {
 }
 
 /**
+ * Makes certain checkboxes automatically check other checkboxes.
+ *
+ * {{{
+ * // when '#mycheckbox' is clicked, '#otherone' and '#another' change accordingly
+ * CORE.checkboxRequires('#mycheckbox', ['#otherone', '#another']);
+ * }}}
+ *
+ * @param string|Element checkbox The checkbox
+ * @param array requirements List of dependent items as string|Element 
+ */
+CORE.checkboxRequires = function(checkbox, requirements) {
+	$(checkbox).on('change', function() {
+		for (var box in requirements) {
+			var el = $(requirements[box]);
+			el.prop('checked', this.checked);
+			if (this.checked) {
+				el.parent('.core-checkbox, .core-radio').addClass('disabled');
+			} else {
+				el.parent('.core-checkbox, .core-radio').removeClass('disabled');
+			}
+			el.change();
+		}
+	});
+	$(checkbox).change();
+}
+
+/**
 * Initializes special form elements
 */
 CORE.initFormUI = function() {
