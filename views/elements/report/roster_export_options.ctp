@@ -2,8 +2,13 @@
 $this->Report->squash('User.Profile.work_phone', array('User.Profile.work_phone', 'User.Profile.work_phone_ext'), '%d %d', 'Work Phone');
 $this->Report->squash('User.Address.name', array('User.ActiveAddress.address_line_1', 'User.ActiveAddress.address_line_2', 'User.ActiveAddress.city', 'User.ActiveAddress.state', 'User.ActiveAddress.zip'), '%s %s %s, %s %d', 'Address');
 $this->Report->multiple('Answer.description', 'expand');
+$this->Report->multiple('Payment.amount', 'expand');
+$this->Report->multiple('Payment.PaymentType.name', 'expand');
+$this->Report->multiple('Payment.number', 'expand');
+$this->Report->multiple('Payment.transaction_id', 'expand');
 $this->Report->alias(array('RosterStatus.name' => 'Roster Status'));
 $this->Report->alias(array('Answer.description' => 'Answer'));
+$this->Report->alias(array('Payment.PaymentType.name' => 'Payment Type'));
 ?>
 <div class="clearfix">
 	<fieldset class="grid_6">
@@ -70,6 +75,41 @@ $this->Report->alias(array('Answer.description' => 'Answer'));
 			echo $this->Form->input('Export.RosterStatus.name', array(
 				'type' => 'checkbox',
 				'label' => 'Roster Status'
+			));
+			echo $this->Form->input('Export.Roster.amount_paid', array(
+				'type' => 'checkbox'
+			));
+			echo $this->Form->input('Export.Roster.amount_due', array(
+				'type' => 'checkbox'
+			));
+			// `Roster`.`balance` relies on `amount_due` and `amount_paid`
+			$this->Js->buffer('CORE.checkboxRequires("#ExportRosterBalance", ["#ExportRosterAmountDue", "#ExportRosterAmountPaid"]);');
+			echo $this->Form->input('Export.Roster.balance', array(
+				'type' => 'checkbox',
+				'label' => 'Balance'
+			));
+			?>
+		</div>
+	</fieldset>
+	<fieldset class="grid_6">
+		<legend>Payment Information</legend>
+		<div class="grid_3 omega">
+			<?php
+			echo $this->Form->input('Export.Payment.amount', array(
+				'type' => 'checkbox',
+				'label' => 'Payment Amount'
+			));
+			echo $this->Form->input('Export.Payment.PaymentType.name', array(
+				'type' => 'checkbox',
+				'label' => 'Payment Type'
+			));
+			echo $this->Form->input('Export.Payment.number', array(
+				'type' => 'checkbox',
+				'label' => 'Payment Number'
+			));
+			echo $this->Form->input('Export.Payment.transaction_id', array(
+				'type' => 'checkbox',
+				'label' => 'Payment Amount'
 			));
 			?>
 		</div>
