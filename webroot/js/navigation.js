@@ -98,7 +98,7 @@ CORE.eventAfterLoad = function(ele) {
 	$('#'+ele+' .event:not(.fc-other-month)').each(function() {
 		var td = $(this);
 		var content = td.find('.fc-day-content').html();
-		td.find('.fc-day-content').empty();
+		td.find('.fc-day-content').html('<div style="position:relative"></div>');
 		CORE.tooltip(td, content, {
 			detachAfter: false,
 			container: $('#'+ele)
@@ -124,7 +124,7 @@ CORE.eventRender = function(cal, event, element, view) {
 		.addClass('event')
 		.addClass(dayClass)
 		.find('.fc-day-content')
-			.empty()
+			.html('<div style="position:relative"></div>')
 	
 	// remember which days have events so we can remove extra classes
 	dates.push(dayClass);
