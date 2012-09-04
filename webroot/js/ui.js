@@ -552,6 +552,12 @@ CORE.autoComplete = function(id, datasource, onSelect) {
  * @param string id The id of form
  */
 CORE.ajaxUpload = function(id) {
+	if (!$('#'+id).data('ajax-form-attached')) {
+		$('#'+id).data('ajax-form-attached', true);
+	} else {
+		return;
+	}
+
 	var submit = $('#'+id+' div.submit');
 	var input = $('#'+id+' input[type=file]').prop('multiple', true);
 	var button = $('<button id="'+id+'_button">'+submit.children('input').prop('value')+'</button>').button();
