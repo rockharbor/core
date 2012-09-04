@@ -467,6 +467,10 @@ class RostersController extends AppController {
 				
 				$this->set(compact('verb', 'signedupUsers'));
 				
+				$signupSuccess = false;
+				$paymentSuccess = false;
+				$redirect = null;
+				
 				if ($involvement['Involvement']['take_payment'] && $this->data['Default']['payment_option_id'] > 0 && !$this->data['Default']['pay_later'] && $amount > 0) {
 					$description = implode(' and ', Set::extract('/Profile/name', $signedupUsers)).' '.$verb.' been signed up for '.$involvement['InvolvementType']['name'].' '.$involvement['Involvement']['name'];
 					
@@ -507,24 +511,8 @@ class RostersController extends AppController {
 							}
 						}
 						
-						$leaders = $this->Roster->Involvement->getLeaders($involvement['Involvement']['id']);
-						$this->set('amount', $amount);
-						
-						foreach ($leaders as $leader) {
-							$this->Notifier->notify(array(
-								'to' => $leader,
-								'template' => 'involvements_signup_leader',
-								'subject' => 'New user(s) signed up and paid for '.$involvement['Involvement']['name']
-							));
-							
-							if ($rosterCount + $childCount + $currentCount == $involvement['Involvement']['roster_limit']) {
-								$this->Notifier->notify(array(
-									'to' => $leader,
-									'template' => 'rosters_filled',
-									'subject' => $involvement['Involvement']['name'].' roster filled'
-								));
-							}
-						}
+						$signupSuccess = true;
+						$paymentSuccess = true;
 						
 						$this->Notifier->notify(array(
 							'to' => $this->activeUser['User']['id'],
@@ -532,7 +520,7 @@ class RostersController extends AppController {
 							'subject' => 'Your payment has been made for '.$involvement['InvolvementType']['name'],
 						));
 						$this->Session->setFlash('Your payment has been received and you have signed up for '.$involvement['Involvement']['name'].'.', 'flash'.DS.'success');
-						$this->redirect(array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvementId));
+						$redirect = array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvementId);
 					} else {
 						$this->validationErrors['CreditCard'] = $CreditCard->validationErrors;
 						$this->Session->setFlash('Unable to process payment.', 'flash'.DS.'failure');
@@ -563,14 +551,25 @@ class RostersController extends AppController {
 						}
 					}
 					
+					$signupSuccess = true;
+					
+					$this->Session->setFlash('You have signed up for '.$involvement['Involvement']['name'].'.', 'flash'.DS.'success');
+					$redirect = array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvementId);
+				}
+				
+				if ($signupSuccess) {
+					// notify leaders
 					$leaders = $this->Roster->Involvement->getLeaders($involvement['Involvement']['id']);
+					$this->set('amount', $amount);
+
 					foreach ($leaders as $leader) {
+						$paid = $paymentSuccess ? 'and paid for ' : null;
 						$this->Notifier->notify(array(
 							'to' => $leader,
 							'template' => 'involvements_signup_leader',
-							'subject' => 'New user(s) signed up for '.$involvement['Involvement']['name']
+							'subject' => 'New user(s) signed up '.$paid.$involvement['Involvement']['name']
 						));
-						
+
 						if ($rosterCount + $childCount + $currentCount == $involvement['Involvement']['roster_limit']) {
 							$this->Notifier->notify(array(
 								'to' => $leader,
@@ -583,6 +582,11 @@ class RostersController extends AppController {
 					$this->Session->setFlash('You have signed up for '.$involvement['Involvement']['name'].'.', 'flash'.DS.'success');
 					$this->redirect(array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvementId));
 				}		
+					
+					if ($redirect) {
+						$this->redirect($redirect);
+					}
+				}
 			} else {
 				if (!$pValidates && isset($this->data['Child'])) {
 					$msg = 'Please assign a parent to this child.';
