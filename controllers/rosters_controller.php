@@ -461,8 +461,8 @@ class RostersController extends AppController {
 				));
 				$verb = count($signedupUsers) > 1 ? 'have' : 'has';
 				
-				foreach ($signedupUsers as &$signedupUser) {
-					$signedupUser['answers'] = Set::extract('/Adult/Roster[user_id='.$signedupUser['Profile']['user_id'].']/../Answer', $this->data);
+				foreach ($signedupUsers as $key => $signedupUser) {
+					$signedupUsers[$key]['answers'] = Set::extract('/Adult/Roster[user_id='.$signedupUser['Profile']['user_id'].']/../Answer', $this->data);
 				}
 				
 				$this->set(compact('verb', 'signedupUsers'));
@@ -579,9 +579,32 @@ class RostersController extends AppController {
 						}
 					}
 					
-					$this->Session->setFlash('You have signed up for '.$involvement['Involvement']['name'].'.', 'flash'.DS.'success');
-					$this->redirect(array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvementId));
-				}		
+					// if it's a child being signed up, notify the household contact(s)
+					foreach ($signedupUsers as $signedupUser) {
+						if ($signedupUser['Profile']['child']) {
+							$households = $this->Roster->User->HouseholdMember->find('all', array(
+								'conditions' => array(
+									'HouseholdMember.user_id' => $signedupUser['Profile']['user_id'],
+									'HouseholdMember.confirmed' => true,
+									'not' => array(
+										'Household.contact_id' => $signedupUser['Profile']['user_id']
+									)
+								),
+								'contain' => array(
+									'Household'
+								)
+							));
+							
+							foreach ($households as $household) {
+								// let every contact (unless the contact is signing the person up)
+								$this->Notifier->notify(array(
+									'to' => $household['Household']['contact_id'],
+									'template' => 'involvements_signup_child',
+									'subject' => $signedupUser['Profile']['child'].' signed up for '.$involvement['InvolvementType']['name'],
+								));
+							}
+						}
+					}
 					
 					if ($redirect) {
 						$this->redirect($redirect);

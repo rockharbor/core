@@ -292,8 +292,7 @@ class RostersControllerTestCase extends CoreTestCase {
 	}
 	
 	function testAddChildcare() {
-		$this->loadFixtures('Household', 'HouseholdMember');
-		
+		$this->loadFixtures('Household', 'HouseholdMember', 'Profile');
 		
 		$data = array(
 			'Default' => array(
@@ -358,9 +357,26 @@ class RostersControllerTestCase extends CoreTestCase {
 				)
 			)
 		);
+		
+		$notificationsBefore = ClassRegistry::init('Notification')->find('count');
 		$vars = $this->testAction('/rosters/add/User:1/Involvement:2', array(
 			'data' => $data
 		));
+		$notificationsAfter = ClassRegistry::init('Notification')->find('count');
+		
+		$result = $this->Rosters->Session->read('Message.flash.element');
+		$expected = 'flash'.DS.'success';
+		$this->assertEqual($result, $expected);
+		
+		// one for user, one for child, two for child's household contacts
+		$result = $notificationsAfter-$notificationsBefore;
+		$expected = 4;
+		$this->assertEqual($result, $expected);
+		
+		$results = Set::extract('/Profile/user_id', $vars['signedupUsers']);
+		$expected = array(1, 3);
+		$this->assertEqual($results, $expected);
+		
 		$result = $this->Rosters->Roster->validationErrors;
 		$this->assertEqual($result, array());
 		
@@ -372,6 +388,50 @@ class RostersControllerTestCase extends CoreTestCase {
 		));
 		$result = $roster['Roster']['parent_id'];
 		$this->assertEqual($result, 1);
+		
+		$data = array(
+			'Default' => array(
+				'pay_later' => 1
+			),
+			'Adult' => array(
+				array(
+					'Roster' => array(
+						'user_id' => 2
+					)
+				)
+			),
+			'Child' => array(
+				array(
+					'Roster' => array(
+						'user_id' => 3
+					)
+				)
+			)
+		);
+		
+		$notificationsBefore = ClassRegistry::init('Notification')->find('count');
+		$vars = $this->testAction('/rosters/add/User:1/Involvement:2', array(
+			'data' => $data
+		));
+		$notificationsAfter = ClassRegistry::init('Notification')->find('count');
+		
+		$result = $this->Rosters->Session->read('Message.flash.element');
+		$expected = 'flash'.DS.'success';
+		$this->assertEqual($result, $expected);
+		
+		// one for user, one for child, two for child's household contacts
+		$result = $notificationsAfter-$notificationsBefore;
+		$expected = 4;
+		$this->assertEqual($result, $expected);
+		
+		$roster = $this->Rosters->Roster->find('first', array(
+			'conditions' => array(
+				'involvement_id' => 2,
+				'user_id' => 3
+			)
+		));
+		$result = $roster['Roster']['parent_id'];
+		$this->assertEqual($result, 2);
 	}
 
 	function testAdd() {
