@@ -32,7 +32,7 @@ class CampusesControllerTestCase extends CoreTestCase {
 	
 	function testIndex() {
 		$vars = $this->testAction('/campuses/index');
-		$this->assertIsA('Array', $vars['campusesMenu']);
+		$this->assertIsA($vars['campusesMenu'], 'Array');
 	}
 
 	function testView() {
