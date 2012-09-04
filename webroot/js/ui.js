@@ -613,7 +613,10 @@ CORE.ajaxUpload = function(id) {
 					yesTitle: false,
 					noTitle: 'Try Again',
 					title: 'Whoops',
-					onNo: 'CORE.closeModals("confirmation-modal");$("#'+id+'_error").remove();'
+					onNo: function() {
+						CORE.closeModals("confirmation-modal");
+						$('#'+id+'_error').remove();
+					}
 				});
 				$('#'+id+'_error').click();
 			}
@@ -622,21 +625,24 @@ CORE.ajaxUpload = function(id) {
 			form.before('<div class="error-message" id="'+id+'_error"></div>');
 			var e = $('#'+id+'_error');
 			var msg = '';
-			if (response.length == 0) {
+			var name = input.prop('name');
+			var model = name.substring(name.indexOf('[')+1, name.indexOf(']'));
+			if (!response[model]) {
 				CORE.update($('#'+id));
 			} else if (response == null) {
 				msg = "Unknown error."
 				e.text(msg);
 				e.addClass("error-message upload-error");
 			} else {
-				var name = input.prop('name');
-				var model = name.substring(name.indexOf('[')+1, name.indexOf(']'));
 				msg = response[model]['file'];
 				CORE.confirmation(id+'_error', msg, {
 					yesTitle: false,
 					noTitle: 'Try Again',
 					title: 'Upload failed',
-					onNo: 'CORE.closeModals("confirmation-modal");$("#'+id+'_error").remove();'
+					onNo: function() {
+						CORE.closeModals("confirmation-modal");
+						$('#'+id+'_error').remove();
+					}
 				});
 				$('#'+id+'_error').click();
 			}
