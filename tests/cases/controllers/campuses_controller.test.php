@@ -29,6 +29,11 @@ class CampusesControllerTestCase extends CoreTestCase {
 		unset($this->Campuses);		
 		ClassRegistry::flush();
 	}
+	
+	function testIndex() {
+		$vars = $this->testAction('/campuses/index');
+		$this->assertIsA('Array', $vars['campusesMenu']);
+	}
 
 	function testView() {
 		$vars = $this->testAction('/campuses/view/Campus:1', array(

@@ -41,7 +41,15 @@ class CampusesController extends AppController {
  * @access private
  */
 	function beforeFilter() {
+		$this->Auth->allow('index');
 		parent::beforeFilter();
+	}
+
+/**
+ * List of campuses
+ */ 
+	function index() {
+		// `$campusesMenu` var set in `AppController::beforeRender()`
 	}
 
 /**
