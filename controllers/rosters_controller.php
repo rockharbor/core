@@ -386,7 +386,7 @@ class RostersController extends AppController {
 					// try to find the parent
 					$parent = null;
 					foreach ($possibleParents as $possibleParent) {
-						if ($this->Roster->User->HouseholdMember->Household->isContactFor($possibleParent, $child['Roster']['user_id'])) {
+						if ($this->Roster->User->HouseholdMember->Household->isMemberWith($possibleParent, $child['Roster']['user_id'])) {
 							$parent = $possibleParent;
 							break;
 						}

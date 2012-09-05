@@ -432,6 +432,49 @@ class RostersControllerTestCase extends CoreTestCase {
 		));
 		$result = $roster['Roster']['parent_id'];
 		$this->assertEqual($result, 2);
+		
+		$data = array(
+			'Default' => array(
+				'pay_later' => 1,
+				'payment_option_id' => 0
+			),
+			'Adult' => array(
+				array(
+					'Roster' => array(
+						'user_id' => 1
+					)
+				)
+			),
+			'Child' => array(
+				array(
+					'Roster' => array(
+						'user_id' => 5
+					)
+				)
+			)
+		);
+		
+		$notificationsBefore = ClassRegistry::init('Notification')->find('count');
+		$vars = $this->testAction('/rosters/add/User:1/Involvement:3', array(
+			'data' => $data
+		));
+		$notificationsAfter = ClassRegistry::init('Notification')->find('count');
+		
+		$result = $this->Rosters->Session->read('Message.flash.element');
+		$expected = 'flash'.DS.'success';
+		$this->assertEqual($result, $expected);
+		
+		// one for leader, one for user 1, one for child 5, 
+		// one for child 5 confirmed household contact
+		// none for child 5 unconfirmed household contact
+		// none for user 1 because he's an adult 
+		$result = $notificationsAfter-$notificationsBefore;
+		$expected = 4;
+		$this->assertEqual($result, $expected);
+		
+		$results = Set::extract('/Profile/user_id', $vars['signedupUsers']);
+		$expected = array(1, 5);
+		$this->assertEqual($results, $expected);
 	}
 
 	function testAdd() {
