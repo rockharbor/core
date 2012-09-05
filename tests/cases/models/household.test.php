@@ -19,22 +19,22 @@ class HouseholdTestCase extends CoreTestCase {
 	function testGetMemberIds() {
 		$results = $this->Household->getMemberIds(1);
 		sort($results);
-		$expected = array(3, 100);
+		$expected = array(3, 5, 100);
 		$this->assertEqual($results, $expected);
 
 		$results = $this->Household->getMemberIds(1, true);
 		sort($results);
-		$expected = array(3, 100);
+		$expected = array(3, 5, 100);
 		$this->assertEqual($results, $expected);
 
 		$results = $this->Household->getMemberIds(3);
 		sort($results);
-		$expected = array(1, 2, 97, 98, 99);
+		$expected = array(1, 2, 5, 97, 98, 99);
 		$this->assertEqual($results, $expected);
 
 		$results = $this->Household->getMemberIds(3, true);
 		sort($results);
-		$expected = array(97);
+		$expected = array(5, 97);
 		$this->assertEqual($results, $expected);
 
 		$results = $this->Household->getMemberIds(6);

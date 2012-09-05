@@ -84,7 +84,9 @@ class Household extends AppModel {
 		));
 
 		// extract member ids
-		return Set::extract('/Household/HouseholdMember/user_id', $householdMembers);
+		$memberIds = Set::extract('/Household/HouseholdMember/user_id', $householdMembers);
+		$memberIds = array_unique($memberIds);
+		return $memberIds;
 	}
 
 /**
