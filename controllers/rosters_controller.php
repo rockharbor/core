@@ -612,7 +612,7 @@ class RostersController extends AppController {
 				}
 			} else {
 				if (!$pValidates && isset($this->data['Child'])) {
-					$msg = 'Please assign a parent to this child.';
+					$msg = 'A child cannot attend on his or her own! Please also select the adult who is bringing this child.';
 				} elseif (!$lValidates) {
 					$msg = 'Cannot join '.$involvement['Involvement']['name'].'. The roster is full.';
 				} elseif ($rosterCount == 0) {
