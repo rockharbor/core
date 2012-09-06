@@ -560,7 +560,9 @@ class RostersController extends AppController {
 				if ($signupSuccess) {
 					// notify leaders
 					$leaders = $this->Roster->Involvement->getLeaders($involvement['Involvement']['id']);
-					$this->set('amount', $amount);
+					if ($amount > 0) {
+						$this->set('amount', $amount);
+					}
 
 					foreach ($leaders as $leader) {
 						$paid = $paymentSuccess ? 'and paid for ' : null;

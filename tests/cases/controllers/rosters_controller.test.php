@@ -460,6 +460,8 @@ class RostersControllerTestCase extends CoreTestCase {
 		));
 		$notificationsAfter = ClassRegistry::init('Notification')->find('count');
 		
+		$this->assertFalse(isset($vars['amount']));
+		
 		$result = $this->Rosters->Session->read('Message.flash.element');
 		$expected = 'flash'.DS.'success';
 		$this->assertEqual($result, $expected);
@@ -537,6 +539,8 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, $this->Rosters->Roster->id);
 		$result = $payment['Payment']['number'];
 		$this->assertEqual($result, 1234);
+		
+		$this->assertTrue(isset($vars['amount']));
 
 		$notificationsNow = $this->Rosters->Roster->User->Notification->find('count');
 		$this->assertEqual($notificationsNow-$notificationsBefore, 3);
