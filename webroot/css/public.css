@@ -40,3 +40,9 @@ body {
 #login-info label, #login-info div.input {
 	display: inline;
 }
+
+/* padding for tooltip */
+#logo img {
+	position: relative;
+	padding-top: 25px;
+}

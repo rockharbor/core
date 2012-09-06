@@ -653,25 +653,22 @@ ul.core-admin-tabs a:hover {
 /*
 Tooltip
 */
-.qtip {
-	z-index: 900 !important;
-	position: fixed;
+.ui-tooltip {	
+	border: none;
+	max-width: 150px;
 }
-.qtip .qtip-contentWrapper {	
-	border: none !important;	
-}
-.qtip .qtip-content {
-	background: #343434 !important;
-	color: #ffffff !important;
-	padding: 5px !important;
+.ui-tooltip .ui-tooltip-content {
+	background: #343434;
+	color: #ffffff;
+	padding: 5px;
 	line-height:13px;
 }
-.qtip .qtip-content-error {
-	background: #E03A14 !important;
-	color:  #ffffff !important;
-	padding: 5px !important;
+.ui-tooltip .ui-tooltip-content-error {
+	background: #E03A14;
+	color:  #ffffff;
+	padding: 5px;
 }
-.qtip a {
+.ui-tooltip a {
 	color: #ffffff;
 	text-decoration: none;
 	float:left;
@@ -680,12 +677,12 @@ Tooltip
 	min-width: 80px;
 	overflow: hidden;
 }
-.qtip img {
+.ui-tooltip img {
 	float:left;
 	margin-right:5px;
 }
-.qtip a:hover {
-	color: #343434 !important;
+.ui-tooltip a:hover {
+	color: #343434;
 	background: rgb(55,174,107);
 	background: -webkit-gradient(
 		linear,

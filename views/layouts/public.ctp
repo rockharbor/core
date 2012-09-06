@@ -32,6 +32,7 @@
 		$this->AssetCompress->css('960');
 		$this->AssetCompress->css('960-modal');
 		$this->AssetCompress->css('font-face');
+		$this->AssetCompress->css('jquery.qtip');
 		$this->AssetCompress->css('jquery-ui');
 		$this->AssetCompress->css('styles');
 		$this->AssetCompress->css('public');

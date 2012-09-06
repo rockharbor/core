@@ -13,6 +13,7 @@
 .fc {
 	direction: ltr;
 	text-align: left;
+	position: relative;
 	}
 	
 .fc table {

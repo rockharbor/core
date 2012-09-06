@@ -14,6 +14,7 @@
 		$this->AssetCompress->css('960-modal');
 		$this->AssetCompress->css('font-face');
 		$this->AssetCompress->css('menu');
+		$this->AssetCompress->css('jquery.qtip');
 		$this->AssetCompress->css('jquery-ui');
 		$this->AssetCompress->css('styles');
 		$this->AssetCompress->css('tables');

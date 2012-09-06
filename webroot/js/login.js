@@ -31,7 +31,9 @@ CORE.loadSillyPhrase = function() {
  * @param text string The phrase
  */
 CORE.showSillyPhrase = function(text) {
-	CORE.tooltip($('#logo img'), text, {autoShow:true, container:$('#logo')});
+	CORE.tooltip($('#logo img'), text, {
+		autoShow:true
+	});
 }
 
 /**
