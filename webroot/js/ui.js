@@ -127,8 +127,7 @@ CORE.tooltip = function(ele, content, options) {
 		detachAfter: true,
 		container: $(document.body),
 		color: '#343434',
-		autoShow: false,
-		contentClass: 'qtip-content'
+		autoShow: false
 	}
 	var useOptions;
 	if (options != undefined) {
@@ -147,18 +146,15 @@ CORE.tooltip = function(ele, content, options) {
 			text: _content
 		},
 		position: {
-			corner: {
-				target: 'topMiddle',
-				tooltip: 'bottomLeft'
-			},
 			container: useOptions.container,
-			type: $(useOptions.container).is('body') ? 'absolute' : 'fixed',
 			adjust: {
-				screen: true,
-				scroll: true,
 				mouse: false,
-				y: 5
-			}
+				y: -3
+			},
+			my: "bottom center",
+			at: "center",
+			target: $(ele),
+			viewport: $(window)
 		},
 		show: {
 			delay: 50,
@@ -166,18 +162,12 @@ CORE.tooltip = function(ele, content, options) {
 			ready: useOptions.autoShow
 		},
 		hide: {
+			delay: 50,
 			fixed: true
 		},
 		style: {
-			width: {
-				max: 170
-			},
 			tip: {
-				corner: 'bottomLeft',
-				color: useOptions.color
-			},
-			classes: {
-				content: useOptions.contentClass
+				corner: true
 			}
 		}
 	});

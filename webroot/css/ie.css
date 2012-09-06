@@ -16,7 +16,7 @@ div.content-box,
 div.mapset.history {
 	filter:Alpha(Opacity=50);
 }
-.qtip a:hover,
+.ui-tooltip a:hover,
 ul.core-admin-tabs li,
 ul.core-admin-tabs li:hover,
 div.subministry {
