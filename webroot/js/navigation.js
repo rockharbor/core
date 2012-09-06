@@ -83,7 +83,7 @@ CORE.eventAfterLoad = function(ele) {
 			if (classes[c].match(/(\d{4})-(\d{1,2})-(\d{1,2})/)) {
 				// get html for the event and remove all fc-specific classes
 				var html = $('<p>').append($(this).eq(0).clone().removeClass().removeAttr('style'));
-				html.find('*').each(function() {
+				html.find('.fc-event-skin').each(function() {
 					$(this).removeClass();
 				});
 				html = html.html();
@@ -118,13 +118,22 @@ CORE.eventRender = function(cal, event, element, view) {
 	var dayClass = currentDate.getFullYear() + '-' + (currentDate.getMonth()+1) + '-' + currentDate.getDate();
 	var dates = $('#'+cal).data('dates') || [];
 	
+	// ignore events that won't show up anyway
+	if (currentDate.getMonth() !== view.start.getMonth()) {
+		return;
+	}
+	
 	// mark the calendar date as having events and empty out the ones 
 	// `$.fullcalendar()` generates
-	$('#'+cal+' .fc-widget-content:not(.fc-other-month, .event).fc-day'+(currentDate.getDate()-1))
-		.addClass('event')
-		.addClass(dayClass)
-		.find('.fc-day-content')
-			.html('<div style="position:relative"></div>')
+	$('#'+cal+' .fc-widget-content:not(.fc-other-month) .fc-day-number')
+		.filter(function() {
+			return $(this).text() == currentDate.getDate()
+		})
+			.closest('td')
+			.addClass('event')
+			.addClass(dayClass)
+			.find('.fc-day-content')
+				.html('<div style="position:relative"></div>')
 	
 	// remember which days have events so we can remove extra classes
 	dates.push(dayClass);
@@ -142,7 +151,7 @@ CORE.eventRender = function(cal, event, element, view) {
 CORE.eventLoading = function(ele) {
 	$('#'+ele+' .event').each(function() {
 		$(this).qtip('destroy');
-		$(this).children('.fc-day-content').children('div').html('');
+		$(this).children('.fc-day-content').children('div').html('<div style="position:relative"></div>');
 		$(this).removeClass('event');
 		var dates = $(this).data('dates');
 		for (var d in dates) {
