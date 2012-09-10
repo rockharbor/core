@@ -254,6 +254,43 @@ CORE.attachModalBehavior = function() {
 }
 
 /**
+ * Makes everything with a the data attribute `data-core-ajax` an ajax request.
+ * 
+ * {{{
+ * // when clicked, the link runs in the background and updates the closest
+ * // `data-core-update-url` area
+ * <a href='/some/link' data-core-ajax='true'>Link</a>
+ * // when clicked, the link runs in the background and doesn't update anything
+ * <a href='/some/link' data-core-ajax='{"update":false}'>Link</a>
+ * }}}
+ *
+ * @return boolean True
+ */
+CORE.attachAjaxBehavior = function() {
+	$('[data-core-ajax]').each(function() {
+		if (!$(this).prop('id')) {
+			$(this).prop('id', unique('link-'));
+		}
+		
+		var opts = {
+			url: $(this).prop('href')
+		};
+		if ($(this).data('core-ajax') == true) {
+			// default options
+			opts.update = true;
+		}
+		$(this).click(function() {
+			CORE.request(this, opts);
+			return false;
+		});
+
+		$(this).removeAttr('data-core-ajax');
+	});
+	
+	return true;
+}
+
+/**
  * Creates tabs from <li> tags
  *
  * ####Options:

@@ -32,10 +32,10 @@
 			<?php
 			switch ($viewStyle) {
 				case 'column':
-					echo $this->Js->link('List View', array('action' => 'index', 'list', 'Ministry' => $this->passedArgs['Ministry']), array('update' => '#involvement'));
+					echo $this->Html->link('List View', array('action' => 'index', 'list', 'Ministry' => $this->passedArgs['Ministry']), array('data-core-ajax' => 'true'));
 				break;
 				case 'list':
-					echo $this->Js->link('Column View', array('action' => 'index', 'column', 'Ministry' => $this->passedArgs['Ministry']), array('update' => '#involvement'));
+					echo $this->Html->link('Column View', array('action' => 'index', 'column', 'Ministry' => $this->passedArgs['Ministry']), array('data-core-ajax' => 'true'));
 				break;
 			}
 			?>

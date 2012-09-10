@@ -49,7 +49,9 @@ CORE.beforeForm = function(event, XMLHttpRequest) {
 		return false;
 	}
 	
-	CORE.setLoading($(event.currentTarget).closest('[data-core-update-url]'));
+	var container = $(event.currentTarget).closest('[data-core-update-url]');
+	CORE.setLoading(container);
+	container.data('core-update-url', $(event.currentTarget).closest('form').prop('action'));
 	
 	XMLHttpRequest.async = false;
 	
@@ -57,7 +59,6 @@ CORE.beforeForm = function(event, XMLHttpRequest) {
 	
 	$('.tabs a').each(function(i) {$(this).removeClass('error');});
 	
-	$(event.originalTarget).addClass('loading');
 	$(event.originalTarget).data('disabled', true);
 
 	return true;
@@ -76,7 +77,6 @@ CORE.completeForm = function(event, XMLHttpRequest, textStatus) {
 	
 	// allow submit to be clicked again
 	$(event.originalTarget).data('disabled', false);
-	$(event.originalTarget).removeClass('loading');
 }
 
 /**

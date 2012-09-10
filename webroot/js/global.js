@@ -130,7 +130,11 @@ CORE.init = function() {
 				redirect('/login');
 			}
 		},
-		beforeSend: function() {
+		beforeSend: function(x, s) {
+			// don't show the loading indicator on background requests
+			if (s.update !== undefined && s.update == false) {
+				return;
+			}
 			// if the XHR's context is not set correctly, the loading spinner
 			// will not show
 			CORE.setLoading(this);
@@ -152,6 +156,8 @@ CORE.initUI = function() {
 	CORE.attachModalBehavior();
 	// tooltips
 	CORE.attachTooltipBehavior();
+	// ajax links
+	CORE.attachAjaxBehavior();
 	// form elements
 	CORE.initFormUI();
 	// pagination

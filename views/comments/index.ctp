@@ -25,7 +25,7 @@
 				</span>
 				<span style="float:right">
 					<?php
-					echo $this->Js->link('Edit', array('action' => 'edit', 'Comment' => $comment['Comment']['id'], 'User' => $comment['Creator']['id']), array('id' => 'edit_comment_'.$i, 'class' => 'core-icon icon-edit', 'title' => 'Edit', 'update' => '#content'));
+					echo $this->Html->link('Edit', array('action' => 'edit', 'Comment' => $comment['Comment']['id'], 'User' => $comment['Creator']['id']), array('id' => 'edit_comment_'.$i, 'class' => 'core-icon icon-edit', 'title' => 'Edit', 'data-core-ajax' => 'true'));
 					echo $this->Html->link('Delete', array('action' => 'delete', 'Comment' => $comment['Comment']['id'], 'User' => $comment['Creator']['id']), array('id' => 'delete_comment_'.$i, 'class' => 'core-icon icon-delete', 'title' => 'Delete'));
 					$this->Js->buffer('CORE.confirmation("delete_comment_'.$i.'", "Are you sure you want to delete this comment?", {update:true});')
 					?>
@@ -40,13 +40,8 @@
 </div>
 <?php echo $this->element('pagination'); ?>
 <?php
-
-echo $this->Js->link('Add comment', 
-	array(
-		'controller' => 'comments', 'action' => 'add', 'User' => $userId),
-		array(
-			'class' => 'button',
-			'update' => '#content'
-		)
-);
-
+echo $this->Html->link('Add comment', array('controller' => 'comments', 'action' => 'add', 'User' => $userId), array(
+	'class' => 'button',
+	'data-core-ajax' => 'true',
+	'escape' => true
+));

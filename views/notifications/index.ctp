@@ -15,7 +15,7 @@
 					$this->MultiSelect->token
 				),
 				'options' => array(
-					'update' => '#content'
+					'data-core-ajax' => 'true'
 				)
 			);
 			$links[] =array(
@@ -27,7 +27,7 @@
 					0
 				),
 				'options' => array(
-					'update' => '#content'
+					'data-core-ajax' => 'true'
 				)
 			);
 			$links[] = array(
@@ -38,7 +38,7 @@
 					$this->MultiSelect->token
 				),
 				'options' => array(
-					'update' => '#content'
+					'data-core-ajax' => 'true'
 				)
 			);
 			echo $this->element('multiselect', array(

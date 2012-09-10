@@ -28,8 +28,8 @@
 	</dl>
 </div>
 <div>
-	<?php echo $this->Js->link('Edit', array('action' => 'edit', $result[$model]['id']), array(
-		'update' => '#content',
+	<?php echo $this->Html->link('Edit', array('action' => 'edit', $result[$model]['id']), array(
+		'data-core-ajax' => 'true',
 		'class' => 'button'
 	)); ?>
 </div>
