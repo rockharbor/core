@@ -6,9 +6,9 @@ echo $this->MultiSelect->create();
 	<p>
 		Filter:
 		<?php
-			echo $this->Js->link('All', array(), array('update' => '#content', 'class' => 'button'));
-			echo $this->Js->link('Unread', array('unread'), array('update' => '#content', 'class' => 'button'));
-			echo $this->Js->link('Read', array('read'), array('update' => '#content', 'class' => 'button'));
+			echo $this->Html->link('All', array(), array('data-core-ajax' => 'true', 'class' => 'button'));
+			echo $this->Html->link('Unread', array('unread'), array('data-core-ajax' => 'true', 'class' => 'button'));
+			echo $this->Html->link('Read', array('read'), array('data-core-ajax' => 'true', 'class' => 'button'));
 		?>
 	</p>
 	
@@ -24,7 +24,7 @@ echo $this->MultiSelect->create();
 					$this->MultiSelect->token
 				),
 				'options' => array(
-					'update' => '#content'
+					'data-core-ajax' => 'true'
 				)
 			);
 			echo $this->element('multiselect', array(

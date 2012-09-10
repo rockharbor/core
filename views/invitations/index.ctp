@@ -17,14 +17,14 @@
 					<?php
 					$icon = $this->element('icon', array('icon' => 'confirm'));
 					echo $this->Js->link($icon, array('controller' => 'invitations', 'action' => 'confirm', $invitation['Invitation']['id'], 1), array(
-						'update' => '#content',
+						'data-core-ajax' => 'true',
 						'escape' => false,
 						'class' => 'no-hover',
 						'title' => 'Confirm'
 					));
 					$icon = $this->element('icon', array('icon' => 'deny'));
 					echo $this->Js->link($icon, array('controller' => 'invitations', 'action' => 'confirm', $invitation['Invitation']['id'], 0), array(
-						'update' => '#content',
+						'data-core-ajax' => 'true',
 						'escape' => false,
 						'class' => 'no-hover',
 						'title' => 'Deny'
