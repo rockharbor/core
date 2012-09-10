@@ -128,7 +128,10 @@ class Roster extends AppModel {
  * @return integer Record count
  */
 	function paginateCount($conditions = null, $recursive = 0, $extra = array()) {
-		return $this->find('count', compact('conditions'));
+		if (isset($extra['link'])) {
+			$link = $extra['link'];
+		}
+		return $this->find('count', compact('conditions', 'link'));
 	}
 
 /**

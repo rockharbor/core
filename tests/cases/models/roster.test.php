@@ -59,6 +59,18 @@ class RosterTestCase extends CoreTestCase {
 		);
 		$results = $this->Roster->paginateCount($conditions, $recursive, $extra);
 		$this->assertEqual($results, 2);
+		
+		$conditions = array(
+			'Involvement.id' => 1
+		);
+		$recursive = 1;
+		$extra = array(
+			'link' => array(
+				'Involvement'
+			)
+		);
+		$results = $this->Roster->paginateCount($conditions, $recursive, $extra);
+		$this->assertEqual($results, 2);
 	}
 
 	function testSetDefaultAlreadySignedUp() {
