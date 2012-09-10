@@ -110,7 +110,7 @@ class RostersController extends AppController {
 			$this->Roster->Involvement->isLeader($this->activeUser['User']['id'], $involvementId)
 			|| $this->Roster->Involvement->Ministry->isManager($this->activeUser['User']['id'], $involvement['Involvement']['ministry_id'])
 			|| $this->Roster->Involvement->Ministry->Campus->isManager($this->activeUser['User']['id'], $involvement['Ministry']['campus_id'])
-			|| $this->isAuthorized('rosters/index', array('Involvement' => $id));
+			|| $this->isAuthorized('rosters/index', array('Involvement' => $involvementId));
 		
 		$canSeeRoster = 
 			($inRoster && $roster['Roster']['roster_status_id'] == 1 && $involvement['Involvement']['roster_visible'])
