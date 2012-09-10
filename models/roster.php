@@ -42,9 +42,9 @@ class Roster extends AppModel {
  * @var array
  */
 	var $virtualFields = array(
-		'amount_due' => '@vad:=CAST((SELECT (IF (:ALIAS:.parent_id IS NOT NULL, ad.childcare, ad.total)) FROM payment_options as ad WHERE ad.id = :ALIAS:.payment_option_id) AS DECIMAL(7,2))',
-		'amount_paid' => '@vap:=CAST((COALESCE((SELECT SUM(ap.amount) FROM payments as ap WHERE ap.roster_id = :ALIAS:.id), 0)) AS DECIMAL(7,2))',
-		'balance' => 'CAST(@vad-@vap AS DECIMAL(7,2))'
+		'amount_due' => '@vad:=CAST((SELECT (IF (:ALIAS:.parent_id IS NOT NULL, ad.childcare, ad.total)) FROM payment_options as ad WHERE ad.id = :ALIAS:.payment_option_id) AS DECIMAL(10,2))',
+		'amount_paid' => '@vap:=CAST((COALESCE((SELECT SUM(ap.amount) FROM payments as ap WHERE ap.roster_id = :ALIAS:.id), 0)) AS DECIMAL(10,2))',
+		'balance' => 'CAST(@vad-@vap AS DECIMAL(10,2))'
 	);
 
 /**

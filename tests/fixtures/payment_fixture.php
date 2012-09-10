@@ -7,7 +7,7 @@ class PaymentFixture extends CakeTestFixture {
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'user_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
 		'roster_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8),
-		'amount' => array('type' => 'float', 'null' => true, 'default' => NULL, 'length' => '7,2'),
+		'amount' => array('type' => 'decimal', 'null' => true, 'default' => NULL, 'length' => '10,2'),
 		'payment_type_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8),
 		'number' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 20),
 		'transaction_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 64),
@@ -78,4 +78,12 @@ class PaymentFixture extends CakeTestFixture {
 			'comment' => 'Invisible user made a payment'
 		),
 	);
+	
+	function create(&$db) {
+		$db->columns['decimal'] = array(
+			'name' => 'decimal',
+			'formatter' => 'floatval'
+		);
+		return parent::create($db);
+	}
 }

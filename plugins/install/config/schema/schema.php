@@ -9,6 +9,20 @@ class InstallSchema extends CakeSchema {
 	function after($event = array()) {
 	}
 
+/**
+ * Adds the DECIMAL column type as a recognized datatype
+ * 
+ * @return void 
+ */
+	function __construct() {
+		$db =& ConnectionManager::getDataSource('default');
+		$db->columns['decimal'] = array(
+			'name' => 'decimal',
+			'formatter' => 'floatval'
+		);
+		return parent::__construct();
+	}
+
 	var $acos = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
 		'parent_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),
@@ -374,9 +388,9 @@ class InstallSchema extends CakeSchema {
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'involvement_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
 		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 64),
-		'total' => array('type' => 'float', 'null' => false, 'default' => NULL, 'length' => '7,2'),
-		'deposit' => array('type' => 'float', 'null' => true, 'default' => NULL, 'length' => '7,2'),
-		'childcare' => array('type' => 'float', 'null' => true, 'default' => NULL, 'length' => '7,2'),
+		'total' => array('type' => 'decimal', 'null' => false, 'default' => NULL, 'length' => '10,2'),
+		'deposit' => array('type' => 'decimal', 'null' => true, 'default' => NULL, 'length' => '10,2'),
+		'childcare' => array('type' => 'decimal', 'null' => true, 'default' => NULL, 'length' => '10,2'),
 		'account_code' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),
 		'tax_deductible' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
@@ -398,7 +412,7 @@ class InstallSchema extends CakeSchema {
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'user_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
 		'roster_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),
-		'amount' => array('type' => 'float', 'null' => true, 'default' => NULL, 'length' => '7,2'),
+		'amount' => array('type' => 'decimal', 'null' => true, 'default' => NULL, 'length' => '10,2'),
 		'payment_type_id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),
 		'number' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 20),
 		'transaction_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 64),
