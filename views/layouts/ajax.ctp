@@ -20,6 +20,7 @@
 <?php
 echo $scripts_for_layout;
 $this->Js->buffer('$("#modal").dialog("option", "title", "'.$title_for_layout.'");');
+$this->Js->buffer('$("#modal").data("core-update-url", "'.$this->here.'");');
 
 echo $this->Session->flash('auth');
 echo $this->Session->flash();

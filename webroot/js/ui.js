@@ -60,9 +60,6 @@ CORE.modal = function(id, options) {
 		// remember where the modal originated from
 		$('#modal').data('core-modal-originator', $('#'+id));
 		
-		// set modal as an auto update area
-		$('#modal').data('core-update-url', this.href);
-		
 		// load the link into the modal
 		$("#modal").parent().position({
 			my: 'center',
