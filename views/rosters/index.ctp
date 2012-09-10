@@ -40,36 +40,105 @@
 	</div>
 </div>
 <div>
-	<?php
-	echo $this->Form->create('Roster', array(
-		'class' => 'core-filter-form',
-		'url' => array(
-			'controller' => 'rosters',
-			'action'=> 'index',
-			'Involvement' => $involvement['Involvement']['id']
-		)
-	));
-	?>
-	<p>Filter</p>
-	<?php
-	echo $this->Form->input('Filter.Role', array(
-		'label' => false,
-		'multiple' => 'checkbox',
-		'div' => array(
-			'tag' => 'span',
-			'class' => 'toggle'
-		),
-		'options' => $roles
-	));
-	$rosterStatuses[0] = 'All';
-	if (empty($this->data['Filter']['roster_status_id'])) {
-		$this->data['Filter']['roster_status_id'] = 0;
+	<div id="basic-filter" style="margin: 10px 0;">
+		<?php
+		echo $this->Form->create('Roster', array(
+			'class' => 'core-filter-form',
+			'url' => array(
+				'controller' => 'rosters',
+				'action'=> 'index',
+				'Involvement' => $involvement['Involvement']['id']
+			)
+		));
+		?>
+		<p>Filter</p>
+		<?php
+		echo $this->Form->input('Filter.Role', array(
+			'label' => false,
+			'multiple' => 'checkbox',
+			'div' => array(
+				'tag' => 'span',
+				'class' => 'toggle'
+			),
+			'options' => $roles
+		));
+		?>
+		<a href="#" onclick="$('#advanced-filter, #basic-filter').slideToggle();"><?php echo $this->element('icon', array('icon' => 'add')); ?>Advanced Filter</a>
+		<?php echo $this->Form->end('Filter'); ?>
+	</div>
+	<div id="advanced-filter" style="margin: 10px 0;">
+		<a href="#" onclick="$('#advanced-filter, #basic-filter').slideToggle();"><?php echo $this->element('icon', array('icon' => 'delete')); ?>Close Advanced Filter</a>
+		<?php
+		echo $this->Form->create('Roster', array(
+			'default' => false,
+			'id' => 'AdvancedRosterFilter',
+			'url' => array(
+				'controller' => 'rosters',
+				'action'=> 'index',
+				'Involvement' => $involvement['Involvement']['id']
+			)
+		));
+		?>
+		<div class="clearfix">
+			<fieldset class="grid_5 alpha">
+				<legend>User Information</legend>
+				<div style="width: 50%; float: left">
+					<?php
+					echo $this->Form->input('Filter.Profile.first_name');
+					echo $this->Form->input('Filter.Profile.last_name');
+					?>
+				</div>
+				<div style="width: 50%; float: left">
+					<?php
+					echo $this->Form->input('Filter.Profile.primary_email');
+					echo $this->Form->input('Filter.User.active', array(
+						'options' => array(
+							'Inactive',
+							'Active'
+						),
+						'empty' => true
+					));
+					?>
+				</div>
+			</fieldset>
+			<fieldset id="roster-filters" class="grid_5 omega">
+				<legend>Roster Information</legend>
+				<?php
+				$rosterStatuses[0] = 'All';
+				if (empty($this->data['Filter']['roster_status_id'])) {
+					$this->data['Filter']['roster_status_id'] = 0;
+				}
+				echo $this->Form->input('Filter.Roster.roster_status_id', array(
+					'options' => $rosterStatuses
+				));
+				if ($involvement['Involvement']['offer_childcare']) {
+					echo $this->Form->input('Filter.Roster.show_childcare', array(
+						'type' => 'checkbox',
+						'label' => 'Children signed up for childcare',
+						'id' => 'ChildcareOnly',
+						'options' => array(0, 1) // for some reason cake was creating a select w/o options on ajax updates
+					));
+					echo $this->Form->input('Filter.Roster.hide_childcare', array(
+						'type' => 'checkbox',
+						'label' => 'Non-childcare members only',
+						'id' => 'NonChildcare',
+						'options' => array(0, 1)
+					));
+				}
+				?>
+			</fieldset>
+		</div>
+		<?php
+		echo $this->Js->submit('Filter', $defaultSubmitOptions);
+		echo $this->Form->end(); 
+		?>
+	</div>
+	<?php  
+	if (isset($this->data['Filter']['Roster']['roster_status_id'])) {
+		$this->Js->buffer('$("#basic-filter").hide();');
+	} else {
+		$this->Js->buffer('$("#advanced-filter").hide();');
 	}
-	echo $this->Form->input('Filter.roster_status_id', array(
-		'options' => $rosterStatuses,
-		'selected' => $this->data['Filter']['roster_status_id']
-	));
-	echo $this->Form->end('Filter');
 	?>
 </div>
 <div>

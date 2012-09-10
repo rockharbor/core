@@ -34,7 +34,7 @@ class RosterFixture extends CakeTestFixture {
 			'payment_option_id' => 2,
 			'created' => '2010-04-19 09:55:07',
 			'modified' => '2010-04-19 11:09:11',
-			'parent_id' => NULL,
+			'parent_id' => null,
 			'roster_status_id' => 2
 		),
 		array(

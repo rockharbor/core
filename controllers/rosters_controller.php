@@ -124,14 +124,31 @@ class RostersController extends AppController {
 		$conditions['Roster.involvement_id'] = $involvementId;
 		
 		if (!empty($this->data)) {
-			if (!empty($this->data['Filter']['roster_status_id'])) {
-				$conditions['Roster.roster_status_id'] = $this->data['Filter']['roster_status_id'];
+			$filters = $this->data['Filter'];
+			if (isset($filters['Roster']['show_childcare'])) {
+				if ($filters['Roster']['show_childcare']) {
+					$conditions += array('Roster.parent_id >' => 0);
+				}
+				unset($filters['Roster']['show_childcare']);
 			}
-			$conditions += $this->Roster->parseCriteria(array('roles' => $this->data['Filter']['Role']));
+			if (isset($filters['Roster']['hide_childcare'])) {
+				if ($filters['Roster']['hide_childcare']) {
+					$conditions += array('Roster.parent_id' => null);
+				}
+				unset($filters['Roster']['hide_childcare']);
+			}
+			unset($filters['Role']);
+			$filters = array_filter_recursive($filters);
+			$conditions += $this->postConditions($filters, 'LIKE');
+			if (isset($this->data['Filter']['Role'])) {
+				$conditions += $this->Roster->parseCriteria(array('roles' => $this->data['Filter']['Role']));
+			}
 		} else {
 			$this->data = array(
 				'Filter' => array(
-					'pending' => 0,
+					'Roster' => array(
+						'pending' => 0,
+					),
 					'Role' => array()
 				)
 			);
@@ -147,6 +164,8 @@ class RostersController extends AppController {
 				),
 				'Profile' => array(
 					'fields' => array(
+						'first_name',
+						'last_name',
 						'name',
 						'cell_phone',
 						'allow_sponsorage',
@@ -164,7 +183,7 @@ class RostersController extends AppController {
 		$contain = array('Role');
 
 		$this->Roster->recursive = -1;
-		$fields = array('id', 'created', 'user_id');
+		$fields = array('id', 'created', 'user_id', 'parent_id');
 		if ($involvement['Involvement']['take_payment']) {
 			array_push($fields, 'amount_due', 'amount_paid', 'balance');
 		}
@@ -178,15 +197,26 @@ class RostersController extends AppController {
 		$involvement = $this->Roster->Involvement->read(null, $involvementId);
 		
 		$rosters =  $this->FilterPagination->paginate();
+		
+		$rosterIds = Set::extract('/Roster/id', $rosters);
 		$counts['childcare'] = $this->Roster->find('count', array(
-			'conditions' => array_merge_recursive($conditions, array('Roster.parent_id >' => 0))
+			'conditions' => array(
+				'Roster.id' => $rosterIds,
+				'Roster.parent_id >' => 0
+			)
 		));
 		$counts['pending'] = $this->Roster->find('count', array(
-			'conditions' => array_merge_recursive($conditions, array('Roster.roster_status_id' => 2))
+			'conditions' => array(
+				'Roster.id' => $rosterIds,
+				'Roster.roster_status_id' => 2
+			)
 		));
 		$counts['leaders'] = count($involvement['Leader']);
 		$counts['confirmed'] = $this->Roster->find('count', array(
-			'conditions' => array_merge_recursive($conditions, array('Roster.roster_status_id' => 1))
+			'conditions' => array(
+				'Roster.id' => $rosterIds,
+				'Roster.roster_status_id' => 1
+			)
 		));
 		$counts['total'] = $this->params['paging']['Roster']['count'];
 		
@@ -288,7 +318,7 @@ class RostersController extends AppController {
 
 		$this->set(compact('userId', 'leaderOf', 'rosters', 'private', 'memberOf'));
 	}
-
+	
 /**
  * Signs a user up for an involvement opportunity
  *
