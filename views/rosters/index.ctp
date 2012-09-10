@@ -303,7 +303,14 @@
 			}
 			?>&nbsp;</td>
 			<?php if ($involvement['Involvement']['take_payment']) { ?>
-			<td><?php echo $this->Formatting->money($roster['Roster']['balance']); ?>&nbsp;</td>
+			<td><?php 
+			$balance = $this->Formatting->money($roster['Roster']['balance']);
+			if ($roster['Roster']['balance'] > 0) {
+				$balance = $this->Html->tag('span', $balance, array('class' => 'balance'));
+			}
+			$link = $this->Permission->link($balance, array('controller' => 'payments', 'action' => 'add', 'User' => $roster['User']['id'], $roster['Roster']['id']), array('data-core-modal' => 'true', 'escape' => false));
+			echo $link ? $link : $balance;
+			?>&nbsp;</td>
 			<?php } ?>
 			<td><?php echo $this->Formatting->date($roster['Roster']['created']); ?>&nbsp;</td>
 		<?php endif; ?>
