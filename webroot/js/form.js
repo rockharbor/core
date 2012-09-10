@@ -44,7 +44,7 @@ CORE.showValidationErrors = function(form) {
 */
 CORE.beforeForm = function(event, XMLHttpRequest) {	
 	// stop the request if this button has been clicked
-	if ($(event.originalTarget).data('disabled')) {
+	if ($(event.currentTarget).data('disabled')) {
 		XMLHttpRequest.abort();
 		return false;
 	}
@@ -59,7 +59,7 @@ CORE.beforeForm = function(event, XMLHttpRequest) {
 	
 	$('.tabs a').each(function(i) {$(this).removeClass('error');});
 	
-	$(event.originalTarget).data('disabled', true);
+	$(event.currentTarget).data('disabled', true);
 
 	return true;
 }
