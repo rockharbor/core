@@ -470,6 +470,17 @@ class RosterTestCase extends CoreTestCase {
 
 		$result = $roster['Roster']['balance'];
 		$this->assertIdentical($result, '80.00');
+		
+		$roster = $this->Roster->read(null, 4);
+
+		$result = $roster['Roster']['amount_paid'];
+		$this->assertIdentical($result, '30.00');
+
+		$result = $roster['Roster']['amount_due'];
+		$this->assertIdentical($result, '5.00');
+
+		$result = $roster['Roster']['balance'];
+		$this->assertIdentical($result, '-25.00');
 	}
 	
 }
