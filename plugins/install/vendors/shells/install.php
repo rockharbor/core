@@ -423,7 +423,6 @@ class InstallShell extends Shell {
 			'controllers/Campuses/edit',
 			'controllers/Campuses/revise',
 			'controllers/Campuses/history',
-			'controllers/Campuses/admin',
 			'controllers/CampusLeaders/add',
 			'controllers/CampusLeaders/delete',
 			'controllers/MinistryLeaders/add',
