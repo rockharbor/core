@@ -125,6 +125,11 @@ class RostersController extends AppController {
 		
 		if (!empty($this->data)) {
 			$filters = $this->data['Filter'];
+			if (isset($filters['User']['active'])) {
+				if ($filters['User']['active'] !== '') {
+					$conditions += array('User.active' => $filters['User']['active']);
+				}
+			}
 			if (isset($filters['Roster']['show_childcare'])) {
 				if ($filters['Roster']['show_childcare']) {
 					$conditions += array('Roster.parent_id >' => 0);
