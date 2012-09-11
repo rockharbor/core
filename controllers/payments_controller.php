@@ -171,7 +171,12 @@ class PaymentsController extends AppController {
 		if (!empty($this->data)) {
 			$paymentType = $this->Payment->PaymentType->read(array('name'), $this->data['Payment']['payment_type_id']);
 			
-			$payForUsers = Set::extract('/Roster[balance>0]/..', $users);
+			if (count($users) > 1) {
+				// don't allow adding multiple credits
+				$payForUsers = Set::extract('/Roster[balance>0]/..', $users);
+			} else {
+				$payForUsers = $users;
+			}
 			
 			// get balance
 			$balance = Set::apply('/Roster/balance', $payForUsers, 'array_sum');
@@ -180,7 +185,7 @@ class PaymentsController extends AppController {
 			
 			// set `amount` validation rule to reflect balance range and validate as it's
 			// own field because we'll be splitting the payments up
-			if ($amount <= 0 || $amount > $balance) {
+			if ($amount > $balance) {
 				$this->Payment->invalidate('amount', 'Your chosen amount must be at or under $'.$balance.'.');
 			}
 				
