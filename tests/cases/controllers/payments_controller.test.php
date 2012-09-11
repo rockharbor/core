@@ -155,8 +155,8 @@ class PaymentsControllerTestCase extends CoreTestCase {
 			)
 		));
 
-		$total = Set::filter('/Payment/amount', $results, 'array_sum');
-		$this->assertEqual($total, 35);
+		$total = Set::apply('/Payment/amount', $results, 'array_sum');
+		$this->assertIdentical($total, 35.00);
 
 		$results = Set::extract('/Payment/amount', $results);
 		$expected = array(5, 5, 5, 20);
