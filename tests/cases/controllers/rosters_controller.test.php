@@ -133,21 +133,6 @@ class RostersControllerTestCase extends CoreTestCase {
 		$data = array(
 			'Filter' => array(
 				'Roster' => array(
-					'has_balance' => '1'
-				),
-				'Role' => array()
-			)
-		);
-		$vars = $this->testAction('/rosters/index/Involvement:1', array(
-			'data' => $data
-		));
-		$results = Set::extract('/Roster/id', $vars['rosters']);
-		$expected = array(1, 2);
-		$this->assertEqual($results, $expected);
-		
-		$data = array(
-			'Filter' => array(
-				'Roster' => array(
 					'show_childcare' => '1'
 				),
 				'Role' => array()
