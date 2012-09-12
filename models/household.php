@@ -59,15 +59,24 @@ class Household extends AppModel {
  *
  * @param integer $userId The user
  * @param boolean $mustBeContact Only get households where user is contact?
+ * @param boolean $mustBeConfirmed Only get confirmed members?
  * @return array Array of ids
  */
-	function getMemberIds($userId, $mustBeContact = false) {
+	function getMemberIds($userId, $mustBeContact = false, $mustBeConfirmed = false) {
 		$conditions = array(
 			'HouseholdMember.user_id' => $userId
+		);
+		
+		$memberConditions = array(
+			'HouseholdMember.user_id <>' => $userId
 		);
 
 		if ($mustBeContact) {
 			$conditions['Household.contact_id'] = $userId;
+		}
+		
+		if ($mustBeConfirmed) {
+			$memberConditions['HouseholdMember.confirmed'] = true;
 		}
 
 		$householdMembers = $this->HouseholdMember->find('all', array(
@@ -75,9 +84,7 @@ class Household extends AppModel {
 			'contain' => array(
 				'Household' => array(
 					'HouseholdMember' => array(
-						'conditions' => array(
-							'HouseholdMember.user_id <>' => $userId
-						)
+						'conditions' => $memberConditions
 					)
 				)
 			)

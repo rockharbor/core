@@ -75,6 +75,17 @@ class UserFixture extends CakeTestFixture {
 			'last_logged_in' => NULL,
 			'flagged' => 0,
 			'group_id' => 8
+		),
+		array(
+			'id' => 6,
+			'username' => 'lfrancis',
+			'password' => '005b8f6046bb2039063d9dde0678f9f28ae38827',
+			'active' => 1,
+			'created' => '2010-04-07 13:55:09',
+			'modified' => '2010-04-07 13:55:09',
+			'last_logged_in' => NULL,
+			'flagged' => 0,
+			'group_id' => 8
 		)
 	);
 }

@@ -19,17 +19,17 @@ class HouseholdTestCase extends CoreTestCase {
 	function testGetMemberIds() {
 		$results = $this->Household->getMemberIds(1);
 		sort($results);
-		$expected = array(3, 5, 100);
+		$expected = array(3, 5, 6, 100);
 		$this->assertEqual($results, $expected);
 
 		$results = $this->Household->getMemberIds(1, true);
 		sort($results);
-		$expected = array(3, 5, 100);
+		$expected = array(3, 5, 6, 100);
 		$this->assertEqual($results, $expected);
 
 		$results = $this->Household->getMemberIds(3);
 		sort($results);
-		$expected = array(1, 2, 5, 97, 98, 99);
+		$expected = array(1, 2, 5, 6, 97, 98, 99);
 		$this->assertEqual($results, $expected);
 
 		$results = $this->Household->getMemberIds(3, true);
@@ -39,7 +39,17 @@ class HouseholdTestCase extends CoreTestCase {
 
 		$results = $this->Household->getMemberIds(6);
 		sort($results);
-		$expected = array();
+		$expected = array(1, 3, 5);
+		$this->assertEqual($results, $expected);
+
+		$results = $this->Household->getMemberIds(2, false);
+		sort($results);
+		$expected = array(3, 98, 99);
+		$this->assertEqual($results, $expected);
+
+		$results = $this->Household->getMemberIds(2, false, true);
+		sort($results);
+		$expected = array(3);
 		$this->assertEqual($results, $expected);
 	}
 
@@ -82,7 +92,7 @@ class HouseholdTestCase extends CoreTestCase {
 		$this->assertTrue($this->Household->isContactFor(2,3));
 		$this->assertFalse($this->Household->isContactFor(1,2));
 		$this->assertTrue($this->Household->isContactFor(1,3));
-		$this->assertFalse($this->Household->isContactFor(1,6));
+		$this->assertTrue($this->Household->isContactFor(1,6));
 	}
 
 	function testCreateHousehold() {
