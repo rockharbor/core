@@ -210,7 +210,7 @@
 			);
 			$colCount = 7;
 			if ($involvement['Involvement']['take_payment']) {
-				$link[] = array(
+				$links[] = array(
 					'title' => 'Add Payment',
 					'url' => array(
 						'controller' => 'payments',
