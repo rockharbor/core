@@ -19,7 +19,7 @@
 				<span class="float:left">
 					<?php
 					echo $this->Html->link($comment['Creator']['Profile']['name'], array('controller' => 'profiles', 'action' => 'view', 'User' => $comment['Creator']['id']));
-					echo ' ('.$groups[$comment['Comment']['group_id']].') ';
+					echo ' ('.$comment['Group']['name'].') ';
 					echo 'Commented on '.$this->Formatting->date($comment['Comment']['created']);
 					?>
 				</span>
