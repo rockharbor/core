@@ -121,18 +121,18 @@ CORE.successForm = function(event, data, textStatus, options) {
 	switch (options.autoUpdate) {
 		case 'failure':		
 			if (!validates) {
-				CORE.update(event.currentTarget, data)
+				CORE.update(event.currentTarget, data);
 				CORE.showValidationErrors(id);
 			}
 		break;
 		case 'success':
 			if (validates) {
-				CORE.update(event.currentTarget, data)
+				CORE.update(event.currentTarget, data);
 				CORE.showValidationErrors(id);
 			}
 		break;
 		default:
-			CORE.update(event.currentTarget, data)
+			CORE.update(event.currentTarget, data);
 			CORE.showValidationErrors(id);
 		break;
 	}

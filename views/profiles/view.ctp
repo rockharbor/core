@@ -9,6 +9,16 @@
 		<li><a href="#my-profile"><?php echo $prefix; ?>Profile</a></li>
 		<li><?php echo $this->Html->link($prefix.'Household', array('controller' => 'households', 'User' => $profile['User']['id']), array('title' => 'household')); ?></li>
 		<li><?php echo $this->Html->link($prefix.'Payments', array('controller' => 'payments', 'User' => $profile['User']['id']), array('title' => 'payments')); ?></li>
+		<?php
+		$link = $this->Permission->link($prefix.'Comments', array('controller' => 'comments', 'User' => $profile['User']['id']), array('title' => 'comments'));
+		if ($link) {
+			echo $this->Html->tag('li', $link);
+		}
+		$link = $this->Permission->link($prefix.'Documents', array('controller' => 'user_documents', 'User' => $profile['User']['id']), array('title' => 'documents'));
+		if ($link) {
+			echo $this->Html->tag('li', $link);
+		}
+		?>
 	</ul>
 
 	<div class="content-box clearfix">
@@ -310,8 +320,6 @@
 
 			<ul class="core-admin-tabs">
 				<li><?php echo $this->Permission->link('Administration', array('controller' => 'profiles', 'action' => 'admin', 'User' => $profile['User']['id']), array('data-core-modal' => '{"update":false}')); ?></li>
-				<li><?php echo $this->Permission->link('Documents', array('controller' => 'user_documents', 'User' => $profile['User']['id']), array('data-core-modal' => '{"update":false}')); ?></li>
-				<li><?php echo $this->Permission->link('Comments', array('controller' => 'comments', 'User' => $profile['User']['id']), array('data-core-modal' => '{"update":false}')); ?></li>
 				<li><?php echo $this->Permission->link('Edit', array('controller' => 'profiles', 'action' => 'edit', 'User' => $profile['User']['id'])); ?></li>
 			</ul>
 
@@ -346,6 +354,39 @@
 			?>
 		</div>
 		
+		<?php if ($this->Permission->check(array('controller' => 'comments', 'User' => $profile['User']['id']))): ?>
+		<div id="comments">
+			<?php
+			echo $this->requestAction('/comments/index', array(
+				'renderAs' => 'ajax',
+				'bare' => false,
+				'return',
+				'named' => array(
+					'User' => $profile['User']['id']
+				),
+				'data' => null,
+				'form' => array('data' => null)
+				));
+			?>
+		</div>
+		<?php endif; ?>
+		
+		<?php if ($this->Permission->check(array('controller' => 'user_documents', 'User' => $profile['User']['id']))): ?>
+		<div id="documents">
+			<?php
+			echo $this->requestAction('/user_documents/index', array(
+				'renderAs' => 'ajax',
+				'bare' => false,
+				'return',
+				'named' => array(
+					'User' => $profile['User']['id']
+				),
+				'data' => null,
+				'form' => array('data' => null)
+				));
+			?>
+		</div>
+		<?php endif; ?>
 
 	</div>
 </div>

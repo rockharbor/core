@@ -5,7 +5,8 @@
 $addresses = array();
 foreach ($results as $result) {
 	if (isset($result['ImageIcon'])) {
-		$imageUrl = $this->Media->url($this->Media->file('s/', $result['ImageIcon']));
+		$path = 's'.DS.$result['ImageIcon']['dirname'].DS.$result['ImageIcon']['basename'];
+		$imageUrl = $this->Media->url($this->Media->file($path));
 	} else {
 		$imageUrl = null;
 	}

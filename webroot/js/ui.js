@@ -331,6 +331,11 @@ CORE.tabs = function(id, taboptions, options) {
 	}
 	
 	var tabbed = $('#'+id);
+	
+	if (tabbed.find('ul li.selected-tab').length) {
+		useOptions.selected = tabbed.find('ul li.selected-tab').index();
+	}
+	
 	tabbed.tabs(useOptions);
 
 	// check to see if this is a "wizard"

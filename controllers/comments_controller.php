@@ -72,7 +72,8 @@ class CommentsController extends AppController {
 						'name',
 					),
 					'Image'
-				)
+				),
+				'Group'
 			),
 			'limit' => 5
 		);

@@ -304,15 +304,12 @@ class UsersController extends AppController {
 		$return = trim($return, '/').'/skip_check:1';
 
 		$users = $this->User->find('all', array(
-			'fields' => array(
-				'id'
-			),
 			'conditions' => array(
 				'User.id' => $users
 			),
 			'contain' => array(
 				'Profile' => array(
-					'fields' => array('first_name', 'last_name')
+					'fields' => array('first_name', 'last_name', 'name')
 				),
 				'ActiveAddress' => array(
 					'fields' => array('city')
@@ -348,7 +345,7 @@ class UsersController extends AppController {
 					'template' => 'users_request_activation',
 					'subject' => 'Account merge request',
 				));
-				$this->Session->setFlash('Account merge request has been received.', 'flash'.DS.'success');
+				$this->Session->setFlash('Account merge request has been received. You will receive an email when it is confirmed!', 'flash'.DS.'success');
 			} else {
 				$this->Session->setFlash('Unable to send account merge request. Please try again.', 'flash'.DS.'failure');
 			}			

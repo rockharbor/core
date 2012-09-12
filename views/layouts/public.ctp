@@ -35,6 +35,7 @@
 		$this->AssetCompress->css('jquery.qtip');
 		$this->AssetCompress->css('jquery-ui');
 		$this->AssetCompress->css('styles');
+		$this->AssetCompress->css('tables');
 		$this->AssetCompress->css('public');
 		echo '<!--[if lt IE 9]>'.$this->Html->css('ie').'<![endif]-->';
 

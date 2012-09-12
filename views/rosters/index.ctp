@@ -39,9 +39,25 @@
 		<p># of Leaders</p>
 	</div>
 </div>
-<div>
-	<div id="basic-filter" style="margin: 10px 0;">
+<div class="core-tabs sub-tabs" style="margin: 15px 0;">
+	<ul>
+		<li><a href="#basic-filter">Filter</a></li>
 		<?php
+		$class = null;
+		if (isset($this->data['Filter']['Roster']['roster_status_id'])) {
+			$class = ' class="selected-tab"';
+		}
+		?>
+		<li<?php echo $class; ?>><a href="#advanced-filter">Advanced Filter</a></li>
+	</ul>
+	<div id="basic-filter">
+		<?php
+		$link = $this->Permission->link($this->element('icon', array('icon' => 'add')).'Add role', array('controller' => 'roles', 'action' => 'add', 'Ministry' => $involvement['Involvement']['ministry_id']), array('escape' => false, 'data-core-modal' => 'true'));
+		if ($link) {
+			echo $this->Html->tag('div', $link, array(
+				'style' => 'margin-bottom: 10px;'
+			));
+		}
 		echo $this->Form->create('Roster', array(
 			'class' => 'core-filter-form',
 			'url' => array(
@@ -50,9 +66,6 @@
 				'Involvement' => $involvement['Involvement']['id']
 			)
 		));
-		?>
-		<p>Filter</p>
-		<?php
 		echo $this->Form->input('Filter.Role', array(
 			'label' => false,
 			'multiple' => 'checkbox',
@@ -62,12 +75,10 @@
 			),
 			'options' => $roles
 		));
+		echo $this->Form->end('Filter'); 
 		?>
-		<a href="#" onclick="$('#advanced-filter, #basic-filter').slideToggle();"><?php echo $this->element('icon', array('icon' => 'add')); ?>Advanced Filter</a>
-		<?php echo $this->Form->end('Filter'); ?>
 	</div>
-	<div id="advanced-filter" style="margin: 10px 0;">
-		<a href="#" onclick="$('#advanced-filter, #basic-filter').slideToggle();"><?php echo $this->element('icon', array('icon' => 'delete')); ?>Close Advanced Filter</a>
+	<div id="advanced-filter">
 		<?php
 		echo $this->Form->create('Roster', array(
 			'default' => false,
@@ -80,8 +91,7 @@
 		));
 		?>
 		<div class="clearfix">
-			<fieldset class="grid_5 alpha">
-				<legend>User Information</legend>
+			<div class="grid_5 alpha">
 				<div style="width: 50%; float: left">
 					<?php
 					echo $this->Form->input('Filter.Profile.first_name');
@@ -100,9 +110,8 @@
 					));
 					?>
 				</div>
-			</fieldset>
-			<fieldset id="roster-filters" class="grid_5 omega">
-				<legend>Roster Information</legend>
+			</div>
+			<div id="roster-filters" class="grid_5 omega">
 				<?php
 				$rosterStatuses[0] = 'All';
 				if (empty($this->data['Filter']['roster_status_id'])) {
@@ -126,20 +135,13 @@
 					));
 				}
 				?>
-			</fieldset>
+			</div>
 		</div>
 		<?php
 		echo $this->Js->submit('Filter', $defaultSubmitOptions);
 		echo $this->Form->end(); 
 		?>
 	</div>
-	<?php  
-	if (isset($this->data['Filter']['Roster']['roster_status_id'])) {
-		$this->Js->buffer('$("#basic-filter").hide();');
-	} else {
-		$this->Js->buffer('$("#advanced-filter").hide();');
-	}
-	?>
 </div>
 <div>
 <?php
@@ -210,7 +212,7 @@
 			);
 			$colCount = 7;
 			if ($involvement['Involvement']['take_payment']) {
-				$link[] = array(
+				$links[] = array(
 					'title' => 'Add Payment',
 					'url' => array(
 						'controller' => 'payments',

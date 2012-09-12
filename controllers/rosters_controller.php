@@ -188,7 +188,12 @@ class RostersController extends AppController {
 		$contain = array('Role');
 
 		$this->Roster->recursive = -1;
-		$fields = array('id', 'created', 'user_id', 'parent_id');
+		$fields = array(
+			'id', 
+			'created', 
+			'user_id', 
+			'parent_id'
+		);
 		if ($involvement['Involvement']['take_payment']) {
 			array_push($fields, 'amount_due', 'amount_paid', 'balance');
 		}
@@ -201,27 +206,21 @@ class RostersController extends AppController {
 		$this->Roster->Involvement->contain(array('InvolvementType', 'Leader'));
 		$involvement = $this->Roster->Involvement->read(null, $involvementId);
 		
-		$rosters =  $this->FilterPagination->paginate();
+		$rosters = $this->FilterPagination->paginate();
 		
 		$rosterIds = Set::extract('/Roster/id', $rosters);
 		$counts['childcare'] = $this->Roster->find('count', array(
-			'conditions' => array(
-				'Roster.id' => $rosterIds,
-				'Roster.parent_id >' => 0
-			)
+			'conditions' => $conditions + array('Roster.parent_id >' => 0),
+			'link' => $link
 		));
 		$counts['pending'] = $this->Roster->find('count', array(
-			'conditions' => array(
-				'Roster.id' => $rosterIds,
-				'Roster.roster_status_id' => 2
-			)
+			'conditions' => $conditions + array('Roster.roster_status_id' => 2),
+			'link' => $link
 		));
 		$counts['leaders'] = count($involvement['Leader']);
 		$counts['confirmed'] = $this->Roster->find('count', array(
-			'conditions' => array(
-				'Roster.id' => $rosterIds,
-				'Roster.roster_status_id' => 1
-			)
+			'conditions' => $conditions + array('Roster.roster_status_id' => 1),
+			'link' => $link
 		));
 		$counts['total'] = $this->params['paging']['Roster']['count'];
 		

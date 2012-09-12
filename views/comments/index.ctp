@@ -19,7 +19,7 @@
 				<span class="float:left">
 					<?php
 					echo $this->Html->link($comment['Creator']['Profile']['name'], array('controller' => 'profiles', 'action' => 'view', 'User' => $comment['Creator']['id']));
-					echo ' ('.$groups[$comment['Comment']['group_id']].') ';
+					echo ' ('.$comment['Group']['name'].') ';
 					echo 'Commented on '.$this->Formatting->date($comment['Comment']['created']);
 					?>
 				</span>
@@ -39,9 +39,14 @@
 	<?php endforeach; ?>
 </div>
 <?php echo $this->element('pagination'); ?>
-<?php
-echo $this->Html->link('Add comment', array('controller' => 'comments', 'action' => 'add', 'User' => $userId), array(
-	'class' => 'button',
-	'data-core-ajax' => 'true',
-	'escape' => true
-));
+<ul class="core-admin-tabs">
+	<?php
+	$link = $this->Permission->link('Add comment', array('controller' => 'comments', 'action' => 'add', 'User' => $userId), array(
+		'data-core-modal' => 'true',
+		'escape' => true
+	));
+	if ($link) {
+		echo $this->Html->tag('li', $link);
+	}
+	?>
+</ul>
