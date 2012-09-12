@@ -17,8 +17,6 @@
 		?>
 		<li><a href="#lists">Lists</a></li>
 		<?php
-		$link = $this->Permission->link('Campuses', array('controller' => 'campuses', 'action' => 'admin'), array('title' => 'campuses'));
-		echo $link ? $this->Html->tag('li', $link) : null;
 		$link = $this->Permission->link('App Settings', array('controller' => 'app_settings'), array('title' => 'app-settings'));
 		echo $link ? $this->Html->tag('li', $link) : null;
 		?>
@@ -74,16 +72,6 @@
 				<?php endforeach; ?>
 			</div>
 		</div>
-		<?php if ($this->Permission->check(array('controller' => 'campuses', 'action' => 'admin'))): ?>
-		<div id="campuses">
-			<?php
-			echo $this->requestAction('/campuses/admin', array(
-				'renderAs' => 'ajax',
-				'return'
-			));
-			?>
-		</div>
-		<?php endif; ?>
 		<?php if ($this->Permission->check(array('controller' => 'app_settings'))): ?>
 		<div id="app-settings">
 			<?php
