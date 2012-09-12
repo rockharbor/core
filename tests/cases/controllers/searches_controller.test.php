@@ -409,6 +409,81 @@ class SearchesControllerTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 		$this->Searches->Session->delete('FilterPagination');
+		
+		$data = array(
+			'User' => array(
+				'active' => '',
+				'username' => 'o'
+			)
+		);
+		$vars = $this->testAction('/searches/simple/User/some_element/', compact('data'));
+		$results = Set::extract('/User/id', $vars['results']);
+		sort($results);
+		$expected = array(2, 3, 4, 5);
+		$this->assertEqual($results, $expected);
+		$this->Searches->Session->delete('FilterPagination');
+		
+		$data = array(
+			'User' => array(
+				'active' => 1,
+				'username' => 'o'
+			)
+		);
+		$vars = $this->testAction('/searches/simple/User/some_element/', compact('data'));
+		$results = Set::extract('/User/id', $vars['results']);
+		sort($results);
+		$expected = array(2, 3, 5);
+		$this->assertEqual($results, $expected);
+		$this->Searches->Session->delete('FilterPagination');
+		
+		$data = array(
+			'User' => array(
+				'active' => 0,
+				'username' => 'o'
+			)
+		);
+		$vars = $this->testAction('/searches/simple/User/some_element/', compact('data'));
+		$results = Set::extract('/User/id', $vars['results']);
+		sort($results);
+		$expected = array(4);
+		$this->assertEqual($results, $expected);
+		$this->Searches->Session->delete('FilterPagination');
+		
+		$data = array(
+			'Ministry' => array(
+				'active' => 0
+			)
+		);
+		$vars = $this->testAction('/searches/simple/Ministry/some_element/', compact('data'));
+		$results = Set::extract('/Ministry/id', $vars['results']);
+		sort($results);
+		$expected = array(3, 4, 6);
+		$this->assertEqual($results, $expected);
+		$this->Searches->Session->delete('FilterPagination');
+		
+		$data = array(
+			'Involvement' => array(
+				'active' => 1
+			)
+		);
+		$vars = $this->testAction('/searches/simple/Involvement/some_element/', compact('data'));
+		$results = Set::extract('/Involvement/id', $vars['results']);
+		sort($results);
+		$expected = array(1, 4, 5, 6, 7);
+		$this->assertEqual($results, $expected);
+		$this->Searches->Session->delete('FilterPagination');
+		
+		$data = array(
+			'Involvement' => array(
+				'active' => ''
+			)
+		);
+		$vars = $this->testAction('/searches/simple/Involvement/some_element/', compact('data'));
+		$results = Set::extract('/Involvement/id', $vars['results']);
+		sort($results);
+		$expected = array(1, 2, 3, 4, 5, 6, 7);
+		$this->assertEqual($results, $expected);
+		$this->Searches->Session->delete('FilterPagination');
 	}
 
 	function testNotInHouseholdSearchFilter() {
