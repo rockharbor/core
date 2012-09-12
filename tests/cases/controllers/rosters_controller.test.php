@@ -246,6 +246,16 @@ class RostersControllerTestCase extends CoreTestCase {
 			1 => 'Snack Bringer',
 			2 => 'Snack Eater'
 		));
+
+		$vars = $this->testAction('/rosters/index/Involvement:3/limit:1');
+		$results = $vars['rosterIds'];
+		sort($results);
+		$expected = array(4);
+		$this->assertEqual($results, $expected);
+		$this->assertEqual($vars['counts']['leaders'], 1);
+		$this->assertEqual($vars['counts']['confirmed'], 3);
+		$this->assertEqual($vars['counts']['pending'], 0);
+		$this->assertEqual($vars['counts']['total'], 3);
 	}
 
 	function testInvolvement() {
