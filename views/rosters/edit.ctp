@@ -8,10 +8,6 @@ check to see if this is a quick signup
 	- involvement.offer_childcare = false
 	- no household members
 */
-
-// get kids in their households
-$children = Set::extract('/Profile[child=1]', $householdMembers);
-
 echo $this->Form->create('Roster', array(
 	'default' => false,
 	'inputDefaults' => array()
@@ -22,7 +18,7 @@ echo $this->Form->hidden('Roster.user_id');
 echo $this->Form->hidden('Roster.involvement_id');
 
 	// if this involvement offers childcare and this is the user we're signing up (i.e., the household contact)
-	if ($involvement['Involvement']['offer_childcare'] && !empty($children)) {
+	if ($involvement['Involvement']['offer_childcare'] && !empty($children) && !$user['Profile']['child']) {
 ?>
 	<fieldset>
 		<legend>Childcare Signups</legend>
@@ -99,6 +95,14 @@ if (!empty($involvement['Question'])) {
 			echo $this->Form->input('Roster.payment_option_id', array(
 				'empty' => 'No Payment Option',
 				'after' => "<br/>Changing a user's payment option will affect their balance"
+			));
+		}
+		if ($involvement['Involvement']['offer_childcare']) {
+			echo $this->Form->input('Roster.parent_id', array(
+				'empty' => 'Not Childcare',
+				'options' => Set::combine($adults, '{n}.Profile.user_id', '{n}.Profile.name'),
+				'value' => $this->data['Roster']['parent_id'],
+				'after' => "<br/>Changing a user's parent can affect their balance"
 			));
 		}
 	?>

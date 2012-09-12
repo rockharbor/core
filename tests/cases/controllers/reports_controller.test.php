@@ -40,7 +40,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 		
 		$vars = $this->testAction('/reports/index');
 		$results = $vars['userCounts']['involved'];
-		$this->assertEqual($results, 4);
+		$this->assertEqual($results, 5);
 		$results = $vars['ministryCounts']['active'];
 		$this->assertEqual($results, 3);
 		$results = $vars['involvementCounts']['Event']['involved'];

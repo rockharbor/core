@@ -772,15 +772,31 @@ class RostersController extends AppController {
 			}
 		}
 		
+		$ds = $this->Roster->User->Profile->getDatasource();
 		// get user info and all household info where they are the contact
 		$signedUp = Set::extract('/Roster/user_id', $involvement);
-		$householdMemberIds = $this->Roster->User->HouseholdMember->Household->getMemberIds($thisRoster['Roster']['user_id'], true);
-		$householdMembers = $this->Roster->User->find('all', array(
+		// only get children where this user is the household contact and kids are confirmed
+		$possibleChildren = $this->Roster->User->HouseholdMember->Household->getMemberIds($thisRoster['Roster']['user_id'], true, true);
+		$children = $this->Roster->User->find('all', array(
 			'conditions' => array(
-				'User.id' => $householdMemberIds,
+				'User.id' => $possibleChildren,
 				'not' => array(
 					'User.id' => $signedUp
-				)
+				),
+				$this->Roster->User->Profile->getVirtualField('child') => true
+			),
+			'contain' => array(
+				'Profile',
+				'Group'
+			)
+		));
+		// get all adults from households this user belongs to
+		$possibleAdults = $this->Roster->User->HouseholdMember->Household->getMemberIds($thisRoster['Roster']['user_id'], false, false);
+		$possibleAdults = array_intersect($signedUp, $possibleAdults);
+		$adults = $this->Roster->User->find('all', array(
+			'conditions' => array(
+				'User.id' => $possibleAdults,
+				$this->Roster->User->Profile->getVirtualField('child') => false
 			),
 			'contain' => array(
 				'Profile',
@@ -811,7 +827,7 @@ class RostersController extends AppController {
 			|| $this->Roster->Involvement->Ministry->Campus->isManager($this->activeUser['User']['id'], $involvement['Ministry']['campus_id'])
 			|| $this->isAuthorized('rosters/index', array('Involvement' => $involvement['Involvement']['id']));
 		
-		$this->set(compact('involvement', 'user', 'roster', 'paymentOptions', 'householdMembers', 'rosterStatuses', 'fullAccess'));
+		$this->set(compact('involvement', 'user', 'roster', 'paymentOptions', 'children', 'adults', 'rosterStatuses', 'fullAccess'));
 	}
 
 /**
