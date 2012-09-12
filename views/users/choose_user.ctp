@@ -17,8 +17,7 @@ $secureFields = $this->Form->fields;
 <table cellpadding="0" cellspacing="0" class="datatable">
 	<thead>
 		<tr>
-			<th>First Name</th>
-			<th>Last Name</th>
+			<th>Name</th>
 			<th>City</th>
 			<th>&nbsp;</th>
 		</tr>
@@ -33,8 +32,7 @@ $secureFields = $this->Form->fields;
 			}
 		?>
 			<tr<?php echo $class;?>>
-				<td><?php echo $user['Profile']['first_name']; ?></td>
-				<td><?php echo $user['Profile']['last_name']; ?></td>
+				<td><?php echo $user['Profile']['name']. $this->Formatting->flags('User', $user); ?></td>
 				<td><?php echo $user['ActiveAddress']['city']; ?></td>
 				<td><?php
 				$url = String::insert(

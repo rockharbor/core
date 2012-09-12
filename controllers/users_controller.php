@@ -304,15 +304,12 @@ class UsersController extends AppController {
 		$return = trim($return, '/').'/skip_check:1';
 
 		$users = $this->User->find('all', array(
-			'fields' => array(
-				'id'
-			),
 			'conditions' => array(
 				'User.id' => $users
 			),
 			'contain' => array(
 				'Profile' => array(
-					'fields' => array('first_name', 'last_name')
+					'fields' => array('first_name', 'last_name', 'name')
 				),
 				'ActiveAddress' => array(
 					'fields' => array('city')
