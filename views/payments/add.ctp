@@ -2,9 +2,6 @@
 <div class="payments">
 <?php 
 $balance = Set::apply('/Roster/balance', $users, 'array_sum');
-
-if ($balance > 0) {
-
 ?>
 <p>You are submitting a payment for 
 <?php echo $involvement['Involvement']['name']; ?> for 
@@ -61,11 +58,6 @@ foreach ($types as $id => $name):
 	
 endforeach;
 
-
 $this->Js->buffer('CORE.tabs("payment_types");');
-
-} else {
 ?>
-<p>No balance is due!</p>
-<?php } ?>
 </div>

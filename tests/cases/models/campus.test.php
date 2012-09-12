@@ -31,11 +31,11 @@ class CampusTestCase extends CoreTestCase {
 
 		$results = $this->Campus->getInvolved(1);
 		sort($results);
-		$this->assertEqual($results, array(1, 5));
+		$this->assertEqual($results, array(1, 5, 6));
 
 		$results = $this->Campus->getInvolved(1, true);
 		sort($results);
-		$this->assertEqual($results, array(1, 2, 3, 5));
+		$this->assertEqual($results, array(1, 2, 3, 5, 6));
 	}
 
 	function testGetLeaders() {

@@ -53,19 +53,6 @@ class CampusesController extends AppController {
 	}
 
 /**
- * Admin dashboard for editing campuses
- */ 
-	function admin() {
-		$this->Campus->recursive = 0;
-		$this->paginate = array(
-			'contain' => array(
-				'Leader'
-			)
-		);
-		$this->set('campuses', $this->paginate());
-	}
-
-/**
  * Campus details
  */ 
 	function view() {

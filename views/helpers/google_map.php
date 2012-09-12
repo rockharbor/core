@@ -153,12 +153,12 @@ class GoogleMapHelper extends AppHelper {
 			$this->Js->buffer('
 var script = document.createElement("script");
 script.type = "text/javascript";
-script.src = "http://maps.googleapis.com/maps/api/js?sensor='.($this->options['sensor'] ? 'true': 'false').'&callback='.$mapName.'load";
+script.src = "//maps.googleapis.com/maps/api/js?sensor='.($this->options['sensor'] ? 'true': 'false').'&callback='.$mapName.'load";
 document.body.appendChild(script);
 ');
 			return null;
 		}
-		return $this->Html->script('http://maps.google.com/maps/api/js?callback='.$mapName.'load&sensor='.($this->options['sensor'] ? 'true': 'false'), array('inline' => $this->options['inline']));
+		return $this->Html->script('//maps.google.com/maps/api/js?callback='.$mapName.'load&sensor='.($this->options['sensor'] ? 'true': 'false'), array('inline' => $this->options['inline']));
 	}
 
 /**

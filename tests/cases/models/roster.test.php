@@ -59,6 +59,18 @@ class RosterTestCase extends CoreTestCase {
 		);
 		$results = $this->Roster->paginateCount($conditions, $recursive, $extra);
 		$this->assertEqual($results, 2);
+		
+		$conditions = array(
+			'Involvement.id' => 1
+		);
+		$recursive = 1;
+		$extra = array(
+			'link' => array(
+				'Involvement'
+			)
+		);
+		$results = $this->Roster->paginateCount($conditions, $recursive, $extra);
+		$this->assertEqual($results, 2);
 	}
 
 	function testSetDefaultAlreadySignedUp() {
@@ -458,6 +470,17 @@ class RosterTestCase extends CoreTestCase {
 
 		$result = $roster['Roster']['balance'];
 		$this->assertIdentical($result, '80.00');
+		
+		$roster = $this->Roster->read(null, 4);
+
+		$result = $roster['Roster']['amount_paid'];
+		$this->assertIdentical($result, '30.00');
+
+		$result = $roster['Roster']['amount_due'];
+		$this->assertIdentical($result, '5.00');
+
+		$result = $roster['Roster']['balance'];
+		$this->assertIdentical($result, '-25.00');
 	}
 	
 }

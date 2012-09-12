@@ -34,7 +34,7 @@ class RosterFixture extends CakeTestFixture {
 			'payment_option_id' => 2,
 			'created' => '2010-04-19 09:55:07',
 			'modified' => '2010-04-19 11:09:11',
-			'parent_id' => NULL,
+			'parent_id' => null,
 			'roster_status_id' => 2
 		),
 		array(
@@ -71,6 +71,16 @@ class RosterFixture extends CakeTestFixture {
 			'id' => 6,
 			'user_id' => 5,
 			'involvement_id' => 5,
+			'payment_option_id' => 4,
+			'created' => '2010-04-19 09:32:49',
+			'modified' => '2010-04-19 12:30:21',
+			'parent_id' => NULL,
+			'roster_status_id' => 1
+		),
+		array(
+			'id' => 7,
+			'user_id' => 6,
+			'involvement_id' => 3,
 			'payment_option_id' => 4,
 			'created' => '2010-04-19 09:32:49',
 			'modified' => '2010-04-19 12:30:21',

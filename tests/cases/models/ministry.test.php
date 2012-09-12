@@ -34,7 +34,7 @@ class MinistryTestCase extends CoreTestCase {
 
 		$results = $this->Ministry->getInvolved(1, true);
 		sort($results);
-		$this->assertEqual($results, array(1, 2, 3, 5));
+		$this->assertEqual($results, array(1, 2, 3, 5, 6));
 
 		$results = $this->Ministry->getInvolved(10);
 		$this->assertEqual($results, array());

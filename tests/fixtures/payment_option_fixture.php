@@ -7,9 +7,9 @@ class PaymentOptionFixture extends CakeTestFixture {
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'involvement_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
 		'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 64),
-		'total' => array('type' => 'float', 'null' => true, 'default' => NULL, 'length' => '7,2'),
-		'deposit' => array('type' => 'float', 'null' => true, 'default' => NULL, 'length' => '7,2'),
-		'childcare' => array('type' => 'float', 'null' => true, 'default' => NULL, 'length' => '7,2'),
+		'total' => array('type' => 'decimal', 'null' => true, 'default' => NULL, 'length' => '10,2'),
+		'deposit' => array('type' => 'decimal', 'null' => true, 'default' => NULL, 'length' => '10,2'),
+		'childcare' => array('type' => 'decimal', 'null' => true, 'default' => NULL, 'length' => '10,2'),
 		'account_code' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),
 		'tax_deductible' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
@@ -68,4 +68,12 @@ class PaymentOptionFixture extends CakeTestFixture {
 			'modified' => '2010-04-09 10:20:25'
 		)
 	);
+	
+	function create(&$db) {
+		$db->columns['decimal'] = array(
+			'name' => 'decimal',
+			'formatter' => 'floatval'
+		);
+		return parent::create($db);
+	}
 }
