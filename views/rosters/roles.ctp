@@ -1,25 +1,4 @@
-<?php
-if ($this->Permission->check(array(
-	'controller' => 'roles',
-	'action' => 'add',
-	'Ministry' => $ministry['Ministry']['id']
-))) :
-	?>
-<div id="addroles" class="grid_5 alpha">
-<?php
-	echo $this->requestAction('/roles/add/Ministry:'.$ministry['Ministry']['id'], array(
-		'return',
-		'renderAs' => 'ajax',
-		'named' => array(
-			'Ministry' => $ministry['Ministry']['id']
-		),
-		'data' => null,
-		'form' => array('data' => null)
-	));
-?>
-</div>
-<?php endif; ?>
-<div class="grid_5 omega">
+<div>
 <?php
 echo $this->Form->create('Roster', array(
 	'class' => 'core-filter-form',
