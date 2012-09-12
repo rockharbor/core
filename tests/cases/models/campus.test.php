@@ -31,7 +31,7 @@ class CampusTestCase extends CoreTestCase {
 
 		$results = $this->Campus->getInvolved(1);
 		sort($results);
-		$this->assertEqual($results, array(1, 5, 6));
+		$this->assertEqual($results, array(1, 5));
 
 		$results = $this->Campus->getInvolved(1, true);
 		sort($results);
