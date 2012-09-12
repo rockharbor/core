@@ -368,7 +368,9 @@ class AppController extends Controller {
 							$key = $key.' '.$fieldOp;
 						}
 						
-						$cond[$key] = $value;
+						if ($value !== '%%') {
+							$cond[$key] = $value;
+						}
 					}
 				}
 			}
