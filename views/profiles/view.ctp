@@ -10,11 +10,11 @@
 		<li><?php echo $this->Html->link($prefix.'Household', array('controller' => 'households', 'User' => $profile['User']['id']), array('title' => 'household')); ?></li>
 		<li><?php echo $this->Html->link($prefix.'Payments', array('controller' => 'payments', 'User' => $profile['User']['id']), array('title' => 'payments')); ?></li>
 		<?php
-		$link = $this->Permission->link($prefix.'Documents', array('controller' => 'user_documents', 'User' => $profile['User']['id']), array('title' => 'documents'));
+		$link = $this->Permission->link($prefix.'Comments', array('controller' => 'comments', 'User' => $profile['User']['id']), array('title' => 'comments'));
 		if ($link) {
 			echo $this->Html->tag('li', $link);
 		}
-		$link = $this->Permission->link($prefix.'Comments', array('controller' => 'comments', 'User' => $profile['User']['id']), array('title' => 'comments'));
+		$link = $this->Permission->link($prefix.'Documents', array('controller' => 'user_documents', 'User' => $profile['User']['id']), array('title' => 'documents'));
 		if ($link) {
 			echo $this->Html->tag('li', $link);
 		}
