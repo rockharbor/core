@@ -247,6 +247,8 @@ class RostersController extends AppController {
 			$this->cakeError('error404');
 		}
 		
+		$rosterStatuses = $this->Roster->RosterStatus->find('list');
+		
 		$_default = array(
 			'Roster' => array(
 				'previous' => 0,
@@ -254,8 +256,15 @@ class RostersController extends AppController {
 				'inactive' => 0,
 				'private' => 1,
 				'household' => 1
-			)
+			),
+			'RosterStatus' => array()
 		);
+		
+		foreach ($rosterStatuses as $id => $status) {
+			// only show confirmed and pending statuses by default
+			$_default['RosterStatus'][$status] = $id <= 2 ? 1 : 0;
+		}
+		
 		$this->data = $search = Set::merge($_default, $this->data);
 		
 		$users = array();
@@ -288,6 +297,9 @@ class RostersController extends AppController {
 		$conditions = array(
 			'Involvement.id' => array_unique(array_values($memberOf))
 		);
+		$rosterConditions = array(
+			'Roster.user_id' => $users
+		);
 		
 		if ($this->data['Roster']['leading']) {
 			$conditions['Involvement.id'] = array_merge(array_values($leaderOf), array_values($memberOf));
@@ -302,7 +314,17 @@ class RostersController extends AppController {
 		if (!$this->data['Roster']['private']) {
 			$conditions['Involvement.private'] = false;
 		}
-
+		$flippedStatuses = array_flip($rosterStatuses);
+		$checkedStatuses = array();
+		foreach ($this->data['RosterStatus'] as $status => $checked) {
+			if ($checked) {
+				$checkedStatuses[] = $flippedStatuses[$status];
+			}
+		}
+		if (!empty($checkedStatuses)) {
+			$rosterConditions['Roster.roster_status_id'] = $checkedStatuses;
+		}
+		
 		$this->paginate = array(
 			'fields' => array(
 				'id', 'name', 'previous', 'active', 'private'
@@ -312,9 +334,7 @@ class RostersController extends AppController {
 				'Date',
 				'InvolvementType',
 				'Roster' => array(
-					'conditions' => array(
-						'Roster.user_id' => $users
-					),
+					'conditions' => $rosterConditions,
 					'Role',
 					'User' => array(
 						'Profile' => array(
@@ -332,8 +352,8 @@ class RostersController extends AppController {
 		foreach ($rosters as &$roster) {
 			$roster['Involvement']['dates'] = $this->Roster->Involvement->Date->generateDates($roster['Involvement']['id'], array('limit' => 1));
 		}
-
-		$this->set(compact('userId', 'leaderOf', 'rosters', 'private', 'memberOf'));
+		
+		$this->set(compact('userId', 'leaderOf', 'rosters', 'private', 'memberOf', 'rosterStatuses'));
 	}
 	
 /**

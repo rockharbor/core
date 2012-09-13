@@ -122,10 +122,11 @@ class DatesController extends AppController {
 				$ids = explode(',', $this->passedArgs[$model]);
 				switch ($model) {
 					case 'User':
-						// get involvements user is involved with first
+						// get involvements user is involved in and confirmed
 						$rosters = $this->Date->Involvement->Roster->find('all', array(
 							'conditions' => array(
-								'Roster.user_id' => $ids
+								'Roster.user_id' => $ids,
+								'Roster.roster_status_id' => 1
 							)
 						));
 						$leaders = $this->Date->Involvement->Leader->find('all', array(

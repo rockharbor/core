@@ -32,6 +32,15 @@
 			'class' => 'toggle',
 			'div' => false
 		));
+		echo '<div>';
+		foreach ($rosterStatuses as $status) {
+			echo $this->Form->input('RosterStatus.'.$status, array(
+				'type' => 'checkbox',
+				'class' => 'toggle',
+				'div' => false
+			));
+		}
+		echo '</div>';
 		echo $this->Js->submit('Filter');
 		echo $this->Form->end();
 		?>
@@ -67,6 +76,9 @@
 				}
 				if (!empty($involvement['Involvement']['dates'])) {
 					$inv .= ' | '.$this->Formatting->datetime($involvement['Involvement']['dates'][0]['Date']['start_date'].' '.$involvement['Involvement']['dates'][0]['Date']['start_time']);
+				}
+				if ($roster['roster_status_id'] > 1) {
+					$inv .= ' | '.$rosterStatuses[$roster['roster_status_id']];
 				}
 				echo $this->Html->tag('p', $inv);
 			}
