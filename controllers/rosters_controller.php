@@ -235,7 +235,7 @@ class RostersController extends AppController {
 	}
 
 /**
- * Shows involvement history
+ * Shows involvement history for a user and confirmed members of their household
  *
  * ### Passed args:
  * - integer $User The id of the user
@@ -246,6 +246,23 @@ class RostersController extends AppController {
 		if (!$userId) {
 			$this->cakeError('error404');
 		}
+		
+		$_default = array(
+			'Roster' => array(
+				'previous' => 0,
+				'leading' => 1,
+				'inactive' => 0,
+				'private' => 1,
+				'household' => 1
+			)
+		);
+		$this->data = $search = Set::merge($_default, $this->data);
+		
+		$users = array();
+		if ($this->data['Roster']['household']) {
+			$users = $this->Roster->User->HouseholdMember->Household->getMemberIds($userId, false, true);
+		}
+		$users[] = $userId;
 
 		$leaderOf = $this->Roster->Involvement->Leader->find('list', array(
 			'fields' => array(
@@ -264,26 +281,13 @@ class RostersController extends AppController {
 				'Roster.involvement_id'
 			),
 			'conditions' => array(
-				'Roster.user_id' => $userId
+				'Roster.user_id' => $users
 			)
 		));
 
 		$conditions = array(
-			'Involvement.id' => array_values($memberOf)	
+			'Involvement.id' => array_unique(array_values($memberOf))
 		);
-
-		if ($this->Session->check('FilterPagination.data') && empty($this->data)) {
-			$this->data = $this->Session->read('FilterPagination.data');
-		}
-		$_default = array(
-			'Roster' => array(
-				'previous' => 0,
-				'leading' => 1,
-				'inactive' => 0,
-				'private' => 1
-			)
-		);
-		$this->data = $search = Set::merge($_default, $this->data);
 		
 		if ($this->data['Roster']['leading']) {
 			$conditions['Involvement.id'] = array_merge(array_values($leaderOf), array_values($memberOf));
@@ -309,13 +313,22 @@ class RostersController extends AppController {
 				'InvolvementType',
 				'Roster' => array(
 					'conditions' => array(
-						'Roster.user_id' => $userId
+						'Roster.user_id' => $users
 					),
-					'Role'
+					'Role',
+					'User' => array(
+						'Profile' => array(
+							'fields' => array(
+								'id', 'user_id', 'first_name', 'last_name', 'name'
+							)
+						)
+					)
 				)
 			)
 		);
+		
 		$rosters = $this->FilterPagination->paginate('Involvement');
+		
 		foreach ($rosters as &$roster) {
 			$roster['Involvement']['dates'] = $this->Roster->Involvement->Date->generateDates($roster['Involvement']['id'], array('limit' => 1));
 		}

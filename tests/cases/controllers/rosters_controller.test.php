@@ -257,6 +257,92 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($vars['counts']['pending'], 0);
 		$this->assertEqual($vars['counts']['total'], 3);
 	}
+	
+	function testInvolvementWithHousehold() {
+		$this->loadFixtures('Household', 'HouseholdMember', 'Profile');
+		
+		$vars = $this->testAction('/rosters/involvement/User:1', array(
+			'data' => array(
+				'Roster' => array(
+					'previous' => true,
+					'leading' => true,
+					'inactive' => true,
+					'private' => true,
+					'household' => true
+				)
+			)
+		));
+		$results = Set::extract('/Roster/id', $vars['rosters']);
+		sort($results);
+		$expected = array(1, 3, 5, 6, 7);
+		$this->assertEqual($results, $expected);
+		
+		$vars = $this->testAction('/rosters/involvement/User:2', array(
+			'data' => array(
+				'Roster' => array(
+					'previous' => true,
+					'leading' => true,
+					'inactive' => true,
+					'private' => true,
+					'household' => true
+				)
+			)
+		));
+		$results = Set::extract('/Roster/id', $vars['rosters']);
+		sort($results);
+		$expected = array(1, 2, 4);
+		$this->assertEqual($results, $expected);
+		
+		$results = Set::extract('/Roster/User/Profile/name', $vars['rosters']);
+		sort($results);
+		$expected = array(
+			'ricky jr. rockharbor',
+			'ricky rockharbor',
+			'ricky rockharbor'
+		);
+		$this->assertEqual($results, $expected);
+		
+		// remove user 3 from household
+		$this->Rosters->Roster->User->HouseholdMember->delete(3);
+		$vars = $this->testAction('/rosters/involvement/User:2', array(
+			'data' => array(
+				'Roster' => array(
+					'previous' => true,
+					'leading' => true,
+					'inactive' => true,
+					'private' => true,
+					'household' => true
+				)
+			)
+		));
+		$results = Set::extract('/Roster/id', $vars['rosters']);
+		sort($results);
+		$expected = array(2, 4);
+		$this->assertEqual($results, $expected);
+
+		// unconfirm user 3
+		$this->Rosters->Roster->User->HouseholdMember->save(array(
+			'HouseholdMember' => array(
+				'id' => 4,
+				'confirmed' => false
+			)
+		));
+		$vars = $this->testAction('/rosters/involvement/User:1', array(
+			'data' => array(
+				'Roster' => array(
+					'previous' => true,
+					'leading' => true,
+					'inactive' => true,
+					'private' => true,
+					'household' => true
+				)
+			)
+		));
+		$results = Set::extract('/Roster/id', $vars['rosters']);
+		sort($results);
+		$expected = array(3, 5, 6, 7);
+		$this->assertEqual($results, $expected);
+	}
 
 	function testInvolvement() {
 		$vars = $this->testAction('/rosters/involvement/User:1');
@@ -270,7 +356,8 @@ class RostersControllerTestCase extends CoreTestCase {
 					'previous' => true,
 					'leading' => true,
 					'inactive' => true,
-					'private' => false
+					'private' => false,
+					'household' => false
 				)
 			)
 		));
@@ -287,7 +374,8 @@ class RostersControllerTestCase extends CoreTestCase {
 					'previous' => true,
 					'leading' => false,
 					'inactive' => true,
-					'private' => true
+					'private' => true,
+					'household' => false
 				)
 			)
 		));
