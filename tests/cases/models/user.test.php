@@ -21,6 +21,81 @@ class UserTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 	
+	function testMergeWithLimitedUserData() {
+		$this->loadFixtures('Profile');
+		
+		$user = array(
+			'User' => array(
+				'username' => 'rocky'
+			),
+			'Profile' => array(
+				'first_name' => 'Ricky',
+				'last_name' => 'Rock'
+			)
+		);
+		$this->assertTrue($this->User->createUser($user));
+		$newId = $this->User->id;
+		
+		$this->User->contain(array('Profile'));
+		$user = $this->User->read(null, $newId);
+		$result = $user['Profile']['primary_email'];
+		$expected = null;
+		$this->assertEqual($result, $expected);
+		
+		$this->assertTrue($this->User->merge(2, $newId));
+		$this->assertFalse($this->User->read(null, $newId));
+		
+		$results = $this->User->find('first', array(
+			'conditions' => array(
+				'User.id' => 2
+			),
+			'contain' => array(
+				'Profile'
+			)
+		));
+		$this->assertEqual($results['Profile']['primary_email'], 'ricky@rockharbor.org');
+		$this->assertEqual($results['Profile']['signed_covenant_date'], '2010-01-06');
+		
+		// save empty email and try to merge
+		$this->User->Profile->id = 2;
+		$this->User->Profile->saveField('primary_email', null);
+		
+		$this->User->contain(array('Profile'));
+		$user = $this->User->read(null, 2);
+		
+		$user = array(
+			'User' => array(
+				'username' => 'newuser'
+			),
+			'Profile' => array(
+				'first_name' => 'New',
+				'last_name' => 'User',
+				'primary_email' => 'newuser@example.com'
+			)
+		);
+		$this->assertTrue($this->User->createUser($user));
+		$newId = $this->User->id;
+		
+		$this->User->contain(array('Profile'));
+		$user = $this->User->read(null, $newId);
+		$result = $user['Profile']['primary_email'];
+		$expected = 'newuser@example.com';
+		$this->assertEqual($result, $expected);
+		
+		$this->assertTrue($this->User->merge(2, $newId));
+		$this->assertFalse($this->User->read(null, $newId));
+		
+		$results = $this->User->find('first', array(
+			'conditions' => array(
+				'User.id' => 2
+			),
+			'contain' => array(
+				'Profile'
+			)
+		));
+		$this->assertEqual($results['Profile']['primary_email'], 'newuser@example.com');
+	}
+	
 	function testMerge() {
 		$this->loadFixtures('Profile', 'Address', 'Roster', 'Household', 'HouseholdMember');
 		
