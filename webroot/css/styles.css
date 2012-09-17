@@ -846,6 +846,7 @@ dl {
 	line-height: 12px;
 }
 dt {
+	clear: left;
 	float:left;
 	color:#acacac;
 	padding-right:5px;
