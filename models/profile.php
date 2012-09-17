@@ -90,7 +90,7 @@ class Profile extends AppModel {
 			'rule' => '/^[0-9]{7,10}$/',
 			'required' => false,
 			'allowEmpty' => true,
-			'message' => 'Pleaes enter a valid phone number.'
+			'message' => 'Please enter a valid phone number.'
 		),
 		'work_phone' => array(
 			'rule' => '/^[0-9]{7,10}$/',
