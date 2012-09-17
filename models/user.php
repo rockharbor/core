@@ -58,8 +58,8 @@ class User extends AppModel {
 				'message' => 'Please fill in the required field.'
 			),
 			'characters' => array(
-				'rule' => '/^[a-z0-9\-_]/i',
-				'message' => 'Username must only contain letters, numbers, dashes and underscores.',
+				'rule' => '/^[a-z0-9_]*$/i',
+				'message' => 'Username must only contain letters, numbers, and underscores.',
 				'allowEmpty' => true
 			)
 		),

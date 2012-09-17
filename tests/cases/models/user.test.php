@@ -21,6 +21,97 @@ class UserTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 	
+	function testUsernameValidation() {
+		$this->User->set(array(
+			'User' => array(
+				'username' => 'invalid@username$.com'
+			)
+		));
+		$this->assertFalse($this->User->validates(array('fieldList' => array('username'))));
+		
+		$this->User->set(array(
+			'User' => array(
+				'username' => 'totally_Valid123'
+			)
+		));
+		$this->assertTrue($this->User->validates(array('fieldList' => array('username'))));
+	}
+	
+	function testMergeWithLimitedUserData() {
+		$this->loadFixtures('Profile');
+		
+		$user = array(
+			'User' => array(
+				'username' => 'rocky'
+			),
+			'Profile' => array(
+				'first_name' => 'Ricky',
+				'last_name' => 'Rock'
+			)
+		);
+		$this->assertTrue($this->User->createUser($user));
+		$newId = $this->User->id;
+		
+		$this->User->contain(array('Profile'));
+		$user = $this->User->read(null, $newId);
+		$result = $user['Profile']['primary_email'];
+		$expected = null;
+		$this->assertEqual($result, $expected);
+		
+		$this->assertTrue($this->User->merge(2, $newId));
+		$this->assertFalse($this->User->read(null, $newId));
+		
+		$results = $this->User->find('first', array(
+			'conditions' => array(
+				'User.id' => 2
+			),
+			'contain' => array(
+				'Profile'
+			)
+		));
+		$this->assertEqual($results['Profile']['primary_email'], 'ricky@rockharbor.org');
+		$this->assertEqual($results['Profile']['signed_covenant_date'], '2010-01-06');
+		
+		// save empty email and try to merge
+		$this->User->Profile->id = 2;
+		$this->User->Profile->saveField('primary_email', null);
+		
+		$this->User->contain(array('Profile'));
+		$user = $this->User->read(null, 2);
+		
+		$user = array(
+			'User' => array(
+				'username' => 'newuser'
+			),
+			'Profile' => array(
+				'first_name' => 'New',
+				'last_name' => 'User',
+				'primary_email' => 'newuser@example.com'
+			)
+		);
+		$this->assertTrue($this->User->createUser($user));
+		$newId = $this->User->id;
+		
+		$this->User->contain(array('Profile'));
+		$user = $this->User->read(null, $newId);
+		$result = $user['Profile']['primary_email'];
+		$expected = 'newuser@example.com';
+		$this->assertEqual($result, $expected);
+		
+		$this->assertTrue($this->User->merge(2, $newId));
+		$this->assertFalse($this->User->read(null, $newId));
+		
+		$results = $this->User->find('first', array(
+			'conditions' => array(
+				'User.id' => 2
+			),
+			'contain' => array(
+				'Profile'
+			)
+		));
+		$this->assertEqual($results['Profile']['primary_email'], 'newuser@example.com');
+	}
+	
 	function testMerge() {
 		$this->loadFixtures('Profile', 'Address', 'Roster', 'Household', 'HouseholdMember');
 		
@@ -835,6 +926,38 @@ class UserTestCase extends CoreTestCase {
 		$users = $this->User->find('all', $search);
 		$results = Set::extract('/User/id', $users);
 		$expected = array(1);
+		$this->assertEqual($results, $expected);
+		
+		// load dates which make the involvement in the past
+		$this->loadFixtures('Date');
+		$search = array(
+			'Search' => array(
+				'operator' => 'AND'
+			),
+			'Profile' => array(
+				'currently_leading' => 1
+			)
+		);
+		$search = $this->User->prepareSearch($this->Controller, $search);
+		$users = $this->User->find('all', $search);
+		$results = Set::extract('/User/id', $users);
+		$expected = array();
+		$this->assertEqual($results, $expected);
+		
+		$search = array(
+			'Search' => array(
+				'operator' => 'OR'
+			),
+			'Profile' => array(
+				'grade' => array(
+					6, 7
+				)
+			)
+		);
+		$search = $this->User->prepareSearch($this->Controller, $search);
+		$users = $this->User->find('all', $search);
+		$results = Set::extract('/User/id', $users);
+		$expected = array(2, 3);
 		$this->assertEqual($results, $expected);
 		
 		// load dates which make the involvement in the past

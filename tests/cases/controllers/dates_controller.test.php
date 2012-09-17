@@ -150,6 +150,22 @@ class DatesControllerTestCase extends CoreTestCase {
 			)
 		));
 		$results = Set::extract('/Involvement/id', $vars['events']);
+		$expected = array();
+		$this->assertEqual($results, $expected);
+		
+		$this->Dates->Date->Involvement->Roster->save(array(
+			'id' => 2,
+			'roster_status_id' => 1
+		));
+		$vars = $this->testAction('/dates/calendar/User:2.json', array(
+			'return' => 'vars',
+			'method' => 'get',
+			'data' => array(
+				'start' => strtotime('1/1/2010'),
+				'end' => strtotime('1/1/2011')
+			)
+		));
+		$results = Set::extract('/Involvement/id', $vars['events']);
 		$expected = array(1);
 		$this->assertEqual($results, $expected);
 		

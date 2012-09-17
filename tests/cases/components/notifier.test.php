@@ -21,7 +21,7 @@ class NotifierTestCase extends CoreTestCase {
 
 	function startTest($method) {
 		parent::startTest($method);
-		$this->loadFixtures('Notification', 'User', 'Profile', 'Queue');
+		$this->loadFixtures('Notification', 'User', 'Profile', 'SysEmail');
 		$this->loadSettings();
 		$this->Notification = ClassRegistry::init('Notification');
 		$this->Controller = new TestNotifierController();

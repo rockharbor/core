@@ -116,6 +116,7 @@
 					'options' => $chunk,
 					'multiple' => 'checkbox',
 					'hiddenField' => false,
+					'label' => false,
 					'empty' => false
 				)), array(
 					 'style' => 'float:left;width:50px;margin-right:10px;'
@@ -144,11 +145,21 @@
 			</fieldset>
 			<fieldset>
 				<legend>School</legend>
-			<?php		
-			echo $this->Form->input('Profile.grade', array(
-				'type' => 'select',
-				'options' => $this->SelectOptions->grades
-			));
+			<?php
+			$chunks = array_chunk($this->SelectOptions->grades, 8, true);
+			foreach ($chunks as $chunk) {
+				echo $this->Html->tag('div', $this->Form->input('Profile.grade', array(
+					'type' => 'select',
+					'options' => $chunk,
+					'multiple' => 'checkbox',
+					'hiddenField' => false,
+					'label' => false,
+					'empty' => false
+				)), array(
+					 'style' => 'float:left;width:49%;margin-right:1%;'
+				));
+			}
+			echo '<br clear="all" />';
 			echo $this->Form->input('Profile.graduation_year', array(
 				'type' => 'select',
 				'options' => $this->SelectOptions->generateOptions('year', array(
