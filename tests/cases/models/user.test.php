@@ -21,6 +21,22 @@ class UserTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 	
+	function testUsernameValidation() {
+		$this->User->set(array(
+			'User' => array(
+				'username' => 'invalid@username$.com'
+			)
+		));
+		$this->assertFalse($this->User->validates(array('fieldList' => array('username'))));
+		
+		$this->User->set(array(
+			'User' => array(
+				'username' => 'totally_Valid123'
+			)
+		));
+		$this->assertTrue($this->User->validates(array('fieldList' => array('username'))));
+	}
+	
 	function testMergeWithLimitedUserData() {
 		$this->loadFixtures('Profile');
 		
