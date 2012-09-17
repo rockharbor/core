@@ -1,7 +1,8 @@
 <?php
-/* Queue Fixture generated on: 2010-09-17 11:09:12 : 1284748272 */
-class QueueFixture extends CakeTestFixture {
-	var $name = 'Queue';
+class SysEmailFixture extends CakeTestFixture {
+	var $name = 'SysEmail';
+	
+	var $table = 'queues';
 
 	var $fields = array(
 		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),

@@ -28,22 +28,7 @@ class SysEmail extends AppModel {
  *
  * @var boolean
  */
-	var $useTable = false;
-
-/**
- * Manually defined schema for validation
- *
- * @var array
- */
-	var $_schema = array(
-		'subject' => array(
-			'type' => 'string',
-			'length' => 45
-		),
-		'body' => array(
-			'type' => 'text'
-		)
-	);
+	var $useTable = 'queues';
 
 /**
  * Validation rules
