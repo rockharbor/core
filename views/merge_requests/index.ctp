@@ -1,5 +1,19 @@
 <h1>Merge Requests</h1>
 <div class="merge_requests">
+	<p>These users have requested that their account information be merged. Their new account is disabled until you take action here.</p>
+	<p>
+		<strong>Merge:</strong> You should merge accounts if you know that the accounts are one and the same. Merging an account will 
+		update the current information with the new information and remove the new user from the system, leaving their current user 
+		and all involvement in tact.
+	</p>
+	<p>
+		<strong>Ignore:</strong> You should ignore the request if the new user is not the same as the current user. The new user will be
+		activated automatically. Both users remain in the system.
+	</p>
+	<p>
+		<strong>Deny:</strong> Use this for completely invalid requests. The new information will be discarded entirely and the current
+		user is left untouched.
+	</p>
 	<?php foreach ($requests as $request): ?>
 	<div class="clearfix">
 		<div class="grid_4 alpha"><h3>Current Information</h3></div>
