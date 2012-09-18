@@ -37,6 +37,124 @@ class UserTestCase extends CoreTestCase {
 		$this->assertTrue($this->User->validates(array('fieldList' => array('username'))));
 	}
 	
+	function testCleanMerge() {
+		$this->loadFixtures('Address');
+		
+		$data = array(
+			'User' => array(
+				'flagged' => 1
+			),
+			'Profile' => array(
+				'first_name' => 'original',
+				'last_name' => 'user',
+				'cell_phone' => 1234567890,
+				'home_phone' => 1234567890,
+				'work_phone' => 1234567890,
+				'primary_email' => 'primary@example.com',
+				'alternate_email_1' => 'alternate_email_1@example.com',
+				'alternate_email_2' => 'alternate_email_2@example.com'
+			),
+			'Address' => array(
+				array(
+					'address_line_1' => '123 Main St.',
+					'city' => 'Anywhere',
+					'state' => 'CA',
+					'zip' => '12345'
+				)
+			)
+		);
+		$this->assertTrue($this->User->createUser($data));
+		$originalId = $this->User->id;
+		
+		$data = array(
+			'User' => array(
+				'flagged' => 0
+			),
+			'Profile' => array(
+				'first_name' => 'new',
+				'last_name' => 'user',
+				'cell_phone' => 1987654321,
+				'work_phone' => 1987654321,
+				'primary_email' => '',
+				'alternate_email_1' => 'alternate_email_1_merge@example.com'
+			),
+			'Address' => array(
+				array(
+					'address_line_1' => '456 Secondary St.',
+					'city' => 'Nowhere',
+					'state' => 'KS',
+					'zip' => '54321'
+				)
+			)
+		);
+		$this->assertTrue($this->User->createUser($data));
+		$newId = $this->User->id;
+		
+		$this->assertTrue($this->User->merge($originalId, $newId));
+		
+		$user = $this->User->find('first', array(
+			'conditions' => array(
+				'User.id' => $originalId
+			),
+			'contain' => array(
+				'Address',
+				'Profile'
+			)
+		));
+		
+		$result = $user['User']['id'];
+		$expected = $originalId;
+		$this->assertEqual($result, $expected);
+		
+		$result = $user['User']['flagged'];
+		$expected = 0;
+		$this->assertEqual($result, $expected);
+		
+		$result = $user['Profile']['first_name'];
+		$expected = 'new';
+		$this->assertEqual($result, $expected);
+		
+		$result = $user['Profile']['last_name'];
+		$expected = 'user';
+		$this->assertEqual($result, $expected);
+		
+		$result = $user['Profile']['primary_email'];
+		$expected = 'primary@example.com';
+		$this->assertEqual($result, $expected);
+		
+		$result = $user['Profile']['alternate_email_1'];
+		$expected = 'alternate_email_1_merge@example.com';
+		$this->assertEqual($result, $expected);
+		
+		$result = $user['Profile']['alternate_email_2'];
+		$expected = 'alternate_email_2@example.com';
+		$this->assertEqual($result, $expected);
+		
+		$result = $user['Profile']['cell_phone'];
+		$expected = '1987654321';
+		$this->assertEqual($result, $expected);
+		
+		$result = $user['Profile']['home_phone'];
+		$expected = '1234567890';
+		$this->assertEqual($result, $expected);
+		
+		$result = $user['Profile']['work_phone'];
+		$expected = '1987654321';
+		$this->assertEqual($result, $expected);
+		
+		$result = count($user['Address']);
+		$expected = 2;
+		$this->assertEqual($result, $expected);
+		
+		$result = Set::extract('/Address/address_line_1', $user);
+		sort($result);
+		$expected = array(
+			'123 Main St.',
+			'456 Secondary St.'
+		);
+		$this->assertEqual($result, $expected);
+	}
+	
 	function testMergeWithLimitedUserData() {
 		$this->loadFixtures('Profile');
 		
