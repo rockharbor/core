@@ -46,22 +46,10 @@
 		?>
 		</div>
 		<?php
-		foreach ($rosters as $involvement) { 
-			foreach ($involvement['Roster'] as $roster) { 
-				$roles = Set::extract('/Role/name', $roster);
-				if (empty($roles) && in_array($involvement['Involvement']['id'], array_values($memberOf))) {
-					$roles[] = 'Member';
-				}
-				if (in_array($involvement['Involvement']['id'], array_values($leaderOf)) && $roster['user_id'] == $userId) {
-					array_unshift($roles, 'Leader');
-				}
-				$inv = '';
-				if ($roster['user_id'] !== $userId) {
-					$link = $this->Html->link($roster['User']['Profile']['name'], array('controller' => 'profiles', 'action' => 'view', 'User' => $roster['user_id']));
-					$inv .= $link.$this->Formatting->flags('User', $roster).' is a ';
-				}
-				$inv .= $this->Text->toList($roles);
-				$inv .= (count($roles) > 1 && !in_array('Member', $roles)) ? ' for ' : ' of ';
+		foreach ($rosters as $involvement) {
+			if (empty($involvement['Roster'])) {
+				// they're just a leader
+				$inv = 'Leader of ';
 				$inv .= $this->Html->link($involvement['Involvement']['name'], array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvement['Involvement']['id']));
 				$inv_flags = array(
 					'Involvement' => $involvement['Involvement'],
@@ -69,18 +57,44 @@
 					'InvolvementType' => $involvement['InvolvementType']
 				);
 				$inv .= $this->Formatting->flags('Involvement', $inv_flags);
-				if ($roster['balance'] > 0) {
-					$due = $this->Formatting->money($roster['balance']);
-					$link = $this->Html->link($due, array('controller' => 'payments', 'action' => 'add', 'Involvement' => $involvement['Involvement']['id'], $roster['id'], 'User' => $roster['user_id']), array('data-core-modal' => 'true', 'class' => 'balance'));
-					$inv .= ' | '.$this->Html->tag('span', $link);
-				}
-				if (!empty($involvement['Involvement']['dates'])) {
-					$inv .= ' | '.$this->Formatting->datetime($involvement['Involvement']['dates'][0]['Date']['start_date'].' '.$involvement['Involvement']['dates'][0]['Date']['start_time']);
-				}
-				if ($roster['roster_status_id'] > 1) {
-					$inv .= ' | '.$rosterStatuses[$roster['roster_status_id']];
-				}
 				echo $this->Html->tag('p', $inv);
+			} else {
+				// they're actually involved
+				foreach ($involvement['Roster'] as $roster) { 
+					$roles = Set::extract('/Role/name', $roster);
+					if (empty($roles) && in_array($involvement['Involvement']['id'], array_values($memberOf))) {
+						$roles[] = 'Member';
+					}
+					if (in_array($involvement['Involvement']['id'], array_values($leaderOf)) && $roster['user_id'] == $userId) {
+						array_unshift($roles, 'Leader');
+					}
+					$inv = '';
+					if ($roster['user_id'] !== $userId) {
+						$link = $this->Html->link($roster['User']['Profile']['name'], array('controller' => 'profiles', 'action' => 'view', 'User' => $roster['user_id']));
+						$inv .= $link.$this->Formatting->flags('User', $roster).' is a ';
+					}
+					$inv .= $this->Text->toList($roles);
+					$inv .= (count($roles) > 1 && !in_array('Member', $roles)) ? ' for ' : ' of ';
+					$inv .= $this->Html->link($involvement['Involvement']['name'], array('controller' => 'involvements', 'action' => 'view', 'Involvement' => $involvement['Involvement']['id']));
+					$inv_flags = array(
+						'Involvement' => $involvement['Involvement'],
+						'Date' => $involvement['Date'],
+						'InvolvementType' => $involvement['InvolvementType']
+					);
+					$inv .= $this->Formatting->flags('Involvement', $inv_flags);
+					if ($roster['balance'] > 0) {
+						$due = $this->Formatting->money($roster['balance']);
+						$link = $this->Html->link($due, array('controller' => 'payments', 'action' => 'add', 'Involvement' => $involvement['Involvement']['id'], $roster['id'], 'User' => $roster['user_id']), array('data-core-modal' => 'true', 'class' => 'balance'));
+						$inv .= ' | '.$this->Html->tag('span', $link);
+					}
+					if (!empty($involvement['Involvement']['dates'])) {
+						$inv .= ' | '.$this->Formatting->datetime($involvement['Involvement']['dates'][0]['Date']['start_date'].' '.$involvement['Involvement']['dates'][0]['Date']['start_time']);
+					}
+					if ($roster['roster_status_id'] > 1) {
+						$inv .= ' | '.$rosterStatuses[$roster['roster_status_id']];
+					}
+					echo $this->Html->tag('p', $inv);
+				}
 			}
 		}
 		echo $this->element('pagination'); 
