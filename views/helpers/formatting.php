@@ -405,9 +405,11 @@ class FormattingHelper extends AppHelper {
 		);
 		
 		// move it if it was found via containable
-		foreach ($_defaults as $default => $fields) {
-			if (isset($user['User'][$default])) {
-				$user[$default] = $user['User'][$default];
+		if (!isset($user['User'])) {
+			foreach ($user as $field => $value) {
+				if (!is_array($value)) {
+					$user['User'][$field] = $value;
+				}
 			}
 		}
 		

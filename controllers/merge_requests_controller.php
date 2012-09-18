@@ -45,6 +45,10 @@ class MergeRequestsController extends AppController {
  * Shows a list of merge requests
  */ 	
 	function index() {
+		if (!isset($this->passedArgs['model'])) {
+			$this->cakeError('error404');
+		}
+		
 		// get model
 		$Model = ClassRegistry::init($this->passedArgs['model']);
 
@@ -71,6 +75,8 @@ class MergeRequestsController extends AppController {
 					)
 				);
 			break;
+			default:
+			$this->cakeError('error404');
 		}
 
 		$this->paginate['limit'] = 3;

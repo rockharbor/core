@@ -484,6 +484,22 @@ class FormattingHelperTestCase extends CoreTestCase {
 			array('span' => array('class' => 'core-icon icon-background-check', 'title' => 'Background Check Complete')),
 			'/span'
 		));
+		
+		// as if found via containable
+		$user = array(
+			'active' => 1,
+			'flagged' => 1,
+			'Profile' => array(
+				'background_check_complete' => 1
+			)
+		);
+		$result = $this->Formatting->flags('User', $user);
+		$this->assertTags($result, array(
+			array('span' => array('class' => 'core-icon icon-flagged', 'title' => 'Flagged User')),
+			'/span',
+			array('span' => array('class' => 'core-icon icon-background-check', 'title' => 'Background Check Complete')),
+			'/span'
+		));
 	}
 
 	function testFlagInvolvement() {
