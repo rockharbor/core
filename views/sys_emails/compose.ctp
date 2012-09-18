@@ -85,6 +85,7 @@ if (!isset($this->passedArgs['mstoken'])) {
 			'style' => 'width:300px'
 		));
 		echo $this->Form->input('SysEmail.body', array(
+			'type' => 'textarea',
 			'label' => 'Body'
 		));
 		if (empty($this->data['SysEmail']['email_users'])) {

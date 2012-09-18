@@ -273,14 +273,14 @@ class User extends AppModel {
 		// merge data
 		$user = $currentUser['User'];
 		foreach ($updatedUser['User'] as $update => $val) {
-			if ($val === null) {
+			if (empty($val) && ($val !== 0 && $val !== '0' && $val !== false)) {
 				continue;
 			}
 			$user[$update] = $val;
 		}
 		$profile = $currentUser['Profile'];
 		foreach ($updatedUser['Profile'] as $update => $val) {
-			if ($val === null) {
+			if (empty($val) && ($val !== 0 && $val !== '0' && $val !== false)) {
 				continue;
 			}
 			$profile[$update] = $val;
