@@ -222,8 +222,20 @@ echo $this->MultiSelect->create();
 					'options' => array(
 						'data-core-modal' => '{"update":false}'
 					)
+				),
+				array(
+					'title' => 'Delete',
+					'url' => array(
+						'controller' => 'users',
+						'action' => 'delete',
+						$this->MultiSelect->token
+					),
+					'options' => array(
+						'id' => 'users-delete'
+					)
 				)
 			);
+			$this->Js->buffer('CORE.confirmation("users-delete", "Are you sure you want to delete the selected users?", {update:true})');
 			$colCount = 6;
 			$checkAll = true;
 			echo $this->element('multiselect', compact('links', 'colCount', 'checkAll')); 

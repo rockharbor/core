@@ -413,7 +413,8 @@ class InstallShell extends Shell {
 			'controllers/Rosters/edit',
 			'controllers/PaymentTypes',
 			'controllers/InvolvementTypes',
-			'controllers/Users/add'
+			'controllers/Users/add',
+			'controllers/Users/delete'
 		),
 		'Communications Admin' => array(
 			'controllers/Alerts/add',
