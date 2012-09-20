@@ -5,7 +5,8 @@
 	'default' => false,
 	'id' => 'SearchUserForm',
 	'inputDefaults' => array(
-		'empty' => true
+		'empty' => true,
+		'hiddenField' => false
 	)
 ));?>
 	<div class="clearfix">
@@ -22,13 +23,17 @@
 				'empty' => false
 			));
 			echo $this->Form->input('User.username');
+			echo $this->Form->input('User.group_id', array(
+				'multiple' => 'checkbox',
+				'empty' => false
+			));
 			echo $this->Form->input('User.active', array(
 				'type' => 'select',
 				'options' => array(
 					1 => 'Active',
 					0 => 'Inactive'
 				),
-				'selected' => 1
+				'selected' => isset($this->data['User']['active']) ? $this->data['User']['active'] : 1
 			));
 			echo $this->Form->input('User.flagged', array(
 				'type' => 'select',
@@ -55,8 +60,7 @@
 			));
 			echo $this->Form->input('Profile.currently_leading', array(
 				'type' => 'checkbox',
-				'label' => 'Currently Leading',
-				'hiddenField' => false
+				'label' => 'Currently Leading'
 			));
 		?>
 			</fieldset>
@@ -115,7 +119,6 @@
 					'type' => 'select',
 					'options' => $chunk,
 					'multiple' => 'checkbox',
-					'hiddenField' => false,
 					'label' => false,
 					'empty' => false
 				)), array(
@@ -152,7 +155,6 @@
 					'type' => 'select',
 					'options' => $chunk,
 					'multiple' => 'checkbox',
-					'hiddenField' => false,
 					'label' => false,
 					'empty' => false
 				)), array(
@@ -220,8 +222,20 @@ echo $this->MultiSelect->create();
 					'options' => array(
 						'data-core-modal' => '{"update":false}'
 					)
+				),
+				array(
+					'title' => 'Delete',
+					'url' => array(
+						'controller' => 'users',
+						'action' => 'delete',
+						$this->MultiSelect->token
+					),
+					'options' => array(
+						'id' => 'users-delete'
+					)
 				)
 			);
+			$this->Js->buffer('CORE.confirmation("users-delete", "Are you sure you want to delete the selected users?", {update:true})');
 			$colCount = 6;
 			$checkAll = true;
 			echo $this->element('multiselect', compact('links', 'colCount', 'checkAll')); 

@@ -483,6 +483,11 @@ class SearchesController extends AppController {
 		$this->set('middleSchools', $this->User->Profile->MiddleSchool->find('list'));
 		$this->set('highSchools', $this->User->Profile->HighSchool->find('list'));
 		$this->set('colleges', $this->User->Profile->College->find('list'));
-		$this->set(compact('results', 'regions', 'classifications', 'campuses'));
+		$this->set('groups', $this->User->Group->find('list', array(
+			'conditions' => array(
+				'Group.conditional' => false
+			)
+		)));
+		$this->set(compact('results', 'regions', 'classifications', 'campuses', 'groups'));
 	}
 }

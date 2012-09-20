@@ -587,19 +587,36 @@ class UsersController extends AppController {
 	}
 
 /**
- * Deletes a user
+ * Deletes user(s)
+ * 
+ * If a multiselect token is passed, those users are deleted. If not, it checks
+ * for the `User` named parameter and deletes that user instead.
  *
- * @param integer $id The id of the User to delete
+ * @param string $mskey The multiselect token
  */
-	function delete($id = null) {		
-		if (!$id) {
-			$this->cakeError('error404');
+	function delete($mskey = null) {	
+		$selected = $this->MultiSelect->getSelected($mskey);
+		
+		if (empty($selected)) {
+			if (!isset($this->passedArgs['User'])) {
+				return $this->cakeError('error404');
+			}
+			$selected = array($this->passedArgs['User']);
 		}
-		if ($this->User->delete($id)) {
-			$this->Session->setFlash(__('User record has been removed.', true), 'flash'.DS.'success');
-			$this->redirect(array('action'=>'index'));
+		
+		$successes = array();
+		foreach ($selected as $userId) {
+			$successes[] = $this->User->delete($userId);
 		}
-		$this->Session->setFlash(__('Unable to remove user. Please try again.', true), 'flash'.DS.'failure');
-		$this->redirect(array('action' => 'index'));
+		
+		if (count($successes) == count($selected)) {
+			$this->Session->setFlash(__('The selected users have been removed.', true), 'flash'.DS.'success');
+		} else {
+			$this->Session->setFlash(__('Some users could not be removed.', true), 'flash'.DS.'failure');
+		}
+		$this->redirect(array(
+			'controller' => 'pages',
+			'action' => 'message'
+		));
 	}
 }
