@@ -5,7 +5,8 @@
 	'default' => false,
 	'id' => 'SearchUserForm',
 	'inputDefaults' => array(
-		'empty' => true
+		'empty' => true,
+		'hiddenField' => false
 	)
 ));?>
 	<div class="clearfix">
@@ -24,8 +25,7 @@
 			echo $this->Form->input('User.username');
 			echo $this->Form->input('User.group_id', array(
 				'multiple' => 'checkbox',
-				'empty' => false,
-				'hiddenField' => false
+				'empty' => false
 			));
 			echo $this->Form->input('User.active', array(
 				'type' => 'select',
@@ -60,8 +60,7 @@
 			));
 			echo $this->Form->input('Profile.currently_leading', array(
 				'type' => 'checkbox',
-				'label' => 'Currently Leading',
-				'hiddenField' => false
+				'label' => 'Currently Leading'
 			));
 		?>
 			</fieldset>
@@ -120,7 +119,6 @@
 					'type' => 'select',
 					'options' => $chunk,
 					'multiple' => 'checkbox',
-					'hiddenField' => false,
 					'label' => false,
 					'empty' => false
 				)), array(
@@ -157,7 +155,6 @@
 					'type' => 'select',
 					'options' => $chunk,
 					'multiple' => 'checkbox',
-					'hiddenField' => false,
 					'label' => false,
 					'empty' => false
 				)), array(
