@@ -128,7 +128,7 @@ class User extends AppModel {
 			'dependent' => true
 		),
 		'Payment' => array(
-			'dependent' => true
+			'dependent' => false
 		),
 		'Invitation' => array(
 			'dependent' => true

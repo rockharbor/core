@@ -42,6 +42,47 @@ class UsersControllerTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 	
+	function testDelete() {
+		$this->loadFixtures('Roster', 'Payment');
+		
+		$this->Users->expectAt(0, 'cakeError', array('error404'));
+		$vars = $this->testAction('/users/delete');
+		
+		$this->Users->expectAt(1, 'cakeError', array('error404'));
+		$vars = $this->testAction('/users/delete/1');
+		
+		$vars = $this->testAction('/users/delete/User:1');
+		$result = $this->Users->Session->read('Message.flash.element');
+		$expected = 'flash'.DS.'success';
+		
+		$result = $this->Users->User->read(null, 1);
+		$expected = false;
+		$this->assertEqual($result, $expected);
+		
+		$result = $this->Users->User->Roster->read(null, 3);
+		$expected = false;
+		$this->assertEqual($result, $expected);
+		
+		$result = $this->Users->User->Payment->read(null, 1);
+		$this->assertIsA($result, 'Array');
+		
+		$this->Users->Session->write('MultiSelect.test', array(
+			'selected' => array(2, 3)
+		));
+
+		$vars = $this->testAction('/users/delete/test');
+		$result = $this->Users->Session->read('Message.flash.element');
+		$expected = 'flash'.DS.'success';
+		
+		$result = $this->Users->User->read(null, 2);
+		$expected = false;
+		$this->assertEqual($result, $expected);
+		
+		$result = $this->Users->User->read(null, 3);
+		$expected = false;
+		$this->assertEqual($result, $expected);
+	}
+	
 	function testRedirectOnResetPassword() {
 		// trick CoreTestCase into not setting up a user
 		$this->Users->Session->write('User', array());
