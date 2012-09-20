@@ -824,6 +824,13 @@ div.checkbox:hover .core-checkbox.disabled, div.radio:hover .core-radio.disabled
 	background: #ffcbbf !important;
 	border: 1px solid #e03a14 !important;
 }
+
+div.radio.form-error,
+div.checkbox.form-error {
+	background: transparent !important;
+	border:none !important;
+}
+
 div.input.error .error-message {
 	color: #e03a14;
 	margin-top: 3px;
