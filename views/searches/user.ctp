@@ -22,6 +22,11 @@
 				'empty' => false
 			));
 			echo $this->Form->input('User.username');
+			echo $this->Form->input('User.group_id', array(
+				'multiple' => 'checkbox',
+				'empty' => false,
+				'hiddenField' => false
+			));
 			echo $this->Form->input('User.active', array(
 				'type' => 'select',
 				'options' => array(

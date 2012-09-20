@@ -1093,6 +1093,38 @@ class UserTestCase extends CoreTestCase {
 		$results = Set::extract('/User/id', $users);
 		$expected = array();
 		$this->assertEqual($results, $expected);
+		
+		$search = array(
+			'Search' => array(
+				'operator' => 'AND'
+			),
+			'User' => array(
+				'group_id' => array(
+					1, 2
+				)
+			)
+		);
+		$search = $this->User->prepareSearch($this->Controller, $search);
+		$users = $this->User->find('all', $search);
+		$results = Set::extract('/User/id', $users);
+		$expected = array(1);
+		$this->assertEqual($results, $expected);
+		
+		$search = array(
+			'Search' => array(
+				'operator' => 'AND'
+			),
+			'User' => array(
+				'group_id' => array(
+					1, 8
+				)
+			)
+		);
+		$search = $this->User->prepareSearch($this->Controller, $search);
+		$users = $this->User->find('all', $search);
+		$results = Set::extract('/User/id', $users);
+		$expected = array(1, 2, 3, 4, 5, 6);
+		$this->assertEqual($results, $expected);
 	}
 
 	function testGenerateUsername() {
