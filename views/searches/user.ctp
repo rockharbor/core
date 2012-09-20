@@ -33,7 +33,7 @@
 					1 => 'Active',
 					0 => 'Inactive'
 				),
-				'selected' => 1
+				'selected' => isset($this->data['User']['active']) ? $this->data['User']['active'] : 1
 			));
 			echo $this->Form->input('User.flagged', array(
 				'type' => 'select',

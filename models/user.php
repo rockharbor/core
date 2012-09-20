@@ -661,7 +661,7 @@ class User extends AppModel {
 		unset($data['User']['password']);
 		unset($data['User']['confirm_password']);
 
-		$data = array_filter_recursive($data);
+		$data = Set::filter($data);
 		$options = (array)$this->postOptions($data) + array('contain' => array());
 		$link = $options['contain'];
 		
