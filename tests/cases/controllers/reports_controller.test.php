@@ -228,7 +228,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 				)
 			)
 		));
-		$vars = $this->testAction('/reports/user_map/User/testMap');
+		$vars = $this->testAction('/reports/user_map/User/mstoken:testMap');
 		$results = Set::extract('/Profile/name', $vars['results']);
 		$expected = array('Jeremy Harris');
 		$this->assertEqual($results, $expected);
@@ -237,7 +237,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 			'selected' => array(1, 3),
 			'search' => array()
 		));
-		$vars = $this->testAction('/reports/user_map/Roster/testMap');
+		$vars = $this->testAction('/reports/user_map/Roster/mstoken:testMap');
 		$results = Set::extract('/User/id', $vars['results']);
 		sort($results);
 		$expected = array(1, 3);
@@ -254,11 +254,12 @@ class ReportsControllerTestCase extends CoreTestCase {
 		
 		$this->Reports->Session->write('MultiSelect.testExportCsvWithSearch', array(
 			'selected' => array(),
-		   'search' => array(
+			'search' => array(
 				'conditions' => array(
 					'Ministry.parent_id' => null
 				)
-			)
+			),
+			'all' => true
 		));
 		$data = array(
 			'Export' => array(
@@ -272,7 +273,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 			)
 		);
 		
-		$vars = $this->testAction('/reports/export/Ministry/testExportCsvWithSearch.csv', array(
+		$vars = $this->testAction('/reports/export/Ministry/mstoken:testExportCsvWithSearch.csv', array(
 			'data' => $data
 		));
 		
@@ -300,7 +301,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 				)
 			)
 		);
-		$vars = $this->testAction('/reports/export/Ministry/testExportPrint.print', array(
+		$vars = $this->testAction('/reports/export/Ministry/mstoken:testExportPrint.print', array(
 			'data' => $data
 		));
 		$results = $vars['models'];
@@ -348,7 +349,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 				)
 			)
 		);
-		$vars = $this->testAction('/reports/export/Roster/testExportExtraFields.print', array(
+		$vars = $this->testAction('/reports/export/Roster/mstoken:testExportExtraFields.print', array(
 			'data' => $data
 		));
 		$results = Set::extract('/User/Profile/first_name', $vars['results']);

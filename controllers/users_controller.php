@@ -588,20 +588,14 @@ class UsersController extends AppController {
 
 /**
  * Deletes user(s)
- * 
- * If a multiselect token is passed, those users are deleted. If not, it checks
- * for the `User` named parameter and deletes that user instead.
  *
- * @param string $mskey The multiselect token
+ * @param string $id The user id
  */
-	function delete($mskey = null) {	
-		$selected = $this->MultiSelect->getSelected($mskey);
-		
-		if (empty($selected)) {
-			if (!isset($this->passedArgs['User'])) {
-				return $this->cakeError('error404');
-			}
-			$selected = array($this->passedArgs['User']);
+	function delete($id = null) {	
+		if ($id) {
+			$selected = array($id);
+		} else {
+			$selected = $this->_extractIds();
 		}
 		
 		$successes = array();

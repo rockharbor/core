@@ -45,13 +45,10 @@ class UsersControllerTestCase extends CoreTestCase {
 	function testDelete() {
 		$this->loadFixtures('Roster', 'Payment');
 		
-		$this->Users->expectAt(0, 'cakeError', array('error404'));
+		$this->Users->expectAt(0, 'cakeError', array('invalidMultiSelectSelection'));
 		$vars = $this->testAction('/users/delete');
 		
-		$this->Users->expectAt(1, 'cakeError', array('error404'));
 		$vars = $this->testAction('/users/delete/1');
-		
-		$vars = $this->testAction('/users/delete/User:1');
 		$result = $this->Users->Session->read('Message.flash.element');
 		$expected = 'flash'.DS.'success';
 		
@@ -70,7 +67,7 @@ class UsersControllerTestCase extends CoreTestCase {
 			'selected' => array(2, 3)
 		));
 
-		$vars = $this->testAction('/users/delete/test');
+		$vars = $this->testAction('/users/delete/0/mstoken:test');
 		$result = $this->Users->Session->read('Message.flash.element');
 		$expected = 'flash'.DS.'success';
 		

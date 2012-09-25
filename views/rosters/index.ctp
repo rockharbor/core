@@ -166,8 +166,7 @@
 					'url' => array(
 						'controller' => 'reports',
 						'action' => 'export',
-						'Roster',
-						$this->MultiSelect->token
+						'Roster'
 					),
 					'options' => array(
 						'data-core-modal' => '{"update":false}'
@@ -178,8 +177,7 @@
 					'url' => array(
 						'controller' => 'reports',
 						'action' => 'user_map',
-						'Roster',
-						$this->MultiSelect->token
+						'Roster'
 					),
 					'options' => array(
 						'data-core-modal' => '{"update":false}'
@@ -190,7 +188,7 @@
 					'url' => array(
 						'controller' => 'rosters',
 						'action' => 'delete',
-						$this->MultiSelect->token,
+						0,
 						'Involvement' => $involvement['Involvement']['id']
 					),
 					'options' => array(
@@ -202,7 +200,7 @@
 					'url' => array(
 						'controller' => 'rosters',
 						'action' => 'status',
-						$this->MultiSelect->token,
+						0,
 						'Involvement' => $involvement['Involvement']['id'],
 					),
 					'options' => array(
@@ -218,7 +216,7 @@
 						'controller' => 'payments',
 						'action' => 'add',
 						'Involvement' => $involvement['Involvement']['id'],
-						$this->MultiSelect->token
+						0
 					),
 					'options' => array(
 						'data-core-modal' => 'true'

@@ -12,7 +12,8 @@
 				'url' => array(
 					'controller' => 'notifications',
 					'action' => 'read',
-					$this->MultiSelect->token
+					0,
+					1
 				),
 				'options' => array(
 					'data-core-ajax' => 'true'
@@ -23,7 +24,7 @@
 				'url' => array(
 					'controller' => 'notifications',
 					'action' => 'read',
-					$this->MultiSelect->token,
+					0,
 					0
 				),
 				'options' => array(
@@ -35,7 +36,7 @@
 				'url' => array(
 					'controller' => 'notifications',
 					'action' => 'delete',
-					$this->MultiSelect->token
+					0
 				),
 				'options' => array(
 					'data-core-ajax' => 'true'

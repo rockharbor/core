@@ -228,7 +228,7 @@ echo $this->MultiSelect->create();
 					'url' => array(
 						'controller' => 'users',
 						'action' => 'delete',
-						$this->MultiSelect->token
+						0
 					),
 					'options' => array(
 						'id' => 'users-delete'

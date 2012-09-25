@@ -120,7 +120,7 @@ class AlertsControllerTestCase extends CoreTestCase {
 		$this->Alerts->Session->write('MultiSelect.test', array(
 			'selected' => array(2,3)
 		));
-		$vars = $this->testAction('/alerts/read/test');
+		$vars = $this->testAction('/alerts/read/mstoken:test');
 		$read = $this->Alerts->Alert->AlertsUser->find('all', array(
 			'conditions' => array(
 				'user_id' => 1

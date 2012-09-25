@@ -91,7 +91,7 @@ class NotificationsControllerTestCase extends CoreTestCase {
 		$this->Notifications->Session->write('MultiSelect.test', array(
 			'selected' => array(1,2)
 		));
-		$vars = $this->testAction('/notifications/read/test');
+		$vars = $this->testAction('/notifications/read/0/1/mstoken:test');
 		$results = $this->Notifications->Notification->find('all', array(
 			'conditions' => array(
 				'user_id' => 1

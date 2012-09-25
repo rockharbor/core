@@ -64,7 +64,7 @@ class LeadersControllerTestCase extends CoreTestCase {
 		));
 		
 		$notificationsBefore =  $this->Leaders->Leader->User->Notification->find('count');
-		$vars = $this->testAction('/involvement_leaders/add/test/Involvement:1/model:Involvement', array(
+		$vars = $this->testAction('/involvement_leaders/add/Involvement:1/model:Involvement/mstoken:test', array(
 			'return' => 'vars'
 		));
 

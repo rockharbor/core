@@ -8,8 +8,7 @@ $links = array(
 			'action' => 'add',
 			'model' => $named['leader_model'],
 			$named['leader_model'] => $named['leader_model_id'],
-			'User' => $activeUser['User']['id'],
-			$this->MultiSelect->token
+			'User' => $activeUser['User']['id']
 		),
 		'options' => array(
 			'success' => 'CORE.showFlash(data);'
@@ -23,7 +22,6 @@ if ($named['leader_model'] == 'Involvement') {
 		'url' => array(
 			'controller' => 'involvements',
 			'action' => 'invite',
-			$this->MultiSelect->token,
 			1, // status = confirmed
 			'Involvement' => $named['leader_model_id']
 		),

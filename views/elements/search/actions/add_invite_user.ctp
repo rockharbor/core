@@ -5,7 +5,6 @@ $links = array(
 		'url' => array(
 			'controller' => 'involvements',
 			'action' => 'invite',
-			$this->MultiSelect->token,
 			1, // status = confirmed
 			'Involvement' => $named['Involvement']
 		),
@@ -18,7 +17,6 @@ $links = array(
 		'url' => array(
 			'controller' => 'involvements',
 			'action' => 'invite',
-			$this->MultiSelect->token,
 			3, // status = invited
 			'Involvement' => $named['Involvement']
 		),

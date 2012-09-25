@@ -120,20 +120,10 @@ class NotificationsController extends AppController {
  * @param boolean $read 1 for `read`, 0 for `unread`
  */
 	function read($id = null, $read = 1) {
-		if (!$id) {
-			$this->cakeError('error404');
-		}
-		
-		// check to see if this is a MultiSelect
-		if ($this->MultiSelect->check($id)) {			
-			$search = $this->MultiSelect->getSearch($id);
-			$selected = $this->MultiSelect->getSelected($id);
-			
-			$search['conditions']['Notification.id'] = $selected;
-			$results = $this->Notification->find('all', $search);
-			$ids = $selected;
-		} else {
+		if ($id) {			
 			$ids = array($id);
+		} else {
+			$ids = $this->_extractIds($this->Notification, '/Notification/id');
 		}
 		
 		foreach ($ids as $id) {
@@ -158,20 +148,11 @@ class NotificationsController extends AppController {
  * @param integer $id The notification id
  */
 	function delete($id = null) {
-		if (!$id) {
-			$this->cakeError('error404');
-		}
-		
 		// check to see if this is a MultiSelect
-		if ($this->MultiSelect->check($id)) {
-			$search = $this->MultiSelect->getSearch($id);
-			$selected = $this->MultiSelect->getSelected($id);
-						
-			$search['conditions']['Notification.id'] = $selected;			
-			$results = $this->Notification->find('all', $search);
-			$ids = $selected; // Set::extract('/Notification/id', $results);
-		} else {
+		if ($id) {
 			$ids = array($id);
+		} else {
+			$ids = $this->_extractIds($this->Notification, '/Notification/id');
 		}
 
 		foreach ($ids as $id) {
