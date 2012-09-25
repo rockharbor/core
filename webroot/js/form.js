@@ -231,11 +231,12 @@ CORE.initFormUI = function() {
 	// special check for "check all" multi selects
 	$('input.multi-select-box[value=all]').change(function() {
 		var token = $(this).data('multiselect-token');
+		var disabled = $(this).prop('checked');
 		$('.multi-select-box[data-multiselect-token='+token+']').each(function() {
 			if (this.value !== 'all') {
 				$(this).parent().removeClass('disabled');
 				$(this).parent().removeClass('selected');
-				if (this.disabled) {
+				if (disabled) {
 					$(this).parent().addClass('disabled');
 				}
 			}

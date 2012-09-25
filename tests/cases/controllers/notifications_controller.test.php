@@ -118,7 +118,7 @@ class NotificationsControllerTestCase extends CoreTestCase {
 		$this->Notifications->Session->write('MultiSelect.test', array(
 			'selected' => array(1,2,3)
 		));
-		$vars = $this->testAction('/notifications/delete/test');
+		$vars = $this->testAction('/notifications/delete/0/mstoken:test');
 		$results = $this->Notifications->Notification->find('count');
 		$this->assertEqual($results, 2);
 	}
