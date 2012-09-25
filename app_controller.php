@@ -469,5 +469,48 @@ class AppController extends Controller {
 		}		
 	}
 
+/**
+ * Extracts ids from multiple selection
+ * 
+ * Errors are thrown if nothing is selected or a saved search is missing when 
+ * 'check all' is selected.
+ * 
+ * {{{
+ * if ($id) {
+ *   // handle non MultiSelect requests
+ *   $ids = array($id);
+ * } else {
+ *   // get selected ids
+ *   $ids = $this->_extractIds($this->User, '/User/id');
+ * }
+ * }}}
+ * 
+ * @param Model $model The model to use for searching
+ * @param string $path A `Set::extract()`-compatible path
+ * @return array Array of ids 
+ * @see MultiSelect.MultiSelect
+ */
+	function _extractIds($model = null, $path = '/User/id') {
+		if (!isset($this->MultiSelect)) {
+			trigger_error('MultiSelect component not loaded.', E_USER_NOTICE);
+		}
+		$ids = $this->MultiSelect->getSelected();
+		if ($ids === 'all') {
+			if (!$model) {
+				trigger_error('Invalid model.', E_USER_NOTICE);
+			}
+			$search = $this->MultiSelect->getSearch();
+			if (empty($search)) {
+				$this->cakeError('invalidMultiSelectSelection');
+			}
+			$results = $model->find('all', $search);
+			$ids = Set::extract($path, $results);
+		}
+		if (empty($ids)) {
+			$this->cakeError('invalidMultiSelectSelection');
+		}
+		return $ids;
+	}
+
 }
 ?>
