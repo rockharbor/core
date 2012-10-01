@@ -18,11 +18,14 @@ $this->Report->alias(array('HouseholdMember.Household.HouseholdContact.Profile.a
 $this->Report->alias(array('HouseholdMember.Household.HouseholdContact.Profile.cell_phone' => 'Household Contact Cell Phone'));
 $this->Report->alias(array('HouseholdMember.Household.HouseholdContact.Profile.home_phone' => 'Household Contact Home Phone'));
 $this->Report->alias(array('HouseholdMember.Household.HouseholdContact.Profile.work_phone' => 'Household Contact Work Phone'));
+$this->Report->alias(array('Profile.ElementarySchool.name' => 'Elementary School'));
+$this->Report->alias(array('Profile.MiddleSchool.name' => 'Middle School'));
+$this->Report->alias(array('Profile.HighSchool.name' => 'High School'));
+$this->Report->alias(array('Profile.College.name' => 'College'));
 ?>
 <div class="clearfix">
-	<fieldset class="grid_6">
+	<fieldset class="grid_3 alpha">
 		<legend>User Information</legend>
-		<div class="grid_3 alpha">
 			<?php
 			echo $this->Form->input('Export.Profile.first_name', array(
 				'type' => 'checkbox',
@@ -38,10 +41,6 @@ $this->Report->alias(array('HouseholdMember.Household.HouseholdContact.Profile.w
 			echo $this->Form->input('Export.Profile.age', array(
 				'type' => 'checkbox'
 			));
-			?>
-		</div>
-		<div class="grid_3 omega">
-			<?php
 			echo $this->Form->input('Export.Profile.JobCategory.name', array(
 				'type' => 'checkbox',
 				'label' => 'Job category'
@@ -64,7 +63,33 @@ $this->Report->alias(array('HouseholdMember.Household.HouseholdContact.Profile.w
 				'label' => 'Permission group'
 			));
 			?>
-		</div>
+	</fieldset>
+	<fieldset class="grid_3 omega">
+		<legend>School Information</legend>
+			<?php
+			echo $this->Form->input('Export.Profile.grade', array(
+				'type' => 'checkbox'
+			));
+			echo $this->Form->input('Export.Profile.graduation_year', array(
+				'type' => 'checkbox'
+			));
+			echo $this->Form->input('Export.Profile.ElementarySchool.name', array(
+				'type' => 'checkbox',
+				'label' => 'Elementary School'
+			));
+			echo $this->Form->input('Export.Profile.MiddleSchool.name', array(
+				'type' => 'checkbox',
+				'label' => 'Middle School'
+			));
+			echo $this->Form->input('Export.Profile.HighSchool.name', array(
+				'type' => 'checkbox',
+				'label' => 'High School'
+			));
+			echo $this->Form->input('Export.Profile.College.name', array(
+				'type' => 'checkbox',
+				'label' => 'College'
+			));
+			?>
 	</fieldset>
 	<fieldset class="grid_3">
 		<legend>Contact Information</legend>
