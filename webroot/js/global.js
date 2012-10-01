@@ -8,6 +8,14 @@ if (CORE == undefined) {
 }
 
 /**
+ * The plugin we are in, if any. This makes `core-update-url` aware that we are
+ * in a plugin in order to append `/page:1` for routed index pages.
+ * 
+ * @var string
+ */
+CORE.plugin = '';
+
+/**
  * Convenience method for updating an element's update container with html. If
  * `html` is not defined, a new request will be made
  *
@@ -173,7 +181,7 @@ $.fn.data = function() {
 			parsed.href = arguments[1];
 			var path = parsed.pathname.replace(/^\/|\/$/g, '');
 			var pieces = path.split('/');
-			if (pieces.length == 1) {
+			if (pieces.length == 1 || (CORE.plugin !== '' && pieces.length == 2)) {
 				pieces.push('index');
 			}
 			pieces.push('page:1');

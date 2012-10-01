@@ -49,6 +49,11 @@
 		$this->Js->buffer('CORE.init();');
 		$element = addslashes(str_replace(array("\r", "\r\n", "\n"), '', $this->element('wysiwyg_toolbar')));
 		$this->Js->buffer("CORE.wysiwygToolbar = '$element';", true);
+		if ($this->params['plugin']) {
+			// set plugin so update system is aware (for magic `/index/page:1` append)
+			$this->Js->buffer('CORE.plugin = "'.$this->params['plugin'].'";');
+		}
+		
 		echo $this->AssetCompress->includeAssets(Configure::read('debug') == 0);
 		echo $scripts_for_layout;
 		echo $this->Js->writeBuffer();
