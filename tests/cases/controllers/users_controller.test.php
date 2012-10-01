@@ -637,6 +637,31 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, 2);
 		$result = $user['HouseholdMember'][0]['Household']['id'];
 		$this->assertEqual($result, 2);
+		
+		$data = array(
+			'Profile' => array(
+				'first_name' => 'Ricky',
+				'last_name' => 'Rockharbor',
+				'primary_email' => null,
+				'birth_date' => array(
+					'year' => '',
+					'month' => '',
+					'day' => ''
+				)
+			),
+			'Household' => array(
+				'id' => 2
+			)
+		);
+		// will redirect to choose_user because a user is found
+		$vars = $this->testAction('/users/household_add/Household:2', array(
+			'data' => $data
+		));
+		$this->assertEqual($vars['redirect'], FULL_BASE_URL.'/households/invite/:ID:/2');
+		
+		$results = Set::extract('/User/id', $vars['users']);
+		$expected = array(2, 3);
+		$this->assertEqual($results, $expected);
 	}
 	
 	function testSpecialBirthdateValidation() {
