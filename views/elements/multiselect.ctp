@@ -42,8 +42,10 @@ if (!isset($links)) {
 		$link = array_merge($_default, $link);
 		if (is_string($link['url'])) {
 			$link['url'] = rtrim($link['url'], '/').'/mstoken:'.$this->MultiSelect->token;
+			$link['url'] .= '/mspersist:1';
 		} else {
 			$link['url']['mstoken'] = $this->MultiSelect->token;
+			$link['url']['mspersist'] = 1;
 		}
 		if (isset($link['permission']) && $link['permission']) {
 			echo $this->Html->link($link['title'], $link['url'], $link['options']);
