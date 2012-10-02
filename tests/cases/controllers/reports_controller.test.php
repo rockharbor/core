@@ -248,6 +248,45 @@ class ReportsControllerTestCase extends CoreTestCase {
 		$expected = array('rickyrockharbor');
 		$this->assertEqual($results, $expected);
 	}
+	
+	function testUserMapMissingCoords() {
+		$this->loadFixtures('Address');
+		$floatReg = '/^[+-]?(([0-9]+)|([0-9]*\.[0-9]+|[0-9]+\.[0-9]*)|(([0-9]+|([0-9]*\.[0-9]+|[0-9]+\.[0-9]*))[eE][+-]?[0-9]+))$/';
+		
+		$this->Reports->Session->write('MultiSelect.test', array(
+			'selected' => array(2, 3),
+			'search' => array()
+		));
+		
+		$vars = $this->testAction('/reports/user_map/User/test');
+		
+		foreach ($vars['results'] as $result) {
+			$addresses = $result['Address'];
+			foreach ($addresses as $address) {
+				if (!empty($address['id'])) {
+					$this->assertNotEqual(0.0000000, $address['lat']);
+					$this->assertNotEqual(0.0000000, $address['lng']);
+					$this->assertPattern($floatReg, $address['lat']);
+					$this->assertPattern($floatReg, $address['lng']);
+				}
+			}
+			
+			$address = $result['ActiveAddress'];
+			if (!empty($result['ActiveAddress']['id'])) {
+				$this->assertNotEqual(0.0000000, $address['lat']);
+				$this->assertNotEqual(0.0000000, $address['lng']);
+				$this->assertPattern($floatReg, $address['lat']);
+				$this->assertPattern($floatReg, $address['lng']);
+			}
+		}
+		
+		// ensure the new data was saved
+		$address = ClassRegistry::init('Address')->read(null, 4);
+		$this->assertNotEqual(0.0000000, $address['Address']['lat']);
+		$this->assertNotEqual(0.0000000, $address['Address']['lng']);
+		$this->assertPattern($floatReg, $address['Address']['lat']);
+		$this->assertPattern($floatReg, $address['Address']['lng']);
+	}
 
 	function testExportCsvWithSearch() {
 		$this->Reports->RequestHandler = new MockReportsRequestHandlerComponent();

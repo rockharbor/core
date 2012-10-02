@@ -264,7 +264,7 @@ class UserTestCase extends CoreTestCase {
 			)
 		));
 		$this->assertEqual($results['User']['id'], 2);
-		$this->assertEqual(count($results['Address']), 0);
+		$this->assertEqual(count($results['Address']), 1);
 		
 		$user = array(
 			'User' => array(
@@ -745,7 +745,7 @@ class UserTestCase extends CoreTestCase {
 							'last_name' => 'rockharbor'
 						),
 						'ActiveAddress' => array(
-							'city' => null
+							'city' => 'Costa Mesa'
 						)
 					),
 					array(
@@ -758,7 +758,7 @@ class UserTestCase extends CoreTestCase {
 							'last_name' => 'rockharbor'
 						),
 						'ActiveAddress' => array(
-							'city' => null
+							'city' => 'Costa Mesa'
 						)
 					)
 				),
@@ -1139,8 +1139,40 @@ class UserTestCase extends CoreTestCase {
 		$results = Set::extract('/User/id', $users);
 		$expected = array(4);
 		$this->assertEqual($results, $expected);
+		
+		$search = array(
+			'Search' => array(
+				'operator' => 'OR'
+			),
+			'Profile' => array(
+				'first_name' => 'jeremy',
+				'birth_date' => array(
+					'year' => '',
+					'month' => '',
+					'day' => ''
+				)
+			)
+		);
+		$results = $this->User->prepareSearch($this->Controller, $search);
+		$expected = array(
+			'link' => array(
+				'Profile' => array(
+					'fields' => array(
+						'user_id',
+						'first_name'
+					)
+				)
+			),
+			'group' => 'User.id',
+			'conditions' => array(
+				'OR' => array(
+					'Profile.first_name LIKE' => '%jeremy%'
+				)
+			)
+		);
+		$this->assertEqual($results, $expected);
 	}
-
+	
 	function testGenerateUsername() {
 		$result = $this->User->generateUsername();
 		$expected = '';

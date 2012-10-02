@@ -694,3 +694,12 @@ CORE.closeModals = function(modalName) {
 		$('#content').dialog('close');
 	}
 }
+
+/** Fix for jQuery bug 4671
+ *
+ * @link http://bugs.jqueryui.com/ticket/4671
+ * @link https://github.com/ksenzee/views3ui/blob/bdf8d279d0a78b6a921e446fc7448fabffa3322d/js/jquery.ui.dialog.patch.js
+ */
+if ($.ui && $.ui.dialog) {
+	$.ui.dialog.overlay.events = $.map('focus,keydown,keypress'.split(','), function(event) { return event + '.dialog-overlay'; }).join(' ');
+}
