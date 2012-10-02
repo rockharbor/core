@@ -419,6 +419,40 @@ class ReportsController extends AppController {
 				'Image'
 			)
 		));
+		
+		// fill in missing geocoordinates - while this logic belongs in the model
+		// layer afterFind isn't called on contained associations
+		foreach ($results as $key => $result) {
+			// has many
+			foreach ($result['Address'] as $addressKey => $address) {
+				if (!empty($address['id']) && ($address['lat'] == 0.0000000 || $address['lng'] == 0.0000000)) {
+					$coords = $this->User->Address->geoCoordinates($address);
+					if (isset($coords['lat']) && isset($coords['lng'])) {
+						$this->User->Address->id = $address['id'];
+						$this->User->Address->saveField('lat', $coords['lat']);
+						$this->User->Address->saveField('lng', $coords['lng']);
+						$address['lat'] = $coords['lat'];
+						$address['lng'] = $coords['lng'];
+					}
+				}
+				$results[$key]['Address'][$addressKey] = $address;
+			}
+			
+			// has one
+			$address = $result['ActiveAddress'];
+			if (!empty($address['id']) && ($address['lat'] == 0.0000000 || $address['lng'] == 0.0000000)) {
+				$coords = $this->User->Address->geoCoordinates($address);
+				if (isset($coords['lat']) && isset($coords['lng'])) {
+					$this->User->Address->id = $address['id'];
+					$this->User->Address->saveField('lat', $coords['lat']);
+					$this->User->Address->saveField('lng', $coords['lng']);
+					$address['lat'] = $coords['lat'];
+					$address['lng'] = $coords['lng'];
+				}
+			}
+			$results[$key]['ActiveAddress'] = $address;
+		}
+		
 		$this->set(compact('results', 'model'));
 	}
 }

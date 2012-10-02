@@ -74,6 +74,40 @@ class AddressFixture extends CakeTestFixture {
 			'model' => 'Involvement',
 			'primary' => 1,
 			'active' => 1
+		),
+		array(
+			'id' => 4,
+			'name' => 'Central Mini-lab 2',
+			'address_line_1' => '3080 Airway',
+			'address_line_2' => '',
+			'city' => 'Costa Mesa',
+			'state' => 'CA',
+			'zip' => 92626,
+			'lat' => 0.0000000,
+			'lng' => 0.0000000,
+			'created' => '2010-02-24 10:52:16',
+			'modified' => '2010-06-07 08:34:48',
+			'foreign_key' => 2,
+			'model' => 'User',
+			'primary' => 1,
+			'active' => 1
+		),
+		array(
+			'id' => 5,
+			'name' => 'Central Mini-lab 2',
+			'address_line_1' => '3080 Airway',
+			'address_line_2' => '',
+			'city' => 'Costa Mesa',
+			'state' => 'CA',
+			'zip' => 92626,
+			'lat' => 1.2345678,
+			'lng' => 0.0000000,
+			'created' => '2010-02-24 10:52:16',
+			'modified' => '2010-06-07 08:34:48',
+			'foreign_key' => 3,
+			'model' => 'User',
+			'primary' => 1,
+			'active' => 1
 		)
 	);
 }

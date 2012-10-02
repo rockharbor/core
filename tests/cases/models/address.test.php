@@ -65,7 +65,7 @@ class AddressTestCase extends CoreTestCase {
 		$result = $this->Address->toggleActivity(2, false);
 		$this->assertFalse($result);
 		$result = $this->Address->toggleActivity(4, false);
-		$this->assertTrue($result);
+		$this->assertFalse($result);
 		$result = $this->Address->toggleActivity(1, true);
 		$this->assertTrue($result);
 	}

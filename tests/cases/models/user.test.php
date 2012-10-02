@@ -264,7 +264,7 @@ class UserTestCase extends CoreTestCase {
 			)
 		));
 		$this->assertEqual($results['User']['id'], 2);
-		$this->assertEqual(count($results['Address']), 0);
+		$this->assertEqual(count($results['Address']), 1);
 		
 		$user = array(
 			'User' => array(
@@ -745,7 +745,7 @@ class UserTestCase extends CoreTestCase {
 							'last_name' => 'rockharbor'
 						),
 						'ActiveAddress' => array(
-							'city' => null
+							'city' => 'Costa Mesa'
 						)
 					),
 					array(
@@ -758,7 +758,7 @@ class UserTestCase extends CoreTestCase {
 							'last_name' => 'rockharbor'
 						),
 						'ActiveAddress' => array(
-							'city' => null
+							'city' => 'Costa Mesa'
 						)
 					)
 				),
