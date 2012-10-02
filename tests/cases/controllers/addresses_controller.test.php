@@ -68,7 +68,7 @@ class AddressesControllerTestCase extends CoreTestCase {
 		sort($results);
 		$this->assertEqual($results, array(1, 2));
 
-		$vars = $this->testAction('/user_addresses/index/User:2');
+		$vars = $this->testAction('/user_addresses/index/User:4');
 		$result = $vars['addresses'];
 		$this->assertEqual($result, array());
 	}

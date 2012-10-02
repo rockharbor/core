@@ -642,11 +642,15 @@ class User extends AppModel {
 			),
 			'Profile' => array(
 				'Birthday' => array(),
-				'email' => array()
+				'email' => array(),
+				'birth_date' => null
 			),
 			'Distance' => array()
 		);
 		$data = Set::merge($_search, $data);
+		
+		// deconstruct and normalize special fields
+		$data['Profile']['birth_date'] = $this->Profile->deconstruct('birth_date', $data['Profile']['birth_date']);
 
 		// remove and store fields that aren't actually in the db
 		$operator = $data['Search']['operator'];
