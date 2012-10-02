@@ -139,16 +139,7 @@ class SysEmailsController extends AppController {
 			if (isset($this->passedArgs['Ministry'])) {
 				$ministries = array($this->passedArgs['Ministry']);
 			} else {
-				$token = $this->params['named']['mstoken'];
-				$ministries = $this->MultiSelect->getSelected($token);
-				if (empty($ministries)) {
-					$search = $this->MultiSelect->getSearch($token);
-					if (empty($search)) {
-						$search['conditions'] = array('id' => null);
-					}
-					$results = $this->Ministry->find('all', $search);
-					$ministries = Set::extract('/Ministry/id', $results);
-				}
+				$ministries = $this->_extractIds($this->Ministry, '/Ministry/id');
 			}
 			
 			$this->users = $this->_getUsers('Ministry', $ministries, $group);
@@ -170,16 +161,7 @@ class SysEmailsController extends AppController {
 			if (isset($this->passedArgs['Involvement'])) {
 				$involvements = array($this->passedArgs['Involvement']);
 			} else {
-				$token = $this->params['named']['mstoken'];
-				$involvements = $this->MultiSelect->getSelected($token);
-				if (empty($involvements)) {
-					$search = $this->MultiSelect->getSearch($token);
-					if (empty($search)) {
-						$search['conditions'] = array('id' => null);
-					}
-					$results = $this->Involvement->find('all', $search);
-					$involvements = Set::extract('/Involvement/id', $results);
-				}
+				$involvements = $this->_extractIds($this->Involvement, '/Involvement/id');
 			}
 			
 			$this->users = $this->_getUsers('Involvement', $involvements, $group);
@@ -195,31 +177,16 @@ class SysEmailsController extends AppController {
  */	
 	function roster() {
 		if (empty($this->data['SysEmail']['to'])) {
-			$token = $this->params['named']['mstoken'];
-			$rosters = $this->MultiSelect->getSelected($token);
-			if (empty($rosters)) {
-				$search = $this->MultiSelect->getSearch($token);
-				if (empty($search)) {
-					$search['conditions'] = array('id' => null);
-				}
-				if (isset($search['fields'])) {
-					$search['fields'][] = 'user_id';
-				} else {
-					$search['fields'] = array('user_id');
-				}
-				$results = $this->Involvement->Roster->find('all', $search);
-			} else {
-				$results = $this->Involvement->Roster->find('all', array(
-					'fields' => array(
-						'user_id'
-					),
-					'conditions' => array(
-						'id' => $rosters
-					)
-				));
-			}
-			
-			$this->users = Set::extract('/Roster/user_id', $results);
+			$rosters = $this->_extractIds($this->Involvement->Roster, '/Roster/id');
+			$users = $this->Involvement->Roster->find('all', array(
+				'fields' => array(
+					'user_id'
+				),
+				'conditions' => array(
+					'id' => $rosters
+				)
+			));
+			$this->users = Set::extract('/Roster/user_id', $users);
 		}
 		$this->setAction('compose');
 	}

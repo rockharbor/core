@@ -151,7 +151,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 			'selected' => array(1,4,5),
 			'search' => array()
 		));
-		$vars = $this->testAction('/ministries/bulk_edit/test', array(
+		$vars = $this->testAction('/ministries/bulk_edit/mstoken:test', array(
 			'data' => array(
 				'Ministry' => array(
 					'active' => 1,
@@ -181,7 +181,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$expected = array(1,1,2);
 		$this->assertEqual($results, $expected);
 
-		$vars = $this->testAction('/ministries/bulk_edit/test', array(
+		$vars = $this->testAction('/ministries/bulk_edit/mstoken:test', array(
 			'data' => array(
 				'Ministry' => array(
 					'active' => 1,
@@ -214,7 +214,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 				'campus_id' => 2
 			)
 		));
-		$vars = $this->testAction('/ministries/bulk_edit/test', array(
+		$vars = $this->testAction('/ministries/bulk_edit/mstoken:test', array(
 			'data' => array(
 				'Ministry' => array(
 					'active' => 1,
@@ -240,7 +240,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$expected = array(5,5,null);
 		$this->assertEqual($results, $expected);
 		
-		$vars = $this->testAction('/ministries/bulk_edit/test', array(
+		$vars = $this->testAction('/ministries/bulk_edit/mstoken:test', array(
 			'data' => array(
 				'Ministry' => array(
 					'active' => 1,
@@ -266,7 +266,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$expected = array(0,0,0);
 		$this->assertEqual($results, $expected);
 		
-		$vars = $this->testAction('/ministries/bulk_edit/test', array(
+		$vars = $this->testAction('/ministries/bulk_edit/mstoken:test', array(
 			'data' => array(
 				'Ministry' => array(
 					'active' => 1,

@@ -20,8 +20,7 @@ echo $this->MultiSelect->create();
 				'title' => 'Mark as read',
 				'url' => array(
 					'controller' => 'alerts',
-					'action' => 'read',
-					$this->MultiSelect->token
+					'action' => 'read'
 				),
 				'options' => array(
 					'data-core-ajax' => 'true'

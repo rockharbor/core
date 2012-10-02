@@ -201,7 +201,8 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 				'contain' => array(
 					'User'
 				)
-			)
+			),
+			'all' => true
 		));
 		$vars = $this->testAction('/sys_emails/roster/mstoken:test');
 		$results = Set::extract('/User/id', $vars['toUsers']);

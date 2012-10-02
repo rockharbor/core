@@ -6,7 +6,7 @@ $links = array(
 		'url' => array(
 			'controller' => strtolower(Inflector::underscore($model.'Images')),
 			'action' => 'promote',
-			$this->MultiSelect->token,
+			0,
 			1
 		),
 		'options' => array(

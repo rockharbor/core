@@ -304,7 +304,10 @@ class ReportsController extends AppController {
  * @param string $uid The MultiSelect cache key to get results from
  * @see MultiSelectComponent::getSearch();
  */ 
-	function export($model, $uid) {
+	function export($model) {
+		// persist selected items through POST requests
+		$this->here .= '/mspersist:1';
+		
 		if (!empty($this->data)) {
 			$options = array();
 			if ($this->data['Export']['type'] == 'csv') {
@@ -322,14 +325,10 @@ class ReportsController extends AppController {
 			unset($this->data['Export']['squashed_fields']);
 			unset($this->data['Export']['multiple_records']);
 			
-			$search = $this->MultiSelect->getSearch($uid);
-			$selected = $this->MultiSelect->getSelected($uid);
-			// assume they want all if they didn't select any
 			$pk = $this->{$model}->primaryKey;
-			if (empty($selected)) {
-				$selected = $this->{$model}->find('all', $search);
-				$selected = Set::extract("/$model/$pk", $selected);
-			}
+			
+			$selected = $this->_extractIds($this->{$model}, "/$model/$pk");
+			
 			// add to field list if contain or link is restricting them
 			$options = $this->{$model}->postOptions($this->data['Export']);
 			$options['conditions']["$model.$pk"] = $selected;

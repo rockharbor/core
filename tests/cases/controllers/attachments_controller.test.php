@@ -90,7 +90,7 @@ class AttachmentsControllerTestCase extends CoreTestCase {
 		$this->Attachments->Session->write('MultiSelect.test', array(
 			'selected' => array(1, 2)
 		));
-		$this->testAction('/involvement_images/promote/test/1');
+		$this->testAction('/involvement_images/promote/0/1/mstoken:test');
 		$results = $this->Attachments->Image->find('all', array(
 			'conditions' => array(
 				'id' => array(6, 7)
@@ -111,7 +111,7 @@ class AttachmentsControllerTestCase extends CoreTestCase {
 		$this->Attachments->Session->write('MultiSelect.test', array(
 			'selected' => array(1, 2)
 		));
-		$this->testAction('/ministry_images/promote/test/1');
+		$this->testAction('/ministry_images/promote/0/1/mstoken:test');
 		$results = $this->Attachments->Image->find('all', array(
 			'conditions' => array(
 				'id' => array(8, 9)

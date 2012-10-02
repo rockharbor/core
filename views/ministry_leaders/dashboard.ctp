@@ -24,8 +24,7 @@
 					'title' => 'Bulk Edit',
 					'url' => array(
 						'controller' => 'ministries',
-						'action' => 'bulk_edit',
-						$this->MultiSelect->token,
+						'action' => 'bulk_edit'
 					),
 					'options' => array(
 						'data-core-modal' => '{"update":false}'

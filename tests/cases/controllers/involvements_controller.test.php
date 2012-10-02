@@ -300,7 +300,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		));
 		$notificationCountBefore = $this->Involvements->Involvement->Roster->User->Notification->find('count');
 		$countBefore = $this->Involvements->Involvement->Roster->find('count');
-		$vars = $this->testAction('/involvements/invite_roster/test/3/Involvement:1');
+		$vars = $this->testAction('/involvements/invite_roster/3/Involvement:1/mstoken:test');
 		$invites = $this->Involvements->Involvement->Roster->User->Invitation->find('all');
 		$this->assertEqual(count($invites), 2);
 		$countNow = $this->Involvements->Involvement->Roster->find('count');
@@ -318,7 +318,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 			'search' => array()
 		));
 		$notificationCountBefore = $this->Involvements->Involvement->Roster->User->Notification->find('count');
-		$vars = $this->testAction('/involvements/invite_roster/test/3/Involvement:1');
+		$vars = $this->testAction('/involvements/invite_roster/3/Involvement:1/mstoken:test');
 		$notificationCountAfter = $this->Involvements->Involvement->Roster->User->Notification->find('count');
 		// one for each leader for each roster
 		$this->assertEqual($notificationCountAfter-$notificationCountBefore, 2);
@@ -333,7 +333,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		));
 		$countBefore = $this->Involvements->Involvement->Roster->find('count');
 		$notificationCountBefore = $this->Involvements->Involvement->Roster->User->Notification->find('count');
-		$vars = $this->testAction('/involvements/invite/test/3/Involvement:1');
+		$vars = $this->testAction('/involvements/invite/3/Involvement:1/mstoken:test');
 		$invites = $this->Involvements->Involvement->Roster->User->Invitation->find('all');
 		$this->assertEqual(count($invites), 2);
 		$countNow = $this->Involvements->Involvement->Roster->find('count');
@@ -352,7 +352,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		));
 		$countBefore = $this->Involvements->Involvement->Roster->find('count');
 		$notificationCountBefore = $this->Involvements->Involvement->Roster->User->Notification->find('count');
-		$vars = $this->testAction('/involvements/invite/test/1/Involvement:1');
+		$vars = $this->testAction('/involvements/invite/1/Involvement:1/mstoken:test');
 		$countNow = $this->Involvements->Involvement->Roster->find('count');
 		$this->assertEqual($countNow - $countBefore, 2);
 		$notificationCountAfter = $this->Involvements->Involvement->Roster->User->Notification->find('count');

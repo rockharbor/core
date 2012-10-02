@@ -84,11 +84,10 @@ class LeadersController extends AppController {
 /**
  * Adds a leader
  *
- * @param string $mskey The MultiSelect token
  * @todo check if they already exists and if they're allowed to lead
  */
-	function add($mskey) {
-		$userIds = $this->MultiSelect->getSelected($mskey);
+	function add() {
+		$userIds = $this->_extractIds();
 		
 		$model = $this->passedArgs['model'];
 		$model_id = $this->passedArgs[$this->passedArgs['model']];

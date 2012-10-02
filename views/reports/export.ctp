@@ -2,10 +2,7 @@
 <div class="content-box">
 <?php
 echo $this->Form->create('Report', array(
-	'url' => array(
-		$model,
-		$uid
-	)
+	'url' => $this->here
 ));
 ?>
 <fieldset class="grid_10">

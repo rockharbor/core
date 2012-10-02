@@ -177,12 +177,13 @@ class MinistriesController extends AppController {
 
 /**
  * Bulk edits ministries
- *
- * @param string $mstoken
  */
-	function bulk_edit($mstoken) {
-		if (!empty($this->data) && $this->MultiSelect->check($mstoken)) {
-			$selected = $this->MultiSelect->getSelected($mstoken);
+	function bulk_edit() {
+		// persist mstoken through POST requests
+		$this->here .= '/mspersist:1';
+		
+		if (!empty($this->data)) {
+			$selected = $this->_extractIds($this->Ministry, '/Ministry/id');
 			$this->Ministry->Behaviors->disable('Confirm');
 			if (!$this->data['Ministry']['move_ministry']) {
 				unset($this->data['Ministry']['parent_id']);

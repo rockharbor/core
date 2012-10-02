@@ -135,16 +135,10 @@ class AlertsController extends AppController {
 	function read($id = null) {
 		$userId = $this->activeUser['User']['id'];
 		
-		if (!$id) {
-			$this->cakeError('error404');
-		}
-		
-		// check to see if this is a MultiSelect
-		if ($this->MultiSelect->check($id)) {
-			$search = $this->MultiSelect->getSearch($id);
-			$ids = $this->MultiSelect->getSelected($id);
-		} else {
+		if ($id) {
 			$ids = array($id);
+		} else {
+			$ids = $this->_extractIds($this->Alert, '/Alert/user_id');
 		}
 		
 		foreach ($ids as $id) {

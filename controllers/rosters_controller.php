@@ -892,13 +892,14 @@ class RostersController extends AppController {
 /**
  * Confirms a set of roster ids
  *
- * @param integer $uid The multi select id or a single roster record id
+ * @param integer $id The roster id
  * @param integer $status The RosterStatus id
  */
-	function status($uid = null, $status = 1) {
-		$selected = $this->MultiSelect->getSelected($uid);
-		if (empty($selected)) {
-			$selected = $uid;
+	function status($id = null, $status = 1) {
+		if ($id) {
+			$selected = $id;
+		} else {
+			$selected = $this->_extractIds($this->Roster, '/Roster/id');
 		}
 		
 		$success = $this->Roster->updateAll(
@@ -915,23 +916,20 @@ class RostersController extends AppController {
 /**
  * Deletes a set of roster ids
  *
- * @param integer $uid The multi select id
+ * @param integer $id The roster id
  */
-	function delete($uid = null) {
-		$selected = $this->MultiSelect->getSelected($uid);
-
-		if (empty($selected) && ($uid && isset($this->passedArgs['User']))) {
-			$roster = $this->Roster->read(null, $uid);
+	function delete($id = null) {
+		if ($id) {
+			$selected = array($id);
+			$roster = $this->Roster->read(null, $id);
 			if ($this->passedArgs['User'] !== $roster['Roster']['user_id'] &&
-			!$this->Roster->User->HouseholdMember->Household->isContactFor($this->passedArgs['User'], $roster['Roster']['user_id'])
-			) {
+			!$this->Roster->User->HouseholdMember->Household->isContactFor($this->passedArgs['User'], $roster['Roster']['user_id'])) {
 				$this->cakeError('error404');
 			}
-			$selected = array($uid);
-		} elseif (empty($selected)) {
-			$this->Session->setFlash(__('Roster was not deleted', true));
-			$this->redirect(array('action' => 'index'));
+		} else {
+			$selected = $this->_extractIds($this->Roster, '/Roster/id');
 		}
+
 		foreach ($selected as $rosterId) {
 			$this->Roster->recursive = -1;
 			$roster = $this->Roster->read(null, $rosterId);

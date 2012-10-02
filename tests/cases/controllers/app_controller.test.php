@@ -1,6 +1,7 @@
 <?php
 App::import('Lib', 'CoreTestCase');
 App::import('Controller', 'App');
+App::import('Component', 'MultiSelect.MultiSelect');
 
 class AppControllerTestCase extends CoreTestCase {
 
@@ -21,6 +22,70 @@ class AppControllerTestCase extends CoreTestCase {
 		$this->App->Session->destroy();
 		unset($this->App);
 		ClassRegistry::flush();
+	}
+	
+	function testExtractIds() {
+		$this->loadFixtures('Profile');
+		
+		Mock::generatePartial('AppController', 'ExtractIdsAppController', array('isAuthorized', 'render', 'redirect', '_stop', 'header', 'cakeError'));
+		$Controller = new ExtractIdsAppController();
+		$Controller->__construct();
+		$Controller->modelClass = 'User';
+		$Controller->constructClasses();
+		
+		Mock::generatePartial('MultiSelectComponent', 'ExtractIdsMultiSelectComponent', array(
+			'getSelected',
+			'getSearch'
+		));
+		$MultiSelect = new ExtractIdsMultiSelectComponent();
+		$Controller->MultiSelect = $MultiSelect;
+		
+		$model = ClassRegistry::init('User');
+		
+		$Controller->MultiSelect->setReturnValueAt(0, 'getSelected', array());
+		$Controller->expectAt(0, 'cakeError', array('invalidMultiSelectSelection'));
+		$results = $Controller->_extractIds($model, '/User/id');
+		
+		$Controller->MultiSelect->setReturnValueAt(1, 'getSelected', array(1, 2, 3));
+		$results = $Controller->_extractIds($model, '/User/id');
+		$expected = array(1, 2, 3);
+		$this->assertEqual($results, $expected);
+		
+		$Controller->MultiSelect->setReturnValueAt(2, 'getSelected', 'all');
+		$Controller->MultiSelect->setReturnValueAt(0, 'getSearch', array());
+		$Controller->expectAt(1, 'cakeError', array('invalidMultiSelectSelection'));
+		$results = $Controller->_extractIds($model, '/User/id');
+		
+		$search = array(
+			'conditions' => array(
+				'Profile.last_name LIKE' => '%rock%'
+			),
+			'contain' => array(
+				'Profile'
+			)
+		);
+		$Controller->MultiSelect->setReturnValueAt(3, 'getSelected', 'all');
+		$Controller->MultiSelect->setReturnValueAt(1, 'getSearch', $search);
+		$results = $Controller->_extractIds($model, '/User/id');
+		$expected = array(2, 3);
+		$this->assertEqual($results, $expected);
+		
+		$search = array(
+			'conditions' => array(
+				'Profile.last_name LIKE' => '%rock%'
+			),
+			'contain' => array(
+				'Profile'
+			)
+		);
+		$Controller->MultiSelect->setReturnValueAt(4, 'getSelected', 'all');
+		$Controller->MultiSelect->setReturnValueAt(2, 'getSearch', $search);
+		$results = $Controller->_extractIds($model, '/Profile/primary_email');
+		$expected = array(
+			'ricky@rockharbor.org',
+			'rickyjr@rockharbor.org'
+		);
+		$this->assertEqual($results, $expected);
 	}
 	
 	function testSetConditionalGroups() {

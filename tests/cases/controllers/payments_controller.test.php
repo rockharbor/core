@@ -103,7 +103,7 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		);
 
 		// too much
-		$vars = $this->testAction('/payments/add/test/Involvement:1', array(
+		$vars = $this->testAction('/payments/add/0/Involvement:1/mstoken:test', array(
 			'return' => 'vars',
 			'data' => $data
 		));
@@ -120,7 +120,7 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		// split between 2 people
 		$notificationCountBefore = $this->Payments->Payment->User->Notification->find('count');
 		$data['Payment']['amount'] = 10;
-		$vars = $this->testAction('/payments/add/test/Involvement:1', array(
+		$vars = $this->testAction('/payments/add/0/Involvement:1/mstoken:test', array(
 			'return' => 'vars',
 			'data' => $data
 		));
@@ -142,7 +142,7 @@ class PaymentsControllerTestCase extends CoreTestCase {
 
 		// pay the rest of 1 person who only has 5 left, then the other 20 on the other
 		$data['Payment']['amount'] = 25;
-		$vars = $this->testAction('/payments/add/test/Involvement:1', array(
+		$vars = $this->testAction('/payments/add/0/Involvement:1/mstoken:test', array(
 			'return' => 'vars',
 			'data' => $data
 		));

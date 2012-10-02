@@ -1093,7 +1093,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$rostersBefore = $this->Rosters->Roster->find('count');
 		$notificationsBefore = $this->Rosters->Roster->User->Notification->find('count');
 
-		$vars = $this->testAction('/rosters/delete/testDelete');
+		$vars = $this->testAction('/rosters/delete/0/mstoken:testDelete');
 		$this->assertFalse($this->Rosters->Roster->read(null, 1));
 		$this->assertFalse($this->Rosters->Roster->read(null, 2));
 		$this->assertFalse($this->Rosters->Roster->read(null, 4));
@@ -1106,12 +1106,12 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($notificationsAfter-$notificationsBefore, 4);
 		
 		$rostersBefore = $this->Rosters->Roster->find('count');
-		$vars = $this->testAction('/rosters/delete/testDelete/3');
+		$vars = $this->testAction('/rosters/delete/0/mstoken:testDelete');
 		$rostersAfter = $this->Rosters->Roster->find('count');
 		$this->assertEqual($rostersAfter-$rostersBefore, 0);
 		
 		$rostersBefore = $this->Rosters->Roster->find('count');
-		$vars = $this->testAction('/rosters/delete/testDelete/3/User:1');
+		$vars = $this->testAction('/rosters/delete/0/mstoken:testDelete/User:1');
 		$rostersAfter = $this->Rosters->Roster->find('count');
 		$this->assertEqual($rostersAfter-$rostersBefore, 0);
 	}
@@ -1121,7 +1121,7 @@ class RostersControllerTestCase extends CoreTestCase {
 			'selected' => array(2, 4)
 		));
 
-		$vars = $this->testAction('/rosters/status/testConfirm');
+		$vars = $this->testAction('/rosters/status/0/mstoken:testConfirm');
 		$rosters = $this->Rosters->Roster->find('all', array(
 			'conditions' => array(
 				'Roster.id' => array(2, 4)

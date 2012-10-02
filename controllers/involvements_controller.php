@@ -239,11 +239,10 @@ class InvolvementsController extends AppController {
  * ### Passed args:
  * - integer `Involvement` The involvement id to get the roster from
  * 
- * @param integer $mskey The multiselect key
  * @param boolean $add Whether to add or invite
  * @todo Don't invite users who are already on the roster! (move to model?)
  */
-	function invite_roster($mskey = null, $status = 3) {
+	function invite_roster($status = 3) {
 		// get users from roster
 		$roster = $this->Involvement->Roster->find('all', array(
 			'fields' => array(
@@ -257,7 +256,7 @@ class InvolvementsController extends AppController {
 		
 		$this->Involvement->contain(array('InvolvementType'));
 		$fromInvolvement = $this->Involvement->read(null, $this->passedArgs['Involvement']);
-		$toInvolvements = $this->MultiSelect->getSelected($mskey);
+		$toInvolvements = $this->_extractIds();
 		$this->set('fromInvolvement', $fromInvolvement);
 		foreach ($toInvolvements as $to) {
 			$this->Involvement->contain(array('InvolvementType', 'PaymentOption'));
@@ -325,18 +324,17 @@ class InvolvementsController extends AppController {
  * ### Passed args:
  * - `Involvement` The involvement id to invite the user to
  *
- * @param integer $mskey The multiselect key
  * @param boolean $add Whether to add or invite
  * @todo Don't invite users who are already on the roster! (move to model?)
  */ 
-	function invite($mskey = null, $status = 3) {
+	function invite($status = 3) {
 		$this->Involvement->Roster->User->contain(array('Profile'));
 		$this->Involvement->contain(array('InvolvementType'));
 		
 		$involvement = $this->Involvement->read(null, $this->passedArgs['Involvement']);
 		$leaders = $this->Involvement->getLeaders($involvement['Involvement']['id']);
 		
-		$userIds = $this->MultiSelect->getSelected($mskey);
+		$userIds = $this->_extractIds();
 		foreach ($userIds as $userId) {
 			$roster = $this->Involvement->Roster->setDefaultData(array(
 				'roster' => array(

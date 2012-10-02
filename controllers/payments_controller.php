@@ -127,16 +127,18 @@ class PaymentsController extends AppController {
 	}
 
 /**
- * Adds a payment to a search from a MultiSelect key
+ * Adds a payment to a roster record
  *
- * @param string $mskey The MultiSelect cache key to pull a list from
+ * @param string $id The roster id to attach the payment to
  */
-	function add($mskey) {
-		// check to see if this is a MultiSelect
-		if ($this->MultiSelect->check($mskey)) {
-			$ids = $this->MultiSelect->getSelected($mskey);
+	function add($id) {
+		// persist selected items through POST requests
+		$this->here .= '/mspersist:1';
+		
+		if ($id) {
+			$ids = array($id);
 		} else {
-			$ids = array($mskey);
+			$ids = $this->_extractIds();
 		}
 		// get selected
 		$users = $this->Payment->Roster->find('all', array(

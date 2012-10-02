@@ -192,15 +192,15 @@ class AttachmentsController extends AppController {
 /**
  * Promotes or demotes a model's first image
  * 
- * @param mixed $mskey A multiselect token or the model's id
+ * @param mixed $id The model's id
  * @param int $level The promotion level
  */	
-	function promote($mskey = null, $level = 0) {
+	function promote($id = null, $level = 0) {
 		$this->{$this->modelClass}->Behaviors->detach('Media.Coupler'); // don't require 'file' key
-		if ($this->MultiSelect->check($mskey)) {
-			$ids = $this->MultiSelect->getSelected($mskey);
+		if ($id) {
+			$ids = array($id);
 		} else {
-			$ids = array($mskey);
+			$ids = $this->_extractIds();
 		}
 		
 		foreach ($ids as $id) {
