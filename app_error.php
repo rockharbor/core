@@ -18,6 +18,16 @@
 class AppError extends ErrorHandler {
 
 /**
+ * Force using limited layout for errors
+ * 
+ * @param string $template Template to render
+ */
+	function _outputMessage($template) {
+		$this->controller->layout = 'ajax';
+		parent::_outputMessage($template);
+	}
+
+/**
  * Error shown when a user tries to access a private item
  * 
  * @param array $params 
