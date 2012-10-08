@@ -374,11 +374,16 @@ class User extends AppModel {
 			'Profile' => array(
 				'first_name' => null,
 				'last_name' => null,
+				'email' => null,
 				'primary_email' => null,
 				'birth_date' =>  null
 			)
 		);
 		$data = Set::merge($_default, $data);
+		
+		if (!empty($data['Profile']['email'])) {
+			$data['Profile']['primary_email'] = $data['Profile']['email'];
+		}
 
 		$data = array(
 			'Search' => array(
