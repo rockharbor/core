@@ -242,6 +242,7 @@ class UsersController extends AppController {
 					$user = $user[0];
 				}
 			} else{
+				$this->set('found', true);
 				$user = $id;
 			}
 			
@@ -513,8 +514,14 @@ class UsersController extends AppController {
 			}
 
 			if (!empty($foundUser)) {
-				// take to activation request (preserve data)
 				if (count($foundUser) == 1) {
+					$enteredName = !empty($this->data['Profile']['first_name']) && !empty($this->data['Profile']['first_name']);
+					$enteredEmail = !empty($this->data['Profile']['primary_email']);
+					if ($enteredName && $enteredEmail) {
+						// same name and email? we can assume this is them, just reset their password
+						return $this->setAction('forgot_password', $foundUser[0]);
+					}
+					// otherwise take to activation request (preserve data)
 					return $this->setAction('request_activation', $foundUser[0], true);
 				} else {
 					return $this->setAction('choose_user', $foundUser, array(
