@@ -115,6 +115,25 @@ class DatesController extends AppController {
 				)
 			)
 		);
+		
+		// get involvements user is involved in and confirmed
+		$rosters = $this->Date->Involvement->Roster->find('all', array(
+			'conditions' => array(
+				'Roster.user_id' => $this->activeUser['User']['id'],
+				'Roster.roster_status_id' => 1
+			)
+		));
+		$rosterIds = Set::extract('/Roster/involvement_id', $rosters);
+		$leaders = $this->Date->Involvement->Leader->find('all', array(
+			'conditions' => array(
+				'Leader.user_id' => $this->activeUser['User']['id'],
+				'Leader.model' => 'Involvement'
+			)
+		));
+		$leaderIds = Set::extract('/Leader/model_id', $leaders);
+		
+		$involved = array_unique(array_merge($rosterIds, $leaderIds));
+		
 		$involvementIds = array();
 		foreach (array('User', 'Ministry', 'Involvement', 'Campus') as $model) {
 			if (isset($this->passedArgs[$model])) {
@@ -144,13 +163,13 @@ class DatesController extends AppController {
 						}
 					break;
 					case 'Involvement':
-						$conditions['or']['Involvement.id'] = $ids;
+						$conditions['and']['or']['Involvement.id'] = $ids;
 					break;
 					case 'Ministry':
-						$conditions['or']['Involvement.ministry_id'] = $ids;
+						$conditions['and']['or']['Involvement.ministry_id'] = $ids;
 					break;
 					case 'Campus':
-						$conditions['or']['Ministry.campus_id'] = $ids;
+						$conditions['and']['or']['Ministry.campus_id'] = $ids;
 						$link[] = 'Ministry';
 					break;
 				}			
@@ -169,7 +188,12 @@ class DatesController extends AppController {
 			$conditions['Involvement.id'] = array_unique($involvementIds);
 		}
 		$conditions['Involvement.active'] = true;
-		$conditions['Involvement.private'] = false;
+		if (!ClassRegistry::init('Group')->canSeePrivate($this->activeUser['Group']['id'])) {
+			$conditions['or'] = array(
+				'Involvement.private' => false,
+				'Involvement.id' => $involved
+			);
+		}
 		$conditions['Date.start_date <>'] = null;
 		
 		// get all involvements and their dates within the range

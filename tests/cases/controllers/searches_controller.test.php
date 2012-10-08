@@ -469,7 +469,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/searches/simple/Involvement/some_element/', compact('data'));
 		$results = Set::extract('/Involvement/id', $vars['results']);
 		sort($results);
-		$expected = array(1, 4, 5, 6, 7);
+		$expected = array(1, 3, 4, 5, 6, 7);
 		$this->assertEqual($results, $expected);
 		$this->Searches->Session->delete('FilterPagination');
 		
