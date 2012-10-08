@@ -530,19 +530,6 @@ class UserTestCase extends CoreTestCase {
 		
 		$data = array(
 			'Profile' => array(
-				'birth_date' => array(
-					'year' => '1984',
-					'month' => '04',
-					'day' => '14'
-				)
-			)
-		);
-		$result = $this->User->findUser($data);
-		$expected = array(1);
-		$this->assertEqual($result, $expected);
-		
-		$data = array(
-			'Profile' => array(
 				'adult' => 1,
 				'somefield' => 'value'
 			),
@@ -552,6 +539,15 @@ class UserTestCase extends CoreTestCase {
 		);
 		$result = $this->User->findUser($data);
 		$expected = array();
+		$this->assertEqual($result, $expected);
+		
+		$data = array(
+			'Profile' => array(
+				'email' => 'jeremy@paxtechservices.com',
+			)
+		);
+		$result = $this->User->findUser($data);
+		$expected = array(1);
 		$this->assertEqual($result, $expected);
 	}
 

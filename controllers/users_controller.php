@@ -226,7 +226,7 @@ class UsersController extends AppController {
 						'username' => $this->data['User']['forgotten']
 					),
 					'Profile' => array(
-						'primary_email' => $this->data['User']['forgotten']
+						'email' => $this->data['User']['forgotten']
 					)
 				);
 				$user = $this->User->findUser($searchData, 'OR');
@@ -242,6 +242,7 @@ class UsersController extends AppController {
 					$user = $user[0];
 				}
 			} else{
+				$this->set('found', true);
 				$user = $id;
 			}
 			
@@ -364,7 +365,7 @@ class UsersController extends AppController {
 				// check if user exists (only use profile info to search)
 				$searchData = array('Profile' => $this->data['Profile']);
 				$searchData['Profile']['email'] = $searchData['Profile']['primary_email'];
-				$foundUser = $this->User->findUser($searchData, 'OR');
+				$foundUser = $this->User->findUser($searchData);
 			}
 
 			if (!empty($foundUser)) {
@@ -431,7 +432,7 @@ class UsersController extends AppController {
 			// check if user exists (only use profile info to search)
 			$searchData = array('Profile' => $this->data['Profile']);
 			$searchData['Profile']['email'] = $searchData['Profile']['primary_email'];
-			$foundUser = $this->User->findUser($searchData, 'OR');
+			$foundUser = $this->User->findUser($searchData);
 			if (!empty($foundUser) && !isset($this->passedArgs['skip_check'])) {
 				// take to choose user
 				// - takes them to Households::invite() if a match is found
@@ -509,12 +510,18 @@ class UsersController extends AppController {
 				$searchData['Profile']['email'] = $searchData['Profile']['primary_email'];
 				// don't compare usernames
 				unset($searchData['User']['username']);
-				$foundUser = $this->User->findUser($searchData, 'OR');
+				$foundUser = $this->User->findUser($searchData);
 			}
 
 			if (!empty($foundUser)) {
-				// take to activation request (preserve data)
 				if (count($foundUser) == 1) {
+					$enteredName = !empty($this->data['Profile']['first_name']) && !empty($this->data['Profile']['first_name']);
+					$enteredEmail = !empty($this->data['Profile']['primary_email']);
+					if ($enteredName && $enteredEmail) {
+						// same name and email? we can assume this is them, just reset their password
+						return $this->setAction('forgot_password', $foundUser[0]);
+					}
+					// otherwise take to activation request (preserve data)
 					return $this->setAction('request_activation', $foundUser[0], true);
 				} else {
 					return $this->setAction('choose_user', $foundUser, array(

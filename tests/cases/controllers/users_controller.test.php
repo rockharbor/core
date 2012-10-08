@@ -553,6 +553,52 @@ class UsersControllerTestCase extends CoreTestCase {
 		$user = $this->Users->User->findByUsername('newuserna');
 		$result = $user['Profile']['name'];
 		$this->assertEqual($result, 'Another User');
+		
+		/**
+		 * Test redirections (setAction) based on various `findUser` responses
+		 */
+		
+		$data = array(
+			'Profile' => array(
+				'first_name' => 'ricky',
+				'last_name' => 'rock',
+				'primary_email' => ''
+			)
+		);
+		$vars = $this->testAction('/users/register', array(
+			'data' => $data
+		));
+		$results = $this->testController->action;
+		$expected = 'choose_user';
+		$this->assertEqual($results, $expected);
+		
+		$data = array(
+			'Profile' => array(
+				'first_name' => 'ricky',
+				'last_name' => 'rock',
+				'primary_email' => 'jharris@rockharbor.org'
+			)
+		);
+		$vars = $this->testAction('/users/register', array(
+			'data' => $data
+		));
+		$results = $this->testController->action;
+		$expected = '/users/register';
+		$this->assertEqual($results, $expected);
+		
+		$data = array(
+			'Profile' => array(
+				'first_name' => 'jeremy',
+				'last_name' => 'harris',
+				'primary_email' => 'jharris@rockharbor.org'
+			)
+		);
+		$vars = $this->testAction('/users/register', array(
+			'data' => $data
+		));
+		$results = $this->testController->action;
+		$expected = 'forgot_password';
+		$this->assertEqual($results, $expected);
 	}
 	
 	function testChooseUser() {
@@ -587,7 +633,7 @@ class UsersControllerTestCase extends CoreTestCase {
 			'Profile' => array(
 				'first_name' => 'Jeremy',
 				'last_name' => 'Harris',
-				'primary_email' => 'test@test.com',
+				'primary_email' => 'jeremy@paxtechservices.com',
 				'birth_date' => array(
 					'month' => 4,
 					'day' => 14,
