@@ -375,8 +375,7 @@ class User extends AppModel {
 				'first_name' => null,
 				'last_name' => null,
 				'email' => null,
-				'primary_email' => null,
-				'birth_date' =>  null
+				'primary_email' => null
 			)
 		);
 		$data = Set::merge($_default, $data);
@@ -394,7 +393,6 @@ class User extends AppModel {
 			),
 			'Profile' => array(
 				'email' => $data['Profile']['primary_email'],
-				'birth_date' =>  $data['Profile']['birth_date'],
 				'first_name' => $data['Profile']['first_name'],
 				'last_name' => $data['Profile']['last_name']
 			)

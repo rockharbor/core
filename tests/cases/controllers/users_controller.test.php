@@ -587,7 +587,7 @@ class UsersControllerTestCase extends CoreTestCase {
 			'Profile' => array(
 				'first_name' => 'Jeremy',
 				'last_name' => 'Harris',
-				'primary_email' => 'test@test.com',
+				'primary_email' => 'jeremy@paxtechservices.com',
 				'birth_date' => array(
 					'month' => 4,
 					'day' => 14,
