@@ -288,9 +288,9 @@
 							}
 							echo $this->Html->tag('dd', $bt);
 							echo $this->Html->tag('dt', 'Signed Covenant 2011:');
-							echo $this->Html->tag('dd', $this->Formatting->boolean($profile['Profile']['signed_covenant_2011']));
+							echo $this->Html->tag('dd', $this->SelectOptions->boolean($profile['Profile']['signed_covenant_2011']));
 							echo $this->Html->tag('dt', 'Signed Covenant 2012:');
-							echo $this->Html->tag('dd', $this->Formatting->boolean($profile['Profile']['signed_covenant_2012']));
+							echo $this->Html->tag('dd', $this->SelectOptions->boolean($profile['Profile']['signed_covenant_2012']));
 						?>
 						</dl>
 					</div>
