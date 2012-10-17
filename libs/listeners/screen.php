@@ -1,4 +1,9 @@
 <?php
+/*
+ * Imports
+ */
+App::import('Lib', 'Referee.RefereeListener');
+
 /**
  * ScreenListener
  * 
@@ -6,7 +11,7 @@
  *
  * @author Frank de Graaf (Phally)
  */
-class ScreenListener {
+class ScreenListener extends RefereeListener {
 
 /**
  * Triggered when we're passed an error from the WhistleComponent
@@ -16,9 +21,22 @@ class ScreenListener {
  * @return null
  * @access public
  */
-	public function error($error, $configuration = array()) {
+	public function error($error = array()) {
+		$error += array(
+			'level' => null,
+			'message' => null,
+			'file' => null,
+			'line' => null,
+			'context' => null,
+		);
 		if (Configure::read() > 0) {
-			call_user_func_array(array('Debugger', 'handleError'), array_values($error));
+			call_user_func_array(array('Debugger', 'handleError'), array(
+				$error['level'],
+				$error['message'],
+				$error['file'],
+				$error['line'],
+				$error['context']
+			));
 		}
 	}
 }

@@ -68,6 +68,11 @@ class AppController extends Controller {
 				'EmailListener' => array(
 					'class' => 'EmailListener',
 					'file' => EMAIL_LISTENER_PATH
+				),
+				'ScreenListener' => array(
+					'errorLevels' => E_ALL,
+					'class' => 'ScreenListener',
+					'file' => SCREEN_LISTENER_PATH
 				)
 			)
 		),
