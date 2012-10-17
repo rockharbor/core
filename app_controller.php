@@ -26,7 +26,6 @@ class AppController extends Controller {
 		'DebugKit.Toolbar' => array(
 			'panels' => array(
 				'CoreDebugPanels.errors',
-				'CoreDebugPanels.visitHistory',
 				'CoreDebugPanels.auth',
 				'log' => false,
 				'history' => false
@@ -172,19 +171,6 @@ class AppController extends Controller {
 		if ((!isset($this->params['plugin']) || !$this->params['plugin']) && sizeof($this->uses) && isset($this->{$this->modelClass}->Behaviors) && $this->{$this->modelClass}->Behaviors->attached('Logable')) { 
 			$this->{$this->modelClass}->setUserData($this->activeUser); 
 		}
-		
-		if (!$this->Session->check('CoreDebugPanels.visitHistory')) {
-			$this->Session->write('CoreDebugPanels.visitHistory', array());
-		}
-
-		$visitHistory = $this->Session->read('CoreDebugPanels.visitHistory');
-		$visitHistory[] = $this->here;
-
-		while (count($visitHistory) > 10) {
-			array_shift($visitHistory);
-		}
-
-		$this->Session->write('CoreDebugPanels.visitHistory', $visitHistory);
 	}
 
 /**

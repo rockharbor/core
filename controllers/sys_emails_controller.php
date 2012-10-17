@@ -97,7 +97,7 @@ class SysEmailsController extends AppController {
 			}
 		}
 		
-		$this->set('visitHistory', array_reverse($this->Session->read('CoreDebugPanels.visitHistory')));
+		$this->set('visitHistory', array_reverse($this->Session->read('CoreDebugPanels.authHistory')));
 		$this->set('toUsers', array(array(
 			'Profile' => array(
 				'name' => Core::read('development.debug_email'),
