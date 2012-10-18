@@ -596,9 +596,10 @@ class FormattingHelperTestCase extends CoreTestCase {
 
 	function testDatetime() {
 		$this->assertEqual('2/24/2010 @ 9:55am', $this->Formatting->datetime('2010-02-24 09:55:30'));
+		$this->assertEqual('3/1/1900 @ 9:55am', $this->Formatting->datetime('1900-03-01 09:55:30'));
 		$this->assertNull($this->Formatting->datetime());
 	}
-
+	
 	function testDate() {
 		$result = $this->Formatting->date('2010-02-24 09:55:30');
 		$expected = '2/24/2010';
@@ -619,11 +620,23 @@ class FormattingHelperTestCase extends CoreTestCase {
 		$result = $this->Formatting->date('2012-00-01');
 		$expected = '2012';
 		$this->assertEqual($result, $expected);
+		
+		$result = $this->Formatting->date('1900-03-05');
+		$expected = '3/5/1900';
+		$this->assertEqual($result, $expected);
+		
+		$result = $this->Formatting->date('1900-03-00');
+		$expected = 'March 1900';
+		$this->assertEqual($result, $expected);
 	}
 
 	function testTime() {
 		$this->assertEqual('9:55am', $this->Formatting->time('2010-02-24 09:55:30'));
 		$this->assertNull($this->Formatting->time());
+		
+		$result = $this->Formatting->time('1900-03-00 12:00:00');
+		$expected = '12:00pm';
+		$this->assertEqual($result, $expected);
 	}
 
 }

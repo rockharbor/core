@@ -353,7 +353,8 @@ class FormattingHelper extends AppHelper {
 		$year = (int)$year;
 		// April
 		if (!empty($month)) {
-			$out[] = date('F', strtotime($month.'/1/2000'));
+			$dt = new DateTime($month.'/1/2000');
+			$out[] = $dt->format('F');
 		}
 		// April 14
 		if (!empty($day) && !empty($month)) {
@@ -361,12 +362,14 @@ class FormattingHelper extends AppHelper {
 		}
 		// April 1984; 1984
 		if (!empty($year)) {
-			$out[] = date('Y', strtotime('1/1/'.$year));
+			$dt = new DateTime('1/1/'.$year);
+			$out[] = $dt->format('Y');
 		}
 		$out = count($out) > 0 ? implode(' ', $out) : null;
 		// if we have all the info, so replace it with 4/14/1984
 		if (!empty($day) && !empty($month) && !empty($year)) {
-			$out = date('n/j/Y', strtotime($date));
+			$dt = new DateTime($date);
+			$out = $dt->format('n/j/Y');
 		}
 		return $out;
 	}
@@ -382,7 +385,8 @@ class FormattingHelper extends AppHelper {
 		if ($datetime == '') {
 			return null;
 		}
-		return date('g:ia', strtotime($datetime));
+		$dt = new DateTime($datetime);
+		return $dt->format('g:ia');
 	}
 
 /**
