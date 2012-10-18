@@ -25,10 +25,7 @@ class AppController extends Controller {
 		'Email',
 		'DebugKit.Toolbar' => array(
 			'panels' => array(
-				'CoreDebugPanels.errors',
-				'CoreDebugPanels.auth',
-				'log' => false,
-				'history' => false
+				'CoreDebugPanels.auth'
 			)
 		),
 		'RequestHandler',
