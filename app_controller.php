@@ -62,20 +62,6 @@ class AppController extends Controller {
 				)
 			)
 		),
-		'Referee.Whistle' => array(
-			'listeners' => array(
-				'Db',
-				'EmailListener' => array(
-					'class' => 'EmailListener',
-					'file' => EMAIL_LISTENER_PATH
-				),
-				'ScreenListener' => array(
-					'errorLevels' => E_ALL,
-					'class' => 'ScreenListener',
-					'file' => SCREEN_LISTENER_PATH
-				)
-			)
-		),
 		'Notifier',
 		'QueueEmail.QueueEmail',
 		'Security'
