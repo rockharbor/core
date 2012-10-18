@@ -20,11 +20,6 @@ require_once APP.'config'.DS.'routes.php';
 Mock::generatePartial('AclComponent', 'MockAclComponent', array('check'));
 
 /**
- * Disable Referee plugin from swallowing errors
- */
-Configure::write('Referee', false);
-
-/**
  * Ensure SimpleTest doesn't think this is a test case
  */
 SimpleTest::ignore('CoreTestCase');

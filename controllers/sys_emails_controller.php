@@ -74,58 +74,6 @@ class SysEmailsController extends AppController {
 	}
 
 /**
- * Creates a new bug report email
- */ 
-	function bug_compose() {
-		$this->set('title_for_layout', 'Submit a bug report');
-		
-		if (!empty($this->data)) {
-			$this->SysEmail->set($this->data);
-			$this->set('include_greeting', $this->data['SysEmail']['include_greeting']);
-			$this->set('include_signoff', $this->data['SysEmail']['include_signoff']);
-			
-			// send it!
-			if ($this->SysEmail->validates() && $this->Notifier->notify(array(
-				'from' => $this->activeUser['User']['id'], 
-				'to' => Core::read('development.debug_email'), 
-				'subject' => $this->data['SysEmail']['subject'],
-				'body' => $this->data['SysEmail']['body']
-			), 'email')) {
-				$this->Session->setFlash('Your email has been sent.', 'flash'.DS.'success');
-			} else {
-				$this->Session->setFlash('Unable to send email.', 'flash'.DS.'failure');
-			}
-		}
-		
-		$this->set('visitHistory', array_reverse($this->Session->read('CoreDebugPanels.visitHistory')));
-		$this->set('toUsers', array(array(
-			'Profile' => array(
-				'name' => Core::read('development.debug_email'),
-				'primary_email' => Core::read('development.debug_email')
-			)
-		)));
-		$this->set('fromUser', $this->activeUser);
-		$this->set('cacheuid', false);
-		$this->set('showPreferences', false);
-		$this->set('showAttachments', false);
-		// needed for element
-		$this->set('activeUser', $this->activeUser);
-		
-		if (empty($this->data)) {
-			$this->data['SysEmail']['subject'] = 'Bug Report :: [enter short description here]';
-			
-			App::import('View', 'view');
-			$View = new View($this->Controller, false);
-			$View->webroot = WEBROOT_DIR;
-			$content = $View->element('email' . DS . 'bug_report', $this->viewVars, true);
-			
-			$this->data['SysEmail']['body'] = $content;
-		}
-		
-		$this->render('compose');
-	}
-	
-/**
  * Emails users or leaders from a Ministry
  * 
  * By passing an id to the `Ministry` passed arg, you can email a single
@@ -204,12 +152,12 @@ class SysEmailsController extends AppController {
 			} else {
 				$token = $this->params['named']['mstoken'];
 				$this->users = $this->MultiSelect->getSelected($token);
-				if (empty($this->users)) {
+				if ($this->users == 'all') {
 					$search = $this->MultiSelect->getSearch($token);
 					if (empty($search)) {
 						$search['conditions'] = array('User.id' => null);
 					}
-					$results = ClassRegistry::init('User')->find('all', $search);
+					$results = $this->User->find('all', $search);
 					$this->users = Set::extract('/User/id', $results);
 				}
 			}
@@ -223,8 +171,7 @@ class SysEmailsController extends AppController {
  * @param integer $leaderId The leader id
  */
 	function leader($leaderId) {
-		$Leader = ClassRegistry::init('Leader');
-		$user = $Leader->findById($leaderId);
+		$user = $this->Involvement->Leader->findById($leaderId);
 		$this->users = array($user['Leader']['user_id']);
 		$this->setAction('compose');
 	}
@@ -236,22 +183,21 @@ class SysEmailsController extends AppController {
  * set by a preceding action.
  */ 
 	function compose() {
-		if (empty($this->data) && (empty($this->users) && empty($this->data['SysEmail']['to']))) {
+		// data was posted, so get the users
+		if (!empty($this->data['SysEmail']['to'])) {
+			$this->users = explode(',', $this->data['SysEmail']['to']);
+		}
+		
+		if (empty($this->data) && (empty($this->users))) {
 			$this->Session->setFlash('Invalid email list.', 'flash'.DS.'failure');
 			return $this->redirect($this->emptyPage);
 		}
 		
-		$User = ClassRegistry::init('User');
-
 		$fromUser = $this->activeUser;
 		
-		$isPost = !empty($this->data);
-		if (empty($this->data['SysEmail']['to'])) {
-			$this->data['SysEmail']['to'] = implode(',', $this->users);
-			$isPost = $isPost || false;
-		}
+		$toUserIds = $this->users;
 		
-		if ($isPost) {
+		if (!empty($this->data)) {
 			// get attachments for this email
 			$Document = ClassRegistry::init('Document');
 			$Document->recursive = -1;
@@ -274,12 +220,9 @@ class SysEmailsController extends AppController {
 			if ($this->SysEmail->validates()) {
 				$e = 0;
 				
-				$toUsers = explode(',', $this->data['SysEmail']['to']);
-				$toUsers = array_unique($toUsers);
-				
 				if (in_array($this->data['SysEmail']['email_users'], array('both', 'household_contact'))) {
-					$households = $User->HouseholdMember->Household->getHouseholdIds($toUsers);
-					$contacts = $User->HouseholdMember->Household->find('all', array(
+					$households = $this->User->HouseholdMember->Household->getHouseholdIds($toUserIds);
+					$contacts = $this->User->HouseholdMember->Household->find('all', array(
 						'fields' => array(
 							'contact_id'
 						),
@@ -289,18 +232,17 @@ class SysEmailsController extends AppController {
 					));
 					$extraUsers = Set::extract('/Household/contact_id', $contacts);
 					if ($this->data['SysEmail']['email_users'] == 'both') {
-						$toUsers = array_merge($toUsers, $extraUsers);
+						$toUserIds = array_merge($toUserIds, $extraUsers);
 					} else {
-						$toUsers = $extraUsers;
+						$toUserIds = $extraUsers;
 					}
 				}
 				
-				$toUsers = array_unique($toUsers);
-				$this->set('allToUsers', $toUsers);
+				$toUserIds = array_unique($toUserIds);
 				$this->set('include_greeting', $this->data['SysEmail']['include_greeting']);
 				$this->set('include_signoff', $this->data['SysEmail']['include_signoff']);
-
-				foreach ($toUsers as $toUser) {
+				
+				foreach ($toUserIds as $toUser) {
 					if ($this->Notifier->notify(array(
 						'from' => $fromUser['User']['id'],
 						'to' => $toUser,
@@ -320,25 +262,22 @@ class SysEmailsController extends AppController {
 				$this->Session->setFlash('Unable to send your emails.', 'flash'.DS.'failure');
 			}			
 		} else {
+			// comma-delimited list of users to email
+			$this->data['SysEmail']['to'] = implode(',', $toUserIds);
 			// clear old attachments that people aren't using anymore
 			$this->SysEmail->gcAttachments();
 		}
 		
-		$User->contain(array(
-			'Profile' => array(
-				'fields' => array(
-					'id','name','primary_email'
-				)
-			)
-		));
-		$this->set('toUsers', $User->find('all', array('conditions'=>array('User.id'=>explode(',', $this->data['SysEmail']['to'])))));
-		$User->contain(array(
-			'Profile' => array(
-				'fields' => array(
-					'id','name','primary_email'
-				)
-			)
-		));
+		$this->set('toUserIds', $toUserIds);
+		$this->set('toUsers', $this->User->find('all', array(
+			'conditions' => array(
+				'User.id' => $toUserIds
+			),
+			'contain' => array(
+				'Profile'
+			),
+			'limit' => 20
+		)));
 		$this->set('fromUser', $fromUser);
 		$this->set('showAttachments', true);
 		$this->set('showPreferences', true);
