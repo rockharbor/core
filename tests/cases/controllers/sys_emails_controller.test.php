@@ -45,6 +45,7 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/sys_emails/user/User:1', array(
 			'data' => array(
 				'SysEmail' => array(
+					'to' => '1',
 					'subject' => '',
 					'body' => 'Email!',
 					'email_users' => 'users',
@@ -57,7 +58,6 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/User/id', $vars['toUsers']);
 		$expected = array(1);
 		$this->assertEqual($results, $expected);
-		$this->assertTrue(array_key_exists('to', $this->SysEmails->SysEmail->data['SysEmail']));
 		$results = $this->SysEmails->Session->read('Message.flash.element');
 		$expected = 'flash'.DS.'failure';
 		$this->assertEqual($results, $expected);
@@ -254,7 +254,7 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 			)
 		));
 		
-		$results = $vars['allToUsers'];
+		$results = $vars['toUserIds'];
 		$expected = array(1);
 		$this->assertEqual($results, $expected);
 		
@@ -271,7 +271,7 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 			)
 		));
 		
-		$results = $vars['allToUsers'];
+		$results = $vars['toUserIds'];
 		$expected = array(1);
 		$this->assertEqual($results, $expected);
 		
@@ -288,7 +288,7 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 			)
 		));
 		
-		$results = $vars['allToUsers'];
+		$results = $vars['toUserIds'];
 		sort($results);
 		$expected = array(1, 2, 3);
 		$this->assertEqual($results, $expected);
@@ -306,7 +306,7 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 			)
 		));
 		
-		$results = $vars['allToUsers'];
+		$results = $vars['toUserIds'];
 		sort($results);
 		$expected = array(1, 2, 3, 97, 98, 99, 100);
 		$this->assertEqual($results, $expected);
