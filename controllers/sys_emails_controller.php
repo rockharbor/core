@@ -74,58 +74,6 @@ class SysEmailsController extends AppController {
 	}
 
 /**
- * Creates a new bug report email
- */ 
-	function bug_compose() {
-		$this->set('title_for_layout', 'Submit a bug report');
-		
-		if (!empty($this->data)) {
-			$this->SysEmail->set($this->data);
-			$this->set('include_greeting', $this->data['SysEmail']['include_greeting']);
-			$this->set('include_signoff', $this->data['SysEmail']['include_signoff']);
-			
-			// send it!
-			if ($this->SysEmail->validates() && $this->Notifier->notify(array(
-				'from' => $this->activeUser['User']['id'], 
-				'to' => Core::read('development.debug_email'), 
-				'subject' => $this->data['SysEmail']['subject'],
-				'body' => $this->data['SysEmail']['body']
-			), 'email')) {
-				$this->Session->setFlash('Your email has been sent.', 'flash'.DS.'success');
-			} else {
-				$this->Session->setFlash('Unable to send email.', 'flash'.DS.'failure');
-			}
-		}
-		
-		$this->set('visitHistory', array_reverse($this->Session->read('CoreDebugPanels.authHistory')));
-		$this->set('toUsers', array(array(
-			'Profile' => array(
-				'name' => Core::read('development.debug_email'),
-				'primary_email' => Core::read('development.debug_email')
-			)
-		)));
-		$this->set('fromUser', $this->activeUser);
-		$this->set('cacheuid', false);
-		$this->set('showPreferences', false);
-		$this->set('showAttachments', false);
-		// needed for element
-		$this->set('activeUser', $this->activeUser);
-		
-		if (empty($this->data)) {
-			$this->data['SysEmail']['subject'] = 'Bug Report :: [enter short description here]';
-			
-			App::import('View', 'view');
-			$View = new View($this->Controller, false);
-			$View->webroot = WEBROOT_DIR;
-			$content = $View->element('email' . DS . 'bug_report', $this->viewVars, true);
-			
-			$this->data['SysEmail']['body'] = $content;
-		}
-		
-		$this->render('compose');
-	}
-	
-/**
  * Emails users or leaders from a Ministry
  * 
  * By passing an id to the `Ministry` passed arg, you can email a single

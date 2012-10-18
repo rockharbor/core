@@ -84,31 +84,6 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 	
-	function testBugCompose() {
-		$this->loadSettings();
-		$_SERVER['HTTP_USER_AGENT'] = 'cli';
-		
-		$this->su();
-		$this->su(array(
-			'User' => array(
-				'active' => 1
-			),
-			'Profile' => array(
-				'child' => 0
-			)
-		), false);
-		
-		$vars = $this->testAction('/sys_emails/bug_compose');
-		$results = Set::extract('/Profile/primary_email', $vars['toUsers']);
-		$expected = array(Core::read('development.debug_email'));
-		$this->assertEqual($results, $expected);
-		
-		$this->assertIsA($this->SysEmails->data['SysEmail']['body'], 'string');
-		$this->assertIsA($this->SysEmails->data['SysEmail']['subject'], 'string');
-		
-		$this->unloadSettings();
-	}
-	
 	function testLeader() {
 		$this->loadFixtures('Leader');
 		
