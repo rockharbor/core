@@ -157,7 +157,7 @@ class SysEmailsController extends AppController {
 					if (empty($search)) {
 						$search['conditions'] = array('User.id' => null);
 					}
-					$results = ClassRegistry::init('User')->find('all', $search);
+					$results = $this->User->find('all', $search);
 					$this->users = Set::extract('/User/id', $results);
 				}
 			}
@@ -171,8 +171,7 @@ class SysEmailsController extends AppController {
  * @param integer $leaderId The leader id
  */
 	function leader($leaderId) {
-		$Leader = ClassRegistry::init('Leader');
-		$user = $Leader->findById($leaderId);
+		$user = $this->Involvement->Leader->findById($leaderId);
 		$this->users = array($user['Leader']['user_id']);
 		$this->setAction('compose');
 	}
@@ -194,8 +193,6 @@ class SysEmailsController extends AppController {
 			return $this->redirect($this->emptyPage);
 		}
 		
-		$User = ClassRegistry::init('User');
-
 		$fromUser = $this->activeUser;
 		
 		$toUserIds = $this->users;
@@ -224,8 +221,8 @@ class SysEmailsController extends AppController {
 				$e = 0;
 				
 				if (in_array($this->data['SysEmail']['email_users'], array('both', 'household_contact'))) {
-					$households = $User->HouseholdMember->Household->getHouseholdIds($toUserIds);
-					$contacts = $User->HouseholdMember->Household->find('all', array(
+					$households = $this->User->HouseholdMember->Household->getHouseholdIds($toUserIds);
+					$contacts = $this->User->HouseholdMember->Household->find('all', array(
 						'fields' => array(
 							'contact_id'
 						),
