@@ -236,6 +236,21 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/sys_emails/user/mstoken:test');
 		$this->assertEqual($this->SysEmails->Session->read('Message.flash.element'), 'flash'.DS.'failure');
 		$this->assertFalse(isset($vars['toUsers']));
+		
+		$this->SysEmails->Session->write('MultiSelect.test', array(
+			'selected' => array(),
+			'search' => array(
+				'conditions' => array(
+					'User.id' => 1
+				)
+			),
+			'all' => true,
+			'created' => time()
+		));
+		$vars = $this->testAction('/sys_emails/user/mstoken:test');
+		$results = $vars['toUserIds'];
+		$expected = array(1);
+		$this->assertEqual($results, $expected);
 	}
 	
 	function testEmailHouseholdContact() {

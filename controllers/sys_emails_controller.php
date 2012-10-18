@@ -152,7 +152,7 @@ class SysEmailsController extends AppController {
 			} else {
 				$token = $this->params['named']['mstoken'];
 				$this->users = $this->MultiSelect->getSelected($token);
-				if (empty($this->users)) {
+				if ($this->users == 'all') {
 					$search = $this->MultiSelect->getSearch($token);
 					if (empty($search)) {
 						$search['conditions'] = array('User.id' => null);
