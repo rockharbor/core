@@ -463,21 +463,24 @@ CORE.confirmation = function(id, message, options) {
 	var useOptions = $.extend(_defaultOptions, options || {});
 	
 	if (useOptions.onYes === false) {
-		useOptions.onYes =  function(useOptions) {
-			var callingElement = $('#confirmation-modal').data('core-modal-originator');
-			CORE.request($(callingElement), {
-				url: href,
-				success: function(data) {
-					// only update with the request's response if 
-					// `useOptions.update = true`, otherwise perform auto-update
-					if (!useOptions.update) {
-						data = undefined;
+		(function(useOptions) {
+			useOptions.onYes = function() {
+				var callingElement = $('#confirmation-modal').data('core-modal-originator');
+				CORE.request($(callingElement), {
+					url: href,
+					success: function(data) {
+						console.log(useOptions);
+						// only update with the request's response if 
+						// `useOptions.update = true`, otherwise perform auto-update
+						if (!useOptions.update) {
+							data = undefined;
+						}
+						CORE.update($(callingElement), data);
+						CORE.closeModals('confirmation-modal');
 					}
-					CORE.update($(callingElement), data);
-					CORE.closeModals('confirmation-modal');
-				}
-			});
-		};
+				});
+			};
+		})(useOptions);
 	}
 	
 	if (useOptions.onNo === false) {

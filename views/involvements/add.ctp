@@ -20,26 +20,34 @@
 			'type' => 'textarea'
 		));
 	?>
-		<fieldset>
-			<legend>Roster</legend>
-	<?php		
-		echo $this->Form->input('default_status_id');
-		echo $this->Form->input('signup', array(
-			'label' => 'Offer signup'
-		));
-		echo $this->Form->input('roster_visible');
-		echo $this->Form->input('take_payment');
-		echo $this->Form->input('force_payment', array(
-			'label' => 'Force user to pay upon signup'
-		));
-		echo $this->Form->input('roster_limit', array(
-			'label' => 'Roster Limit (leave blank for unlimited)'
-		));
-		
-		echo $this->Form->input('offer_childcare');
-	?>
-		</fieldset>
 	</fieldset>
+	<div class="clearfix">
+		<fieldset class="grid_5 alpha">
+			<legend>Roster</legend>
+			<?php
+				echo $this->Form->input('default_status_id');
+				echo $this->Form->input('signup', array(
+					'label' => 'Offer signup'
+				));
+				echo $this->Form->input('take_payment');
+				echo $this->Form->input('force_payment', array(
+					'label' => 'Force user to pay upon signup'
+				));
+				echo $this->Form->input('roster_limit', array(
+					'label' => 'Roster Limit (leave blank for unlimited)'
+				));
+
+				echo $this->Form->input('offer_childcare');
+			?>
+		</fieldset>
+		<fieldset class="grid_5 omega">
+			<legend>Privacy</legend>
+			<?php
+				echo $this->Form->input('roster_visible');
+				echo $this->Form->input('private');
+			?>
+		</fieldset>
+	</div>
 <?php 
 echo $this->Form->end('Submit');
 ?>

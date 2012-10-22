@@ -69,6 +69,10 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Payment/id', $vars['payments']);
 		$expected = array(2, 3);
 		$this->assertEqual($results, $expected);
+		
+		$results = $this->Payments->MultiSelect->getSelected();
+		$expected = 'all';
+		$this->assertEqual($results, $expected);
 	}
 
 	function testAdd() {
