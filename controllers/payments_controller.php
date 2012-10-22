@@ -120,6 +120,8 @@ class PaymentsController extends AppController {
 		}
 
 		$this->MultiSelect->saveSearch($this->paginate);
+		// for payment export, always export all
+		$this->MultiSelect->selectAll();
 		
 		$this->set('payments', $this->paginate());
 		$this->Payment->User->contain(array('Profile'));

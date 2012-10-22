@@ -101,7 +101,7 @@
 				'controller' => 'reports',
 				'action' => 'export',
 				'Payment',
-				$this->MultiSelect->token
+				'mstoken' => $this->MultiSelect->token
 			),
 			array(
 				'data-core-modal' => '{"update":false}'
