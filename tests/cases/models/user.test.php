@@ -188,7 +188,7 @@ class UserTestCase extends CoreTestCase {
 			)
 		));
 		$this->assertEqual($results['Profile']['primary_email'], 'ricky@rockharbor.org');
-		$this->assertEqual($results['Profile']['signed_covenant_date'], '2010-01-06');
+		$this->assertEqual($results['Profile']['signed_covenant_2011'], 1);
 		
 		// save empty email and try to merge
 		$this->User->Profile->id = 2;

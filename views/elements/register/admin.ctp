@@ -6,9 +6,8 @@
 	echo $this->Form->input('Profile.background_check_complete');
 	echo $this->Form->input('Profile.background_check_by');
 	echo $this->Form->input('Profile.background_check_date');
-	echo $this->Form->input('Profile.signed_covenant_date', array(
-		'empty' => true
-	));
+	echo $this->Form->input('Profile.signed_covenant_2011');
+	echo $this->Form->input('Profile.signed_covenant_2012');
 	?>
 </fieldset>
 <fieldset class="grid_5 omega">
