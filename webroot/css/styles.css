@@ -864,6 +864,10 @@ dd {
 	color: #838383;
 }
 
+dd:after {
+	content: '\a0'; /* unicode for `&nbsp;` */
+}
+
 /*
 Custom Icons
 */
