@@ -469,7 +469,6 @@ CORE.confirmation = function(id, message, options) {
 				CORE.request($(callingElement), {
 					url: href,
 					success: function(data) {
-						console.log(useOptions);
 						// only update with the request's response if 
 						// `useOptions.update = true`, otherwise perform auto-update
 						if (!useOptions.update) {

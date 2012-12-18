@@ -225,7 +225,7 @@
 			} else {
 				$colCount--;
 			}
-			$this->Js->buffer('CORE.confirmation("roster-remove", "Are you sure you want to remove the selected users?", {update:true})');
+			$this->Js->buffer('CORE.confirmation("roster-remove", "Are you sure you want to remove the selected users?")');
 			if ($fullAccess) {
 				echo $this->element('multiselect', array(
 					'colCount' => $colCount,
@@ -254,7 +254,7 @@
 	<tbody>
 	<?php
 	$addIcon = $this->element('icon', array('icon' => 'add'));
-	$canModifyRoles = $this->Permission->check(array('controller' => 'rosters', 'action' => 'roles', 'Involvement' => $involvement['Involvement']['id'], $roster['Roster']['id']));
+	$canModifyRoles = $this->Permission->check(array('controller' => 'rosters', 'action' => 'roles', 'Involvement' => $involvement['Involvement']['id']));
 	$i = 0;
 	foreach ($rosters as $roster):
 		$class = null;
