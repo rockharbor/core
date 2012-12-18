@@ -40,6 +40,7 @@
 		echo '<!--[if lt IE 9]>'.$this->Html->css('ie').'<![endif]-->';
 
 		// google cdn scripts
+		$min = Configure::read('debug') == 0 ? '.min' : null;
 		echo $this->Html->script('//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery'.$min.'.js');
 		echo $this->Html->script('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/jquery-ui'.$min.'.js');
 

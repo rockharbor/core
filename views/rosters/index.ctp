@@ -254,7 +254,7 @@
 	<tbody>
 	<?php
 	$addIcon = $this->element('icon', array('icon' => 'add'));
-	$canModifyRoles = $this->Permission->check(array('controller' => 'rosters', 'action' => 'roles', 'Involvement' => $involvement['Involvement']['id'], $roster['Roster']['id']));
+	$canModifyRoles = $this->Permission->check(array('controller' => 'rosters', 'action' => 'roles', 'Involvement' => $involvement['Involvement']['id']));
 	$i = 0;
 	foreach ($rosters as $roster):
 		$class = null;
