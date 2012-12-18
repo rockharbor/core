@@ -225,7 +225,7 @@
 			} else {
 				$colCount--;
 			}
-			$this->Js->buffer('CORE.confirmation("roster-remove", "Are you sure you want to remove the selected users?", {update:true})');
+			$this->Js->buffer('CORE.confirmation("roster-remove", "Are you sure you want to remove the selected users?")');
 			if ($fullAccess) {
 				echo $this->element('multiselect', array(
 					'colCount' => $colCount,
