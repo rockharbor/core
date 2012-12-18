@@ -97,7 +97,7 @@ class CreditCard extends AppModel {
 		),
 		'cvv' => array(
 			'minLength' => array(
-				'rule' => 'minLength',
+				'rule' => array('minLength', 3),
 				'required' => true,
 				'message' => 'Please fill in the required field.'
 			)
@@ -149,6 +149,13 @@ class CreditCard extends AppModel {
  * @todo Use id instead to maintain conventions
  */ 
 	var $transactionId = null;
+	
+/**
+ * The payment gateway component
+ * 
+ * @var AuthorizeDotNetComponent
+ */
+	var $gateway = null;
 
 /**
  * Overwrite Model::exists() due to Cake looking for a table
@@ -195,20 +202,19 @@ class CreditCard extends AppModel {
 	
 		$this->set($data);
 		if (!($options['validate']) || $this->validates()) {
-			App::import('Component', 'AuthorizeDotNet');
-			$AuthorizeDotNet = new AuthorizeDotNetComponent();
+			$gateway = $this->getGateway();
 			// set up credit card authorization
-			$AuthorizeDotNet->setCustomer($data);
-			$AuthorizeDotNet->setInvoiceNumber($data['invoice_number']);
-			$AuthorizeDotNet->setDescription($data['description']);
-			$AuthorizeDotNet->setAmount($data['amount']);
+			$gateway->setCustomer($data);
+			$gateway->setInvoiceNumber($data['invoice_number']);
+			$gateway->setDescription($data['description']);
+			$gateway->setAmount($data['amount']);
 			
 			if ($options['validate'] != 'only') {
 				// run credit card
-				$success = $AuthorizeDotNet->request();
-				$this->transactionId = $AuthorizeDotNet->transactionId;
+				$success = $gateway->request();
+				$this->transactionId = $gateway->transactionId;
 				if (!$success) {
-					$this->invalidate('credit_card_number', $AuthorizeDotNet->error);
+					$this->invalidate('credit_card_number', $gateway->error);
 				}
 				return $success;
 			}
@@ -217,5 +223,18 @@ class CreditCard extends AppModel {
 		}
 		
 		return false;
+	}
+
+/**
+ * Gets the gateway component
+ * 
+ * @return AuthorizeDotNetComponent
+ */
+	function getGateway() {
+		if ($this->gateway === null) {
+			App::import('Component', 'AuthorizeDotNet');
+			$this->gateway = new AuthorizeDotNetComponent();
+		}
+		return $this->gateway;
 	}
 }

@@ -284,7 +284,7 @@ class PaymentsController extends AppController {
 			
 					$this->Session->setFlash('Your payment has been received.', 'flash'.DS.'success');
 				} else {
-					$this->Session->setFlash('Unable to process payment. '.$this->Payment->CreditCard->creditCardError, 'flash'.DS.'failure');
+					$this->Session->setFlash('Unable to process payment.', 'flash'.DS.'failure');
 				}					
 			} else {
 				$this->Session->setFlash('Unable to process payment. Please try again.', 'flash'.DS.'failure');
