@@ -59,16 +59,6 @@ class SysEmail extends AppModel {
 	);
 	
 /**
- * Overwrite Model::exists() due to Cake looking for a table when validating.
- *
- * @return boolean True
- */
-	function exists() {
-		return true;
-	}
-
-	
-/**
  * Garbage collects email attachments
  *
  * Deletes all attachments that are older than 1 day (orphaned). Or, if $uid is
