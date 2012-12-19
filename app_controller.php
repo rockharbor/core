@@ -8,8 +8,6 @@
  * @subpackage    core.app
  */
 
-App::import('Vendor', array('file' => 'FirePHPCore/FirePHP.class.php'));
-
 /**
  * App Controller
  *
