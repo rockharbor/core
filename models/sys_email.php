@@ -59,6 +59,22 @@ class SysEmail extends AppModel {
 	);
 	
 /**
+ * BelongsTo associations
+ * 
+ * @var array
+ */
+	var $belongsTo = array(
+		'ToUser' => array(
+			'className' => 'User',
+			'foreignKey' => 'to_id'
+		),
+		'FromUser' => array(
+			'className' => 'User',
+			'foreignKey' => 'from_id'
+		)
+	);
+	
+/**
  * Garbage collects email attachments
  *
  * Deletes all attachments that are older than 1 day (orphaned). Or, if $uid is
