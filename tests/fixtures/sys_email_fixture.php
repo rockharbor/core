@@ -71,7 +71,7 @@ class SysEmailFixture extends CakeTestFixture {
 			'subject' => 'Some Mail',
 			'delivery' => null,
 			'smtp_options' => null,
-			'message' => null,
+			'message' => 'a:6:{i:0;s:62:"<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">";i:1;s:6:"<html>";i:2;s:6:"<body>";i:3;s:49:"<p>This is a test <strong>with</strong> html.</p>";i:4;s:7:"</body>";i:5;s:7:"</html>";}',
 			'header' => null,
 			'attempts' => 0,
 			'status' => 0,

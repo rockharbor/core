@@ -171,6 +171,11 @@ li{
 	position: relative;
 }
 
+iframe {
+	border: 1px solid #acacac;
+	background: #f1f1f1;
+}
+
 /*
 Links
 */

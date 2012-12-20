@@ -79,7 +79,7 @@ class SysEmailsController extends AppController {
 	function beforeFilter() {
 		parent::beforeFilter();
 		
-		$this->_editSelf('index');
+		$this->_editSelf('index', 'view', 'html_email');
 		
 		$this->Auth->allow('bug_compose');
 		
@@ -141,6 +141,51 @@ class SysEmailsController extends AppController {
 		$statuses = $this->statuses;
 		
 		$this->set(compact('emails', 'statuses'));
+	}
+	
+/**
+ * Shows a sent email
+ * 
+ * @param integer $id The message id
+ */	
+	function view($id = null) {
+		if (!$id) {
+			$this->cakeError('error404');
+		}
+		
+		$user = $this->passedArgs['User'];
+		
+		$email = $this->SysEmail->find('first', array(
+			'fields' => array(
+				'id',
+				'subject',
+				'message',
+				'from_id'
+			),
+			'conditions' => array(
+				'or' => array(
+					'SysEmail.to_id' => $user,
+					'SysEmail.from_id' => $user
+				),
+				'SysEmail.id' => $id
+			),
+			'contain' => array(
+				'FromUser' => array(
+					'Profile' => array('name')
+				)
+			)
+		));
+		$this->set('email', $this->QueueEmail->interpret($email, 'SysEmail'));
+	}
+	
+/**
+ * Renders the complete HTML email message
+ * 
+ * @param integer $id The message id
+ */
+	function html_email($id = null) {
+		$this->layout = false;
+		$this->view($id);
 	}
 
 /**
