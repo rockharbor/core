@@ -75,6 +75,34 @@ class SysEmail extends AppModel {
 	);
 	
 /**
+ * Behaviors
+ * 
+ * @var array
+ */
+	var $actsAs = array(
+		'Containable'
+	);
+
+/**
+ * Caculates pagination count
+ * 
+ * @param array $conditions
+ * @param array $recursive
+ * @param array $options
+ * @return integer
+ */
+	function paginateCount($conditions, $recursive, $options) {
+		$options += array(
+			'fields' => array(
+				'COUNT(*) as count'
+			),
+			'conditions' => $conditions
+		);
+		$count = $this->find('all', $options);
+		return count($count);
+	}
+	
+/**
  * Garbage collects email attachments
  *
  * Deletes all attachments that are older than 1 day (orphaned). Or, if $uid is

@@ -37,6 +37,49 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		return parent::testAction($url, $options);
 	}
 	
+	function testIndex() {
+		$this->loadFixtures('SysEmail');
+		
+		$vars = $this->testAction('/sys_emails/index/User:2');
+		$result = count($vars['emails']);
+		$expected = 2;
+		$this->assertEqual($result, $expected);
+		
+		$result = $vars['emails'][0][0]['message_count'];
+		$expected = 2;
+		$this->assertEqual($result, $expected);
+		
+		$result = $vars['emails'][1][0]['message_count'];
+		$expected = 1;
+		$this->assertEqual($result, $expected);
+		
+		$vars = $this->testAction('/sys_emails/index/User:2', array(
+			'data' => array(
+				'Filter' => array(
+					'show' => 'both'
+				)
+			)
+		));
+		$result = count($vars['emails']);
+		$expected = 4;
+		$this->assertEqual($result, $expected);
+		
+		$result = $this->testController->params['paging']['SysEmail']['count'];
+		$expected = 4;
+		$this->assertEqual($result, $expected);
+		
+		$vars = $this->testAction('/sys_emails/index/User:2', array(
+			'data' => array(
+				'Filter' => array(
+					'show' => 'to'
+				)
+			)
+		));
+		$result = count($vars['emails']);
+		$expected = 3;
+		$this->assertEqual($result, $expected);
+	}
+	
 	function testComposeValidation() {
 		$vars = $this->testAction('/sys_emails/user/User:1');
 		$results = $this->SysEmails->SysEmail->validationErrors;

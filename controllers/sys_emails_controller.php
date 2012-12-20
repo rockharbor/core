@@ -35,7 +35,10 @@ class SysEmailsController extends AppController {
  *
  * @var array
  */
-	var $components = array('MultiSelect.MultiSelect');
+	var $components = array(
+		'MultiSelect.MultiSelect',
+		'FilterPagination'
+	);
 	
 /**
  * Models used by this controller
@@ -56,6 +59,17 @@ class SysEmailsController extends AppController {
 	var $users = array();
 
 /**
+ * List of human readable statuses
+ * 
+ * @var array
+ */
+	var $statuses = array(
+		0 => 'Queued',
+		1 => 'Sent',
+		2 => 'Sending'
+	);
+
+/**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
@@ -65,12 +79,68 @@ class SysEmailsController extends AppController {
 	function beforeFilter() {
 		parent::beforeFilter();
 		
+		$this->_editSelf('index');
+		
 		$this->Auth->allow('bug_compose');
 		
 		// if the user is leading or managing, let them email people
 		if ($this->activeUser['Profile']['leading'] > 0 || $this->activeUser['Profile']['managing'] > 0) {
 			$this->Auth->allow('compose');
 		}
+	}
+	
+/**
+ * Shows a list of emails to or from the user
+ */
+	function index() {
+		$user = $this->passedArgs['User'];
+		
+		if (empty($this->data)) {
+			$this->data = array(
+				'Filter' => array(
+					'show' => 'from'
+				)
+			);
+		}
+		
+		$this->paginate = array(
+			'fields' => array(
+				'COUNT(*) as message_count, SysEmail.*'
+			),
+			'contain' => array(
+				'ToUser' => array(
+					'Profile' => array(
+						'fields' => array('name')
+					)
+				),
+				'FromUser' => array(
+					'Profile' => array(
+						'fields' => array('name')
+					)
+				)
+			),
+			'group' => 'SysEmail.subject',
+			'order' => 'modified DESC'
+		);
+		
+		switch ($this->data['Filter']['show']) {
+			case 'from':
+				$this->paginate['conditions']['SysEmail.from_id'] = $user;
+				break;
+			case 'both':
+				$this->paginate['conditions']['or'] = array(
+					'SysEmail.to_id' => $user,
+					'SysEmail.from_id' => $user
+				);
+				break;
+			default:
+				$this->paginate['conditions']['SysEmail.to_id'] = $user;
+		}
+		
+		$emails = $this->FilterPagination->paginate();
+		$statuses = $this->statuses;
+		
+		$this->set(compact('emails', 'statuses'));
 	}
 
 /**

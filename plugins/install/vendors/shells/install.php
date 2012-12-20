@@ -566,6 +566,7 @@ class InstallShell extends Shell {
 			'controllers/SysEmails/roster',
 			'controllers/SysEmails/involvement',
 			'controllers/SysEmails/ministry',
+			'controllers/SysEmails/index',
 			'controllers/CampusLeaders/index',
 			'controllers/MinistryLeaders/index',
 			'controllers/InvolvementLeaders/index',
