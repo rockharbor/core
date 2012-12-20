@@ -98,7 +98,8 @@ class SysEmailsController extends AppController {
 		if (empty($this->data)) {
 			$this->data = array(
 				'Filter' => array(
-					'show' => 'from'
+					'show' => 'from',
+					'hide_system' => 1
 				)
 			);
 		}
@@ -122,6 +123,10 @@ class SysEmailsController extends AppController {
 			'group' => 'SysEmail.subject',
 			'order' => 'modified DESC'
 		);
+		
+		if ($this->data['Filter']['hide_system']) {
+			$this->paginate['group'] .= ' HAVING SysEmail.from_id > 0';
+		}
 		
 		switch ($this->data['Filter']['show']) {
 			case 'from':

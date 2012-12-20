@@ -99,7 +99,8 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/sys_emails/index/User:2', array(
 			'data' => array(
 				'Filter' => array(
-					'show' => 'both'
+					'show' => 'both',
+					'hide_system' => 0
 				)
 			)
 		));
@@ -114,7 +115,20 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/sys_emails/index/User:2', array(
 			'data' => array(
 				'Filter' => array(
-					'show' => 'to'
+					'show' => 'to',
+					'hide_system' => 0
+				)
+			)
+		));
+		$result = count($vars['emails']);
+		$expected = 3;
+		$this->assertEqual($result, $expected);
+		
+		$vars = $this->testAction('/sys_emails/index/User:2', array(
+			'data' => array(
+				'Filter' => array(
+					'show' => 'both',
+					'hide_system' => 1
 				)
 			)
 		));

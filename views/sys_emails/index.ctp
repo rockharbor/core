@@ -13,6 +13,10 @@
 			'both' => 'both'
 		)
 	));
+	echo $this->Form->input('hide_system', array(
+		'label' => 'Hide system emails',
+		'type' => 'checkbox'
+	));
 	echo $this->Js->submit('Filter', $defaultSubmitOptions);
 	echo $this->Form->end();
 	

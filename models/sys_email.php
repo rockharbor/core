@@ -94,7 +94,7 @@ class SysEmail extends AppModel {
 	function paginateCount($conditions, $recursive, $options) {
 		$options += array(
 			'fields' => array(
-				'COUNT(*) as count'
+				'COUNT(*) as count, SysEmail.from_id'
 			),
 			'conditions' => $conditions
 		);
