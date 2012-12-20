@@ -3,10 +3,10 @@
 App::import('Lib', 'CoreTestCase');
 App::import('Controller', 'Payments');
 App::import('Model', 'CreditCard');
-App::import('Component', array('QueueEmail.QueueEmail'));
+App::import('Component', array('QueueEmail.QueueEmail', 'AuthorizeDotNet'));
 
+Mock::generatePartial('AuthorizeDotNetComponent', 'TestPaymentsControllerAuthorizeDotNetComponent', array('_request'));
 Mock::generatePartial('PaymentsController', 'TestPaymentsController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
-Mock::generatePartial('CreditCard', 'MockPaymentsCreditCard', array('save', 'saveAll'));
 Mock::generatePartial('QueueEmailComponent', 'MockPaymentsQueueEmailComponent', array('_smtp', '_mail'));
 
 class PaymentsControllerTestCase extends CoreTestCase {
@@ -21,10 +21,8 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		$this->Payments->Notifier->QueueEmail->initialize($this->Payments);
 		$this->Payments->Notifier->QueueEmail->setReturnValue('_smtp', true);
 		$this->Payments->Notifier->QueueEmail->setReturnValue('_mail', true);
-		$CreditCard =& new MockPaymentsCreditCard();
-		$CreditCard->something = 'nothing';
-		$CreditCard->setReturnValue('save', true);
-		$CreditCard->setReturnValue('saveAll', true);
+		$CreditCard = new CreditCard();
+		$CreditCard->gateway = new TestPaymentsControllerAuthorizeDotNetComponent();
 		ClassRegistry::removeObject('CreditCard');
 		ClassRegistry::addObject('CreditCard', $CreditCard);
 		ClassRegistry::init('CreditCard');
@@ -74,8 +72,58 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		$expected = 'all';
 		$this->assertEqual($results, $expected);
 	}
+	
+	function testFailedPayment() {
+		$this->su(array(
+			'User' => array('id' => 1),
+			'Group' => array('id' => 1),
+			'Profile' => array('primary_email' => 'test@test.com')
+		));
+
+		$data = array(
+			'Payment' => array(
+				'payment_type_id' => 1,
+				'amount' => 10
+			),
+			'CreditCard' => array(
+				'address_line_1' => '123 Main St.',
+				'address_line_2' => null,
+				'city' => 'Anytown',
+				'state' => 'CA',
+				'zip' => '12345',
+				'first_name' => 'Joe',
+				'last_name' => 'Schmoe',
+				'credit_card_number' => 'invalid',
+				'cvv' => '123',
+				'expiration_date' => array(
+					'month' => '04',
+					'year' => '2080',
+				)
+			)
+		);
+
+		// invalid card number
+		$vars = $this->testAction('/payments/add/1/Involvement:1', array(
+			'return' => 'vars',
+			'data' => $data
+		));
+		$result = $this->Payments->Payment->CreditCard->validationErrors;
+		$this->assertTrue(array_key_exists('credit_card_number', $result));
+		$result = $this->Payments->Payment->validationErrors;
+		$this->assertTrue(empty($result));
+		
+		// valid card, invalid gateway response
+		$data['CreditCard']['credit_card_number'] = '4242424242424242';
+		ClassRegistry::getObject('CreditCard')->gateway->setReturnValueAt(0, '_request', '0|||some error|||123456');
+		
+		$result = $this->Payments->Payment->CreditCard->validationErrors;
+		$this->assertTrue(array_key_exists('credit_card_number', $result));
+		$this->assertTrue($result['credit_card_number'], 'some error');
+	}
 
 	function testAdd() {
+		ClassRegistry::getObject('CreditCard')->gateway->setReturnValue('_request', '1||||||123456');
+		
 		$this->su(array(
 			'User' => array('id' => 1),
 			'Group' => array('id' => 1),
@@ -92,6 +140,7 @@ class PaymentsControllerTestCase extends CoreTestCase {
 			),
 			'CreditCard' => array(
 				'address_line_1' => '123 Main St.',
+				'address_line_2' => null,
 				'city' => 'Anytown',
 				'state' => 'CA',
 				'zip' => '12345',

@@ -59,14 +59,48 @@ class SysEmail extends AppModel {
 	);
 	
 /**
- * Overwrite Model::exists() due to Cake looking for a table when validating.
- *
- * @return boolean True
+ * BelongsTo associations
+ * 
+ * @var array
  */
-	function exists() {
-		return true;
-	}
+	var $belongsTo = array(
+		'ToUser' => array(
+			'className' => 'User',
+			'foreignKey' => 'to_id'
+		),
+		'FromUser' => array(
+			'className' => 'User',
+			'foreignKey' => 'from_id'
+		)
+	);
+	
+/**
+ * Behaviors
+ * 
+ * @var array
+ */
+	var $actsAs = array(
+		'Containable'
+	);
 
+/**
+ * Caculates pagination count
+ * 
+ * @param array $conditions
+ * @param array $recursive
+ * @param array $options
+ * @return integer
+ */
+	function paginateCount($conditions, $recursive, $options) {
+		$options += array(
+			'fields' => array(
+				'COUNT(*) as count, SysEmail.from_id'
+			),
+			'conditions' => $conditions
+		);
+		$count = $this->find('all', $options);
+		return count($count);
+	}
 	
 /**
  * Garbage collects email attachments
