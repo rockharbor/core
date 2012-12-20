@@ -18,6 +18,10 @@
 		if ($link) {
 			echo $this->Html->tag('li', $link);
 		}
+		$link = $this->Permission->link($prefix.'Email', array('controller' => 'sys_emails', 'User' => $profile['User']['id']), array('title' => 'email'));
+		if ($link) {
+			echo $this->Html->tag('li', $link);
+		}
 		?>
 	</ul>
 
@@ -381,6 +385,23 @@
 				'data' => null,
 				'form' => array('data' => null)
 				));
+			?>
+		</div>
+		<?php endif; ?>
+		
+		<?php if ($this->Permission->check(array('controller' => 'sys_emails', 'User' => $profile['User']['id']))): ?>
+		<div id="email">
+			<?php
+			echo $this->requestAction('/sys_emails/index', array(
+				'renderAs' => 'ajax',
+				'bare' => false,
+				'return',
+				'named' => array(
+					'User' => $profile['User']['id']
+				),
+				'data' => null,
+				'form' => array('data' => null)
+			));
 			?>
 		</div>
 		<?php endif; ?>
