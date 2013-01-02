@@ -515,9 +515,6 @@ class InstallShell extends Shell {
 			'controllers/SysEmails/roster',
 			'controllers/SysEmails/involvement',
 			'controllers/SysEmails/ministry',
-			'controllers/SysEmails/index',
-			'controllers/SysEmails/view',
-			'controllers/SysEmails/html_email',
 			'controllers/SysEmailDocuments',
 			'controllers/Involvements/invite',
 			'controllers/MinistryImages/upload',
@@ -651,7 +648,10 @@ class InstallShell extends Shell {
 			'controllers/Households/confirm',
 			'controllers/Profiles/edit',
 			'controllers/Payments/view',
-			'controllers/Payments/index'
+			'controllers/Payments/index',
+			'controllers/SysEmails/index',
+			'controllers/SysEmails/view',
+			'controllers/SysEmails/html_email',
 		),
 		'Household Contact' => array(
 			'controllers/UserImages/delete',
