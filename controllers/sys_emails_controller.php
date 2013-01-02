@@ -181,6 +181,7 @@ class SysEmailsController extends AppController {
 			)
 		));
 		$this->set('email', $this->QueueEmail->interpret($email, 'SysEmail'));
+		$this->set('user', $user);
 	}
 	
 /**
