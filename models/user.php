@@ -698,7 +698,7 @@ class User extends AppModel {
 			$ages = array();
 			foreach ($data['Profile']['age'] as $ageGroup) {			
 				$ageRange = explode('-', $ageGroup);
-				$ages['or'][] = array($this->Profile->getVirtualField('age').' BETWEEN ? AND ?' => array((int)$ageRange[0], (int)$ageRange[1]));
+				$ages['or'][] = array($this->Profile->getVirtualField('age').' BETWEEN ? AND ?' => array($ageRange[0], $ageRange[1]));
 			}
 			$conditions[$operator][] = $ages;
 			unset($conditions['Profile.age']);
