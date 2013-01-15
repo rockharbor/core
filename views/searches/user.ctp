@@ -62,6 +62,7 @@
 				'type' => 'checkbox',
 				'label' => 'Currently Leading'
 			));
+			echo $this->Form->input('Profile.background_check_complete');
 			echo $this->Form->input('Profile.signed_covenant_2011');
 			echo $this->Form->input('Profile.signed_covenant_2012');
 		?>

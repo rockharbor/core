@@ -981,6 +981,39 @@ class UserTestCase extends CoreTestCase {
 				'operator' => 'AND'
 			),
 			'Profile' => array(
+				'age' => array(
+					 '0-17.99'
+				)
+			)
+		);
+		$results = $this->User->prepareSearch($this->Controller, $search);
+		$expected = array(
+			'link' => array(
+				'Profile' => array(
+					'fields' => array(
+						'user_id',
+						$this->User->Profile->getVirtualField('age').' AS Profile__age',
+					)
+				)
+			),
+			'group' => 'User.id',
+			'conditions' => array(
+				array(
+					'or' => array(
+						 array(
+							  $this->User->Profile->getVirtualField('age').' BETWEEN ? AND ?' => array(0, 17.99)
+						 )
+					)
+				)
+			)
+		);
+		$this->assertEqual($results, $expected);
+		
+		$search = array(
+			'Search' => array(
+				'operator' => 'AND'
+			),
+			'Profile' => array(
 				'birth_date' => '4/14/1984'
 			)
 		);
