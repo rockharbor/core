@@ -454,7 +454,7 @@ class InstallSchema extends CakeSchema {
 		'qualified_leader' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
 		'background_check_complete' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
 		'background_check_by' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),
-		'background_check_date' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),
+		'background_check_date' => array('type' => 'date', 'null' => true, 'default' => NULL),
 		'signed_covenant_2011' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'signed_covenant_2012' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'grade' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 2),

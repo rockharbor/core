@@ -19,7 +19,9 @@ echo $this->Form->create(array(
 			echo $this->Form->input('cpr_certified_date');
 			echo $this->Form->input('background_check_complete');
 			echo $this->Form->input('background_check_by');
-			echo $this->Form->input('background_check_date');
+			echo $this->Form->input('background_check_date', array(
+				'empty' => true
+			));
 			echo $this->Form->input('signed_covenant_2011');
 			echo $this->Form->input('signed_covenant_2012');
 			?>
