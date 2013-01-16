@@ -645,6 +645,7 @@ class User extends AppModel {
 			),
 			'Profile' => array(
 				'Birthday' => array(),
+				'BackgroundCheck' => array(),
 				'email' => array(),
 				'birth_date' => null
 			),
@@ -663,6 +664,9 @@ class User extends AppModel {
 		$birthdayRange = $data['Profile']['Birthday'];
 		$birthdayRange = array_map('Set::filter', $birthdayRange);
 		unset($data['Profile']['Birthday']);
+		$backgroundCheckRange = $data['Profile']['BackgroundCheck'];
+		$backgroundCheckRange = array_map('Set::filter', $backgroundCheckRange);
+		unset($data['Profile']['BackgroundCheck']);
 		$email = $data['Profile']['email'];
 		unset($data['Profile']['email']);
 		unset($data['User']['password']);
@@ -718,6 +722,17 @@ class User extends AppModel {
 			$start = implode('-', $birthdayRange['start']);
 			$end = implode('-', $birthdayRange['end']);
 			$conditions['Profile.birth_date BETWEEN ? AND ?'] = array($start, $end);
+			$link['Profile'] = array();
+		}
+		
+		// check for background check range
+		if (!empty($backgroundCheckRange['start']) && !empty($backgroundCheckRange['end'])) {
+			krsort($backgroundCheckRange['start']);
+			krsort($backgroundCheckRange['end']);
+			$start = implode('-', $backgroundCheckRange['start']);
+			$end = implode('-', $backgroundCheckRange['end']);
+			$conditions['Profile.background_check_date BETWEEN ? AND ?'] = array($start, $end);
+			$link['Profile'] = array();
 		}
 		
 		// check for birthdate
