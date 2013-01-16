@@ -1202,6 +1202,44 @@ class UserTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 	
+	function testSearchBackgroundDateRange() {
+		$controller =  new UsersTestController();
+		
+		$search = array(
+			'Search' => array(
+				'operator' => 'AND'
+			),
+			'Profile' => array(
+				'BackgroundCheck' => array(
+					'start' => array(
+						'year' => '2010',
+						'month' => '04',
+						'day' => '01'
+					),
+					'end' => array(
+						'year' => '2010',
+						'month' => '06',
+						'day' => '01'
+					)
+				)
+			)
+		);
+		$results = $this->User->prepareSearch($controller, $search);
+		$expected = array(
+			'link' => array(
+				'Profile' => array()
+			),
+			'group' => 'User.id',
+			'conditions' => array(
+				'Profile.background_check_date BETWEEN ? AND ?' => array(
+					'2010-04-01',
+					'2010-06-01'
+				)
+			)
+		);
+		$this->assertEqual($results, $expected);
+	}
+	
 	function testGenerateUsername() {
 		$result = $this->User->generateUsername();
 		$expected = '';

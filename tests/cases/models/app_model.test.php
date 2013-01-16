@@ -423,7 +423,7 @@ class AppModelTestCase extends CoreTestCase {
 			'year' => ''
 		);
 		$expected = '0000-4-14';
-		$results = $this->User->Profile->deconstruct('background_check_date', $data);
+		$results = $this->User->Profile->deconstruct('baptism_date', $data);
 		$this->assertEqual($results, $expected);
 
 		$data = array(
@@ -432,12 +432,12 @@ class AppModelTestCase extends CoreTestCase {
 			'year' => 1984
 		);
 		$expected = '1984-4-00';
-		$results = $this->User->Profile->deconstruct('background_check_date', $data);
+		$results = $this->User->Profile->deconstruct('baptism_date', $data);
 		$this->assertEqual($results, $expected);
 		
 		$data = '1984-04-14';
 		$expected = '1984-04-14';
-		$results = $this->User->Profile->deconstruct('background_check_date', $data);
+		$results = $this->User->Profile->deconstruct('baptism_date', $data);
 		$this->assertEqual($results, $expected);
 	}
 	

@@ -63,6 +63,16 @@
 				'label' => 'Currently Leading'
 			));
 			echo $this->Form->input('Profile.background_check_complete');
+			echo $this->Form->input('Profile.BackgroundCheck.start', array(
+				'type' => 'date',
+				'label' => 'Background Check Range',
+				'minYear' => 1900
+			));
+			echo $this->Form->input('Profile.BackgroundCheck.end', array(
+				'type' => 'date',
+				'label' => false,
+				'minYear' => 1900
+			));
 			echo $this->Form->input('Profile.signed_covenant_2011');
 			echo $this->Form->input('Profile.signed_covenant_2012');
 		?>
