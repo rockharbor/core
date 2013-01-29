@@ -3,22 +3,6 @@
 		<a class="tool" data-wysihtml5-command="bold" title="Bold">Bold</a>
 		<a class="tool" data-wysihtml5-command="italic" title="Italic">Italic</a>
 		<a class="tool" data-wysihtml5-command="underline" title="Underline">Underline</a>
-
-		<span class="separator">&nbsp;</span>
-
-		<a class="tool" data-wysihtml5-command="insertOrderedList" title="Insert Ordered List">Ordered List</a>
-		<a class="tool" data-wysihtml5-command="insertUnorderedList" title="Insert Unordered List">Unordered List</a>
-
-		<span class="separator">&nbsp;</span>
-
-		<a class="tool" data-wysihtml5-command="createLink" title="Insert Link">Insert Link</a>
-
-		<span class="separator">&nbsp;</span>
-
-		<a class="tool" data-wysihtml5-action="change_view" title="View HTML Code">View HTML</a>
-
-		<span class="separator">&nbsp;</span>
-
 		<li data-wysihtml5-command-group="foreColor" class="tool fore-color" title="Color the selected text" class="command">
             <ul>
               <li data-wysihtml5-command="foreColor" data-wysihtml5-command-value="silver"></li>
@@ -41,6 +25,19 @@
               <li data-wysihtml5-command="fontSize" data-wysihtml5-command-value="x-large">X-Large</li>
             </ul>
          </li>
+
+		<span class="separator">&nbsp;</span>
+
+		<a class="tool" data-wysihtml5-command="insertOrderedList" title="Insert Ordered List">Ordered List</a>
+		<a class="tool" data-wysihtml5-command="insertUnorderedList" title="Insert Unordered List">Unordered List</a>
+
+		<span class="separator">&nbsp;</span>
+
+		<a class="tool" data-wysihtml5-command="createLink" title="Insert Link">Insert Link</a>
+
+		<span class="separator">&nbsp;</span>
+
+		<a class="tool" data-wysihtml5-action="change_view" title="View HTML Code">View HTML</a>
 	</div>
 	
 	<div class="dialogs">
