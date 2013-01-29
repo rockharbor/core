@@ -6,3 +6,51 @@ CSS stylesheet for emails
 	font-family: 'Lucida Sans',Helvetica,Arial,sans-serif;
 	font-size: 13px;
 }
+
+.wysiwyg-color-red {
+	color: red;
+}
+
+.wysiwyg-color-green {
+	color: green;
+}
+
+.wysiwyg-color-blue {
+	color: blue;
+}
+
+.wysiwyg-color-silver {
+	color: silver;
+}
+
+.wysiwyg-color-gray {
+	color: gray;
+}
+
+.wysiwyg-color-maroon {
+	color: maroon;
+}
+
+.wysiwyg-color-red {
+	color: red;
+}
+
+.wysiwyg-color-purple {
+	color: purple;
+}
+
+.wysiwyg-color-green {
+	color: green;
+}
+
+.wysiwyg-color-olive {
+	color: olive;
+}
+
+.wysiwyg-color-navy {
+	color: navy;
+}
+
+.wysiwyg-color-blue {
+	color: blue;
+}

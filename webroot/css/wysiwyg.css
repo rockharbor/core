@@ -29,7 +29,7 @@
 	border-right: 1px solid #838383;
 }
 
-.wysihtml5-toolbar .tools a {
+.wysihtml5-toolbar .tools .tool {
 	display: block; 
 	width: 16px; 
 	height: 16px;
@@ -50,6 +50,78 @@
 .wysihtml5-toolbar .tools a.wysihtml5-command-active,
 .wysihtml5-toolbar .tools a:hover {
 	background-color: #f1f1f1;
+}
+
+.fore-color {
+	position: relative;
+}
+
+.fore-color ul {
+	display: none;
+	position: absolute;
+	z-index: 2;
+	top: 16px;
+	right: -1px;
+	left: -2px;
+	overflow: hidden;
+	width: 100px;
+	
+	border: 1px solid #ccc;
+	/* to align it with the toolbar's bottom */
+	border-top: 11px solid #fff;
+	
+	background: #fff;
+}
+
+.fore-color li {
+	display: block;
+	margin: 3px;
+	width: auto;
+	height: 15px;
+	
+	cursor: pointer;
+	
+	border: 0;
+}
+
+.fore-color:hover ul {
+  display: block;
+}
+
+.fore-color [data-wysihtml5-command-value="silver"] {
+	background: silver;
+}
+
+.fore-color [data-wysihtml5-command-value="gray"] {
+	background: gray;
+}
+
+.fore-color [data-wysihtml5-command-value="maroon"] {
+	background: maroon;
+}
+
+.fore-color [data-wysihtml5-command-value="red"] {
+	background: red;
+}
+
+.fore-color [data-wysihtml5-command-value="purple"] {
+	background: purple;
+}
+
+.fore-color [data-wysihtml5-command-value="green"] {
+	background: green;
+}
+
+.fore-color [data-wysihtml5-command-value="olive"] {
+	background: olive;
+}
+
+.fore-color [data-wysihtml5-command-value="navy"] {
+	background: navy;
+}
+
+.fore-color [data-wysihtml5-command-value="blue"] {
+	background: blue;
 }
 
 .wysihtml5-toolbar .tools a[data-wysihtml5-command="bold"] {
@@ -78,4 +150,8 @@
 
 .wysihtml5-toolbar .tools a[data-wysihtml5-action="change_view"] {
 	background-position: -48px -48px;
+}
+
+.wysihtml5-toolbar .tools li[data-wysihtml5-command-group="foreColor"] {
+	background-position: -16px -96px;
 }
