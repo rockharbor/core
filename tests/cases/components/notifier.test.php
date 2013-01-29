@@ -339,8 +339,23 @@ class NotifierTestCase extends CoreTestCase {
 		));
 		$expected = array('/path/to/file.txt');
 		$this->assertEqual($this->Notifier->QueueEmail->attachments, $expected);
+		
+		$result = $this->Notifier->Controller->view;
+		$expected = 'View';
+		$this->assertEqual($result, $expected);
+		
+		$result = $this->Notifier->_send($user, array(
+			'from' => 1,
+			'body' => '<span class="wysiwyg-color-green">green</span>'
+		));
+		$this->assertTrue($result);
+		
+		// test that css classes were made inline
+		$result = $this->Notifier->QueueEmail->Model->read(array('message'));
+		$result = $result['Queue']['message'];
+		$this->assertPattern('/style=\"color\s*:\s*green/', $result);
 	}
-
+	
 	function testSave() {
 		$this->Notification->User->contain(array('Profile'));
 		$user = $this->Notification->User->read(null, 1);

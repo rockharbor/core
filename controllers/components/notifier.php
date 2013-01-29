@@ -149,7 +149,7 @@ class NotifierComponent extends Object {
 	}
 
 /**
- * Queues an email
+ * Queues an email and renders it using the EmailView class
  *
  * If $from is not defined, it sends the email from the site instead, using
  * configured options (see AppSettings)
@@ -168,6 +168,9 @@ class NotifierComponent extends Object {
  * @access protected
  */
 	function _send($user, $options = array()) {
+		$_originalView = $this->QueueEmail->Controller->view;
+		$this->QueueEmail->Controller->view = 'Email';
+		
 		$config = Configure::read('debug') == 0 ? $this->Config->default : $this->Config->debug;
 		
 		$this->QueueEmail->reset();
@@ -214,13 +217,20 @@ class NotifierComponent extends Object {
 		$this->QueueEmail->queue = $queue;
 		$this->QueueEmail->from = $from['Profile']['name'].' <'.$from['Profile']['primary_email'].'>';
 		$this->QueueEmail->subject = Core::read('notifications.email_subject_prefix').' '.$subject;
+		
+		$failed = false;
 		if (!empty($user['Profile']['primary_email']) && !empty($user['Profile']['name'])) {
 			$this->QueueEmail->to = $user['Profile']['name'].' <'.$user['Profile']['primary_email'].'>';
 		} else {
-			return false;
+			$failed = true;
 		}
-		if (!$this->QueueEmail->send($body)) {
+		if (!$failed && !$this->QueueEmail->send($body)) {
 			CakeLog::write('smtp', $this->QueueEmail->smtpError);
+			$failed = true;
+		}
+		
+		$this->QueueEmail->Controller->view = $_originalView;
+		if ($failed) {
 			return false;
 		}
 		
