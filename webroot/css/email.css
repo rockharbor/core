@@ -27,6 +27,10 @@ CSS stylesheet for emails
 	color: gray;
 }
 
+.wysiwyg-color-black {
+	color: black;
+}
+
 .wysiwyg-color-maroon {
 	color: maroon;
 }

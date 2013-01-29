@@ -7,6 +7,7 @@
             <ul>
               <li data-wysihtml5-command="foreColor" data-wysihtml5-command-value="silver"></li>
               <li data-wysihtml5-command="foreColor" data-wysihtml5-command-value="gray"></li>
+              <li data-wysihtml5-command="foreColor" data-wysihtml5-command-value="black"></li>
               <li data-wysihtml5-command="foreColor" data-wysihtml5-command-value="maroon"></li>
               <li data-wysihtml5-command="foreColor" data-wysihtml5-command-value="red"></li>
               <li data-wysihtml5-command="foreColor" data-wysihtml5-command-value="purple"></li>

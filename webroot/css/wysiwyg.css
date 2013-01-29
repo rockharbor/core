@@ -135,6 +135,10 @@
 	background: blue;
 }
 
+.fore-color [data-wysihtml5-command-value="black"] {
+	background: black;
+}
+
 .font-size [data-wysihtml5-command-value="small"] {
 	font-size: 11px;
 }
