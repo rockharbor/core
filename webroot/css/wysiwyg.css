@@ -52,10 +52,12 @@
 	background-color: #f1f1f1;
 }
 
+.font-size,
 .fore-color {
 	position: relative;
 }
 
+.font-size ul,
 .fore-color ul {
 	display: none;
 	position: absolute;
@@ -73,17 +75,26 @@
 	background: #fff;
 }
 
+.font-size li,
 .fore-color li {
 	display: block;
 	margin: 3px;
 	width: auto;
-	height: 15px;
 	
 	cursor: pointer;
 	
 	border: 0;
 }
 
+.font-size li {
+	text-indent: 0;
+}
+
+.fore-color li {
+	height: 15px;
+}
+
+.font-size:hover ul,
 .fore-color:hover ul {
   display: block;
 }
@@ -124,6 +135,22 @@
 	background: blue;
 }
 
+.font-size [data-wysihtml5-command-value="small"] {
+	font-size: 11px;
+}
+
+.font-size [data-wysihtml5-command-value="medium"] {
+	font-size: 13px;
+}
+
+.font-size [data-wysihtml5-command-value="large"] {
+	font-size: 15px;
+}
+
+.font-size [data-wysihtml5-command-value="x-large"] {
+	font-size: 17px;
+}
+
 .wysihtml5-toolbar .tools a[data-wysihtml5-command="bold"] {
 	background-position: 0 -16px;
 }
@@ -154,4 +181,8 @@
 
 .wysihtml5-toolbar .tools li[data-wysihtml5-command-group="foreColor"] {
 	background-position: -16px -96px;
+}
+
+.wysihtml5-toolbar .tools li[data-wysihtml5-command-group="fontSize"] {
+	background-position: 0 -80px;
 }

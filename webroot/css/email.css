@@ -54,3 +54,15 @@ CSS stylesheet for emails
 .wysiwyg-color-blue {
 	color: blue;
 }
+
+.wysiwyg-font-size-small {
+	font-size: 11px;
+}
+
+.wysiwyg-font-size-large {
+	font-size: 15px;
+}
+
+.wysiwyg-font-size-x-large {
+	font-size: 17px;
+}

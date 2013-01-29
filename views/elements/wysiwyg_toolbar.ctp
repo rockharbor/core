@@ -32,6 +32,15 @@
               <li data-wysihtml5-command="foreColor" data-wysihtml5-command-value="blue"></li>
             </ul>
          </li>
+
+		<li data-wysihtml5-command-group="fontSize" class="tool font-size" title="Resize the selected text" class="command">
+            <ul>
+              <li data-wysihtml5-command="fontSize" data-wysihtml5-command-value="small">Small</li>
+              <li data-wysihtml5-command="fontSize" data-wysihtml5-command-value="medium">Regular</li>
+              <li data-wysihtml5-command="fontSize" data-wysihtml5-command-value="large">Large</li>
+              <li data-wysihtml5-command="fontSize" data-wysihtml5-command-value="x-large">X-Large</li>
+            </ul>
+         </li>
 	</div>
 	
 	<div class="dialogs">
