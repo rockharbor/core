@@ -63,6 +63,10 @@ CSS stylesheet for emails
 	font-size: 11px;
 }
 
+.wysiwyg-font-size-medium {
+	font-size: 13px;
+}
+
 .wysiwyg-font-size-large {
 	font-size: 15px;
 }
