@@ -533,10 +533,14 @@ CORE.wysiwyg = function(id) {
 	$('#'+id).before(toolbar);
 	
 	var editor = new wysihtml5.Editor(id, {
+		style: false,
 		toolbar: toolbarId,
-		parserRules: wysihtml5ParserRules
+		parserRules: wysihtml5ParserRules,
+		stylesheets: [
+			'/css/email.css'
+		]
 	});
-
+	
 	return true;	
 }
 

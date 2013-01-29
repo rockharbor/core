@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-	<body>
+	<body class="wysihtml5-editor">
 		<?php if ($include_greeting): ?>
 		<p>Hey <?php echo ucfirst($toUser['Profile']['first_name']); ?>,</p>
 		<?php endif; ?>

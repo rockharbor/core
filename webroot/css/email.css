@@ -1,3 +1,8 @@
 /*
 CSS stylesheet for emails
 */
+
+.wysihtml5-editor {
+	font-family: 'Lucida Sans',Helvetica,Arial,sans-serif;
+	font-size: 13px;
+}
