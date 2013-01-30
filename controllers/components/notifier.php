@@ -225,7 +225,13 @@ class NotifierComponent extends Object {
 			$failed = true;
 		}
 		if (!$failed && !$this->QueueEmail->send($body)) {
-			CakeLog::write('smtp', $this->QueueEmail->smtpError);
+			if ($queue) {
+				// if it's queued, the error will result from a failed database save
+				CakeLog::write('smtp', $this->QueueEmail->getDataSource()->lastError());
+			} else {
+				// if it's not queued, log the smtp error
+				CakeLog::write('smtp', $this->QueueEmail->smtpError);
+			}
 			$failed = true;
 		}
 		
