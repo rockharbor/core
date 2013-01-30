@@ -7,6 +7,15 @@ App::import('Controller', 'UserImages');
 Mock::generatePartial('QueueEmailComponent', 'MockAttachmentsQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('UserImagesController', 'MockUserImagesController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 
+/**
+ * Proxy class for accessing protected methods
+ */
+class AttachmentsControllerTestAttachmentsController extends MockUserImagesController {
+	public function _getLimit($model = null, $modelClass = null) {
+		return parent::_getLimit($model, $modelClass);
+	}
+}
+
 class AttachmentsControllerTestCase extends CoreTestCase {
 
 	function startTest($method) {
@@ -26,6 +35,22 @@ class AttachmentsControllerTestCase extends CoreTestCase {
 		$this->Attachments->Session->destroy();
 		unset($this->Attachments);
 		ClassRegistry::flush();
+	}
+	
+	function testGetLimit() {
+		$controller = new AttachmentsControllerTestAttachmentsController();
+		
+		$result = $controller->_getLimit();
+		$expected = 1;
+		$this->assertEqual($result, $expected);
+		
+		$result = $controller->_getLimit('User', 'Document');
+		$expected = 3;
+		$this->assertEqual($result, $expected);
+		
+		$result = $controller->_getLimit('SysEmail', 'Document');
+		$expected = 2;
+		$this->assertEqual($result, $expected);
 	}
 
 	function testBeforeFilter() {
@@ -71,6 +96,10 @@ class AttachmentsControllerTestCase extends CoreTestCase {
 		$result = Set::extract('/Image/id', $vars['attachments']);
 		sort($result);
 		$expected = array(4);
+		$this->assertEqual($result, $expected);
+		
+		$result = $vars['limit'];
+		$expected = 1;
 		$this->assertEqual($result, $expected);
 	}
 

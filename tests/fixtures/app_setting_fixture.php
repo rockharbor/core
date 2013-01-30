@@ -187,5 +187,14 @@ class AppSettingFixture extends CakeTestFixture {
 			'value' => null,
 			'type' => 'image'
 		),
+		array(
+			'id' => 26,
+			'name' => 'sys_emails.sys_email_document_limit',
+			'description' => 'The maximum number of documents that can be attached to an email.',
+			'created' => '2010-03-18 00:00:00',
+			'modified' => '0000-00-00 00:00:00',
+			'value' => '2',
+			'type' => 'integer'
+		),
 	);
 }

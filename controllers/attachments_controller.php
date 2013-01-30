@@ -98,6 +98,7 @@ class AttachmentsController extends AppController {
 				'model' => $this->model
 			)
 		)));
+		$this->set('limit', $this->_getLimit());
 	}
 
 /**
@@ -132,7 +133,7 @@ class AttachmentsController extends AppController {
  * should be sent so the file can be attached to the user, involvement, or whatever.
  */ 	
 	function upload() {
-		$settingName = Inflector::pluralize(strtolower($this->model)).'.'.strtolower($this->model).'_'.strtolower($this->modelClass).'_limit';
+		$limit = $this->_getLimit();
 		$attachments = $this->{$this->modelClass}->find('all', array(
 			'conditions' => array(
 				'foreign_key' => $this->modelId,
@@ -140,7 +141,7 @@ class AttachmentsController extends AppController {
 				'model' => $this->model
 			)
 		));
-		if (!empty($this->data) && (count($attachments) < (Core::read($settingName) !== null ? Core::read($settingName) : 1))) {
+		if (!empty($this->data) && (count($attachments) < $limit)) {
 			$friendly = explode('.', $this->data[$this->modelClass]['file']['name']);
 			array_pop($friendly);
 			$friendly = implode('.', $friendly);
@@ -157,7 +158,7 @@ class AttachmentsController extends AppController {
 			//and ajax uploads handle the errors nicely
 		}
 
-		$this->set(compact('attachments'));
+		$this->set(compact('attachments', 'limit'));
 	}
 
 /**
@@ -251,6 +252,26 @@ class AttachmentsController extends AppController {
 			'action' => 'index',
 			$this->model => $this->modelId
 		));	
+	}
+
+/**
+ * Returns the limit for this model and attachment type
+ * 
+ * @param string model The name of the model
+ * @param string modelClass The model class of the attachment (Image, Document)
+ * @return integer Number of allowed attachments for the model
+ */
+	protected function _getLimit($model = null, $modelClass = null) {
+		if (empty($model)) {
+			$model = $this->model;
+		}
+		if (empty($modelClass)) {
+			$modelClass = $this->modelClass;
+		}
+		$model = strtolower(Inflector::underscore($model));
+		$modelClass = strtolower(Inflector::underscore($modelClass));
+		$settingName = Inflector::pluralize($model).'.'.$model.'_'.$modelClass.'_limit';
+		return Core::read($settingName) !== null ? Core::read($settingName) : 1;
 	}
 }
 

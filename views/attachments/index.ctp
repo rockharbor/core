@@ -55,8 +55,7 @@
 	?>
 	</div>
 	<?php
-	$settingName = Inflector::pluralize(strtolower($model)).'.'.strtolower($model).'_'.strtolower($attachmentModel).'_limit';
-	if (count($attachments) < (Core::read($settingName) !== null ? Core::read($settingName) : 1)) {
+	if (count($attachments) < $limit) {
 		echo $this->element('upload', array(
 			'model' => $model,
 			$model => $modelId,
