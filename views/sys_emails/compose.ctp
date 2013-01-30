@@ -85,7 +85,7 @@ if (!isset($this->passedArgs['mstoken'])) {
 			'value' => $this->data['SysEmail']['to']
 		));
 		echo $this->Form->input('SysEmail.subject', array(
-			'between' => Core::read('notifications.email_subject_prefix').' ',
+			'between' => Core::read('sys_emails.subject_prefix'),
 			'style' => 'width:300px'
 		));
 		echo $this->Form->input('SysEmail.body', array(
