@@ -107,15 +107,6 @@ class AppSettingFixture extends CakeTestFixture {
 			'type' => 'string'
 		),
 		array(
-			'id' => 16,
-			'name' => 'notifications.email_subject_prefix',
-			'description' => 'A prefix to put in front of the subject of each email sent through the app.',
-			'created' => '2010-05-24 00:00:00',
-			'modified' => '2010-05-24 00:00:00',
-			'value' => 'CORE ::',
-			'type' => 'string'
-		),
-		array(
 			'id' => 17,
 			'name' => 'notifications.activation_requests',
 			'description' => 'The user to notify when account activation requests are sent.',
@@ -186,6 +177,20 @@ class AppSettingFixture extends CakeTestFixture {
 			'modified' => '2010-09-13 00:00:00',
 			'value' => null,
 			'type' => 'image'
+		),
+		array(
+			'id' => 26,
+			'name' => 'sys_emails.system_subject_prefix',
+			'description' => 'A prefix to put in front of the subject of each user email sent through the app.',
+			'value' => '[core] ',
+			'type' => 'string'
+		),
+		array(
+			'id' => 27,
+			'name' => 'sys_emails.subject_prefix',
+			'description' => 'A prefix to put in front of the subject of each user email sent through the app.',
+			'value' => '[core user] ',
+			'type' => 'string'
 		),
 	);
 }

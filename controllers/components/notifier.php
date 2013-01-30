@@ -216,7 +216,9 @@ class NotifierComponent extends Object {
 		$this->QueueEmail->attachments = $attachments;
 		$this->QueueEmail->queue = $queue;
 		$this->QueueEmail->from = $from['Profile']['name'].' <'.$from['Profile']['primary_email'].'>';
-		$this->QueueEmail->subject = Core::read('notifications.email_subject_prefix').' '.$subject;
+		
+		$prefixKey = ($from['User']['id'] === 0) ? 'system_subject_prefix' : 'subject_prefix';
+		$this->QueueEmail->subject = Core::read("sys_emails.$prefixKey").$subject;
 		
 		$failed = false;
 		if (!empty($user['Profile']['primary_email']) && !empty($user['Profile']['name'])) {

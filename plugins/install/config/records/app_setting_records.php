@@ -79,13 +79,6 @@ class AppSettingRecords extends Records {
 			'type' => 'string'
 		),
 		array(
-			'id' => 11,
-			'name' => 'notifications.email_subject_prefix',
-			'description' => 'A prefix to put in front of the subject of each email sent through the app.',
-			'value' => '[CORE] ',
-			'type' => 'string'
-		),
-		array(
 			'id' => 12,
 			'name' => 'notifications.activation_requests',
 			'description' => 'The user to notify when account activation requests are sent.',
@@ -161,6 +154,27 @@ class AppSettingRecords extends Records {
 			'description' => 'The maximum number of documents that can be uploaded to a Ministry.',
 			'value' => 5,
 			'type' => 'integer'
+		),
+		array(
+			'id' => 23,
+			'name' => 'sys_emails.sys_email_document_limit',
+			'description' => 'The maximum number of documents that can attached to an email.',
+			'value' => 1,
+			'type' => 'integer'
+		),
+		array(
+			'id' => 24,
+			'name' => 'sys_emails.system_subject_prefix',
+			'description' => 'A prefix to put in front of the subject of each user email sent through the app.',
+			'value' => '[core]',
+			'type' => 'string'
+		),
+		array(
+			'id' => 25,
+			'name' => 'sys_emails.subject_prefix',
+			'description' => 'A prefix to put in front of the subject of each user email sent through the app.',
+			'value' => '',
+			'type' => 'string'
 		),
 	);
 
