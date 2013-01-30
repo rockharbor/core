@@ -1,0 +1,76 @@
+/*
+CSS stylesheet for emails
+*/
+
+.wysihtml5-editor {
+	font-family: 'Lucida Sans',Helvetica,Arial,sans-serif;
+	font-size: 13px;
+}
+
+.wysiwyg-color-red {
+	color: red;
+}
+
+.wysiwyg-color-green {
+	color: green;
+}
+
+.wysiwyg-color-blue {
+	color: blue;
+}
+
+.wysiwyg-color-silver {
+	color: silver;
+}
+
+.wysiwyg-color-gray {
+	color: gray;
+}
+
+.wysiwyg-color-black {
+	color: black;
+}
+
+.wysiwyg-color-maroon {
+	color: maroon;
+}
+
+.wysiwyg-color-red {
+	color: red;
+}
+
+.wysiwyg-color-purple {
+	color: purple;
+}
+
+.wysiwyg-color-green {
+	color: green;
+}
+
+.wysiwyg-color-olive {
+	color: olive;
+}
+
+.wysiwyg-color-navy {
+	color: navy;
+}
+
+.wysiwyg-color-blue {
+	color: blue;
+}
+
+.wysiwyg-font-size-small {
+	font-size: 11px;
+}
+
+.wysiwyg-font-size-medium {
+	font-size: 13px;
+}
+
+.wysiwyg-font-size-large {
+	font-size: 15px;
+}
+
+.wysiwyg-font-size-x-large {
+	font-size: 17px;
+}
