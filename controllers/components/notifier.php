@@ -180,7 +180,7 @@ class NotifierComponent extends Object {
 			'attachments' => array(),
 			'queue' => true
 		);
-		$options = array_merge($default, $options, $config);
+		$options = array_merge($default, $options);
 		extract($options);
 
 		// set system defaults if no 'from' user

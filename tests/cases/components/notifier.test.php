@@ -43,11 +43,10 @@ class NotifierTestCase extends CoreTestCase {
 	function testEmailConfigStandard() {
 		$config = new EmailConfig();
 		$config->default = array(
-			'transport' => 'Mail',
-			'queue' => false
+			'transport' => 'Mail'
 		);
 		$config->debug = array(
-			'transport' => 'Mail'
+			'transport' => 'Smtp'
 		);
 		$this->Notifier->Config = $config;
 		
@@ -58,7 +57,8 @@ class NotifierTestCase extends CoreTestCase {
 		$this->Controller->set('ministry', 1);
 		$this->assertTrue($this->Notifier->notify(array(
 			'to' => 1,
-			'template' => 'ministries_edit'
+			'template' => 'ministries_edit',
+			'queue' => false
 		)), 'email');
 		$countAfter = $this->Notifier->QueueEmail->Model->find('count');
 		$this->assertEqual($countBefore, $countAfter);
