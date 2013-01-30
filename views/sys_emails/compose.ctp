@@ -71,6 +71,9 @@ if (!isset($this->passedArgs['mstoken'])) {
 		if (strpos($this->here, 'mstoken') === false) {
 			$this->here = rtrim($this->here, '/').'/mstoken:'.$this->MultiSelect->token;
 		}
+		if (strpos($this->here, 'mspersist') === false) {
+			$this->here = rtrim($this->here, '/').'/mspersist:1';
+		}
 		echo $this->Form->create('SysEmail', array(
 			'default' => false,
 			'url' => $this->here

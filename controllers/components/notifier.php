@@ -149,7 +149,7 @@ class NotifierComponent extends Object {
 	}
 
 /**
- * Queues an email
+ * Queues an email and renders it using the EmailView class
  *
  * If $from is not defined, it sends the email from the site instead, using
  * configured options (see AppSettings)
@@ -168,6 +168,9 @@ class NotifierComponent extends Object {
  * @access protected
  */
 	function _send($user, $options = array()) {
+		$_originalView = $this->QueueEmail->Controller->view;
+		$this->QueueEmail->Controller->view = 'Email';
+		
 		$config = Configure::read('debug') == 0 ? $this->Config->default : $this->Config->debug;
 		
 		$this->QueueEmail->reset();
@@ -180,7 +183,7 @@ class NotifierComponent extends Object {
 			'attachments' => array(),
 			'queue' => true
 		);
-		$options = array_merge($default, $options, $config);
+		$options = array_merge($default, $options);
 		extract($options);
 
 		// set system defaults if no 'from' user
@@ -213,14 +216,29 @@ class NotifierComponent extends Object {
 		$this->QueueEmail->attachments = $attachments;
 		$this->QueueEmail->queue = $queue;
 		$this->QueueEmail->from = $from['Profile']['name'].' <'.$from['Profile']['primary_email'].'>';
-		$this->QueueEmail->subject = Core::read('notifications.email_subject_prefix').' '.$subject;
+		
+		$prefixKey = ($from['User']['id'] === 0) ? 'system_subject_prefix' : 'subject_prefix';
+		$this->QueueEmail->subject = Core::read("sys_emails.$prefixKey").$subject;
+		
+		$failed = false;
 		if (!empty($user['Profile']['primary_email']) && !empty($user['Profile']['name'])) {
 			$this->QueueEmail->to = $user['Profile']['name'].' <'.$user['Profile']['primary_email'].'>';
 		} else {
-			return false;
+			$failed = true;
 		}
-		if (!$this->QueueEmail->send($body)) {
-			CakeLog::write('smtp', $this->QueueEmail->smtpError);
+		if (!$failed && !$this->QueueEmail->send($body)) {
+			if ($queue) {
+				// if it's queued, the error will result from a failed database save
+				CakeLog::write('smtp', $this->QueueEmail->getDataSource()->lastError());
+			} else {
+				// if it's not queued, log the smtp error
+				CakeLog::write('smtp', $this->QueueEmail->smtpError);
+			}
+			$failed = true;
+		}
+		
+		$this->QueueEmail->Controller->view = $_originalView;
+		if ($failed) {
 			return false;
 		}
 		

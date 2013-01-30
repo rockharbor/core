@@ -171,9 +171,13 @@ li{
 	position: relative;
 }
 
-iframe {
+iframe.wysihtml5-sandbox {
 	border: 1px solid #acacac;
-	background: #f1f1f1;
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 200px;
+	margin: 0;
+	padding: 1%;
 }
 
 /*

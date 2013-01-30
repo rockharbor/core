@@ -19,6 +19,7 @@
 		$this->AssetCompress->css('styles');
 		$this->AssetCompress->css('tables');
 		$this->AssetCompress->css('wysiwyg');
+		$this->AssetCompress->css('email');
 
 		$this->AssetCompress->css('fullcalendar');
 		$this->AssetCompress->css('calendar');
