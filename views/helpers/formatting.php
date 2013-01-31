@@ -56,6 +56,9 @@ class FormattingHelper extends AppHelper {
  */
 	function address($data, $link = true) {
 		$address = array();
+		if (!empty($data['name'])) {
+			$address[] = $data['name'];
+		}
 		if (!empty($data['address_line_1'])) {
 			$address[] = $data['address_line_1'];
 		}
@@ -65,9 +68,9 @@ class FormattingHelper extends AppHelper {
 		if (!empty($data['city']) || !empty($data['state']) || !empty($data['zip'])) {
 			$address[] = $data['city'].', '.$data['state'].' '.$data['zip'];
 		}
-		
+
 		$address = implode('<br />', $address);
-		
+
 		if (empty($address)) {
 			return null;
 		}
@@ -100,7 +103,7 @@ class FormattingHelper extends AppHelper {
 		$endDate = date('F j, Y', strtotime($date['Date']['end_date']));
 		$startTime = date('g:ia', strtotime($date['Date']['start_time']));
 		$endTime = date('g:ia', strtotime($date['Date']['end_time']));
-		
+
 		// trim off extra 0's if it was sent as a string
 		$date['Date']['frequency'] = (int)$date['Date']['frequency'];
 		$date['Date']['weekday'] = (int)$date['Date']['weekday'];
@@ -222,7 +225,7 @@ class FormattingHelper extends AppHelper {
  * @return string
  */
 	function age($age = 0, $extended = false) {
-		$out = '';	
+		$out = '';
 		$years = $months = 0;
 		if ($age < 1) {
 			$months = round($age*12);
@@ -235,11 +238,11 @@ class FormattingHelper extends AppHelper {
 				$out .= ', '.$months.' mos.';
 			}
 		}
-		
+
 		return $out;
 	}
-	
-	
+
+
 /**
  * Formats as money
  *
@@ -249,7 +252,7 @@ class FormattingHelper extends AppHelper {
 	function money($amount = 0) {
 		return $this->Number->currency($amount);
 	}
-	
+
 /**
  * Creates flags for a specific model (i.e., inactive, private, etc.)
  *
@@ -274,7 +277,7 @@ class FormattingHelper extends AppHelper {
 		if (!$model || empty($data)) {
 			return null;
 		}
-		
+
 		if (method_exists('FormattingHelper',"_flag$model")) {
 			return $this->{'_flag'.$model}($data);
 		} else {
@@ -308,14 +311,14 @@ class FormattingHelper extends AppHelper {
 		}
 		return $phone;
 	}
-	
+
 /**
  * Formats a datetime
  *
  * @param string $datetime MySQL date or datetime to format
  * @return string
  * @access public
- */	
+ */
 	function datetime($datetime = '') {
 		$out = $this->date($datetime);
 		$time = $this->time($datetime);
@@ -391,7 +394,7 @@ class FormattingHelper extends AppHelper {
 
 /**
  * Creates flags for a user
- * 
+ *
  * @param array $user The user
  * @return string Flags
  * @access private
@@ -407,7 +410,7 @@ class FormattingHelper extends AppHelper {
 				'background_check_complete' => false
 			)
 		);
-		
+
 		// move it if it was found via containable
 		if (!isset($user['User'])) {
 			foreach ($user as $field => $value) {
@@ -416,11 +419,11 @@ class FormattingHelper extends AppHelper {
 				}
 			}
 		}
-		
+
 		$output = null;
-		
+
 		$user = Set::merge($_defaults, $user);
-		
+
 		if ($this->Permission->canSeePrivate()) {
 			if ($user['User']['flagged']) {
 				$output .= $this->Html->tag('span', '', array(
@@ -435,26 +438,26 @@ class FormattingHelper extends AppHelper {
 				));
 			}
 		}
-		
-		
+
+
 		if (!$user['User']['active']) {
 			$output .= $this->Html->tag('span', '', array(
 				'class' => 'core-icon icon-inactive',
 				'title' => 'Inactive User'
 			));
 		}
-		
+
 		return $output;
 	}
 
 /**
  * Creates flags for an involvement
- * 
+ *
  * @param array $involvement The involvement
  * @return string Flags
  * @access private
- */	
-	function _flagInvolvement($involvement) {		
+ */
+	function _flagInvolvement($involvement) {
 		// default associated data that is needed
 		$_defaults = array(
 			'Involvement' => array(
@@ -466,17 +469,17 @@ class FormattingHelper extends AppHelper {
 				'name' => 'Involvement'
 			)
 		);
-		
+
 		// move it if it was found via containable
 		foreach ($_defaults as $default => $fields) {
 			if (isset($involvement['Involvement'][$default])) {
 				$involvement[$default] = $involvement['Involvement'][$default];
 			}
 		}
-		
+
 		// merge defaults
 		$involvement = Set::merge($_defaults, $involvement);
-		
+
 		$output = null;
 
 		if ($involvement['Involvement']['previous']) {
@@ -492,30 +495,30 @@ class FormattingHelper extends AppHelper {
 				'title' => 'Inactive '.$involvement['InvolvementType']['name']
 			));
 		}
-		
+
 		if ($involvement['Involvement']['private']) {
 			$output .= $this->Html->tag('span', '', array(
 				'class' => 'core-icon icon-private',
 				'title' => 'Private '.$involvement['InvolvementType']['name']
 			));
 		}
-		
+
 		return $output;
 	}
-	
+
 /**
  * Creates flags for a ministry
- * 
+ *
  * @param array $ministry The Ministry
  * @return string Flags
  * @access private
- */	
+ */
 	function _flagMinistry($ministry) {
 		// if used as containable, it could be formatted differently
 		if (isset($ministry['Ministry']['Group'])) {
 			$ministry['Group'] = $ministry['Ministry']['Group'];
 		}
-		
+
 		// default associated data that is needed
 		$_defaults = array(
 			'Ministry' => array(
@@ -523,33 +526,33 @@ class FormattingHelper extends AppHelper {
 				'active' => 1
 			),
 		);
-		
+
 		// move it if it was found via containable
 		foreach ($_defaults as $default => $fields) {
 			if (isset($ministry['Ministry'][$default])) {
 				$ministry[$default] = $ministry['Ministry'][$default];
 			}
 		}
-			
+
 		// merge defaults
 		$ministry = Set::merge($_defaults, $ministry);
-		
+
 		$output = '';
-		
+
 		if (!$ministry['Ministry']['active']) {
 			$output .= $this->Html->tag('span', '', array(
 				'class' => 'core-icon icon-inactive',
 				'title' => 'Inactive Ministry'
 			));
 		}
-		
+
 		if ($ministry['Ministry']['private']) {
 			$output .= $this->Html->tag('span', '', array(
 				'class' => 'core-icon icon-private',
 				'title' => 'Private Ministry'
 			));
 		}
-		
+
 		return $output;
 	}
 
