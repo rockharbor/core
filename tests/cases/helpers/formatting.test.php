@@ -49,7 +49,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 			'jeremy@42pixels.com',
 			'/span'
 		));
-		
+
 		$this->Formatting->Permission->setReturnValueAt(1, 'check', true);
 		$result = $this->Formatting->email('jeremy@42pixels.com', 1);
 		$this->assertTags($result, array(
@@ -61,7 +61,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 			'/a',
 		));
 	}
-	
+
 	function testAddress() {
 		$address = array(
 			'address_line_1' => '123 Main',
@@ -88,7 +88,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 			'Somewhere, CA ',
 			'/span'
 		));
-		
+
 		$this->Formatting->Permission->setReturnValueAt(1, 'check', true);
 		$this->assertTags($this->Formatting->address($address), array(
 			'span' => array('class' => 'core-icon icon-address'),
@@ -100,7 +100,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 			'Somewhere, CA ',
 			'/a'
 		));
-		
+
 		$address = array(
 			'address_line_1' => '',
 			'address_line_2' => '',
@@ -111,17 +111,37 @@ class FormattingHelperTestCase extends CoreTestCase {
 			'foreign_key' => 1
 		);
 		$this->assertNull($this->Formatting->address($address, false));
+
+		$address = array(
+			'name' => 'Home',
+			'address_line_1' => '123 Main',
+			'address_line_2' => '',
+			'city' => 'Somewhere',
+			'state' => 'CA',
+			'zip' => '',
+			'model' => 'User',
+			'foreign_key' => 1
+		);
+		$this->assertTags($this->Formatting->address($address, false), array(
+			'<span',
+			'Home',
+			'<br',
+			'123 Main',
+			'br' => array(),
+			'Somewhere, CA ',
+			'/span'
+		));
 	}
 
 	function testReadableDate() {
 		$result = $this->Formatting->readableDate();
 		$expected = null;
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $this->Formatting->readableDate(array());
 		$expected = null;
 		$this->assertEqual($result, $expected);
-		
+
 		$date = array(
 			'Date' => array(
 				'start_date' => '2010-03-16',
@@ -261,7 +281,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 		$result = $this->Formatting->readableDate($date);
 		$expected = 'Every week on Wednesday starting March 1, 2010 until March 31, 2010 all day';
 		$this->assertEqual($result, $expected);
-		
+
 		$date = array(
 			'Date' => array(
 				'start_date' => '2010-03-16',
@@ -281,7 +301,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 		$result = $this->Formatting->readableDate($date);
 		$expected = 'Every 2 days from 4:00pm to 6:00pm starting March 16, 2010 until March 20, 2010';
 		$this->assertEqual($result, $expected);
-		
+
 		$date = array(
 			'Date' => array(
 				'start_date' => '2010-03-16',
@@ -301,7 +321,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 		$result = $this->Formatting->readableDate($date);
 		$expected = 'March 16, 2010 from 4:00pm to 6:00pm';
 		$this->assertEqual($result, $expected);
-		
+
 		$date = array(
 			'Date' => array(
 				'start_date' => '2010-03-16',
@@ -321,7 +341,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 		$result = $this->Formatting->readableDate($date);
 		$expected = 'March 16, 2010 @ 4:00pm to May 16, 2010 @ 6:00pm';
 		$this->assertEqual($result, $expected);
-		
+
 		$date = array(
 			'Date' => array(
 				'start_date' => '2010-03-16',
@@ -341,7 +361,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 		$result = $this->Formatting->readableDate($date);
 		$expected = 'Every month on the 3rd Wednesday starting March 16, 2010 all day';
 		$this->assertEqual($result, $expected);
-		
+
 		$date = array(
 			'Date' => array(
 				'start_date' => '2012-03-16',
@@ -361,7 +381,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 		$result = $this->Formatting->readableDate($date);
 		$expected = 'March 16, 2012 @ 12:00am';
 		$this->assertEqual($result, $expected);
-		
+
 		$date = array(
 			'Date' => array(
 				'start_date' => '2012-03-16',
@@ -381,7 +401,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 		$result = $this->Formatting->readableDate($date);
 		$expected = 'March 16, 2012 all day';
 		$this->assertEqual($result, $expected);
-		
+
 		$date = array(
 			'Date' => array(
 				'start_date' => '2012-03-16',
@@ -401,7 +421,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 		$result = $this->Formatting->readableDate($date);
 		$expected = 'Every week on Monday starting March 16, 2012 all day';
 		$this->assertEqual($result, $expected);
-		
+
 		$date = array(
 			'Date' => array(
 				'start_date' => '2012-03-16',
@@ -447,7 +467,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 				'id' => 1
 			)
 		);
-		
+
 		$user = array(
 			'User' => array(
 				'active' => 1,
@@ -467,7 +487,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 			'span' => array('class' => 'core-icon icon-flagged', 'title' => 'Flagged User'),
 			'/span'
 		));
-		
+
 		$user = array(
 			'User' => array(
 				'active' => 1,
@@ -484,7 +504,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 			array('span' => array('class' => 'core-icon icon-background-check', 'title' => 'Background Check Complete')),
 			'/span'
 		));
-		
+
 		// as if found via containable
 		$user = array(
 			'active' => 1,
@@ -599,32 +619,32 @@ class FormattingHelperTestCase extends CoreTestCase {
 		$this->assertEqual('3/1/1900 @ 9:55am', $this->Formatting->datetime('1900-03-01 09:55:30'));
 		$this->assertNull($this->Formatting->datetime());
 	}
-	
+
 	function testDate() {
 		$result = $this->Formatting->date('2010-02-24 09:55:30');
 		$expected = '2/24/2010';
 		$this->assertEqual($result, $expected);
-		
+
 		$this->assertNull($this->Formatting->date());
-		
+
 		$this->assertNull($this->Formatting->date('0000-00-00'));
-		
+
 		$result = $this->Formatting->date('2012-07-00');
 		$expected = 'July 2012';
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $this->Formatting->date('2012-00-00');
 		$expected = '2012';
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $this->Formatting->date('2012-00-01');
 		$expected = '2012';
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $this->Formatting->date('1900-03-05');
 		$expected = '3/5/1900';
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $this->Formatting->date('1900-03-00');
 		$expected = 'March 1900';
 		$this->assertEqual($result, $expected);
@@ -633,7 +653,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 	function testTime() {
 		$this->assertEqual('9:55am', $this->Formatting->time('2010-02-24 09:55:30'));
 		$this->assertNull($this->Formatting->time());
-		
+
 		$result = $this->Formatting->time('1900-03-00 12:00:00');
 		$expected = '12:00pm';
 		$this->assertEqual($result, $expected);
