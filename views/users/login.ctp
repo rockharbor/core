@@ -30,6 +30,10 @@ $this->Js->buffer('CORE.initLogin()');
 		echo ' | ';
 		echo $this->Html->link('Trouble logging in?', array('action' => 'forgot_password'), array('data-core-modal' => '{"update":false}'));
 		echo ' | ';
+		if (Core::read('notifications.support_email')) {
+			echo $this->Html->link('Support', 'mailto:'.Core::read('notifications.support_email'));
+			echo ' | ';
+		}
 		echo $this->Html->link('Sign Up', array('action' => 'register'), array('data-core-modal' => '{"update":false}'));
 		echo $this->Form->end('Login');
 		?>
