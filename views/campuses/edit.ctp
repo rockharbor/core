@@ -24,7 +24,7 @@ if ($revision && !empty($changes)): ?>
 	</ul>
 	<div class="content-box clearfix">
 		<div id="campus-information">
-			<?php 
+			<?php
 			echo $this->Form->create('Campus', array(
 				'default' => false,
 				'url' => $this->here
@@ -36,12 +36,13 @@ if ($revision && !empty($changes)): ?>
 				echo $this->Form->input('id');
 				echo $this->Form->input('name');
 				echo $this->Form->input('description', array(
-					'type' => 'textarea'
+					'type' => 'textarea',
+					'escape' => false
 				));
 				echo $this->Form->input('active');
 			?>
 			</fieldset>
-			<?php 
+			<?php
 			echo $this->Js->submit(__('Submit', true), $defaultSubmitOptions);
 			echo $this->Form->end();
 			?>

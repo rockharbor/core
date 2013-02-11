@@ -17,7 +17,8 @@
 		echo $this->Form->input('involvement_type_id');
 		echo $this->Form->input('name');
 		echo $this->Form->input('description', array(
-			'type' => 'textarea'
+			'type' => 'textarea',
+			'escape' => false
 		));
 	?>
 	</fieldset>
@@ -48,7 +49,7 @@
 			?>
 		</fieldset>
 	</div>
-<?php 
+<?php
 echo $this->Form->end('Submit');
 ?>
 </div>

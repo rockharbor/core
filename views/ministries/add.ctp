@@ -8,7 +8,8 @@
 	<?php
 		echo $this->Form->input('name');
 		echo $this->Form->input('description', array(
-			 'type' => 'textarea'
+			'type' => 'textarea',
+			'escape' => false
 		));
 		if (isset($parentId)) {
 			echo $this->Form->hidden('parent_id', array('value' => $parentId));

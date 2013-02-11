@@ -18,11 +18,11 @@ if (!isset($this->passedArgs['mstoken'])) {
 		foreach ($toUsers as $user) {
 			$toEmails[] = $user['Profile']['name'].' <'.$user['Profile']['primary_email'].'>';
 		}
-		
+
 		$fromEmail = $fromUser['Profile']['name'].' <'.$fromUser['Profile']['primary_email'].'>';
-	
+
 		echo $this->Html->tag(
-			'div', 
+			'div',
 			$this->Form->label('from').$this->Html->tag('div', $fromEmail, array('escape' => true)),
 			array(
 				'id' => 'SysEmailFrom',
@@ -32,7 +32,7 @@ if (!isset($this->passedArgs['mstoken'])) {
 		);
 		$append = count($toUserIds) > count($toUsers) ? ' (20 shown)' : null;
 		echo $this->Html->tag(
-			'div', 
+			'div',
 			$this->Form->label('to', 'To '.count($toUserIds).' Users'.$append).$this->Html->tag('div', implode(', ',$toEmails), array('escape' => true)),
 			array(
 				'id' => 'SysEmailTo',
@@ -42,8 +42,8 @@ if (!isset($this->passedArgs['mstoken'])) {
 		);
 		?>
 	</fieldset>
-	<?php 
-	if ($showAttachments && $this->Permission->check(array('controller' => 'sys_email_documents', 'action' => 'index'))): 
+	<?php
+	if ($showAttachments && $this->Permission->check(array('controller' => 'sys_email_documents', 'action' => 'index'))):
 		$url = Router::url(array(
 			'controller' => 'sys_email_documents',
 			'action' => 'index',
@@ -67,7 +67,7 @@ if (!isset($this->passedArgs['mstoken'])) {
 		?>
 	</div>
 	<?php endif; ?>
-		<?php 
+		<?php
 		if (strpos($this->here, 'mstoken') === false) {
 			$this->here = rtrim($this->here, '/').'/mstoken:'.$this->MultiSelect->token;
 		}
@@ -90,7 +90,8 @@ if (!isset($this->passedArgs['mstoken'])) {
 		));
 		echo $this->Form->input('SysEmail.body', array(
 			'type' => 'textarea',
-			'label' => 'Body'
+			'label' => 'Body',
+			'escape' => false
 		));
 		if (empty($this->data['SysEmail']['email_users'])) {
 			$this->data['SysEmail']['email_users'] = 'users';

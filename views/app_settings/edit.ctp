@@ -26,6 +26,7 @@ else: ?>
 			$options = array();
 			if ($this->data['AppSetting']['type'] == 'html') {
 				$options['type'] = 'textarea';
+				$options['escape'] = false;
 				$this->Js->buffer('CORE.wysiwyg("AppSettingValue");');
 			}
 			?></legend>

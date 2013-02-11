@@ -45,7 +45,8 @@ if ($revision && !empty($changes)): ?>
 				echo $this->Form->input('description', array(
 					'type' => 'textarea',
 					'cols' => 100,
-					'value' => $this->data['Ministry']['description']
+					'value' => $this->data['Ministry']['description'],
+					'escape' => false
 				));
 				echo $this->Form->input('parent_id', array(
 					'options' => $ministries,
