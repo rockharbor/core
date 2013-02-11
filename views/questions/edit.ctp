@@ -6,8 +6,9 @@
 	<?php
 		echo $this->Form->input('id');
 		echo $this->Form->input('description', array(
-			 'type' => 'textarea',
-			 'label' => 'Question'
+			'type' => 'textarea',
+			'label' => 'Question',
+			'escape' => false
 		));
 	?>
 	</fieldset>

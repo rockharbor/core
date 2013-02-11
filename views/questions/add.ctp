@@ -6,12 +6,13 @@
 	<?php
 		echo $this->Form->hidden('involvement_id', array('value' => $involvementId));
 		echo $this->Form->input('description', array(
-			 'type' => 'textarea',
-			 'label' => 'Question'
+			'type' => 'textarea',
+			'label' => 'Question',
+			'escape' => false
 		));
 	?>
 	</fieldset>
-<?php 
+<?php
 $defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals:true})';
 echo $this->Js->submit('Submit', $defaultSubmitOptions);
 echo $this->Form->end();

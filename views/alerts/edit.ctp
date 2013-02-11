@@ -8,7 +8,8 @@
 		echo $this->Form->input('id');
 		echo $this->Form->input('name');
 		echo $this->Form->input('description', array(
-			'type' => 'textarea'
+			'type' => 'textarea',
+			'escape' => false
 		));
 		echo $this->Form->input('group_id', array(
 			'label' => 'Visible for:'
@@ -18,7 +19,7 @@
 		));
 	?>
 	</fieldset>
-<?php 
+<?php
 echo $this->Js->submit('Submit', $defaultSubmitOptions);
 echo $this->Form->end();
 

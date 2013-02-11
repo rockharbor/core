@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html charset=UTF-8" />
+	</head>
 	<body class="wysihtml5-editor">
 		<?php if ($include_greeting): ?>
 		<p>Hey <?php echo ucfirst($toUser['Profile']['first_name']); ?>,</p>

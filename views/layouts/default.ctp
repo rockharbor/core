@@ -23,14 +23,14 @@
 
 		$this->AssetCompress->css('fullcalendar');
 		$this->AssetCompress->css('calendar');
-		
+
 		echo '<!--[if lt IE 9]>'.$this->Html->css('ie').'<![endif]-->';
 
 		// google cdn scripts
 		$min = Configure::read('debug') == 0 ? '.min' : null;
 		echo $this->Html->script('//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery'.$min.'.js');
 		echo $this->Html->script('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/jquery-ui'.$min.'.js');
-		
+
 		// vendor scripts
 		$this->AssetCompress->script('jquery.plugins/jquery.form');
 		$this->AssetCompress->script('jquery.plugins/jquery.qtip');
@@ -38,14 +38,14 @@
 		$this->AssetCompress->script('jquery.plugins/jquery.fullcalendar');
 		$this->AssetCompress->script('wysiwyg/advanced');
 		$this->AssetCompress->script('wysiwyg/wysihtml5-0.3.0.min');
-	
+
 		// CORE scripts
 		$this->AssetCompress->script('functions');
 		$this->AssetCompress->script('global');
 		$this->AssetCompress->script('ui');
 		$this->AssetCompress->script('form');
 		$this->AssetCompress->script('navigation');
-		
+
 		// setup
 		$this->Js->buffer('CORE.init();');
 		$element = addslashes(str_replace(array("\r", "\r\n", "\n"), '', $this->element('wysiwyg_toolbar')));
@@ -54,11 +54,11 @@
 			// set plugin so update system is aware (for magic `/index/page:1` append)
 			$this->Js->buffer('CORE.plugin = "'.$this->params['plugin'].'";');
 		}
-		
+
 		echo $this->AssetCompress->includeAssets(Configure::read('debug') == 0);
 		echo $scripts_for_layout;
 		echo $this->Js->writeBuffer();
-		
+
 		// analytics
 		$trackingcode = Core::read('general.tracking_code');
 		if (!empty($trackingcode)) {
@@ -74,6 +74,10 @@
 			</div>
 			<div class="grid_2" id="secondary">
 				<?php
+				if (Core::read('notifications.support_email')) {
+					echo $this->Html->link('Support', 'mailto:'.Core::read('notifications.support_email'));
+					echo ' / ';
+				}
 				echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout', 'plugin' => false));
 				?>
 			</div>
