@@ -300,13 +300,13 @@ class RostersController extends AppController {
 		$rosterConditions = array(
 			'Roster.user_id' => $users
 		);
-		
+
 		if ($this->data['Roster']['leading']) {
 			$conditions['Involvement.id'] = array_merge(array_values($leaderOf), array_values($memberOf));
 		}
-		if ($this->data['Roster']['previous'] == false) {
+		if (!$this->data['Roster']['previous']) {
 			$db = $this->Roster->getDataSource();
-			$conditions[] = $db->expression('('.$this->Roster->Involvement->getVirtualField('previous').') = '.$this->data['Roster']['previous']);
+			$conditions[] = $db->expression('('.$this->Roster->Involvement->getVirtualField('previous').') = '.(int)$this->data['Roster']['previous']);
 		}
 		if (!$this->data['Roster']['inactive']) {
 			$conditions['Involvement.active'] = true;
