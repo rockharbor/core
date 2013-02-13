@@ -11,12 +11,12 @@
 		echo $this->Html->css('styles');
 		echo $this->Html->css('tables');
 		echo $this->Html->css('print');
-		
+
 		// google cdn scripts
 		echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js');
-		
+
 		echo $scripts_for_layout;
-		
+
 		echo $this->Js->writeBuffer();
 	?>
 </head>

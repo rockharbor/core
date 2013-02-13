@@ -32,12 +32,12 @@ class Core {
  * @access protected
  */
 	var $_version = '2.0.0';
-	
+
 /**
  * Loaded flag
- * 
+ *
  * If false, tries to load database settings if the database exists
- * 
+ *
  * @var boolean
  */
 	var $_loaded = false;
@@ -48,10 +48,10 @@ class Core {
  * @var array
  */
 	var $settings = array();
-	
+
 /**
  * The Acl Component
- * 
+ *
  * @var AclComponent
  */
 	var $Acl = null;
@@ -64,7 +64,7 @@ class Core {
  */
 	function loadSettings($force = false) {
 		$self =& Core::getInstance();
-		
+
 		$settings = $self->_loadDbSettings($force);
 		foreach ($settings as $setting => $value) {
 			$self->_write($setting, $value);
@@ -73,9 +73,9 @@ class Core {
 
 /**
  * Returns a singleton instance
- * 
+ *
  * Loads db settings if the database tables exists and it hasn't loaded them yet
- * 
+ *
  * @return Core class object
  */
 	function &getInstance() {
@@ -93,7 +93,7 @@ class Core {
 				$instance[0]->_initAcl();
 			}
 		}
-		return $instance[0];	
+		return $instance[0];
 	}
 
 /**
@@ -129,7 +129,7 @@ class Core {
 
 /**
  * Writes a setting to configuration (not to the db!)
- * 
+ *
  * @param mixed $key The key to write
  * @param mixed $value The value to write
  * @return mixed The variable
@@ -146,7 +146,7 @@ class Core {
 		$child = array(
 			$keys[0] => $value
 		);
-		array_shift($keys);		
+		array_shift($keys);
 		foreach ($keys as $k) {
 			$child = array(
 				$k => $child
@@ -208,10 +208,10 @@ class Core {
 
 /**
  * Adds an ACO to allow a group access to an action
- * 
+ *
  * @param string $action The action to allow
  * @param int $foreign_key The group id. Default is 8 (User)
- * @return boolean Success 
+ * @return boolean Success
  */
 	function addAco($action = null, $foreign_key = 8) {
 		if (!$action) {
@@ -222,7 +222,7 @@ class Core {
 		if (stripos($action, 'controllers/') === false) {
 			$action = 'controllers/'.ltrim($action, '/');
 		}
-		
+
 		// iterate through the path and add missing acos
 		$nodes = explode('/', $action);
 		$parentId = null;
@@ -239,14 +239,14 @@ class Core {
 			}
 			$path .= '/';
 		}
-		
+
 		// save the permission
 		return $self->Acl->allow(compact('model', 'foreign_key'), $action);
 	}
 
 /**
  * Removes an ACO record
- * 
+ *
  * @param string $action
  * @param type $foreign_key The group id. Default is 8 (User)
  * @return boolean Success
@@ -259,20 +259,20 @@ class Core {
 		}
 		$key = md5(serialize(compact('model', 'foreign_key', 'action')).'main');
 		Cache::delete($key, 'acl');
-		
+
 		$acoNode = $self->Acl->Aco->node($action);
         if (isset($acoNode['0']['Aco']['id'])) {
            return  $self->Acl->Aco->delete($acoNode[0]['Aco']['id']);
         }
 	}
-	
+
 /**
  * Checks acl for a certain group and action. It will cache the result so checking
  * again should have less of a hit
- * 
+ *
  * @param int $foreign_key The group id
  * @param string $action The Acl action to check
- * @param string $type This key is only here to differentiate between main and 
+ * @param string $type This key is only here to differentiate between main and
  *		conditional access. It acts as a way of namespacing the cache so checking
  *		the same action for main access vs conditional access will return proper
  *		results
@@ -301,14 +301,14 @@ class Core {
 	}
 
 /**
- * Hooks into CORE to allow adding links to your plugin. Links are only shown if 
+ * Hooks into CORE to allow adding links to your plugin. Links are only shown if
  * the user has permission to see them
- * 
+ *
  * #### Options:
  * - string $title The link title
  * - string $element The element to use instead of a link
  * - array $options Options for the link
- * 
+ *
  * @param array $url Url array
  * @param string $area Dot-string representing the area of the app we want to hook
  *   into. To hook into the top-level nav, use `root`
@@ -324,7 +324,7 @@ class Core {
 		} else {
 			$last = $url['action'];
 		}
-		
+
 		$_defaults = array(
 			'title' => Inflector::humanize($last),
 			'element' => null,
@@ -332,7 +332,7 @@ class Core {
 		);
 		$options = array_merge($_defaults, $options);
 		extract($options);
-		
+
 		$area = trim($area, '.');
 		$self =& Core::getInstance();
 		$existing = $self->getHooks($area);
@@ -342,11 +342,11 @@ class Core {
 		$existing = compact('url', 'group', 'operator', 'title', 'element', 'options');
 		$self->_write('hooks.'.$area, $existing);
 	}
-	
+
 /**
  * Gets hooks for an area
- * 
- * @param string $area 
+ *
+ * @param string $area
  * @param array $exclude Sub items to exclude
  * @return array The area's hooks
  */

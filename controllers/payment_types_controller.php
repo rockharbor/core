@@ -27,14 +27,14 @@ class PaymentTypesController extends SimpleCrudsController {
  * @var string
  */
 	var $name = 'PaymentTypes';
-	
+
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
  *
  * @access private
- */ 
+ */
 	function beforeFilter() {
 		parent::beforeFilter();
 		$this->set('types', $this->PaymentType->types);

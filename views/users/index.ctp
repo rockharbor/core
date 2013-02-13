@@ -27,9 +27,9 @@
 		<td><?php echo $user['User']['modified']; ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Js->link('Forgot password!', array(
-				'action' => 'forgot_password', 
+				'action' => 'forgot_password',
 				'User'=>$user['User']['id']
-			), 
+			),
 			array(
 				'complete' => 'CORE.update($("users"));'
 			)); ?>

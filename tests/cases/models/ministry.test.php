@@ -49,13 +49,13 @@ class MinistryTestCase extends CoreTestCase {
 		$results = $this->Ministry->getLeaders(4);
 		$this->assertEqual($results, array(1, 2));
 	}
-	
+
 	function testGetLeading() {
 		$results = $this->Ministry->getLeading(1);
 		sort($results);
 		$expected = array(4);
 		$this->assertEqual($results, $expected);
-		
+
 		$results = $this->Ministry->getLeading(1, true);
 		sort($results);
 		$expected = array(4, 6);

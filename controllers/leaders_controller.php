@@ -41,23 +41,23 @@ class LeadersController extends AppController {
 			'startEmpty' => false
 		)
 	);
-	
+
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
  *
  * @access private
- */ 
+ */
 	function beforeFilter() {
 		parent::beforeFilter();
 		$this->_editSelf('dashboard');
 	}
-	
+
 /**
  * A list of leaders
  */
-	function index() {	
+	function index() {
 		$this->paginate = array(
 			'conditions' => array(
 				'model' => $this->model,
@@ -69,7 +69,7 @@ class LeadersController extends AppController {
 				)
 			)
 		);
-		$this->set('leaders', $this->paginate());		
+		$this->set('leaders', $this->paginate());
 		$this->set('model', $this->model);
 		$this->set('modelId', $this->modelId);
 	}
@@ -78,9 +78,9 @@ class LeadersController extends AppController {
  * A list of Involvements, Ministries or Campuses a user is a leader for
  */
 	function dashboard() {
-		
+
 	}
-	
+
 /**
  * Adds a leader
  *
@@ -88,12 +88,12 @@ class LeadersController extends AppController {
  */
 	function add() {
 		$userIds = $this->_extractIds();
-		
+
 		$model = $this->passedArgs['model'];
 		$model_id = $this->passedArgs[$this->passedArgs['model']];
 		$leaders = $this->Leader->{$model}->getLeaders($model_id);
 		$item = $this->Leader->{$model}->read(array('name'), $model_id);
-				
+
 		foreach ($userIds as $userId) {
 			$data = array(
 				'Leader' => array(
@@ -102,7 +102,7 @@ class LeadersController extends AppController {
 					'user_id' => $userId,
 				)
 			);
-			
+
 			$this->Leader->create();
 			if ($this->Leader->save($data)) {
 				$this->Leader->User->contain(array('Profile'));
@@ -113,7 +113,7 @@ class LeadersController extends AppController {
 				$this->set(compact('model', 'leader', 'item', 'itemType'));
 
 				$subject = $leader['Profile']['name'].' is now a leader of '.$item[$model]['name'].'.';
-				
+
 				// notify this user
 				$this->Notifier->notify(array(
 					'to' => $userId,
@@ -136,11 +136,11 @@ class LeadersController extends AppController {
 				$this->Session->setFlash('Unable to process this request. Please try again.', 'flash'.DS.'failure');
 			}
 		}
-		$this->redirect(array(	
+		$this->redirect(array(
 			'action' => 'index')
 		);
 	}
-	
+
 /**
  * Deletes a leader
  *
@@ -182,7 +182,7 @@ class LeadersController extends AppController {
 		));
 		$this->Leader->User->contain(array('Profile'));
 		$leader = $this->Leader->User->read(null, $this->passedArgs['User']);
-		
+
 		if ($this->Leader->delete($leaderId['Leader']['id'])) {
 			$this->Leader->User->contain(array('Profile'));
 			$leader = $this->Leader->User->read(null, $this->passedArgs['User']);
@@ -191,16 +191,16 @@ class LeadersController extends AppController {
 			$model = $this->model;
 
 			$this->set(compact('model', 'leader', 'item', 'itemType'));
-			
+
 			$subject = $leader['Profile']['name'].' has been removed from leading '.$item[$model]['name'].'.';
-			
+
 			// notify this user
 			$this->Notifier->notify(array(
 				'to' => $leader['User']['id'],
 				'template' => 'leaders_delete',
 				'subject' => $subject
 			));
-			
+
 			// notify the remaining leaders
 			$leaders = $this->Leader->{$this->model}->getLeaders($this->modelId);
 			foreach ($leaders as $leader) {
@@ -212,7 +212,7 @@ class LeadersController extends AppController {
 					));
 				}
 			}
-		
+
 			$this->Session->setFlash($subject, 'flash'.DS.'success');
 			return $this->redirect(array('action'=>'index'));
 		}

@@ -57,10 +57,10 @@ class SysEmail extends AppModel {
 	var $sanitize = array(
 		'body' => 'stripScripts'
 	);
-	
+
 /**
  * BelongsTo associations
- * 
+ *
  * @var array
  */
 	var $belongsTo = array(
@@ -73,10 +73,10 @@ class SysEmail extends AppModel {
 			'foreignKey' => 'from_id'
 		)
 	);
-	
+
 /**
  * Behaviors
- * 
+ *
  * @var array
  */
 	var $actsAs = array(
@@ -85,7 +85,7 @@ class SysEmail extends AppModel {
 
 /**
  * Caculates pagination count
- * 
+ *
  * @param array $conditions
  * @param array $recursive
  * @param array $options
@@ -101,7 +101,7 @@ class SysEmail extends AppModel {
 		$count = $this->find('all', $options);
 		return count($count);
 	}
-	
+
 /**
  * Garbage collects email attachments
  *

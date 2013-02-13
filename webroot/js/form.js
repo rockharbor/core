@@ -42,23 +42,23 @@ CORE.showValidationErrors = function(form) {
 * @param object XMLHttpRequest The XMLHttpRequest
 * @return boolean If the request will continue
 */
-CORE.beforeForm = function(event, XMLHttpRequest) {	
+CORE.beforeForm = function(event, XMLHttpRequest) {
 	// stop the request if this button has been clicked
 	if ($(event.currentTarget).data('disabled')) {
 		XMLHttpRequest.abort();
 		return false;
 	}
-	
+
 	var container = $(event.currentTarget).closest('[data-core-update-url]');
 	CORE.setLoading(container);
 	container.data('core-update-url', $(event.currentTarget).closest('form').prop('action'));
-	
+
 	XMLHttpRequest.async = false;
-	
+
 	$('div.error-message').each(function(i) {$(this).fadeOut()});
-	
+
 	$('.tabs a').each(function(i) {$(this).removeClass('error');});
-	
+
 	$(event.currentTarget).data('disabled', true);
 
 	return true;
@@ -66,7 +66,7 @@ CORE.beforeForm = function(event, XMLHttpRequest) {
 
 /**
 * Handles actions after a form has been submitted
-* 
+*
 * @param object event The event for the click
 * @param object XMLHttpRequest The XMLHttpRequest
 * @param object textStatus The textStatus
@@ -74,7 +74,7 @@ CORE.beforeForm = function(event, XMLHttpRequest) {
 CORE.completeForm = function(event, XMLHttpRequest, textStatus) {
 	// scroll to top
 	$('html, body').animate({scrollTop:0}, 'slow');
-	
+
 	// allow submit to be clicked again
 	$(event.originalTarget).data('disabled', false);
 }
@@ -102,7 +102,7 @@ CORE.successForm = function(event, data, textStatus, options) {
 		closeModals: false,
 		showFlash: false
 	};
-	
+
 	options = $.extend(_defaultOptions, options);
 
 	// check to see if it validates if content depends on it
@@ -114,12 +114,12 @@ CORE.successForm = function(event, data, textStatus, options) {
 	if (!$(event.currentTarget).closest('form').prop('id')) {
 		$(event.currentTarget).closest('form').prop('id', unique('form-'));
 	}
-	
+
 	var id = $(event.currentTarget).closest('form').prop('id');
-	
+
 	// update the content
 	switch (options.autoUpdate) {
-		case 'failure':		
+		case 'failure':
 			if (!validates) {
 				CORE.update(event.currentTarget, data);
 				CORE.showValidationErrors(id);
@@ -136,11 +136,11 @@ CORE.successForm = function(event, data, textStatus, options) {
 			CORE.showValidationErrors(id);
 		break;
 	}
-	
+
 	if (validates) {
 		if (options.success != false) {
 			options.success();
-		} 
+		}
 		if (options.closeModals) {
 			CORE.closeModals();
 			if (options.showFlash) {
@@ -158,11 +158,11 @@ CORE.successForm = function(event, data, textStatus, options) {
 * Only allows one checkbox per value to be checked.
 *
 * This will iterate through all radio and checkboxes and automatically
-* set `change` events to detect if the checkbox/radio is checked 
+* set `change` events to detect if the checkbox/radio is checked
 * and disable similar checkboxes (useful when selecting multiple users
 * when they may appear more than once on screen)
-* 
-* @param string fieldset ID of the fieldset to 
+*
+* @param string fieldset ID of the fieldset to
 */
 CORE.noDuplicateCheckboxes = function(fieldset) {
 	$('input:checkbox, input:radio', $('#'+fieldset)).each(function() {
@@ -173,7 +173,7 @@ CORE.noDuplicateCheckboxes = function(fieldset) {
 				$(this).prop('disabled', false).prop('checked', true).parent('.core-checkbox, .core-radio').removeClass('disabled');
 			} else {
 				matching.prop('disabled', false).parent('.core-checkbox, .core-radio').removeClass('disabled');
-			}			
+			}
 		});
 	});
 }
@@ -187,7 +187,7 @@ CORE.noDuplicateCheckboxes = function(fieldset) {
  * }}}
  *
  * @param string|Element checkbox The checkbox
- * @param array requirements List of dependent items as string|Element 
+ * @param array requirements List of dependent items as string|Element
  */
 CORE.checkboxRequires = function(checkbox, requirements) {
 	$(checkbox).on('change', function() {
@@ -227,7 +227,7 @@ CORE.initFormUI = function() {
 	}).change(function () {
 		this.checked ?	$(this).parent().addClass('selected') : $(this).parent().removeClass('selected');
 	});
-	
+
 	// special check for "check all" multi selects
 	$('input.multi-select-box[value=all]').change(function() {
 		var token = $(this).data('multiselect-token');
@@ -240,9 +240,9 @@ CORE.initFormUI = function() {
 					$(this).parent().addClass('disabled');
 				}
 			}
-		}); 
+		});
 	});
-	
+
 	$('input:radio:not(.ui-helper-hidden-accessible, .core-radio-hidden)').each(function() {
 		$(this).addClass('core-radio-hidden');
 		$(this).wrap(function() {
@@ -278,7 +278,7 @@ CORE.initFormUI = function() {
 				left: offsetPx
 			});
 		});
-			
+
 
 	// set up filter forms
 	$('.core-filter-form').each(function() {
@@ -301,7 +301,7 @@ CORE.initFormUI = function() {
 	});
 
 	$('.form-error').one('focus', function() { $(this).removeClass('.form-error'); });
-	
+
 	// search forms
 	$('.search-form input[type="text"]').each(function() {
 		var id = $(this).prop('id');

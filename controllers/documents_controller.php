@@ -27,7 +27,7 @@ class DocumentsController extends AttachmentsController {
  * @var string
  */
 	var $name = 'Documents';
-	
+
 /**
  * The name of the model this Address belongs to. Used for Acl
  *

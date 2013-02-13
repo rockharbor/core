@@ -11,22 +11,22 @@
 /**
  * Confirm Behavior
  *
- * Saves a revision instead of the actual record. Only saves a revision if a 
+ * Saves a revision instead of the actual record. Only saves a revision if a
  * change is detected.
- * 
+ *
  * ### Options:
  * - `fields` An array of fields to check for changes. If blank, all fields
- * will be checked. 
+ * will be checked.
  *
  * @package       core
  * @subpackage    core.app.models.behaviors
  * @todo Refactor and wrap in a plugin, generally clean it up, use an actual model
  */
 class ConfirmBehavior extends ModelBehavior {
-	
+
 /**
  * Stores status of the last save attempt
- * 
+ *
  * @var boolean
  */
 	var $_changed = false;
@@ -36,18 +36,18 @@ class ConfirmBehavior extends ModelBehavior {
  *
  * @param object $Model The calling model
  */
-	function setup(&$Model, $settings = array()) {		
+	function setup(&$Model, $settings = array()) {
 		$Model->RevisionModel = new Model(array(
 			'table' => Inflector::tableize($Model->name).'_revs',
 			'name' => 'Revision',
 			'ds' => $Model->useDbConfig
 		));
 		$Model->RevisionModel->primaryKey = 'version_id';
-		
+
 		$default = array(
 			'fields' => array()
 		);
-		
+
 		$this->settings[$Model->alias] = array_merge_recursive($default, $settings);
 	}
 
@@ -66,14 +66,14 @@ class ConfirmBehavior extends ModelBehavior {
 		} else {
 			$data = $Model->data;
 		}
-		
+
 		if (!$Model->id && isset($data['id'])) {
 			$Model->id = $data['id'];
 		}
-		
+
 		$original = $Model->read();
 		$Model->set($data);
-		
+
 		// compare fields to see if anything changed
 		$this->_changed = false;
 		foreach ($original[$Model->alias] as $field => $value) {
@@ -84,11 +84,11 @@ class ConfirmBehavior extends ModelBehavior {
 				}
 			}
 		}
-		
+
 		if (!$this->_changed) {
 			return true;
 		}
-		
+
 		// save to revision table
 		$data['id'] = $Model->id;
 		$data['version_created'] = date('Y-m-d H:i:s');
@@ -105,9 +105,9 @@ class ConfirmBehavior extends ModelBehavior {
 
 /**
  * Returns `true` if the last save created a revision
- * 
+ *
  * @param type $Model
- * @return type 
+ * @return type
  */
 	function changed(&$Model) {
 		return $this->_changed;
@@ -129,7 +129,7 @@ class ConfirmBehavior extends ModelBehavior {
 			'conditions' => array(
 				'Revision.id' => $id
 			)
-		));	
+		));
 	}
 
 /**
@@ -161,12 +161,12 @@ class ConfirmBehavior extends ModelBehavior {
 			$Model->alias => $rev
 		);
 		$mSave = $Model->save($data);
-		
+
 		// remove revision
 		$rDelete = $Model->RevisionModel->deleteAll(array(
 			'Revision.id' => $id
 		));
-		
+
 		// re-enable model
 		$Model->Behaviors->enable('Confirm');
 
@@ -180,7 +180,7 @@ class ConfirmBehavior extends ModelBehavior {
  * @param integer $Model The id of the model to check for revisions of
  * @return boolean Success
  */
-	function denyRevision(&$Model, $id = null) {	
+	function denyRevision(&$Model, $id = null) {
 		// remove revision
 		return $Model->RevisionModel->deleteAll(array(
 			'Revision.id' => $id

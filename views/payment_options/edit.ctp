@@ -24,7 +24,7 @@
 		));
 		?>
 	</fieldset>
-<?php 
+<?php
 $defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals:true})';
 echo $this->Js->submit('Submit', $defaultSubmitOptions);
 echo $this->Form->end();

@@ -18,9 +18,9 @@
 			?>
 			<tr class="core-iconable clearfix <?php echo $class;?>">
 				<td>
-					<?php 
+					<?php
 					$link = $this->Html->link($leader['User']['Profile']['name'] ,array('controller' => 'profiles', 'action' => 'view', 'User' => $leader['User']['id']));
-					echo $link.$this->Formatting->flags('User', $leader['User']); 
+					echo $link.$this->Formatting->flags('User', $leader['User']);
 					?>
 				</td>
 				<td>

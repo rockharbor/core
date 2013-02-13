@@ -37,12 +37,12 @@ class AppController extends Controller {
 			'authError' => 'Please login to continue.',
 			'autoRedirect' => false,
 			'loginAction' => array(
-				'controller' => 'users', 
+				'controller' => 'users',
 				'action' => 'login',
 				'plugin' => null
 			),
 			'logoutRedirect' => array(
-				'controller' => 'users', 
+				'controller' => 'users',
 				'action' => 'login'
 			),
 			'loginRedirect' => array(
@@ -82,32 +82,32 @@ class AppController extends Controller {
  *
  * @var array
  * @access public
- */	
+ */
 	var $defaultSubmitOptions = array(
 		'before' => 'CORE.beforeForm(event, XMLHttpRequest);',
 		'complete' => 'CORE.completeForm(event, XMLHttpRequest, textStatus);',
 		'success' => 'CORE.successForm(event, data, textStatus);',
 		'evalScripts' =>  true
 	);
-	
+
 /**
  * Empty page as Cake url
  *
  * @var array
  * @access public
- */	
+ */
 	var $emptyPage = array(
 		'controller' => 'pages',
 		'action' => 'display',
 		'empty'
 	);
-	
+
 /**
  * Failed authorization page as Cake url
  *
  * @var array
  * @access public
- */	
+ */
 	var $authPage = array(
 		'controller' => 'pages',
 		'action' => 'display',
@@ -119,9 +119,9 @@ class AppController extends Controller {
  *
  * @var array
  * @access public
- */		
+ */
 	var $activeUser = null;
-	
+
 /**
  * Controller::beforeFilter() callback
  *
@@ -138,7 +138,7 @@ class AppController extends Controller {
 		// WORKAROUND: Firefox tries to open json instead of reading it, so use different headers
 		$this->RequestHandler->setContent('json', 'text/plain');
 		$this->RequestHandler->setContent('print', 'text/html');
-		
+
 		$User = ClassRegistry::init('User');
 
 		if ($this->Auth->user() && $this->action !== 'logout') {
@@ -147,15 +147,15 @@ class AppController extends Controller {
 		} else {
 			$this->layout = 'public';
 		}
-			
+
 		// use custom authentication (password encrypt/decrypt)
 		$this->Auth->authenticate = new User();
-		
+
 		$this->Security->blackHoleCallback = 'cakeError';
 
 		// set to log using this user (see LogBehavior)
-		if ((!isset($this->params['plugin']) || !$this->params['plugin']) && sizeof($this->uses) && isset($this->{$this->modelClass}->Behaviors) && $this->{$this->modelClass}->Behaviors->attached('Logable')) { 
-			$this->{$this->modelClass}->setUserData($this->activeUser); 
+		if ((!isset($this->params['plugin']) || !$this->params['plugin']) && sizeof($this->uses) && isset($this->{$this->modelClass}->Behaviors) && $this->{$this->modelClass}->Behaviors->attached('Logable')) {
+			$this->{$this->modelClass}->setUserData($this->activeUser);
 		}
 	}
 
@@ -167,7 +167,7 @@ class AppController extends Controller {
  *		params are the passedArgs
  * @param array $user The user to test. Default is the active user
 	 * @return boolean True if user can continue.
- */ 
+ */
 	function isAuthorized($action = '', $params = array(), &$user = array()) {
 		if (!$this->activeUser && empty($user)) {
 			return false;
@@ -192,7 +192,7 @@ class AppController extends Controller {
 
 		// main group
 		$mainAccess = Core::acl($user['Group']['id'], $action);
-		
+
 		$condAccess = false;
 		// check for conditional group
 		if (!empty($user['ConditionalGroup'])) {
@@ -213,13 +213,13 @@ class AppController extends Controller {
  * Sets globally needed variables for the views.
  *
  * @see Controller::beforeRender()
- */	
+ */
 	function beforeRender() {
 		$this->defaultSubmitOptions['url'] = $this->here;
-		
-		$this->set('activeUser', $this->activeUser);	
+
+		$this->set('activeUser', $this->activeUser);
 		$this->set('defaultSubmitOptions', $this->defaultSubmitOptions);
-		
+
 		// get ministry list
 		if ($this->layout == 'default') {
 			$Campus = ClassRegistry::init('Campus');
@@ -263,7 +263,7 @@ class AppController extends Controller {
 			);
 			$this->set('campusesMenu', $Campus->find('all', $options));
 		}
-		
+
 		// increase security form timeout
 		if ($this->Session->read('_Token')) {
 			$token = unserialize($this->Session->read('_Token'));
@@ -271,7 +271,7 @@ class AppController extends Controller {
 			$this->Session->write('_Token', serialize($token));
 		}
 	}
-	
+
 /**
  * Converts POST'ed form data to a model conditions array, suitable for use in a Model::find() call.
  *
@@ -294,7 +294,7 @@ class AppController extends Controller {
 		if ($op === null) {
 			$op = '';
 		}
-		
+
 		$arrayOp = is_array($op);
 		foreach ($data as $model => $fields) {
 			if (is_array($fields)) {
@@ -308,15 +308,15 @@ class AppController extends Controller {
 						} else {
 							$key = $model.'.'.$field;
 						}
-						
+
 						// check for habtm [Publication][Publication][0] = 1
 						if ($model == $field) {
 							// should get PK
 							$key = $model.'.id';
 						}
-						
+
 						$fieldOp = $op;
-						
+
 						if ($arrayOp) {
 							if (array_key_exists($key, $op)) {
 								$fieldOp = $op[$key];
@@ -331,7 +331,7 @@ class AppController extends Controller {
 						}
 						$fieldOp = strtoupper(trim($fieldOp));
 						if (is_array($value) || is_numeric($value)) {
-							$fieldOp = '=';					
+							$fieldOp = '=';
 						}
 						if ($fieldOp === 'LIKE') {
 							$key = $key.' LIKE';
@@ -339,7 +339,7 @@ class AppController extends Controller {
 						} elseif ($fieldOp && $fieldOp != '=') {
 							$key = $key.' '.$fieldOp;
 						}
-						
+
 						if ($value !== '%%') {
 							$cond[$key] = $value;
 						}
@@ -350,7 +350,7 @@ class AppController extends Controller {
 		if ($bool != null && strtoupper($bool) != 'AND') {
 			$cond = array($bool => $cond);
 		}
-		
+
 		return $cond;
 	}
 
@@ -361,11 +361,11 @@ class AppController extends Controller {
  * created on a case by case basis depending on if the user qualifies. For example, if the
  * active user owns the record they are trying to edit, they are added to the Owner
  * conditional group. These groups are not persistent.
- * 
+ *
  * If a URL contains more than one conditional group key (User, Involvement,
  * Ministry and Campus) the lower of the keys will be used to check permissions.
  * So, /involvements/view/Involvement:1/Ministry:5 would check permissions on
- * involvement 1, ignoring ministry 5. This prevents forging permissions by 
+ * involvement 1, ignoring ministry 5. This prevents forging permissions by
  * entering a ministry you *are* managing in the URL of an involvement you *aren't*
  * in order to gain access.
  *
@@ -373,12 +373,12 @@ class AppController extends Controller {
  * @param array $user The user to check
  * @return array Conditional groups
  * @access protected
- */ 
+ */
 	function _setConditionalGroups($params = array(), $user = array()) {
 		$groups = array();
 		$Group = ClassRegistry::init('Group');
 		$Group->recursive = -1;
-		
+
 		if (isset($params['User'])) {
 			$User = ClassRegistry::init('User');
 
@@ -386,13 +386,13 @@ class AppController extends Controller {
 			if ($User->HouseholdMember->Household->isContactFor($user['User']['id'], $params['User'])) {
 				$groups[] = $Group->findByName('Household Contact');
 			}
-		
+
 			// check owner
 			if ($User->ownedBy($user['User']['id'], $params['User'])) {
 				$groups[] = $Group->findByName('Owner');
 			}
 		}
-		
+
 		// check leader
 		if (isset($params['Involvement'])) {
 			$Involvement = ClassRegistry::init('Involvement');
@@ -402,7 +402,7 @@ class AppController extends Controller {
 			$involvement = $Involvement->read(array('id', 'ministry_id'), $params['Involvement']);
 			$params['Ministry'] = $involvement['Involvement']['ministry_id'];
 		}
-		
+
 		// check ministry manager
 		if (isset($params['Ministry'])) {
 			$Ministry = ClassRegistry::init('Ministry');
@@ -412,7 +412,7 @@ class AppController extends Controller {
 			$ministry = $Ministry->read(array('id', 'campus_id'), $params['Ministry']);
 			$params['Campus'] = $ministry['Ministry']['campus_id'];
 		}
-		
+
 		// check campus manager
 		if (isset($params['Campus'])) {
 			$Campus = ClassRegistry::init('Campus');
@@ -429,24 +429,24 @@ class AppController extends Controller {
  *
  * @return void
  * @access protected
- */ 
+ */
 	function _editSelf() {
 		$actions = func_get_args();
-		
+
 		if (in_array($this->action, $actions)) {
 			if (!isset($this->passedArgs['User'])) {
 				$this->passedArgs['User'] = $this->activeUser['User']['id'];
 				$this->params['named']['User'] = $this->activeUser['User']['id'];
 			}
-		}		
+		}
 	}
 
 /**
  * Extracts ids from multiple selection
- * 
- * Errors are thrown if nothing is selected or a saved search is missing when 
+ *
+ * Errors are thrown if nothing is selected or a saved search is missing when
  * 'check all' is selected.
- * 
+ *
  * {{{
  * if ($id) {
  *   // handle non MultiSelect requests
@@ -456,10 +456,10 @@ class AppController extends Controller {
  *   $ids = $this->_extractIds($this->User, '/User/id');
  * }
  * }}}
- * 
+ *
  * @param Model $model The model to use for searching
  * @param string $path A `Set::extract()`-compatible path
- * @return array Array of ids 
+ * @return array Array of ids
  * @see MultiSelect.MultiSelect
  */
 	function _extractIds($model = null, $path = '/User/id') {

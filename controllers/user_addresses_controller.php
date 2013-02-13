@@ -35,7 +35,7 @@ class UserAddressesController extends AddressesController {
  *
  * @access private
  */
-	function beforeFilter() {	
+	function beforeFilter() {
 		parent::beforeFilter();
 		$this->modelId = isset($this->passedArgs[$this->model]) ? $this->passedArgs[$this->model] : null;
 	}

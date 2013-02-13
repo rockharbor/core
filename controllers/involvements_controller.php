@@ -41,7 +41,7 @@ class InvolvementsController extends AppController {
 		),
 		'MultiSelect.MultiSelect'
 	);
-	
+
 /**
  * Model::beforeFilter() callback
  *
@@ -53,15 +53,15 @@ class InvolvementsController extends AppController {
 		$this->_editSelf('index');
 		parent::beforeFilter();
 	}
-	
+
 /**
  * Shows a list of involvement opportunities
- */	
+ */
 	function index($viewStyle = 'column') {
 		$private = $this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id']);
 
 		$conditions['or']['Involvement.ministry_id'] = $this->passedArgs['Ministry'];
-		
+
 		if (empty($this->data)) {
 			$this->data = array(
 				'Involvement' => array(
@@ -71,7 +71,7 @@ class InvolvementsController extends AppController {
 				)
 			);
 		}
-		
+
 		// set conditions based on filters
 		if ($this->data['Involvement']['inactive']) {
 			$conditions['Involvement.active'] = array(0, 1);
@@ -87,7 +87,7 @@ class InvolvementsController extends AppController {
 			$db = $this->Involvement->getDataSource();
 			$conditions[] = $db->expression('NOT ('.$this->Involvement->getVirtualField('previous').')');
 		}
-		
+
 		// include display involvements
 		$ids = array();
 		$displayInvolvements = $this->Involvement->Ministry->find('all', array(
@@ -102,7 +102,7 @@ class InvolvementsController extends AppController {
 			)
 		));
 		$ids = array_merge($ids, Set::extract('/DisplayInvolvement/id', $displayInvolvements));
-		
+
 		if (!empty($ids)) {
 			$conditions['or']['Involvement.id'] = array_unique($ids);
 		}
@@ -123,9 +123,9 @@ class InvolvementsController extends AppController {
 			'limit' => $viewStyle == 'column' ? 6 : 20,
 			'order' => 'Ministry.name ASC, Involvement.name ASC'
 		);
-		
+
 		$involvements = $this->FilterPagination->paginate('Involvement');
-		
+
 		foreach ($involvements as &$involvement) {
 			$involvement['dates'] = $this->Involvement->Date->generateDates($involvement['Involvement']['id'], array(
 				'limit' => 1,
@@ -135,17 +135,17 @@ class InvolvementsController extends AppController {
 
 		$this->set(compact('viewStyle', 'involvements', 'private'));
 	}
-	
+
 /**
  * Views an involvement opportunity
  */
 	function view() {
 		$id = $this->passedArgs['Involvement'];
-		
+
 		if (!$id) {
 			return $this->cakeError('error404');
 		}
-		
+
 		$this->Involvement->contain(array(
 			'InvolvementType',
 			'Ministry' => array(
@@ -186,16 +186,16 @@ class InvolvementsController extends AppController {
 			)
 		));
 		$inRoster = !empty($roster);
-		$canSeeRoster = 
+		$canSeeRoster =
 			($inRoster && $roster['Roster']['roster_status_id'] == 1 && $involvement['Involvement']['roster_visible'])
 			|| $this->Involvement->isLeader($this->activeUser['User']['id'], $id)
 			|| $this->Involvement->Ministry->isManager($this->activeUser['User']['id'], $involvement['Involvement']['ministry_id'])
 			|| $this->Involvement->Ministry->Campus->isManager($this->activeUser['User']['id'], $involvement['Ministry']['campus_id'])
 			|| $this->isAuthorized('rosters/index', array('Involvement' => $id));
-		
-		if ($involvement['Involvement']['private'] 
-			&& !$this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id']) 
-			&& !$inRoster 
+
+		if ($involvement['Involvement']['private']
+			&& !$this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id'])
+			&& !$inRoster
 			&& !$this->Involvement->isLeader($this->activeUser['User']['id'], $id)
 		) {
 			return $this->cakeError('privateItem', array('type' => 'Involvement'));
@@ -216,7 +216,7 @@ class InvolvementsController extends AppController {
 				)
 			)
 		));
-		
+
 		$full = false;
 		if (!empty($involvement['Involvement']['roster_limit'])) {
 			$currentCount = $this->Involvement->Roster->find('count', array(
@@ -229,7 +229,7 @@ class InvolvementsController extends AppController {
 
 			$full = $currentCount >= $involvement['Involvement']['roster_limit'];
 		}
-		
+
 		$this->set(compact('involvement', 'signedUp', 'inRoster', 'canSeeRoster', 'full'));
 	}
 
@@ -238,7 +238,7 @@ class InvolvementsController extends AppController {
  *
  * ### Passed args:
  * - integer `Involvement` The involvement id to get the roster from
- * 
+ *
  * @param boolean $add Whether to add or invite
  * @todo Don't invite users who are already on the roster! (move to model?)
  */
@@ -253,7 +253,7 @@ class InvolvementsController extends AppController {
 			)
 		));
 		$userIds = Set::extract('/Roster/user_id', $roster);
-		
+
 		$this->Involvement->contain(array('InvolvementType'));
 		$fromInvolvement = $this->Involvement->read(null, $this->passedArgs['Involvement']);
 		$toInvolvements = $this->_extractIds();
@@ -280,13 +280,13 @@ class InvolvementsController extends AppController {
 					)
 				));
 				$roster['Roster']['roster_status_id'] = $status;
-				
+
 				$this->Involvement->Roster->create();
 				if ($this->Involvement->Roster->save($roster)) {
 					$this->set('involvement', $involvement);
 					$invitee = $this->Involvement->Roster->User->Profile->findByUserId($userId);
 					$this->set('invitee', $invitee);
-					
+
 					if ($status == 1) {
 						$subject = $invitee['Profile']['name'].' has been added to '.$involvement['Involvement']['name'];
 						$this->Notifier->notify(array(
@@ -314,10 +314,10 @@ class InvolvementsController extends AppController {
 			}
 		}
 		$this->Session->setFlash($subject, 'flash'.DS.'success');
-		
+
 		$this->redirect($this->referer());
 	}
-	
+
 /**
  * Invites a user to an involvement opportunity
  *
@@ -326,14 +326,14 @@ class InvolvementsController extends AppController {
  *
  * @param boolean $add Whether to add or invite
  * @todo Don't invite users who are already on the roster! (move to model?)
- */ 
+ */
 	function invite($status = 3) {
 		$this->Involvement->Roster->User->contain(array('Profile'));
 		$this->Involvement->contain(array('InvolvementType'));
-		
+
 		$involvement = $this->Involvement->read(null, $this->passedArgs['Involvement']);
 		$leaders = $this->Involvement->getLeaders($involvement['Involvement']['id']);
-		
+
 		$userIds = $this->_extractIds();
 		foreach ($userIds as $userId) {
 			$roster = $this->Involvement->Roster->setDefaultData(array(
@@ -354,7 +354,7 @@ class InvolvementsController extends AppController {
 				$this->set('involvement', $involvement);
 				$invitee = $this->Involvement->Roster->User->Profile->findByUserId($userId);
 				$this->set('invitee', $invitee);
-				
+
 				if ($status == 1) {
 					$subject = $invitee['Profile']['name'].' has been added to '.$involvement['Involvement']['name'];
 					$this->Notifier->notify(array(
@@ -371,7 +371,7 @@ class InvolvementsController extends AppController {
 						'deny' => '/rosters/status/'.$this->Involvement->Roster->id.'/4' //status 4 = declined
 					));
 				}
-				
+
 				foreach ($leaders as $leader) {
 					$this->Notifier->notify(array(
 						'to' => $leader,
@@ -385,14 +385,14 @@ class InvolvementsController extends AppController {
 
 		$this->redirect($this->referer());
 	}
-	
+
 /**
  * Adds an involvement opportunity
  *
  * By default, Involvement is inactive until Involvement::toggleActivity() is called. Additional
  * validation is performed then.
  */
-	function add() {		
+	function add() {
 		if (!empty($this->data)) {
 			$this->Involvement->create();
 			if ($this->Involvement->save($this->data)) {
@@ -402,19 +402,19 @@ class InvolvementsController extends AppController {
 				$this->Session->setFlash('Unable to create involvement opportunity. Please try again.', 'flash'.DS.'failure');
 			}
 		}
-				
+
 		$this->set('ministries', $this->Involvement->Ministry->active('list'));
 		$this->set('displayMinistries', array($this->Involvement->Ministry->active('list')));
 		$this->set('involvementTypes', $this->Involvement->InvolvementType->find('list'));
 		$this->set('defaultStatuses', $this->Involvement->DefaultStatus->find('list'));
 	}
-	
+
 /**
  * Edits an involvement opportunity
  */
 	function edit() {
 		$id = $this->passedArgs['Involvement'];
-	
+
 		if (!$id && empty($this->data)) {
 			$this->cakeError('error404');
 		}
@@ -424,13 +424,13 @@ class InvolvementsController extends AppController {
 				$this->Session->setFlash('This involvement opportunity has been updated.', 'flash'.DS.'success');
 			} else {
 				$this->Session->setFlash('Unable to update involvement opportunity. Please try again.', 'flash'.DS.'failure');
-			}	
+			}
 		}
 		if (empty($this->data)) {
 			$this->Involvement->contain(array('Ministry'));
-			$this->data = $this->Involvement->read(null, $id);			
+			$this->data = $this->Involvement->read(null, $id);
 		}
-		
+
 		$this->set('ministries', $this->Involvement->Ministry->active('list'));
 		$this->set('displayMinistries', array($this->Involvement->Ministry->active('list')));
 		$this->set('involvementTypes', $this->Involvement->InvolvementType->find('list'));
@@ -449,11 +449,11 @@ class InvolvementsController extends AppController {
  */
 	function toggle_activity($active = false, $recursive = false) {
 		$id = $this->passedArgs['Involvement'];
-		
+
 		if (!$id) {
 			$this->cakeError('error404');
 		}
-		
+
 		// get involvement
 		$this->Involvement->contain(array('PaymentOption', 'Leader'));
 		$involvement = $this->Involvement->read(null, $id);
@@ -469,9 +469,9 @@ class InvolvementsController extends AppController {
 			$this->redirect($this->referer());
 			return;
 		}
-		
+
 		$success = $this->Involvement->toggleActivity($id, $active, $recursive);
-		
+
 		if ($success) {
 			$this->Session->setFlash(
 				'Successfully '.($active ? 'activated' : 'deactivated')
@@ -488,7 +488,7 @@ class InvolvementsController extends AppController {
 		$this->data = array();
 		$this->redirect($this->referer());
 	}
-	
+
 /**
  * Deletes an involvement opportunity
  */

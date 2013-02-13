@@ -9,7 +9,7 @@
 		 */
 		public function gauge($data){
 			$this->_chartType = 'gauge';
-			
+
 			return $this->_buildChart($data);
 		}
 
@@ -51,7 +51,7 @@
 
 			return $this->_buildChart($data);
 		}
-		
+
 		/**
 		 * @brief an array of helpers that will be used within this class
 		 */
@@ -441,7 +441,7 @@
 			if(strlen($return) > 2048){
 				trigger_error(sprintf(__('The query string is too long (%d chars)', true), strlen($return)), E_USER_ERROR);
 			}
-			
+
 			$this->_query = null;
 
 			return $return;
@@ -451,14 +451,14 @@
 		 * @brief generate different urls for downloading multi images at a time
 		 *
 		 * @link http://code.google.com/apis/chart/docs/making_charts.html#enhancements
-		 * 
+		 *
 		 * @return string the domain to pull images from
 		 */
 		public function _apiUrl(){
 			if($this->_apiUrlIndex > 9){
 				$this->_apiUrlIndex = 0;
 			}
-			
+
 			return sprintf($this->_apiUrl, $this->_apiUrlIndex++);
 		}
 
@@ -627,7 +627,7 @@
 				case isset($value['width']) && is_int($value['width']):
 					$return[] = $value['width'];
 					break;
-				
+
 				case 'relative':
 					$return[] = 'r';
 					$value['padding'] = is_float($value['padding']) ? $value['padding'] : $value['padding'] / 100;
@@ -670,7 +670,7 @@
 			if(!is_array($value)){
 				$value = array('width' => $value);
 			}
-			
+
 			if(!isset($value['width']) && !isset($value['height'])){
 				trigger_error(__('No size specified', true), E_USER_ERROR);
 				return false;
@@ -708,7 +708,7 @@
 			}
 			$value['position'] = isset($value['position']) ? $value['position'] : 'default';
 			$value['order'] = isset($value['order']) ? $value['order'] : 'default';
-			
+
 			$position = array();
 			switch($value['position']){
 				case 'bottom_horizontal':
@@ -798,11 +798,11 @@
 
 					$out = array_merge($out, array($v['dash'][0], $v['dash'][1]));
 				}
-				
+
 				if(isset($v['arrow'])){
 					$arrows[] = (int)$v['arrow'];
 				}
-				
+
 				$return[] = implode(',', $out);
 				$out = array();
 			}
@@ -832,7 +832,7 @@
 				trigger_error(sprintf(__('Value for %s is type %s and expecting array', true), $key, gettype($value)), E_USER_WARNING);
 				return false;
 			}
-			
+
 			return $this->_formats[$key]['key'] . $this->_implode($key, $value);
 		}
 
@@ -855,7 +855,7 @@
 				trigger_error(sprintf(__('No format available for %s', true), $dataType), E_USER_WARNING);
 				return false;
 			}
-			
+
 			return implode($this->_formats[$dataType]['separator'], $value);
 		}
 

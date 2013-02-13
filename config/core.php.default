@@ -201,7 +201,7 @@
  * A random numeric string (digits only) used to encrypt/decrypt strings.
  */
 	Configure::write('Security.cipherSeed', '1581233478423716321237891217865');
-	
+
 /**
  * The old CORE password encryption key
  */

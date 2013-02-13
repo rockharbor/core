@@ -11,7 +11,7 @@ echo $this->MultiSelect->create();
 			echo $this->Html->link('Read', array('read'), array('data-core-ajax' => 'true', 'class' => 'button'));
 		?>
 	</p>
-	
+
 	<table cellpadding="0" cellspacing="0" class="datatable">
 		<thead>
 			<?php
@@ -41,10 +41,10 @@ echo $this->MultiSelect->create();
 			if ($i++ % 2 == 0) {
 				$class = ' class="altrow"';
 			}
-	?>		
+	?>
 		<tr<?php echo $class;?>>
 			<td><?php echo $this->MultiSelect->checkbox($alert['Alert']['id']); ?></td>
-			<td><?php 
+			<td><?php
 			$class = 'notification ' . (in_array($alert['Alert']['id'], $read) ? 'read' : 'unread');
 			$style = 'padding-left:5px';
 			echo $this->Html->link($alert['Alert']['name'], array('controller' => 'alerts', 'action' => 'view', $alert['Alert']['id']), array('data-core-modal' => 'true', 'class' => $class, 'style' => $style));
@@ -54,8 +54,8 @@ echo $this->MultiSelect->create();
 	<?php endforeach; ?>
 		</tbody>
 	</table>
-	<?php 
+	<?php
 	echo $this->MultiSelect->end();
-	echo $this->element('pagination'); 
+	echo $this->element('pagination');
 	?>
 </div>

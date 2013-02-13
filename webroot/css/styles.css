@@ -29,13 +29,13 @@ h1, h2, h3 {
 div .content-box h1, div.ui-dialog h1, div.ui-dialog .breadcrumb { display:none; }
 h1 { font-size: 44px; position: relative; left: -25px; margin-bottom: 10px; margin-top: 5px; }
 h2 { font-size: 20px;}
-h3 { 
+h3 {
 	font-size: 16px;
-	margin:0; 
-	text-transform: uppercase; 
-	line-height: 18px; 
-	padding-bottom: 5px; 
-	padding-top: 8px; 
+	margin:0;
+	text-transform: uppercase;
+	line-height: 18px;
+	padding-bottom: 5px;
+	padding-top: 8px;
 }
 
 /*
@@ -57,7 +57,7 @@ div.message {
 	-webkit-box-shadow:0 0 15px #999999;
 	z-index: 99999;
 }
-#authMessage, 
+#authMessage,
 .message.error {
 	color: #e03a14;
 	background: #ffcbbf;
@@ -162,7 +162,7 @@ li{
 	left: 0;
 	height: 100%;
 	width: 100%;
-	
+
 	background: url('../assets/indicator.gif') no-repeat 50% 50% #ffffff;
 	opacity: 0.7;
 }
@@ -417,7 +417,7 @@ div#involvement-dates .date {
 	display: none;
 }
 div#involvement-dates .date:first-child {
-	display: block; 
+	display: block;
 }
 .ministry-description img {
 	margin-left: 10px;
@@ -662,7 +662,7 @@ ul.core-admin-tabs a:hover {
 /*
 Tooltip
 */
-.ui-tooltip {	
+.ui-tooltip {
 	border: none;
 	max-width: 150px;
 }

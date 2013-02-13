@@ -1,12 +1,12 @@
 if (CORE == undefined) {
 	throw 'CORE global.js needs to be imported first!';
-} 
+}
 
 /**
- * Attaches modal behavior. 
+ * Attaches modal behavior.
  *
  * Modal will not open until the link is clicked.
- * 
+ *
  * ### Extra options:
  * - `update` Boolean. Whether or not to auto update when the modal is closed
  *
@@ -28,17 +28,17 @@ CORE.modal = function(id, options) {
 		update: true,
 		title: 'Loading'
 	}
-	
+
 	// use user defined options if defined
 	var useOptions = $.extend(_defaultOptions, options || {});
 
 	$('#'+id).click(function(event) {
 		// stop link
 		event.preventDefault();
-		
+
 		// get options
 		var options = $(this).data('core-modal-options');
-		
+
 		// close callback
 		options.close = function(event, ui) {
 			if ($('#modal').dialog('option', 'update')) {
@@ -53,13 +53,13 @@ CORE.modal = function(id, options) {
 				xhr.abort();
 			}
 		};
-		
+
 		// open modal
 		$('#modal').dialog(options);
-		
+
 		// remember where the modal originated from
 		$('#modal').data('core-modal-originator', $('#'+id));
-		
+
 		// load the link into the modal
 		$("#modal").parent().position({
 			my: 'center',
@@ -83,10 +83,10 @@ CORE.modal = function(id, options) {
 			context: $("#modal")
 		});
 		$("#modal").data('xhr', xhr);
-		
+
 		return false;
 	});
-	
+
 	$('#'+id).data('core-modal-options', useOptions);
 }
 
@@ -206,7 +206,7 @@ CORE.attachTabbedBehavior = function() {
  *
  * Makes everything with a the data attribute `data-core-modal` a modal. If the
  * data attribute is a json object, those options will be passed to `CORE.modal`
- * 
+ *
  * {{{
  * // when clicked, the link opens in a modal and *does not* update its
  * // originating container on close
@@ -246,13 +246,13 @@ CORE.attachModalBehavior = function() {
 		// don't double attach modals
 		$(this).removeAttr('data-core-modal');
 	});
-	
+
 	return true;
 }
 
 /**
  * Makes everything with a the data attribute `data-core-ajax` an ajax request.
- * 
+ *
  * {{{
  * // when clicked, the link runs in the background and updates the closest
  * // `data-core-update-url` area
@@ -268,7 +268,7 @@ CORE.attachAjaxBehavior = function() {
 		if (!$(this).prop('id')) {
 			$(this).prop('id', unique('link-'));
 		}
-		
+
 		var opts = {
 			url: $(this).prop('href')
 		};
@@ -283,7 +283,7 @@ CORE.attachAjaxBehavior = function() {
 
 		$(this).removeAttr('data-core-ajax');
 	});
-	
+
 	return true;
 }
 
@@ -329,13 +329,13 @@ CORE.tabs = function(id, taboptions, options) {
 	if (taboptions != undefined) {
 		useOptions = $.extend(useOptions, taboptions);
 	}
-	
+
 	var tabbed = $('#'+id);
-	
+
 	if (tabbed.find('ul li.selected-tab').length) {
 		useOptions.selected = tabbed.find('ul li.selected-tab').index();
 	}
-	
+
 	tabbed.tabs(useOptions);
 
 	// check to see if this is a "wizard"
@@ -352,37 +352,37 @@ CORE.tabs = function(id, taboptions, options) {
 			if (tabbed.tabs('option', 'selected')+1 == tabbed.tabs('length')) {
 				$('#'+options.next).hide();
 			}
-			
+
 			$('#'+options.next).on('click', function(event, ui) {
 				var selected = tabbed.tabs('option', 'selected');
 				// select next visible tab
 				tabbed.children('ul').children('li:nth-child('+(selected+1)+')').nextAll(':visible').eq(0).children('a').click();
 			});
 		}
-		
+
 		if (options.previous != undefined) {
 			// hide prev button if it automatically was selected (cookie)
 			if (tabbed.tabs('option', 'selected') == 0) {
 				$('#'+options.previous).hide();
 			}
-			
+
 			$('#'+options.previous).on('click', function(event, ui) {
 				var selected = tabbed.tabs('option', 'selected');
 				// select previous visible tab
 				tabbed.children('ul').children('li:nth-child('+(selected+1)+')').prevAll(':visible').eq(0).children('a').click();
 			});
 		}
-		
+
 		if (options.submit != undefined) {
 			if (options.alwaysAllowSubmit == undefined) {
 				options.alwaysAllowSubmit = true;
 			}
-			
+
 			if (!options.alwaysAllowSubmit && tabbed.tabs('option', 'selected')+1 != tabbed.tabs('length')) {
 				$('#'+options.submit).hide();
 			}
 		}
-		
+
 		// bind all button actions to one select event
 		if (options.next != undefined || options.previous != undefined || options.submit != undefined) {
 			tabbed.on('tabsselect', function(event, ui) {
@@ -390,21 +390,21 @@ CORE.tabs = function(id, taboptions, options) {
 				var previous = $('#'+options.previous);
 				var submit = $('#'+options.submit);
 				var selected = ui.index;
-				
+
 				var nextTab = tabbed.children('ul').children('li:nth-child('+(selected+1)+')').nextAll(':visible').eq(0);
 				var prevTab = tabbed.children('ul').children('li:nth-child('+(selected+1)+')').prevAll(':visible').eq(0);
-				
+
 				if (nextTab.length == 0) {
 					next.hide();
 					submit.show();
 					previous.show();
-				} else {				
+				} else {
 					next.show();
 					if (!options.alwaysAllowSubmit) {
 						submit.hide();
 					}
 					previous.show();
-					
+
 					if (prevTab.length == 0) {
 						previous.hide();
 					}
@@ -412,10 +412,10 @@ CORE.tabs = function(id, taboptions, options) {
 			});
 		}
 	}
-	
+
 	// just in case it was missed
 	tabbed.find('.ui-tabs-panel').addClass('clearfix');
-	
+
 	return tabbed;
 }
 
@@ -425,8 +425,8 @@ CORE.tabs = function(id, taboptions, options) {
  *
  * #### Options:
  *
- * - `update` Boolean. True to update the originator's `core-update-url` 
- *		container with the HTML results of this link after the confirmation is 
+ * - `update` Boolean. True to update the originator's `core-update-url`
+ *		container with the HTML results of this link after the confirmation is
  *		closed, False to perform a request and auto-update on close.
  * - `onYes` Js function to call on confirmation
  * - `yesTitle` Yes button title, `false` for no button
@@ -437,7 +437,7 @@ CORE.tabs = function(id, taboptions, options) {
  * @param string message The message to display
  * @param object options Customizable options
  * @return boolean
- */ 
+ */
 CORE.confirmation = function(id, message, options) {
 	if ($('#confirmation-modal').length == 0) {
 		$('#wrapper').append('<div id="confirmation-modal"></div>');
@@ -445,12 +445,12 @@ CORE.confirmation = function(id, message, options) {
 	if (id == undefined || message == undefined) {
 		return false;
 	}
-	
-	var el = $('#'+id);	
-	
-	// extract controller from url 
+
+	var el = $('#'+id);
+
+	// extract controller from url
 	var href = el.prop('href');
-	
+
 	var _defaultOptions = {
 		update: true,
 		yesTitle: 'Yes',
@@ -459,9 +459,9 @@ CORE.confirmation = function(id, message, options) {
 		onYes: false,
 		title: 'Confirmation'
 	};
-		
+
 	var useOptions = $.extend(_defaultOptions, options || {});
-	
+
 	if (useOptions.onYes === false) {
 		(function(useOptions) {
 			useOptions.onYes = function() {
@@ -469,7 +469,7 @@ CORE.confirmation = function(id, message, options) {
 				CORE.request($(callingElement), {
 					url: href,
 					success: function(data) {
-						// only update with the request's response if 
+						// only update with the request's response if
 						// `useOptions.update = true`, otherwise perform auto-update
 						if (!useOptions.update) {
 							data = undefined;
@@ -481,17 +481,17 @@ CORE.confirmation = function(id, message, options) {
 			};
 		})(useOptions);
 	}
-	
+
 	if (useOptions.onNo === false) {
 		useOptions.onNo = function() {
 			CORE.closeModals("confirmation-modal");
 		}
 	}
-	
+
 	el.click(function(event) {
 		// stop href
 		event.preventDefault();
-		
+
 		var extraButtons = {};
 		if (useOptions.yesTitle !== false) {
 			extraButtons[useOptions.yesTitle] = useOptions.onYes;
@@ -509,17 +509,17 @@ CORE.confirmation = function(id, message, options) {
 		$('#confirmation-modal').html('<p>'+message+'</p>');
 		$('#confirmation-modal').dialog('open');
 		$('#confirmation-modal').data('core-modal-originator', el);
-		
+
 		// stop href
 		return false;
 	});
-	
-	return true;	
+
+	return true;
 }
 
 /**
  * Attaches WYSIWYG behavior to text area
- * 
+ *
  * Makes the width 100% of it's parent minus 20px (for scrollbar) if the width
  * isn't explicitly set
  *
@@ -531,7 +531,7 @@ CORE.wysiwyg = function(id) {
 	var toolbarId = unique('wysihtml5-toolbar-');
 	toolbar.wrap('div').prop('id', toolbarId);
 	$('#'+id).before(toolbar);
-	
+
 	var editor = new wysihtml5.Editor(id, {
 		style: false,
 		toolbar: toolbarId,
@@ -540,8 +540,8 @@ CORE.wysiwyg = function(id) {
 			'/css/email.css'
 		]
 	});
-	
-	return true;	
+
+	return true;
 }
 
 /**

@@ -1,18 +1,18 @@
 <?php
 
 class ProfileRecords extends Records {
-	
+
 	/**
 	 *The name of the model
-	 * 
-	 * @var string 
+	 *
+	 * @var string
 	 */
 	protected $name = 'Profile';
-	
+
 	/**
 	 *Records to insert upon install
-	 * 
-	 * @var array 
+	 *
+	 * @var array
 	 */
 	protected $records = array(
 		array(

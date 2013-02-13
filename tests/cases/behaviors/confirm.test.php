@@ -24,27 +24,27 @@ class ConfirmBehaviorTestCase extends CoreTestCase {
 		$this->assertIsA($this->Ministry->Behaviors->Confirm->settings['Ministry'], 'array');
 		$this->assertIsA($this->Ministry->Behaviors->Confirm->settings['Ministry']['fields'], 'array');
 	}
-	
+
 	function testFieldsSetting() {
 		$this->Ministry->Behaviors->attach('Confirm', array(
 			'fields' => array(
 				'description'
 			)
 		));
-		
+
 		$this->Ministry->id = 1;
 		$this->Ministry->saveField('name', 'Not communications');
 		$results = $this->Ministry->field('name');
 		$expected = 'Not communications';
 		$this->assertEqual($results, $expected);
-		
+
 		$this->Ministry->id = 1;
 		$this->Ministry->saveField('description', 'A new description');
 		$results = $this->Ministry->field('description');
 		$expected = 'Description';
 		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testNoChange() {
 		$this->Ministry->id = 1;
 		$this->Ministry->saveField('name', 'Communications');
@@ -58,7 +58,7 @@ class ConfirmBehaviorTestCase extends CoreTestCase {
 			)
 		));
 		$this->assertTrue(empty($rev));
-		
+
 		$this->assertFalse($this->Ministry->changed());
 	}
 
@@ -76,9 +76,9 @@ class ConfirmBehaviorTestCase extends CoreTestCase {
 		));
 		$this->assertEqual($rev['Revision']['name'], 'Revised Name');
 		$this->Ministry->RevisionModel->delete($rev['Revision']['id']);
-		
+
 		$this->assertTrue($this->Ministry->changed());
-		
+
 		$this->Ministry->id = null;
 		$this->Ministry->data = null;
 		$this->Ministry->save(array(
@@ -88,7 +88,7 @@ class ConfirmBehaviorTestCase extends CoreTestCase {
 		$results = $this->Ministry->field('name');
 		$expected = 'Communications';
 		$this->assertEqual($results, $expected);
-		
+
 		$rev = $this->Ministry->RevisionModel->find('first', array(
 			'conditions' => array(
 				'id' => 1
@@ -96,7 +96,7 @@ class ConfirmBehaviorTestCase extends CoreTestCase {
 		));
 		$this->assertEqual($rev['Revision']['name'], 'Another change');
 	}
-	
+
 	function testConfirmDisabled() {
 		$this->Ministry->Behaviors->disable('Confirm');
 		$this->Ministry->id = 1;
@@ -121,7 +121,7 @@ class ConfirmBehaviorTestCase extends CoreTestCase {
 			'active' => false
 		));
 		$this->assertTrue($success);
-		$results = $this->Ministry->revision(1);		
+		$results = $this->Ministry->revision(1);
 		$expected = array(
 			'Revision' => array(
 				'version_id' => 1,
@@ -136,7 +136,7 @@ class ConfirmBehaviorTestCase extends CoreTestCase {
 		);
 		unset($results['Revision']['version_created']);
 		$this->assertEqual($results, $expected);
-		
+
 		$this->assertFalse($this->Ministry->revision());
 	}
 

@@ -90,23 +90,23 @@ class FilterPaginationTestCase extends CoreTestCase {
 		$this->testController = $this->Controller;
 	}
 
-	function endTest() {		
+	function endTest() {
 		$this->Controller->Session->destroy();
 		unset($this->Controller);
 		ClassRegistry::flush();
 	}
-	
+
 	function testAttachLinkedModel() {
 		ClassRegistry::addObject('CompletelyUnrelatedModel', new CompletelyUnrelatedModel());
 		ClassRegistry::addObject('EmptyModel', new EmptyModel());
 		ClassRegistry::addObject('UnrelatedModel', new UnrelatedModel());
-		
+
 		$link = array(
 			'CompletelyUnrelatedModel'
 		);
 		$this->Controller->FilterPagination->_attachLinkedModels($this->Controller->PaginateTest, $link);
 		$this->assertIsA($this->Controller->PaginateTest->CompletelyUnrelatedModel, 'CompletelyUnrelatedModel');
-		
+
 		$link = array(
 			'CompletelyUnrelatedModel' => array(
 				'EmptyModel' => array(
@@ -269,7 +269,7 @@ class FilterPaginationTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testNoDataLeak() {
 		$data = array(
 			'PaginateTest' => array(
@@ -286,7 +286,7 @@ class FilterPaginationTestCase extends CoreTestCase {
 		);
 		$this->assertTrue($this->Controller->Session->check('FilterPagination.PaginateTests_filter'));
 		$this->assertEqual($results, $expected);
-		
+
 		// check to see that data persists when a pagination call is made
 		$vars = $this->testAction('/paginate_tests/filter/page:1/sort:name/direction:desc');
 		$results = Set::extract('/PaginateTest/name', $vars['results']);
@@ -296,7 +296,7 @@ class FilterPaginationTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 		$this->assertEqual($this->Controller->data, $data);
-		
+
 		$Controller = new PaginateTests2Controller();
 		$Controller->__construct();
 		$Controller->constructClasses();

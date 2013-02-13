@@ -11,8 +11,8 @@ class InstallSchema extends CakeSchema {
 
 /**
  * Adds the DECIMAL column type as a recognized datatype
- * 
- * @return void 
+ *
+ * @return void
  */
 	function __construct() {
 		$db =& ConnectionManager::getDataSource('default');

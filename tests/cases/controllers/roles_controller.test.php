@@ -19,7 +19,7 @@ class RolesControllerTestCase extends CoreTestCase {
 
 	function endTest() {
 		$this->Roles->Session->destroy();
-		unset($this->Roles);		
+		unset($this->Roles);
 		ClassRegistry::flush();
 	}
 
@@ -29,10 +29,10 @@ class RolesControllerTestCase extends CoreTestCase {
 		$expected = array(1, 2);
 		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testAdd() {
 		$this->loadFixtures('Ministry');
-		
+
 		$countBefore = $this->Roles->Role->find('count');
 		$this->testAction('/roles/add/Ministry:3', array(
 			'data' => array(
@@ -45,7 +45,7 @@ class RolesControllerTestCase extends CoreTestCase {
 		$countAfter = $this->Roles->Role->find('count');
 		$this->assertEqual($countBefore, $countAfter-1);
 	}
-	
+
 	function testEdit() {
 		$this->testAction('/roles/edit/1', array(
 			'data' => array(
@@ -59,7 +59,7 @@ class RolesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results['Role']['id'], 1);
 		$this->assertEqual($results['Role']['ministry_id'], 3);
 	}
-	
+
 	function testDelete() {
 		$this->testAction('/roles/delete/1');
 		$this->assertFalse($this->Roles->Role->read(null, 1));

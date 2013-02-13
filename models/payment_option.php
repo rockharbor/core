@@ -45,7 +45,7 @@ class PaymentOption extends AppModel {
  */
 	var $validate = array(
 		'total' => array(
-			'money' => array(	
+			'money' => array(
 				'rule' => 'money',
 				'message' => 'Please enter a valid amount.'
 			),
@@ -65,7 +65,7 @@ class PaymentOption extends AppModel {
 			)
 		),
 		'childcare' => array(
-			'money' => array(	
+			'money' => array(
 				'rule' => 'money',
 				'message' => 'Please enter a valid amount.',
 				'required' => false,
@@ -73,7 +73,7 @@ class PaymentOption extends AppModel {
 			)
 		),
 		'deposit' => array(
-			'money' => array(	
+			'money' => array(
 				'rule' => 'money',
 				'message' => 'Please enter a valid amount.',
 				'required' => false,

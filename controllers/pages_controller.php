@@ -10,7 +10,7 @@
 
 /**
  * Pages Controller
- * 
+ *
  * There is a greedy route for pages that will prevent extra actions from being
  * used automatically. A route for each new method is necessary.
  *
@@ -47,7 +47,7 @@ class PagesController extends AppController {
 		$this->Auth->allow('display', 'phrase', 'message');
 		parent::beforeFilter();
 	}
-	
+
 /**
  * Generic view for displaying flash messages in the HTML body instead of using
  * the typical flash elements. This is useful for when an action needs to
@@ -55,13 +55,13 @@ class PagesController extends AppController {
  */
 	function message() {
 		$this->set('title_for_layout', 'Message');
-		
+
 		$auth = $this->Session->read('Message.auth');
 		$flash = $this->Session->read('Message.flash');
-		
+
 		$this->Session->delete('Message.auth');
 		$this->Session->delete('Message.flash');
-		
+
 		$this->set(compact('auth', 'flash'));
 	}
 

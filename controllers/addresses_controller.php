@@ -50,8 +50,8 @@ class AddressesController extends AppController {
  * Used to override Acl permissions for this controller.
  *
  * @access private
- */ 
-	function beforeFilter() {		
+ */
+	function beforeFilter() {
 		parent::beforeFilter();
 		$this->_editSelf('index', 'add', 'edit', 'toggle_activity', 'primary');
 	}
@@ -61,11 +61,11 @@ class AddressesController extends AppController {
  */
 	function beforeRender() {
 		parent::beforeRender();
-	
+
 		$this->set('model', $this->model);
 		$this->set('modelId', $this->modelId);
 	}
-	
+
 /**
  * Shows a list of addresses
  */
@@ -93,30 +93,30 @@ class AddressesController extends AppController {
  */
 	function add() {
 		if (!empty($this->data)) {
-			// check to see if they chose an existing address. 
-			// if so, duplicate the selected address			
+			// check to see if they chose an existing address.
+			// if so, duplicate the selected address
 			if (isset($this->data['Address']['existing'])) {
 				$selectedAddress = $this->Address->read(null, $this->data['Address']['address_id']);
-				
+
 				// not an update!
 				unset($selectedAddress['Address']['id']);
-				
+
 				// new model id
 				$selectedAddress['Address']['foreign_key'] = $this->modelId;
-				
+
 				// clear out old data and use the existing address instead
 				$this->data = array();
 				$this->data = $selectedAddress;
 			}
-			
+
 			$this->Address->create();
-			
+
 			// this address will be the new primary
 			$success= $this->Address->save($this->data);
-			
+
 			// don't overwrite that we just made it primary!
 			$lastId = $this->Address->getLastInsertID();
-			
+
 			// mark all others as not primary
 			if ($success) {
 				if ($this->data['Address']['primary']) {
@@ -128,7 +128,7 @@ class AddressesController extends AppController {
 				$this->Session->setFlash('Unable to save. Please try again.', 'flash'.DS.'failure');
 			}
 		}
-		
+
 		$addresses = array();
 		if ($this->model != 'User') {
 			$addresses = $this->Address->find('list', array(
@@ -138,7 +138,7 @@ class AddressesController extends AppController {
 				'group' => 'name'
 			));
 		}
-		
+
 		$this->set('addresses', $addresses);
 	}
 
@@ -165,7 +165,7 @@ class AddressesController extends AppController {
 				$this->Session->setFlash('Unable to save. Please try again.', 'flash'.DS.'failure');
 			}
 		}
-		
+
 		if (empty($this->data)) {
 			$this->data = $this->Address->read(null, $id);
 		}
@@ -181,14 +181,12 @@ class AddressesController extends AppController {
 			$this->cakeError('error404');
 		}
 		$related = $this->Address->related($this->passedArgs['Address']);
-		$this->Address->updateAll(
-			array(
-				'Address.primary' => 0
-			),
-			array(
-				'Address.id' => $related
-			)
-		);
+
+		foreach ($related as $relatedId) {
+			$this->Address->id = $relatedId;
+			$this->Address->saveField('primary', 0);
+		}
+		
 		$this->Address->id = $this->passedArgs['Address'];
 		$this->Address->saveField('primary', true);
 		$this->Address->saveField('active', true);

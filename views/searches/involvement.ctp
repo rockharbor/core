@@ -43,7 +43,7 @@
 			));
 			echo $this->Form->input('Distance.distance', array(
 				'type' => 'select',
-				'options' => array(	
+				'options' => array(
 					'5' => '5 miles',
 					'10' => '10 miles',
 					'15' => '15 miles',
@@ -62,11 +62,11 @@ if (!empty($results)) {
 
 ?>
 <h3>Results</h3>
-	<p>Sort by: <?php echo $this->Paginator->sort('name'); ?> / <?php echo $this->Paginator->sort('description'); ?> 
+	<p>Sort by: <?php echo $this->Paginator->sort('name'); ?> / <?php echo $this->Paginator->sort('description'); ?>
 	/ <?php echo $this->Paginator->sort('Type', 'InvolvementType.name'); ?> / <?php echo $this->Paginator->sort('Ministry', 'Ministry.name'); ?>
 	</p>
 	<div class="clearfix">
-<?php	
+<?php
 	$i = 0;
 	foreach ($results as $result):
 		$class = ($i % 2 == 0) ? 'alpha' : 'omega';
@@ -80,7 +80,7 @@ if (!empty($results)) {
 ?>
 <h3>Results</h3>
 <p>No results</p>
-<?php 
+<?php
 }
 ?>
 </div>

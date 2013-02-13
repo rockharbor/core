@@ -78,7 +78,7 @@ class PaymentFixture extends CakeTestFixture {
 			'comment' => 'Invisible user made a payment'
 		),
 	);
-	
+
 	function create(&$db) {
 		$db->columns['decimal'] = array(
 			'name' => 'decimal',

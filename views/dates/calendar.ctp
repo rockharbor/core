@@ -23,13 +23,13 @@ $this->Js->buffer('function gotoDate() {
 	} else {
 		year = $("#JumpYear").val()
 	}
-	
+
 	if ($("#JumpMonth").val() == "") {
 		month = new Date().getMonth();
 	} else {
 		month = Number($("#JumpMonth").val())-1;
 	}
-	
+
 	$("#calendar'.$calendarid.'").fullCalendar("gotoDate", year, month, 1);
 }');
 

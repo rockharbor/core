@@ -41,28 +41,28 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->unloadSettings();
 		ClassRegistry::flush();
 	}
-	
+
 	function testDelete() {
 		$this->loadFixtures('Roster', 'Payment');
-		
+
 		$this->Users->expectAt(0, 'cakeError', array('invalidMultiSelectSelection'));
 		$vars = $this->testAction('/users/delete');
-		
+
 		$vars = $this->testAction('/users/delete/1');
 		$result = $this->Users->Session->read('Message.flash.element');
 		$expected = 'flash'.DS.'success';
-		
+
 		$result = $this->Users->User->read(null, 1);
 		$expected = false;
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $this->Users->User->Roster->read(null, 3);
 		$expected = false;
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $this->Users->User->Payment->read(null, 1);
 		$this->assertIsA($result, 'Array');
-		
+
 		$this->Users->Session->write('MultiSelect.test', array(
 			'selected' => array(2, 3)
 		));
@@ -70,23 +70,23 @@ class UsersControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/users/delete/0/mstoken:test');
 		$result = $this->Users->Session->read('Message.flash.element');
 		$expected = 'flash'.DS.'success';
-		
+
 		$result = $this->Users->User->read(null, 2);
 		$expected = false;
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $this->Users->User->read(null, 3);
 		$expected = false;
 		$this->assertEqual($result, $expected);
 	}
-	
+
 	function testRedirectOnResetPassword() {
 		// trick CoreTestCase into not setting up a user
 		$this->Users->Session->write('User', array());
-		
+
 		$this->Users->User->id = 1;
 		$this->Users->User->saveField('reset_password', true);
-		
+
 		$vars = $this->testAction('/users/login', array(
 			'data' => array(
 				'User' => array(
@@ -122,7 +122,7 @@ class UsersControllerTestCase extends CoreTestCase {
 
 		$result = $user['User']['username'];
 		$this->assertEqual($result, 'newusername');
-		
+
 		$result = $user['User']['reset_password'];
 		$this->assertFalse($result);
 
@@ -166,12 +166,12 @@ class UsersControllerTestCase extends CoreTestCase {
 			'data' => $data
 		));
 		$this->assertTrue(!empty($this->Users->User->validationErrors));
-		
+
 		$user = $this->Users->User->read(null, 1);
 		$result = $user['User']['password'];
 		$expected = $this->Users->Auth->password('password');
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $user['User']['reset_password'];
 		$this->assertFalse($result);
 
@@ -194,7 +194,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$result = $user['User']['password'];
 		$expected = $this->Users->Auth->password('newpassword');
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $user['User']['reset_password'];
 		$this->assertFalse($result);
 
@@ -203,7 +203,7 @@ class UsersControllerTestCase extends CoreTestCase {
 
 		$result = $this->Users->Session->read('Message.flash.element');
 		$this->assertEqual($result, 'flash'.DS.'success');
-		
+
 		$data = array(
 			'User' => array(
 				'id' => 2,
@@ -217,12 +217,12 @@ class UsersControllerTestCase extends CoreTestCase {
 			'data' => $data
 		));
 		$this->assertTrue(empty($this->Users->User->validationErrors));
-		
+
 		$user = $this->Users->User->read(null, 2);
 		$result = $user['User']['password'];
 		$expected = $this->Users->Auth->password('newpassword');
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $user['User']['reset_password'];
 		$this->assertTrue($result);
 
@@ -237,7 +237,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		// trick CoreTestCase into not setting up a user
 		$this->Users->Session->write('User', array());
 		$this->Users->Cookie->setReturnValue('read', null);
-		
+
 		// children can't log in
 		$vars = $this->testAction('/users/login', array(
 			'data' => array(
@@ -250,7 +250,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		));
 		$result = $this->Users->Session->read('Auth.User.id');
 		$this->assertNull($result);
-		
+
 		// inactive users can't log in
 		$vars = $this->testAction('/users/login', array(
 			'data' => array(
@@ -263,7 +263,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		));
 		$result = $this->Users->Session->read('Auth.User.id');
 		$this->assertNull($result);
-		
+
 		$this->Users->Session->destroy();
 	}
 
@@ -272,7 +272,7 @@ class UsersControllerTestCase extends CoreTestCase {
 
 		// trick CoreTestCase into not setting up a user
 		$this->Users->Session->write('User', array());
-		
+
 		$this->Users->Cookie->setReturnValueAt(0, 'read', null);
 		$vars = $this->testAction('/users/login', array(
 			'data' => array(
@@ -291,7 +291,7 @@ class UsersControllerTestCase extends CoreTestCase {
 
 		$result = $this->Users->Session->read('User.User.last_logged_in');
 		$this->assertEqual($result, $lastLoggedIn['User']['last_logged_in']);
-		
+
 		$result = $this->Users->User->read(null, 1);
 		$this->assertNotEqual($result['User']['last_logged_in'], $lastLoggedIn['User']['last_logged_in']);
 
@@ -306,11 +306,11 @@ class UsersControllerTestCase extends CoreTestCase {
 		$result = $this->Users->Session->read('Auth.User.id');
 		$this->assertEqual($result, 1);
 		$this->assertNull($this->Users->Session->read('Message.auth'));
-		
+
 		// logout fail with cookie (because of password change)
 		$this->Users->Session->destroy();
 		$this->Users->Session->write('User', array());
-		
+
 		$this->Users->Cookie->setReturnValueAt(2, 'read', array(
 			'username' => 'no',
 			'password' => 'access'
@@ -318,10 +318,10 @@ class UsersControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/users/login');
 		$this->assertNull($this->Users->Session->read('Auth'));
 		$this->assertTrue(!empty($this->Users->User->validationErrors));
-		
+
 		$vars = $this->testAction('/users/dashboard');
 		$this->assertNotNull($this->Users->Session->read('Message.auth'));
-		
+
 		$this->Users->Session->destroy();
 	}
 
@@ -342,7 +342,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($this->Users->Session->read('Message.flash.element'), 'flash'.DS.'success');
 		$user = $this->Users->User->read('reset_password', 1);
 		$this->assertTrue($user['User']['reset_password']);
-		
+
 		// test as if we just came from choose_user
 		$oldPassword = $this->Users->User->read('password', 2);
 		$vars = $this->testAction('/users/forgot_password/1');
@@ -384,7 +384,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		));
 		$result = $request['MergeRequest']['merge_id'];
 		$this->assertEqual($result, 1);
-		
+
 		$newUser = $this->Users->User->findByUsername('newusername');
 		$result = $newUser['User']['id'];
 		$this->assertEqual($request['MergeRequest']['model_id'], $result);
@@ -508,7 +508,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$user = $this->Users->User->findByUsername('newusername');
 		$result = $user['Profile']['name'];
 		$this->assertEqual($result, 'Test User');
-		
+
 		// get last invitation and make sure it has the right actions
 		$this->Users->User->contain(array('Profile', 'HouseholdMember' => array('Household')));
 		$user = $this->Users->User->read(null, 1);
@@ -521,7 +521,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$results = $invitation['Invitation']['deny_action'];
 		$expected = '/households/delete/1/'.$lastHousehold['id'];
 		$this->assertEqual($results, $expected);
-		
+
 		// test for no fuzzy username search
 		$data = array(
 			'User' => array(
@@ -553,11 +553,11 @@ class UsersControllerTestCase extends CoreTestCase {
 		$user = $this->Users->User->findByUsername('newuserna');
 		$result = $user['Profile']['name'];
 		$this->assertEqual($result, 'Another User');
-		
+
 		/**
 		 * Test redirections (setAction) based on various `findUser` responses
 		 */
-		
+
 		$data = array(
 			'Profile' => array(
 				'first_name' => 'ricky',
@@ -571,7 +571,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$results = $this->testController->action;
 		$expected = 'choose_user';
 		$this->assertEqual($results, $expected);
-		
+
 		$data = array(
 			'Profile' => array(
 				'first_name' => 'ricky',
@@ -585,7 +585,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$results = $this->testController->action;
 		$expected = '/users/register';
 		$this->assertEqual($results, $expected);
-		
+
 		$data = array(
 			'Profile' => array(
 				'first_name' => 'jeremy',
@@ -600,14 +600,14 @@ class UsersControllerTestCase extends CoreTestCase {
 		$expected = 'forgot_password';
 		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testChooseUser() {
 		$this->Users->choose_user(array(1, 2), '/users/request_activation/:ID:/1', '/original/action');
 		$vars = $this->Users->viewVars;
 		$this->assertEqual(count($vars['users']), 2);
 		$this->assertEqual($vars['redirect'], FULL_BASE_URL.'/users/request_activation/:ID:/1');
 		$this->assertEqual($vars['return'], FULL_BASE_URL.'/original/action/skip_check:1');
-		
+
 		$this->Users->choose_user(array(1, 2), array(
 			'controller' => 'some_controller',
 			'action' => 'action',
@@ -616,7 +616,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$vars = $this->Users->viewVars;
 		$this->assertEqual($vars['redirect'], FULL_BASE_URL.'/some_controller/action/:ID:');
 	}
-	
+
 	function testHouseholdAdd() {
 		$this->loadFixtures('MergeRequest', 'Address', 'Household', 'HouseholdMember', 'Notification', 'Invitation');
 		$notificationsBefore = $this->Users->User->Notification->find('count');
@@ -661,7 +661,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($notificationsAfter-$notificationsBefore, 2);
 
 		$this->Users->User->contain(array(
-			'Profile', 
+			'Profile',
 			'HouseholdMember' => array(
 				'Household' => array(
 					'HouseholdContact'
@@ -671,16 +671,16 @@ class UsersControllerTestCase extends CoreTestCase {
 		$user = $this->Users->User->findByUsername('newusername');
 		$result = $user['Profile']['name'];
 		$this->assertEqual($result, 'Jeremy Harris');
-		
+
 		// make sure they only have one household
 		$this->assertEqual(count($user['HouseholdMember']), 1);
-		
+
 		// make sure they belong to user 1's household
 		$result = $user['HouseholdMember'][0]['Household']['HouseholdContact']['id'];
 		$this->assertEqual($result, 2);
 		$result = $user['HouseholdMember'][0]['Household']['id'];
 		$this->assertEqual($result, 2);
-		
+
 		$data = array(
 			'Profile' => array(
 				'first_name' => 'Ricky',
@@ -701,15 +701,15 @@ class UsersControllerTestCase extends CoreTestCase {
 			'data' => $data
 		));
 		$this->assertEqual($vars['redirect'], FULL_BASE_URL.'/households/invite/:ID:/2');
-		
+
 		$results = Set::extract('/User/id', $vars['users']);
 		$expected = array(2, 3);
 		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testSpecialBirthdateValidation() {
 		$origValidation = $this->Users->User->Profile->validate;
-		
+
 		$data = array(
 			'User' => array(
 				'username' => 'someuser'
@@ -728,17 +728,17 @@ class UsersControllerTestCase extends CoreTestCase {
 				'id' => 2
 			)
 		);
-		
+
 		$vars = $this->testAction('/users/household_add/Household:2', array(
 			'data' => $data
 		));
 		$result = array_keys($this->Users->User->Profile->validationErrors);
 		$expected = array('birth_date');
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $this->Users->Session->read('Message.flash.element');
 		$this->assertEqual($result, 'flash'.DS.'failure');
-		
+
 		$this->Users->User->Profile->validate = $origValidation;
 		$vars = $this->testAction('/users/register', array(
 			'data' => $data
@@ -746,20 +746,20 @@ class UsersControllerTestCase extends CoreTestCase {
 		$result = array_keys($this->Users->User->Profile->validationErrors);
 		$expected = array('birth_date');
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $this->Users->Session->read('Message.flash.element');
 		$this->assertEqual($result, 'flash'.DS.'failure');
-		
+
 		$this->Users->User->Profile->validate = $origValidation;
 		$vars = $this->testAction('/users/add', array(
 			'data' => $data
 		));
 		$result = array_keys($this->Users->User->Profile->validationErrors);
 		$this->assertTrue(empty($result));
-		
+
 		$result = $this->Users->Session->read('Message.flash.element');
 		$this->assertEqual($result, 'flash'.DS.'success');
-		
+
 		$data = array(
 			'User' => array(
 				'username' => 'someuseragain'
@@ -783,7 +783,7 @@ class UsersControllerTestCase extends CoreTestCase {
 				'id' => 2
 			)
 		);
-		
+
 		$this->Users->User->Profile->validate = $origValidation;
 		$vars = $this->testAction('/users/household_add/Household:2', array(
 			'data' => $data
@@ -791,10 +791,10 @@ class UsersControllerTestCase extends CoreTestCase {
 		$result = array_keys($this->Users->User->Profile->validationErrors);
 		$expected = array('birth_date');
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $this->Users->Session->read('Message.flash.element');
 		$this->assertEqual($result, 'flash'.DS.'failure');
-		
+
 		$this->Users->User->Profile->validate = $origValidation;
 		$vars = $this->testAction('/users/register', array(
 			'data' => $data
@@ -802,10 +802,10 @@ class UsersControllerTestCase extends CoreTestCase {
 		$result = array_keys($this->Users->User->Profile->validationErrors);
 		$expected = array('birth_date');
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $this->Users->Session->read('Message.flash.element');
 		$this->assertEqual($result, 'flash'.DS.'failure');
-		
+
 		$this->Users->User->Profile->validate = $origValidation;
 		$vars = $this->testAction('/users/add', array(
 			'data' => $data
@@ -815,7 +815,7 @@ class UsersControllerTestCase extends CoreTestCase {
 
 		$result = $this->Users->Session->read('Message.flash.element');
 		$this->assertEqual($result, 'flash'.DS.'success');
-		
+
 	}
 
 }

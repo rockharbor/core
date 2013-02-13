@@ -35,7 +35,7 @@ class InvolvementLeadersControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Involvement/id', $vars['involvements']);
 		sort($results);
 		$this->assertEqual($results, array());
-		
+
 		$vars = $this->testAction('/involvement_leaders/dashboard/User:1', array(
 			'data' => array(
 				'Filter' => array(
@@ -49,7 +49,7 @@ class InvolvementLeadersControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Involvement/id', $vars['involvements']);
 		sort($results);
 		$this->assertEqual($results, array(1));
-		
+
 		$vars = $this->testAction('/involvement_leaders/dashboard/User:1', array(
 			'data' => array(
 				'Filter' => array(
@@ -63,7 +63,7 @@ class InvolvementLeadersControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Involvement/id', $vars['involvements']);
 		sort($results);
 		$this->assertEqual($results, array(1, 3));
-		
+
 		$vars = $this->testAction('/involvement_leaders/dashboard/User:1', array(
 			'data' => array(
 				'Filter' => array(

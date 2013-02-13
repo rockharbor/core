@@ -1,6 +1,29 @@
 <h1>Ministry Leader Dashboard</h1>
 <div class="content-box">
 	<p>Manage your ministries.</p>
+	<?php
+		echo $this->Form->create('Filter', array(
+			'class' => 'core-filter-form',
+			'url' => $this->here,
+		));
+		echo $this->Form->input('inactive', array(
+			'type' => 'checkbox',
+			'class' => 'toggle',
+			'div' => false
+		));
+		echo $this->Form->input('private', array(
+			'type' => 'checkbox',
+			'class' => 'toggle',
+			'div' => false
+		));
+		echo $this->Form->input('affiliated', array(
+			'type' => 'checkbox',
+			'class' => 'toggle',
+			'div' => false
+		));
+		echo $this->Js->submit('Filter');
+		echo $this->Form->end();
+	?>
 <?php
 	echo $this->MultiSelect->create();
 ?>
@@ -56,14 +79,14 @@
 			?>
 			<tr<?php echo $class;?>>
 				<td><?php echo $this->MultiSelect->checkbox($ministry['Ministry']['id']); ?></td>
-				<td><?php 
+				<td><?php
 				echo $this->Html->link($ministry['Campus']['name'], array('controller' => 'campuses', 'action' => 'view', 'Campus' => $ministry['Campus']['id']), array('escape' => false));
 				if (!empty($ministry['ParentMinistry']['id'])) {
 					echo ' > ';
 					echo $this->Html->link($ministry['ParentMinistry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $ministry['ParentMinistry']['id']), array('escape' => false));
 				}
 				echo ' > ';
-				echo $this->Html->link($ministry['Ministry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $ministry['Ministry']['id'])).$this->Formatting->flags('Ministry', $ministry); 
+				echo $this->Html->link($ministry['Ministry']['name'], array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $ministry['Ministry']['id'])).$this->Formatting->flags('Ministry', $ministry);
 				?></td>
 				<td><?php
 				$link = array('controller' => 'roles', 'action' => 'index', 'Ministry' => $ministry['Ministry']['id']);

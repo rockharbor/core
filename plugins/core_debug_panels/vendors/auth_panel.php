@@ -94,7 +94,7 @@ class AuthPanel extends DebugPanel {
 		$controller->_setConditionalGroups();
 		$authHistory = $controller->Session->read('CoreDebugPanels.authHistory');
 		$action = $controller->Auth->action();
-		
+
 		$condAccess = false;
 		if (!empty($controller->activeUser['ConditionalGroup'])) {
 			foreach ($controller->activeUser['ConditionalGroup'] as $group) {
@@ -109,7 +109,7 @@ class AuthPanel extends DebugPanel {
 				}
 			}
 		}
-		
+
 		// main group
 		$mainAccess = Core::acl($groupId, $action);
 		$message = "User of group $groupId allowed to access $action? [$mainAccess]";

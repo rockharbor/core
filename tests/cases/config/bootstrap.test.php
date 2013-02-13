@@ -3,28 +3,24 @@
 App::import('Lib', 'CoreTestCase');
 
 class BootstrapTestCase extends CoreTestCase {
-	
+
 	function testBr2nl() {
 		$text = 'This<br />is some<br>text.';
 		$result = br2nl($text);
-		$expected = <<<TEXT
-This
-is some
-text.
-TEXT;
+		$expected = 'This'.PHP_EOL.'is some'.PHP_EOL.'text.';
 		$this->assertEqual($result, $expected);
 	}
-	
+
 	function testArrayFilterRecursive() {
 		$array = array(
 			'User' => array(
 				'Profile' => array(
-					'user_id' => null, 
+					'user_id' => null,
 					'primary_email' => 'some value'
 				),
 				'Roster' => array(
-					'user_id' => 1, 
-					'id' => 0, 
+					'user_id' => 1,
+					'id' => 0,
 					'roster_status_id' => 0,
 					'RosterStatus' => array(
 						'name' => 1
@@ -39,7 +35,7 @@ TEXT;
 					'primary_email' => 'some value'
 				),
 				'Roster' => array(
-					'user_id' => 1, 
+					'user_id' => 1,
 					'RosterStatus' => array(
 						'name' => 1
 					)
@@ -47,8 +43,8 @@ TEXT;
 			)
 		);
 		$this->assertEqual($result, $expected);
-		
+
 		$this->assertEqual($array['User']['Profile']['user_id'], null);
 	}
-	
+
 }

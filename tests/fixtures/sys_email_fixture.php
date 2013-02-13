@@ -1,7 +1,7 @@
 <?php
 class SysEmailFixture extends CakeTestFixture {
 	var $name = 'SysEmail';
-	
+
 	var $table = 'queues';
 
 	var $fields = array(

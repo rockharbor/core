@@ -105,8 +105,8 @@ class Document extends MediaAppModel {
 			),
 			'extension'  => array(
 				'rule' => array(
-					'checkExtension', 
-					false, 
+					'checkExtension',
+					false,
 					array(
 						'txt', 'doc', 'docx', 'xls', 'xlsx', 'pdf', 'tmp'
 					)

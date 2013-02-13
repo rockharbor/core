@@ -4,12 +4,12 @@
 
 <div id="humanized" class="box highlight"></div>
 
-<?php 
-	echo $this->Form->create('Date', array('default' => false));	
+<?php
+	echo $this->Form->create('Date', array('default' => false));
 	echo $this->Form->hidden('involvement_id', array(
 		'value' => $involvementId
 	));
-?>	
+?>
 	<fieldset>
 		<legend>Date</legend>
 	<?php
@@ -25,20 +25,20 @@
 				'type' => 'select',
 				'options' => $recurranceTypes
 			));
-			
+
 			echo $this->Form->input('frequency', array(
 				'label' => false,
 				'before' => 'Recur every ',
 				'after' => ' <span id="frequency_label">day(s)</span>',
 				'style' => 'width:20px'
 			));
-			
+
 			echo $this->Form->input('offset', array(
 				'type' => 'select',
 				'options' => array('1'=>'1','2'=>'2','3'=>'3','4'=>'4'),
 				'div' => array('id' => 'offset')
 			));
-			
+
 			echo $this->Form->input('weekday', array(
 				'label' => false,
 				'before' => 'On ',
@@ -46,23 +46,23 @@
 				'options' => $this->SelectOptions->generateOptions('week'),
 				'div' => array('id' => 'weekday')
 			));
-			
+
 			echo $this->Form->input('day', array(
 				'type' => 'select',
 				'options' => $this->SelectOptions->generateOptions('day'),
 				'div' => array('id' => 'day')
 			));
-			
+
 		?>
 		</fieldset>
-	
-	<?php	
+
+	<?php
 		echo $this->Form->input('start_date', array(
 			'div' => array('id' => 'start_date')
 		));
 		echo $this->Form->input('permanent', array(
 			'label' => 'Never ends'
-		));		
+		));
 		echo $this->Form->input('end_date', array(
 			'div' => array('id' => 'end_date')
 		));
@@ -70,15 +70,15 @@
 		echo $this->Form->input('start_time', array(
 			'interval' => 15,
 			'div' => array('id' => 'start_time')
-		));		
+		));
 		echo $this->Form->input('end_time', array(
 			'interval' => 15,
 			'div' => array('id' => 'end_time')
-		));	
+		));
 	?>
 	</fieldset>
-	
-<?php 
+
+<?php
 $defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals:true})';
 echo $this->Js->submit('Save', $defaultSubmitOptions);
 echo $this->Form->end();

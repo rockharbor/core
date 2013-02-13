@@ -50,7 +50,7 @@ class Alert extends AppModel {
 				'rule' => 'date',
 				'message' => 'Please select a valid date',
 				'allowEmpty' => true
-			)			
+			)
 		)
 	);
 
@@ -83,13 +83,13 @@ class Alert extends AppModel {
  *
  * @param integer $userId The user
  * @return array List of ids
- */ 
+ */
 	function getReadAlerts($userId = null) {
 		if (!$userId) {
 			return false;
-		}		
-		
-		// get ids of alerts this user has read		
+		}
+
+		// get ids of alerts this user has read
 		$readAlerts = $this->AlertsUser->find('all', array(
 			'fields' => array(
 				'alert_id'
@@ -98,7 +98,7 @@ class Alert extends AppModel {
 				'user_id' => $userId
 			)
 		));
-		
+
 		return Set::extract('/AlertsUser/alert_id', $readAlerts);
 	}
 
@@ -109,7 +109,7 @@ class Alert extends AppModel {
  * @param array $groupId The user's group id
  * @param boolean $getExpired Whether or not to get expired alerts as well
  * @return array List of ids
- */ 	
+ */
 	function getUnreadAlerts($userId = null, $groupId = null, $getExpired = true) {
 		if (!$userId) {
 			return false;
@@ -122,7 +122,7 @@ class Alert extends AppModel {
 		}
 		// get ids of alerts this user has read
 		$readAlerts = $this->getReadAlerts($userId);
-		
+
 		$search = array(
 			'fields' => array(
 				'id'
@@ -135,7 +135,7 @@ class Alert extends AppModel {
 			),
 			'order' => 'Alert.created DESC'
 		);
-		
+
 		if (!$getExpired) {
 			$search['conditions']['or'] = array(
 				'Alert.expires >=' => date('Y-m-d'),
@@ -143,7 +143,7 @@ class Alert extends AppModel {
 			);
 		}
 		$alert = $this->find('all', $search);
-		
+
 		return Set::extract('/Alert/id', $alert);
 	}
 
@@ -151,9 +151,9 @@ class Alert extends AppModel {
  * Marks an Alert as read by a User
  *
  * @param integer $userId The user
- * @param integer $alertId The alert 
+ * @param integer $alertId The alert
  * @return boolean Success
- */ 	
+ */
 	function markAsRead($userId = null, $alertId = null) {
 		if (!$userId || !$alertId) {
 			return false;
@@ -168,7 +168,7 @@ class Alert extends AppModel {
 
 		// get read alerts
 		$readAlerts = $this->getReadAlerts($userId);
-		
+
 		if (!in_array($alertId, $readAlerts)) {
 			$this->AlertsUser->create();
 			return $this->AlertsUser->save(array(

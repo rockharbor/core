@@ -36,7 +36,7 @@ class MinistriesController extends AppController {
  * @var array
  */
 	var $components = array(
-		'MultiSelect.MultiSelect', 
+		'MultiSelect.MultiSelect',
 		'FilterPagination' => array(
 			'startEmpty' => false
 		)
@@ -48,12 +48,12 @@ class MinistriesController extends AppController {
  * Used to override Acl permissions for this controller.
  *
  * @access private
- */ 
+ */
 	function beforeFilter() {
 		$this->Auth->allow('index');
-		
+
 		parent::beforeFilter();
-		
+
 		// if user is leading or managing, let them bulk edit ministries
 		if ($this->activeUser['Profile']['leading'] > 0 || $this->activeUser['Profile']['managing'] > 0) {
 			$this->Auth->allow('bulk_edit');
@@ -67,7 +67,7 @@ class MinistriesController extends AppController {
 		if (!isset($this->passedArgs['Campus']) && !isset($this->passedArgs['Ministry'])) {
 			$this->cakeError('error404');
 		}
-		
+
 		$conditions = array(
 			'Ministry' => array(
 				'active' => true,
@@ -82,7 +82,7 @@ class MinistriesController extends AppController {
 		if (isset($this->passedArgs['Ministry'])) {
 			$conditions['Ministry']['parent_id'] = $this->passedArgs['Ministry'];
 		}
-		
+
 		if (!empty($this->data)) {
 			if ($this->data['Ministry']['inactive']) {
 				$conditions['Ministry']['active'] = array(1, 0);
@@ -102,7 +102,7 @@ class MinistriesController extends AppController {
 				)
 			);
 		}
-		
+
 		$this->paginate = array(
 			'conditions' => $this->postConditions($conditions),
 			'limit' => 9,
@@ -114,16 +114,16 @@ class MinistriesController extends AppController {
 
 /**
  * Ministry details
- */ 
+ */
 	function view() {
 		$id = $this->passedArgs['Ministry'];
-		
+
 		if (!$id) {
 			$this->cakeError('error404');
 		}
-		
+
 		$private = $this->Ministry->Leader->User->Group->canSeePrivate($this->activeUser['Group']['id']);
-		
+
 		$ministry = $this->Ministry->find('first', array(
 			'conditions' => array(
 				'Ministry.id' => $id
@@ -148,16 +148,16 @@ class MinistriesController extends AppController {
 
 /**
  * Adds a ministry
- */ 
+ */
 	function add() {
 		$this->Ministry->Behaviors->disable('Confirm');
-		
+
 		if (isset($this->passedArgs['Ministry'])) {
 			$this->set('parentId', $this->passedArgs['Ministry']);
 			$parentMinistry = $this->Ministry->read(null, $this->passedArgs['Ministry']);
 			$this->passedArgs['Campus'] = $parentMinistry['Ministry']['campus_id'];
 		}
-		
+
 		if (!empty($this->data)) {
 			$this->Ministry->create();
 			if ($this->Ministry->save($this->data)) {
@@ -167,11 +167,11 @@ class MinistriesController extends AppController {
 				$this->Session->setFlash('Unable to create this ministry. Please try again.', 'flash'.DS.'failure');
 			}
 		}
-		
+
 		if (empty($this->data)) {
 			$this->data['Ministry']['campus_id'] = $this->passedArgs['Campus'];
 		}
-		
+
 		$this->set('campuses', $this->Ministry->Campus->find('list'));
 	}
 
@@ -181,7 +181,7 @@ class MinistriesController extends AppController {
 	function bulk_edit() {
 		// persist mstoken through POST requests
 		$this->here .= '/mspersist:1';
-		
+
 		if (!empty($this->data)) {
 			$selected = $this->_extractIds($this->Ministry, '/Ministry/id');
 			$this->Ministry->Behaviors->disable('Confirm');
@@ -222,10 +222,10 @@ class MinistriesController extends AppController {
 
 /**
  * Edits a ministry
- */ 
+ */
 	function edit() {
 		$id = $this->passedArgs['Ministry'];
-	
+
 		if (!$id) {
 			$this->cakeError('error404');
 		}
@@ -235,11 +235,11 @@ class MinistriesController extends AppController {
 		if ($authorized) {
 			$this->Ministry->Behaviors->disable('Confirm');
 		}
-		
+
 		$this->Ministry->id = $id;
 		$name = $this->Ministry->field('name');
 		$revision = $this->Ministry->revision($id);
-		
+
 		if (!empty($this->data)) {
 			if (!$revision) {
 				if ($this->Ministry->save($this->data)) {
@@ -257,15 +257,15 @@ class MinistriesController extends AppController {
 				} else {
 					$this->Session->setFlash('Unable to save this ministry. Please try again.', 'flash'.DS.'failure');
 				}
-				
+
 				$revision = $this->Ministry->revision($id);
 			} else {
 				$this->Session->setFlash('There\'s already a pending change for this ministry.', 'flash'.DS.'failure');
 			}
 		}
-		
-		$this->data = $this->Ministry->read(null, $id);		
-		
+
+		$this->data = $this->Ministry->read(null, $id);
+
 		$this->set('campuses', $this->Ministry->Campus->find('list'));
 		$this->set('ministries', $this->Ministry->active('list', array(
 			'conditions' => array(
@@ -275,7 +275,7 @@ class MinistriesController extends AppController {
 				)
 			)
 		)));
-		
+
 		$this->set('revision', $revision);
 	}
 
@@ -324,21 +324,21 @@ class MinistriesController extends AppController {
 		$this->data = array();
 		$this->redirect($this->emptyPage);
 	}
-	
+
 /**
  * Displays ministry revision history (up to 1 change)
  *
  * @param integer $id The id of the ministry
- */ 	
+ */
 	function history() {
 		$id = $this->passedArgs['Ministry'];
 
 		if (!$id) {
 			$this->cakeError('error404');
 		}
-		
+
 		$this->set('ministry', $this->Ministry->read(null, $id));
-		
+
 		// get the most recent change (not quite using revisions as defined, but close)
 		$this->set('campuses', $this->Ministry->Campus->find('list'));
 		$this->set('parents', $this->Ministry->find('list'));
@@ -350,7 +350,7 @@ class MinistriesController extends AppController {
  *
  * @param integer $id The id of the ministry
  * @param boolean $confirm Whether or not to approve the revision
- */ 	
+ */
 	function revise($confirm = false) {
 		$id = $this->passedArgs['Ministry'];
 
@@ -359,7 +359,7 @@ class MinistriesController extends AppController {
 		} else {
 			$success = $this->Ministry->denyRevision($id);
 		}
-		
+
 		if ($success) {
 			if ($confirm) {
 				$this->Session->setFlash('This request has been approved.', 'flash'.DS.'success');
@@ -368,14 +368,14 @@ class MinistriesController extends AppController {
 			}
 		} else {
 			$this->Session->setFlash('Unable to process this request.', 'flash'.DS.'failure');
-		}		
-		
+		}
+
 		$this->redirect(array('action' => 'history', 'Ministry' => $id));
 	}
 
 /**
  * Deletes a ministry
- */ 
+ */
 	function delete() {
 		$id = $this->passedArgs['Ministry'];
 		if (!$id) {

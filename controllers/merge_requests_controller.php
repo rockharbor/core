@@ -36,19 +36,19 @@ class MergeRequestsController extends AppController {
  * Used to override Acl permissions for this controller.
  *
  * @access private
- */ 
+ */
 	function beforeFilter() {
 		parent::beforeFilter();
 	}
 
 /**
  * Shows a list of merge requests
- */ 	
+ */
 	function index() {
 		if (!isset($this->passedArgs['model'])) {
 			$this->cakeError('error404');
 		}
-		
+
 		// get model
 		$Model = ClassRegistry::init($this->passedArgs['model']);
 
@@ -95,17 +95,17 @@ class MergeRequestsController extends AppController {
 		if (!$id) {
 			$this->cakeError('error404');
 		}
-		
+
 		// get request
 		$request = $this->MergeRequest->read(null, $id);
 
 		// get model we're merging
 		$Model = ClassRegistry::init($request['MergeRequest']['model']);
-		
+
 		if (method_exists($Model, 'merge') && $Model->merge($request['MergeRequest']['merge_id'], $request['MergeRequest']['model_id'])) {
 			$this->MergeRequest->delete($id);
 			$this->Session->setFlash('Merge was successful.', 'flash'.DS.'success');
-			
+
 			$this->set('user', $Model->read(null, $request['MergeRequest']['merge_id']));
 			$this->Notifier->notify(array(
 				'to' => $request['MergeRequest']['merge_id'],
@@ -115,7 +115,7 @@ class MergeRequestsController extends AppController {
 		} else {
 			$this->Session->setFlash('Unable to process request. Please try again.', 'flash'.DS.'failure');
 		}
-		
+
 		$this->redirect(array(
 			'action' => 'index',
 			'model' => $request['MergeRequest']['model']
@@ -128,32 +128,32 @@ class MergeRequestsController extends AppController {
  * @param integer $id The id of the request to delete
  * @param boolean $ignore Whether or not to just ignore it
  */
-	function delete($id = null, $ignore = 0) {		
+	function delete($id = null, $ignore = 0) {
 		if (!$id) {
 			$this->cakeError('error404');
 		}
-		
+
 		// get request
 		$request = $this->MergeRequest->read(null, $id);
 		// get model we're merging
 		$Model = ClassRegistry::init($request['MergeRequest']['model']);
-		
+
 		if ($ignore) {
 			// activate new user
 			$Model->id = $request['MergeRequest']['model_id'];
 			if ($Model->hasField('active')) {
 				$Model->saveField('active', true);
 			}
-			
+
 			$this->set('user', $Model->read());
 			$this->Notifier->notify(array(
 				'to' => $request['MergeRequest']['model_id'],
 				'subject' => 'Your account has been activated',
 				'template' => 'merge_requests_merge'
 			), 'email');
-			
+
 			$this->MergeRequest->delete($id);
-			
+
 			$this->Session->setFlash('Merge request was ignored.', 'flash'.DS.'success');
 			$this->redirect(array('action'=>'index', 'model' => $request['MergeRequest']['model']));
 		} else {
@@ -165,7 +165,7 @@ class MergeRequestsController extends AppController {
 				$this->redirect(array('action'=>'index', 'model' => $request['MergeRequest']['model']));
 			}
 		}
-		
+
 		$this->Session->setFlash('Unable to process request. Please try again.', 'flash'.DS.'failure');
 		$this->redirect(array('action' => 'index', 'model' => $request['MergeRequest']['model']));
 	}

@@ -22,14 +22,14 @@ class InvitationsController extends AppController {
  * @var string
  */
 	var $name = 'Invitations';
-	
+
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
  *
  * @access private
- */ 
+ */
 	function beforeFilter() {
 		$this->_editSelf('index', 'confirm');
 		parent::beforeFilter();
@@ -52,23 +52,23 @@ class InvitationsController extends AppController {
 
 /**
  * Confirms or denies an invitation
- * 
+ *
  * @param int $id The invitation id
  * @param boolean $confirm Whether to confirm or deny
  */
 	function confirm($id = null, $confirm = 0) {
 		$action = $confirm ? 'confirm' : 'deny';
-		
+
 		if (!$id) {
 			$this->Session->setFlash('Unable to '.$action.' this invitation.', 'flash'.DS.'failure');
 			$this->redirect(array('action'=>'index'));
 		}
-		
+
 		$invitations = $this->Invitation->getInvitations($this->activeUser['User']['id']);
 		if (in_array($id, $invitations)) {
 			$this->Invitation->id = $id;
 			$invitation = $this->Invitation->read();
-			
+
 			$success = $this->requestAction($invitation['Invitation'][$action.'_action'], array(
 				'named' => array(
 					'User' => $this->activeUser['User']['id']
@@ -84,7 +84,7 @@ class InvitationsController extends AppController {
 		} else {
 			$this->Session->setFlash('Unable to '.$action.' this invitation.', 'flash'.DS.'failure');
 		}
-		
+
 		$this->redirect(array('action' => 'index'));
 	}
 }

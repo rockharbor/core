@@ -2,7 +2,7 @@
 <div class="notifications">
 <?php
 	echo $this->MultiSelect->create();
-?>	
+?>
 	<table class="datatable" cellpadding="0" cellspacing="0">
 		<thead>
 			<?php
@@ -66,8 +66,8 @@
 				echo $this->Html->tag('span', $notification['Notification']['body'], compact('class', 'style'));
 				?></td>
 			</tr>
-			<?php 
-			endforeach; 
+			<?php
+			endforeach;
 			?>
 		</tbody>
 		<tfoot>

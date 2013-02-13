@@ -27,7 +27,7 @@ App::import('Model', array('DbAcl', 'User', 'Group'));
  * @subpackage    install.vendors.shells
  */
 class InstallShell extends Shell {
-	
+
 /**
  * Start up and load dependent components and models
  *
@@ -46,14 +46,14 @@ class InstallShell extends Shell {
 			$this->out('ERROR: Missing api_generator plugin.');
 			$this->_stop();
 		}
-		
+
 		$this->SchemaShell = new SchemaShell($this->Dispatch);
 		$this->SchemaShell->startup();
 		$this->_welcome();
 		$this->out('CORE Install Shell');
 		$this->hr();
 	}
-	
+
 /**
  * Override main() for help message hook
  *
@@ -71,13 +71,13 @@ class InstallShell extends Shell {
  * Shows help for the shell commands
  *
  * @access public
- */ 
+ */
 	function help() {
 		$out  = "Usage: cake install <command>"."\n";
 		$out .= "-----------------------------------------------\n";
-		
+
 		$command = $this->args[0];
-		
+
 		if (empty($command)) {
 			$out  = "Available Install commands:"."\n";
 			$out .= "\t - install\n";
@@ -95,7 +95,7 @@ class InstallShell extends Shell {
 				$out .= "$command does not exist. Run 'help' for a list of commands.\n";
 				break;
 			}
-			
+
 			$this->out($out);
 		}
 	}
@@ -106,7 +106,7 @@ class InstallShell extends Shell {
 	function update() {
 		// clear cache
 		Cache::clear(false, 'acl');
-		
+
 		// create Acos
 		$this->Acl =& new AclComponent();
 		$controller = null;
@@ -140,7 +140,7 @@ class InstallShell extends Shell {
  *
  * @return void
  * @todo Make it sync instead of deleting everything
- */ 
+ */
 	function install() {
 		$response = $this->in('Install CORE database? Doing so will drop all current tables and records!', array('y', 'n'), 'n');
 		if (strtolower($response) !== 'y') {
@@ -171,19 +171,19 @@ class InstallShell extends Shell {
 		$ApiIndex = new ApiIndexShell($this->Dispatch);
 		$ApiIndex->startup();
 		$ApiIndex->update();
-		
+
 		$this->out('Complete!');
 	}
 
 /**
  * Installs or uninstalls a CORE plugin
- * 
+ *
  * ### Args:
  * - 0: the name of the plugin
- * 
+ *
  * ### Params:
  * - `-uninstall` To uninstall the plugin
- * 
+ *
  * @return void
  */
 	function plugin() {
@@ -197,17 +197,17 @@ class InstallShell extends Shell {
 			$this->_stop();
 		}
 		$plugin = $this->args[0];
-		
+
 		if (isset($this->params['uninstall'])) {
 			$this->_uninstallPlugin($plugin);
 			return;
 		}
-		
+
 		$response = $this->in('Install '.Inflector::humanize($plugin).' plugin?', array('y', 'n'), 'n');
 		if (strtolower($response) !== 'y') {
 			$this->_stop();
 		}
-		
+
 		// insert tables & records
 		if (file_exists(APP.'plugins'.DS.$plugin.DS.'config'.DS.'schema'.DS.$plugin.'.php')) {
 			// table schema
@@ -229,12 +229,12 @@ class InstallShell extends Shell {
 				}
 			}
 		}
-		
+
 		// sync acos
 		$this->AclExtras = new AclExtrasShell($this->Dispatch);
 		$this->AclExtras->startup();
 		$this->AclExtras->aco_sync();
-		
+
 		// add the app setting
 		$this->out(__('Registering plugin', true));
 		$AppSetting = ClassRegistry::init('AppSetting');
@@ -243,7 +243,7 @@ class InstallShell extends Shell {
 			'description' => Inflector::humanize($plugin).' Plugin',
 			'type' => 'plugin'
 		));
-		
+
 		// run the plugin's install file
 		$class = Inflector::camelize($plugin).'Install';
 		if (App::import('Plugin', $class)) {
@@ -252,47 +252,47 @@ class InstallShell extends Shell {
 			$installer->install();
 		}
 	}
-	
+
 /**
  * Uninstalls a plugin, removing it's tables and setting
- * 
- * @param string $plugin 
+ *
+ * @param string $plugin
  */
 	function _uninstallPlugin($plugin) {
 		$response = $this->in('Uninstall '.Inflector::humanize($plugin).' plugin? All tables associated with this plugin will be dropped!', array('y', 'n'), 'n');
 		if (strtolower($response) !== 'y') {
 			$this->_stop();
 		}
-		
+
 		if (file_exists(APP.'plugins'.DS.$plugin.DS.'config'.DS.'schema'.DS.$plugin.'.php')) {
 			$this->SchemaShell->params['name'] = Inflector::camelize($plugin);
 			$this->SchemaShell->params['plugin'] = $plugin;
 			$this->SchemaShell->startup();
-			
+
 			list($Schema, $table) = $this->SchemaShell->_loadSchema();
 			$db =& ConnectionManager::getDataSource($this->SchemaShell->Schema->connection);
-			
+
 			$drop = array();
 			foreach ($Schema->tables as $table => $fields) {
 				$drop[$table] = $db->dropSchema($Schema, $table);
 			}
-			
+
 			if ($this->in(__('Are you sure you want to drop the table(s)?', true), array('y', 'n'), 'n') == 'y') {
 				$this->out(__('Dropping table(s).', true));
 				$this->SchemaShell->__run($drop, 'drop', $Schema);
 			}
 		}
-		
+
 		// remove from app settings
 		$this->out(__('Unregistering plugin', true));
 		$AppSetting = ClassRegistry::init('AppSetting');
 		$result = $AppSetting->findByName('plugin.'.$plugin);
 		$AppSetting->delete($result['AppSetting']['id']);
-		
+
 		// remove acos for this plugin
 		$this->out(__('Removing ACOs', true));
 		Core::removeAco(Inflector::humanize($plugin));
-		
+
 		// run the plugin's uninstall file
 		$class = Inflector::camelize($plugin).'Install';
 		if (App::import('Plugin', $class)) {
@@ -311,7 +311,7 @@ class InstallShell extends Shell {
 		foreach ($this->_allowPermissions as $alias => $perms) {
 			$group = $Group->findByName($alias);
 			$Group->id = $group['Group']['id'];
-			
+
 			foreach ($perms as $allow) {
 				if (@$this->Acl->allow($Group, $allow)) {
 					$this->out('Permission allowed for '.$alias.' at '.$allow);
@@ -320,11 +320,11 @@ class InstallShell extends Shell {
 				}
 			}
 		}
-		
+
 		foreach ($this->_denyPermissions as $alias => $perms) {
 			$group = $Group->findByName($alias);
 			$Group->id = $group['Group']['id'];
-			
+
 			foreach ($perms as $deny) {
 				if (@$this->Acl->deny($Group, $deny)) {
 					$this->out('Permission denied for '.$alias.' at '.$deny);
@@ -349,7 +349,7 @@ class InstallShell extends Shell {
  *
  * @return void
  * @todo make it sync so adding groups is easier and doesn't affect app
- */ 
+ */
 	function _createGroupAros() {
 		$Group = ClassRegistry::init('Group');
 		$Group->Behaviors->attach('Tree');
@@ -380,26 +380,26 @@ class InstallShell extends Shell {
 			}
 		}
 	}
-	
+
 /**
  * Denied permissions
  *
  * @var array
  * @access private
- */ 
+ */
 	var $_denyPermissions = array(
 		'Owner' => array(
 			'controllers/Households/make_household_contact'
 		)
 	);
-	
+
 /**
  * Granted permissions
  *
  * @var array
  * @access private
- */ 
-	var $_allowPermissions = array(		
+ */
+	var $_allowPermissions = array(
 		'Super Administrator' => array(
 			'controllers'
 		),
@@ -468,7 +468,7 @@ class InstallShell extends Shell {
 			'controllers/MinistryImages/index',
 			'controllers/MinistryImages/approve',
 			'controllers/MinistryImages/promote',
-			'controllers/Regions',	
+			'controllers/Regions',
 			'controllers/Zipcodes',
 			'controllers/Schools',
 			'controllers/UserImages/delete',
@@ -640,7 +640,7 @@ class InstallShell extends Shell {
 			'controllers/Reports/user_map',
 		),
 		'Owner' => array(
-			'controllers/Users/edit',			
+			'controllers/Users/edit',
 			'controllers/CampusLeaders/delete',
 			'controllers/MinistryLeaders/delete',
 			'controllers/InvolvementLeaders/delete',
@@ -680,6 +680,6 @@ class InstallShell extends Shell {
 			'controllers/Reports/user_map',
 		)
 	);
-	
+
 }
 

@@ -20,7 +20,7 @@ echo $this->Form->create('User', array(
 	<?php echo $this->element('register'.DS.'personal'); ?>
 	</div>
 	<div id="contact" class="clearfix">
-	<?php 
+	<?php
 	echo $this->element('register'.DS.'address');
 	echo $this->element('register'.DS.'phone_email');
 	?>

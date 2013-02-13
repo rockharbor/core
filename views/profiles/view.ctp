@@ -55,9 +55,9 @@
 						$image['Image']['foreign_key'],
 						0
 					), array(
-						'class' => 'no-hover', 
-						'id' => 'remove-promoted-'.$image['Image']['id'], 
-						'title' => 'Remove from promoted', 
+						'class' => 'no-hover',
+						'id' => 'remove-promoted-'.$image['Image']['id'],
+						'title' => 'Remove from promoted',
 						'escape' => false
 					));
 					if ($link) {
@@ -354,7 +354,7 @@
 				));
 			?>
 		</div>
-		
+
 		<?php if ($this->Permission->check(array('controller' => 'comments', 'User' => $profile['User']['id']))): ?>
 		<div id="comments">
 			<?php
@@ -371,7 +371,7 @@
 			?>
 		</div>
 		<?php endif; ?>
-		
+
 		<?php if ($this->Permission->check(array('controller' => 'user_documents', 'User' => $profile['User']['id']))): ?>
 		<div id="documents">
 			<?php
@@ -388,7 +388,7 @@
 			?>
 		</div>
 		<?php endif; ?>
-		
+
 		<?php if ($this->Permission->check(array('controller' => 'sys_emails', 'User' => $profile['User']['id']))): ?>
 		<div id="email">
 			<?php

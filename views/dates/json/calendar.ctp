@@ -3,7 +3,7 @@
 // format the array as a json array (/js/fullCalendar friendly)
 $fcEvents = array();
 $e = 0;
-foreach ($events as $event) {	
+foreach ($events as $event) {
 	foreach ($event['dates'] as $date) {
 		$fcEvents[] = array(
 			'id' => $event['Involvement']['id'],

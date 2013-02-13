@@ -10,7 +10,7 @@ if (CORE == undefined) {
 /**
  * The plugin we are in, if any. This makes `core-update-url` aware that we are
  * in a plugin in order to append `/page:1` for routed index pages.
- * 
+ *
  * @var string
  */
 CORE.plugin = '';
@@ -47,7 +47,7 @@ CORE.update = function(element, html) {
  */
 CORE.request = function(element, options) {
 	var container = $(element).closest('[data-core-update-url]');
-	
+
 	// use user defined options if defined
 	var useOptions = {
 		url: null,
@@ -55,20 +55,20 @@ CORE.request = function(element, options) {
 		success: function() {},
 		context: container
 	};
-	
+
 	useOptions = $.extend(useOptions, options || {});
-	
+
 	if (useOptions.url == null) {
 		useOptions.url = container.data('core-update-url');
 	}
-	
+
 	if (useOptions.update !== false) {
 		container.data('core-update-url', useOptions.url)
 		var success = useOptions.success;
 		useOptions.success = function(data) {
 			container.html(data);
 			success(data);
-		}		
+		}
 		delete useOptions.update;
 	}
 
@@ -96,7 +96,7 @@ CORE.ajaxPagination = function() {
 
 /**
  * Extracts the flash message from a response and displays it
- * 
+ *
  * @param data string The html response
  * @return void
  */
@@ -107,7 +107,7 @@ CORE.showFlash = function(data) {
 
 /**
  * Creates a "loading" overlay on top of the container
- * 
+ *
  * @param Element container The container that has loading content
  */
 CORE.setLoading = function(container) {
@@ -125,7 +125,7 @@ CORE.setLoading = function(container) {
 /**
  * Inits CORE js
  */
-CORE.init = function() {	
+CORE.init = function() {
 	// init ui elements
 	CORE.initUI();
 	// init navigation

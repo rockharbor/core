@@ -14,7 +14,7 @@ class AddressTestCase extends CoreTestCase {
 		unset($this->Comment);
 		ClassRegistry::flush();
 	}
-	
+
 	function testBeforeSave() {
 		$this->Address->save(array(
 			'Address' => array(
@@ -24,7 +24,7 @@ class AddressTestCase extends CoreTestCase {
 		));
 		$result = $this->Address->read();
 		$this->assertEqual($result['Address']['name'], 'Placentia Address');
-		
+
 		$this->Address->create();
 		$this->Address->save(array(
 			'Address' => array(
@@ -33,7 +33,7 @@ class AddressTestCase extends CoreTestCase {
 		));
 		$result = $this->Address->read();
 		$this->assertEqual($result['Address']['name'], '92870 Address');
-		
+
 		$this->Address->create();
 		$this->Address->save(array(
 			'city' => 'Placentia',
@@ -69,14 +69,14 @@ class AddressTestCase extends CoreTestCase {
 		$result = $this->Address->toggleActivity(1, true);
 		$this->assertTrue($result);
 	}
-	
+
 	function testSetPrimary() {
 		$this->Address->setPrimary(1);
 		$this->Address->id = 1;
 		$this->assertEqual($this->Address->field('primary'), 1);
 		$this->Address->id = 2;
 		$this->assertEqual($this->Address->field('primary'), 0);
-		
+
 		$this->Address->setPrimary(2);
 		$this->Address->id = 1;
 		$this->assertEqual($this->Address->field('primary'), 0);

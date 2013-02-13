@@ -17,7 +17,7 @@
 		}
 	?>
 	</fieldset>
-<?php 
+<?php
 echo $this->Js->submit('Save', $defaultSubmitOptions);
 echo $this->Form->end();
 ?>

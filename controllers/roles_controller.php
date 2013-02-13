@@ -31,26 +31,26 @@ class RolesController extends AppController {
 	var $helpers = array(
 		'Formatting'
 	);
-	
+
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
  *
  * @access private
- */ 
+ */
 	function beforeFilter() {
 		parent::beforeFilter();
 	}
 
 /**
  * List of roles for a ministry
- * 
+ *
  * Note: Only shows roles of this ministry
  */
 	function index() {
 		$this->Role->recursive = -1;
-		
+
 		$this->paginate = array(
 			'conditions' => array(
 				'Role.ministry_id' => $this->passedArgs['Ministry']

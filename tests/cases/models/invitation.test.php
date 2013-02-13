@@ -19,11 +19,11 @@ class InvitationTestCase extends CoreTestCase {
 		$results = $this->Invitation->getInvitations(1);
 		$expected = array(1, 2);
 		$this->assertEqual($results, $expected);
-		
+
 		$results = $this->Invitation->getInvitations(2);
 		$expected = array(2);
 		$this->assertEqual($results, $expected);
-		
+
 		$results = $this->Invitation->getInvitations(3);
 		$expected = array(2);
 		$this->assertEqual($results, $expected);

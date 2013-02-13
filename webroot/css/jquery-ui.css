@@ -42,7 +42,7 @@
 .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: 'Lucida Sans',Helvetica,Arial,sans-serif; font-size: 11px; }
 .ui-widget-content { background: #ffffff; }
 .ui-widget-content a { }
-.ui-widget-header { 
+.ui-widget-header {
 	font-family: LeagueGothicRegular,Helvetica,Arial,sans-serif;
 	font-size:18px;
 	border: none;
@@ -134,10 +134,10 @@
 	);
 	zoom: 1;
 	font-weight: normal;
-	color: #454545; 
+	color: #454545;
 }
 .ui-state-hover a, .ui-state-hover a:hover { color: #454545; text-decoration: none; }
-.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active { 
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
 	color:#ffffff;
 	font-weight:normal;
 	background: rgb(55,174,107);
@@ -261,7 +261,7 @@
 	width: 65px;
 }
 .ui-autocomplete .autocomplete-row {
-	float:left;	
+	float:left;
 	width: 200px;
 }
 .ui-autocomplete p {
@@ -366,7 +366,7 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 	border-bottom: 1px solid #acacac;
 }
 .ui-dialog .ui-dialog-title { float: left; margin: .1em 16px .2em 0; }
-.ui-dialog .ui-dialog-titlebar-close { 
+.ui-dialog .ui-dialog-titlebar-close {
 	position: absolute; right: .3em; top: 50%; width: 19px; margin: -10px 0 0 0; padding: 1px; height: 18px;
 }
 .ui-dialog .ui-dialog-titlebar-close span {
@@ -602,7 +602,7 @@ Wizard tabs
 	background: #838383;
 	-pie-background: none;
 	color: #ffffff;
-	height: 26px;	
+	height: 26px;
 }
 .core-tabs-wizard > .ui-tabs-nav li a {
 	padding: 5px 10px;

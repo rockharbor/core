@@ -36,7 +36,7 @@ class DatesController extends AppController {
  * Used to override Acl permissions for this controller.
  *
  * @access private
- */ 
+ */
 	function beforeFilter() {
 		$this->Auth->allow('calendar', 'readable');
 		parent::beforeFilter();
@@ -44,16 +44,16 @@ class DatesController extends AppController {
 
 /**
  * Model::beforeRender() callback
- */ 
+ */
 	function beforeRender() {
 		parent::beforeRender();
-		
+
 		$this->set('recurranceTypes', $this->Date->recurranceTypes);
 	}
 
 /**
  * Simply spits out a readable date using the Formatting helper.
- * 
+ *
  * Helps reduce code duplication when needing JS to display human readable
  * dates when a user is creating a date. Instead, an ajax request to this
  * method should be used
@@ -70,7 +70,7 @@ class DatesController extends AppController {
 
 /**
  * Displays a calendar
- * 
+ *
  * ### Params:
  *
  *	- `start` The start timestamp
@@ -81,14 +81,14 @@ class DatesController extends AppController {
  * If any of the three searchable models (User, Ministry, or Involvement) are
  * passed, they are used as filters. The named parameter value can be a
  * comma-delimited list of ids.
- * 
+ *
  * For example:
  * {{{
- * /dates/calendar/User:1,2,3/Ministry:1/Involvement:5,6 
+ * /dates/calendar/User:1,2,3/Ministry:1/Involvement:5,6
  * }}}
- * The above would pull all involvements for users 1, 2 and 3, include all 
+ * The above would pull all involvements for users 1, 2 and 3, include all
  * involvements for ministry 1 and include the two involvements 5 and 6.
- * 
+ *
  * For BC purposes, the 'User' parameter acts differently than the other two in
  * that it forces the calendar to return *only* events that user is involved in,
  * while specifying 'Ministry' or 'Involvement' will include the specified ids
@@ -96,16 +96,16 @@ class DatesController extends AppController {
  *
  * @param string $size A mini or full-size calendar
  * @todo Make all parameters act the same (may require special action for User calendar)
- */ 
+ */
 	function calendar($size = 'mini') {
 		$this->set(compact('size'));
-		
-		// if it's not the calendar calling, just leave. there's nothing 
+
+		// if it's not the calendar calling, just leave. there's nothing
 		// special to pass to the calendar view
 		if (!isset($this->params['url']['ext']) || $this->params['url']['ext'] != 'json') {
 			return;
 		}
-				
+
 		// check for filtering and add extra conditions
 		$conditions = array();
 		$link = array(
@@ -115,7 +115,7 @@ class DatesController extends AppController {
 				)
 			)
 		);
-		
+
 		// get involvements user is involved in and confirmed
 		$rosters = $this->Date->Involvement->Roster->find('all', array(
 			'conditions' => array(
@@ -131,9 +131,9 @@ class DatesController extends AppController {
 			)
 		));
 		$leaderIds = Set::extract('/Leader/model_id', $leaders);
-		
+
 		$involved = array_unique(array_merge($rosterIds, $leaderIds));
-		
+
 		$involvementIds = array();
 		foreach (array('User', 'Ministry', 'Involvement', 'Campus') as $model) {
 			if (isset($this->passedArgs[$model])) {
@@ -172,10 +172,10 @@ class DatesController extends AppController {
 						$conditions['and']['or']['Ministry.campus_id'] = $ids;
 						$link[] = 'Ministry';
 					break;
-				}			
+				}
 			}
 		}
-		
+
 		$options = array();
 		if (isset($this->params['url']['start'])) {
 			$options['start'] = $this->params['url']['start'];
@@ -183,7 +183,7 @@ class DatesController extends AppController {
 		if (isset($this->params['url']['end'])) {
 			$options['end'] = $this->params['url']['end'];
 		}
-		
+
 		if (!empty($involvementIds)) {
 			$conditions['Involvement.id'] = array_unique($involvementIds);
 		}
@@ -195,7 +195,7 @@ class DatesController extends AppController {
 			);
 		}
 		$conditions['Date.start_date <>'] = null;
-		
+
 		// get all involvements and their dates within the range
 		$involvements = $this->Date->Involvement->find('all', array(
 			'fields' => array('id', 'name'),
@@ -203,7 +203,7 @@ class DatesController extends AppController {
 			'conditions' => $conditions,
 			'group' => 'Involvement.id'
 		));
-		
+
 		$events = array();
 		foreach ($involvements as $involvement) {
 			$involvement_dates = $this->Date->generateDates($involvement['Involvement']['id'], $options);
@@ -217,8 +217,8 @@ class DatesController extends AppController {
 
 /**
  * Displays a list of dates
- */ 
-	function index() {		
+ */
+	function index() {
 		$this->Date->recursive = 0;
 		$this->set('dates', $this->Date->find('all', array(
 			'conditions' => array(
@@ -230,9 +230,9 @@ class DatesController extends AppController {
 
 /**
  * Adds a date
- */ 
+ */
 	function add() {
-		if (!empty($this->data)) {		
+		if (!empty($this->data)) {
 			$this->Date->create();
 			if ($this->Date->save($this->data)) {
 				$this->Session->setFlash(__('This date has been created.', true), 'flash'.DS.'success');
@@ -240,7 +240,7 @@ class DatesController extends AppController {
 				$this->Session->setFlash(__('Unable to create date. Please try again.', true), 'flash'.DS.'failure');
 			}
 		}
-		
+
 		$this->set('involvementId', $this->passedArgs['Involvement']);
 	}
 
@@ -248,7 +248,7 @@ class DatesController extends AppController {
  * Edits a date
  *
  * @param integer $id The id of the date to edit
- */ 
+ */
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->cakeError('error404');
@@ -269,7 +269,7 @@ class DatesController extends AppController {
  * Deletes a date
  *
  * @param integer $id The id of the date to delete
- */ 
+ */
 	function delete($id = null) {
 		if (!$id) {
 			$this->cakeError('error404');

@@ -20,14 +20,14 @@ if ($new > 0) {
 			echo $invitation['Invitation']['body'];
 			$icon = $this->element('icon', array('icon' => 'confirm'));
 			$confirm = $this->Html->link($icon, array('controller' => 'invitations', 'action' => 'confirm', $invitation['Invitation']['id'], 1), array(
-				'class' => 'confirm no-hover', 
-				'escape' => false, 
+				'class' => 'confirm no-hover',
+				'escape' => false,
 				'title' => 'Confirm'
 			));
 			$icon = $this->element('icon', array('icon' => 'deny'));
 			$deny = $this->Html->link($icon, array('controller' => 'invitations', 'action' => 'confirm', $invitation['Invitation']['id'], 0), array(
-				'class' => 'deny no-hover', 
-				'escape' => false, 
+				'class' => 'deny no-hover',
+				'escape' => false,
 				'title' => 'Deny'
 			));
 			echo $this->Html->tag('span', $confirm.$deny, array('class' => 'actions'));

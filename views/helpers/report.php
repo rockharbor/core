@@ -20,11 +20,11 @@ class ReportHelper extends AppHelper {
 
 /**
  * The active data
- * 
- * @var array 
+ *
+ * @var array
  */
 	var $data = array();
-	
+
 /**
  * List of field name aliases so printed headers are the same as field labels
  *
@@ -41,10 +41,10 @@ class ReportHelper extends AppHelper {
  * @access protected
  */
 	var $_fields = array();
-	
+
 /**
  * Array of squashed fields
- * 
+ *
  * {{{
  * array(
  *   field_to_use => array(
@@ -59,14 +59,14 @@ class ReportHelper extends AppHelper {
  * @access protected
  */
 	var $_squashed = array();
-	
+
 /**
  * Array of fields that can contain multiple records
- * 
+ *
  * This is useful for relationships that may return an undetermined amount of
  * records, like hasMany records. When a "multiple" field is defined, the number
  * of records is pulled from the highest count of that path in the records
- *  
+ *
  * {{{
  * array(
  *   path => array(
@@ -75,15 +75,15 @@ class ReportHelper extends AppHelper {
  *   )
  * );
  * }}}
- * 
+ *
  * @var array
  * @see ReportHelper::multiple()
  */
 	var $_multiples = array();
-	
+
 /**
  * Extra helpers needed for this helper
- * 
+ *
  * @var array
  */
 	var $helpers = array(
@@ -102,7 +102,7 @@ class ReportHelper extends AppHelper {
 
 /**
  * Sets active data
- * 
+ *
  * @param array $data Cake find results
  */
 	function set($data = array()) {
@@ -110,7 +110,7 @@ class ReportHelper extends AppHelper {
 	}
 
 /**
- * Stores an alias. Gets aliases if no argument is passed. 
+ * Stores an alias. Gets aliases if no argument is passed.
  *
  * {{{
  * $this->Report->alias(array('User.Profile.birth_date' => 'DOB'));
@@ -177,22 +177,22 @@ class ReportHelper extends AppHelper {
 
 		$paths = Set::flatten($this->_fields);
 		$squashed = array_keys($this->_squashed);
-		
+
 		foreach ($this->_squashed as $squash) {
 			foreach ($squash['fields'] as $field) {
 				unset($paths[$field]);
 			}
 		}
 		$paths = array_keys($paths);
-		
+
 		$allpaths = array_keys(Set::flatten($data));
 		$flat = array_intersect($paths, $allpaths);
 		$headers = array();
-		
+
 		foreach ($flat as $path) {
 			$exp = explode('.', $path);
 			$name = $exp[count($exp)-1];
-			
+
 			if (array_key_exists($path, $this->_multiples) && !empty($this->data)) {
 				if (is_null($this->_multiples[$path]['max']) && $this->_multiples[$path]['expand'] == 'expand') {
 					$max = 0;
@@ -204,7 +204,7 @@ class ReportHelper extends AppHelper {
 					}
 					$this->_multiples[$path]['max'] = $max;
 				}
-				
+
 				switch ($this->_multiples[$path]['expand']) {
 					case 'expand':
 						for ($c = 0; $c < $this->_multiples[$path]['max']; $c++) {
@@ -223,10 +223,10 @@ class ReportHelper extends AppHelper {
 						}
 					break;
 				}
-				
+
 				continue;
 			}
-			
+
 			if (in_array($squashed, $this->_squashed)) {
 				$headers[] = $this->_squashed[$squashed]['alias'];
 			} elseif (array_key_exists($path, $this->_aliases)) {
@@ -242,7 +242,7 @@ class ReportHelper extends AppHelper {
 /**
  * Takes Cake data and pulls out just the information based on the headers. Useful
  * for HtmlHelper::tableCells() and similar functions.
- * 
+ *
  * Uses `$this->data` to generate rows. See `ReportHelper::set()`
  *
  * Note: `ReportHelper::createHeaders()` needs to be run before this function so
@@ -311,15 +311,15 @@ class ReportHelper extends AppHelper {
 /**
  * Marks a field (i.e., User.Roster.Involvement.name) as having multiple records
  * per single record
- * 
+ *
  * ### Column Expansion (`$expand`):
  * - 'expand' : Count the number of records for a multi-record result and create
  * columns for each record (checks the first record)
  * - 'concat' : Concatenate the row values into a single column (comma-delimited)
  * - 'none' : Just use the first record's value
- * 
+ *
  * The `max` key is used internally when generating headers and row results.
- * 
+ *
  * @param string $path Field dot-path
  * @param boolean $expand Column expansion type (see options above)
  */
@@ -329,11 +329,11 @@ class ReportHelper extends AppHelper {
 			'max' => null
 		);
 	}
-	
+
 /**
  * Gets or sets multiple record models. If setting, make sure they are set _before_
  * `createHeaders()` is called to ensure they make it into the headers
- * 
+ *
  * @param string $str The models that can have multiple records
  */
 	function multipleRecords($str = '') {
@@ -343,15 +343,15 @@ class ReportHelper extends AppHelper {
 			return serialize($this->_multiples);
 		}
 	}
-	
+
 /**
  * Squashes fields into a single field
- * 
+ *
  * Multiple fields can be 'squashed' into a single field. This is useful for things
  * like addresses. The `$squashee` is the field that will be overwritten by the
  * squashed `$fields`. `$format` is a `sprintf`-type formatting, and `$alias` is
  * the header alias.
- * 
+ *
  * @param string $squashee The field to squash
  * @param array $fields The fields to be squashed
  * @param string $format How to format the fields (when they are data values)
@@ -360,11 +360,11 @@ class ReportHelper extends AppHelper {
 	function squash($squashee = '', $fields = array(), $format = null, $alias = '') {
 		$this->_squashed[$squashee] = compact('fields', 'format', 'alias');
 	}
-	
+
 /**
  * Gets or sets squashed fields. If setting, make sure they are set _before_
  * `createHeaders()` is called to ensure they make it into the headers
- * 
+ *
  * @param string $str The fields to sqhash
  */
 	function squashFields($str = '') {
@@ -374,12 +374,12 @@ class ReportHelper extends AppHelper {
 			return serialize($this->_squashed);
 		}
 	}
-	
+
 /**
  * Addes necessary hidden fields for export at the end of a report form
- * 
+ *
  * @param string $model The data model
- * @return string 
+ * @return string
  */
 	function end($model = 'Export') {
 		$out = '';

@@ -27,7 +27,7 @@ class Classification extends AppModel {
  * Default order
  *
  * @var string
- */	
+ */
 	var $order = ':ALIAS:.name ASC';
 
 /**

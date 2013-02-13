@@ -69,7 +69,7 @@ class Address extends AppModel {
  * `Model::beforeSave` callback to ensure a name is added, so when `$displayField`
  * is used in calls such as `Model::find('list');` it is populated with at least
  * something for the user to choose.
- * 
+ *
  * @return true Continue with the save
  */
 	function beforeSave() {
@@ -84,26 +84,26 @@ class Address extends AppModel {
 	}
 
 /**
- * Returns a Cake virtual field SQL string for the distance 
+ * Returns a Cake virtual field SQL string for the distance
  * from a latitude and longitude
  *
  * @param float $lat Latitude
  * @param float $lng Longitude
  * @return string SQL string
  * @access public
- */ 
+ */
 	function distance($lat = null, $lng = null) {
 		if (!$lat || !$lng) {
 			return null;
 		}
 		return "(
-			(ACOS(SIN($lat * PI() / 180) 
-			* SIN(Address.lat * PI() / 180) 
-			+ COS($lat * PI() / 180) 
-			* COS(Address.lat * PI() / 180) 
-			* COS(($lng - Address.lng) * PI() / 180)) 
+			(ACOS(SIN($lat * PI() / 180)
+			* SIN(Address.lat * PI() / 180)
+			+ COS($lat * PI() / 180)
+			* COS(Address.lat * PI() / 180)
+			* COS(($lng - Address.lng) * PI() / 180))
 			* 180 / PI()) * 60 * 1.1515
-		)"; 
+		)";
 	}
 
 /**
@@ -146,22 +146,28 @@ class Address extends AppModel {
 
 /**
  * Sets the primary address
- * 
- * @param integer $id 
+ *
+ * @param integer $id
  */
 	function setPrimary($id) {
 		$this->id = $id;
-		$address = $this->read();
-		$this->updateAll(
-			array(
-				'Address.primary' => 0
+		$primaryAddress = $this->read();
+		$otherAddresses = $this->find('all', array(
+			'fields' => array(
+				'id'
 			),
-			array(
-				'Address.foreign_key' => $address[$this->alias]['foreign_key'],
-				'Address.model' => $address[$this->alias]['model'],
+			'conditions' => array(
+				'Address.foreign_key' => $primaryAddress[$this->alias]['foreign_key'],
+				'Address.model' => $primaryAddress[$this->alias]['model'],
 				'Address.id <>' => $id
 			)
-		);
+		));
+		foreach ($otherAddresses as $otherAddress) {
+			$this->id = $otherAddress['Address']['id'];
+			$this->saveField('primary', false);
+		}
+
+		$this->id = $id;
 		$this->saveField('primary', true);
 	}
 }

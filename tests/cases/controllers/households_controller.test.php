@@ -26,7 +26,7 @@ class HouseholdsControllerTestCase extends CoreTestCase {
 
 	function endTest() {
 		$this->Households->Session->destroy();
-		unset($this->Households);		
+		unset($this->Households);
 		ClassRegistry::flush();
 	}
 
@@ -40,10 +40,10 @@ class HouseholdsControllerTestCase extends CoreTestCase {
 		$this->assertTrue($this->Households->Household->isMember(1, 1));
 		$this->testAction('/households/invite/1/1/User:1');
 		$this->assertTrue($this->Households->Household->isMember(1, 1));
-		
+
 		$this->testAction('/households/invite/5/2/User:1');
 		$this->assertTrue($this->Households->Household->isMember(5, 2));
-		
+
 		$invites = $this->Households->Household->HouseholdMember->User->Invitation->getInvitations(5);
 		$invitation = $this->Households->Household->HouseholdMember->User->Invitation->read(null, $invites[0]);
 		$results = $invitation['Invitation']['confirm_action'];
@@ -53,18 +53,18 @@ class HouseholdsControllerTestCase extends CoreTestCase {
 		$expected = '/households/delete/5/2';
 		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testDelete() {
 		$this->testAction('/households/delete/3/1');
 		$this->assertFalse($this->Households->Household->isMember(3, 1));
-		
+
 		$this->testAction('/households/delete/3/2');
 		$this->assertFalse($this->Households->Household->isMember(3, 2));
-		
+
 		// deleting from last household will not work
 		$this->testAction('/households/delete/3/3');
 		$this->assertTrue($this->Households->Household->isMember(3, 3));
-		
+
 		// only remove if they are confirmed somewhere else
 		$this->testAction('/households/delete/97/5');
 		// they were removed but a new confirmed household was created

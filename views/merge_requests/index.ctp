@@ -2,8 +2,8 @@
 <div class="merge_requests">
 	<p>These users have requested that their account information be merged. Their new account is disabled until you take action here.</p>
 	<p>
-		<strong>Merge:</strong> You should merge accounts if you know that the accounts are one and the same. Merging an account will 
-		update the current information with the new information and remove the new user from the system, leaving their current user 
+		<strong>Merge:</strong> You should merge accounts if you know that the accounts are one and the same. Merging an account will
+		update the current information with the new information and remove the new user from the system, leaving their current user
 		and all involvement in tact.
 	</p>
 	<p>

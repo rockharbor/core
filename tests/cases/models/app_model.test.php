@@ -15,7 +15,7 @@ class VirtualFieldModel extends AppModel {
 	var $useTable = false;
 
 	var $name = 'VirtualField';
-	
+
 	var $order = ':ALIAS:.name';
 
 	var $virtualFields = array(
@@ -44,7 +44,7 @@ class AppModelTestCase extends CoreTestCase {
 		unset($this->User);
 		ClassRegistry::flush();
 	}
-	
+
 	function testAliasInOrder() {
 		$VirtualField = new VirtualFieldModel();
 		$result = $VirtualField->order;
@@ -100,7 +100,7 @@ class AppModelTestCase extends CoreTestCase {
 		$this->loadFixtures('Attachment');
 		$this->loadSettings();
 		$this->User->Image->Behaviors->detach('Media.Coupler');
-		
+
 		$find = $this->User->read(null, 1);
 		$this->assertFalse(isset($find['Image']));
 		$this->assertFalse(isset($find['ImageIcon']));
@@ -273,7 +273,7 @@ class AppModelTestCase extends CoreTestCase {
 		);
 		$results = $this->User->postOptions($data);
 		$this->assertEqual($results, $expected);
-		
+
 		$data = array(
 			 'Profile' => array(
 				  'Campus' => array(
@@ -293,11 +293,11 @@ class AppModelTestCase extends CoreTestCase {
 						)
 					)
 				)
-			)			
+			)
 		);
 		$results = $this->User->postOptions($data);
 		$this->assertEqual($results, $expected);
-		
+
 		$data = array(
 			'HouseholdMember' => array(
 				'Household' => array(
@@ -332,7 +332,7 @@ class AppModelTestCase extends CoreTestCase {
 		);
 		$results = $this->User->postOptions($data);
 		$this->assertEqual($results, $expected);
-		
+
 		$data = array(
 			'User' => array(
 				'Profile' => array(
@@ -434,13 +434,13 @@ class AppModelTestCase extends CoreTestCase {
 		$expected = '1984-4-00';
 		$results = $this->User->Profile->deconstruct('baptism_date', $data);
 		$this->assertEqual($results, $expected);
-		
+
 		$data = '1984-04-14';
 		$expected = '1984-04-14';
 		$results = $this->User->Profile->deconstruct('baptism_date', $data);
 		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testEitherOr() {
 		$this->User->Profile->validate = array(
 			'first_name' => array(
@@ -462,7 +462,7 @@ class AppModelTestCase extends CoreTestCase {
 				)
 			)
 		);
-		
+
 		$this->User->Profile->validationErrors = array();
 		$this->User->Profile->set(array(
 			'first_name' => '',
@@ -471,7 +471,7 @@ class AppModelTestCase extends CoreTestCase {
 		$results = array_keys($this->User->Profile->invalidFields());
 		$expected = array('first_name', 'last_name');
 		$this->assertEqual($results, $expected);
-		
+
 		$this->User->Profile->validationErrors = array();
 		$this->User->Profile->set(array(
 			'first_name' => 'mark',
@@ -480,7 +480,7 @@ class AppModelTestCase extends CoreTestCase {
 		$results = array_keys($this->User->Profile->invalidFields());
 		$expected = array('last_name');
 		$this->assertEqual($results, $expected);
-		
+
 		$this->User->Profile->validationErrors = array();
 		$this->User->Profile->set(array(
 			'first_name' => 'mark',
@@ -489,7 +489,7 @@ class AppModelTestCase extends CoreTestCase {
 		$results = array_keys($this->User->Profile->invalidFields());
 		$expected = array();
 		$this->assertEqual($results, $expected);
-		
+
 		$this->User->Profile->validationErrors = array();
 		$this->User->Profile->set(array(
 			'first_name' => '',

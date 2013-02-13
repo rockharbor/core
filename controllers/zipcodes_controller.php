@@ -22,14 +22,14 @@ class ZipcodesController extends AppController {
  * @var string
  */
 	var $name = 'Zipcodes';
-	
+
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
  *
  * @access private
- */ 
+ */
 	function beforeFilter() {
 		parent::beforeFilter();
 	}
@@ -41,7 +41,7 @@ class ZipcodesController extends AppController {
 		if (!isset($this->passedArgs['Region'])) {
 			$this->cakeError('error404');
 		}
-				
+
 		if (!empty($this->data)) {
 			$this->Zipcode->create();
 			if ($this->Zipcode->save($this->data)) {
@@ -50,10 +50,10 @@ class ZipcodesController extends AppController {
 				$this->Session->setFlash('Unable to create zipcode. Please try again.', 'flash'.DS.'failure');
 			}
 		}
-		
+
 		$this->data['Zipcode']['region_id'] = $this->passedArgs['Region'];
 	}
-	
+
 /**
  * Deletes a Zipcode
  *

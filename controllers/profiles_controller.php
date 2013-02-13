@@ -82,7 +82,7 @@ class ProfilesController extends AppController {
 				$this->Session->setFlash('Unable to save this user. Please try again.', 'flash'.DS.'failure');
 			}
 		}
-		
+
 		$this->data = $this->Profile->find('first', array(
 			'conditions' => array(
 				'Profile.user_id' => $this->passedArgs['User']

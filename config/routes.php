@@ -12,12 +12,12 @@
   * Extensions to redirect views/layouts
   */
 	Router::parseExtensions('json', 'csv', 'print');
- 
+
 /**
  * Bring in custom routing libraries
  */
 	App::import('Lib', array('Slugger.routes/SluggableRoute'));
- 
+
 /**
  * Static routes
  */
@@ -52,13 +52,13 @@
 		'controller' => 'users|profiles',
 		'prependPk' => true
 	));
-	
+
 /*
  * Asset Compress
  */
 	Router::connect('/css_cache/*', array('plugin' => 'asset_compress', 'controller' => 'css_files', 'action' => 'get'));
 	Router::connect('/js_cache/*', array('plugin' => 'asset_compress', 'controller' => 'js_files', 'action' => 'get'));
- 
+
 /**
  * ...and connect the rest of 'Pages' controller's urls.
  */

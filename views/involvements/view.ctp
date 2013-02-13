@@ -1,4 +1,4 @@
-<?php 
+<?php
 echo $this->Html->script('misc/involvement', array('inline' => false));
 ?>
 
@@ -15,7 +15,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 <div class="involvements view core-tabs">
 	<ul>
 		<li><a href="#details-tab">Details</a></li>
-		<?php 
+		<?php
 		if ($canSeeRoster) {
 			$link = $this->Html->link('Roster', '#roster-tab');
 			echo $this->Html->tag('li', $link);
@@ -87,7 +87,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 					?>
 					<div class="more-dates grid_2 clearfix <?php echo $prefix; ?>" style="text-align:center">
 						<div class="pagination">
-							<?php 
+							<?php
 							for ($i=0; $i<count($involvement['Date']); $i++) {
 								$icon = $this->element('icon', array('icon' => 'bullet'));
 								echo $this->Html->link($icon, array('controller' => 'dates', 'Involvement' => $involvement['Involvement']['id']), array('escape' => false, 'class' => 'no-hover', 'target' => $i));
@@ -138,7 +138,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 					<?php if (!empty($signedUp)): ?>
 					<h3>Signed Up</h3>
 					<div class="box highlight">
-						<?php	
+						<?php
 						foreach ($signedUp as $householdMember) {
 							echo '<div class="core-iconable">';
 							echo $this->Html->link($householdMember['User']['Profile']['name'], array('controller' => 'profiles', 'action' => 'view', 'User' => $householdMember['User']['id']), array('style' => 'display:block'));
@@ -177,7 +177,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 				</div>
 			</div>
 			<div class="grid_10 alpha omega">
-				<?php 
+				<?php
 				if ($involvement['Involvement']['signup'] && $involvement['Involvement']['active'] && !$involvement['Involvement']['previous'] && !$inRoster) {
 					if (!$full) {
 						echo $this->Html->link('Sign up', array('controller' => 'rosters', 'action' => 'add', 'User' => $activeUser['User']['id'], 'Involvement' => $involvement['Involvement']['id']), array('data-core-modal' => 'true', 'class' => 'button'));
@@ -210,7 +210,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 		));
 		?>
 		<div id="roster-tab" data-core-update-url="<?php echo $url; ?>">
-			<?php 
+			<?php
 			echo $this->requestAction($url, array(
 				'return',
 				'renderAs' => 'ajax'

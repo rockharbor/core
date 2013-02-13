@@ -1,11 +1,11 @@
 <div class="simple_lists">
 <h2><?php echo Inflector::humanize($modelKey);?></h2>
 	<dl>
-	<?php 
-	
-	$i = 0; 
-	
-	foreach ($schema as $field => $attrs) {		
+	<?php
+
+	$i = 0;
+
+	foreach ($schema as $field => $attrs) {
 		if ($i % 2 == 0) {
 			$class = ' class="altrow"';
 		} else {
@@ -21,7 +21,7 @@
 				echo '<dd'.$class.'>'.$result[$model][$field].'</dd>';
 			}
 		}
-		
+
 		$i++;
 	}
 	?>

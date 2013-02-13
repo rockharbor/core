@@ -58,7 +58,7 @@
 		<div id="lists">
 			<div class="sub-tabs core-tabs">
 				<ul>
-				<?php	
+				<?php
 				foreach ($controllers as $controller) {
 					$link = $this->Permission->link(Inflector::humanize($controller), array('controller' => $controller), array('title' => Inflector::slug(Inflector::humanize($controller), '-')));
 					if ($link) {

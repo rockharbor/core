@@ -22,17 +22,17 @@ class CampusesController extends AppController {
  * @var string
  */
 	var $name = 'Campuses';
-	
+
 /**
  * Extra helpers for this controller
- * 
+ *
  * @var array
  */
 	var $helpers = array(
 		'SelectOptions',
 		'Formatting'
 	);
-	
+
 /**
  * Model::beforeFilter() callback
  *
@@ -47,27 +47,27 @@ class CampusesController extends AppController {
 
 /**
  * List of campuses
- */ 
+ */
 	function index() {
 		// `$campusesMenu` var set in `AppController::beforeRender()`
 	}
 
 /**
  * Campus details
- */ 
+ */
 	function view() {
 		$id = $this->passedArgs['Campus'];
-		
+
 		if (!$id) {
 			$this->cakeError('error404');
 		}
-		
+
 		$this->set('campus', $this->Campus->read(null, $id));
 	}
 
 /**
  * Adds a campus
- */ 
+ */
 	function add() {
 		$this->Campus->Behaviors->disable('Confirm');
 
@@ -84,10 +84,10 @@ class CampusesController extends AppController {
 
 /**
  * Edits a campus
- */ 
+ */
 	function edit() {
 		$id = $this->passedArgs['Campus'];
-	
+
 		if (!$id) {
 			$this->cakeError('error404');
 		}
@@ -99,7 +99,7 @@ class CampusesController extends AppController {
 		}
 
 		$revision = $this->Campus->revision($id);
-		
+
 		if (!empty($this->data)) {
 			if (!$revision) {
 				if ($this->Campus->save($this->data)) {
@@ -117,13 +117,13 @@ class CampusesController extends AppController {
 				} else {
 					$this->Campus->setFlash('Unable to save campus. Please try again.', 'flash'.DS.'failure');
 				}
-				
+
 				$revision = $this->Campus->revision($id);
 			} else {
 				$this->Session->setFlash('There\'s already an existing request pending approval.', 'flash'.DS.'failure');
 			}
 		}
-		
+
 		if (empty($this->data)) {
 			$this->data = $this->Campus->read(null, $id);
 		}
@@ -223,12 +223,12 @@ class CampusesController extends AppController {
 
 		$this->redirect(array('action' => 'history', 'Campus' => $id));
 	}
-	
+
 /**
  * Deletes a campus
  *
  * @param integer $id The id of the campus to delete
- */ 
+ */
 	function delete($id = null) {
 		if (!$id) {
 			$this->cakeError('error404');

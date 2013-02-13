@@ -3,7 +3,7 @@ App::import('Lib', 'CoreTestCase');
 App::import('Helper', array('Report'));
 
 class ReportHelperTestCase extends CoreTestCase {
-	
+
 	var $skipSetup = true;
 
 	function startTest($method) {
@@ -15,7 +15,7 @@ class ReportHelperTestCase extends CoreTestCase {
 		unset($this->Report);
 		ClassRegistry::flush();
 	}
-	
+
 	function testSquash() {
 		$fields = array('Address.address_line_1', 'Address.city', 'Address.state', 'Address.zip');
 		$format = '%s %s, %s %d';
@@ -75,12 +75,12 @@ class ReportHelperTestCase extends CoreTestCase {
 		);
 
 		$this->Report->squashFields(serialize($squashed));
-		
+
 		$results  = $this->Report->createHeaders($headers);
 		$expected = array(
 			'Username', 'Address'
 		);
-		
+
 		$this->Report->set($data);
 		$results = $this->Report->getResults();
 		$expected = array(
@@ -89,7 +89,7 @@ class ReportHelperTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testSquashFields() {
 		$fields = array(array('Address.address_line_1', 'Address.city', 'Address.state', 'Address.zip'), '%s/n%s, %s %d', 'Address');
 		$this->Report->squashFields(serialize($fields));
@@ -102,7 +102,7 @@ class ReportHelperTestCase extends CoreTestCase {
 			'Some.Field.value' => 'Readable Title'
 		);
 		$this->assertEqual($this->Report->_aliases, $expected);
-		
+
 		$result = $this->Report->alias();
 		$this->assertEqual($result, $expected);
 
@@ -191,7 +191,7 @@ class ReportHelperTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($this->Report->_fields, $expected);
 	}
-	
+
 	function testCreateHeadersWithMultipleRecords() {
 		$headers = array(
 			'HouseholdMember' => array(
@@ -226,14 +226,14 @@ class ReportHelperTestCase extends CoreTestCase {
 				)
 			)
 		);
-		
+
 		$this->Report->set($data);
 		$this->Report->multiple('HouseholdMember.Household.HouseholdContact.Profile.primary_email', 'expand');
-		
+
 		$results = $this->Report->createHeaders($headers);
 		$expected = array('Primary Email 1', 'Primary Email 2');
 		$this->assertEqual($results, $expected);
-		
+
 		$headers = array(
 			'Roster' => array(
 				'RosterStatus' => array(
@@ -273,14 +273,14 @@ class ReportHelperTestCase extends CoreTestCase {
 				)
 			)
 		);
-		
+
 		$this->Report->reset();
 		$this->Report->set($data);
 		$this->Report->multiple('Answer.description', 'expand');
 		$results = $this->Report->createHeaders($headers);
 		$expected = array('Name', 'Description 1', 'Description 2');
 		$this->assertEqual($results, $expected);
-		
+
 		$headers = array(
 			'Roster' => array(
 				'RosterStatus' => array(
@@ -320,7 +320,7 @@ class ReportHelperTestCase extends CoreTestCase {
 				)
 			)
 		);
-		
+
 		$this->Report->reset();
 		$this->Report->set($data);
 		$this->Report->multiple('Answer.description', 'concat');
@@ -385,7 +385,7 @@ class ReportHelperTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testGetResultsWithMultipleRecords() {
 		$headers = array(
 			'HouseholdMember' => array(
@@ -429,7 +429,7 @@ class ReportHelperTestCase extends CoreTestCase {
 			array('jharris@rockharbor.org')
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$this->Report->reset();
 		$this->Report->set($data);
 		$this->Report->multiple('HouseholdMember.Household.HouseholdContact.Profile.primary_email', 'concat');
@@ -439,7 +439,7 @@ class ReportHelperTestCase extends CoreTestCase {
 			array('jharris@rockharbor.org, contact@example.com')
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$this->Report->reset();
 		$this->Report->set($data);
 		$this->Report->multiple('HouseholdMember.Household.HouseholdContact.Profile.primary_email', 'expand');
@@ -449,7 +449,7 @@ class ReportHelperTestCase extends CoreTestCase {
 			array('jharris@rockharbor.org', 'contact@example.com')
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$headers = array(
 			'Roster' => array(
 				'RosterStatus' => array(
@@ -500,7 +500,7 @@ class ReportHelperTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 	}
-	 
+
 	function testSet() {
 		$data = array(
 			array(
@@ -528,7 +528,7 @@ class ReportHelperTestCase extends CoreTestCase {
 				)
 			)
 		);
-		
+
 		$this->Report->set($data);
 		$this->assertEqual($this->Report->data, $data);
 	}

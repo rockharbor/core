@@ -19,7 +19,7 @@
 	));
 	echo $this->Js->submit('Filter', $defaultSubmitOptions);
 	echo $this->Form->end();
-	
+
 	?>
 	<table class="datatable">
 		<thead>

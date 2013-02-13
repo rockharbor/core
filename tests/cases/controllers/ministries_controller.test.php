@@ -32,15 +32,15 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$this->unloadSettings();
 		ClassRegistry::flush();
 	}
-	
+
 	function testIndex() {
 		$this->loadFixtures('Group');
-		
+
 		$vars = $this->testAction('/ministries/index/Campus:2');
 		$results = Set::extract('/Ministry/id', $vars['ministries']);
 		sort($results);
 		$this->assertEqual($results, array());
-		
+
 		$results = $this->Ministries->data;
 		$expected = array(
 			'Ministry' => array(
@@ -49,12 +49,12 @@ class MinistriesControllerTestCase extends CoreTestCase {
 			)
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$vars = $this->testAction('/ministries/index/Campus:1');
 		$results = Set::extract('/Ministry/id', $vars['ministries']);
 		sort($results);
 		$this->assertEqual($results, array(1, 2));
-		
+
 		$vars = $this->testAction('/ministries/index/Campus:1', array(
 			'data' => array(
 				'Ministry' => array(
@@ -66,7 +66,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Ministry/id', $vars['ministries']);
 		sort($results);
 		$this->assertEqual($results, array(1, 2));
-		
+
 		$vars = $this->testAction('/ministries/index/Campus:1', array(
 			'data' => array(
 				'Ministry' => array(
@@ -78,19 +78,19 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Ministry/id', $vars['ministries']);
 		sort($results);
 		$this->assertEqual($results, array(1, 2, 3));
-		
+
 		$this->su(array('Group' => 8));
-		
+
 		$vars = $this->testAction('/ministries/index/Campus:1');
 		$results = Set::extract('/Ministry/id', $vars['ministries']);
 		sort($results);
 		$this->assertEqual($results, array(1, 2));
-		
+
 		$vars = $this->testAction('/ministries/index/Campus:2');
 		$results = Set::extract('/Ministry/id', $vars['ministries']);
 		sort($results);
 		$this->assertEqual($results, array());
-		
+
 		$results = $this->Ministries->data;
 		$expected = array(
 			'Ministry' => array(
@@ -99,7 +99,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 			)
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$vars = $this->testAction('/ministries/index/Ministry:1', array(
 			'data' => array(
 				'Ministry' => array(
@@ -111,8 +111,8 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Ministry/id', $vars['ministries']);
 		sort($results);
 		$this->assertEqual($results, array(4));
-		
-		
+
+
 		$this->Ministries->Ministry->save(array(
 			'id' => 1,
 			'private' => 1
@@ -132,17 +132,17 @@ class MinistriesControllerTestCase extends CoreTestCase {
 
 	function testView() {
 		$this->loadFixtures('Group');
-		
+
 		$vars = $this->testAction('/ministries/view/Ministry:3');
 		$result = $vars['ministry']['Ministry']['id'];
 		$this->assertEqual($result, 3);
-		
+
 		$this->su(array('Group' => array('id' => 8)));
 		$vars = $this->testAction('/ministries/view/Ministry:3');
-		
+
 		$result = $vars['ministry']['Ministry']['id'];
 		$this->assertEqual($result, 3);
-		
+
 		$this->assertTrue(empty($vars['ministry']['ChildMinistry']));
 	}
 
@@ -172,7 +172,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Ministry/active', $ministries);
 		$expected = array(1,1,1);
 		$this->assertEqual($results, $expected);
-		
+
 		$results = Set::extract('/Ministry/private', $ministries);
 		$expected = array(0,0,1);
 		$this->assertEqual($results, $expected);
@@ -202,11 +202,11 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Ministry/campus_id', $ministries);
 		$expected = array(1,1,1);
 		$this->assertEqual($results, $expected);
-		
+
 		$results = Set::extract('/Ministry/parent_id', $ministries);
 		$expected = array(0,0,0);
 		$this->assertEqual($results, $expected);
-		
+
 		// put #5 back into campus 2 to test moving to a ministry under a different campus
 		$this->Ministries->Ministry->save(array(
 			'Ministry' => array(
@@ -235,11 +235,11 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Ministry/campus_id', $ministries);
 		$expected = array(2,2,2);
 		$this->assertEqual($results, $expected);
-		
+
 		$results = Set::extract('/Ministry/parent_id', $ministries);
 		$expected = array(5,5,null);
 		$this->assertEqual($results, $expected);
-		
+
 		$vars = $this->testAction('/ministries/bulk_edit/mstoken:test', array(
 			'data' => array(
 				'Ministry' => array(
@@ -261,11 +261,11 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Ministry/campus_id', $ministries);
 		$expected = array(1,1,1);
 		$this->assertEqual($results, $expected);
-		
+
 		$results = Set::extract('/Ministry/parent_id', $ministries);
 		$expected = array(0,0,0);
 		$this->assertEqual($results, $expected);
-		
+
 		$vars = $this->testAction('/ministries/bulk_edit/mstoken:test', array(
 			'data' => array(
 				'Ministry' => array(
@@ -295,7 +295,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$this->assertNull($this->Ministries->Session->read('Message'));
 		$countAfter = $this->Ministries->Ministry->find('count');
 		$this->assertEqual($countBefore - $countAfter, 0);
-		
+
 		$data = array(
 			'Ministry' => array(
 				'name' => 'New Root Ministry',
@@ -314,7 +314,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$ministry = $this->Ministries->Ministry->read(null, $this->Ministries->Ministry->id);
 		$result = $ministry['Ministry']['name'];
 		$this->assertEqual($result, 'New Root Ministry');
-		
+
 		$vars = $this->testAction('/ministries/add/Campus:2/Ministry:1');
 		$this->assertEqual($vars['parentId'], 1);
 		$this->assertEqual($this->testController->data['Ministry']['campus_id'], 1);
@@ -322,14 +322,14 @@ class MinistriesControllerTestCase extends CoreTestCase {
 
 	function testEdit() {
 		$this->loadFixtures('User');
-		
+
 		$data = $this->Ministries->Ministry->read(null, 1);
 		$data['Ministry']['name'] = 'New name';
 
 		$this->Ministries->Ministry->Behaviors->enable('Confirm');
 		$this->Ministries->setReturnValueAt(0, 'isAuthorized', true);
 		$this->Ministries->setReturnValueAt(1, 'isAuthorized', true);
-		
+
 		$notificationsBefore = ClassRegistry::init('Notification')->find('count');
 		$vars = $this->testAction('/ministries/edit/Ministry:1', array(
 			'return' => 'vars',
@@ -342,7 +342,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 			2 => 'Alpha'
 		);
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $notificationsAfter-$notificationsBefore;
 		$expected = 0;
 		$this->assertEqual($result, $expected);
@@ -350,25 +350,25 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$this->Ministries->Ministry->id = 1;
 		$result = $this->Ministries->Ministry->field('name');
 		$this->assertEqual($result, 'New name');
-		
+
 		$this->Ministries->Ministry->Behaviors->enable('Confirm');
 		$this->Ministries->setReturnValueAt(2, 'isAuthorized', true);
 		$this->Ministries->setReturnValueAt(3, 'isAuthorized', false);
-		
+
 		$data = $this->Ministries->Ministry->read(null, 1);
 		$data['Ministry']['name'] = 'This change should end up pending';
-		
+
 		$notificationsBefore = ClassRegistry::init('Notification')->find('count');
 		$vars = $this->testAction('/ministries/edit/Ministry:1', array(
 			'return' => 'vars',
 			'data' => $data
 		));
 		$notificationsAfter = ClassRegistry::init('Notification')->find('count');
-		
+
 		$result = $this->Ministries->Ministry->RevisionModel->field('name');
 		$expected = 'This change should end up pending';
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $notificationsAfter-$notificationsBefore;
 		$expected = 1;
 		$this->assertEqual($result, $expected);

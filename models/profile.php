@@ -49,7 +49,7 @@ class Profile extends AppModel {
 
 /**
  * Validation rules
- * 
+ *
  * Note: birth_date 'allowEmpty' is set to `false` in `UsersController::register()`
  * and `UsersController::household_add()`
  *
@@ -158,19 +158,19 @@ class Profile extends AppModel {
 			'fields' => '',
 			'order' => ''
 		),
-		'Campus',		
+		'Campus',
 		'ElementarySchool' => array(
 			'className' => 'School',
 			'foreignKey' => 'elementary_school_id'
-		),		
+		),
 		'MiddleSchool' => array(
 			'className' => 'School',
 			'foreignKey' => 'middle_school_id'
-		),		
+		),
 		'HighSchool' => array(
 			'className' => 'School',
 			'foreignKey' => 'high_school_id'
-		),		
+		),
 		'College' => array(
 			'className' => 'School',
 			'foreignKey' => 'college_id'
@@ -193,7 +193,7 @@ class Profile extends AppModel {
 		if (isset($this->data['Profile']['work_phone'])) {
 			$this->data['Profile']['work_phone'] = preg_replace('/[^0-9]+/', '', $this->data['Profile']['work_phone']);
 		}
-		
+
 		return true;
-	}	
+	}
 }

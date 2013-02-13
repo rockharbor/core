@@ -9,7 +9,7 @@ class AppControllerTestCase extends CoreTestCase {
 		parent::startTest($method);
 		$this->loadFixtures('User', 'Group', 'Notification', 'Alert', 'Household', 'HouseholdMember');
 		$this->loadFixtures('Leader', 'Campus', 'Ministry', 'Involvement');
-		$this->App =& new AppController();		
+		$this->App =& new AppController();
 		$this->App->__construct();
 		$this->App->constructClasses();
 		$this->App->activeUser = array(
@@ -23,39 +23,39 @@ class AppControllerTestCase extends CoreTestCase {
 		unset($this->App);
 		ClassRegistry::flush();
 	}
-	
+
 	function testExtractIds() {
 		$this->loadFixtures('Profile');
-		
+
 		Mock::generatePartial('AppController', 'ExtractIdsAppController', array('isAuthorized', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 		$Controller = new ExtractIdsAppController();
 		$Controller->__construct();
 		$Controller->modelClass = 'User';
 		$Controller->constructClasses();
-		
+
 		Mock::generatePartial('MultiSelectComponent', 'ExtractIdsMultiSelectComponent', array(
 			'getSelected',
 			'getSearch'
 		));
 		$MultiSelect = new ExtractIdsMultiSelectComponent();
 		$Controller->MultiSelect = $MultiSelect;
-		
+
 		$model = ClassRegistry::init('User');
-		
+
 		$Controller->MultiSelect->setReturnValueAt(0, 'getSelected', array());
 		$Controller->expectAt(0, 'cakeError', array('invalidMultiSelectSelection'));
 		$results = $Controller->_extractIds($model, '/User/id');
-		
+
 		$Controller->MultiSelect->setReturnValueAt(1, 'getSelected', array(1, 2, 3));
 		$results = $Controller->_extractIds($model, '/User/id');
 		$expected = array(1, 2, 3);
 		$this->assertEqual($results, $expected);
-		
+
 		$Controller->MultiSelect->setReturnValueAt(2, 'getSelected', 'all');
 		$Controller->MultiSelect->setReturnValueAt(0, 'getSearch', array());
 		$Controller->expectAt(1, 'cakeError', array('invalidMultiSelectSelection'));
 		$results = $Controller->_extractIds($model, '/User/id');
-		
+
 		$search = array(
 			'conditions' => array(
 				'Profile.last_name LIKE' => '%rock%'
@@ -69,7 +69,7 @@ class AppControllerTestCase extends CoreTestCase {
 		$results = $Controller->_extractIds($model, '/User/id');
 		$expected = array(2, 3);
 		$this->assertEqual($results, $expected);
-		
+
 		$search = array(
 			'conditions' => array(
 				'Profile.last_name LIKE' => '%rock%'
@@ -87,7 +87,7 @@ class AppControllerTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testSetConditionalGroups() {
 		$this->App->passedArgs = array('User' => 1);
 		$results = $this->App->_setConditionalGroups($this->App->passedArgs, $this->App->activeUser);
@@ -127,29 +127,29 @@ class AppControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Group/name', $results);
 		$expected = array('Involvement Leader', 'Ministry Manager', 'Campus Manager');
 		$this->assertEqual($results, $expected);
-		
+
 		$this->App->activeUser['User']['id'] = 2;
 		$this->App->passedArgs = array('Involvement' => 1);
 		$results = $this->App->_setConditionalGroups($this->App->passedArgs, $this->App->activeUser);
 		$results = $results = Set::extract('/Group/name', $results);
 		$expected = array('Ministry Manager');
 		$this->assertEqual($results, $expected);
-		
+
 		$this->App->activeUser['User']['id'] = 1;
 		$this->App->passedArgs = array('Involvement' => 1, 'Ministry' => 4);
 		$results = $this->App->_setConditionalGroups($this->App->passedArgs, $this->App->activeUser);
 		$results = $results = Set::extract('/Group/name', $results);
 		$expected = array('Involvement Leader', 'Ministry Manager', 'Campus Manager');
 		$this->assertEqual($results, $expected);
-		
+
 		$this->App->activeUser['User']['id'] = 1;
 		$this->App->passedArgs = array('Involvement' => 2);
 		$results = $this->App->_setConditionalGroups($this->App->passedArgs, $this->App->activeUser);
 		$results = $results = Set::extract('/Group/name', $results);
 		$expected = array('Campus Manager');
 		$this->assertEqual($results, $expected);
-		
-		// don't let them try to use a permission they have to get to something 
+
+		// don't let them try to use a permission they have to get to something
 		// they don't have permission to
 		$this->App->activeUser['User']['id'] = 2;
 		$this->App->passedArgs = array('Involvement' => 2, 'Ministry' => 4);

@@ -46,7 +46,7 @@ class Comment extends AppModel {
 			),
 		),
 	);
-	
+
 /**
  * BelongsTo association link
  *

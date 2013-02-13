@@ -10,16 +10,16 @@
 
 /**
  * Date model
- * 
+ *
  * ### How recurring dates work
- * 
+ *
  * Recurring dates are a single record that contains all the information needed
  * to generate a group of dates based on a recurrance pattern. For example, "the
  * third wednesday of each month." Recurring dates also have exemptions, single
  * dates that can be removed from the recurrance pattern.
- * 
+ *
  * ### Recurrance fields
- * 
+ *
  * - `permanent` A boolean specifying if the recurrance doesn't have an end date
  * - `recurrance_type` Type of recurrance, see `$recurranceTypes`
  * - `frequency` Frequency of recurrance. If it's a weekly occurance, than 2 would
@@ -111,15 +111,15 @@ class Date extends AppModel {
 			$this->data['Date']['start_time'] = '00:00:00';
 			$this->data['Date']['end_time'] = '23:59:00';
 		}
-		
+
 		if (isset($this->data['Date']['frequency']) && !$this->data['Date']['frequency']) {
-			$this->data['Date']['frequency'] = 1;	
+			$this->data['Date']['frequency'] = 1;
 		}
-		
+
 		return parent::beforeSave();
 	}
 
-	
+
 /*
  * Generates a list of dates from an involvement record within a range.
  *
@@ -163,11 +163,11 @@ class Date extends AppModel {
 		} else {
 			$range['start'] = $default['start'];
 		}
-		
+
 		$conditions =  array(
 			'Date.involvement_id' => $involvement_id
 		);
-		
+
 		$this->recursive = -1;
 		$dates = $this->find('all', array(
 			'conditions' => $conditions
@@ -218,7 +218,7 @@ class Date extends AppModel {
  */
 	function _generateRecurringDates($masterDate, $range, $limit = 20, $exemptions = array()) {
 		$dates = array();
-		
+
 		if (isset($range['start']) && !is_numeric($range['start'])) {
 			$range['start'] = strtotime($range['start']);
 		}
@@ -324,7 +324,7 @@ class Date extends AppModel {
 				$onLimit++;
 			}
 
-			// progress forward by frequency amount			
+			// progress forward by frequency amount
 			$onDate = strtotime('+'.$masterDate['Date']['frequency'].' '.$this->_frequency[$masterDate['Date']['recurrance_type']], $onDate);
 
 			// should we keep looping based on the limit and end range?

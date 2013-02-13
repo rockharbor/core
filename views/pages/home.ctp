@@ -5,7 +5,7 @@ Admin-y sort of things
 <ul>
 	<li><?php echo $this->Html->link('Alerts', array('controller' => 'alerts')); ?></li>
 	<li><?php echo $this->Html->link('App Settings', array('controller' => 'app_settings')); ?></li>
-	<li><?php echo $this->Html->link('Merge Requests', array('controller' => 'merge_requests', 'action' => 'index', 'model' => 'User')); ?></li>	
+	<li><?php echo $this->Html->link('Merge Requests', array('controller' => 'merge_requests', 'action' => 'index', 'model' => 'User')); ?></li>
 	<li><?php echo $this->Html->link('Payment Types', array('controller' => 'payment_types')); ?></li>
 	<li><?php echo $this->Html->link('Permission Groups', array('controller' => 'groups')); ?></li>
 	<li><?php echo $this->Html->link('Profiles', array('controller' => 'profiles')); ?></li>
@@ -32,5 +32,5 @@ Lists, etc.
 <ul>
 	<li><?php echo $this->Html->link('Job Categories', array('controller' => 'job_categories')); ?></li>
 	<li><?php echo $this->Html->link('Regions', array('controller' => 'regions')); ?></li>
-	<li><?php echo $this->Html->link('Schools', array('controller' => 'schools')); ?></li>	
+	<li><?php echo $this->Html->link('Schools', array('controller' => 'schools')); ?></li>
 </ul>

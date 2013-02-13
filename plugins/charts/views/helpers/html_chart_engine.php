@@ -107,7 +107,7 @@
 				$legend
 			);
 
-			$html = sprintf($this->__chartWrapper, $data['title'], $chart);			
+			$html = sprintf($this->__chartWrapper, $data['title'], $chart);
 
 			return sprintf(
 				'%s<style type=text/css>%s %s</style>%s',
@@ -146,7 +146,7 @@
 
 	.html-chart.bar.verticle table{
 		height: {$data['height']}px;
-	}	
+	}
 
 	.html-chart.bar.verticle td.col div{
 		margin-left: {$margin}px;
@@ -160,7 +160,7 @@
 	.html-chart.bar.verticle .fill{
 		background-color: #{$data['color']['fill']};
 	}
-	
+
 cssData;
 
 		}
@@ -176,4 +176,3 @@ cssData;
 	}
 
 
-	

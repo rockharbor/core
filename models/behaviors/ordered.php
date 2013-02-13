@@ -4,111 +4,111 @@
  *
  *
  * This behavior lets you order items in a very similar way to the tree
- * behavior, only there is only 1 level. You can however have many 
+ * behavior, only there is only 1 level. You can however have many
  * independent lists in one table. Usually you use a foreign key to
  * set / see what list you are in (see example bellow) or if you have
  * just one list for the entire table, you can do that too.
- * 
+ *
  * What it does:
- * 
- * It manages the creation and updating of the order field. It 
+ *
+ * It manages the creation and updating of the order field. It
  * also sets the models order property to this field. When adding new
  * nodes or deleting old ones, this behavior will do the necisary changes
  * to keep the list working properly. It is build to be completely
- * automagic after the initial configuration by letting it know 
+ * automagic after the initial configuration by letting it know
  * your foreign_key and weight fields.
- * 
+ *
  * Usage example :
- * 
+ *
  * Lets say you have books with pages and want the pages ordered
- * by page number (obviously a book sorted alphabetically would be 
+ * by page number (obviously a book sorted alphabetically would be
  * silly). So you have these models:
- * 
+ *
  * Book hasMany Page
  * Page belongsTo Book
- * 
- * The Page model has fields : 
- * 
+ *
+ * The Page model has fields :
+ *
  * id
  * content
- * book_id 
+ * book_id
  * page_number
- * 
+ *
  * To set up this behavior we add this property to the Page model :
- * 
+ *
  * var $actsAs = array('Ordered' => array(
  * 			'field' 		=> 'page_number',
  * 			'foreign_key' 	=> 'book_id'
  * 		));
- * 
+ *
  * Now when you save a new page (no changes needed to action or view,
- * but leave page_number out of the form), it will be added to the end 
+ * but leave page_number out of the form), it will be added to the end
  * of the book.
- * 
+ *
  * When deleting, the weights will automatically be adjusted to fill in
- * the vacum. 
- * 
+ * the vacum.
+ *
  * NB! Note that if using Model::deleteAll() it is VERY important that you
  * assign it to use callbacks 'beforeDelete' and 'afterDelete', like this:
- * 
+ *
  * // in controller action
  * $this->Page->deleteAll(array('user_id'=>22),true,array('beforeDelete','afterDelete'));
- * 
- * Now lets say the last two pages to be created got made in the wrong 
- * order, so you want to move the last page "up" one space. With the 
+ *
+ * Now lets say the last two pages to be created got made in the wrong
+ * order, so you want to move the last page "up" one space. With the
  * a simple controller call to the model like this that can be achieved:
- * 
+ *
  * // in a controller action :
  * $this->Page->moveup($id);
  * // the id here is the id of the newest page
- * 
+ *
  * You find that the first page you made is suppose to be the 5 pages later:
- * 
+ *
  * // in a controller action :
  * $this->Page->movedown($id, 5);
- * 
- * Also you discovered that in the first page got put in the middle. This 
+ *
+ * Also you discovered that in the first page got put in the middle. This
  * can easily be moved first by doing this :
- * 
+ *
  * // in a controller action :
  * $this->Page->moveup($id,true);
  * // true will move it to the extre in that direction
- * 
+ *
  * You can also use actions to find out if the node is first or last page :
- * 
+ *
  *  - isfirst($id)
  *  - islast($id)
- *  
+ *
  * And a last feature is the ability to sort the list by any field
  * you want and have it set weights based on that. You do that like this :
- * 
+ *
  * //in controller action :
  * $this->Page->sortby('content DESC', $book_id);
  * // dont ask me why you would sort the pages of a book by its content lol
- *  
+ *
  * Note that this behaviour will also let you sort an entire table as one list.
  * To do that you simply set the 'foreign_key' to false (and dont create the field
  * in the table). Now there will only be one set of weights. (Note you need the weight
  * field as normal)
- * 
+ *
  * @author Alexander Morland aka alkemann
  * @license MIT
  * @version 2.2.2
  * @modified 29. jan 2009
- * 
+ *
  */
 class OrderedBehavior extends ModelBehavior {
 	public $name = 'Ordered';
-	
+
 	/**
-	 * field : (string) The field to be ordered by. 
-	 * 
-	 * foreign_key : (string) The field to identify one SET by. 
+	 * field : (string) The field to be ordered by.
+	 *
+	 * foreign_key : (string) The field to identify one SET by.
 	 * 				 Each set has their own order (ie they start at 1).
 	 *               Set to FALSE to not use this feature (and use only 1 set)
 	 */
 	public $_defaults = array('field' => 'weight', 'foreign_key' => 'order_id');
-	
+
 	public function setup(&$Model, $config = array()) {
 		if (!is_array($config)) {
 			$config = array();
@@ -116,9 +116,9 @@ class OrderedBehavior extends ModelBehavior {
 		$this->settings[$Model->alias] = array_merge($this->_defaults, $config);
 		$Model->order = $Model->alias . '.' . $this->settings[$Model->alias]['field'] . ' ASC';
 	}
-	
+
 	/**
-	 * Returns true if the specified item is the first item 
+	 * Returns true if the specified item is the first item
 	 *
 	 * @param Model $Model
 	 * @param Int $id
@@ -143,9 +143,9 @@ class OrderedBehavior extends ModelBehavior {
 			return false;
 		}
 	}
-	
+
 	/**
-	 * Returns true if the specified item is the last item 
+	 * Returns true if the specified item is the last item
 	 *
 	 * @param Model $Model
 	 * @param Int $id
@@ -165,7 +165,7 @@ class OrderedBehavior extends ModelBehavior {
 		}
 		$last = $this->_highest($Model);
 		return ($last[$Model->alias][$Model->primaryKey] == $id);
-	}	
+	}
 
 	/**
 	 * Reorder the node, by moving it $number spaces down. Defaults to 1
@@ -199,16 +199,16 @@ class OrderedBehavior extends ModelBehavior {
 				if (!$next) { // it is the last node
 					return false;
 				}
-				// switch the node's weight around		
+				// switch the node's weight around
 				$Model->data[$Model->alias][$this->settings[$Model->alias]['field']] = $next[$Model->alias][$this->settings[$Model->alias]['field']];
-				
+
 				$next[$Model->alias][$this->settings[$Model->alias]['field']] = $old_weight;
-				
+
 				// create an array of the two nodes and save them
 				$data[0] = $Model->data;
 				$data[1] = $next;
 				return $Model->saveAll($data, array('validate' => false));
-			
+
 			} elseif ($number < 1) { // cant move 0 or negative number of spaces
 				return false;
 			} else { // move Model up N spaces DWN
@@ -218,37 +218,37 @@ class OrderedBehavior extends ModelBehavior {
 				} else {
 					$conditions = array();
 				}
-				
+
 				// find the one occupying new space and its weight
 				$new_weight = $Model->data[$Model->alias][$this->settings[$Model->alias]['field']] + $number;
 				// check if new weight is possible. else move last
 				if (!$this->_findByWeight($Model, $new_weight)) {
 					return false;
 				}
-				// increase weight of all where weight > new weight and id != Model.id				
-				
+				// increase weight of all where weight > new weight and id != Model.id
+
 
 				$conditions[$Model->alias . '.' . $this->settings[$Model->alias]['field'] . ' <='] = $new_weight;
 				$conditions[$Model->alias . '.' . $this->settings[$Model->alias]['field'] . ' >'] = $old_weight;
-				
+
 				$Model->updateAll(array(
 						$this->settings[$Model->alias]['field'] => $this->settings[$Model->alias]['field'] . ' - 1'), $conditions);
-				
+
 				// set Model weight to new weight and save it
 				$Model->set($this->settings[$Model->alias]['field'], $new_weight);
 				return $Model->save(null, false);
 			}
-		
+
 		} elseif (is_bool($number) && $number) { // move Model LAST;
 			if ($this->settings[$Model->alias]['foreign_key']) {
 				$conditions = array(
-						$Model->alias . '.' . $this->settings[$Model->alias]['field'] . ' >' => $old_weight, 
+						$Model->alias . '.' . $this->settings[$Model->alias]['field'] . ' >' => $old_weight,
 						$Model->alias . '.' . $this->settings[$Model->alias]['foreign_key'] => $Model->data[$Model->alias][$this->settings[$Model->alias]['foreign_key']]);
 			} else {
 				$conditions = array(
 						$Model->alias . '.' . $this->settings[$Model->alias]['field'] . ' >' => $old_weight);
 			}
-			
+
 			// get highest weighted row
 			$highest = $this->_highest($Model);
 			// check of Model is allready highest
@@ -258,15 +258,15 @@ class OrderedBehavior extends ModelBehavior {
 			// Save models as highest +1
 			$Model->saveField($this->settings[$Model->alias]['field'], $highest[$Model->alias][$this->settings[$Model->alias]['field']] + 1);
 			// updated all by taking off 1
-			$Model->updateAll(array( // action 
+			$Model->updateAll(array( // action
 					$Model->alias . '.' . $this->settings[$Model->alias]['field'] => $Model->alias . '.' . $this->settings[$Model->alias]['field'] . ' - 1'), $conditions);
-			
+
 			return true;
 		} else { // $number is neither a number nor a bool
 			return false;
 		}
 	}
-		
+
 	/**
 	 * Moving a node to specific weight, it will shift the rest of the table to make room.
 	 *
@@ -282,7 +282,7 @@ class OrderedBehavior extends ModelBehavior {
 		$highest = $this->_highest($Model);
 		// fetch the model and its old weight
 		$old_weight = $this->_read($Model, $id);
-		
+
 		//check if new weight is too big
 		if ($new_weight > $highest[$Model->alias][$this->settings[$Model->alias]['field']]) {
 			return false;
@@ -297,8 +297,8 @@ class OrderedBehavior extends ModelBehavior {
 		if ($this->settings[$Model->alias]['foreign_key']) {
 			$conditions[$Model->alias . '.' . $this->settings[$Model->alias]['foreign_key']] = $Model->data[$Model->alias][$this->settings[$Model->alias]['foreign_key']];
 		}
-		
-		// give Model new weight	
+
+		// give Model new weight
 		$Model->set($this->settings[$Model->alias]['field'], $new_weight);
 		if ($new_weight == $old_weight) {
 			// move to same location?
@@ -314,23 +314,23 @@ class OrderedBehavior extends ModelBehavior {
 			$conditions[$Model->alias . '.' . $this->settings[$Model->alias]['field'] . ' <='] = $new_weight;
 			$conditions[$Model->alias . '.' . $this->settings[$Model->alias]['field'] . ' >'] = $old_weight;
 		} else { // $new_weight < $old_weight
-			// move all where weight >= new_weight AND < old_weight down one (+1)	
+			// move all where weight >= new_weight AND < old_weight down one (+1)
 			$action = array(
 					$Model->alias . '.' . $this->settings[$Model->alias]['field'] => $Model->alias . '.' . $this->settings[$Model->alias]['field'] . ' + 1');
 			$conditions[$Model->alias . '.' . $this->settings[$Model->alias]['field'] . ' >='] = $new_weight;
 			$conditions[$Model->alias . '.' . $this->settings[$Model->alias]['field'] . ' <'] = $old_weight;
-		
+
 		}
 		$Model->updateAll($action, $conditions);
 		return $Model->save(null, false);
 	}
-	
+
 	/**
 	 * Reorder the node, by moving it $number spaces up. Defaults to 1
 	 *
 	 * If the node is the first node (or less then $number spaces from first)
 	 * this method will return false.
-	 * 
+	 *
 	 * @param AppModel $Model
 	 * @param mixed $id The ID of the record to move
 	 * @param mixed $number how many places to move the node or true to move to last position
@@ -358,14 +358,14 @@ class OrderedBehavior extends ModelBehavior {
 					return false;
 				}
 				$Model->data[$Model->alias][$this->settings[$Model->alias]['field']] = $previous[$Model->alias][$this->settings[$Model->alias]['field']];
-				
+
 				$previous[$Model->alias][$this->settings[$Model->alias]['field']] = $old_weight;
-				
+
 				$data[0] = $Model->data;
 				$data[1] = $previous;
-				
+
 				return $Model->saveAll($data, array('validate' => false));
-			
+
 			} elseif ($number < 1) { // cant move 0 or negative spaces
 				return false;
 			} else { // move Model up N spaces UP
@@ -375,7 +375,7 @@ class OrderedBehavior extends ModelBehavior {
 				} else {
 					$conditions = array();
 				}
-				
+
 				// find the one occupying new space and its weight
 				$new_weight = $Model->data[$Model->alias][$this->settings[$Model->alias]['field']] - $number;
 				// check if new weight is possible. else move last
@@ -384,10 +384,10 @@ class OrderedBehavior extends ModelBehavior {
 				}
 				$conditions[$Model->alias . '.' . $this->settings[$Model->alias]['field'] . ' >='] = $new_weight;
 				$conditions[$Model->alias . '.' . $this->settings[$Model->alias]['field'] . ' <'] = $old_weight;
-				// increase weight of all where weight > new weight and id != Model.id		
+				// increase weight of all where weight > new weight and id != Model.id
 				$Model->updateAll(array(
 						$this->settings[$Model->alias]['field'] => $Model->alias . '.' . $this->settings[$Model->alias]['field'] . ' + 1'), $conditions);
-				
+
 				// set Model weight to new weight and save it
 				$Model->set($this->settings[$Model->alias]['field'], $new_weight);
 				return $Model->save(null, false);
@@ -395,7 +395,7 @@ class OrderedBehavior extends ModelBehavior {
 		} elseif (is_bool($number) && $number && $Model->data[$Model->alias][$this->settings[$Model->alias]['field']] != 1) { // move Model FIRST;
 			if ($this->settings[$Model->alias]['foreign_key']) {
 				$conditions = array(
-						$Model->alias . '.' . $this->settings[$Model->alias]['field'] . ' <' => $old_weight, 
+						$Model->alias . '.' . $this->settings[$Model->alias]['field'] . ' <' => $old_weight,
 						$Model->alias . '.' . $this->settings[$Model->alias]['foreign_key'] => $Model->data[$Model->alias][$this->settings[$Model->alias]['foreign_key']]);
 			} else {
 				$conditions = array(
@@ -405,13 +405,13 @@ class OrderedBehavior extends ModelBehavior {
 			$Model->saveField($this->settings[$Model->alias]['field'], 0);
 			$Model->updateAll(array( // update
 				$Model->alias . '.' . $this->settings[$Model->alias]['field'] => $Model->alias . '.' . $this->settings[$Model->alias]['field'] . ' + 1'), $conditions);
-			
+
 			return true;
 		} else { // $number is neither a number nor a bool
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Returns the next and previews rows relative to the behaviors weight
 	 *
@@ -436,13 +436,13 @@ class OrderedBehavior extends ModelBehavior {
 			'field' => $this->settings[$Model->alias]['field']
 		));
 	}
-	
+
 	/**
 	 * Removing an item from the list means to set its field to 0 and updating the other items to be "complete"
 	 *
 	 * @param Model $Model
 	 * @param int $id
-	 * @return boolean 
+	 * @return boolean
 	 */
 	public function removefromlist(&$Model, $id) {
 		$this->_read($Model, $id);
@@ -461,7 +461,7 @@ class OrderedBehavior extends ModelBehavior {
 		}
 		return $Model->updateAll($action, $conditions);
 	}
-	
+
 	/**
 	 * This will create weights based on display field. The purpose of the method is to create
 	 * weights for tables that existed before this behavior was added.
@@ -469,10 +469,10 @@ class OrderedBehavior extends ModelBehavior {
 	 * @param Object $Model
 	 * @return boolean success
 	 */
-	public function resetweights(&$Model) {		
+	public function resetweights(&$Model) {
 		if ($this->settings[$Model->alias]['foreign_key']) {
 			$temp = $Model->find('all', array(
-					'fields' => 'DISTINCT '.$this->settings[$Model->alias]['foreign_key'], 
+					'fields' => 'DISTINCT '.$this->settings[$Model->alias]['foreign_key'],
 					'recursive' => -1));
 			$foreign_keys = Set::extract($temp, '/'.$Model->alias.'/'.$this->settings[$Model->alias]['foreign_key']);
 			foreach ($foreign_keys as $fk) {
@@ -480,7 +480,7 @@ class OrderedBehavior extends ModelBehavior {
 					return false;
 				}
 			}
-		} else {		
+		} else {
 			return $this->sortby($Model,$Model->displayField);
 		}
 		return true;
@@ -508,11 +508,11 @@ class OrderedBehavior extends ModelBehavior {
 			$conditions = array(
 					$Model->alias . '.' . $this->settings[$Model->alias]['foreign_key'] => $foreign_key);
 		}
-		
+
 		$all = $Model->find('all', array(
-				'fields' => $fields, 
-				'conditions' => $conditions, 
-				'recursive' => -1, 
+				'fields' => $fields,
+				'conditions' => $conditions,
+				'recursive' => -1,
 				'order' => $order));
 		$i = 1;
 		foreach ($all as $key => $one) {
@@ -520,9 +520,9 @@ class OrderedBehavior extends ModelBehavior {
 		}
 		return $Model->saveAll($all);
 	}
-	
-/** CALLBACKS */	
-	
+
+/** CALLBACKS */
+
 	/**
 	 * updates weights after delete
 	 *
@@ -531,9 +531,9 @@ class OrderedBehavior extends ModelBehavior {
 	 */
 	public function afterDelete(&$Model) {
 		if ($Model->data) {
-			// What was the weight of the deleted model?		
+			// What was the weight of the deleted model?
 			$old_weight = $Model->data[$Model->alias][$this->settings[$Model->alias]['field']];
-			// update the weight of all models of higher weight by			
+			// update the weight of all models of higher weight by
 
 			$action = array($this->settings[$Model->alias]['field'] => $Model->alias.'.'.$this->settings[$Model->alias]['field'] . ' - 1');
 			$conditions = array(
@@ -546,7 +546,7 @@ class OrderedBehavior extends ModelBehavior {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Reads in existing data in beforeDelete()
 	 *
@@ -569,19 +569,19 @@ class OrderedBehavior extends ModelBehavior {
 		//	Check if weight id is set. If not add to end, if set update all
 		// rows from ID and up
 		if (
-			!isset($Model->data[$Model->alias][$Model->primaryKey]) 
-				|| 
+			!isset($Model->data[$Model->alias][$Model->primaryKey])
+				||
 			(
-				isset($Model->data[$Model->alias][$this->settings[$Model->alias]['field']]) 
-					&& 
-				!is_numeric($Model->data[$Model->alias][$this->settings[$Model->alias]['field']]) 
-			) 
+				isset($Model->data[$Model->alias][$this->settings[$Model->alias]['field']])
+					&&
+				!is_numeric($Model->data[$Model->alias][$this->settings[$Model->alias]['field']])
+			)
 		) {
 			$fk = null;
 			if ($this->settings[$Model->alias]['foreign_key']) {
 				if (!isset($Model->data[$Model->alias][$this->settings[$Model->alias]['foreign_key']])) {
 					trigger_error('OrderedBehavior : New rows must be saved with foreign key field present.', E_USER_WARNING);
-					return false;					
+					return false;
 				}
 				$fk = $Model->data[$Model->alias][$this->settings[$Model->alias]['foreign_key']];
 			}
@@ -591,11 +591,11 @@ class OrderedBehavior extends ModelBehavior {
 	}
 
 /** Private functions */
-	
+
 	private function _all(&$Model) {
-		$options = array( 
-				'order' => $this->settings[$Model->alias]['field'] . ' DESC', 
-				'fields' => array($Model->primaryKey, $this->settings[$Model->alias]['field']), 
+		$options = array(
+				'order' => $this->settings[$Model->alias]['field'] . ' DESC',
+				'fields' => array($Model->primaryKey, $this->settings[$Model->alias]['field']),
 				'recursive' => -1);
 		if ($this->settings[$Model->alias]['foreign_key']) {
 			$options['conditions'] = array(
@@ -604,7 +604,7 @@ class OrderedBehavior extends ModelBehavior {
 		}
 		return $Model->find('all', $options);
 	}
-	
+
 	private function _findbyweight(&$Model, $weight) {
 		$conditions = array($this->settings[$Model->alias]['field'] => $weight);
 		$fields = array($Model->primaryKey, $this->settings[$Model->alias]['field']);
@@ -613,16 +613,16 @@ class OrderedBehavior extends ModelBehavior {
 			$fields[] = $this->settings[$Model->alias]['foreign_key'];
 		}
 		return $Model->find('first', array(
-				'conditions' => $conditions, 
-				'order' => $this->settings[$Model->alias]['field'] . ' DESC', 
-				'fields' => $fields, 
+				'conditions' => $conditions,
+				'order' => $this->settings[$Model->alias]['field'] . ' DESC',
+				'fields' => $fields,
 				'recursive' => -1));
 	}
-		
+
 	private function _highest(&$Model, $foreignKey = null) {
 		$options = array(
-				'order' => $this->settings[$Model->alias]['field'] . ' DESC', 
-				'fields' => array($Model->primaryKey, $this->settings[$Model->alias]['field']), 
+				'order' => $this->settings[$Model->alias]['field'] . ' DESC',
+				'fields' => array($Model->primaryKey, $this->settings[$Model->alias]['field']),
 				'recursive' => -1);
 		if ($this->settings[$Model->alias]['foreign_key']) {
 			if (!$foreignKey) {
@@ -630,8 +630,8 @@ class OrderedBehavior extends ModelBehavior {
 					$foreignKey = $Model->data[$Model->alias][$this->settings[$Model->alias]['foreign_key']];
 				} else {
 					$foreignKey = $Model->field($this->settings[$Model->alias]['foreign_key']);
-				}		
-			}	
+				}
+			}
 			$options['conditions'] = array($Model->alias .'.'. $this->settings[$Model->alias]['foreign_key'] => $foreignKey);
 			$options['fields'][] = $this->settings[$Model->alias]['foreign_key'];
 		}
@@ -641,15 +641,15 @@ class OrderedBehavior extends ModelBehavior {
 		$Model->id = $temp_model_id;
 		return $last;
 	}
-	
+
 	private function _newWeight($Model, $foreignKey = null) {
-		if ( $this->settings[$Model->alias]['foreign_key'] && !$foreignKey ) {			
+		if ( $this->settings[$Model->alias]['foreign_key'] && !$foreignKey ) {
 			return false;
 		}
 		$highest = $this->_highest($Model, $foreignKey);
-		return $highest[$Model->alias][$this->settings[$Model->alias]['field']] + 1;		
-	}	
-		
+		return $highest[$Model->alias][$this->settings[$Model->alias]['field']] + 1;
+	}
+
 	private function _next(&$Model) {
 		$conditions = array(
 				$this->settings[$Model->alias]['field'] => $Model->data[$Model->alias][$this->settings[$Model->alias]['field']] + 1);
@@ -659,12 +659,12 @@ class OrderedBehavior extends ModelBehavior {
 			$fields[] = $this->settings[$Model->alias]['foreign_key'];
 		}
 		return $Model->find('first', array(
-				'conditions' => $conditions, 
-				'order' => $this->settings[$Model->alias]['field'] . ' DESC', 
-				'fields' => $fields, 
+				'conditions' => $conditions,
+				'order' => $this->settings[$Model->alias]['field'] . ' DESC',
+				'fields' => $fields,
 				'recursive' => -1));
 	}
-		
+
 	private function _previous(&$Model) {
 		$conditions = array(
 				$this->settings[$Model->alias]['field'] => $Model->data[$Model->alias][$this->settings[$Model->alias]['field']] - 1);
@@ -674,12 +674,12 @@ class OrderedBehavior extends ModelBehavior {
 			$fields[] = $this->settings[$Model->alias]['foreign_key'];
 		}
 		return $Model->find('first', array(
-				'conditions' => $conditions, 
-				'order' => $this->settings[$Model->alias]['field'] . ' DESC', 
-				'fields' => $fields, 
+				'conditions' => $conditions,
+				'order' => $this->settings[$Model->alias]['field'] . ' DESC',
+				'fields' => $fields,
 				'recursive' => -1));
 	}
-		
+
 	private function _read(&$Model, $id) {
 		$Model->id = $id;
 		$fields = array($Model->primaryKey, $this->settings[$Model->alias]['field']);
@@ -687,8 +687,8 @@ class OrderedBehavior extends ModelBehavior {
 			$fields[] = $this->settings[$Model->alias]['foreign_key'];
 		}
 		$Model->data = $Model->find('first', array(
-				'fields' => $fields, 
-				'conditions' => array($Model->primaryKey => $id), 
+				'fields' => $fields,
+				'conditions' => array($Model->primaryKey => $id),
 				'recursive' => -1));
 		return $Model->data[$Model->alias][$this->settings[$Model->alias]['field']];
 	}

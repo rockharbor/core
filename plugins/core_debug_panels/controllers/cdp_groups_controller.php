@@ -23,7 +23,7 @@ class CdpGroupsController extends CoreDebugPanelsAppController {
 
 		$this->activeUser['Group'] = reset($group);
 		$this->activeUser['User']['group_id'] = $group['Group']['id'];
-		
+
 		$this->set('activeUser', $this->activeUser);
 	}
 }

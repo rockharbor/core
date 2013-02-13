@@ -53,14 +53,14 @@ class ReportsController extends AppController {
 		'MultiSelect.MultiSelect',
 		'FilterPagination'
 	);
-	
+
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
  *
  * @access private
- */ 
+ */
 	function beforeFilter() {
 		parent::beforeFilter();
 	}
@@ -74,7 +74,7 @@ class ReportsController extends AppController {
 
 		$conditions = array();
 		$involvedUsers = array();
-		
+
 		if (empty($this->data)) {
 			$this->data = array(
 				'Ministry' => array(
@@ -86,7 +86,7 @@ class ReportsController extends AppController {
 				)
 			);
 		}
-		
+
 		if (!empty($this->data)) {
 			if (!empty($this->data['Ministry']['campus_id'])) {
 				// campus takes precedence
@@ -129,7 +129,7 @@ class ReportsController extends AppController {
 			)
 		));
 		$userCounts['active'] = count($activeUsers);
-		
+
 		$userCounts['involved'] = count($involvedUsers);
 		$userCounts['logged_in'] = $this->User->find('count', array(
 			'conditions' => array(
@@ -156,15 +156,15 @@ class ReportsController extends AppController {
 					$options['conditions'][] = $ds->expression('('.$this->Involvement->getVirtualField('previous').')');
 				break;
 			}
-			
+
 			$involvementCounts[$type]['total'] = $this->Involvement->find('count', $options);
-			
+
 			$options['conditions']['Involvement.active'] = true;
 			$involvementCounts[$type]['active'] = $this->Involvement->find('count', $options);
-			
+
 			$options['contain'] = array('Involvement');
 			$involvementCounts[$type]['leaders'] = $this->Involvement->Leader->find('count', $options);
-			
+
 			$involved = $this->Roster->find('all', array(
 				'fields' => array(
 					'Roster.id'
@@ -292,7 +292,7 @@ class ReportsController extends AppController {
 
 		$this->set(compact('ministries', 'campuses', 'paymentTypes', 'paymentTypeTypes', 'payments'));
 	}
-	
+
 /**
  * Exports a saved search (from MultiSelectComponent) as a report
  *
@@ -303,11 +303,11 @@ class ReportsController extends AppController {
  * @param string $model The model we're searching / exporting data from
  * @param string $uid The MultiSelect cache key to get results from
  * @see MultiSelectComponent::getSearch();
- */ 
+ */
 	function export($model) {
 		// persist selected items through POST requests
 		$this->here .= '/mspersist:1';
-		
+
 		if (!empty($this->data)) {
 			$options = array();
 			if ($this->data['Export']['type'] == 'csv') {
@@ -324,21 +324,21 @@ class ReportsController extends AppController {
 			unset($this->data['Export']['header_aliases']);
 			unset($this->data['Export']['squashed_fields']);
 			unset($this->data['Export']['multiple_records']);
-			
+
 			$pk = $this->{$model}->primaryKey;
-			
+
 			$selected = $this->_extractIds($this->{$model}, "/$model/$pk");
-			
+
 			// add to field list if contain or link is restricting them
 			$options = $this->{$model}->postOptions($this->data['Export']);
 			$options['conditions']["$model.$pk"] = $selected;
-		
+
 			$results = $this->{$model}->find('all', $options);
-			
+
 			$this->set('models', $this->data['Export']);
 			$this->set(compact('results', 'aliases', 'squashed', 'multiples'));
 		}
-		
+
 		$this->set(compact('uid', 'model'));
 	}
 
@@ -354,7 +354,7 @@ class ReportsController extends AppController {
 		if (!isset($this->passedArgs['Involvement'])) {
 			$this->cakeError('error404');
 		}
-		
+
 		$results = $this->Involvement->find('all', array(
 			'conditions' => array(
 				'Involvement.id' => $this->passedArgs['Involvement']
@@ -363,13 +363,13 @@ class ReportsController extends AppController {
 				'Address'
 			)
 		));
-		
+
 		$this->set(compact('results'));
 	}
 
 /**
  * Shows a map for a user or a group of users
- * 
+ *
  * If a User id is passed through the passed args, it will be the sole user
  * placed on the map. Otherwise, it looks for a multi-select search and pulls
  * all the users that qualify in that search.
@@ -379,15 +379,15 @@ class ReportsController extends AppController {
  *
  * @param string $model The name of the model to search (User or related model)
  * @param string $uid The multi-select id
- */	
+ */
 	function user_map($model = 'User', $uid = null) {
 		$search = $this->MultiSelect->getSearch($uid);
 		$selected = $this->MultiSelect->getSelected($uid);
-		
+
 		if (empty($model) || (empty($search) && !isset($this->passedArgs[$model]))) {
 			$this->cakeError('error404');
 		}
-		
+
 		if (isset($this->passedArgs[$model])) {
 			$search = array();
 			$selected = $this->passedArgs[$model];
@@ -403,7 +403,7 @@ class ReportsController extends AppController {
 		} else {
 			$ids = Set::extract('/'.$model.'/user_id', $results);
 		}
-		
+
 		// only need name, picture and address
 		$results = $this->User->find('all', array(
 			'conditions' => array(
@@ -418,7 +418,7 @@ class ReportsController extends AppController {
 				'Image'
 			)
 		));
-		
+
 		// fill in missing geocoordinates - while this logic belongs in the model
 		// layer afterFind isn't called on contained associations
 		foreach ($results as $key => $result) {
@@ -436,7 +436,7 @@ class ReportsController extends AppController {
 				}
 				$results[$key]['Address'][$addressKey] = $address;
 			}
-			
+
 			// has one
 			$address = $result['ActiveAddress'];
 			if (!empty($address['id']) && ($address['lat'] == 0.0000000 || $address['lng'] == 0.0000000)) {
@@ -451,7 +451,7 @@ class ReportsController extends AppController {
 			}
 			$results[$key]['ActiveAddress'] = $address;
 		}
-		
+
 		$this->set(compact('results', 'model'));
 	}
 }

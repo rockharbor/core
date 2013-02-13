@@ -18,7 +18,7 @@
  *
  * *NOTE:* By default, if there is no data and this is not a pagination request, FilterPagination::paginate() returns an
  * empty array instead of Controller::paginate()'s default resultset.
- * 
+ *
  * @package       core
  * @subpackage    core.app.controllers.components
  */
@@ -29,7 +29,7 @@ class FilterPaginationComponent extends Object {
  *
  * @var object
  * @access public
- */ 
+ */
 	var $controller = null;
 
 /**
@@ -37,7 +37,7 @@ class FilterPaginationComponent extends Object {
  *
  * @var array
  * @access public
- */ 
+ */
 	var $components = array('Session');
 
 /**
@@ -60,11 +60,11 @@ class FilterPaginationComponent extends Object {
 		$this->controller =& $controller;
 		$this->_set($settings);
 	}
-	
+
 /**
  * Startup method, populates data from previously saved filter if available
  * and removes saved filter if it's a new session
- * 
+ *
  * @return void
  */
 	function startup() {
@@ -74,37 +74,37 @@ class FilterPaginationComponent extends Object {
 			$this->Session->delete($key);
 			return;
 		}
-		
+
 		if (empty($this->controller->data)) {
 			if ($this->Session->check($key.'.data')) {
 				$this->controller->data = $this->Session->read($key.'.data');
 			}
 		}
 	}
-	
+
 /**
- * Saves search parameters in the Session then paginates 
+ * Saves search parameters in the Session then paginates
  * using CakePHP's paginate function
  *
  * @param string $model Model to paginate
  * @return array Cake results
  * @access public
  * @see Controller::paginate()
- */	
+ */
 	function paginate($model = null) {
 		if (!$model) {
 			$model = $this->controller->modelClass;
 		}
 		$model = ClassRegistry::init($model);
-		
+
 		$key = $this->_key();
 		$this->Session->write($key.'.data', $this->controller->data);
-		
+
 		// check for 'link' key
 		if (isset($this->controller->paginate) && isset($this->controller->paginate['link'])) {
 			$this->_attachLinkedModels($model, $this->controller->paginate['link']);
 		}
-		
+
 		// return empty array by default so we don't perform a search without filtering first
 		if (!empty($this->controller->data) || isset($this->controller->params['named']['page']) || !$this->startEmpty) {
 			return $this->controller->paginate($model);
@@ -115,13 +115,13 @@ class FilterPaginationComponent extends Object {
 
 /**
  * Iterates through an array and attaches those models to $Model
- * 
+ *
  * This function is here solely to trick `Controller::paginate()` into thinking
  * that the models in $linked are directly and should only be used if the 'link'
  * key is present
- * 
+ *
  * @param Model $Model
- * @param array $linked 
+ * @param array $linked
  * @see LinkableBehavior
  */
 	function _attachLinkedModels(&$Model, $linked) {
@@ -138,14 +138,14 @@ class FilterPaginationComponent extends Object {
 			}
 		}
 	}
-	
+
 /**
  * Gets the session key
- * 
+ *
  * @return string
  */
 	function _key() {
 		return 'FilterPagination.'.$this->controller->name.'_'.$this->controller->params['action'];
 	}
-	
+
 }

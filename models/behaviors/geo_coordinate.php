@@ -86,7 +86,7 @@ class GeoCoordinateBehavior extends ModelBehavior {
  * Adds the lat and lng to the address
  *
  * @param object $Model Model reference
- */	
+ */
 	function beforeSave(&$Model) {
 		if (isset($Model->data[$Model->alias]['address_line_1']) && !empty($Model->data[$Model->alias]['address_line_1']) &&
 			isset($Model->data[$Model->alias]['city']) && !empty($Model->data[$Model->alias]['city']) &&
@@ -95,14 +95,14 @@ class GeoCoordinateBehavior extends ModelBehavior {
 		) {
 			// get geo coords
 			$coords = $this->_geocoords($Model->data[$Model->alias], $this->settings);
-			
+
 			// add to data
 			if (isset($coords['lat']) && isset($coords['lng'])) {
 				$Model->data[$Model->alias]['lat'] = $coords['lat'];
 				$Model->data[$Model->alias]['lng'] = $coords['lng'];
 			}
 		}
-		
+
 		// continue with save
 		return true;
 	}
@@ -114,12 +114,12 @@ class GeoCoordinateBehavior extends ModelBehavior {
  * @param mixed $q Query, an address array or string
  * @return array Lat and lng
  * @access public
- */	
+ */
 	function geoCoordinates(&$Model, $q = '') {
 		// get geo coords
 		return $this->_geocoords($q, $this->settings);
 	}
-	
+
 /**
 * Get Lng/Lat from provider
 *
@@ -138,7 +138,7 @@ class GeoCoordinateBehavior extends ModelBehavior {
 		} else {
 			$q = $query;
 		}
-	
+
 		$data = array();
 
 		//Extract variables to use
@@ -149,7 +149,7 @@ class GeoCoordinateBehavior extends ModelBehavior {
 		$q .= ', '.$countryCode;
 
 		//Build url
-		$url = String::insert($url,compact('api','q','countryCode'));            
+		$url = String::insert($url,compact('api','q','countryCode'));
 
 		//Get data and parse
 		if($result = $this->connection->get($url)) {

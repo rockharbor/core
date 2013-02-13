@@ -75,7 +75,7 @@
 			),
 			'options' => $roles
 		));
-		echo $this->Form->end('Filter'); 
+		echo $this->Form->end('Filter');
 		?>
 	</div>
 	<div id="advanced-filter">
@@ -139,7 +139,7 @@
 		</div>
 		<?php
 		echo $this->Js->submit('Filter', $defaultSubmitOptions);
-		echo $this->Form->end(); 
+		echo $this->Form->end();
 		?>
 	</div>
 </div>
@@ -171,7 +171,7 @@
 					'options' => array(
 						'data-core-modal' => '{"update":false}'
 					)
-				),				
+				),
 				array(
 					'title' => 'View Map Results',
 					'url' => array(
@@ -233,7 +233,7 @@
 					'links' => $links
 				));
 			}
-			?>			
+			?>
 			<tr>
 				<?php if ($fullAccess): ?>
 					<th>&nbsp;</th>
@@ -266,7 +266,7 @@
 		<?php if ($fullAccess): ?>
 			<td><?php echo $this->MultiSelect->checkbox($roster['Roster']['id']); ?></td>
 		<?php endif; ?>
-		<td><?php 
+		<td><?php
 		$name = $roster['Profile']['name'].$this->Formatting->flags('User', $roster);
 		$link = array('controller' => 'profiles', 'action' => 'view', 'User' => $roster['User']['id']);
 		$viewProfilePermission = $this->Permission->check($link);
@@ -294,16 +294,16 @@
 		<td><?php echo $this->Formatting->email($roster['Profile']['primary_email'], $roster['User']['id']); ?>&nbsp;</td>
 		<?php if ($fullAccess): ?>
 			<td><?php echo $this->Formatting->phone($roster['Profile']['cell_phone']); ?>&nbsp;</td>
-			<td><?php 
+			<td><?php
 			$link = array('controller' => 'rosters', 'action' => 'edit', $roster['Roster']['id'], 'Involvement' => $involvement['Involvement']['id'], 'User' => $roster['User']['id']);
 			if ($this->Permission->check($link)) {
-				echo $this->Html->link($roster['RosterStatus']['name'], $link, array('data-core-modal' => 'true')); 
+				echo $this->Html->link($roster['RosterStatus']['name'], $link, array('data-core-modal' => 'true'));
 			} else {
 				echo $roster['RosterStatus']['name'];
 			}
 			?>&nbsp;</td>
 			<?php if ($involvement['Involvement']['take_payment']) { ?>
-			<td><?php 
+			<td><?php
 			$balance = $this->Formatting->money($roster['Roster']['balance']);
 			if ($roster['Roster']['balance'] > 0) {
 				$balance = $this->Html->tag('span', $balance, array('class' => 'balance'));
@@ -329,7 +329,7 @@
 		?></td>
 	</tr>
 <?php endforeach; ?>
-	</table>	
+	</table>
 <?php
 	echo $this->element('pagination');
 	echo $this->MultiSelect->end();

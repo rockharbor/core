@@ -27,7 +27,7 @@ class MergeRequestsControllerTestCase extends CoreTestCase {
 	}
 
 	function endTest() {
-		unset($this->MergeRequests);		
+		unset($this->MergeRequests);
 		ClassRegistry::flush();
 	}
 
@@ -56,7 +56,7 @@ class MergeRequestsControllerTestCase extends CoreTestCase {
 
 	function testMerge() {
 		$this->loadFixtures('HouseholdMember', 'Household');
-		
+
 		$this->Profile =& ClassRegistry::init('Profile');
 		$this->User =& ClassRegistry::init('User');
 		$vars = $this->testAction('/merge_requests/merge/1');
@@ -78,7 +78,7 @@ class MergeRequestsControllerTestCase extends CoreTestCase {
 
 		$result = $user['Profile']['primary_email'];
 		$this->assertEqual($result, 'rickyjr@rockharbor.org');
-		
+
 		// remember that the user was merged so he has a new username
 		$this->assertEqual($vars['user']['User']['username'], 'rickyrockharborjr');
 		$this->assertEqual($vars['user']['User']['id'], 2);
@@ -90,27 +90,27 @@ class MergeRequestsControllerTestCase extends CoreTestCase {
 		$this->testAction('/merge_requests/delete/1');
 
 		$this->assertFalse($this->MergeRequests->MergeRequest->read(null, 1));
-		
+
 		$results = $this->User->read(null, 3);
 		$this->assertFalse($results);
 
 		$results = $this->User->read(null, 2);
 		$this->assertTrue(!empty($results));
-		
+
 		$result = $this->Profile->find('count');
 		$this->assertEqual($result, 5);
 
 		$result = $this->User->find('count');
 		$this->assertEqual($result, 5);
 	}
-	
+
 	function testIgnore() {
 		$Profile =& ClassRegistry::init('Profile');
 		$User =& ClassRegistry::init('User');
 		$vars = $this->testAction('/merge_requests/delete/1/1');
 
 		$this->assertFalse($this->MergeRequests->MergeRequest->read(null, 1));
-		
+
 		// activated the new user
 		$results = $User->read(null, 2);
 		$this->assertEqual($results['User']['active'], 1);
@@ -118,7 +118,7 @@ class MergeRequestsControllerTestCase extends CoreTestCase {
 		// original user remains untouched
 		$results = $User->read(null, 3);
 		$this->assertTrue(!empty($results));
-		
+
 		$this->assertEqual($vars['user']['User']['username'], 'rickyrockharborjr');
 	}
 

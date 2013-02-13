@@ -51,9 +51,9 @@
 	 * it will shuffle things around to be more simple to manipulate and allows
 	 * for a few other options like passing size as '900,150' (a string) instead
 	 * of the array format. This is true for all options.
-	 * 
+	 *
 	 * @code
-	 *	echo $this->Charts->draw(		
+	 *	echo $this->Charts->draw(
 	 *		'bar',
 	 *		array(
 	 *			'data' => array(10, 15, 20, 5, 10, 40),

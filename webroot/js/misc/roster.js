@@ -98,7 +98,7 @@ CORE_roster.updateAmount = function() {
 	if (payLater) {
 		totalDue = 0;
 	}
-	
+
 	if (totalDue == 0) {
 		$('#billing, #billing-tab').hide();
 	} else {

@@ -102,7 +102,7 @@ if (!empty($ministries)) { ?>
 foreach ($ministries as $ministry):
 ?>
 	<div class="subministry">
-<?php 
+<?php
 	echo $this->Html->link($ministry['Ministry']['name'].$this->Formatting->flags('Ministry', $ministry),
 		array('controller' => 'ministries', 'action' => 'view', 'Ministry' => $ministry['Ministry']['id']),
 		array('escape' => false, 'class' => 'subministry-title')
@@ -111,7 +111,7 @@ foreach ($ministries as $ministry):
 	echo $this->Html->tag('p', $this->Text->excerpt($ministry['Ministry']['description'], $this->data['Search']['query'], 100).'&nbsp;');
 ?></div>
 
-<?php	
+<?php
 endforeach;
 ?>
 	</div>
@@ -132,7 +132,7 @@ if (!empty($involvements)) { ?>
 	</div>
 	<hr />
 <?php }
-	
+
 if (empty($users) && empty($ministries) && empty($involvements)) { ?>
 
 <p>Whoops, no results. This ain't <span style="color: blue;">G</span><span style="color: red;">o</span><span style="color: yellow;">o</span><span style="color: blue;">g</span><span style="color: green;">l</span><span style="color: red;">e</span>&trade;, so try again with something less specific.</p>
@@ -141,8 +141,8 @@ if (empty($users) && empty($ministries) && empty($involvements)) { ?>
 echo $this->element('search');
 } ?>
 	<ul class="core-admin-tabs">
-		<?php 
-		$link = $this->Permission->link('User Search', array('action' => 'user'), array('class' => 'button')); 
+		<?php
+		$link = $this->Permission->link('User Search', array('action' => 'user'), array('class' => 'button'));
 		if ($link) {
 			echo $this->Html->tag('li', $link);
 		}

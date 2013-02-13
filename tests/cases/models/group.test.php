@@ -14,7 +14,7 @@ class GroupTestCase extends CoreTestCase {
 
 	function endTest() {
 		$this->unloadSettings();
-		unset($this->Group);		
+		unset($this->Group);
 		ClassRegistry::flush();
 	}
 
@@ -22,7 +22,7 @@ class GroupTestCase extends CoreTestCase {
 		$results = $this->Group->findGroups(7);
 		$expected = array(7, 8);
 		$this->assertEqual($results, $expected);
-		
+
 		$results = $this->Group->findGroups(2, '>');
 		$expected = array(1);
 		$this->assertEqual($results, $expected);
@@ -34,7 +34,7 @@ class GroupTestCase extends CoreTestCase {
 		$results = $this->Group->findGroups(5, '<=');
 		$expected = array(5, 6, 7, 8);
 		$this->assertEqual($results, $expected);
-		
+
 		$this->assertFalse($this->Group->findGroups());
 	}
 
@@ -50,7 +50,7 @@ class GroupTestCase extends CoreTestCase {
 
 		$result = $this->Group->canSeePrivate(3);
 		$this->assertTrue($result);
-		
+
 		$this->assertFalse($this->Group->canSeePrivate());
 	}
 

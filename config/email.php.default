@@ -2,12 +2,12 @@
 /**
  * This is the email configuration file.
  *
- * Currently, only 'default' and 'debug' are supported and needed. The syntax 
+ * Currently, only 'default' and 'debug' are supported and needed. The syntax
  * for this  configuration file is the same as Cake 2.1.x. All options below
  * override default and runtime-configured options.
- * 
+ *
  * Below are the options supported
- * 
+ *
  * ### Options:
  * - `transport` If 'Smtp', it will look use smtp keys
  * - `port` The SMTP port to use if `'transport' => 'Smtp'`
@@ -19,8 +19,8 @@ class EmailConfig {
 
 /**
  * The default email configuration
- * 
- * @var array 
+ *
+ * @var array
  */
 	public $default = array(
 		'transport' => 'Mail',
@@ -29,10 +29,10 @@ class EmailConfig {
 
 /**
  * The debug email configuration
- * 
+ *
  * This is where debugging emails, including tests and crash reports, are sent.
- * 
- * @var array 
+ *
+ * @var array
  */
 	public $debug = array(
 		'transport' => 'Mail'

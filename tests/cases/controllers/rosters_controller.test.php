@@ -13,7 +13,7 @@ class RostersControllerTestCase extends CoreTestCase {
 
 	function startTest($method) {
 		parent::startTest($method);
-		$this->loadFixtures('Roster', 'User', 'Involvement', 'Group', 'Date', 
+		$this->loadFixtures('Roster', 'User', 'Involvement', 'Group', 'Date',
 			'Payment', 'Notification', 'PaymentOption', 'PaymentType',
 			'InvolvementType', 'Role', 'RolesRoster', 'Leader', 'Ministry');
 		$this->Rosters =& new MockRostersController();
@@ -39,7 +39,7 @@ class RostersControllerTestCase extends CoreTestCase {
 	function endTest() {
 		$this->unloadSettings();
 		$this->Rosters->Session->destroy();
-		unset($this->Rosters);		
+		unset($this->Rosters);
 		ClassRegistry::flush();
 	}
 
@@ -76,7 +76,7 @@ class RostersControllerTestCase extends CoreTestCase {
 
 	function testFilterIndex() {
 		$this->loadFixtures('Profile');
-		
+
 		$vars = $this->testAction('/rosters/index/Involvement:3');
 		$results = Set::extract('/Roster/id', $vars['rosters']);
 		sort($results);
@@ -114,7 +114,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Roster/id', $vars['rosters']);
 		$expected = array(1);
 		$this->assertEqual($results, $expected);
-		
+
 		$data = array(
 			'Filter' => array(
 				'Profile' => array(
@@ -129,7 +129,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Roster/id', $vars['rosters']);
 		$expected = array(1);
 		$this->assertEqual($results, $expected);
-		
+
 		$data = array(
 			'Filter' => array(
 				'Roster' => array(
@@ -143,7 +143,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		));
 		$results = Set::extract('/Roster/id', $vars['rosters']);
 		$expected = array(1);
-		
+
 		$data = array(
 			'Filter' => array(
 				'Roster' => array(
@@ -158,7 +158,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Roster/id', $vars['rosters']);
 		$expected = array(2);
 		$this->assertEqual($results, $expected);
-		
+
 		$data = array(
 			'Filter' => array(
 				'User' => array(
@@ -173,7 +173,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Roster/id', $vars['rosters']);
 		$expected = array(6);
 		$this->assertEqual($results, $expected);
-		
+
 		$data = array(
 			'Filter' => array(
 				'User' => array(
@@ -188,7 +188,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Roster/id', $vars['rosters']);
 		$expected = array();
 		$this->assertEqual($results, $expected);
-		
+
 		$data = array(
 			'Filter' => array(
 				'User' => array(
@@ -257,10 +257,10 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($vars['counts']['pending'], 0);
 		$this->assertEqual($vars['counts']['total'], 3);
 	}
-	
+
 	function testInvolvementWithHousehold() {
-		$this->loadFixtures('Household', 'HouseholdMember', 'Profile');
-		
+		$this->loadFixtures('Household', 'HouseholdMember', 'Profile', 'RosterStatus');
+
 		$vars = $this->testAction('/rosters/involvement/User:1', array(
 			'data' => array(
 				'Roster' => array(
@@ -269,6 +269,12 @@ class RostersControllerTestCase extends CoreTestCase {
 					'inactive' => true,
 					'private' => true,
 					'household' => true
+				),
+				'RosterStatus' => array(
+					'Confirmed' => 1,
+					'Pending' => 1,
+					'Declined' => 1,
+					'Invited' => 1,
 				)
 			)
 		));
@@ -276,7 +282,12 @@ class RostersControllerTestCase extends CoreTestCase {
 		sort($results);
 		$expected = array(1, 3, 5, 6, 7);
 		$this->assertEqual($results, $expected);
-		
+
+		$results = Set::extract('/Involvement/id', $vars['rosters']);
+		sort($results);
+		$expected = array(1, 2, 3, 5);
+		$this->assertEqual($results, $expected);
+
 		$vars = $this->testAction('/rosters/involvement/User:2', array(
 			'data' => array(
 				'Roster' => array(
@@ -285,6 +296,12 @@ class RostersControllerTestCase extends CoreTestCase {
 					'inactive' => true,
 					'private' => true,
 					'household' => true
+				),
+				'RosterStatus' => array(
+					'Confirmed' => 1,
+					'Pending' => 1,
+					'Declined' => 1,
+					'Invited' => 1,
 				)
 			)
 		));
@@ -292,7 +309,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		sort($results);
 		$expected = array(1, 2, 4);
 		$this->assertEqual($results, $expected);
-		
+
 		$results = Set::extract('/Roster/User/Profile/name', $vars['rosters']);
 		sort($results);
 		$expected = array(
@@ -301,7 +318,7 @@ class RostersControllerTestCase extends CoreTestCase {
 			'ricky rockharbor'
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		// remove user 3 from household
 		$this->Rosters->Roster->User->HouseholdMember->delete(3);
 		$vars = $this->testAction('/rosters/involvement/User:2', array(
@@ -312,6 +329,12 @@ class RostersControllerTestCase extends CoreTestCase {
 					'inactive' => true,
 					'private' => true,
 					'household' => true
+				),
+				'RosterStatus' => array(
+					'Confirmed' => 1,
+					'Pending' => 1,
+					'Declined' => 1,
+					'Invited' => 1,
 				)
 			)
 		));
@@ -335,6 +358,12 @@ class RostersControllerTestCase extends CoreTestCase {
 					'inactive' => true,
 					'private' => true,
 					'household' => true
+				),
+				'RosterStatus' => array(
+					'Confirmed' => 1,
+					'Pending' => 1,
+					'Declined' => 1,
+					'Invited' => 1,
 				)
 			)
 		));
@@ -346,7 +375,7 @@ class RostersControllerTestCase extends CoreTestCase {
 
 	function testInvolvement() {
 		$this->loadFixtures('RosterStatus');
-		
+
 		$vars = $this->testAction('/rosters/involvement/User:1');
 		$results = Set::extract('/Involvement/name', $vars['rosters']);
 		$expected = array();
@@ -360,14 +389,30 @@ class RostersControllerTestCase extends CoreTestCase {
 					'inactive' => true,
 					'private' => false,
 					'household' => false
+				),
+				'RosterStatus' => array(
+					'Confirmed' => 1,
+					'Pending' => 1,
+					'Declined' => 1,
+					'Invited' => 1,
 				)
 			)
 		));
 		$results = Set::extract('/Involvement/name', $vars['rosters']);
 		$expected = array(
 			'CORE 2.0 testing',
-			'Third Wednesday',			
+			'Third Wednesday',
 		);
+		$this->assertEqual($results, $expected);
+
+		$results = $vars['leaderOf'];
+		sort($results);
+		$expected = array(1, 3);
+		$this->assertEqual($results, $expected);
+
+		$results = $vars['memberOf'];
+		sort($results);
+		$expected = array(2, 3);
 		$this->assertEqual($results, $expected);
 
 		$vars = $this->testAction('/rosters/involvement/User:1', array(
@@ -378,6 +423,12 @@ class RostersControllerTestCase extends CoreTestCase {
 					'inactive' => true,
 					'private' => true,
 					'household' => false
+				),
+				'RosterStatus' => array(
+					'Confirmed' => 1,
+					'Pending' => 1,
+					'Declined' => 1,
+					'Invited' => 1,
 				)
 			)
 		));
@@ -425,8 +476,78 @@ class RostersControllerTestCase extends CoreTestCase {
 		sort($results);
 		$expected = array(5);
 		$this->assertEqual($results, $expected);
+
+		$vars = $this->testAction('/rosters/involvement/User:4', array(
+			'data' => array(
+				'Roster' => array(
+					'previous' => true,
+					'leading' => true,
+					'inactive' => false,
+					'private' => true,
+					'household' => false
+				),
+				'RosterStatus' => array(
+					'Confirmed' => 1,
+					'Pending' => 0,
+					'Declined' => 0,
+					'Invited' => 0,
+				)
+			)
+		));
+
+		$results = Set::extract('/Involvement/id', $vars['rosters']);
+		$expected = array();
+		$this->assertEqual($results, $expected);
+
+		$vars = $this->testAction('/rosters/involvement/User:4', array(
+			'data' => array(
+				'Roster' => array(
+					'previous' => true,
+					'leading' => true,
+					'inactive' => false,
+					'private' => true,
+					'household' => false
+				),
+				'RosterStatus' => array(
+					'Confirmed' => 1,
+					'Pending' => 0,
+					'Declined' => 0,
+					'Invited' => 1,
+				)
+			)
+		));
+
+		$results = Set::extract('/Involvement/id', $vars['rosters']);
+		$expected = array(8);
+		$this->assertEqual($results, $expected);
+
+		$vars = $this->testAction('/rosters/involvement/User:4', array(
+			'data' => array(
+				'Roster' => array(
+					'previous' => false,
+					'leading' => false,
+					'inactive' => false,
+					'private' => false,
+					'household' => false
+				),
+				'RosterStatus' => array(
+					'Confirmed' => 0,
+					'Pending' => 0,
+					'Declined' => 0,
+					'Invited' => 0,
+				)
+			)
+		));
+
+		$results = Set::extract('/Involvement/id', $vars['rosters']);
+		$expected = array();
+		$this->assertEqual($results, $expected);
+
+		$results = $vars['memberOf'];
+		$expected = array();
+		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testFreePaymentOption() {
 		$this->Rosters->Roster->Involvement->PaymentOption->save(array(
 			'PaymentOption' => array(
@@ -439,7 +560,7 @@ class RostersControllerTestCase extends CoreTestCase {
 				'tax_deductible' => 0
 			)
 		));
-		
+
 		$paymentsBefore = $this->Rosters->Roster->Payment->find('count');
 		$data = array(
 			'Default' => array(
@@ -468,15 +589,15 @@ class RostersControllerTestCase extends CoreTestCase {
 		));
 		$result = $this->Rosters->Roster->validationErrors;
 		$this->assertEqual($result, array());
-		
+
 		$paymentsAfter = $this->Rosters->Roster->Payment->find('count');
 		$this->assertEqual($paymentsBefore, $paymentsAfter);
 	}
-	
+
 	function testRosterLimit() {
 		$this->Rosters->Roster->Involvement->id = 1;
 		$this->Rosters->Roster->Involvement->saveField('roster_limit', 1);
-		
+
 		$data = array(
 			'Default' => array(
 				'payment_option_id' => 1,
@@ -509,10 +630,10 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($notificationsAfter-$notificationsBefore, 0);
 		$this->assertEqual($this->Rosters->Session->read('Message.flash.element'), 'flash'.DS.'failure');
 		$this->assertPattern('/full/', $this->Rosters->Session->read('Message.flash.message'));
-		
+
 		$this->Rosters->Roster->Involvement->id = 1;
 		$this->Rosters->Roster->Involvement->saveField('roster_limit', 2);
-		
+
 		$notificationsBefore = $this->Rosters->Roster->User->Notification->find('count');
 		$vars = $this->testAction('/rosters/add/User:1/Involvement:1', array(
 			'data' => $data
@@ -523,10 +644,10 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($notificationsAfter-$notificationsBefore, 4);
 		$this->assertEqual($this->Rosters->Session->read('Message.flash.element'), 'flash'.DS.'success');
 	}
-	
+
 	function testAddChildcare() {
 		$this->loadFixtures('Household', 'HouseholdMember', 'Profile');
-		
+
 		$data = array(
 			'Default' => array(
 				'pay_later' => 1
@@ -545,7 +666,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		));
 		$result = $this->Rosters->Roster->validationErrors;
 		$this->assertTrue(!empty($result));
-		
+
 		$data = array(
 			'Default' => array(
 				'pay_later' => 1
@@ -570,7 +691,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		));
 		$result = $this->Rosters->Roster->validationErrors;
 		$this->assertTrue(!empty($result));
-		
+
 		$data = array(
 			'Default' => array(
 				'pay_later' => 1
@@ -590,29 +711,29 @@ class RostersControllerTestCase extends CoreTestCase {
 				)
 			)
 		);
-		
+
 		$notificationsBefore = ClassRegistry::init('Notification')->find('count');
 		$vars = $this->testAction('/rosters/add/User:1/Involvement:2', array(
 			'data' => $data
 		));
 		$notificationsAfter = ClassRegistry::init('Notification')->find('count');
-		
+
 		$result = $this->Rosters->Session->read('Message.flash.element');
 		$expected = 'flash'.DS.'success';
 		$this->assertEqual($result, $expected);
-		
+
 		// one for user, one for child, two for child's household contacts
 		$result = $notificationsAfter-$notificationsBefore;
 		$expected = 4;
 		$this->assertEqual($result, $expected);
-		
+
 		$results = Set::extract('/Profile/user_id', $vars['signedupUsers']);
 		$expected = array(1, 3);
 		$this->assertEqual($results, $expected);
-		
+
 		$result = $this->Rosters->Roster->validationErrors;
 		$this->assertEqual($result, array());
-		
+
 		$roster = $this->Rosters->Roster->find('first', array(
 			'conditions' => array(
 				'involvement_id' => 2,
@@ -621,7 +742,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		));
 		$result = $roster['Roster']['parent_id'];
 		$this->assertEqual($result, 1);
-		
+
 		$data = array(
 			'Default' => array(
 				'pay_later' => 1
@@ -641,22 +762,22 @@ class RostersControllerTestCase extends CoreTestCase {
 				)
 			)
 		);
-		
+
 		$notificationsBefore = ClassRegistry::init('Notification')->find('count');
 		$vars = $this->testAction('/rosters/add/User:1/Involvement:2', array(
 			'data' => $data
 		));
 		$notificationsAfter = ClassRegistry::init('Notification')->find('count');
-		
+
 		$result = $this->Rosters->Session->read('Message.flash.element');
 		$expected = 'flash'.DS.'success';
 		$this->assertEqual($result, $expected);
-		
+
 		// one for user, one for child, two for child's household contacts
 		$result = $notificationsAfter-$notificationsBefore;
 		$expected = 4;
 		$this->assertEqual($result, $expected);
-		
+
 		$roster = $this->Rosters->Roster->find('first', array(
 			'conditions' => array(
 				'involvement_id' => 2,
@@ -665,7 +786,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		));
 		$result = $roster['Roster']['parent_id'];
 		$this->assertEqual($result, 2);
-		
+
 		$data = array(
 			'Default' => array(
 				'pay_later' => 1,
@@ -686,31 +807,31 @@ class RostersControllerTestCase extends CoreTestCase {
 				)
 			)
 		);
-		
+
 		$notificationsBefore = ClassRegistry::init('Notification')->find('count');
 		$vars = $this->testAction('/rosters/add/User:1/Involvement:3', array(
 			'data' => $data
 		));
 		$notificationsAfter = ClassRegistry::init('Notification')->find('count');
-		
+
 		$this->assertFalse(isset($vars['amount']));
-		
+
 		$result = $this->Rosters->Session->read('Message.flash.element');
 		$expected = 'flash'.DS.'success';
 		$this->assertEqual($result, $expected);
-		
-		// one for leader, one for user 1, one for child 5, 
+
+		// one for leader, one for user 1, one for child 5,
 		// one for child 5 confirmed household contact
 		// one because the roster is filled
 		$result = $notificationsAfter-$notificationsBefore;
 		$expected = 5;
 		$this->assertEqual($result, $expected);
-		
+
 		$results = Set::extract('/Profile/user_id', $vars['signedupUsers']);
 		$expected = array(1, 5);
 		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testAdd() {
 		$vars = $this->testAction('/rosters/add/User:1/Involvement:1', array(
 			'data' => array(
@@ -733,7 +854,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$result = $this->Rosters->Session->read('Message.flash.element');
 		$expected = 'flash'.DS.'failure';
 		$this->assertEqual($result, $expected);
-		
+
 		$notificationsBefore = $this->Rosters->Roster->User->Notification->find('count');
 
 		$data = array(
@@ -771,7 +892,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, $this->Rosters->Roster->id);
 		$result = $payment['Payment']['number'];
 		$this->assertEqual($result, 1234);
-		
+
 		$this->assertTrue(isset($vars['amount']));
 
 		$notificationsNow = $this->Rosters->Roster->User->Notification->find('count');
@@ -782,7 +903,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, 1);
 		$result = $roster['Roster']['user_id'];
 		$this->assertEqual($result, 1);
-		
+
 		$data = array(
 			'Default' => array(
 				'payment_option_id' => 1,
@@ -819,14 +940,14 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($roster['Roster']['id'], 2);
 		$this->assertEqual($roster['Roster']['roster_status_id'], 1);
 	}
-	
+
 	function testAddMultiple() {
 		$this->su(array(
 			'User' => array(
 				'id' => 1
 			)
 		));
-		
+
 		$this->loadFixtures('Profile');
 		$notificationsBefore = $this->Rosters->Roster->User->Notification->find('count');
 		$rostersBefore = $this->Rosters->Roster->find('count');
@@ -882,7 +1003,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		// added one for user 1, saved over user 2 (already signed up)
 		$rostersNow = $this->Rosters->Roster->find('count');
 		$this->assertEqual($rostersNow-$rostersBefore, 1);
-		
+
 		$payments = $this->Rosters->Roster->find('all', array(
 			'conditions' => array(
 				'Roster.involvement_id' => 1
@@ -893,7 +1014,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		));
 		$results = Set::extract('/Payment/number', $payments);
 		$this->assertEqual($results, array(1234, 1234));
-		
+
 		$results = Set::extract('/Profile/name', $vars['signedupUsers']);
 		$expected = array(
 			'Jeremy Harris',
@@ -901,10 +1022,10 @@ class RostersControllerTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testAddWithAnswers() {
 		$this->loadFixtures('Profile', 'Question');
-		
+
 		$data = array(
 			'Default' => array(
 				'payment_option_id' => 1,
@@ -957,13 +1078,13 @@ class RostersControllerTestCase extends CoreTestCase {
 		));
 		$results = Set::extract('/answers/Answer/description', $vars['signedupUsers']);
 		$expected = array(
-			'Purple', 
+			'Purple',
 			'Another answer!',
-			'Blue', 
+			'Blue',
 			'I do not understand'
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$results = Set::extract('/Profile/name', $vars['signedupUsers']);
 		$expected = array(
 			'Jeremy Harris',
@@ -971,14 +1092,14 @@ class RostersControllerTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testEdit() {
 		$this->loadFixtures('Household', 'HouseholdMember', 'Profile');
-		
+
 		$this->Rosters->Roster->contain(array('Role'));
 		$data = $this->Rosters->Roster->read(null, 5);
 		$data['Role']['Role'] = array(3);
-		
+
 		$vars = $this->testAction('/rosters/edit/5', array(
 			'data' => $data
 		));
@@ -989,7 +1110,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$roster = $this->Rosters->Roster->read();
 		$roles = Set::extract('/Role/id', $roster);
 		$this->assertEqual($roles, array(3));
-		
+
 		$data['Child'] = array(
 			array(
 				'user_id' => 2
@@ -1005,7 +1126,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, 'flash'.DS.'success');
 
 		$this->assertEqual($this->Rosters->Roster->field('parent_id'), 1);
-		
+
 		$data['Child'] = array(
 			array(
 				'user_id' => 0
@@ -1016,32 +1137,32 @@ class RostersControllerTestCase extends CoreTestCase {
 		));
 		$result = $this->Rosters->Session->read('Message.flash.element');
 		$this->assertEqual($result, 'flash'.DS.'success');
-		
+
 		$vars = $this->testAction('/rosters/edit/5');
-		
+
 		$results = Set::extract('/Profile/user_id', $vars['children']);
 		sort($results);
 		$expected = array(3, 5);
 		$this->assertEqual($results, $expected);
-		
+
 		$results = Set::extract('/Profile/user_id', $vars['adults']);
 		sort($results);
 		$expected = array(6);
 		$this->assertEqual($results, $expected);
-		
+
 		$vars = $this->testAction('/rosters/edit/1');
-		
+
 		$results = Set::extract('/Profile/user_id', $vars['children']);
 		sort($results);
 		$expected = array();
 		$this->assertEqual($results, $expected);
-		
+
 		$results = Set::extract('/Profile/user_id', $vars['adults']);
 		sort($results);
 		$expected = array();
 		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testEditAnswerValidation() {
 		$data = array(
 			'Roster' => array(
@@ -1055,7 +1176,7 @@ class RostersControllerTestCase extends CoreTestCase {
 				)
 			)
 		);
-		
+
 		$this->su(array(
 			'User' => array('id' => 5),
 			'Group' => array('id' => 1)
@@ -1069,7 +1190,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertTrue(!empty($result));
 		$result = $this->Rosters->Roster->Answer->validationErrors[0];
 		$this->assertTrue(array_key_exists('description', $result));
-		
+
 		$this->su(array(
 			'User' => array('id' => 1),
 			'Group' => array('id' => 8)
@@ -1084,7 +1205,7 @@ class RostersControllerTestCase extends CoreTestCase {
 	}
 
 	function testDelete() {
-		$this->loadFixtures('Leader');		
+		$this->loadFixtures('Leader');
 
 		$this->Rosters->Session->write('MultiSelect.testDelete', array(
 			'selected' => array(2, 4)
@@ -1102,14 +1223,14 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($rostersAfter-$rostersBefore, -3);
 
 		$notificationsAfter = $this->Rosters->Roster->User->Notification->find('count');
-		// one for each user and one for each leader for each user
-		$this->assertEqual($notificationsAfter-$notificationsBefore, 4);
-		
+		// one for each user (3) and one for each leader for each user (1x3)
+		$this->assertEqual($notificationsAfter-$notificationsBefore, 6);
+
 		$rostersBefore = $this->Rosters->Roster->find('count');
 		$vars = $this->testAction('/rosters/delete/0/mstoken:testDelete');
 		$rostersAfter = $this->Rosters->Roster->find('count');
 		$this->assertEqual($rostersAfter-$rostersBefore, 0);
-		
+
 		$rostersBefore = $this->Rosters->Roster->find('count');
 		$vars = $this->testAction('/rosters/delete/0/mstoken:testDelete/User:1');
 		$rostersAfter = $this->Rosters->Roster->find('count');
@@ -1129,7 +1250,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		));
 		$results = Set::extract('/Roster/roster_status_id', $rosters);
 		$this->assertEqual($results, array(1,1));
-		
+
 		$this->testAction('/rosters/status/2/4');
 		$results = $this->Rosters->Roster->read(null, 2);
 		$this->assertEqual($results['Roster']['roster_status_id'], 4);

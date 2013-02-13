@@ -34,7 +34,7 @@
 							$upload = true;
 						}
 						echo '<div id='.$user['id'].'Image'.'>';
-						echo $this->Media->embed($path, array('restrict' => 'image'));						
+						echo $this->Media->embed($path, array('restrict' => 'image'));
 						if ($upload) {
 							echo $this->element('upload', array(
 								'type' => 'image',

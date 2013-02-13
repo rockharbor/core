@@ -32,16 +32,16 @@ class HouseholdsController extends AppController {
 		'SelectOptions',
 		'Formatting'
 	);
-	
+
 /**
  * Extra components for this controller
- * 
+ *
  * @var array
  */
 	var $components = array(
 		'MultiSelect.MultiSelect'
 	);
-	
+
 /**
  * Model::beforeFilter() callback
  *
@@ -62,7 +62,7 @@ class HouseholdsController extends AppController {
  */
 	function confirm($user, $household) {
 		$viewUser = $this->passedArgs['User'];
-		
+
 		if ($this->Household->join($household, $user, true)) {
 			$joinedHousehold = $this->Household->read(null, $household);
 			$contact = $this->Household->HouseholdMember->User->Profile->findByUserId($joinedHousehold['Household']['contact_id']);
@@ -95,12 +95,12 @@ class HouseholdsController extends AppController {
  *
  * @param integer $userId The user id
  * @param integer $household The id of the household
- */ 
+ */
 	function invite($userId, $household) {
 		$this->Household->contain(array('HouseholdContact' => array('Profile')));
 		$contact = $this->Household->read(null, $household);
 		$this->set('contact', $contact['HouseholdContact']);
-		
+
 		$usersInvited = array();
 		// check to see if they are in this household
 		$householdMember = $this->Household->HouseholdMember->find('first', array(
@@ -113,12 +113,12 @@ class HouseholdsController extends AppController {
 		$this->Household->HouseholdContact->contain(array('Profile'));
 		$user = $this->Household->HouseholdContact->read(null, $userId);
 
-		if (empty($householdMember)) {			
+		if (empty($householdMember)) {
 			// add them to the household if it exists
 			$this->Household->id = $household;
 			if ($this->Household->exists($household)) {
 				$addUser = $this->Household->HouseholdMember->User->find('first', array(
-					'conditions' => array(	
+					'conditions' => array(
 						'User.id' => $userId
 					),
 					'contain' => 'Profile'
@@ -151,11 +151,11 @@ class HouseholdsController extends AppController {
 				$this->Session->setFlash('Invalid Id.');
 			}
 		}
-		
+
 		if (isset($this->params['requested']) && $this->params['requested']) {
 			return $success;
 		}
-		
+
 		$this->redirect(array(
 			'controller' => 'pages',
 			'action' => 'message'
@@ -167,7 +167,7 @@ class HouseholdsController extends AppController {
  *
  * @param integer $userId The user id
  * @param integer $household The id of the household
- */ 
+ */
 	function delete($userId, $household) {
 		$householdMember = $this->Household->HouseholdMember->find('first', array(
 			'conditions' => array(
@@ -203,9 +203,9 @@ class HouseholdsController extends AppController {
 			$this->Session->setFlash($subject, 'flash'.DS.'success');
 		} else {
 			$success = false;
-			$this->Session->setFlash('Unable to remove '.$user['Profile']['name'].' from this household. Pleaes try again.', 'flash'.DS.'failure');			
+			$this->Session->setFlash('Unable to remove '.$user['Profile']['name'].' from this household. Pleaes try again.', 'flash'.DS.'failure');
 		}
-		
+
 		$this->redirect(array(
 			'controller' => 'pages',
 			'action' => 'message'
@@ -217,16 +217,16 @@ class HouseholdsController extends AppController {
  *
  * @param integer $user The id of the user who is becoming the contact
  * @param integer $household The id of the household to be the contact for
- */ 	
+ */
 	function make_household_contact($user, $household) {
 		$viewUser = $this->passedArgs['User'];
-	
+
 		if ($this->Household->makeHouseholdContact($user, $household)) {
 			$this->Session->setFlash('Household contact changed!', 'flash'.DS.'success');
 		} else {
 			$this->Session->setFlash('Error\'d!', 'flash'.DS.'failure');
 		}
-		
+
 		$this->redirect(array(
 			'action' => 'index',
 			'User' => $viewUser
@@ -235,18 +235,18 @@ class HouseholdsController extends AppController {
 
 /**
  * Shows a list of households for a user
- */ 
+ */
 	function index() {
 		$user = $this->passedArgs['User'];
-		
+
 		// get all households this user belongs to
 		$householdIds = $this->Household->getHouseholdIds($user, false);
-		
+
 		if (empty($householdIds)) {
 			$this->Household->createHousehold($user);
 			$householdIds = $this->Household->getHouseholdIds($user, false);
 		}
-	
+
 		$this->set('households', $this->Household->find('all', array(
 			'conditions' => array(
 				'Household.id' => $householdIds
@@ -261,6 +261,6 @@ class HouseholdsController extends AppController {
 				),
 				'HouseholdContact'
 			)
-		)));	
+		)));
 	}
 }

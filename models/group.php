@@ -47,7 +47,7 @@ class Group extends AppModel {
 	var $actsAs = array(
 		'Acl' => 'requester',
 		'Tree'
-	);		
+	);
 
 /**
  * Finds the parent of this group for Acl
@@ -107,7 +107,7 @@ class Group extends AppModel {
 		}
 
 		$groups = $this->findGroups(Core::read('general.private_group'), '>');
-		
+
 		return in_array($groupId, $groups);
 	}
 }

@@ -44,7 +44,7 @@ class Question extends AppModel {
  * @var array
  */
 	var $validate = array(
-		'description' => array(	
+		'description' => array(
 			'rule' => 'notEmpty',
 			'required' => true,
 			'message' => 'Please fill in the required field.'
@@ -57,7 +57,7 @@ class Question extends AppModel {
  * @var array
  */
 	var $actsAs = array(
-		'Ordered' => array(	
+		'Ordered' => array(
 			'field' => 'order',
 			'foreign_key' => 'involvement_id'
 		)

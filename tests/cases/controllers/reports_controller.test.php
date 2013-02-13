@@ -14,7 +14,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 	function startTest($method) {
 		parent::startTest($method);
 		Router::parseExtensions('csv', 'print');
-		
+
 		// necessary fixtures
 		$this->loadFixtures('User', 'Roster', 'Ministry', 'Involvement', 'Campus', 'InvolvementType');
 		$this->Reports = new TestReportsController();
@@ -37,7 +37,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 
 	function testIndex() {
 		$this->loadFixtures('Date');
-		
+
 		$vars = $this->testAction('/reports/index');
 		$results = $vars['userCounts']['involved'];
 		$this->assertEqual($results, 5);
@@ -49,7 +49,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, 1);
 		$results = $vars['involvementCounts']['Group']['total'];
 		$this->assertEqual($results, 1);
-		
+
 		$vars = $this->testAction('/reports/index', array(
 			'data' => array(
 				'Ministry' => array(
@@ -63,7 +63,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 		));
 		$results = $vars['involvementCounts']['Group']['total'];
 		$this->assertEqual($results, 3);
-		
+
 		$vars = $this->testAction('/reports/index', array(
 			'data' => array(
 				'Ministry' => array(
@@ -181,7 +181,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Payment/id', $vars['payments']);
 		$expected = array(3);
 		$this->assertEqual($results, $expected);
-		
+
 		$vars = $this->testAction('/reports/payments', array(
 			'data' => array(
 				'PaymentType' => array(
@@ -192,7 +192,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Payment/id', $vars['payments']);
 		$expected = array(3, 6);
 		$this->assertEqual($results, $expected);
-		
+
 		$vars = $this->testAction('/reports/payments', array(
 			'data' => array(
 				'PaymentType' => array(
@@ -204,10 +204,10 @@ class ReportsControllerTestCase extends CoreTestCase {
 		$expected = array(1, 2);
 		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testInvolvementMap() {
 		$this->loadFixtures('Address');
-		
+
 		$vars = $this->testAction('/reports/involvement_map/Involvement:1');
 		$results = Set::extract('/Address/name', $vars['results']);
 		sort($results);
@@ -216,10 +216,10 @@ class ReportsControllerTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testUserMap() {
 		$this->loadFixtures('Profile', 'Address');
-		
+
 		$this->Reports->Session->write('MultiSelect.testMap', array(
 			'selected' => array(1),
 			'search' => array(
@@ -248,18 +248,18 @@ class ReportsControllerTestCase extends CoreTestCase {
 		$expected = array('rickyrockharbor');
 		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testUserMapMissingCoords() {
 		$this->loadFixtures('Address');
 		$floatReg = '/^[+-]?(([0-9]+)|([0-9]*\.[0-9]+|[0-9]+\.[0-9]*)|(([0-9]+|([0-9]*\.[0-9]+|[0-9]+\.[0-9]*))[eE][+-]?[0-9]+))$/';
-		
+
 		$this->Reports->Session->write('MultiSelect.test', array(
 			'selected' => array(2, 3),
 			'search' => array()
 		));
-		
+
 		$vars = $this->testAction('/reports/user_map/User/test');
-		
+
 		foreach ($vars['results'] as $result) {
 			$addresses = $result['Address'];
 			foreach ($addresses as $address) {
@@ -270,7 +270,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 					$this->assertPattern($floatReg, $address['lng']);
 				}
 			}
-			
+
 			$address = $result['ActiveAddress'];
 			if (!empty($result['ActiveAddress']['id'])) {
 				$this->assertNotEqual(0.0000000, $address['lat']);
@@ -279,7 +279,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 				$this->assertPattern($floatReg, $address['lng']);
 			}
 		}
-		
+
 		// ensure the new data was saved
 		$address = ClassRegistry::init('Address')->read(null, 4);
 		$this->assertNotEqual(0.0000000, $address['Address']['lat']);
@@ -290,7 +290,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 
 	function testExportCsvWithSearch() {
 		$this->Reports->RequestHandler = new MockReportsRequestHandlerComponent();
-		
+
 		$this->Reports->Session->write('MultiSelect.testExportCsvWithSearch', array(
 			'selected' => array(),
 			'search' => array(
@@ -311,11 +311,11 @@ class ReportsControllerTestCase extends CoreTestCase {
 				)
 			)
 		);
-		
+
 		$vars = $this->testAction('/reports/export/Ministry/mstoken:testExportCsvWithSearch.csv', array(
 			'data' => $data
 		));
-		
+
 		$results = Set::extract('/Ministry/name', $vars['results']);
 		sort($results);
 		$expected = array('All Church', 'Alpha', 'Communications');

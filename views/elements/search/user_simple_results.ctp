@@ -3,7 +3,7 @@ $this->MultiSelect->create();
 ?>
 <table cellpadding="0" cellspacing="0" class="datatable">
 	<thead>
-		<?php 
+		<?php
 		$colCount = 4;
 		echo $this->element('search'.DS.'actions'.DS.$element, compact('result', 'id', 'colCount'));
 		?>
@@ -26,8 +26,8 @@ $this->MultiSelect->create();
 		?>
 			<tr<?php echo $class;?>>
 				<td><?php echo $this->MultiSelect->checkbox($result['User']['id']); ?></td>
-				<td><?php 
-				$name = $result['User']['username'].$this->Formatting->flags('User', $result); 
+				<td><?php
+				$name = $result['User']['username'].$this->Formatting->flags('User', $result);
 				echo $this->Html->link($name, array('controller' => 'profiles', 'action' => 'view', 'User' => $result['User']['id']), array('target' => '_blank', 'escape' => false));
 				?></td>
 				<td><?php echo $result['Profile']['first_name']; ?></td>
@@ -37,6 +37,6 @@ $this->MultiSelect->create();
 		<?php endforeach; ?>
 	</tbody>
 </table>
-<?php 
+<?php
 echo $this->element('pagination');
 echo $this->MultiSelect->end();

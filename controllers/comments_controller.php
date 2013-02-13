@@ -30,7 +30,7 @@ class CommentsController extends AppController {
  * @var array
  */
 	var $helpers = array('Formatting');
-	
+
 /**
  * Model::beforeFilter() callback
  *
@@ -50,10 +50,10 @@ class CommentsController extends AppController {
 		}
 		$this->_editSelf('add', 'edit');
 	}
-	
+
 /**
  * Shows a list of comments for a user
- */ 
+ */
 	function index() {
 		$viewUser = $this->passedArgs['User'];
 
@@ -78,17 +78,17 @@ class CommentsController extends AppController {
 			'limit' => 5
 		);
 		$this->set('comments', $this->paginate());
-		
+
 		$this->set('userId', $viewUser);
 		$this->set('groups', $groups);
 	}
 
 /**
  * Adds a comment
- */ 
-	function add() {		
+ */
+	function add() {
 		$viewUser = $this->passedArgs['User'];
-	
+
 		if (!empty($this->data)) {
 			$this->Comment->create();
 			if ($this->Comment->save($this->data)) {
@@ -109,11 +109,11 @@ class CommentsController extends AppController {
 
 /**
  * Edits a comment
- */ 
+ */
 	function edit() {
 		$id = $this->passedArgs['Comment'];
 		$viewUser = $this->passedArgs['User'];
-		
+
 		if (!$id && empty($this->data)) {
 			$this->cakeError('error404');
 		}
@@ -136,10 +136,10 @@ class CommentsController extends AppController {
 		));
 		$this->set('groups', $groups);
 	}
-	
+
 /**
  * Deletes a comment
- */ 
+ */
 	function delete() {
 		$viewUser = $this->passedArgs['User'];
 		$id = $this->passedArgs['Comment'];

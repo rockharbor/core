@@ -35,7 +35,7 @@
 			echo $this->Html->tag('p', $this->Text->truncate($ministry['Ministry']['description'], 200, array('html' => true)));
 			?>
 		</div>
-		<?php 
+		<?php
 		endforeach;
 		?>
 	</div>

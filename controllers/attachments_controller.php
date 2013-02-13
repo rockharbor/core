@@ -35,16 +35,16 @@ class AttachmentsController extends AppController {
 		'Number',
 		'Formatting'
 	);
-	
+
 /**
  * Extra components for this controller
- * 
+ *
  * @var array
  */
 	var $components = array(
 		'MultiSelect.MultiSelect'
 	);
-	
+
 /**
  * The name of the model this Attachment belongs to. Used for Acl
  *
@@ -58,14 +58,14 @@ class AttachmentsController extends AppController {
  * @var integer
  */
 	var $modelId = null;
-	
+
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
  *
  * @access private
- */ 
+ */
 	function beforeFilter() {
 		parent::beforeFilter();
 		$this->modelClass = Inflector::singularize($this->name);
@@ -83,14 +83,14 @@ class AttachmentsController extends AppController {
 		$this->set('attachmentModel', $this->modelClass);
 		$this->set('model', $this->model);
 		$this->set('modelId', $this->modelId);
-	}	
+	}
 
 /**
  * Shows a list of attachments, along with an upload form.
- */ 
+ */
 	function index() {
 		$this->{$this->modelClass}->recursive = 0;
-		
+
 		$this->set('attachments', $this->{$this->modelClass}->find('all', array(
 			'conditions' => array(
 				'foreign_key' => $this->modelId,
@@ -105,15 +105,15 @@ class AttachmentsController extends AppController {
  * Downloads an attachment
  *
  * @param integer $id The id of the attachment
- */ 
+ */
 	function download($id) {
 		$this->view = 'Media';
-		
+
 		$this->{$this->modelClass}->recursive = -1;
 		$attachment = $this->{$this->modelClass}->read(null, $id);
-		
+
 		$ext = array_pop(explode('.', $attachment[$this->modelClass]['basename']));
-		
+
 		$params = array(
 			'id' => $attachment[$this->modelClass]['basename'],
 			'name' => $attachment[$this->modelClass]['alternative'],
@@ -131,7 +131,7 @@ class AttachmentsController extends AppController {
  *
  * To be sent via a file upload form. The named parameters 'model' and $model
  * should be sent so the file can be attached to the user, involvement, or whatever.
- */ 	
+ */
 	function upload() {
 		$limit = $this->_getLimit();
 		$attachments = $this->{$this->modelClass}->find('all', array(
@@ -189,13 +189,13 @@ class AttachmentsController extends AppController {
 			$this->model => $this->modelId
 		));
 	}
-	
+
 /**
  * Promotes or demotes a model's first image
- * 
+ *
  * @param mixed $id The model's id
  * @param int $level The promotion level
- */	
+ */
 	function promote($id = null, $level = 0) {
 		$this->{$this->modelClass}->Behaviors->detach('Media.Coupler'); // don't require 'file' key
 		if ($id) {
@@ -203,7 +203,7 @@ class AttachmentsController extends AppController {
 		} else {
 			$ids = $this->_extractIds();
 		}
-		
+
 		foreach ($ids as $id) {
 			$attachment = $this->{$this->modelClass}->find('first', array(
 				'fields' => array(
@@ -221,42 +221,42 @@ class AttachmentsController extends AppController {
 				$this->{$this->modelClass}->saveField('promoted', $level);
 			}
 		}
-		
+
 		if ($level == 1) {
 			$msg = 'The selected Involvement Opportunities have been promoted.';
 		} else {
 			$msg = 'The selected Involvement Opportunities have been removed from the list of promoted items.';
 		}
-		
+
 		$this->Session->setFlash($msg, 'flash'.DS.'success');
 		$this->redirect($this->referer());
 	}
-	
+
 /**
  * Deletes an attachment and removes the file.
  *
  * @param integer $id The id of the attachment
- */ 
-	function delete($id = null) {		
+ */
+	function delete($id = null) {
 		if (!$id) {
 			$this->cakeError('error404');
-		} else {		
+		} else {
 			if ($this->{$this->modelClass}->delete($id)) {
 				$this->Session->setFlash('Your '.Inflector::humanize($this->modelKey).' has been deleted.', 'flash'.DS.'success');
 			} else {
 				$this->Session->setFlash('Unable to delete '.Inflector::humanize($this->modelKey).'. Please try agian.', 'flash'.DS.'failure');
-			}	
+			}
 		}
-		
+
 		$this->redirect(array(
 			'action' => 'index',
 			$this->model => $this->modelId
-		));	
+		));
 	}
 
 /**
  * Returns the limit for this model and attachment type
- * 
+ *
  * @param string model The name of the model
  * @param string modelClass The model class of the attachment (Image, Document)
  * @return integer Number of allowed attachments for the model

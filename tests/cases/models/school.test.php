@@ -13,7 +13,7 @@ class SchoolTestCase extends CoreTestCase {
 	}
 
 	function endTest() {
-		unset($this->School);		
+		unset($this->School);
 		ClassRegistry::flush();
 	}
 

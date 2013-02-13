@@ -37,7 +37,7 @@ class AppModel extends Model {
 
 /**
  * Extends model construction
- * 
+ *
  * ### Extended functionality:
  * - allows use of :ALIAS: in virtual field definitions to be replaced with the
  *		model's alias
@@ -256,7 +256,7 @@ class AppModel extends Model {
 				unset($options[$model]);
 			}
 		}
-		
+
 		return $options;
 	}
 
@@ -268,11 +268,11 @@ class AppModel extends Model {
  * @return boolean
  * @access public
  */
-	function ownedBy($userId = null, $modelId = null) {		
+	function ownedBy($userId = null, $modelId = null) {
 		if (!$this->id || $modelId) {
 			$this->id = $modelId;
-		}		
-		
+		}
+
 		if (!$userId || !$this->id) {
 			return false;
 		}
@@ -287,7 +287,7 @@ class AppModel extends Model {
 			$field = $fields[$f];
 			$f++;
 		}
-		
+
 		// check for class/model field if it's a polymorphic model
 		if (!in_array($field, array('id', 'user_id'))) {
 			$fields = array('model', 'class');
@@ -303,7 +303,7 @@ class AppModel extends Model {
 				$class => 'User'
 			));
 		}
-		
+
 		return $this->field($field) == $userId;
 	}
 
@@ -323,7 +323,7 @@ class AppModel extends Model {
 		$this->id = $id;
 		$this->recursive = 1;
 		$data = $this->read(null, $id);
-				
+
 		if ($recursive) {
 			foreach ($this->hasOne as $hasOne => $config) {
 				// get id
@@ -333,7 +333,7 @@ class AppModel extends Model {
 					$this->{$hasOne}->toggleActivity($hasOneId, $active, false);
 				}
 			}
-			
+
 			foreach ($this->hasMany as $hasMany => $config) {
 				// get ids
 				$hasManyIds = Set::extract('/'.$hasMany.'/'.$this->{$hasMany}->primaryKey, $data);
@@ -343,38 +343,38 @@ class AppModel extends Model {
 				}
 			}
 		}
-			
+
 		if ($this->hasField('active')) {
 			return $this->saveField('active', $active) ? true : false;
 		} else {
 			return false;
 		}
 	}
-	
+
 /**
- *  Validation rule that checks to see if the passed 
- *  field matches another field 
+ *  Validation rule that checks to see if the passed
+ *  field matches another field
  * (useful for password / password confirmation)
  *
  * @param array $data Passed by validator
  * @param string $compareField Field to compare it to
  * @return boolean True if it passes validation
- */	
+ */
 	function identicalFieldValues(&$data, $compareField) {
 		// $data array is passed using the form field name as the key
 		// have to extract the value to make the function generic
 		$value = array_values($data);
-		$comparewithvalue = $value[0];	
-		
+		$comparewithvalue = $value[0];
+
 		return ($this->data[$this->name][$compareField] == $comparewithvalue);
 	}
 
 /**
- * Validation rule that invalidates the passed field _if_ other field(s) have a 
+ * Validation rule that invalidates the passed field _if_ other field(s) have a
  * correct value. This validation rule should __always__ be placed last.
- * 
+ *
  * #### Usage
- * 
+ *
  * {{{
  * 'field_name' => array(
  *   'myRule' => array(
@@ -385,10 +385,10 @@ class AppModel extends Model {
  *   )
  * )
  * }}}
- * 
+ *
  * The above rule would validate if `field_name` was an email address *or*
  * if `some_field` is equal to 'someValue'.
- * 
+ *
  * @param array $data Data array
  * @param array $orFields Array of field=>values to allow this field to pass
  * @return boolean Always true, because this function only revalidates fields
@@ -428,7 +428,7 @@ class AppModel extends Model {
 			if (isset($value['year']) && empty($value['year'])) {
 				$value['year'] = '0000';
 			}
-			
+
 			// convert to proper type
 			if (array_key_exists('month', $value) && array_key_exists('day', $value) && array_key_exists('year', $value)) {
 				$value = $value['year'].'-'.$value['month'].'-'.$value['day'];
