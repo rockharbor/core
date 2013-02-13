@@ -565,7 +565,7 @@ class RostersController extends AppController {
 							$this->Notifier->notify(array(
 								'to' => $signuproster['Roster']['user_id'],
 								'template' => 'involvements_signup',
-								'subject' => 'Signed up for '.$involvement['InvolvementType']['name'],
+								'subject' => 'Signed up for '.$involvement['Involvement']['name'],
 							));
 						}
 
@@ -580,7 +580,7 @@ class RostersController extends AppController {
 								$this->Notifier->notify(array(
 									'to' => $signupchild['Roster']['user_id'],
 									'template' => 'involvements_signup',
-									'subject' => 'Signed up for '.$involvement['InvolvementType']['name']
+									'subject' => 'Signed up for '.$involvement['Involvement']['name']
 								));
 							}
 						}
@@ -608,7 +608,7 @@ class RostersController extends AppController {
 						$this->Notifier->notify(array(
 							'to' => $signuproster['Roster']['user_id'],
 							'template' => 'involvements_signup',
-							'subject' => 'You have signed up for '.$involvement['InvolvementType']['name'],
+							'subject' => 'You have signed up for '.$involvement['Involvement']['name'],
 						));
 					}
 
@@ -620,7 +620,7 @@ class RostersController extends AppController {
 							$this->Notifier->notify(array(
 								'to' => $signupchild['Roster']['user_id'],
 								'template' => 'involvements_signup',
-								'subject' => 'You have signed up for '.$involvement['InvolvementType']['name'],
+								'subject' => 'You have signed up for '.$involvement['Involvement']['name'],
 							));
 						}
 					}
@@ -676,7 +676,7 @@ class RostersController extends AppController {
 								$this->Notifier->notify(array(
 									'to' => $household['Household']['contact_id'],
 									'template' => 'involvements_signup_child',
-									'subject' => $signedupUser['Profile']['child'].' signed up for '.$involvement['InvolvementType']['name'],
+									'subject' => $signedupUser['Profile']['child'].' signed up for '.$involvement['Involvement']['name'],
 								));
 							}
 						}
