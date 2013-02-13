@@ -151,5 +151,23 @@ class InvolvementFixture extends CakeTestFixture {
 			'force_payment' => 0,
 			'default_status_id' => 1
 		),
+		array(
+			'id' => 8,
+			'ministry_id' => 6,
+			'involvement_type_id' => 5,
+			'name' => 'An interest list',
+			'description' => 'Interested in interest lists? Apply now!',
+			'roster_limit' => 0,
+			'roster_visible' => 0,
+			'private' => 0,
+			'signup' => 1,
+			'take_payment' => 0,
+			'offer_childcare' => 0,
+			'active' => 1,
+			'created' => '2010-04-23 13:07:08',
+			'modified' => '2010-04-23 13:07:21',
+			'force_payment' => 0,
+			'default_status_id' => 3
+		),
 	);
 }

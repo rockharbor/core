@@ -273,7 +273,8 @@ class RostersController extends AppController {
 		}
 		$users[] = $userId;
 
-		$leaderOf = $this->Roster->Involvement->Leader->find('list', array(
+		// find involvements user is leading
+		$leaders = $this->Roster->Involvement->Leader->find('all', array(
 			'fields' => array(
 				'Leader.id',
 				'Leader.model_id'
@@ -283,26 +284,39 @@ class RostersController extends AppController {
 				'Leader.user_id' => $userId
 			)
 		));
+		$leaderOf = Set::extract('/Leader/model_id', $leaders);
 
-		$memberOf = $this->Roster->find('list', array(
+		// find rosters for user(s)
+		$rosterConditions = array(
+			'Roster.user_id' => $users
+		);
+		$flippedStatuses = array_flip($rosterStatuses);
+		$checkedStatuses = array();
+		foreach ($this->data['RosterStatus'] as $status => $checked) {
+			if ($checked) {
+				$checkedStatuses[] = $flippedStatuses[$status];
+			}
+		}
+		if (!empty($checkedStatuses)) {
+			$rosterConditions['Roster.roster_status_id'] = $checkedStatuses;
+		} else {
+			$rosterConditions['Roster.roster_status_id'] = 0;
+		}
+		$members = $this->Roster->find('all', array(
 			'fields' => array(
 				'Roster.id',
 				'Roster.involvement_id'
 			),
-			'conditions' => array(
-				'Roster.user_id' => $users
-			)
+			'conditions' => $rosterConditions
 		));
+		$memberOf = Set::extract('/Roster/involvement_id', $members);
 
+		// filter conditions for involvements
 		$conditions = array(
-			'Involvement.id' => array_unique(array_values($memberOf))
+			'Involvement.id' => array_unique($memberOf)
 		);
-		$rosterConditions = array(
-			'Roster.user_id' => $users
-		);
-
 		if ($this->data['Roster']['leading']) {
-			$conditions['Involvement.id'] = array_merge(array_values($leaderOf), array_values($memberOf));
+			$conditions['Involvement.id'] = array_unique(array_merge($leaderOf, $memberOf));
 		}
 		if (!$this->data['Roster']['previous']) {
 			$db = $this->Roster->getDataSource();
@@ -314,17 +328,8 @@ class RostersController extends AppController {
 		if (!$this->data['Roster']['private']) {
 			$conditions['Involvement.private'] = false;
 		}
-		$flippedStatuses = array_flip($rosterStatuses);
-		$checkedStatuses = array();
-		foreach ($this->data['RosterStatus'] as $status => $checked) {
-			if ($checked) {
-				$checkedStatuses[] = $flippedStatuses[$status];
-			}
-		}
-		if (!empty($checkedStatuses)) {
-			$rosterConditions['Roster.roster_status_id'] = $checkedStatuses;
-		}
 
+		// filter possible involvements and include roster data
 		$this->paginate = array(
 			'fields' => array(
 				'id', 'name', 'previous', 'active', 'private'
@@ -334,7 +339,9 @@ class RostersController extends AppController {
 				'Date',
 				'InvolvementType',
 				'Roster' => array(
-					'conditions' => $rosterConditions,
+					'conditions' => array(
+						'Roster.user_id' => $users
+					),
 					'Role',
 					'User' => array(
 						'Profile' => array(

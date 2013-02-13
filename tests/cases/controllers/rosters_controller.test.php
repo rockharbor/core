@@ -259,7 +259,7 @@ class RostersControllerTestCase extends CoreTestCase {
 	}
 
 	function testInvolvementWithHousehold() {
-		$this->loadFixtures('Household', 'HouseholdMember', 'Profile');
+		$this->loadFixtures('Household', 'HouseholdMember', 'Profile', 'RosterStatus');
 
 		$vars = $this->testAction('/rosters/involvement/User:1', array(
 			'data' => array(
@@ -269,12 +269,23 @@ class RostersControllerTestCase extends CoreTestCase {
 					'inactive' => true,
 					'private' => true,
 					'household' => true
+				),
+				'RosterStatus' => array(
+					'Confirmed' => 1,
+					'Pending' => 1,
+					'Declined' => 1,
+					'Invited' => 1,
 				)
 			)
 		));
 		$results = Set::extract('/Roster/id', $vars['rosters']);
 		sort($results);
 		$expected = array(1, 3, 5, 6, 7);
+		$this->assertEqual($results, $expected);
+
+		$results = Set::extract('/Involvement/id', $vars['rosters']);
+		sort($results);
+		$expected = array(1, 2, 3, 5);
 		$this->assertEqual($results, $expected);
 
 		$vars = $this->testAction('/rosters/involvement/User:2', array(
@@ -285,6 +296,12 @@ class RostersControllerTestCase extends CoreTestCase {
 					'inactive' => true,
 					'private' => true,
 					'household' => true
+				),
+				'RosterStatus' => array(
+					'Confirmed' => 1,
+					'Pending' => 1,
+					'Declined' => 1,
+					'Invited' => 1,
 				)
 			)
 		));
@@ -312,6 +329,12 @@ class RostersControllerTestCase extends CoreTestCase {
 					'inactive' => true,
 					'private' => true,
 					'household' => true
+				),
+				'RosterStatus' => array(
+					'Confirmed' => 1,
+					'Pending' => 1,
+					'Declined' => 1,
+					'Invited' => 1,
 				)
 			)
 		));
@@ -335,6 +358,12 @@ class RostersControllerTestCase extends CoreTestCase {
 					'inactive' => true,
 					'private' => true,
 					'household' => true
+				),
+				'RosterStatus' => array(
+					'Confirmed' => 1,
+					'Pending' => 1,
+					'Declined' => 1,
+					'Invited' => 1,
 				)
 			)
 		));
@@ -360,6 +389,12 @@ class RostersControllerTestCase extends CoreTestCase {
 					'inactive' => true,
 					'private' => false,
 					'household' => false
+				),
+				'RosterStatus' => array(
+					'Confirmed' => 1,
+					'Pending' => 1,
+					'Declined' => 1,
+					'Invited' => 1,
 				)
 			)
 		));
@@ -370,6 +405,16 @@ class RostersControllerTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 
+		$results = $vars['leaderOf'];
+		sort($results);
+		$expected = array(1, 3);
+		$this->assertEqual($results, $expected);
+
+		$results = $vars['memberOf'];
+		sort($results);
+		$expected = array(2, 3);
+		$this->assertEqual($results, $expected);
+
 		$vars = $this->testAction('/rosters/involvement/User:1', array(
 			'data' => array(
 				'Roster' => array(
@@ -378,6 +423,12 @@ class RostersControllerTestCase extends CoreTestCase {
 					'inactive' => true,
 					'private' => true,
 					'household' => false
+				),
+				'RosterStatus' => array(
+					'Confirmed' => 1,
+					'Pending' => 1,
+					'Declined' => 1,
+					'Invited' => 1,
 				)
 			)
 		));
@@ -424,6 +475,76 @@ class RostersControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Roster/id', $vars['rosters']);
 		sort($results);
 		$expected = array(5);
+		$this->assertEqual($results, $expected);
+
+		$vars = $this->testAction('/rosters/involvement/User:4', array(
+			'data' => array(
+				'Roster' => array(
+					'previous' => true,
+					'leading' => true,
+					'inactive' => false,
+					'private' => true,
+					'household' => false
+				),
+				'RosterStatus' => array(
+					'Confirmed' => 1,
+					'Pending' => 0,
+					'Declined' => 0,
+					'Invited' => 0,
+				)
+			)
+		));
+
+		$results = Set::extract('/Involvement/id', $vars['rosters']);
+		$expected = array();
+		$this->assertEqual($results, $expected);
+
+		$vars = $this->testAction('/rosters/involvement/User:4', array(
+			'data' => array(
+				'Roster' => array(
+					'previous' => true,
+					'leading' => true,
+					'inactive' => false,
+					'private' => true,
+					'household' => false
+				),
+				'RosterStatus' => array(
+					'Confirmed' => 1,
+					'Pending' => 0,
+					'Declined' => 0,
+					'Invited' => 1,
+				)
+			)
+		));
+
+		$results = Set::extract('/Involvement/id', $vars['rosters']);
+		$expected = array(8);
+		$this->assertEqual($results, $expected);
+
+		$vars = $this->testAction('/rosters/involvement/User:4', array(
+			'data' => array(
+				'Roster' => array(
+					'previous' => false,
+					'leading' => false,
+					'inactive' => false,
+					'private' => false,
+					'household' => false
+				),
+				'RosterStatus' => array(
+					'Confirmed' => 0,
+					'Pending' => 0,
+					'Declined' => 0,
+					'Invited' => 0,
+				)
+			)
+		));
+
+		$results = Set::extract('/Involvement/id', $vars['rosters']);
+		$expected = array();
+		$this->assertEqual($results, $expected);
+
+		$results = $vars['memberOf'];
+		$expected = array();
 		$this->assertEqual($results, $expected);
 	}
 
