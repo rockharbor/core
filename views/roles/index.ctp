@@ -24,7 +24,7 @@
 				<td><?php echo $this->Formatting->datetime($role['Role']['created']); ?>&nbsp;</td>
 				<td>
 					<div class="core-icon-container">
-						<?php 
+						<?php
 						echo $this->Html->link($this->element('icon', array('icon' => 'edit')), array('action' => 'edit', $role['Role']['id'], 'Ministry' => $role['Role']['ministry_id']), array('data-core-modal' => 'true', 'escape' => false, 'class' => 'no-hover'));
 						echo $this->Html->link($this->element('icon', array('icon' => 'delete')), array('action' => 'delete', $role['Role']['id'], 'Ministry' => $role['Role']['ministry_id']), array('id' => 'delete_btn_'.$role['Role']['id'], 'escape' => false, 'class' => 'no-hover'));
 						$this->Js->buffer('CORE.confirmation("delete_btn_'.$role['Role']['id'].'","Are you sure you want to delete this role?", {update:true});');

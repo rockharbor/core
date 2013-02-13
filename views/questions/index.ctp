@@ -1,5 +1,5 @@
 <h1>Questions</h1>
-<div class="questions">	
+<div class="questions">
 	<table cellpadding="0" cellspacing="0" class="datatable">
 		<tbody>
 		<?php

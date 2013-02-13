@@ -27,42 +27,42 @@ class AuthorizeDotNetTestCase extends CoreTestCase {
 		$this->unloadSettings();
 		ClassRegistry::flush();
 	}
-	
+
 	function testSetInvoiceNumber() {
 		$this->AuthorizeDotNet->setInvoiceNumber('invoice. 12345&#$');
 		$result = $this->AuthorizeDotNet->_data['x_invoice_num'];
 		$expected = 'invoice12345';
 		$this->assertEqual($result, $expected);
-		
+
 		$this->AuthorizeDotNet->setInvoiceNumber('invoice. 123456549879874654321321&#$');
 		$result = $this->AuthorizeDotNet->_data['x_invoice_num'];
 		$expected = 'invoice1234565498798';
 		$this->assertEqual($result, $expected);
 	}
-	
+
 	function testSetDescription() {
 		$this->AuthorizeDotNet->setDescription(' string &*@!#$& with <b>symbols</b>');
 		$result = $this->AuthorizeDotNet->_data['x_description'];
 		$expected = 'string  with symbols';
 		$this->assertEqual($result, $expected);
 	}
-	
+
 	function testSetAmount() {
 		$this->AuthorizeDotNet->setAmount(2000);
 		$result = $this->AuthorizeDotNet->_data['x_Amount'];
 		$expected = '2000.00';
 		$this->assertEqual($result, $expected);
-		
+
 		$this->AuthorizeDotNet->setAmount(2000.52);
 		$result = $this->AuthorizeDotNet->_data['x_Amount'];
 		$expected = '2000.52';
 		$this->assertEqual($result, $expected);
 	}
-	
+
 	function testSetCustomer() {
 		$this->AuthorizeDotNet->setCustomer();
 		$this->assertFalse(isset($this->AuthorizeDotNet->_data['x_First_Name']));
-		
+
 		$this->AuthorizeDotNet->setCustomer(array(
 			'first_name' => 'jeremy',
 			'last_name' => 'harris',
@@ -82,23 +82,23 @@ class AuthorizeDotNetTestCase extends CoreTestCase {
 		$result = $this->AuthorizeDotNet->_data['x_First_Name'];
 		$expected = 'jeremy';
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $this->AuthorizeDotNet->_data['x_Exp_Date'];
 		$expected = '092012';
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $this->AuthorizeDotNet->_data['x_Address'];
 		$expected = '123 Main Apt B';
 		$this->assertEqual($result, $expected);
 	}
-	
+
 	function testSetInvoice() {
 		$this->AuthorizeDotNet->setInvoice('test');
 		$result = $this->AuthorizeDotNet->_data['x_Invoice'];
 		$expected = 'test';
 		$this->assertEqual($result, $expected);
 	}
-	
+
 	function testFormatFields() {
 		$data = array(
 			'Key' => 'Value',
@@ -122,7 +122,7 @@ class AuthorizeDotNetTestCase extends CoreTestCase {
 		$result = $this->AuthorizeDotNet->_data['x_Test_Request'];
 		$expected = 'TRUE';
 		$this->assertEqual($result, $expected);
-		
+
 		Configure::write('debug', 0);
 		$this->AuthorizeDotNet->_init();
 		$result = $this->AuthorizeDotNet->_data['x_Merchant_Email'];
@@ -151,7 +151,7 @@ class AuthorizeDotNetTestCase extends CoreTestCase {
 		);
 		$results = $this->AuthorizeDotNet->request();
 		$this->assertTrue($results);
-		
+
 		$this->AuthorizeDotNet->_data['x_Login'] = Configure::read('AuthorizeDotNet.username');
 		$this->AuthorizeDotNet->_data['x_Password'] = Configure::read('AuthorizeDotNet.password');
 	}

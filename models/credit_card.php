@@ -147,12 +147,12 @@ class CreditCard extends AppModel {
  *
  * @var string
  * @todo Use id instead to maintain conventions
- */ 
+ */
 	var $transactionId = null;
-	
+
 /**
  * The payment gateway component
- * 
+ *
  * @var AuthorizeDotNetComponent
  */
 	var $gateway = null;
@@ -164,7 +164,7 @@ class CreditCard extends AppModel {
 	function exists() {
 		return true;
 	}
-	
+
 /**
  * Overwrite Model::saveAll()
  *
@@ -181,25 +181,25 @@ class CreditCard extends AppModel {
 		}
 		return $continue;
 	}
-	
+
 /**
  * Overwrite Model::save() to process the card instead
  *
  * @param array $data The data to process
  * @param array $options Save options (currently only supports `validate`)
  * @return boolean Success
- */	
+ */
 	function save($data, $options = array()) {
 		// move to root of $data instead
 		if (isset($data[$this->alias])) {
 			$data = $data[$this->alias];
 		}
-		
+
 		$_defaults = array(
 			'validate' => 'first'
 		);
 		$options = array_merge($_defaults, $options);
-	
+
 		$this->set($data);
 		if (!($options['validate']) || $this->validates()) {
 			$gateway = $this->getGateway();
@@ -208,7 +208,7 @@ class CreditCard extends AppModel {
 			$gateway->setInvoiceNumber($data['invoice_number']);
 			$gateway->setDescription($data['description']);
 			$gateway->setAmount($data['amount']);
-			
+
 			if ($options['validate'] != 'only') {
 				// run credit card
 				$success = $gateway->request();
@@ -221,13 +221,13 @@ class CreditCard extends AppModel {
 			// just validate and it validated, so pass true
 			return true;
 		}
-		
+
 		return false;
 	}
 
 /**
  * Gets the gateway component
- * 
+ *
  * @return AuthorizeDotNetComponent
  */
 	function getGateway() {

@@ -62,7 +62,7 @@ class LeadersControllerTestCase extends CoreTestCase {
 			'selected' => array(1, 2),
 			'search' => array()
 		));
-		
+
 		$notificationsBefore =  $this->Leaders->Leader->User->Notification->find('count');
 		$vars = $this->testAction('/involvement_leaders/add/Involvement:1/model:Involvement/mstoken:test', array(
 			'return' => 'vars'
@@ -71,7 +71,7 @@ class LeadersControllerTestCase extends CoreTestCase {
 		$notificationsAfter = $this->Leaders->Leader->User->Notification->find('count');
 		// 2 for the users, 2x1 leader
 		$this->assertEqual($notificationsAfter-$notificationsBefore, 4);
-		
+
 		$this->assertTrue($this->Leaders->Leader->hasAny(array(
 			'user_id' => 1,
 			'model' => 'Involvement',
@@ -91,7 +91,7 @@ class LeadersControllerTestCase extends CoreTestCase {
 		// can't remove the only leader
 		$this->assertEqual($notificationsAfter-$notificationsBefore, 0);
 		$this->assertEqual($this->Leaders->Session->read('Message.flash.element'), 'flash'.DS.'failure');
-		
+
 		$this->_setLeaderController('Ministry');
 		$notificationsBefore =  $this->Leaders->Leader->User->Notification->find('count');
 		$vars = $this->testAction('/ministry_leaders/delete/Ministry:4/User:1');

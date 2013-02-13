@@ -1,6 +1,6 @@
 .wysihtml5-toolbar {
 	padding: 5px;
-	
+
 	border: 1px solid #838383;
 	border-bottom: none;
 }
@@ -20,25 +20,25 @@
 }
 
 .wysihtml5-toolbar .separator {
-	display: block; 
-	width: 1px; 
+	display: block;
+	width: 1px;
 	height: 16px;
 	float: left;
 	margin: 0 5px;
-	
+
 	border-right: 1px solid #838383;
 }
 
 .wysihtml5-toolbar .tools .tool {
-	display: block; 
-	width: 16px; 
+	display: block;
+	width: 16px;
 	height: 16px;
 	float: left;
 	margin: 0 3px;
-	
+
 	text-indent: -5000px;
 	color: #838383;
-	
+
 	background-color: #ffffff;
 	background-image:  url('../assets/jquery.wysiwyg.gif');
 }
@@ -67,11 +67,11 @@
 	left: -2px;
 	overflow: hidden;
 	width: 100px;
-	
+
 	border: 1px solid #ccc;
 	/* to align it with the toolbar's bottom */
 	border-top: 11px solid #fff;
-	
+
 	background: #fff;
 }
 
@@ -80,9 +80,9 @@
 	display: block;
 	margin: 3px;
 	width: auto;
-	
+
 	cursor: pointer;
-	
+
 	border: 0;
 }
 

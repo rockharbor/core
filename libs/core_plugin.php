@@ -10,7 +10,7 @@
 
 /**
  * CorePlugin class
- * 
+ *
  * Plugin install files should extend this file
  *
  * @copyright     Copyright 2010, *ROCK*HARBOR
@@ -22,18 +22,18 @@ class CorePlugin {
 
 /**
  * Run on plugin install
- * 
+ *
  * @return void
  */
 	function install() {
 	}
-	
+
 /**
  * Run on plugin uninstall
- * 
+ *
  * @return void
  */
 	function uninstall() {
 	}
-	
+
 }

@@ -36,10 +36,10 @@ class PermissionHelper extends AppHelper {
 		'Html',
 		'Js'
 	);
-	
+
 /**
  * Whether the user can see private items or not
- * 
+ *
  * @var boolean
  */
 	var $_canSeePrivate = null;
@@ -108,7 +108,7 @@ class PermissionHelper extends AppHelper {
 		if (!isset($path['plugin'])) {
 			$path['plugin'] = $this->plugin;
 		}
-		
+
 		$view =& ClassRegistry::getObject('view');
 		$controller = $path['controller'];
 		if (!isset($this->controllers[$controller])) {
@@ -124,14 +124,14 @@ class PermissionHelper extends AppHelper {
 			$this->controllers[$controller]->beforeFilter();
 		}
 		$url = Router::url($path);
-		return 
+		return
 			in_array($path['action'], $this->controllers[$controller]->Auth->allowedActions) ||
 			$this->controllers[$controller]->isAuthorized($url, $params, $view->viewVars['activeUser']);
 	}
-	
+
 /**
  * Checks if a user is allowed to see private items
- * 
+ *
  * @return boolean
  */
 	function canSeePrivate() {

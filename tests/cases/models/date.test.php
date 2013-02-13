@@ -16,7 +16,7 @@ class DateTestCase extends CoreTestCase {
 
 	function testVirtualFields() {
 		$this->loadFixtures('Date');
-		
+
 		$date = $this->Date->read(null, 1);
 		$result = $date['Date']['previous'];
 		$this->assertFalse($result);
@@ -32,7 +32,7 @@ class DateTestCase extends CoreTestCase {
 		$result = $date['Date']['previous'];
 		$this->assertFalse($result);
 	}
-	
+
 	function testGenerateDates() {
 		$this->loadFixtures('Date');
 
@@ -135,7 +135,7 @@ class DateTestCase extends CoreTestCase {
 			'2010-07-31'
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		// make it a permanent recurring exemption
 		$this->Date->save(array(
 			'Date' => array(
@@ -144,17 +144,17 @@ class DateTestCase extends CoreTestCase {
 				'permanent' => true
 			)
 		));
-		
+
 		$results = $this->Date->generateDates(5, array(
 			'start' => mktime(0, 0, 0, 7, 17, 2010),
 			'limit' => 1
 		));
 		$this->assertEqual(count($results), 1);
 	}
-	
+
 	function testMonthlyWithExemption() {
 		$this->loadFixtures('Date');
-		
+
 		$range = array(
 			'start' => date('Y-m-d H:i', mktime(0, 0, 0, 4, 1, 2010)),
 			'end' => date('Y-m-d H:i', mktime(0, 0, 0, 6, 2, 2010))
@@ -557,7 +557,7 @@ class DateTestCase extends CoreTestCase {
 		$results = $this->Date->_generateRecurringDates($date, $range);
 		$this->assertEqual($results, array());
 	}
-	
+
 	function testRangeAsTime() {
 		$date = array(
 			'Date' => array(
@@ -576,7 +576,7 @@ class DateTestCase extends CoreTestCase {
 				'offset' => 2
 			)
 		);
-		
+
 		$range = array(
 			'start' => mktime(0, 0, 0, 5, 1, 2010),
 			'end' => mktime(0, 0, 0, 7, 1, 2010)
@@ -587,7 +587,7 @@ class DateTestCase extends CoreTestCase {
 			'2010-05-12'
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$range = array(
 			'start' => (string)mktime(0, 0, 0, 5, 1, 2010),
 			'end' => (string)mktime(0, 0, 0, 7, 1, 2010)
@@ -599,7 +599,7 @@ class DateTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testRangeAsString() {
 		$date = array(
 			'Date' => array(
@@ -618,7 +618,7 @@ class DateTestCase extends CoreTestCase {
 				'offset' => 2
 			)
 		);
-		
+
 		$range = array(
 			'start' => date('Y-m-d H:i', mktime(0, 0, 0, 5, 1, 2010)),
 			'end' => date('Y-m-d H:i', mktime(0, 0, 0, 7, 1, 2010))

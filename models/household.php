@@ -66,7 +66,7 @@ class Household extends AppModel {
 		$conditions = array(
 			'HouseholdMember.user_id' => $userId
 		);
-		
+
 		$memberConditions = array(
 			'HouseholdMember.user_id <>' => $userId
 		);
@@ -74,7 +74,7 @@ class Household extends AppModel {
 		if ($mustBeContact) {
 			$conditions['Household.contact_id'] = $userId;
 		}
-		
+
 		if ($mustBeConfirmed) {
 			$memberConditions['HouseholdMember.confirmed'] = true;
 		}
@@ -130,7 +130,7 @@ class Household extends AppModel {
  * @param integer $householdId The household id
  * @return boolean
  * @access public
- */ 
+ */
 	function isMember($userId, $householdId) {
 		return $this->HouseholdMember->hasAny(array(
 			'household_id' => $householdId,
@@ -149,10 +149,10 @@ class Household extends AppModel {
  * @param mixed $household The household id(s) to restrict the search to. Can be an array
  * @return boolean
  * @access public
- */ 	
+ */
 	function isMemberWith($userId, $memberId, $household = null) {
 		$households = $this->getHouseholdIds($userId);
-		
+
 		if (!$household) {
 			$household = array();
 		} elseif (!is_array($household)) {
@@ -164,7 +164,7 @@ class Household extends AppModel {
 		} else {
 			$household = $households;
 		}
-		
+
 		return $this->HouseholdMember->hasAny(array(
 			'HouseholdMember.user_id' => $memberId,
 			'HouseholdMember.household_id' => $household
@@ -178,7 +178,7 @@ class Household extends AppModel {
  * @param integer $householdId The household id
  * @return boolean
  * @access public
- */ 	
+ */
 	function isContact($userId, $householdId) {
 		$this->id = $householdId;
 		return $this->field('id') == $userId;
@@ -191,7 +191,7 @@ class Household extends AppModel {
  * @param integer $userId The user id
  * @return boolean
  * @access public
- */ 		
+ */
 	function isContactFor($contactId, $userId) {
 		// get households for the user
 		$households = $this->HouseholdMember->find('count', array(
@@ -204,7 +204,7 @@ class Household extends AppModel {
 				'Household'
 			)
 		));
-		
+
 		return $households > 0;
 	}
 
@@ -217,13 +217,13 @@ class Household extends AppModel {
  * @param integer $user User id
  * @return boolean True on success, false on failure
  * @access public
- */ 
+ */
 	function createHousehold($user) {
 		if (!$this->HouseholdMember->hasAny(array(
 			'user_id' => $user,
 			'confirmed' => true
 		))) {
-			// create household			
+			// create household
 			if (!$this->hasAny(array('contact_id' => $user))) {
 				$this->create();
 				$hSuccess = $this->save(array('contact_id' => $user));
@@ -240,10 +240,10 @@ class Household extends AppModel {
 			));
 			return $hSuccess && $hmSuccess;
 		}
-		
+
 		return true;
 	}
-	
+
 /**
  * Makes a user the household contact
  *
@@ -252,7 +252,7 @@ class Household extends AppModel {
  * @return boolean True on success, false on failure
  * @access public
  * @todo Should check and fail if they're a child, inactive, exist, confirmed etc.
- */ 	
+ */
 	function makeHouseholdContact($user, $household) {
 		$this->id = $household;
 		if ($this->isMember($user, $household)) {
@@ -261,7 +261,7 @@ class Household extends AppModel {
 			return false;
 		}
 	}
-	
+
 /**
  * Adds or invites a user to a household
  *
@@ -270,7 +270,7 @@ class Household extends AppModel {
  * @param boolean $confirm True to add, false to invite
  * @return boolean True on success, false on failure
  * @access public
- */ 
+ */
 	function join($household, $user, $confirm = false) {
 		$this->HouseholdMember->User->id = $user;
 		$this->id = $household;
@@ -285,10 +285,10 @@ class Household extends AppModel {
 				'user_id' => $user
 			)
 		));
-		
+
 		if (!empty($member)) {
 			// in the household already
-			$this->HouseholdMember->id = $member['HouseholdMember']['id'];			
+			$this->HouseholdMember->id = $member['HouseholdMember']['id'];
 			$success = $this->HouseholdMember->saveField('confirmed', $confirm);
 		} else {
 			// not in the household
@@ -299,7 +299,7 @@ class Household extends AppModel {
 				'confirmed' => $confirm
 			));
 		}
-		
+
 		return $success;
 	}
 }

@@ -34,11 +34,11 @@ class CampusLeadersController extends LeadersController {
  * Used to override Acl permissions for this controller.
  *
  * @access private
- */ 
+ */
 	function beforeFilter() {
 		parent::beforeFilter();
 		$this->modelId = isset($this->passedArgs[$this->model]) ? $this->passedArgs[$this->model] : null;
 	}
-	
+
 }
 

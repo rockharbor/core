@@ -23,7 +23,7 @@ class InvolvementType extends AppModel {
  * @var string
  */
 	var $name = 'InvolvementType';
-	
+
 /**
  * Default order
  *

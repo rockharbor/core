@@ -67,12 +67,12 @@ class DummiesController extends AppController {
 	var $name = 'Dummies';
 
 	var $components = array('Session', 'Dumb');
-	
+
 	function __mergeVars() {
 		parent::__mergeVars();
 		unset($this->components['DebugKit.Toolbar']);
 	}
-	
+
 	function dummy_action($var) {
 		$this->set('var', $var);
 		return true;
@@ -94,14 +94,14 @@ class DummiesController extends AppController {
 	function get_me() {
 		$this->set('query', $this->params['url']['query']);
 	}
-	
+
 	function disableCache() {
 		return true;
 	}
 }
 
 /**
- * Dummy reporter to ignore painting results 
+ * Dummy reporter to ignore painting results
  */
 class DummyReporter extends SimpleReporter {
 	function paintSkip() {
@@ -130,11 +130,11 @@ class CoreTestCaseTestCase extends CoreTestCase {
 		unset($this->Dummies);
 		ClassRegistry::flush();
 	}
-	
+
 	function testGetTests() {
 		$_reporter = $this->_reporter;
 		$this->_reporter = new DummyReporter();
-		
+
 		$this->testMethods = array('testGetTests');
 		$result = array_values($this->getTests());
 		$expected = array(
@@ -145,18 +145,13 @@ class CoreTestCaseTestCase extends CoreTestCase {
 			'end'
 		);
 		$this->assertEqual($result, $expected);
-		
+
 		unset($this->testMethods);
 		$this->_reporter = $_reporter;
 	}
-	
+
 	function testSingleLine() {
-		$text = <<<TEXT
-Something 
-	with 
-		tabs 
-		and   extra spacing
-TEXT;
+		$text = "Something \r\n\twith\t\ttabs \nand   extra spacing";
 		$result = $this->singleLine($text);
 		$expected = 'Something with tabs and extra spacing';
 		$this->assertEqual($result, $expected);
@@ -181,11 +176,11 @@ TEXT;
 		));
 		$this->assertEqual($vars['query'], 'This is my query');
 	}
-	
+
 	function testQueryStringParams() {
 		$vars = $this->CoreTestCase->testAction('/dummies/dummy_action/pass?with=querystring');
 		$this->assertEqual($this->Dummies->params['url']['with'], 'querystring');
-		
+
 		$vars = $this->CoreTestCase->testAction('/dummies/get_me?with=querystring', array(
 			'method' => 'get',
 			'data' => array(
@@ -227,24 +222,24 @@ TEXT;
 
 		$this->assertFalse($vars['saveSuccess']);
 	}
-	
+
 	function testSu() {
 		$result = $this->CoreTestCase->su();
 		$this->assertTrue($result);
-		
+
 		$results = $this->CoreTestCase->testController->Session->read('Auth');
 		$this->assertEqual($results['User']['id'], 1);
 		$this->assertEqual($results['User']['username'], 'testadmin');
-		
+
 		$results = $this->CoreTestCase->testController->Session->read('User');
 		$this->assertEqual($results['Group']['id'], 1);
 		$this->assertEqual($results['Profile']['primary_email'], 'test@test.com');
-		
+
 		$this->CoreTestCase->testAction('/dummies/dummy_action/0');
 		$results = $this->CoreTestCase->testController->activeUser;
 		$this->assertEqual($results['Group']['id'], 1);
 		$this->assertEqual($results['Profile']['primary_email'], 'test@test.com');
-		
+
 		$newUser = array(
 			'User' => array(
 				'id' => 3
@@ -255,17 +250,17 @@ TEXT;
 		);
 		$result = $this->CoreTestCase->su($newUser);
 		$this->assertTrue($result);
-		
+
 		$results = $this->CoreTestCase->testController->Session->read('Auth');
 		$this->assertEqual($results['User']['id'], 3);
 		$results = $this->CoreTestCase->testController->Session->read('User');
 		$this->assertEqual($results['Profile']['name'], 'New User');
-		
+
 		$this->CoreTestCase->testAction('/dummies/dummy_action/2');
 		$results = $this->CoreTestCase->testController->activeUser;
 		$this->assertEqual($results['User']['id'], 3);
 		$this->assertEqual($results['Profile']['name'], 'New User');
-		
+
 		$addToUser = array(
 			'Group' => array(
 				'id' => 10
@@ -273,13 +268,13 @@ TEXT;
 		);
 		$result = $this->CoreTestCase->su($addToUser, false);
 		$this->assertTrue($result);
-		
+
 		$results = $this->CoreTestCase->testController->Session->read('Auth');
 		$this->assertEqual($results['User']['id'], 3);
 		$results = $this->CoreTestCase->testController->Session->read('User');
 		$this->assertEqual($results['Profile']['name'], 'New User');
 		$this->assertEqual($results['Group']['id'], 10);
-		
+
 		$this->CoreTestCase->testAction('/dummies/dummy_action/1');
 		$results = $this->CoreTestCase->testController->activeUser;
 		$this->assertEqual($results['User']['id'], 3);

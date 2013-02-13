@@ -1,6 +1,6 @@
 <?php
 /**
- * SQL Dump element.  Dumps out SQL log information 
+ * SQL Dump element.  Dumps out SQL log information
  *
  * PHP versions 4 and 5
  *
@@ -51,4 +51,4 @@ foreach ($sqlLogs as $source => $logInfo):
 	endforeach;
 ?>
 </tbody></table>
-<?php endforeach; 
+<?php endforeach;

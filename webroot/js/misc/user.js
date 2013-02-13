@@ -19,7 +19,7 @@ CORE_user.element = '';
 
 /**
  * Initializes functionality needed for user registration
- * 
+ *
  * @param string id The id of the tab div
  */
 CORE_user.init = function(id) {
@@ -27,14 +27,14 @@ CORE_user.init = function(id) {
 	if (!submit.prop('id')) {
 		submit.prop('id', unique('submit-'));
 	}
-	
+
 	CORE.tabs(id, {cookie:false}, {
 		next: "next_button",
 		previous: "previous_button",
 		submit: submit.prop('id'),
 		alwaysAllowSubmit: true
 	});
-	
+
 	// only show child info tab and info if the person being added is actually a child
 	if ($('#ProfileBirthDateMonth').length > 0) {
 		$('#ProfileBirthDateMonth, #ProfileBirthDateDay, #ProfileBirthDateYear').change(function() {
@@ -50,14 +50,14 @@ CORE_user.init = function(id) {
 				$('#childinfo, #childinfo-tab').show();
 			}
 		});
-		
+
 		$('#ProfileBirthDateMonth').change();
 	}
 }
 
 /**
  * Adds an additional household member element to the form
- * 
+ *
  * The element should be created in the view, passing "COUNT" as the count so
  * that this function can replace it with the current count
  */
@@ -68,7 +68,7 @@ CORE_user.addAdditionalMember = function() {
 
 /**
  * Cancels a household addition
- * 
+ *
  * @param int number The member number to cancel
  */
 CORE_user.cancelAddMember = function(number) {

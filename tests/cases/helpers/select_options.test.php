@@ -12,7 +12,7 @@ class SelectOptionsHelperTestCase extends CakeTestCase {
 		unset($this->SelectOptions);
 		ClassRegistry::flush();
 	}
-	
+
 	function testGenerateOptions() {
 		$results = $this->SelectOptions->generateOptions('minute', array('interval' => 15));
 		$expected = array(
@@ -22,7 +22,7 @@ class SelectOptionsHelperTestCase extends CakeTestCase {
 			'45' => '45',
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$results = $this->SelectOptions->generateOptions('hour');
 		$expected = array(
 			'01' => '01',
@@ -39,7 +39,7 @@ class SelectOptionsHelperTestCase extends CakeTestCase {
 			'12' => '12',
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$results = $this->SelectOptions->generateOptions('hour24');
 		$expected = array(
 			'00' => '00',
@@ -68,14 +68,14 @@ class SelectOptionsHelperTestCase extends CakeTestCase {
 			'23' => '23',
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$results = $this->SelectOptions->generateOptions('meridian');
 		$expected = array(
 			'am' => 'am',
 			'pm' => 'pm',
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$results = $this->SelectOptions->generateOptions('day', array('min' => 5, 'max' => 10));
 		$expected = array(
 			'05' => '05',
@@ -86,7 +86,7 @@ class SelectOptionsHelperTestCase extends CakeTestCase {
 			'10' => '10',
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$results = $this->SelectOptions->generateOptions('week');
 		$expected = array(
 			'0' => 'Sunday',
@@ -98,7 +98,7 @@ class SelectOptionsHelperTestCase extends CakeTestCase {
 			'6' => 'Saturday',
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$results = $this->SelectOptions->generateOptions('month');
 		$expected = array(
 			'01' => 'January',
@@ -115,7 +115,7 @@ class SelectOptionsHelperTestCase extends CakeTestCase {
 			'12' => 'December',
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$results = $this->SelectOptions->generateOptions('year', array('min' => 2000, 'max' => 2010));
 		$expected = array(
 			'2000' => '2000',

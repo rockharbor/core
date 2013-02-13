@@ -26,10 +26,10 @@ class CampusesControllerTestCase extends CoreTestCase {
 
 	function endTest() {
 		$this->unloadSettings();
-		unset($this->Campuses);		
+		unset($this->Campuses);
 		ClassRegistry::flush();
 	}
-	
+
 	function testIndex() {
 		$vars = $this->testAction('/campuses/index');
 		$this->assertIsA($vars['campusesMenu'], 'Array');
@@ -70,7 +70,7 @@ class CampusesControllerTestCase extends CoreTestCase {
 
 	function testEdit() {
 		$this->loadFixtures('User');
-		
+
 		$this->Campuses->Campus->Behaviors->enable('Confirm');
 		$this->Campuses->setReturnValueAt(1, 'isAuthorized', true);
 		$data = array(
@@ -86,7 +86,7 @@ class CampusesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($this->Campuses->Campus->field('name'), 'New name');
 		$modified = $this->Campuses->Campus->field('modified');
 		$this->assertNotEqual($modified, '2010-03-11 13:34:41');
-		
+
 		$this->Campuses->Campus->Behaviors->enable('Confirm');
 		$this->Campuses->setReturnValueAt(3, 'isAuthorized', false);
 		$data = array(
@@ -100,11 +100,11 @@ class CampusesControllerTestCase extends CoreTestCase {
 			'data' => $data
 		));
 		$notificationsAfter = ClassRegistry::init('Notification')->find('count');
-		
+
 		$this->Campuses->Campus->id = 1;
 		$this->assertEqual($this->Campuses->Campus->field('name'), 'New name');
 		$this->assertEqual($modified, $this->Campuses->Campus->field('modified'));
-		
+
 		$result = $notificationsAfter-$notificationsBefore;
 		$expected = 1;
 		$this->assertEqual($result, $expected);

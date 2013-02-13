@@ -10,7 +10,7 @@ if (!empty($ministry['ParentMinistry']['id'])) {
 	<div class="grid_10 alpha omega">
 		<h3>Description</h3>
 		<p class="ministry-description">
-			<?php 
+			<?php
 			if (!empty($ministry['Image'])) {
 				$path = 'm'.DS.$ministry['Image'][0]['dirname'].DS.$ministry['Image'][0]['basename'];
 				echo $this->Media->embed($path, array('restrict' => 'image'));
@@ -19,7 +19,7 @@ if (!empty($ministry['ParentMinistry']['id'])) {
 			?>
 		</p>
 	</div>
-	
+
 	<div class="grid_10 alpha omega">
 		<h3>Get Involved!</h3>
 	</div>

@@ -25,7 +25,7 @@ CORE_involvement.setup = function() {
 
 /**
  * Cycles the events automatically
- * 
+ *
  * @return void
  */
 CORE_involvement.cycleDates = function() {

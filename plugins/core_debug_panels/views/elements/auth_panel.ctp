@@ -29,7 +29,7 @@ $("#group_id").bind("change", function() {
 		url: "<?php echo Router::url(array(
 			'controller' => 'cdp_groups',
 			'action' => 'swap',
-			'plugin' => 'core_debug_panels'			
+			'plugin' => 'core_debug_panels'
 		)); ?>/"+$("#group_id").val(),
 		success: function(data) {
 			$("#authGroup").html(data);

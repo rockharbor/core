@@ -40,14 +40,14 @@
 
 		<a class="tool" data-wysihtml5-action="change_view" title="View HTML Code">View HTML</a>
 	</div>
-	
+
 	<div class="dialogs">
 		<div data-wysihtml5-dialog="createLink" style="display: none; ">
 			<label>
 				Link:
 				<input data-wysihtml5-dialog-field="href" value="http://" class="text">
 			</label>
-			<a class="button" data-wysihtml5-dialog-action="save">OK</a> 
+			<a class="button" data-wysihtml5-dialog-action="save">OK</a>
 			<a class="button" data-wysihtml5-dialog-action="cancel">Cancel</a>
 		</div>
 	</div>

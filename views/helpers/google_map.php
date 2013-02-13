@@ -21,7 +21,7 @@ class GoogleMapHelper extends AppHelper {
 
 /**
  * List of options, added on GoogleMapHelper::create()
- * 
+ *
  * @var array
  * @access public
  */
@@ -34,7 +34,7 @@ class GoogleMapHelper extends AppHelper {
  * @access protected
  */
 	var $_buffer = array();
-	
+
 /**
  * Whether or not to create a div for the map or use a user-created div
  *
@@ -42,7 +42,7 @@ class GoogleMapHelper extends AppHelper {
  * @access protected
  */
 	var $_createDiv = true;
-	
+
 /**
  * The name of the map to be used for the div id and JavaScript variable name
  *
@@ -50,7 +50,7 @@ class GoogleMapHelper extends AppHelper {
  * @access protected
  */
 	var $_mapName = null;
-	
+
 /**
  * Google map types mapping
  *
@@ -69,7 +69,7 @@ class GoogleMapHelper extends AppHelper {
  * @access public
  */
 	var $zoom = 4;
-	
+
 /**
  * Initial map center. Defaults to the average of all points.
  *
@@ -77,7 +77,7 @@ class GoogleMapHelper extends AppHelper {
  * @access public
  */
 	var $center = null;
-	
+
 /**
  * The initial map type to use. Supported types: road
  *
@@ -85,7 +85,7 @@ class GoogleMapHelper extends AppHelper {
  * @access public
  */
 	var $mapType = 'road';
-	
+
 /**
  * The element to use to create info windows
  *
@@ -99,15 +99,15 @@ class GoogleMapHelper extends AppHelper {
  *
  * @var integer
  * @access protected
- */	
+ */
 	var $_markerCount = 0;
-	
+
 /**
  * Internal list of addresses
  *
  * @var array
  * @access protected
- */	
+ */
 	var $_addresses = array();
 
 /**
@@ -115,7 +115,7 @@ class GoogleMapHelper extends AppHelper {
  *
  * @var array
  * @access public
- */	
+ */
 	var $helpers = array('Js', 'Html');
 
 /**
@@ -127,27 +127,27 @@ class GoogleMapHelper extends AppHelper {
  *
  * ### Options:
  *	- boolean `inline` Whether the scripts should be created inline or buffered
- *	- boolean `sensor` The Google Map option "sensor" 
+ *	- boolean `sensor` The Google Map option "sensor"
  *
  * @param string $mapName The name of the div to load the map into.
  * @param array $options Additional options
  * @access public
  * @return void Buffers scripts
  */
-	function create($mapName = null, $options = array()) {		
+	function create($mapName = null, $options = array()) {
 		$default = array(
 			'inline' => false,
 			'sensor' => false
 		);
-		
+
 		if (!$mapName) {
-			$mapName = 'gmap'.uniqid();			
+			$mapName = 'gmap'.uniqid();
 		} else {
 			$this->_createDiv = false;
 		}
-		
+
 		$this->_mapName = $mapName;
-		
+
 		$this->options = array_merge($default, $options);
 		if (!$this->options['inline']) {
 			$this->Js->buffer('
@@ -202,7 +202,7 @@ document.body.appendChild(script);
 		$centerLat = $center[0];
 		$centerLng = $center[1];
 		$mapType = $this->_mapTypesMap[$this->mapType];
-		
+
 		array_unshift($this->_buffer, "var $mapName = new google.maps.Map(document.getElementById('$mapName'), {
 			zoom: $zoom,
 			center: mapCenter,
@@ -212,7 +212,7 @@ document.body.appendChild(script);
 		array_unshift($this->_buffer, "var infowindow = new google.maps.InfoWindow();");
 		array_unshift($this->_buffer, 'window.'.$mapName.'load = function() {');
 		array_push($this->_buffer, '}');
-		
+
 		foreach ($this->_buffer as $buffer) {
 			$this->Js->buffer($buffer);
 		}
@@ -221,7 +221,7 @@ document.body.appendChild(script);
 		if ($this->options['inline']) {
 			$out .= $this->Js->writeBuffer();
 		}
-		
+
 		if ($this->_createDiv) {
 			$out .= $this->Html->tag('div', '', array(
 				'id' => $mapName,

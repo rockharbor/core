@@ -104,9 +104,9 @@ class HouseholdTestCase extends CoreTestCase {
 		));
 		$originalHouseholds = Set::extract('/HouseholdMember/household_id', $members);
 		$this->assertEqual(count($originalHouseholds), 1);
-		
+
 		$this->assertTrue($this->Household->createHousehold(91));
-		
+
 		$members = $this->Household->HouseholdMember->find('all', array(
 			'conditions' => array(
 				'user_id' => 90
@@ -114,9 +114,9 @@ class HouseholdTestCase extends CoreTestCase {
 		));
 		$newHouseholds = Set::extract('/HouseholdMember/household_id', $members);
 		$this->assertEqual($originalHouseholds, $newHouseholds);
-			
+
 		$this->assertTrue($this->Household->HouseholdMember->hasAny(array('user_id' => 91)));
-		
+
 		// doesn't have their own confirmed household, so create one
 		$origCount = $this->Household->HouseholdMember->find('count', array(
 			'conditions' => array(
@@ -130,7 +130,7 @@ class HouseholdTestCase extends CoreTestCase {
 			)
 		));
 		$this->assertEqual($newCount-$origCount, 1);
-		
+
 		// already belongs to a household where they are confirmed
 		$origCount = $this->Household->HouseholdMember->find('count', array(
 			'conditions' => array(

@@ -25,7 +25,7 @@ class PermissionHelperTestCase extends CoreTestCase {
 		$controller = new MockPermissionHelperTestSysEmailsController();
 		$controller->__construct();
 		$controller->constructClasses();
-		
+
 		$View = new View($controller, true);
 		$View->set('activeUser', array(
 			'Group' => array(
@@ -41,7 +41,7 @@ class PermissionHelperTestCase extends CoreTestCase {
 
 		$this->Permission->Html->expectOnce('link');
 		$result = $this->Permission->link('Allowed', array('controller' => 'mock_permission_helper_test_sys_emails', 'action' => 'delete'));
-		
+
 		$this->Permission->Js->expectOnce('link');
 		$result = $this->Permission->link('Allowed', array('controller' => 'mock_permission_helper_test_sys_emails', 'action' => 'delete'), array('complete' => 'CORE.update()'));
 	}
@@ -61,7 +61,7 @@ class PermissionHelperTestCase extends CoreTestCase {
 				'id' => 1
 			)
 		));
-		
+
 		// first attempt at isAuthorized will return `null` as it is mocked
 		$this->assertFalse($this->Permission->check(array('controller' => 'mock_permission_helper_test_sys_emails', 'action' => 'path')));
 		$this->assertTrue(isset($this->Permission->controllers['mock_permission_helper_test_sys_emails']));
@@ -69,37 +69,37 @@ class PermissionHelperTestCase extends CoreTestCase {
 
 		$this->Permission->controllers['mock_permission_helper_test_sys_emails']->setReturnValueAt(1, 'isAuthorized', true);
 		$this->assertTrue($this->Permission->check(array('controller' => 'mock_permission_helper_test_sys_emails', 'action' => 'path')));
-		
+
 		$this->Permission->controllers['mock_permission_helper_test_sys_emails']->setReturnValueAt(2, 'isAuthorized', false);
 		$this->assertFalse($this->Permission->check(array('controller' => 'mock_permission_helper_test_sys_emails', 'action' => 'path')));
-		
+
 		// still returns true because `AuthComponent` says so in `beforeFilter`
 		$this->Permission->controllers['mock_permission_helper_test_sys_emails']->setReturnValueAt(3, 'isAuthorized', false);
 		$this->assertTrue($this->Permission->check(array('controller' => 'mock_permission_helper_test_sys_emails', 'action' => 'bug_compose')));
 	}
-	
+
 	function testCanSeePrivate() {
 		$this->loadFixtures('Group');
-		
+
 		$controller = new MockPermissionHelperTestSysEmailsController();
 		$controller->__construct();
-		
+
 		$view = new View($controller);
 		$view->viewVars['activeUser'] = array(
 			'Group' => array(
 				'id' => 1
 			)
 		);
-		
+
 		// allowed
 		$this->assertTrue($this->Permission->canSeePrivate());
-		
+
 		$view->viewVars['activeUser'] = array(
 			'Group' => array(
 				'id' => 8
 			)
 		);
-		
+
 		// cached
 		$this->assertTrue($this->Permission->canSeePrivate());
 		$this->Permission->_canSeePrivate = null;

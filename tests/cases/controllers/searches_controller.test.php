@@ -35,7 +35,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 
 	function testIndex() {
 		$this->loadFixtures('Roster');
-		
+
 		$vars = $this->testAction('/searches/index?q=rick');
 		$results = Set::extract('/User/username', $vars['users']);
 		$expected = array(
@@ -65,9 +65,9 @@ class SearchesControllerTestCase extends CoreTestCase {
 			'rickyrockharborjr'
 		);
 		$this->assertEqual($results, $expected);
-		$this->assertEqual($vars['ministries'], array());		
+		$this->assertEqual($vars['ministries'], array());
 		$this->assertEqual($vars['involvements'], array());
-		
+
 		$vars = $this->testAction('/searches?q=comm', array(
 			'data' => array(
 				'Search' => array(
@@ -80,7 +80,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Ministry/name', $vars['ministries']);
 		$expected = array();
 		$this->assertEqual($results, $expected);
-		
+
 		$vars = $this->testAction('/searches?q=jeremy', array(
 			'data' => array(
 				'Search' => array(
@@ -93,7 +93,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/User/id', $vars['ministries']);
 		$expected = array();
 		$this->assertEqual($results, $expected);
-		
+
 		$vars = $this->testAction('/searches?q=fullerton', array(
 			'data' => array(
 				'Search' => array(
@@ -112,7 +112,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 			'Fullerton meetup'
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$vars = $this->testAction('/searches?q=core', array(
 			'data' => array(
 				'Search' => array(
@@ -130,7 +130,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 			 'CORE 2.0 testing', 'Team CORE'
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$vars = $this->testAction('/searches?q=downtown', array(
 			'data' => array(
 				'Search' => array(
@@ -147,7 +147,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 
 	function testInvolvement() {
 		$this->loadFixtures('Address');
-		
+
 		$vars = $this->testAction('/searches/involvement?q=core');
 		$results = Set::extract('/Involvement/name', $vars['results']);
 		$expected = array(
@@ -155,7 +155,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 			'Team CORE'
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$search = array(
 			'Involvement' => array(
 				'name' => 'core'
@@ -184,7 +184,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 			'Team CORE'
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$search = array(
 			'Involvement' => array(
 				'name' => 'core',
@@ -200,7 +200,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 			'CORE 2.0 testing'
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$search = array(
 			'Involvement' => array(
 				'name' => 'core',
@@ -217,12 +217,12 @@ class SearchesControllerTestCase extends CoreTestCase {
 			'Team CORE'
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		// as a regular user
 		$this->su(array(
 			'Group' => array('id' => 8)
 		));
-		
+
 		$search = array(
 			'Involvement' => array(
 				'name' => 'core'
@@ -236,7 +236,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 			'CORE 2.0 testing'
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$search = array(
 			'Involvement' => array(
 				'name' => 'core'
@@ -253,7 +253,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 			'CORE 2.0 testing'
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$search = array(
 			'Involvement' => array(
 				'previous' => 1
@@ -269,7 +269,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Involvement/id', $vars['results']);
 		$expected = array();
 		$this->assertEqual($results, $expected);
-		
+
 		$search['Distance']['distance_from'] = 'costa mesa, ca';
 		$vars = $this->testAction('/searches/involvement', array(
 			'data' => $search
@@ -277,7 +277,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Involvement/id', $vars['results']);
 		$expected = array(1);
 		$this->assertEqual($results, $expected);
-		
+
 		$search['Involvement']['name'] = 'nurture';
 		$search['Distance']['distance_from'] = 'costa mesa, ca';
 		$vars = $this->testAction('/searches/involvement', array(
@@ -296,7 +296,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 			'Child Web', 'Web'
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$search = array(
 			'Ministry' => array(
 				'name' => 'web'
@@ -311,7 +311,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 			'Child Web', 'Web'
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$search = array(
 			'Ministry' => array(
 				'name' => '',
@@ -325,12 +325,12 @@ class SearchesControllerTestCase extends CoreTestCase {
 		sort($results);
 		$expected = array(1, 2, 3, 4, 6);
 		$this->assertEqual($results, $expected);
-		
+
 		// as a regular user
 		$this->su(array(
 			'Group' => array('id' => 8)
 		));
-		
+
 		$search = array(
 			'Ministry' => array(
 				'name' => ''
@@ -396,7 +396,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 		$this->Searches->Session->delete('FilterPagination');
-		
+
 		$data = array(
 			'Profile' => array(
 				'primary_email' => 'ricky@'
@@ -409,7 +409,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 		$this->Searches->Session->delete('FilterPagination');
-		
+
 		$data = array(
 			'User' => array(
 				'active' => '',
@@ -422,7 +422,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$expected = array(2, 3, 4, 5);
 		$this->assertEqual($results, $expected);
 		$this->Searches->Session->delete('FilterPagination');
-		
+
 		$data = array(
 			'User' => array(
 				'active' => 1,
@@ -435,7 +435,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$expected = array(2, 3, 5);
 		$this->assertEqual($results, $expected);
 		$this->Searches->Session->delete('FilterPagination');
-		
+
 		$data = array(
 			'User' => array(
 				'active' => 0,
@@ -448,7 +448,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$expected = array(4);
 		$this->assertEqual($results, $expected);
 		$this->Searches->Session->delete('FilterPagination');
-		
+
 		$data = array(
 			'Ministry' => array(
 				'active' => 0
@@ -460,7 +460,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$expected = array(3, 4, 6);
 		$this->assertEqual($results, $expected);
 		$this->Searches->Session->delete('FilterPagination');
-		
+
 		$data = array(
 			'Involvement' => array(
 				'active' => 1
@@ -472,7 +472,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$expected = array(1, 3, 4, 5, 6, 7);
 		$this->assertEqual($results, $expected);
 		$this->Searches->Session->delete('FilterPagination');
-		
+
 		$data = array(
 			'Involvement' => array(
 				'active' => ''

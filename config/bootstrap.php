@@ -81,7 +81,7 @@ Configure::write('Core.mediafilters.default', array(
 ));
 
 /**
- * Set QueueEmail to save the emails in the db 
+ * Set QueueEmail to save the emails in the db
  */
 Configure::write('QueueEmail.deleteAfter', false);
 
@@ -98,7 +98,7 @@ if (!empty($plugins)) {
 
 /**
  * Converts `<br />`'s to newlines
- * 
+ *
  * @param string $input
  * @return string
  */
@@ -108,9 +108,9 @@ function br2nl($input) {
 
 /**
  * Recusively runs `array_filter` on an array, removing empty keys
- * 
+ *
  * @param array $data
- * @return array 
+ * @return array
  */
 function array_filter_recursive($data = array()) {
 	$item = $data + array();
@@ -121,7 +121,7 @@ function array_filter_recursive($data = array()) {
  * Callback for `array_filter_recursive
  * `
  * @param mixed $item
- * @return mixed 
+ * @return mixed
  */
 function _array_filter_recursive_callback(&$item) {
 	if (is_array($item)) {

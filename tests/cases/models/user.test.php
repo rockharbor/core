@@ -9,7 +9,7 @@ class UsersTestController extends AppController {
 }
 
 class UserTestCase extends CoreTestCase {
-	
+
 	function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('User', 'Group');
@@ -20,7 +20,7 @@ class UserTestCase extends CoreTestCase {
 		unset($this->User);
 		ClassRegistry::flush();
 	}
-	
+
 	function testUsernameValidation() {
 		$this->User->set(array(
 			'User' => array(
@@ -28,7 +28,7 @@ class UserTestCase extends CoreTestCase {
 			)
 		));
 		$this->assertFalse($this->User->validates(array('fieldList' => array('username'))));
-		
+
 		$this->User->set(array(
 			'User' => array(
 				'username' => 'totally_Valid123'
@@ -36,10 +36,10 @@ class UserTestCase extends CoreTestCase {
 		));
 		$this->assertTrue($this->User->validates(array('fieldList' => array('username'))));
 	}
-	
+
 	function testCleanMerge() {
 		$this->loadFixtures('Address');
-		
+
 		$data = array(
 			'User' => array(
 				'flagged' => 1
@@ -65,7 +65,7 @@ class UserTestCase extends CoreTestCase {
 		);
 		$this->assertTrue($this->User->createUser($data));
 		$originalId = $this->User->id;
-		
+
 		$data = array(
 			'User' => array(
 				'flagged' => 0
@@ -89,9 +89,9 @@ class UserTestCase extends CoreTestCase {
 		);
 		$this->assertTrue($this->User->createUser($data));
 		$newId = $this->User->id;
-		
+
 		$this->assertTrue($this->User->merge($originalId, $newId));
-		
+
 		$user = $this->User->find('first', array(
 			'conditions' => array(
 				'User.id' => $originalId
@@ -101,51 +101,51 @@ class UserTestCase extends CoreTestCase {
 				'Profile'
 			)
 		));
-		
+
 		$result = $user['User']['id'];
 		$expected = $originalId;
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $user['User']['flagged'];
 		$expected = 0;
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $user['Profile']['first_name'];
 		$expected = 'new';
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $user['Profile']['last_name'];
 		$expected = 'user';
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $user['Profile']['primary_email'];
 		$expected = 'primary@example.com';
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $user['Profile']['alternate_email_1'];
 		$expected = 'alternate_email_1_merge@example.com';
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $user['Profile']['alternate_email_2'];
 		$expected = 'alternate_email_2@example.com';
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $user['Profile']['cell_phone'];
 		$expected = '1987654321';
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $user['Profile']['home_phone'];
 		$expected = '1234567890';
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $user['Profile']['work_phone'];
 		$expected = '1987654321';
 		$this->assertEqual($result, $expected);
-		
+
 		$result = count($user['Address']);
 		$expected = 2;
 		$this->assertEqual($result, $expected);
-		
+
 		$result = Set::extract('/Address/address_line_1', $user);
 		sort($result);
 		$expected = array(
@@ -154,10 +154,10 @@ class UserTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($result, $expected);
 	}
-	
+
 	function testMergeWithLimitedUserData() {
 		$this->loadFixtures('Profile');
-		
+
 		$user = array(
 			'User' => array(
 				'username' => 'rocky'
@@ -169,16 +169,16 @@ class UserTestCase extends CoreTestCase {
 		);
 		$this->assertTrue($this->User->createUser($user));
 		$newId = $this->User->id;
-		
+
 		$this->User->contain(array('Profile'));
 		$user = $this->User->read(null, $newId);
 		$result = $user['Profile']['primary_email'];
 		$expected = null;
 		$this->assertEqual($result, $expected);
-		
+
 		$this->assertTrue($this->User->merge(2, $newId));
 		$this->assertFalse($this->User->read(null, $newId));
-		
+
 		$results = $this->User->find('first', array(
 			'conditions' => array(
 				'User.id' => 2
@@ -189,14 +189,14 @@ class UserTestCase extends CoreTestCase {
 		));
 		$this->assertEqual($results['Profile']['primary_email'], 'ricky@rockharbor.org');
 		$this->assertEqual($results['Profile']['signed_covenant_2011'], 1);
-		
+
 		// save empty email and try to merge
 		$this->User->Profile->id = 2;
 		$this->User->Profile->saveField('primary_email', null);
-		
+
 		$this->User->contain(array('Profile'));
 		$user = $this->User->read(null, 2);
-		
+
 		$user = array(
 			'User' => array(
 				'username' => 'newuser'
@@ -209,16 +209,16 @@ class UserTestCase extends CoreTestCase {
 		);
 		$this->assertTrue($this->User->createUser($user));
 		$newId = $this->User->id;
-		
+
 		$this->User->contain(array('Profile'));
 		$user = $this->User->read(null, $newId);
 		$result = $user['Profile']['primary_email'];
 		$expected = 'newuser@example.com';
 		$this->assertEqual($result, $expected);
-		
+
 		$this->assertTrue($this->User->merge(2, $newId));
 		$this->assertFalse($this->User->read(null, $newId));
-		
+
 		$results = $this->User->find('first', array(
 			'conditions' => array(
 				'User.id' => 2
@@ -229,13 +229,13 @@ class UserTestCase extends CoreTestCase {
 		));
 		$this->assertEqual($results['Profile']['primary_email'], 'newuser@example.com');
 	}
-	
+
 	function testMerge() {
 		$this->loadFixtures('Profile', 'Address', 'Roster', 'Household', 'HouseholdMember');
-		
+
 		$this->assertFalse($this->User->merge(1));
 		$this->assertFalse($this->User->merge(1, 0));
-		
+
 		$user = array(
 			'User' => array(
 				'username' => 'rocky'
@@ -248,10 +248,10 @@ class UserTestCase extends CoreTestCase {
 		);
 		$this->assertTrue($this->User->createUser($user));
 		$newId = $this->User->id;
-		
+
 		$this->assertTrue($this->User->merge(2, $newId));
 		$this->assertFalse($this->User->read(null, $newId));
-		
+
 		$results = $this->User->find('first', array(
 			'conditions' => array(
 				'User.id' => 2
@@ -265,7 +265,7 @@ class UserTestCase extends CoreTestCase {
 		));
 		$this->assertEqual($results['User']['id'], 2);
 		$this->assertEqual(count($results['Address']), 1);
-		
+
 		$user = array(
 			'User' => array(
 				'username' => 'jeremyharris'
@@ -288,10 +288,10 @@ class UserTestCase extends CoreTestCase {
 		);
 		$this->assertTrue($this->User->createUser($user));
 		$newId = $this->User->id;
-		
+
 		$this->assertTrue($this->User->merge(1, $newId));
 		$this->assertFalse($this->User->read(null, $newId));
-		
+
 		$results = $this->User->find('first', array(
 			'conditions' => array(
 				'User.id' => 1
@@ -319,7 +319,7 @@ class UserTestCase extends CoreTestCase {
 		$this->assertTrue($results['ActiveAddress']['active']);
 		$this->assertTrue(!empty($results['Roster']));
 		$this->assertEqual(count($this->User->HouseholdMember->Household->getHouseholdIds($results['User']['id'])), 3);
-		
+
 		$user = array(
 			'User' => array(
 				'username' => 'newusername'
@@ -358,10 +358,10 @@ class UserTestCase extends CoreTestCase {
 		$newId = $this->User->id;
 		$child = $this->User->findByUsername('childuser');
 		$childId = $child['User']['id'];
-		
+
 		$this->assertTrue($this->User->merge(1, $newId));
 		$this->assertFalse($this->User->read(null, $newId));
-		
+
 		$results = $this->User->find('first', array(
 			'conditions' => array(
 				'User.id' => 1
@@ -370,13 +370,13 @@ class UserTestCase extends CoreTestCase {
 				'Profile'
 			)
 		));
-		
+
 		$this->assertEqual($results['User']['id'], 1);
 		$this->assertEqual($results['Profile']['last_name'], 'Harris');
 		$this->assertTrue($this->User->HouseholdMember->Household->isMemberWith($results['User']['id'], 4));
 		$this->assertTrue($this->User->HouseholdMember->Household->isMemberWith($results['User']['id'], $childId));
 		$this->assertEqual(count($this->User->HouseholdMember->Household->getHouseholdIds($results['User']['id'])), 4);
-		
+
 		$user = array(
 			'User' => array(
 				'username' => 'rick'
@@ -398,10 +398,10 @@ class UserTestCase extends CoreTestCase {
 		);
 		$this->assertTrue($this->User->createUser($user));
 		$newId = $this->User->id;
-		
+
 		$this->assertTrue($this->User->merge(2, $newId));
 		$this->assertFalse($this->User->read(null, $newId));
-		
+
 		$results = $this->User->find('first', array(
 			'conditions' => array(
 				'User.id' => 2
@@ -478,7 +478,7 @@ class UserTestCase extends CoreTestCase {
 		$result = $this->User->findUser($data);
 		$expected = array(1);
 		$this->assertEqual($result, $expected);
-		
+
 		$data = array(
 			'User' => array(
 				'Profile' => array(
@@ -490,7 +490,7 @@ class UserTestCase extends CoreTestCase {
 		$result = $this->User->findUser($data);
 		$expected = array(1);
 		$this->assertEqual($result, $expected);
-		
+
 		$data = array(
 			'User' => array(
 				'Profile' => array(
@@ -502,7 +502,7 @@ class UserTestCase extends CoreTestCase {
 		$result = $this->User->findUser($data, 'OR');
 		$expected = array();
 		$this->assertEqual($result, $expected);
-		
+
 		$data = array(
 			'User' => array(
 				'Profile' => array(
@@ -527,7 +527,7 @@ class UserTestCase extends CoreTestCase {
 		$result = $this->User->findUser($data, 'OR');
 		$expected = array(1, 2, 3);
 		$this->assertEqual($result, $expected);
-		
+
 		$data = array(
 			'Profile' => array(
 				'adult' => 1,
@@ -540,7 +540,7 @@ class UserTestCase extends CoreTestCase {
 		$result = $this->User->findUser($data);
 		$expected = array();
 		$this->assertEqual($result, $expected);
-		
+
 		$data = array(
 			'Profile' => array(
 				'email' => 'jeremy@paxtechservices.com',
@@ -561,7 +561,7 @@ class UserTestCase extends CoreTestCase {
 				'group_id' => 1
 			)
 		);
-		
+
 		$user = array(
 			'Address' => array(
 					0 => array(
@@ -578,7 +578,7 @@ class UserTestCase extends CoreTestCase {
 				'last_name' => 'User',
 				'primary_email' => 'test@example.com'
 			)
-		);		
+		);
 		$this->assertTrue($this->User->createUser($user, null, $creator));
 		$this->assertEqual(count($this->User->tmpAdded), 1);
 		$user = $this->User->read('reset_password', $this->User->tmpAdded[0]['id']);
@@ -609,7 +609,7 @@ class UserTestCase extends CoreTestCase {
 					)
 				)
 			)
-		);		
+		);
 		$this->assertFalse($this->User->createUser($user, null, $creator));
 		$this->assertEqual(count($this->User->tmpAdded), 0);
 
@@ -700,7 +700,7 @@ class UserTestCase extends CoreTestCase {
 		$results = $addresses[0]['Address']['active'];
 		$expected = 1;
 		$this->assertEqual($results, $expected);
-		
+
 		$this->User->tmpAdded = $this->User->tmpInvited = array();
 		$user = array(
 			'Address' => array(
@@ -727,14 +727,14 @@ class UserTestCase extends CoreTestCase {
 			)
 		);
 		$this->assertFalse($this->User->createUser($user, null, $creator));
-		
+
 		$expected = array(
 			0 => array(
 				'found' => array( // multiple accounts found
 					array(
 						'User' => array(
 							'id' => 2
-						),	
+						),
 						'Profile' => array(
 							'id' => 2,
 							'first_name' => 'ricky',
@@ -747,7 +747,7 @@ class UserTestCase extends CoreTestCase {
 					array(
 						'User' => array(
 							'id' => 3
-						),	
+						),
 						'Profile' => array(
 							'id' => 3,
 							'first_name' => 'ricky jr.',
@@ -766,7 +766,7 @@ class UserTestCase extends CoreTestCase {
 				'User' => array(
 					'id' => 1
 				),
-				'Profile' => array( 
+				'Profile' => array(
 					'id' => 1,
 					'first_name' => 'Jeremy',
 					'last_name' => 'Harris'
@@ -777,7 +777,7 @@ class UserTestCase extends CoreTestCase {
 			)
 		);
 		$this->assertEqual($user['HouseholdMember'], $expected);
-		
+
 		$this->User->tmpAdded = $this->User->tmpInvited = array();
 		$user = array(
 			'User' => array(
@@ -810,7 +810,7 @@ class UserTestCase extends CoreTestCase {
 		);
 		$this->assertFalse($this->User->createUser($user, null, $creator, false));
 		$this->assertTrue(isset($this->User->validationErrors['username']));
-		
+
 		$user = array(
 			'User' => array(
 				'username' => 'addressless'
@@ -892,7 +892,7 @@ class UserTestCase extends CoreTestCase {
 			)
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$search = array(
 			'Search' => array(
 				'operator' => 'OR'
@@ -919,7 +919,7 @@ class UserTestCase extends CoreTestCase {
 			)
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$search = array(
 			'Search' => array(
 				'operator' => 'AND'
@@ -975,7 +975,7 @@ class UserTestCase extends CoreTestCase {
 			)
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$search = array(
 			'Search' => array(
 				'operator' => 'AND'
@@ -1008,7 +1008,7 @@ class UserTestCase extends CoreTestCase {
 			)
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$search = array(
 			'Search' => array(
 				'operator' => 'AND'
@@ -1032,7 +1032,7 @@ class UserTestCase extends CoreTestCase {
 			)
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$search = array(
 			'Search' => array(
 				'operator' => 'AND'
@@ -1060,7 +1060,7 @@ class UserTestCase extends CoreTestCase {
 			)
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$search = array(
 			'Search' => array(
 				'operator' => 'AND'
@@ -1074,7 +1074,7 @@ class UserTestCase extends CoreTestCase {
 		$results = Set::extract('/User/id', $users);
 		$expected = array(1);
 		$this->assertEqual($results, $expected);
-		
+
 		// load dates which make the involvement in the past
 		$this->loadFixtures('Date');
 		$search = array(
@@ -1090,7 +1090,7 @@ class UserTestCase extends CoreTestCase {
 		$results = Set::extract('/User/id', $users);
 		$expected = array();
 		$this->assertEqual($results, $expected);
-		
+
 		$search = array(
 			'Search' => array(
 				'operator' => 'OR'
@@ -1106,7 +1106,7 @@ class UserTestCase extends CoreTestCase {
 		$results = Set::extract('/User/id', $users);
 		$expected = array(2, 3);
 		$this->assertEqual($results, $expected);
-		
+
 		// load dates which make the involvement in the past
 		$this->loadFixtures('Date');
 		$search = array(
@@ -1122,7 +1122,7 @@ class UserTestCase extends CoreTestCase {
 		$results = Set::extract('/User/id', $users);
 		$expected = array();
 		$this->assertEqual($results, $expected);
-		
+
 		$search = array(
 			'Search' => array(
 				'operator' => 'AND'
@@ -1138,7 +1138,7 @@ class UserTestCase extends CoreTestCase {
 		$results = Set::extract('/User/id', $users);
 		$expected = array(1);
 		$this->assertEqual($results, $expected);
-		
+
 		$search = array(
 			'Search' => array(
 				'operator' => 'AND'
@@ -1154,7 +1154,7 @@ class UserTestCase extends CoreTestCase {
 		$results = Set::extract('/User/id', $users);
 		$expected = array(1, 2, 3, 4, 5, 6);
 		$this->assertEqual($results, $expected);
-		
+
 		$search = array(
 			'Search' => array(
 				'operator' => 'AND'
@@ -1168,7 +1168,7 @@ class UserTestCase extends CoreTestCase {
 		$results = Set::extract('/User/id', $users);
 		$expected = array(4);
 		$this->assertEqual($results, $expected);
-		
+
 		$search = array(
 			'Search' => array(
 				'operator' => 'OR'
@@ -1201,10 +1201,10 @@ class UserTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testSearchBackgroundDateRange() {
 		$controller =  new UsersTestController();
-		
+
 		$search = array(
 			'Search' => array(
 				'operator' => 'AND'
@@ -1239,7 +1239,7 @@ class UserTestCase extends CoreTestCase {
 		);
 		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testGenerateUsername() {
 		$result = $this->User->generateUsername();
 		$expected = '';
@@ -1265,7 +1265,7 @@ class UserTestCase extends CoreTestCase {
 
 		$result = $this->User->generateUsername('j', 'harris');
 		$this->assertPattern('/jharris([0-9]{2})/', $result);
-		
+
 	}
 
 	function testGeneratePassword() {

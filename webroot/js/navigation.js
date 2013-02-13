@@ -70,7 +70,7 @@ CORE.decrementCount = function() {
 
 /**
  * Called after the ajax event is complete
- * 
+ *
  * Aggregates all events into a single area and attaches tooltips to event dates
  *
  * @param ele Element The id attribute of the calendar
@@ -107,7 +107,7 @@ CORE.eventAfterLoad = function(ele) {
 }
 
 /**
- * Called after an event is rendered. Makes days with events easier to find by 
+ * Called after an event is rendered. Makes days with events easier to find by
  * adding an `event` and `yyyy-mm-dd` class to the event within the calendar, and
  * keeps track of them for removing special classes later in `CORE.eventLoading()`
  *
@@ -117,13 +117,13 @@ CORE.eventRender = function(cal, event, element, view) {
 	var currentDate = event.start;
 	var dayClass = currentDate.getFullYear() + '-' + (currentDate.getMonth()+1) + '-' + currentDate.getDate();
 	var dates = $('#'+cal).data('dates') || [];
-	
+
 	// ignore events that won't show up anyway
 	if (currentDate.getMonth() !== view.start.getMonth()) {
 		return;
 	}
-	
-	// mark the calendar date as having events and empty out the ones 
+
+	// mark the calendar date as having events and empty out the ones
 	// `$.fullcalendar()` generates
 	$('#'+cal+' .fc-widget-content:not(.fc-other-month) .fc-day-number')
 		.filter(function() {
@@ -134,7 +134,7 @@ CORE.eventRender = function(cal, event, element, view) {
 			.addClass(dayClass)
 			.find('.fc-day-content')
 				.html('<div style="position:relative"></div>')
-	
+
 	// remember which days have events so we can remove extra classes
 	dates.push(dayClass);
 	element.addClass(dayClass);

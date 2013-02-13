@@ -61,7 +61,7 @@ class AppSettingsController extends AppController {
  * Used to override Acl permissions for this controller.
  *
  * @access private
- */ 
+ */
 	function beforeFilter() {
 		parent::beforeFilter();
 	}
@@ -78,7 +78,7 @@ class AppSettingsController extends AppController {
 				'type <>' => 'plugin'
 			)
 		));
-		
+
 		foreach ($appSettings as &$appSetting) {
 			if (!in_array($appSetting['AppSetting']['type'], $this->_reservedTypes)) {
 				$Model = ClassRegistry::init($appSetting['AppSetting']['type']);
@@ -95,7 +95,7 @@ class AppSettingsController extends AppController {
 				}
 			}
 		}
-		
+
 		$this->set(compact('appSettings'));
 	}
 

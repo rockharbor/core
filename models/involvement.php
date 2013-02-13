@@ -70,7 +70,7 @@ class Involvement extends AppModel {
 			'required' => true,
 			'message' => 'Please fill in the required field.'
 		)
-	);	
+	);
 
 /**
  * Extra behaviors for this model
@@ -222,12 +222,12 @@ class Involvement extends AppModel {
  * @param integer $involvementId The involvement id
  * @return boolean True if the user is a leader
  * @access public
- */ 
+ */
 	function isLeader($userId = null, $involvementId = null) {
 		if (!$userId || !$involvementId) {
 			return false;
 		}
-		
+
 		return $this->Leader->hasAny(array(
 			'model' => 'Involvement',
 			'model_id' => $involvementId,
@@ -256,9 +256,9 @@ class Involvement extends AppModel {
 
 /**
  * Gets the leaders for an Involvement
- * 
+ *
  * @param mixed $modelId Integer for single id, or array for multiple
- * @return array Array of user ids 
+ * @return array Array of user ids
  */
 	function getLeaders($modelId) {
 		$leaders = $this->Leader->find('all', array(

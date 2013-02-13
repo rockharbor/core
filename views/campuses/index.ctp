@@ -28,7 +28,7 @@
 				<tr>
 					<td style="width: 49%; padding-right: 1%;">
 						<ul>
-						<?php 
+						<?php
 						foreach ($col1links as $link) {
 							echo $this->Html->tag('li', $link, array('style' => 'list-style: none; margin: 0;'));
 						}
@@ -37,7 +37,7 @@
 					</td>
 					<td style="width: 49%; padding-left: 1%;">
 						<ul>
-						<?php 
+						<?php
 						foreach ($col2links as $link) {
 							echo $this->Html->tag('li', $link, array('style' => 'list-style: none; margin: 0;'));
 						}
@@ -74,7 +74,7 @@
 	</table>
 	<ul class="core-admin-tabs">
 		<?php
-		$link = $this->Permission->link('New Campus', array('action' => 'add'), array('data-core-modal' => 'true', 'class' => 'button')); 
+		$link = $this->Permission->link('New Campus', array('action' => 'add'), array('data-core-modal' => 'true', 'class' => 'button'));
 		echo $link ? $this->Html->tag('li', $link) : null;
 		?>
 	</ul>

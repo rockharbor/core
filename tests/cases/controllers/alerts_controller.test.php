@@ -8,7 +8,7 @@ Mock::generatePartial('QueueEmailComponent', 'MockAlertsQueueEmailComponent', ar
 Mock::generatePartial('AlertsController', 'TestAlertsController', array('render', 'redirect', '_stop', 'header', 'disableCache', 'cakeError'));
 
 class AlertsControllerTestCase extends CoreTestCase {
-	
+
 	function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Alert', 'Group', 'AlertsUser', 'User');
@@ -25,7 +25,7 @@ class AlertsControllerTestCase extends CoreTestCase {
 
 	function endTest() {
 		$this->Alerts->Session->destroy();
-		unset($this->Alerts);		
+		unset($this->Alerts);
 		ClassRegistry::flush();
 	}
 
@@ -161,5 +161,5 @@ class AlertsControllerTestCase extends CoreTestCase {
 		$this->testAction('/alerts/delete/1');
 		$this->assertFalse($this->Alerts->Alert->read(null, 1));
 	}
-	
+
 }

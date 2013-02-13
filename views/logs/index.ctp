@@ -29,7 +29,7 @@
 		<td>
 			<?php echo $this->Html->link($log['User']['username'], array('controller' => 'profiles', 'action' => 'view', 'User'=>$log['User']['id'])); ?>
 		</td>
-		<td><?php echo $log['Log']['created']; ?>&nbsp;</td> 
+		<td><?php echo $log['Log']['created']; ?>&nbsp;</td>
 	</tr>
 <?php endforeach; ?>
 	</table>

@@ -14,7 +14,7 @@ class ArosAcoFixture extends CakeTestFixture {
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'aro_aco_key' => array('column' => array('aro_id', 'aco_id'), 'unique' => 1)),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
-	
+
 	var $records = array(
 	);
 

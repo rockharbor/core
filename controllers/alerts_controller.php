@@ -43,7 +43,7 @@ class AlertsController extends AppController {
  * Used to override Acl permissions for this controller.
  *
  * @access private
- */ 
+ */
 	function beforeFilter() {
 		parent::beforeFilter();
 	}
@@ -64,12 +64,12 @@ class AlertsController extends AppController {
 		}
 		$this->set(compact('alerts'));
 	}
-	
+
 /**
  * Views an alert
  *
  * @param integer $id The id of the alert to read
- */ 	
+ */
 	function view($id = null) {
 		$groups = $this->Alert->Group->findGroups($this->activeUser['Group']['id']);
 		$alert = $this->Alert->find('first', array(
@@ -82,20 +82,20 @@ class AlertsController extends AppController {
 		if (empty($alert)) {
 			$this->cakeError('error404');
 		}
-		
-		$this->set(compact('alert')); 
+
+		$this->set(compact('alert'));
 	}
 
 /**
  * History of alerts for a user
  *
  * @param string $unread Search filter (`read`, `unread`, empty for all)
- */ 
+ */
 	function history($unread = '') {
 		$userId = $this->activeUser['User']['id'];
 		$groups = $this->Alert->Group->findGroups($this->activeUser['Group']['id']);
-		
-		switch ($unread) {			
+
+		switch ($unread) {
 			case 'unread':
 			$this->paginate = array(
 				'conditions' => array(
@@ -121,9 +121,9 @@ class AlertsController extends AppController {
 			);
 			break;
 		}
-		
+
 		$this->MultiSelect->saveSearch($this->paginate);
-		$this->set('read', $this->Alert->getReadAlerts($userId));		
+		$this->set('read', $this->Alert->getReadAlerts($userId));
 		$this->set('alerts', $this->paginate());
 	}
 
@@ -134,23 +134,23 @@ class AlertsController extends AppController {
  */
 	function read($id = null) {
 		$userId = $this->activeUser['User']['id'];
-		
+
 		if ($id) {
 			$ids = array($id);
 		} else {
 			$ids = $this->_extractIds($this->Alert, '/Alert/user_id');
 		}
-		
+
 		foreach ($ids as $id) {
 			$this->Alert->markAsRead($userId, $id);
 		}
-	
+
 		$this->redirect(array('action' => 'history', 'both'));
 	}
 
 /**
  * Adds an Alert
- */ 
+ */
 	function add() {
 		if (!empty($this->data)) {
 			$this->Alert->create();
@@ -161,8 +161,8 @@ class AlertsController extends AppController {
 				$this->Session->setFlash('Unable to create alert. Please try again.', 'flash'.DS.'failure');
 			}
 		}
-		
-		$this->set('groups', $this->Alert->Group->find('list', 
+
+		$this->set('groups', $this->Alert->Group->find('list',
 			array(
 				'conditions' => array(
 					'Group.conditional' => false
@@ -173,7 +173,7 @@ class AlertsController extends AppController {
 
 /**
  * Edits an Alert
- */ 
+ */
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->cakeError('error404');
@@ -188,8 +188,8 @@ class AlertsController extends AppController {
 		if (empty($this->data)) {
 			$this->data = $this->Alert->read(null, $id);
 		}
-		
-		$this->set('groups', $this->Alert->Group->find('list', 
+
+		$this->set('groups', $this->Alert->Group->find('list',
 			array(
 				'conditions' => array(
 					'Group.conditional' => false
@@ -200,7 +200,7 @@ class AlertsController extends AppController {
 
 /**
  * Deletes an Alert
- */ 
+ */
 	function delete($id = null) {
 		if (!$id) {
 			$this->cakeError('error404');

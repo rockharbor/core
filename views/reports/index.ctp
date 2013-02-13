@@ -172,7 +172,7 @@
 				$d1 = floor($involvementCounts[$type]['active']/$involvementCounts[$type]['total']*100);
 				$d2 = 100-$d1;
 			}
-			
+
 			echo $this->Charts->draw('pie', array(
 				'data' => array($d1, $d2),
 				'size' => array(100, 100),

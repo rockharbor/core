@@ -39,28 +39,28 @@ class SysEmailsController extends AppController {
 		'MultiSelect.MultiSelect',
 		'FilterPagination'
 	);
-	
+
 /**
  * Models used by this controller
- * 
+ *
  * @var array
  */
 	var $uses = array('SysEmail', 'User', 'Involvement', 'Ministry');
-	
+
 /**
  * Users to email
- * 
+ *
  * This var is only used on the initial request, afterwhich the data value for
  * `$this->data['SysEmail']['to']` is passed between requests. This prevents
  * the need for looking up the user search on each request.
- * 
+ *
  * @var array
  */
 	var $users = array();
 
 /**
  * List of human readable statuses
- * 
+ *
  * @var array
  */
 	var $statuses = array(
@@ -75,26 +75,26 @@ class SysEmailsController extends AppController {
  * Used to override Acl permissions for this controller.
  *
  * @access private
- */ 
+ */
 	function beforeFilter() {
 		parent::beforeFilter();
-		
+
 		$this->_editSelf('index', 'view', 'html_email');
-		
+
 		$this->Auth->allow('bug_compose');
-		
+
 		// if the user is leading or managing, let them email people
 		if ($this->activeUser['Profile']['leading'] > 0 || $this->activeUser['Profile']['managing'] > 0) {
 			$this->Auth->allow('compose');
 		}
 	}
-	
+
 /**
  * Shows a list of emails to or from the user
  */
 	function index() {
 		$user = $this->passedArgs['User'];
-		
+
 		if (empty($this->data)) {
 			$this->data = array(
 				'Filter' => array(
@@ -103,7 +103,7 @@ class SysEmailsController extends AppController {
 				)
 			);
 		}
-		
+
 		$this->paginate = array(
 			'fields' => array(
 				'COUNT(*) as message_count, SysEmail.*'
@@ -123,11 +123,11 @@ class SysEmailsController extends AppController {
 			'group' => 'SysEmail.subject',
 			'order' => 'modified DESC'
 		);
-		
+
 		if ($this->data['Filter']['hide_system']) {
 			$this->paginate['group'] .= ' HAVING SysEmail.from_id > 0';
 		}
-		
+
 		switch ($this->data['Filter']['show']) {
 			case 'from':
 				$this->paginate['conditions']['SysEmail.from_id'] = $user;
@@ -141,25 +141,25 @@ class SysEmailsController extends AppController {
 			default:
 				$this->paginate['conditions']['SysEmail.to_id'] = $user;
 		}
-		
+
 		$emails = $this->FilterPagination->paginate();
 		$statuses = $this->statuses;
-		
+
 		$this->set(compact('emails', 'statuses'));
 	}
-	
+
 /**
  * Shows a sent email
- * 
+ *
  * @param integer $id The message id
- */	
+ */
 	function view($id = null) {
 		if (!$id) {
 			$this->cakeError('error404');
 		}
-		
+
 		$user = $this->passedArgs['User'];
-		
+
 		$email = $this->SysEmail->find('first', array(
 			'fields' => array(
 				'id',
@@ -183,10 +183,10 @@ class SysEmailsController extends AppController {
 		$this->set('email', $this->QueueEmail->interpret($email, 'SysEmail'));
 		$this->set('user', $user);
 	}
-	
+
 /**
  * Renders the complete HTML email message
- * 
+ *
  * @param integer $id The message id
  */
 	function html_email($id = null) {
@@ -196,13 +196,13 @@ class SysEmailsController extends AppController {
 
 /**
  * Emails users or leaders from a Ministry
- * 
+ *
  * By passing an id to the `Ministry` passed arg, you can email a single
- * Ministry user group (see `$group`). Or, use multiselect to select a group 
+ * Ministry user group (see `$group`). Or, use multiselect to select a group
  * of ministry ids, from which the user groups will be pulled.
- * 
+ *
  * @param string $group 'leaders', 'users', or 'both'
- */		
+ */
 	function ministry($group = 'users') {
 		if (empty($this->data['SysEmail']['to'])) {
 			if (isset($this->passedArgs['Ministry'])) {
@@ -210,21 +210,21 @@ class SysEmailsController extends AppController {
 			} else {
 				$ministries = $this->_extractIds($this->Ministry, '/Ministry/id');
 			}
-			
+
 			$this->users = $this->_getUsers('Ministry', $ministries, $group);
 		}
 		$this->setAction('compose');
 	}
-	
+
 /**
  * Emails users or leaders from an Involvement
- * 
+ *
  * By passing an id to the `Involvement` passed arg, you can email a single
- * Involvement user group (see `$group`). Or, use multiselect to select a group 
+ * Involvement user group (see `$group`). Or, use multiselect to select a group
  * of involvement ids, from which the user groups will be pulled.
- * 
+ *
  * @param string $group 'leaders', 'users', or 'both'
- */		
+ */
 	function involvement($group = 'users') {
 		if (empty($this->data['SysEmail']['to'])) {
 			if (isset($this->passedArgs['Involvement'])) {
@@ -232,18 +232,18 @@ class SysEmailsController extends AppController {
 			} else {
 				$involvements = $this->_extractIds($this->Involvement, '/Involvement/id');
 			}
-			
+
 			$this->users = $this->_getUsers('Involvement', $involvements, $group);
 		}
 		$this->setAction('compose');
 	}
-	
+
 /**
  * Emails a user from roster record
- * 
+ *
  * Use multiselect to select a group of roster ids, from which the user ids will
  * be pulled.
- */	
+ */
 	function roster() {
 		if (empty($this->data['SysEmail']['to'])) {
 			$rosters = $this->_extractIds($this->Involvement->Roster, '/Roster/id');
@@ -262,8 +262,8 @@ class SysEmailsController extends AppController {
 
 /**
  * Emails a user
- * 
- * By passing an id to the named param `User` you can email a specific user. 
+ *
+ * By passing an id to the named param `User` you can email a specific user.
  * Or, use multiselect to select a group of user ids
  */
 	function user() {
@@ -285,10 +285,10 @@ class SysEmailsController extends AppController {
 		}
 		$this->setAction('compose');
 	}
-	
+
 /**
  * Pass-through function to allow regular users to email leaders
- * 
+ *
  * @param integer $leaderId The leader id
  */
 	function leader($leaderId) {
@@ -296,28 +296,28 @@ class SysEmailsController extends AppController {
 		$this->users = array($user['Leader']['user_id']);
 		$this->setAction('compose');
 	}
-	
+
 /**
  * Creates a new email
- * 
- * This action should not be used directly. It relies on `$this->users` to be 
+ *
+ * This action should not be used directly. It relies on `$this->users` to be
  * set by a preceding action.
- */ 
+ */
 	function compose() {
 		// data was posted, so get the users
 		if (!empty($this->data['SysEmail']['to'])) {
 			$this->users = explode(',', $this->data['SysEmail']['to']);
 		}
-		
+
 		if (empty($this->data) && (empty($this->users))) {
 			$this->Session->setFlash('Invalid email list.', 'flash'.DS.'failure');
 			return $this->redirect($this->emptyPage);
 		}
-		
+
 		$fromUser = $this->activeUser;
-		
+
 		$toUserIds = $this->users;
-		
+
 		if (!empty($this->data)) {
 			// get attachments for this email
 			$Document = ClassRegistry::init('Document');
@@ -328,7 +328,7 @@ class SysEmailsController extends AppController {
 					'model' => 'SysEmail'
 				)
 			));
-			
+
 			$attachments = array();
 			foreach ($documents as $attachment) {
 				list($filename, $ext) = explode('.', $attachment['Document']['basename']);
@@ -336,11 +336,11 @@ class SysEmailsController extends AppController {
 			}
 
 			$this->SysEmail->set($this->data);
-			
+
 			// send it!
 			if ($this->SysEmail->validates()) {
 				$e = 0;
-				
+
 				if (in_array($this->data['SysEmail']['email_users'], array('both', 'household_contact'))) {
 					$households = $this->User->HouseholdMember->Household->getHouseholdIds($toUserIds);
 					$contacts = $this->User->HouseholdMember->Household->find('all', array(
@@ -358,11 +358,11 @@ class SysEmailsController extends AppController {
 						$toUserIds = $extraUsers;
 					}
 				}
-				
+
 				$toUserIds = array_unique($toUserIds);
 				$this->set('include_greeting', $this->data['SysEmail']['include_greeting']);
 				$this->set('include_signoff', $this->data['SysEmail']['include_signoff']);
-				
+
 				foreach ($toUserIds as $toUser) {
 					if ($this->Notifier->notify(array(
 						'from' => $fromUser['User']['id'],
@@ -376,19 +376,19 @@ class SysEmailsController extends AppController {
 				}
 
 				$this->Session->setFlash('Your emails have been sent.', 'flash'.DS.'success');
-				
+
 				// delete attachments related with this email
 				$this->SysEmail->gcAttachments($this->MultiSelect->_token);
 			} else {
 				$this->Session->setFlash('Unable to send your emails.', 'flash'.DS.'failure');
-			}			
+			}
 		} else {
 			// comma-delimited list of users to email
 			$this->data['SysEmail']['to'] = implode(',', $toUserIds);
 			// clear old attachments that people aren't using anymore
 			$this->SysEmail->gcAttachments();
 		}
-		
+
 		$this->set('toUserIds', $toUserIds);
 		$this->set('toUsers', $this->User->find('all', array(
 			'conditions' => array(
@@ -406,11 +406,11 @@ class SysEmailsController extends AppController {
 
 /**
  * Gets a list of users from a particular model and user group
- * 
+ *
  * @param string $model The model (Involvement or Ministry)
  * @param array $ids Array of model ids
  * @param string $group 'leaders', 'users', or 'both'
- * @return array Array of user ids 
+ * @return array Array of user ids
  */
 	function _getUsers($model, $ids, $group = 'users') {
 		if (empty($ids)) {
@@ -431,4 +431,4 @@ class SysEmailsController extends AppController {
 		}
 		return $users;
 	}
-}	
+}

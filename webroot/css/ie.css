@@ -31,12 +31,12 @@ div.subministry {
 span.breadcrumb.editing,
 div#payment-details,
 div.payment-options,
-.toggle div.checkbox, 
+.toggle div.checkbox,
 .toggle div.radio,
 div.submit,
 .core-icon-container,
 .core-icon {
-	zoom:1;	
+	zoom:1;
 	display: inline;
 	display: inline-block;
 }
@@ -57,16 +57,16 @@ jquery-ui.css
 .ui-widget-shadow {
 	filter:Alpha(Opacity=30);
 }
-.ui-state-default, 
-.ui-widget-content .ui-state-default, 
+.ui-state-default,
+.ui-widget-content .ui-state-default,
 .ui-widget-header .ui-state-default,
-.ui-state-hover, 
-.ui-widget-content .ui-state-hover, 
-.ui-widget-header .ui-state-hover, 
-.ui-state-focus, .ui-widget-content .ui-state-focus, 
+.ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-state-focus, .ui-widget-content .ui-state-focus,
 .ui-widget-header .ui-state-focus,
-.ui-state-active, 
-.ui-widget-content .ui-state-active, 
+.ui-state-active,
+.ui-widget-content .ui-state-active,
 .ui-widget-header .ui-state-active {
 	behavior: url(css/PIE.htc);
 }
@@ -76,14 +76,14 @@ jquery-ui.css
 .ui-state-disabled, .ui-widget-content .ui-state-disabled, .ui-widget-header .ui-state-disabled {
 	filter:Alpha(Opacity=35);
 }
-.ui-tabs-nav .ui-state-default, 
-.ui-tabs-nav .ui-widget-content .ui-state-default, 
+.ui-tabs-nav .ui-state-default,
+.ui-tabs-nav .ui-widget-content .ui-state-default,
 .ui-tabs-nav .ui-widget-header .ui-state-default ,
-.ui-tabs-nav .ui-state-hover, 
-.ui-tabs-nav .ui-widget-content .ui-state-hover, 
-.ui-tabs-nav .ui-widget-header .ui-state-hover, 
-.ui-tabs-nav .ui-state-focus, 
-.ui-widget-content .ui-state-focus, 
+.ui-tabs-nav .ui-state-hover,
+.ui-tabs-nav .ui-widget-content .ui-state-hover,
+.ui-tabs-nav .ui-widget-header .ui-state-hover,
+.ui-tabs-nav .ui-state-focus,
+.ui-widget-content .ui-state-focus,
 .ui-widget-header .ui-state-focus,
 .ui-tabs-nav .ui-state-active,
 .ui-tabs-nav .ui-widget-content .ui-state-active,

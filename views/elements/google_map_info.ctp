@@ -7,7 +7,7 @@ $default = array(
 	'state' => null,
 	'zip' => null
 );
-	
+
 $data = array_merge($default, $data);
 
 foreach ($data as &$datum) {

@@ -12,7 +12,7 @@
 		}
 		?>
 	</ul>
-	
+
 	<div class="content-box">
 		<?php
 		$url = Router::url(array(
@@ -22,7 +22,7 @@
 		));
 		?>
 		<div id="involvement-dashboard" data-core-update-url="<?php echo $url; ?>">
-			<?php 
+			<?php
 			if ($activeUser['Profile']['leading'] > 0) {
 				echo $this->requestAction($url, array(
 					'return',
@@ -39,7 +39,7 @@
 		));
 		?>
 		<div id="ministry-dashboard" data-core-update-url="<?php echo $url; ?>">
-			<?php 
+			<?php
 			if ($activeUser['Profile']['managing'] > 0) {
 				echo $this->requestAction($url, array(
 					'return',
@@ -49,5 +49,5 @@
 			?>
 		</div>
 	</div>
-	
+
 </div>

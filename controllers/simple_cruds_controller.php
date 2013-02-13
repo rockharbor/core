@@ -33,20 +33,20 @@ class SimpleCrudsController extends AppController {
  * Used to override Acl permissions for this controller.
  *
  * @access private
- */ 
+ */
 	function beforeFilter() {
 		parent::beforeFilter();
-		
+
 		// for accessing the model
 		$this->set('model', $this->modelClass);
 		// for printing it out all friendly-like
 		$this->set('modelKey', $this->modelKey);
-		
+
 		// give the views the schema, too, so they can
 		// create forms with slight differences
 		$schema = $this->{$this->modelClass}->schema();
 		$this->set('schema', $schema);
-		
+
 		// check for dependent lists to add (i.e., ministries as a dropdown)
 		foreach ($schema as $field => $attrs) {
 			if (substr($field, -3) == '_id') {
@@ -54,18 +54,18 @@ class SimpleCrudsController extends AppController {
 				$dependentListVar = Inflector::variable(
 					Inflector::pluralize(preg_replace('/_id$/', '', $field))
 				);
-				
+
 				$this->set($dependentListVar, $this->{$this->modelClass}->{$dependentModel}->find('list', array('fields' => array($dependentModel.'.'.$this->{$this->modelClass}->{$dependentModel}->displayField))));
 			}
 		}
 
-		$this->set('title_for_layout', Inflector::pluralize(Inflector::humanize($this->modelKey)));		
+		$this->set('title_for_layout', Inflector::pluralize(Inflector::humanize($this->modelKey)));
 	}
 
 /**
  * Shows a list of records for this model
  */
-	function index() {	
+	function index() {
 		$this->{$this->modelClass}->recursive = 0;
 		$this->set('results', $this->paginate());
 	}

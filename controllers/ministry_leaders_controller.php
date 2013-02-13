@@ -34,7 +34,7 @@ class MinistryLeadersController extends LeadersController {
  * Used to override Acl permissions for this controller.
  *
  * @access private
- */ 
+ */
 	function beforeFilter() {
 		parent::beforeFilter();
 		$this->modelId = isset($this->passedArgs[$this->model]) ? $this->passedArgs[$this->model] : null;
@@ -55,7 +55,7 @@ class MinistryLeadersController extends LeadersController {
 				'Leader.user_id' => $this->passedArgs['User'],
 			)
 		));
-		
+
 		$this->viewPath = 'ministry_leaders';
 		$this->paginate = array(
 			'conditions' => array(
@@ -72,5 +72,5 @@ class MinistryLeadersController extends LeadersController {
 		$this->set('ministries', $ministries);
 		$this->set('model', $this->model);
 	}
-	
+
 }

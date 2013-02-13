@@ -12,7 +12,7 @@ if (!isset($id)) {
 	$id = uniqid();
 }
 $url = array(
-	'plugin' => false, 
+	'plugin' => false,
 	'controller' => 'dates',
 	'action' => 'calendar',
 	'ext' => 'json',

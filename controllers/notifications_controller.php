@@ -36,14 +36,14 @@ class NotificationsController extends AppController {
  * @var array
  */
 	var $helpers = array('MultiSelect.MultiSelect');
-	
+
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
  *
  * @access private
- */ 
+ */
 	function beforeFilter() {
 		$this->_editSelf('quick', 'index');
 		parent::beforeFilter();
@@ -64,7 +64,7 @@ class NotificationsController extends AppController {
 			'limit' => 5
 		));
 		$this->set('alerts', $alerts);
-		
+
 		// get invites
 		$invites = $this->Notification->User->Invitation->getInvitations($this->activeUser['User']['id']);
 		$invitations = $this->Notification->User->Invitation->find('all', array(
@@ -84,7 +84,7 @@ class NotificationsController extends AppController {
 			'limit' => 10
 		);
 		$this->set('notifications', $this->paginate());
-		
+
 		// get count
 		$new = $this->Notification->find('count', array(
 			'conditions' => array(
@@ -120,12 +120,12 @@ class NotificationsController extends AppController {
  * @param boolean $read 1 for `read`, 0 for `unread`
  */
 	function read($id = null, $read = 1) {
-		if ($id) {			
+		if ($id) {
 			$ids = array($id);
 		} else {
 			$ids = $this->_extractIds($this->Notification, '/Notification/id');
 		}
-		
+
 		foreach ($ids as $id) {
 			$this->Notification->id = $id;
 			if ($this->Notification->ownedBy($this->activeUser['User']['id'])) {
@@ -138,7 +138,7 @@ class NotificationsController extends AppController {
 		} else {
 			$this->Session->setFlash('Notifications have been marked as unread.', 'flash'.DS.'success');
 		}
-	
+
 		$this->redirect(array('action' => 'index'));
 	}
 
@@ -163,7 +163,7 @@ class NotificationsController extends AppController {
 		}
 
 		$this->Session->setFlash('Notifications have been deleted.', 'flash'.DS.'success');
-		
+
 		$this->redirect(array('action' => 'index'));
 	}
 }

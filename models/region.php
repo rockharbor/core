@@ -22,7 +22,7 @@ class Region extends AppModel {
  * @var string
  */
 	var $name = 'Region';
-	
+
 /**
  * Default order
  *

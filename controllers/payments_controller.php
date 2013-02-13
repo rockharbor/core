@@ -22,7 +22,7 @@ class PaymentsController extends AppController {
  * @var string
  */
 	var $name = 'Payments';
-	
+
 /**
  * Extra components for this controller
  *
@@ -43,7 +43,7 @@ class PaymentsController extends AppController {
  * Used to override Acl permissions for this controller.
  *
  * @access private
- */ 
+ */
 	function beforeFilter() {
 		$this->_editSelf('index', 'view');
 		parent::beforeFilter();
@@ -88,7 +88,7 @@ class PaymentsController extends AppController {
 		if (!isset($this->passedArgs['User'])) {
 			$this->cakeError('error404');
 		}
-		
+
 		$userId = $this->passedArgs['User'];
 
 		$this->paginate = array(
@@ -96,7 +96,7 @@ class PaymentsController extends AppController {
 				'Payment.user_id' => $userId
 			),
 			'contain' => array(
-				'Roster' => array(	
+				'Roster' => array(
 					'Involvement' => array(
 						'fields' => array('id', 'name')
 					)
@@ -122,7 +122,7 @@ class PaymentsController extends AppController {
 		$this->MultiSelect->saveSearch($this->paginate);
 		// for payment export, always export all
 		$this->MultiSelect->selectAll();
-		
+
 		$this->set('payments', $this->paginate());
 		$this->Payment->User->contain(array('Profile'));
 		$this->set('user', $this->Payment->User->read(null, $userId));
@@ -136,7 +136,7 @@ class PaymentsController extends AppController {
 	function add($id) {
 		// persist selected items through POST requests
 		$this->here .= '/mspersist:1';
-		
+
 		if ($id) {
 			$ids = array($id);
 		} else {
@@ -153,7 +153,7 @@ class PaymentsController extends AppController {
 				)
 			)
 		));
-		
+
 		$involvement = $this->Payment->Roster->Involvement->find('first', array(
 			'conditions' => array(
 				'Involvement.id' => $users[0]['Roster']['involvement_id']
@@ -162,40 +162,40 @@ class PaymentsController extends AppController {
 				'InvolvementType'
 			)
 		));
-		
-		// bind CreditCard to process the card 
+
+		// bind CreditCard to process the card
 		$this->Payment->bindModel(array(
 			'hasOne' => array(
-				'CreditCard' => array(	
+				'CreditCard' => array(
 					'foreignKey' => false
 				)
 			)
 		));
-		
+
 		if (!empty($this->data)) {
 			$paymentType = $this->Payment->PaymentType->read(array('name'), $this->data['Payment']['payment_type_id']);
-			
+
 			if (count($users) > 1) {
 				// don't allow adding multiple credits
 				$payForUsers = Set::extract('/Roster[balance>0]/..', $users);
 			} else {
 				$payForUsers = $users;
 			}
-			
+
 			// get balance
 			$balance = Set::apply('/Roster/balance', $payForUsers, 'array_sum');
-			
-			$amount = $this->data['Payment']['amount'];		
-			
+
+			$amount = $this->data['Payment']['amount'];
+
 			// set `amount` validation rule to reflect balance range and validate as it's
 			// own field because we'll be splitting the payments up
 			if ($amount > $balance) {
 				$this->Payment->invalidate('amount', 'Your chosen amount must be at or under $'.$balance.'.');
 			}
-				
+
 			// assuming all users still have a balance
 			$avg = round($amount/count($payForUsers), 2);
-			
+
 			// build payment records (transaction id to be added later)
 			$payments = array();
 			foreach ($payForUsers as $user) {
@@ -212,23 +212,23 @@ class PaymentsController extends AppController {
 					'payment_type_id' => $this->data['Payment']['payment_type_id'],
 					'payment_placed_by' => $this->activeUser['User']['id'],
 				);
-				
+
 				// to associate with invoice number
 				$paymentOption = $this->Payment->Roster->PaymentOption->read(null, $user['Roster']['payment_option_id']);
-			}			
-			
+			}
+
 			// if there was any left over, distribute to other users, otherwise, remove unwanted field
 			foreach ($payments as &$payment) {
 				if ($amount > 0) {
 					// get and then set the amount they can receive
-					$amt = ($amount <= $payment['balance'] ? $amount : $payment['balance']);				
-					$payment['amount'] += $amt;				
+					$amt = ($amount <= $payment['balance'] ? $amount : $payment['balance']);
+					$payment['amount'] += $amt;
 					$amount -= $amt;
 				}
-				
+
 				unset($payment['balance']);
 			}
-			
+
 			// create extra fields for credit card
 			$verb = count($payForUsers) > 1 ? 'have' : 'has';
 			$pVerb = count($payForUsers) > 1 ? 'had payments' : 'made a payment';
@@ -236,13 +236,13 @@ class PaymentsController extends AppController {
 			$description = implode(' and ', Set::extract('/User/Profile/name', $payForUsers)).' '.$verb.' '.$pVerb.' made for '.$involvement['InvolvementType']['name'].' '.$involvement['Involvement']['name'];
 			$this->data['CreditCard']['invoice_number'] = $paymentOption['PaymentOption']['account_code'];
 			$this->data['CreditCard']['description'] = $description;
-			$this->data['CreditCard']['email'] = $this->activeUser['Profile']['primary_email'];			
-			$this->data['CreditCard']['amount'] = $this->data['Payment']['amount'];	
-			
+			$this->data['CreditCard']['email'] = $this->activeUser['Profile']['primary_email'];
+			$this->data['CreditCard']['amount'] = $this->data['Payment']['amount'];
+
 			// make sure all the fields validate before charging the card, if there is one
 			if (empty($this->Payment->validationErrors) && $this->Payment->saveAll($payments, array('validate' => 'only'))) {
 				$isCreditCard = (isset($this->data['CreditCard']) && isset($this->data['CreditCard']['credit_card_number']));
-				
+
 				// next, make sure the credit card gets authorized
 				if ($isCreditCard) {
 					$pValidates = $this->Payment->CreditCard->save($this->data['CreditCard']);
@@ -250,11 +250,11 @@ class PaymentsController extends AppController {
 					// no extra validation for other payment types
 					$pValidates = true;
 				}
-				
+
 				if ($pValidates) {
 					// credit card as been charged, save the payment record
 					$this->Payment->create();
-					foreach ($payments as &$completePayment) {						
+					foreach ($payments as &$completePayment) {
 						if ($isCreditCard) {
 							// credit card
 							$completePayment['number'] = substr($this->data['CreditCard']['credit_card_number'], -4);
@@ -262,18 +262,18 @@ class PaymentsController extends AppController {
 						} elseif (isset($this->data['Payment']['number'])) {
 							// other
 							$completePayment['number'] = $this->data['Payment']['number'];
-						} 
+						}
 					}
-					
+
 					$this->Payment->saveAll($payments, array('validate' => false));
-					
+
 					$this->set('involvement', $involvement);
 					$this->set('payer', $this->activeUser);
 					$this->set('amount', $this->data['Payment']['amount']);
 					$leaders = $this->Payment->Roster->Involvement->getLeaders($involvement['Involvement']['id']);
-					
+
 					$subject = $this->activeUser['Profile']['name'].' made a payment for '.$involvement['Involvement']['name'];
-					
+
 					foreach ($leaders as $leader) {
 						$this->Notifier->notify(array(
 							'to' => $leader,
@@ -281,16 +281,16 @@ class PaymentsController extends AppController {
 							'subject' => $subject
 						));
 					}
-			
+
 					$this->Session->setFlash('Your payment has been received.', 'flash'.DS.'success');
 				} else {
 					$this->Session->setFlash('Unable to process payment.', 'flash'.DS.'failure');
-				}					
+				}
 			} else {
 				$this->Session->setFlash('Unable to process payment. Please try again.', 'flash'.DS.'failure');
-			}			
+			}
 		}
-		
+
 		// get user addresses for js
 		$userAddresses = $this->Payment->User->Address->find('all', array(
 			'conditions' => array(
@@ -300,7 +300,7 @@ class PaymentsController extends AppController {
 		));
 		// format for select
 		$addresses = Set::combine($userAddresses, '/Address/id', '/Address/name');
-		
+
 		$paymentTypes = $this->Payment->PaymentType->find('all', array(
 			'conditions' => array(
 				'group_id' => $this->Payment->PaymentType->Group->findGroups($this->activeUser['Group']['id'])
@@ -308,11 +308,11 @@ class PaymentsController extends AppController {
 		));
 		$types = array_unique(Set::extract('/PaymentType/type', $paymentTypes));
 		$types = array_intersect_key($this->Payment->PaymentType->types, array_flip($types));
-		
+
 		$this->set(compact('involvement', 'users', 'userAddresses', 'addresses', 'paymentTypes', 'types', 'mskey'));
-		
+
 	}
-	
+
 /**
  * Edits a payment
  *
@@ -322,7 +322,7 @@ class PaymentsController extends AppController {
 		if (!$id) {
 			$this->cakeError('error404');
 		}
-		
+
 		if (!empty($this->data)) {
 			if ($this->Payment->save($this->data)) {
 				$this->Session->setFlash('This payment has been saved.', 'flash'.DS.'success');

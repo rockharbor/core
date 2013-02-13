@@ -2,7 +2,7 @@
 
 <div class="rosters">
 <?php
-/* 
+/*
 check to see if this is a quick signup
 	- involvement.take_payment = false
 	- involvement.offer_childcare = false
@@ -27,7 +27,7 @@ echo $this->Form->hidden('Roster.involvement_id');
 				echo ' Note: adding childcare to this '.$involvement['InvolvementType']['name'].' may increase your balance depending on the payment option you select.';
 			}
 		?></p>
-<?php 
+<?php
 		$c = 0;
 		foreach ($children as $child) {
 			// see if they're already signed up
@@ -82,15 +82,15 @@ if (!empty($involvement['Question'])) {
 	?>
 		</div>
 	</fieldset>
-	<?php 
-	} 
+	<?php
+	}
 	if ($fullAccess) {
 	?>
 	<fieldset>
  		<legend>Signup Options</legend>
-	<?php		
+	<?php
 		echo $this->Form->input('Roster.roster_status_id');
-		
+
 		if ($involvement['Involvement']['take_payment']) {
 			echo $this->Form->input('Roster.payment_option_id', array(
 				'empty' => 'No Payment Option',
@@ -107,8 +107,8 @@ if (!empty($involvement['Question'])) {
 		}
 	?>
 	</fieldset>
-	
-<?php 
+
+<?php
 	}
 	echo $this->Js->submit('Save', $defaultSubmitOptions);
 	echo $this->Form->end();

@@ -118,10 +118,10 @@ class Roster extends AppModel {
 			'field' => 'Roster.id'
 		)
 	);
-	
+
 /**
  * Remove joins from counts
- * 
+ *
  * @param array $conditions Array of find conditions
  * @param array $recursive Recursive setting
  * @param array $extra Extra find options
@@ -193,9 +193,9 @@ class Roster extends AppModel {
 			'pay_deposit_amount' => false,
 		);
 		$options['defaults'] = array_merge($_defaults, $options['defaults']);
-		
+
 		extract($options);
-		
+
 		if (empty($defaults['payment_option_id']) && $involvement['Involvement']['take_payment']) {
 			$firstPaymentOption = $this->PaymentOption->find('first', array(
 				'fields' => array(
@@ -207,7 +207,7 @@ class Roster extends AppModel {
 			));
 			$defaults['payment_option_id'] = $firstPaymentOption['PaymentOption']['id'];
 		}
-		
+
 		// set defaults
 		$roster['Roster']['involvement_id'] = $involvement['Involvement']['id'];
 		$roster['Roster']['roster_status_id'] = $involvement['Involvement']['default_status_id'];
@@ -228,7 +228,7 @@ class Roster extends AppModel {
 			$roster['Roster']['id'] = $exists['Roster']['id'];
 			$roster['Roster']['roster_status_id'] = 1;
 		}
-		
+
 		// only add a payment if we're taking one
 		if ($involvement['Involvement']['take_payment'] && $defaults['payment_option_id'] > 0 && !$defaults['pay_later']) {
 			if (empty($defaults['payment_option_id'])) {
@@ -240,9 +240,9 @@ class Roster extends AppModel {
 			} else {
 				$paymentOption = $this->PaymentOption->read(null, $defaults['payment_option_id']);
 			}
-			
+
 			$paymentType = $this->Payment->PaymentType->read(null, $defaults['payment_type_id']);
-			
+
 			if (is_null($parent)) {
 				$amount = $defaults['pay_deposit_amount'] ? $paymentOption['PaymentOption']['deposit'] : $paymentOption['PaymentOption']['total'];
 			} else {

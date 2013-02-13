@@ -51,7 +51,7 @@ if (!empty($results)) {
 			<td><?php echo $this->Text->truncate($result['Ministry']['description'], 250); ?></td>
 			<td><?php echo $result['Campus']['name']; ?></td>
 		</tr>
-<?php	
+<?php
 	endforeach;
 ?>
 		</tbody>
@@ -62,7 +62,7 @@ if (!empty($results)) {
 ?>
 <h3>Results</h3>
 <p>No results</p>
-<?php 
+<?php
 }
 ?>
 </div>

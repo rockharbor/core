@@ -3,14 +3,14 @@ App::import('Lib', 'CoreTestCase');
 App::import('Controller', 'Questions');
 
 class TestQuestionsController extends QuestionsController {
-	
+
 	function redirect($url, $status = null, $exit = true) {
 		if (is_array($url)) {
 			$url += array('controller' => 'questions');
 		}
 		$this->redirectUrl = Router::url($url);
 	}
-	
+
 }
 
 Mock::generatePartial('TestQuestionsController', 'MockTestQuestionsController', array('isAuthorized', 'disableCache', 'render', '_stop', 'header', 'cakeError'));
@@ -33,14 +33,14 @@ class QuestionsControllerTestCase extends CoreTestCase {
 		unset($this->Questions);
 		ClassRegistry::flush();
 	}
-	
+
 	function testIndex() {
 		$vars = $this->testAction('/questions/index/Involvement:1');
 		$results = Set::extract('/Question/id', $vars['questions']);
 		$expected = array(1, 2);
 		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testAdd() {
 		$data = array(
 			'Question' => array(
@@ -58,7 +58,7 @@ class QuestionsControllerTestCase extends CoreTestCase {
 		$expected = 'flash'.DS.'success';
 		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testEdit() {
 		$data = array(
 			'Question' => array(
@@ -78,7 +78,7 @@ class QuestionsControllerTestCase extends CoreTestCase {
 		$expected = $data['Question']['description'];
 		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testMove() {
 		$this->testAction('/question/move/1/down');
 		$results = $this->testController->redirectUrl;
@@ -90,7 +90,7 @@ class QuestionsControllerTestCase extends CoreTestCase {
 		$results = $question['Question']['order'];
 		$expected = 2;
 		$this->assertEqual($results, $expected);
-		
+
 		$this->testAction('/question/move/1/up');
 		$results = $this->testController->redirectUrl;
 		$expected = '/questions/index/Involvement:1';
@@ -101,12 +101,12 @@ class QuestionsControllerTestCase extends CoreTestCase {
 		$results = $question['Question']['order'];
 		$expected = 1;
 		$this->assertEqual($results, $expected);
-		
+
 		$this->testAction('/question/move/3/down');
 		$results = $this->Questions->Session->read('Message.flash.element');
 		$expected = 'flash'.DS.'failure';
 	}
-	
+
 	function testDelete() {
 		$this->testAction('/question/delete/1');
 		$results = $this->Questions->Session->read('Message.flash.element');

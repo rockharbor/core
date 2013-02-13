@@ -36,7 +36,7 @@ class SearchesController extends AppController {
  * @var array
  */
 	var $components = array(
-		'FilterPagination', 
+		'FilterPagination',
 		'MultiSelect.MultiSelect',
 		'Security' => array(
 			'enabled' => false
@@ -68,16 +68,16 @@ class SearchesController extends AppController {
 		$users = array();
 		$involvements = array();
 		$query = '';
-		
+
 		if (empty($this->data['Search']['Campus']['id'])) {
 			$this->data['Search']['Campus']['id'] = array_keys($campuses);
 		}
-		
+
 		if (isset($this->data['Search']['q'])) {
 			$this->params['url']['q'] = $this->data['Search']['q'];
 			unset($this->data['Search']['q']);
 		}
-		
+
 		$_default = array(
 			'Search' => array(
 				'query' => $this->params['url']['q'],
@@ -134,7 +134,7 @@ class SearchesController extends AppController {
 						'Profile.last_name LIKE' => '%'.$query.'%',
 					);
 				}
-				
+
 				$options = array(
 					'fields' => array(
 						'id', 'username', 'active', 'flagged'
@@ -145,16 +145,16 @@ class SearchesController extends AppController {
 							'fields' => array(
 								'name', 'primary_email',
 								'alternate_email_1', 'alternate_email_2',
-								'cell_phone', 
+								'cell_phone',
 								'background_check_complete'
 							),
 							'Campus' => array(
 								'fields' => array('id', 'name')
 							)
-						)						
+						)
 					),
 					'contain' => array(
-						'Image'						
+						'Image'
 					),
 					'limit' => 9,
 					'group' => 'User.id'
@@ -253,7 +253,7 @@ class SearchesController extends AppController {
 			// reset multiselect
 			unset($this->passedArgs['mstoken']);
 			$this->MultiSelect->startup();
-			
+
 			// create conditions and contain
 			$options = (array)$this->{$model}->postOptions($this->data) + array('contain' => array());;
 			$options = array(
@@ -301,7 +301,7 @@ class SearchesController extends AppController {
 			$this->data['Involvement']['name'] = $this->params['url']['q'];
 			unset($this->params['url']['q']);
 		}
-		
+
 		$private = $this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id']);
 		$inactive = $private;
 		$results = array();
@@ -310,7 +310,7 @@ class SearchesController extends AppController {
 		$link = array(
 			'Ministry' => array(
 				'Campus'
-			), 
+			),
 			'InvolvementType'
 		);
 		$this->paginate = compact('link');
@@ -327,7 +327,7 @@ class SearchesController extends AppController {
 				)
 			);
 			$this->data = $search = Set::merge($_default, $this->data);
-			
+
 			$dist = $search['Distance'];
 			unset($search['Distance']);
 			if (!empty($dist['distance_from'])) {
@@ -352,7 +352,7 @@ class SearchesController extends AppController {
 				}
 				$search['Address']['id'] = $addresses;
 			}
-			
+
 			if ($search['Involvement']['private']) {
 				$search['Involvement']['private'] = array(0,1);
 			} else {
@@ -367,7 +367,7 @@ class SearchesController extends AppController {
 			if ($search['Involvement']['previous']) {
 				unset($search['Involvement']['previous']);
 			}
-			
+
 			$search = Set::filter($search);
 			$options = (array)$this->Involvement->postOptions($search) + array('contain' => array());
 			$link = array_merge_recursive($link, $options['contain']);
@@ -389,7 +389,7 @@ class SearchesController extends AppController {
 			$this->data['Ministry']['name'] = $this->params['url']['q'];
 			unset($this->params['url']['q']);
 		}
-		
+
 		$private = $this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id']);
 		$inactive = $private;
 		$results = array();
@@ -406,7 +406,7 @@ class SearchesController extends AppController {
 				)
 			);
 			$this->data = $search = Set::merge($_default, $this->data);
-			
+
 			if ($search['Ministry']['private']) {
 				$search['Ministry']['private'] = array(0,1);
 			}
@@ -416,7 +416,7 @@ class SearchesController extends AppController {
 				$search['Ministry']['active'] = 1;
 			}
 			unset($search['Ministry']['inactive']);
-			
+
 			$options = (array)$this->Ministry->postOptions($search) + array('contain' => array());
 			$contain = array_merge_recursive($contain, $options['contain']);
 			$conditions = $this->postConditions($search, 'LIKE');
@@ -453,7 +453,7 @@ class SearchesController extends AppController {
 
 		if (!empty($this->data)) {
 			$options = $this->User->prepareSearch($this, $this->data);
-			
+
 			// cache the find all query, since it will remain the same during pagination
 			$options['cache'] = '+5 minutes';
 
@@ -461,7 +461,7 @@ class SearchesController extends AppController {
 			$filteredUsers = $this->User->find('all', $options);
 			// reset pagination
 			$this->paginate = array(
-				'contain' => $contain, 
+				'contain' => $contain,
 				'conditions' => array('User.id' => Set::extract('/User/id', $filteredUsers)),
 				'order' => 'Profile.first_name ASC, Profile.last_name ASC'
 			);

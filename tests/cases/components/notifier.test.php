@@ -7,14 +7,14 @@ Mock::generatePartial('NotifierComponent', 'MockNotifierNotifierComponent', arra
 Mock::generatePartial('QueueEmailComponent', 'MockQueueEmailComponent', array('__smtp', '__mail'));
 
 class TestNotifierController extends Controller {
-	
+
 	public $activeUser = array(
 		'Profile' => array(
 			'name' => 'Example',
 			'primary_email' => 'example@example.com'
 		)
 	);
-	
+
 }
 
 class NotifierTestCase extends CoreTestCase {
@@ -27,7 +27,7 @@ class NotifierTestCase extends CoreTestCase {
 		$this->Controller = new TestNotifierController();
 		$this->Notifier = new MockNotifierNotifierComponent();
 		$this->Notifier->setReturnValue('_render', 'A notification');
-		$this->Notifier->initialize($this->Controller, array());		
+		$this->Notifier->initialize($this->Controller, array());
 		$this->Notifier->QueueEmail = new MockQueueEmailComponent();
 		$this->Notifier->QueueEmail->initialize($this->Controller, array());
 	}
@@ -39,7 +39,7 @@ class NotifierTestCase extends CoreTestCase {
 		unset($this->Controller);
 		ClassRegistry::flush();
 	}
-	
+
 	function testEmailConfigStandard() {
 		$config = new EmailConfig();
 		$config->default = array(
@@ -49,7 +49,7 @@ class NotifierTestCase extends CoreTestCase {
 			'transport' => 'Smtp'
 		);
 		$this->Notifier->Config = $config;
-		
+
 		Configure::write('debug', 0);
 		$countBefore = $this->Notifier->QueueEmail->Model->find('count');
 		$this->Notifier->QueueEmail->expectNever('__smtp');
@@ -63,7 +63,7 @@ class NotifierTestCase extends CoreTestCase {
 		$countAfter = $this->Notifier->QueueEmail->Model->find('count');
 		$this->assertEqual($countBefore, $countAfter);
 		Configure::write('debug', 2);
-		
+
 		$countBefore = $this->Notifier->QueueEmail->Model->find('count');
 		$this->assertTrue($this->Notifier->notify(array(
 			'to' => 1,
@@ -72,7 +72,7 @@ class NotifierTestCase extends CoreTestCase {
 		$countAfter = $this->Notifier->QueueEmail->Model->find('count');
 		$this->assertEqual($countAfter-$countBefore, 1);
 	}
-	
+
 	function testEmailConfigSmtp() {
 		$config = new EmailConfig();
 		$config->debug = array(
@@ -80,7 +80,7 @@ class NotifierTestCase extends CoreTestCase {
 			'host' => 'smtp.example.com'
 		);
 		$this->Notifier->Config = $config;
-		
+
 		$this->Notifier->QueueEmail->expectNever('__mail');
 		$this->Notifier->QueueEmail->setReturnValueAt(0, '__smtp', true);
 		$this->Controller->set('ministry', 1);
@@ -89,7 +89,7 @@ class NotifierTestCase extends CoreTestCase {
 			'template' => 'ministries_edit'
 		)), 'email');
 		$countAfter = $this->Notifier->QueueEmail->Model->find('count');
-		
+
 		$expected = array(
 			'host' => 'smtp.example.com',
 			'port' => 25,
@@ -97,7 +97,7 @@ class NotifierTestCase extends CoreTestCase {
 		);
 		$results = $this->Notifier->QueueEmail->smtpOptions;
 		$this->assertEqual($results, $expected);
-		
+
 		$config = new EmailConfig();
 		$config->debug = array(
 			'transport' => 'Smtp',
@@ -108,7 +108,7 @@ class NotifierTestCase extends CoreTestCase {
 			'some' => 'value'
 		);
 		$this->Notifier->Config = $config;
-		
+
 		$this->Notifier->QueueEmail->setReturnValueAt(1, '__smtp', true);
 		$this->Controller->set('ministry', 1);
 		$this->assertTrue($this->Notifier->notify(array(
@@ -116,7 +116,7 @@ class NotifierTestCase extends CoreTestCase {
 			'template' => 'ministries_edit'
 		)), 'email');
 		$countAfter = $this->Notifier->QueueEmail->Model->find('count');
-		
+
 		$expected = array(
 			'host' => 'smtp2.example.com',
 			'port' => 25,
@@ -127,11 +127,11 @@ class NotifierTestCase extends CoreTestCase {
 		$results = $this->Notifier->QueueEmail->smtpOptions;
 		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testNoQueue() {
 		$this->Notifier->QueueEmail->setReturnValue('__smtp', true);
 		$this->Notifier->QueueEmail->expectOnce('__smtp');
-		
+
 		// sends now
 		$countBefore = $this->Notifier->QueueEmail->Model->find('count');
 		$this->Controller->set('ministry', 1);
@@ -142,7 +142,7 @@ class NotifierTestCase extends CoreTestCase {
 		)), 'email');
 		$countAfter = $this->Notifier->QueueEmail->Model->find('count');
 		$this->assertEqual($countBefore, $countAfter);
-		
+
 		// queues
 		$countBefore = $this->Notifier->QueueEmail->Model->find('count');
 		$this->assertTrue($this->Notifier->notify(array(
@@ -152,7 +152,7 @@ class NotifierTestCase extends CoreTestCase {
 		$countAfter = $this->Notifier->QueueEmail->Model->find('count');
 		$this->assertEqual($countAfter-$countBefore, 1);
 	}
-	
+
 	function testNormalizeUser() {
 		$results = $this->Notifier->_normalizeUser('email@example.com');
 		$expected = array(
@@ -167,7 +167,7 @@ class NotifierTestCase extends CoreTestCase {
 			)
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$results = $this->Notifier->_normalizeUser(1);
 		$expected = array(
 			'User' => array(
@@ -181,7 +181,7 @@ class NotifierTestCase extends CoreTestCase {
 			)
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$results = $this->Notifier->_normalizeUser('1');
 		$expected = array(
 			'User' => array(
@@ -195,7 +195,7 @@ class NotifierTestCase extends CoreTestCase {
 			)
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$results = $this->Notifier->_normalizeUser(array(
 			'Profile' => array(
 				'name' => 'jeremy',
@@ -227,7 +227,7 @@ class NotifierTestCase extends CoreTestCase {
 			)
 		);
 		$this->assertEqual($results, $expected);
-		
+
 		$results = $this->Notifier->_normalizeUser(array(
 			'Profile' => array(
 				'name' => 'jeremy'
@@ -235,14 +235,14 @@ class NotifierTestCase extends CoreTestCase {
 		));
 		$this->assertNull($results);
 	}
-	
+
 	function testInvite() {
 		$this->loadFixtures('Invitation', 'InvitationsUser');
-		
+
 		$this->assertFalse($this->Notifier->invite(array(
 			'to' => 1
 		)));
-		
+
 		$countBefore = $this->Notifier->Invitation->find('count');
 		$this->assertTrue($this->Notifier->invite(array(
 			'to' => 1,
@@ -252,7 +252,7 @@ class NotifierTestCase extends CoreTestCase {
 		)));
 		$countAfter = $this->Notifier->Invitation->find('count');
 		$this->assertEqual($countAfter-$countBefore, 1);
-		
+
 		$countBefore = $this->Notifier->Invitation->find('count');
 		$countCcBefore = $this->Notifier->Invitation->InvitationsUser->find('count');
 		$this->assertTrue($this->Notifier->invite(array(
@@ -266,7 +266,7 @@ class NotifierTestCase extends CoreTestCase {
 		$countCcAfter = $this->Notifier->Invitation->InvitationsUser->find('count');
 		$this->assertEqual($countAfter-$countBefore, 1);
 		$this->assertEqual($countCcAfter-$countCcBefore, 1);
-		
+
 		$countBefore = $this->Notifier->Invitation->find('count');
 		$countCcBefore = $this->Notifier->Invitation->InvitationsUser->find('count');
 		$this->assertTrue($this->Notifier->invite(array(
@@ -280,7 +280,7 @@ class NotifierTestCase extends CoreTestCase {
 		$countCcAfter = $this->Notifier->Invitation->InvitationsUser->find('count');
 		$this->assertEqual($countAfter-$countBefore, 1);
 		$this->assertEqual($countCcAfter-$countCcBefore, 3);
-		
+
 		$countBefore = $this->Notifier->Invitation->find('count');
 		$countCcBefore = $this->Notifier->Invitation->InvitationsUser->find('count');
 		$this->Notifier->Invitation->delete($this->Notifier->Invitation->id);
@@ -288,7 +288,7 @@ class NotifierTestCase extends CoreTestCase {
 		$countCcAfter = $this->Notifier->Invitation->InvitationsUser->find('count');
 		$this->assertEqual($countAfter-$countBefore, -1);
 		$this->assertEqual($countCcAfter-$countCcBefore, -3);
-		
+
 	}
 
 	function testNotify() {
@@ -316,7 +316,7 @@ class NotifierTestCase extends CoreTestCase {
 		$this->assertEqual($this->Notifier->QueueEmail->from, $expected);
 		$this->assertEqual($this->Notifier->Controller->viewVars['toUser'], $user);
 		$this->assertEqual($this->Notifier->Controller->viewVars['include_greeting'], true);
-		
+
 		$queue = $this->Notifier->QueueEmail->Model->read();
 		$this->assertEqual($queue['Queue']['to_id'], 1);
 		$this->assertEqual($queue['Queue']['from_id'], 0);
@@ -326,7 +326,7 @@ class NotifierTestCase extends CoreTestCase {
 		$this->assertTrue($this->Notifier->_send($user, array('from' => 2)));
 		$expected = 'ricky rockharbor <ricky@rockharbor.org>';
 		$this->assertEqual($this->Notifier->QueueEmail->from, $expected);
-		
+
 		$queue = $this->Notifier->QueueEmail->Model->read();
 		$this->assertEqual($queue['Queue']['to_id'], 1);
 		$this->assertEqual($queue['Queue']['from_id'], 2);
@@ -341,23 +341,23 @@ class NotifierTestCase extends CoreTestCase {
 		));
 		$expected = array('/path/to/file.txt');
 		$this->assertEqual($this->Notifier->QueueEmail->attachments, $expected);
-		
+
 		$result = $this->Notifier->Controller->view;
 		$expected = 'View';
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $this->Notifier->_send($user, array(
 			'from' => 1,
 			'body' => '<span class="wysiwyg-color-green">green</span>'
 		));
 		$this->assertTrue($result);
-		
+
 		// test that css classes were made inline
 		$result = $this->Notifier->QueueEmail->Model->read(array('message'));
 		$result = $result['Queue']['message'];
 		$this->assertPattern('/style=\"color\s*:\s*green/', $result);
 	}
-	
+
 	function testSave() {
 		$this->Notification->User->contain(array('Profile'));
 		$user = $this->Notification->User->read(null, 1);
@@ -375,7 +375,7 @@ class NotifierTestCase extends CoreTestCase {
 			)
 		);
 		$this->assertEqual($result, $expected);
-		
+
 		$data = array(
 			'template' => 'leaders_add',
 			'type' => 'invitation'

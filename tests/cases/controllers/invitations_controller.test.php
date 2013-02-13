@@ -19,7 +19,7 @@ class InvitationsControllerTestCase extends CoreTestCase {
 
 	function endTest() {
 		$this->Invitations->Session->destroy();
-		unset($this->Invitations);		
+		unset($this->Invitations);
 		ClassRegistry::flush();
 	}
 
@@ -28,7 +28,7 @@ class InvitationsControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Invitation/id', $vars['invitations']);
 		$expected = array(1, 2);
 		$this->assertEqual($results, $expected);
-		
+
 		$this->su(array(
 			'User' => array('id' => 100)
 		));
@@ -37,21 +37,21 @@ class InvitationsControllerTestCase extends CoreTestCase {
 		$expected = array();
 		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testConfirm() {
 		$this->testAction('/invitations/confirm');
 		$results = $this->Invitations->Session->read('Message.flash.element');
 		$this->assertEqual($results, 'flash'.DS.'failure');
-		
+
 		$this->testAction('/invitations/confirm/12/0');
 		$results = $this->Invitations->Session->read('Message.flash.element');
 		$this->assertEqual($results, 'flash'.DS.'failure');
-		
+
 		$this->Invitations->setReturnValueAt(0, 'requestAction', true);
 		$this->testAction('/invitations/confirm/1/0');
 		$results = $this->Invitations->Session->read('Message.flash.element');
 		$this->assertEqual($results, 'flash'.DS.'success');
-		
+
 		$beforeCount = $this->Invitations->Invitation->find('count');
 		$this->Invitations->setReturnValueAt(1, 'requestAction', false);
 		$this->testAction('/invitations/confirm/2/1');
@@ -59,7 +59,7 @@ class InvitationsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, 'flash'.DS.'failure');
 		$afterCount = $this->Invitations->Invitation->find('count');
 		$this->assertEqual($beforeCount-$afterCount, 0);
-		
+
 		$userInvitesBefore = count($this->Invitations->Invitation->getInvitations(1));
 		$this->Invitations->setReturnValueAt(2, 'requestAction', true);
 		$this->testAction('/invitations/confirm/2/1');

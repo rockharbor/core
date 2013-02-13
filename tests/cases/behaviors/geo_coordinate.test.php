@@ -15,7 +15,7 @@ class GeoCoordinateBehaviorTestCase extends CoreTestCase {
 		unset($this->Address);
 		ClassRegistry::flush();
 	}
-	
+
 	function testGeoCoordinates() {
 		$address = array(
 			'address_line_1' => '3080 Airway',
@@ -43,10 +43,10 @@ class GeoCoordinateBehaviorTestCase extends CoreTestCase {
 			)
 		);
 		$result = $this->Address->save($data);
-		
+
 		$this->assertPattern($floatReg, $result['Address']['lat']);
 		$this->assertPattern($floatReg, $result['Address']['lng']);
-		
+
 		$oldData = $result;
 		$newData = array(
 			'Address' => array(

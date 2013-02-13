@@ -15,10 +15,10 @@ echo $this->Form->create('User', array(
 		'options' => array(
 			'password' => 'Password',
 			'username' => 'Username',
-			'both' => 'Both'			
+			'both' => 'Both'
 		),
 		'label' => 'What do you want to change?'
-	));			
+	));
 	echo $this->Form->input('username');
 	if ($needCurrentPassword) {
 		echo $this->Form->input('current_password', array('type' => 'password'));

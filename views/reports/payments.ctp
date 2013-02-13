@@ -62,7 +62,7 @@
 			);
 			$colCount = 10;
 			$checkAll = true;
-			echo $this->element('multiselect', compact('links', 'colCount', 'checkAll')); 
+			echo $this->element('multiselect', compact('links', 'colCount', 'checkAll'));
 			?>
 			</tr>
 			<tr>
@@ -109,8 +109,8 @@
 		</tr>
 		<?php endforeach; ?>
 	</table>
-	<?php 
-	echo $this->element('pagination'); 
+	<?php
+	echo $this->element('pagination');
 	echo $this->MultiSelect->end();
 	?>
 </div>

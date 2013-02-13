@@ -29,14 +29,14 @@ class QuestionsController extends AppController {
  * Used to override Acl permissions for this controller.
  *
  * @access private
- */ 
+ */
 	function beforeFilter() {
 		parent::beforeFilter();
 	}
-	
+
 /**
  * Shows a list of questions
- */ 
+ */
 	function index() {
 		$this->Question->recursive = 0;
 		$this->set('questions', $this->Question->find('all', array(
@@ -44,13 +44,13 @@ class QuestionsController extends AppController {
 				'involvement_id' => $this->passedArgs['Involvement']
 			)
 		)));
-		
+
 		$this->set('involvementId', $this->passedArgs['Involvement']);
 	}
 
 /**
  * Adds a question
- */ 
+ */
 	function add() {
 		if (!empty($this->data)) {
 			$this->Question->create();
@@ -61,7 +61,7 @@ class QuestionsController extends AppController {
 				$this->Session->setFlash('Unable to create this question. Please try again.', 'flash'.DS.'failure');
 			}
 		}
-		
+
 		$this->set('involvementId', $this->passedArgs['Involvement']);
 	}
 
@@ -70,7 +70,7 @@ class QuestionsController extends AppController {
  *
  * @param integer $id The id of the question to edit
  * @todo Add involvement named arg to restrict to leaders, etc.
- */ 
+ */
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->cakeError('error404');
@@ -102,9 +102,9 @@ class QuestionsController extends AppController {
 		if (!$id || !$direction) {
 			$this->cakeError('error404');
 		}
-		
+
 		$success = $this->Question->{'move'.$direction}($id);
-		
+
 		$question = $this->Question->read(null, $id);
 
 		if ($success) {
@@ -114,13 +114,13 @@ class QuestionsController extends AppController {
 		}
 		$this->redirect(array('action' => 'index', 'Involvement' => $question['Question']['involvement_id']));
 	}
-	
+
 /**
  * Deletes a question
  *
  * @param integer $id The id of the question to delete
  * @todo Add involvement named arg to restrict to leaders, etc.
- */ 
+ */
 	function delete($id = null) {
 		if (!$id) {
 			$this->cakeError('error404');

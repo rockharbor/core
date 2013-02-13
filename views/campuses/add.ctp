@@ -1,6 +1,6 @@
 <h1>Add a Campus</h1>
 <div class="campuses form">
-<?php 
+<?php
 echo $this->Form->create('Campus', array(
 	'default' => false
 ));
@@ -12,7 +12,7 @@ echo $this->Form->create('Campus', array(
 		echo $this->Form->input('description');
 	?>
 	</fieldset>
-<?php 
+<?php
 echo $this->Js->submit(__('Submit', true), $defaultSubmitOptions);
 echo $this->Form->end();
 ?>

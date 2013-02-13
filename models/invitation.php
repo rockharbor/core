@@ -1,7 +1,7 @@
 <?php
 /**
  * Invitation model class.
- * 
+ *
  * Invitations contain a HABTM link to associate many users with an invitation.
  * This is used in cases where several people should be sent the invitation (that
  * is, it shows up in their notifications list), but the action is only take once
@@ -39,7 +39,7 @@ class Invitation extends AppModel {
 			'foreignKey' => 'user_id',
 		)
 	);
-	
+
 /**
  * HasAndBelongsToMany association link
  */
@@ -61,10 +61,10 @@ class Invitation extends AppModel {
 		'confirm_action' => false,
 		'deny_action' => false
 	);
-	
+
 /**
  * Gets all invitations for a user, including those connected to him via HABTM
- * 
+ *
  * @param int $userId The user id
  * @return array Array of invitation ids
  */

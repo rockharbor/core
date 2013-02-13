@@ -26,7 +26,7 @@ class NotificationsControllerTestCase extends CoreTestCase {
 
 	function endTest() {
 		$this->Notifications->Session->destroy();
-		unset($this->Notifications);		
+		unset($this->Notifications);
 		ClassRegistry::flush();
 	}
 

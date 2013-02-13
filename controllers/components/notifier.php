@@ -69,8 +69,8 @@ class NotifierComponent extends Object {
  * @param string $type The type of notification to send (notification, email, both)
  * @return boolean Success
  * @access public
- */ 
-	function notify($options = array(), $type = 'both') {		
+ */
+	function notify($options = array(), $type = 'both') {
 		if (!$this->enabled || !isset($options['to'])) {
 			return false;
 		}
@@ -97,18 +97,18 @@ class NotifierComponent extends Object {
 
 /**
  * Sends an invitation to one or more people
- * 
+ *
  * If sending to multiple people (`$cc`), a single invitation will be created but each
  * of the users will be notified. Once any one of those users chooses an action,
  * the invitation will no longer show up in any of the users' list of notifications.
- * 
+ *
  * ### Options:
  * - mixed $to The user id to send to
  * - array $cc Users to copy the invitation to
  * - string $template The template (view element)
  * - string $confirm The confirmation link
  * - string $deny The denial link
- * 
+ *
  * @param array $options Array of options
  * @return boolean Success
  */
@@ -170,9 +170,9 @@ class NotifierComponent extends Object {
 	function _send($user, $options = array()) {
 		$_originalView = $this->QueueEmail->Controller->view;
 		$this->QueueEmail->Controller->view = 'Email';
-		
+
 		$config = Configure::read('debug') == 0 ? $this->Config->default : $this->Config->debug;
-		
+
 		$this->QueueEmail->reset();
 		$default = array(
 			'from' => null,
@@ -188,7 +188,7 @@ class NotifierComponent extends Object {
 
 		// set system defaults if no 'from' user
 		$from = $this->_normalizeUser($from);
-		
+
 		// set default preferences
 		if (!isset($this->Controller->viewVars['include_greeting'])) {
 			$this->Controller->set('include_greeting', true);
@@ -196,9 +196,9 @@ class NotifierComponent extends Object {
 		if (!isset($this->Controller->viewVars['include_signoff'])) {
 			$this->Controller->set('include_signoff', true);
 		}
-	
+
 		$this->Controller->set('toUser', $user);
-		
+
 		if ($config['transport'] == 'Smtp') {
 			$default = array(
 				'host' => 'localhost',
@@ -216,10 +216,10 @@ class NotifierComponent extends Object {
 		$this->QueueEmail->attachments = $attachments;
 		$this->QueueEmail->queue = $queue;
 		$this->QueueEmail->from = $from['Profile']['name'].' <'.$from['Profile']['primary_email'].'>';
-		
+
 		$prefixKey = ($from['User']['id'] === 0) ? 'system_subject_prefix' : 'subject_prefix';
 		$this->QueueEmail->subject = Core::read("sys_emails.$prefixKey").$subject;
-		
+
 		$failed = false;
 		if (!empty($user['Profile']['primary_email']) && !empty($user['Profile']['name'])) {
 			$this->QueueEmail->to = $user['Profile']['name'].' <'.$user['Profile']['primary_email'].'>';
@@ -236,12 +236,12 @@ class NotifierComponent extends Object {
 			}
 			$failed = true;
 		}
-		
+
 		$this->QueueEmail->Controller->view = $_originalView;
 		if ($failed) {
 			return false;
 		}
-		
+
 		if ($queue && $this->QueueEmail->Model->id) {
 			// save the ids of the users this was to and from
 			$this->QueueEmail->Model->save(array(
@@ -267,7 +267,7 @@ class NotifierComponent extends Object {
  * @param array $options Array of options
  * @return boolean Success
  * @access private
- */ 	
+ */
 	function _save($user, $options = array()) {
 		extract($options);
 
@@ -292,19 +292,19 @@ class NotifierComponent extends Object {
  * @param string $template The template to render
  * @return string Rendered content
  * @access private
- */ 	
-	function _render($template) {	
-		$View = new View($this->Controller, false);		
+ */
+	function _render($template) {
+		$View = new View($this->Controller, false);
 		$View->layout = 'notification';
 		list($plugin, $template) = pluginSplit($template);
 		$content = $View->element('notification' . DS . $template, compact('plugin'), true);
-		$content = $View->renderLayout($content);		
+		$content = $View->renderLayout($content);
 		return $content;
 	}
 
 /**
  * Normalizes a user argument for the purposes of sending an email
- * 
+ *
  * @param mixed $user Can be a user id, an email address, or a user array with
  * the proper keys
  * @return array Array containing user 'name' and 'primary_email' values

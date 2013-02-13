@@ -186,10 +186,10 @@
 		}
 
 		/**
-		 * @todo 
+		 * @todo
 		 */
 		public function testFormatColorFill(){
-			
+
 		}
 
 		/**
@@ -321,10 +321,10 @@
 			$data = array('position' => 'bottom_horizontal', 'labels' => array('abc', 'xyz'));
 			$expected = array('legend_labels' => 'chdl=abc|xyz','legend_position' => 'chdlp=b|l');
 			$this->assertEqual($expected, $this->GoogleStaticChartEngine->_formatLegend($data));
-			
+
 			$data = array('position' => 'bottom', 'labels' => array('abc', 'xyz'));
 			$this->assertEqual($expected, $this->GoogleStaticChartEngine->_formatLegend($data));
-			
+
 			$data = array('position' => 'bottom_vertical', 'labels' => array('abc', 'xyz'));
 			$expected = array('legend_labels' => 'chdl=abc|xyz','legend_position' => 'chdlp=bv|l');
 			$this->assertEqual($expected, $this->GoogleStaticChartEngine->_formatLegend($data));
@@ -720,7 +720,7 @@
 					'y' => range(0,100, 20)
 				)
 			);
-			$expected = 'http://0.chart.apis.google.com/chart?cht=bvs&chd=t:12,23,10,40,69&chs=200x125&chxl=0:|0|1|2|3|4|1:|0|20|40|60|80|100&chxt=x,y';			
+			$expected = 'http://0.chart.apis.google.com/chart?cht=bvs&chd=t:12,23,10,40,69&chs=200x125&chxl=0:|0|1|2|3|4|1:|0|20|40|60|80|100&chxt=x,y';
 			$this->assertEqual($expected, $this->GoogleStaticChartEngine->bar($chart));
 
 			$chart = array(

@@ -16,35 +16,35 @@ $changes = Set::filter($changes);
 	<?php foreach ($changes as $changeField => $changeValue): ?>
 		<dt<?php if ($i % 2 == 0) echo $class;?>>Original <?php echo $changeField; ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php 
+			<?php
 			$varName = Inflector::variable(Inflector::pluralize(preg_replace('/_id$/', '', $changeField)));
 			if (isset(${$varName})) {
 				echo ${$varName}[$campus['Campus'][$changeField]];
 			} else {
 				echo $campus['Campus'][$changeField];
 			}
-			
+
 			?>
 			&nbsp;
 		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>>Revised <?php echo $changeField; ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php 
+			<?php
 			$varName = Inflector::variable(Inflector::pluralize(preg_replace('/_id$/', '', $changeField)));
 			if (isset(${$varName})) {
 				echo ${$varName}[$changeValue];
 			} else {
 				echo $changeValue;
 			}
-			
+
 			?>
 			&nbsp;
 		</dd>
 	<?php endforeach; ?>
 	</dl>
 
-<?php 
-echo $this->Js->link('Accept', 
+<?php
+echo $this->Js->link('Accept',
 	array(
 		'action' => 'revise',
 		'Campus' => $campus['Campus']['id'],
@@ -55,7 +55,7 @@ echo $this->Js->link('Accept',
 		'complete' => 'CORE.closeModals();'
 	)
 );
-echo $this->Js->link('Deny', 
+echo $this->Js->link('Deny',
 	array(
 		'action' => 'revise',
 		'Campus' => $campus['Campus']['id'],

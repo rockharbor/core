@@ -36,14 +36,14 @@ class SchoolsController extends SimpleCrudsController {
 	var $components = array(
 		'FilterPagination'
 	);
-	
+
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
  *
  * @access private
- */ 
+ */
 	function beforeFilter() {
 		$this->set('types', $this->School->types);
 		parent::beforeFilter();

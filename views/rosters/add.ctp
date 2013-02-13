@@ -7,21 +7,21 @@ $householdMembers = Set::extract('/HouseholdMember/Household/HouseholdMember/Use
 
 // remove duplicates (because of users belonging to more than one household)
 $inlist = array();
-foreach ($householdMembers as $key => $values) {	
+foreach ($householdMembers as $key => $values) {
 	if (in_array($values['User']['id'], $inlist)) {
 		unset($householdMembers[$key]);
 	} else {
 		$inlist[] = $values['User']['id'];
-	}	
+	}
 }
 // remove children duplicates
 $inlist = array();
-foreach ($children as $key => $values) {	
+foreach ($children as $key => $values) {
 	if (in_array($values['Profile']['user_id'], $inlist)) {
 		unset($children[$key]);
 	} else {
 		$inlist[] = $values['Profile']['user_id'];
-	}	
+	}
 }
 
 if (empty($householdMembers)) {
@@ -42,7 +42,7 @@ echo $this->Form->create('Roster', array(
 <div class="rosters core-tabs-wizard" id="roster_tabs">
 
 <ul class="tabs">
-	<li class="tab"><a href="#members">Choose Members</a></li> 
+	<li class="tab"><a href="#members">Choose Members</a></li>
 	<?php if (!empty($involvement['Question'])): ?>
 	<li class="tab" id="questions_tab"><a href="#questions">Answer Questions</a></li>
 	<?php endif; ?>
@@ -79,7 +79,7 @@ echo $this->Form->create('Roster', array(
 
 				$i++;
 			}
-			?>	
+			?>
 			</div>
 		</div>
 		<?php if ($involvement['Involvement']['offer_childcare'] && !empty($children)): ?>
@@ -112,9 +112,9 @@ echo $this->Form->create('Roster', array(
 				foreach ($householdMembers as $householdMember) {
 					echo '<li><a href="#answers_'.$householdMember['User']['id'].'">'.$householdMember['User']['Profile']['name'].'</a></li> ';
 				}
-			?>			
+			?>
 			</ul>
-		<?php			
+		<?php
 			$r = 0;
 			foreach ($householdMembers as $householdMember) {
 				echo '<div id="answers_'.$householdMember['User']['id'].'">';
@@ -205,7 +205,7 @@ echo $this->Form->create('Roster', array(
 					<div id="remaining-balance" class="clearfix">
 						Remaining Balance <span class="balance">$<span id="balance"></span></span>
 					</div>
-					
+
 				</div>
 				<div id="pay-later">
 					<?php
@@ -234,7 +234,7 @@ echo $this->Form->create('Roster', array(
 		?>
 	</div>
 	<?php } ?>
-	
+
 <?php
 $defaultSubmitOptions['id'] = 'submit_button';
 $defaultSubmitOptions['success'] = 'CORE.successForm(event, data, textStatus, {closeModals:true})';

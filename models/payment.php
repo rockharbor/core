@@ -58,11 +58,11 @@ class Payment extends AppModel {
 		'Roster' => array(
 			'className' => 'Roster',
 			'foreignKey' => 'roster_id'
-		),	
+		),
 		'Payer' => array(
 			'className' => 'User',
 			'foreignKey' => 'payment_placed_by'
-		),		
+		),
 		'PaymentType'
 	);
 }

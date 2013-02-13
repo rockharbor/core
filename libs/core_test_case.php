@@ -37,7 +37,7 @@ class CoreTestCase extends CakeTestCase {
 
 /**
  * Fixtures needed for test. Overwrite if you don't need them all.
- * 
+ *
  * @var array
  */
 	var $fixtures = array(
@@ -95,25 +95,25 @@ class CoreTestCase extends CakeTestCase {
  * @var boolean
  */
 	var $autoFixtures = false;
-	
+
 /**
  * The controller we're testing. Set to null to use the original
  * `CakeTestCase::testAction` function.
- * 
+ *
  * @var object
  */
 	var $testController = null;
 
 /**
  * Methods to test
- * 
+ *
  * @param Array of methods to test
  */
 	var $testMethods = null;
 
 /**
  * Runs prior to running the test method
- * 
+ *
  * @param string $method The test method
  * @return void
  */
@@ -121,11 +121,11 @@ class CoreTestCase extends CakeTestCase {
 		parent::startTest($method);
 		Router::reload();
 	}
-	
+
 /**
  * Overrides `CakeTestCase::getTests()` to allow running a subset of tests within
  * the test case
- * 
+ *
  * @return array Array of tests to run
  */
 	function getTests() {
@@ -177,13 +177,13 @@ class CoreTestCase extends CakeTestCase {
  * @return array The view vars
  * @link http://mark-story.com/posts/view/testing-cakephp-controllers-the-hard-way
  */
-	function testAction($url = '', $options = array()) {		
+	function testAction($url = '', $options = array()) {
 		if (is_null($this->testController)) {
 			return parent::testAction($url, $options);
 		}
 
 		$Controller = $this->testController;
-		
+
 		// reset parameters
 		$Controller->passedArgs = array();
 		$Controller->params = array();
@@ -229,7 +229,7 @@ class CoreTestCase extends CakeTestCase {
 		// disable components that mess with testing
 		$Controller->Whistler->enabled = false;
 		$Controller->Toolbar->enabled = false;
-		
+
 		$Controller->Component->initialize($Controller);
 
 		// configure auth
@@ -247,7 +247,7 @@ class CoreTestCase extends CakeTestCase {
 			$core->Acl->enabled = true;
 			$core->Acl->setReturnValue('check', true);
 		}
-		
+
 		$Controller->beforeFilter();
 		$Controller->Component->startup($Controller);
 
@@ -261,7 +261,7 @@ class CoreTestCase extends CakeTestCase {
 			$_debugkit =& DebugKitDebugger::getInstance();
 			$_debugkit->__benchmarks = null;
 		}
-		
+
 		return $Controller->viewVars;
 	}
 
@@ -280,7 +280,7 @@ class CoreTestCase extends CakeTestCase {
 /**
  * Changes the session user, and therefore the `$activeUser` on the controller
  * when an action is called
- * 
+ *
  * @param array $user User data to use
  * @param boolean $wipe Set to `false` to merge existing session info
  * @return boolean
@@ -289,7 +289,7 @@ class CoreTestCase extends CakeTestCase {
 		if (!$this->testController) {
 			return false;
 		}
-		
+
 		$_defaults = array(
 			'User' => array(
 				'id' => 1,
@@ -298,18 +298,18 @@ class CoreTestCase extends CakeTestCase {
 				'reset_password' => false
 			),
 			'Group' => array(
-				'id' => 1, 
+				'id' => 1,
 				'lft' => 1,
 				'rght' => 26
 			),
 			'Profile' => array(
-				'name' => 'Test Admin', 
-				'primary_email' => 'test@test.com', 
-				'leading' => 0, 
+				'name' => 'Test Admin',
+				'primary_email' => 'test@test.com',
+				'leading' => 0,
 				'managing' => 0
 			)
 		);
-		
+
 		if (!$wipe) {
 			$_defaults = array(
 				'User' => $this->testController->Session->read('Auth.User')
@@ -317,21 +317,21 @@ class CoreTestCase extends CakeTestCase {
 			$_defaults = array_merge($this->testController->Session->read('User'), $_defaults);
 		}
 		$user = Set::merge($_defaults, $user);
-		
+
 		$auth = $this->testController->Session->write('Auth.User', $user['User']);
 		$sess = $this->testController->Session->write('User', $user);
-		
+
 		return $auth && $sess;
 	}
-	
+
 /**
  * Helper function for stripping tabs, newlines and extra whitespace from strings
- * 
+ *
  * @param string $str
  * @return string
  */
 	function singleLine($str = '') {
-		$str = str_replace(array("\t", PHP_EOL), '', $str);
+		$str = str_replace(array("\t", "\r\n", "\n"), ' ', $str);
 		$str = preg_replace('/\s\s+/', ' ', $str);
 		return $str;
 	}

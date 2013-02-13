@@ -19,7 +19,7 @@ class PaymentOptionsControllerTestCase extends CoreTestCase {
 
 	function endTest() {
 		$this->PaymentOptions->Session->destroy();
-		unset($this->PaymentOptions);		
+		unset($this->PaymentOptions);
 		ClassRegistry::flush();
 	}
 

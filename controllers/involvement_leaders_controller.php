@@ -59,7 +59,7 @@ class InvolvementLeadersController extends LeadersController {
 				)
 			);
 		}
-		
+
 		$conditions = array(
 			'Involvement.active' => true,
 			'Involvement.private' => false
@@ -84,7 +84,7 @@ class InvolvementLeadersController extends LeadersController {
 				'Leader.user_id' => $this->passedArgs['User'],
 			)
 		));
-		
+
 		$inherited = array();
 		if ($this->data['Filter']['affiliated']) {
 			$ministries = $this->Leader->Ministry->getLeading($this->passedArgs['User'], true);
@@ -93,8 +93,8 @@ class InvolvementLeadersController extends LeadersController {
 		} else {
 			$conditions['Involvement.id'] = Set::extract('/Leader/model_id', $leaders);
 		}
-		
-		
+
+
 		$this->viewPath = 'involvement_leaders';
 		$this->paginate = array(
 			'conditions' => $conditions,
@@ -111,5 +111,5 @@ class InvolvementLeadersController extends LeadersController {
 		$this->set('involvements', $involvements);
 		$this->set('model', $this->model);
 	}
-	
+
 }

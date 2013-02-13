@@ -47,32 +47,32 @@ class SelectOptionsHelper extends AppHelper {
  * @access public
  */
 	var $states = array(
-		'AL'=>"Alabama",  
-		'AK'=>"Alaska",  
-		'AZ'=>"Arizona",  
-		'AR'=>"Arkansas",  
-		'CA'=>"California",  
-		'CO'=>"Colorado",  
-		'CT'=>"Connecticut",  
-		'DE'=>"Delaware",  
-		'DC'=>"District Of Columbia",  
-		'FL'=>"Florida",  
-		'GA'=>"Georgia",  
-		'HI'=>"Hawaii",  
-		'ID'=>"Idaho",  
-		'IL'=>"Illinois",  
-		'IN'=>"Indiana",  
-		'IA'=>"Iowa",  
-		'KS'=>"Kansas",  
-		'KY'=>"Kentucky",  
-		'LA'=>"Louisiana",  
-		'ME'=>"Maine",  
-		'MD'=>"Maryland",  
-		'MA'=>"Massachusetts",  
-		'MI'=>"Michigan",  
-		'MN'=>"Minnesota",  
-		'MS'=>"Mississippi",  
-		'MO'=>"Missouri",  
+		'AL'=>"Alabama",
+		'AK'=>"Alaska",
+		'AZ'=>"Arizona",
+		'AR'=>"Arkansas",
+		'CA'=>"California",
+		'CO'=>"Colorado",
+		'CT'=>"Connecticut",
+		'DE'=>"Delaware",
+		'DC'=>"District Of Columbia",
+		'FL'=>"Florida",
+		'GA'=>"Georgia",
+		'HI'=>"Hawaii",
+		'ID'=>"Idaho",
+		'IL'=>"Illinois",
+		'IN'=>"Indiana",
+		'IA'=>"Iowa",
+		'KS'=>"Kansas",
+		'KY'=>"Kentucky",
+		'LA'=>"Louisiana",
+		'ME'=>"Maine",
+		'MD'=>"Maryland",
+		'MA'=>"Massachusetts",
+		'MI'=>"Michigan",
+		'MN'=>"Minnesota",
+		'MS'=>"Mississippi",
+		'MO'=>"Missouri",
 		'MT'=>"Montana",
 		'NE'=>"Nebraska",
 		'NV'=>"Nevada",
@@ -82,21 +82,21 @@ class SelectOptionsHelper extends AppHelper {
 		'NY'=>"New York",
 		'NC'=>"North Carolina",
 		'ND'=>"North Dakota",
-		'OH'=>"Ohio",  
-		'OK'=>"Oklahoma",  
-		'OR'=>"Oregon",  
-		'PA'=>"Pennsylvania",  
-		'RI'=>"Rhode Island",  
-		'SC'=>"South Carolina",  
+		'OH'=>"Ohio",
+		'OK'=>"Oklahoma",
+		'OR'=>"Oregon",
+		'PA'=>"Pennsylvania",
+		'RI'=>"Rhode Island",
+		'SC'=>"South Carolina",
 		'SD'=>"South Dakota",
-		'TN'=>"Tennessee",  
-		'TX'=>"Texas",  
-		'UT'=>"Utah",  
-		'VT'=>"Vermont",  
-		'VA'=>"Virginia",  
-		'WA'=>"Washington",  
-		'WV'=>"West Virginia",  
-		'WI'=>"Wisconsin",  
+		'TN'=>"Tennessee",
+		'TX'=>"Texas",
+		'UT'=>"Utah",
+		'VT'=>"Vermont",
+		'VA'=>"Virginia",
+		'WA'=>"Washington",
+		'WV'=>"West Virginia",
+		'WI'=>"Wisconsin",
 		'WY'=>"Wyoming"
 	);
 
@@ -105,7 +105,7 @@ class SelectOptionsHelper extends AppHelper {
  *
  * @var array
  * @access public
- */	
+ */
 	var $genders = array(
 		null => 'Unknown',
 		'm' => 'Male',
@@ -117,7 +117,7 @@ class SelectOptionsHelper extends AppHelper {
  *
  * @var array
  * @access public
- */	
+ */
 	var $maritalStatuses = array(
 		null => 'Unknown',
 		's' => 'Single',
@@ -131,7 +131,7 @@ class SelectOptionsHelper extends AppHelper {
  *
  * @var array
  * @access public
- */		
+ */
 	var $grades = array(
 		null => 'Unknown',
 		-1 => 'Pre-kinder',
@@ -155,7 +155,7 @@ class SelectOptionsHelper extends AppHelper {
  *
  * @var array
  * @access public
- */		
+ */
 	var $booleans = array(
 		null => 'Unknown',
 		0 => 'No',
@@ -210,7 +210,7 @@ class SelectOptionsHelper extends AppHelper {
 		}
 		return $return;
 	}
-	
+
 /**
  * Generates option lists for common <select /> menus.
  * Taken from FormHelper, made public here, includes some changes.
@@ -225,13 +225,13 @@ class SelectOptionsHelper extends AppHelper {
 			'order' => '',
 			'monthNames' => true
 		);
-		
+
 		$options = array_merge($_defaultOptions, $options);
-		
+
 		if (!empty($this->options[$name])) {
 			return $this->options[$name];
 		}
-		
+
 		$data = array();
 
 		switch ($name) {

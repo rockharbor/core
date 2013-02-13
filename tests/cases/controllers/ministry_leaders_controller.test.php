@@ -26,7 +26,7 @@ class MinistryLeadersControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Ministry/id', $vars['ministries']);
 		sort($results);
 		$this->assertEqual($results, array(4));
-		
+
 		$this->loadFixtures('Role');
 		$vars = $this->testAction('ministry_leaders/dashboard/User:1');
 		$results = Set::extract('/Role/id', $vars['ministries']);

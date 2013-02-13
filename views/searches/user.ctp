@@ -90,13 +90,13 @@
 			echo $this->Form->input('Address.Zipcode.region_id', array(
 				'type' => 'select',
 				'options' => $regions
-			));		
+			));
 			echo $this->Form->input('Distance.distance_from', array(
 				'after' => '<p>(try: orange, ca)</p>'
 			));
 			echo $this->Form->input('Distance.distance', array(
 				'type' => 'select',
-				'options' => array(	
+				'options' => array(
 					'5' => '5 miles',
 					'10' => '10 miles',
 					'15' => '15 miles',
@@ -140,11 +140,11 @@
 			}
 			echo '<br clear="all" />';
 			echo $this->Form->input('Profile.child', array(
-				'type' => 'checkbox',				
+				'type' => 'checkbox',
 				'label' => 'Considered a child'
 			));
 			echo $this->Form->input('Profile.adult', array(
-				'type' => 'checkbox',				
+				'type' => 'checkbox',
 				'label' => 'Marked as an adult'
 			));
 			echo $this->Form->input('Profile.Birthday.start', array(
@@ -185,7 +185,7 @@
 			echo $this->Form->input('Profile.elementary_school_id');
 			echo $this->Form->input('Profile.middle_school_id');
 			echo $this->Form->input('Profile.high_school_id');
-			echo $this->Form->input('Profile.college_id');	
+			echo $this->Form->input('Profile.college_id');
 			?>
 			</fieldset>
 		</div>
@@ -200,7 +200,7 @@ echo $this->MultiSelect->create();
 <h3>Results</h3>
 	<table cellpadding="0" cellspacing="0" class="datatable">
 		<thead>
-			<?php 
+			<?php
 			$links = array(
 				 array(
 					'title' => 'Email',
@@ -251,7 +251,7 @@ echo $this->MultiSelect->create();
 			$this->Js->buffer('CORE.confirmation("users-delete", "Are you sure you want to delete the selected users?", {update:true})');
 			$colCount = 6;
 			$checkAll = true;
-			echo $this->element('multiselect', compact('links', 'colCount', 'checkAll')); 
+			echo $this->element('multiselect', compact('links', 'colCount', 'checkAll'));
 			?>
 			<tr>
 				<th width="20px;"></th>
@@ -262,7 +262,7 @@ echo $this->MultiSelect->create();
 			</tr>
 		</thead>
 		<tbody>
-<?php	
+<?php
 	$i = 0;
 	foreach ($results as $result):
 		$class = null;
@@ -272,8 +272,8 @@ echo $this->MultiSelect->create();
 ?>
 		<tr<?php echo $class;?>>
 			<td><?php echo $this->MultiSelect->checkbox($result['User']['id']); ?></td>
-			<td><?php 
-			echo $this->Html->link($result['Profile']['name'], array('controller' => 'profiles', 'action' => 'view', 'User' => $result['User']['id'])).$this->Formatting->flags('User', $result); 
+			<td><?php
+			echo $this->Html->link($result['Profile']['name'], array('controller' => 'profiles', 'action' => 'view', 'User' => $result['User']['id'])).$this->Formatting->flags('User', $result);
 			echo '<br />';
 			if (!empty($result['Image'])) {
 				$path = 's'.DS.$result['Image'][0]['dirname'].DS.$result['Image'][0]['basename'];
@@ -286,7 +286,7 @@ echo $this->MultiSelect->create();
 			}
 			?></td>
 			<td><?php echo $this->Formatting->address($result['ActiveAddress']); ?></td>
-			<td><?php 
+			<td><?php
 			$emails = array();
 			$emails[] = $result['Profile']['primary_email'];
 			$emails[] = $result['Profile']['alternate_email_1'];
@@ -318,7 +318,7 @@ echo $this->MultiSelect->create();
 			echo $this->Formatting->address($contact['ActiveAddress']);
 			?></td>
 		</tr>
-<?php	
+<?php
 	endforeach;
 ?>
 		</tbody>
@@ -331,7 +331,7 @@ echo $this->MultiSelect->end();
 ?>
 <h3>Results</h3>
 <p>No results</p>
-<?php 
+<?php
 }
 ?>
 </div>

@@ -116,8 +116,8 @@ class Image extends AppModel {
 			),
 			'extension'  => array(
 				'rule' => array(
-					'checkExtension', 
-					false, 
+					'checkExtension',
+					false,
 					array(
 						'png', 'jpg', 'gif', 'tmp'
 					)

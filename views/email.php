@@ -28,7 +28,7 @@ class EmailView extends View {
 
 /**
  * Renders the layout and includes the css stylesheet for inlining the styles
- * 
+ *
  * @param string $content_for_layout
  * @param string $layout
  * @return string
@@ -39,5 +39,5 @@ class EmailView extends View {
 		$inliner = new CssToInlineStyles($output, $css);
 		return $inliner->convert();
 	}
-	
+
 }

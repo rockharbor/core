@@ -22,11 +22,11 @@ $dates = Set::extract('/Date[exemption=0]', $dates);
 		?>
 		<tr class="core-iconable <?php echo $class;?>">
 			<td><?php echo $this->Formatting->readableDate($date); ?></td>
-			<td width="40px"><div class="core-icon-container"><?php 
+			<td width="40px"><div class="core-icon-container"><?php
 			$icon = $this->element('icon', array('icon' => 'edit'));
 			echo $this->Permission->link($icon, array('action' => 'edit', $date['Date']['id'], 'Involvement' => $involvementId), array('data-core-modal' => 'true', 'class' => 'no-hover', 'escape' => false));
 			$icon = $this->element('icon', array('icon' => 'delete'));
-			echo $this->Permission->link($icon, array('action' => 'delete', $date['Date']['id'], 'Involvement' => $involvementId), array('id' => 'delete-date-btn-'.$date['Date']['id'], 'class' => 'no-hover', 'escape' => false)); 
+			echo $this->Permission->link($icon, array('action' => 'delete', $date['Date']['id'], 'Involvement' => $involvementId), array('id' => 'delete-date-btn-'.$date['Date']['id'], 'class' => 'no-hover', 'escape' => false));
 			$this->Js->buffer('CORE.confirmation("delete-date-btn-'.$date['Date']['id'].'","Are you sure you want to delete this date?", {update:true});');
 			?></div>
 			</td>
@@ -52,11 +52,11 @@ $dates = Set::extract('/Date[exemption=0]', $dates);
 		?>
 		<tr class="core-iconable <?php echo $class;?>">
 			<td><?php echo $this->Formatting->readableDate($date); ?></td>
-			<td width="40px"><div class="core-icon-container"><?php 
+			<td width="40px"><div class="core-icon-container"><?php
 			$icon = $this->element('icon', array('icon' => 'edit'));
 			echo $this->Permission->link($icon, array('action' => 'edit', $date['Date']['id'], 'Involvement' => $involvementId), array('data-core-modal' => 'true', 'class' => 'no-hover', 'escape' => false));
 			$icon = $this->element('icon', array('icon' => 'delete'));
-			echo $this->Permission->link($icon, array('action' => 'delete', $date['Date']['id'], 'Involvement' => $involvementId), array('id' => 'delete-date-btn-'.$date['Date']['id'], 'class' => 'no-hover', 'escape' => false)); 
+			echo $this->Permission->link($icon, array('action' => 'delete', $date['Date']['id'], 'Involvement' => $involvementId), array('id' => 'delete-date-btn-'.$date['Date']['id'], 'class' => 'no-hover', 'escape' => false));
 			$this->Js->buffer('CORE.confirmation("delete-date-btn-'.$date['Date']['id'].'","Are you sure you want to delete this date?", {update:true});');
 			?></div>
 			</td>

@@ -22,7 +22,7 @@ class PaymentType extends AppModel {
  * @var string
  */
 	var $name = 'PaymentType';
-	
+
 /**
  * Default order
  *
@@ -42,7 +42,7 @@ class PaymentType extends AppModel {
 /**
  * Hardcoded payment types. The PaymentType model is used for defining types
  * within these types, i.e., Visa would have type=0
- * 
+ *
  * @var array
  */
 	var $types = array(
@@ -53,7 +53,7 @@ class PaymentType extends AppModel {
 
 /**
  * HasOne association link
- * 
+ *
  * @var array
  */
 	var $belongsTo = array(

@@ -25,7 +25,7 @@ class CommentsControllerTestCase extends CoreTestCase {
 
 	function endTest() {
 		$this->Comments->Session->destroy();
-		unset($this->Comments);		
+		unset($this->Comments);
 		ClassRegistry::flush();
 	}
 

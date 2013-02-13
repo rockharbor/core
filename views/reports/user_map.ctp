@@ -18,7 +18,7 @@ foreach ($results as $result) {
 			$name = $result['Profile']['name'];
 		break;
 	}
-	
+
 	if (isset($result['ActiveAddress'])) {
 		$result['Address'] = $result['ActiveAddress'];
 	}

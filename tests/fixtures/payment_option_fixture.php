@@ -68,7 +68,7 @@ class PaymentOptionFixture extends CakeTestFixture {
 			'modified' => '2010-04-09 10:20:25'
 		)
 	);
-	
+
 	function create(&$db) {
 		$db->columns['decimal'] = array(
 			'name' => 'decimal',

@@ -27,7 +27,7 @@ class ImagesController extends AttachmentsController {
  * @var string
  */
 	var $name = 'Images';
-	
+
 /**
  * The name of the model this Address belongs to. Used for Acl
  *
@@ -52,7 +52,7 @@ class ImagesController extends AttachmentsController {
 	function beforeFilter() {
 		parent::beforeFilter();
 	}
-	
+
 /**
  * Displays an image
  *
@@ -60,17 +60,17 @@ class ImagesController extends AttachmentsController {
  *
  * @param integer $id The id of the image to view
  * @param string $size The size of the filtered image to display
- */ 	
-	function view($id = 0, $size = 's') {	
+ */
+	function view($id = 0, $size = 's') {
 		// use this view path now, instead of attachments
 		$this->viewPath = 'images';
-		
+
 		// get image
 		$this->Image->recursive = -1;
 		if ($id == 0) {
 			$image = $this->Image->find('first', array(
 				'conditions' => array(
-					'model' => $this->model,					
+					'model' => $this->model,
 					'foreign_key' => $this->modelId,
 					'group' => 'Image'
 				)
@@ -78,10 +78,10 @@ class ImagesController extends AttachmentsController {
 		} else {
 			$image = $this->Image->read(null, $id);
 		}
-		
+
 		$this->set(compact('image', 'size'));
 	}
-	
+
 /**
  * All un-approved images
  */

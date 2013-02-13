@@ -63,7 +63,7 @@ class User extends AppModel {
 				'allowEmpty' => true
 			)
 		),
-		'password' => array(			
+		'password' => array(
 			'minLength' => array(
 				'rule' => array('minLength', 6),
 				'message' => 'Your password must be at least 6 characters long.'
@@ -165,7 +165,7 @@ class User extends AppModel {
 
 /**
  * Array of search filters for SearchesController::simple().
- * 
+ *
  * They are merged with any existing conditions and parameters sent to
  * Controller::paginate(). Works in conjunction with
  * SearchesController::simple() where arguments sent after the filter name are
@@ -233,10 +233,10 @@ class User extends AppModel {
 		}
 		return $results;
 	}
-	
+
 /**
  * Merges two records and deletes the newer one
- * 
+ *
  * @param integer $mergeId The original account, to be updated
  * @param integer $modelId The new information to use to update
  * @return boolean Success
@@ -264,12 +264,12 @@ class User extends AppModel {
 				'HouseholdMember'
 			)
 		));
-		
+
 		// keep original fks
 		unset($updatedUser['User']['id']);
 		unset($updatedUser['Profile']['id']);
 		unset($updatedUser['Profile']['user_id']);
-		
+
 		// merge data
 		$user = $currentUser['User'];
 		foreach ($updatedUser['User'] as $update => $val) {
@@ -285,24 +285,24 @@ class User extends AppModel {
 			}
 			$profile[$update] = $val;
 		}
-		
+
 		// activate user
 		$user['active'] = true;
-		
+
 		$successes = array();
 		$successes[] = $this->save($user, array('validate' => false));
 		$successes[] = $this->Profile->save($profile, array('validate' => false));
-		
+
 		foreach ($updatedUser['Address'] as $address) {
 			$address['foreign_key'] = $user['id'];
 			$successes[] = $this->Address->save($address, array('validate' => false));
 		}
-		
+
 		// make new address current
 		if (!empty($updatedUser['Address']) && !empty($updatedUser['Address'][0]['address_line_1'])) {
 			$this->Address->setPrimary($updatedUser['Address'][0]['id']);
 		}
-		
+
 		// merge households
 		$households = $this->HouseholdMember->Household->getHouseholdIds($user['id'], true);
 		if (empty($households)) {
@@ -310,7 +310,7 @@ class User extends AppModel {
 			$households = $this->HouseholdMember->Household->getHouseholdIds($user['id'], true);
 		}
 		$oldHouseholdId = $household = $updatedUser['HouseholdMember'][0]['household_id'];
-		
+
 		if (count($households) == 1) {
 			// if the user has 1 household, merge the households, otherwise the "new" household will be copied over
 			$household = $households[0];
@@ -327,13 +327,13 @@ class User extends AppModel {
 				'user_id' => $mergeId
 			));
 		}
-		
+
 		// move other members to new household
 		$successes[] = $this->HouseholdMember->updateAll(
 			array('household_id' => $household),
 			array('household_id' => $oldHouseholdId)
 		);
-		
+
 		$success = !in_array(false, $successes);
 		if ($success) {
 			$this->delete($modelId);
@@ -342,11 +342,11 @@ class User extends AppModel {
 	}
 
 /**
- * Gets a list of users that match the data provided, using distinguishable 
- * fields (username, email fields, name, etc.). Returns a list of matching user 
- * ids. Uses `User::prepareSearch()` to generate the search options from the 
+ * Gets a list of users that match the data provided, using distinguishable
+ * fields (username, email fields, name, etc.). Returns a list of matching user
+ * ids. Uses `User::prepareSearch()` to generate the search options from the
  * data.
- * 
+ *
  * @param array $data Data to search
  * @param string $operator The search operator
  * @return array The matching ids or an empty array
@@ -356,17 +356,17 @@ class User extends AppModel {
 		if (!is_array($data)) {
 			$data = array($data);
 		}
-		
+
 		if (empty($data)) {
 			return array();
 		}
-		
+
 		// normalize
 		if (isset($data['User']) && isset($data['User']['Profile'])) {
 			$data['Profile'] = $data['User']['Profile'];
 			unset($data['User']['Profile']);
 		}
-		
+
 		$_default = array(
 			'User' => array(
 				'username' => null,
@@ -379,7 +379,7 @@ class User extends AppModel {
 			)
 		);
 		$data = Set::merge($_default, $data);
-		
+
 		if (!empty($data['Profile']['email'])) {
 			$data['Profile']['primary_email'] = $data['Profile']['email'];
 		}
@@ -397,7 +397,7 @@ class User extends AppModel {
 				'last_name' => $data['Profile']['last_name']
 			)
 		);
-		
+
 		$options = $this->prepareSearch(new AppController(), $data);
 		$options['fields'] = 'User.id';
 
@@ -405,7 +405,7 @@ class User extends AppModel {
 			// don't return all the users
 			return array();
 		}
-		
+
 		// special condition: since we don't want to search for "first_name" OR
 		// "last_name", make them an AND condition
 		if (strtolower($operator) == 'or') {
@@ -420,7 +420,7 @@ class User extends AppModel {
 		}
 
 		$foundUsers = $this->find('all', $options);
-		
+
 		return Set::extract('/User/id', $foundUsers);
 	}
 
@@ -442,7 +442,7 @@ class User extends AppModel {
 
 		// add missing data for the main user
 		$data = $this->_createUserData($data);
-		
+
 		// temporarily remove household member info - we have to do that separately
 		$householdMembers = isset($data['HouseholdMember']) ? $data['HouseholdMember'] : array();
 		unset($data['HouseholdMember']);
@@ -463,13 +463,13 @@ class User extends AppModel {
 					)
 				)
 			);
-			
+
 			if (!empty($member['User']['id'])) {
 				$this->contain($contain);
 				$member = $this->read(array('id'), $member['User']['id']);
 			} else {
 				$foundUser = $this->findUser($member);
-				
+
 				if (count($foundUser) == 1) {
 					// don't need to make them pick
 					$this->contain($contain);
@@ -504,7 +504,7 @@ class User extends AppModel {
 				}
 			}
 		}
-		
+
 		if (!$return) {
 			unset($data['User']['password']);
 			unset($data['User']['confirm_password']);
@@ -610,7 +610,7 @@ class User extends AppModel {
 		);
 
 		$data = Set::merge($default, $data);
-		
+
 		if (empty($data['Address'][0]['zip'])) {
 			unset($data['Address']);
 		}
@@ -637,7 +637,7 @@ class User extends AppModel {
  * @param array $data Post data to use for conditions
  * @return array Search option array
  * @access public
- */ 
+ */
 	function prepareSearch(&$Controller, $data) {
 		$_search = array(
 			'Search' => array(
@@ -652,7 +652,7 @@ class User extends AppModel {
 			'Distance' => array()
 		);
 		$data = Set::merge($_search, $data);
-		
+
 		// deconstruct and normalize special fields
 		$data['Profile']['birth_date'] = $this->Profile->deconstruct('birth_date', $data['Profile']['birth_date']);
 
@@ -675,7 +675,7 @@ class User extends AppModel {
 		$data = Set::filter($data);
 		$options = (array)$this->postOptions($data) + array('contain' => array());
 		$link = $options['contain'];
-		
+
 		$conditions = $Controller->postConditions($data, 'LIKE', $operator);
 		// prepare for a distance search
 		if (!empty($dist['distance_from'])) {
@@ -683,7 +683,7 @@ class User extends AppModel {
 			$this->Address->virtualFields = array_merge($this->Address->virtualFields, array(
 				'distance' => $this->Address->distance($coords['lat'], $coords['lng'])
 			));
-			
+
 			// get addresses within distance requirements
 			$distancedAddresses = $this->Address->find('all', array(
 				'fields' => array(
@@ -696,11 +696,11 @@ class User extends AppModel {
 			$link['Address'] = array();
 			$conditions[$operator]['Address.id'] = array_values(Set::extract('/Address/id', $distancedAddresses));
 		}
-		
+
 		// prepare age group search
 		if (isset($data['Profile']['age'])) {
 			$ages = array();
-			foreach ($data['Profile']['age'] as $ageGroup) {			
+			foreach ($data['Profile']['age'] as $ageGroup) {
 				$ageRange = explode('-', $ageGroup);
 				$ages['or'][] = array($this->Profile->getVirtualField('age').' BETWEEN ? AND ?' => array($ageRange[0], $ageRange[1]));
 			}
@@ -708,13 +708,13 @@ class User extends AppModel {
 			unset($conditions['Profile.age']);
 			unset($conditions[$operator]['Profile.age']);
 		}
-		
+
 		// check for child
 		if (isset($data['Profile']['child'])) {
 			$conditions[$operator][$this->Profile->getVirtualField('child')] = $data['Profile']['child'];
 			unset($conditions['Profile.child']);
 		}
-		
+
 		// check for birthday range
 		if (!empty($birthdayRange['start']) && !empty($birthdayRange['end'])) {
 			krsort($birthdayRange['start']);
@@ -724,7 +724,7 @@ class User extends AppModel {
 			$conditions['Profile.birth_date BETWEEN ? AND ?'] = array($start, $end);
 			$link['Profile'] = array();
 		}
-		
+
 		// check for background check range
 		if (!empty($backgroundCheckRange['start']) && !empty($backgroundCheckRange['end'])) {
 			krsort($backgroundCheckRange['start']);
@@ -734,7 +734,7 @@ class User extends AppModel {
 			$conditions['Profile.background_check_date BETWEEN ? AND ?'] = array($start, $end);
 			$link['Profile'] = array();
 		}
-		
+
 		// check for birthdate
 		if (!empty($data['Profile']['birth_date'])) {
 			if (is_array($data['Profile']['birth_date'])) {
@@ -748,15 +748,15 @@ class User extends AppModel {
 			unset($conditions['Profile.birth_date LIKE']);
 			$conditions['Profile.birth_date'] = $bday;
 		}
-		
+
 		// check for region
 		if (!empty($data['Address']['Zipcode']['region_id'])) {
 			$conditions[$operator]['Zipcode.region_id'] = $data['Address']['Zipcode']['region_id'];
 			$link['Address']['Zipcode'] = array();
 			unset($conditions['Address.Zipcode']);
 		}
-		
-		// check for email 
+
+		// check for email
 		if (!empty($email)) {
 			$conditions[$operator][] = array(
 				'or' => array(
@@ -773,13 +773,13 @@ class User extends AppModel {
 			$conditions[$operator]['Involvement.name LIKE'] = '%'.$data['Roster']['Involvement']['name'].'%';
 			unset($conditions['Roster.Involvement']);
 		}
-		
+
 		// check for ministry
 		if (!empty($data['Roster']['Involvement']['Ministry']['name'])) {
 			$conditions[$operator]['Ministry.name LIKE'] = '%'.$data['Roster']['Involvement']['Ministry']['name'].'%';
 			unset($conditions['Roster.Involvement.Ministry']);
 		}
-		
+
 		// check for "currently leading" (can't use `Profile.leading` because it doesn't check for previous dates)
 		if (isset($data['Profile']['currently_leading'])) {
 			$ds = $this->getDatasource();
@@ -800,22 +800,22 @@ class User extends AppModel {
 			$link['Leader'] = array();
 			unset($conditions['Profile.currently_leading']);
 		}
-		
+
 		if (strtolower($operator) == 'and' && isset($conditions[$operator])) {
 			$conditions = array_merge($conditions, $conditions[$operator]);
 			unset($conditions[$operator]);
 		}
-		
+
 		if (strtolower($operator) == 'or' && empty($conditions[$operator])) {
 			$conditions = array();
 		}
-		
+
 		$group = 'User.id';
-		
+
 		return compact('link', 'conditions', 'group');
 	}
 
-	
+
 /**
  * Generates a username from a name
  *
@@ -847,15 +847,15 @@ class User extends AppModel {
 				}
 			}
 		}
-		
+
 		return $username;
 	}
-	
+
 /**
  * Generates a random password
  *
  * Passwords are generated from a selection of random nouns and verbs,
- * and a 4-digit number is appended to the end. Characters that are 
+ * and a 4-digit number is appended to the end. Characters that are
  * difficult to discern (like '0', 'l', etc.) are replaced. Some other
  * characters are also replaced at random (like 4 for an 'a').
  *
@@ -864,25 +864,25 @@ class User extends AppModel {
  */
 	function generatePassword() {
 		$nouns = array('jesus', 'core', 'church', 'php', 'cake', 'pie');
-		// 'is' is added in the middle		
+		// 'is' is added in the middle
 		$verbs = array('awesome', 'swell', 'hilarious', 'thebest', 'socool');
-		
+
 		$noun = $nouns[array_rand($nouns, 1)];
 		$verb = $verbs[array_rand($verbs, 1)];
-		
+
 		$rand_noun = '';
 		$rand_verb = '';
-		
+
 		// shuffle the case around
 		for($i = 0; $i < strlen($noun); $i++) {
 			$rand_noun .= rand(0,1) ? strtoupper(substr($noun, $i, 1)) : strtolower(substr($noun, $i, 1));
 		}
 		for($i = 0; $i < strlen($verb); $i++) {
-			$rand_verb .= rand(0,1) ? strtoupper(substr($verb, $i, 1)) : strtolower(substr($verb, $i, 1));			
+			$rand_verb .= rand(0,1) ? strtoupper(substr($verb, $i, 1)) : strtolower(substr($verb, $i, 1));
 		}
-		
+
 		$word = $rand_noun.'is'.$rand_verb;
-		$rand_word = '';		
+		$rand_word = '';
 		// replace some letters that may be confusing, or for fun
 		for($i = 0; $i < strlen($word); $i++) {
 			$char = substr($word, $i, 1);
@@ -895,7 +895,7 @@ class User extends AppModel {
 				$rand_word .= rand(0,1) ? '1' : 'i';
 			} else if ($char == 'l') {
 				// I and l's are confusing
-				$rand_word .= rand(0,1) ? '7' : 'L';			
+				$rand_word .= rand(0,1) ? '7' : 'L';
 			} else if (in_array($char, array('0', 'O'))) {
 				// 0 and O's are confusing
 				$rand_word .= 'o';
@@ -903,16 +903,16 @@ class User extends AppModel {
 				$rand_word .= $char;
 			}
 		}
-		
+
 		// append some numbers
 		$num = '';
 		for ($i = 0; $i < 4; $i++) {
 			$num .= rand(2,9);
 		}
-		
+
 		return $rand_word.$num;
 	}
-	
+
 /**
  * Model::beforeSave() callback
  *
@@ -920,13 +920,13 @@ class User extends AppModel {
  *
  * @return boolean True, to save
  * @see Cake docs
- */ 
+ */
 	function beforeSave() {
 		$this->hashPasswords(null, true);
-		
+
 		return parent::beforeSave();
 	}
-	
+
 
 /**
  * Custom password hashing function for Auth component
@@ -940,7 +940,7 @@ class User extends AppModel {
  * @param boolean $enforce Force hashing. Used to prevent Auth component from auto-hashing before validation
  * @return array Data with hashed passwords
  * @see User::beforeSave()
- */	
+ */
 	function hashPasswords($data, $enforce = false) {
 		App::import('Component', 'Auth');
 		$Auth = new AuthComponent();
@@ -949,47 +949,47 @@ class User extends AppModel {
 			// if confirm_password isn't sent, it's probably being sent by auth
 			$enforce = true;
 		}
-		
+
 		if (!empty($this->data)) {
 			$data = $this->data;
 		}
-		
+
 		if ($enforce && isset($data[$this->alias]['password']) && !empty($data[$this->alias]['password']))  {
 			$data[$this->alias]['password'] = $Auth->password($data[$this->alias]['password']);
 		}
-		
+
 		$this->data = $data;
 		return $data;
 	}
-	
+
 /**
  * Encrypts a string (used in old CORE's password authentication)
  * Uses Security.encryptKey in Configure
  *
  * @param string $str String to encrypt
  * @return string Encrypted string
- */	
+ */
 	function encrypt($str) {
 		if (empty($str)) {
 			return '';
 		}
 	   $td = mcrypt_module_open('tripledes', '', 'ecb', '');
-		$iv = mcrypt_create_iv (mcrypt_enc_get_iv_size($td), MCRYPT_RAND);	    
+		$iv = mcrypt_create_iv (mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
 		mcrypt_generic_init($td, Configure::read('Security.encryptKey'), $iv);
 		$encrypted_data = mcrypt_generic($td, $str);
 		mcrypt_generic_deinit($td);
 		mcrypt_module_close($td);
-		    
+
 		return $encrypted_data;
 	}
-	
+
 /**
  * Decrypts a string (used in old CORE's password authentication)
  * Uses Security.encryptKey in Configure
  *
  * @param string $str String to decrypt
  * @return string Decrypted string
- */	
+ */
 	function decrypt($str) {
 		if (empty($str)) {
 			return '';
@@ -1000,7 +1000,7 @@ class User extends AppModel {
 		$unencrypted_data = mdecrypt_generic($td, $str);
 		mcrypt_generic_deinit($td);
 		mcrypt_module_close($td);
-					
+
 		return trim($unencrypted_data);
 	}
 }

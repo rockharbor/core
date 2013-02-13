@@ -127,7 +127,7 @@ border:3px solid #688c30;
 .alerts .medium p, .alerts .medium h1 { color: #b0951c; }
 .alerts .high p, .alerts .high h1 { color: #a81f14; }
 .alerts .low p, .alerts .low h1 { color: #688c30; }
- 
+
 
 #search {
 background:#fff;
@@ -381,7 +381,7 @@ input[type=submit], button {
 	width: auto;
 }
 form .submit input[type=submit], form button {
-	background:#FFF;	
+	background:#FFF;
 	/*background: -webkit-gradient(linear, left top, left bottom, from(#a8ea9c), to(#62af56));
 	background-image: -moz-linear-gradient(top, #a8ea9c, #62af56);*/
 	border-color: #DDD;
@@ -415,10 +415,10 @@ form div.error {
 
 /** Notices and Errors **/
 div.message {
-	clear: both;	
+	clear: both;
 	font-size: 140%;
 	font-weight: bold;
-	margin: 0 0 1em 0;	
+	margin: 0 0 1em 0;
 	padding: 5px;
 }
 
@@ -684,14 +684,14 @@ padding: 5px 0;
 }
 
 #notification_content img {
-	margin:0px 5px;	
+	margin:0px 5px;
 }
 
 .loading-overlay {
 	position:absolute;
 	display:none;
-	-moz-opacity:.80; 
-	filter:alpha(opacity=80); 
+	-moz-opacity:.80;
+	filter:alpha(opacity=80);
 	opacity:.80;
 	background: #fff url('../img/indicator.gif') no-repeat 50%;
 	z-index:20;

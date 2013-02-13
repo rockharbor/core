@@ -60,7 +60,7 @@
 				echo $this->Html->tag('p', $inv);
 			} else {
 				// they're actually involved
-				foreach ($involvement['Roster'] as $roster) { 
+				foreach ($involvement['Roster'] as $roster) {
 					$roles = Set::extract('/Role/name', $roster);
 					if (empty($roles) && in_array($involvement['Involvement']['id'], array_values($memberOf))) {
 						$roles[] = 'Member';
@@ -97,7 +97,7 @@
 				}
 			}
 		}
-		echo $this->element('pagination'); 
+		echo $this->element('pagination');
 		?>
 	</div>
 </div>

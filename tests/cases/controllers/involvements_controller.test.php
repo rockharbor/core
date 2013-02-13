@@ -7,11 +7,11 @@ App::import('Controller', 'Involvements');
 Mock::generatePartial('QueueEmailComponent', 'MockInvolvementsQueueEmailComponent', array('_smtp', '_mail'));
 
 class TestInvolvementsController extends InvolvementsController {
-	
+
 	private $_authorized = array();
-	
+
 	private $_defaultAuth = false;
-	
+
 	function setAuthorized($action, $return) {
 		if ($action === null) {
 			$this->_defaultAuth = $return;
@@ -22,7 +22,7 @@ class TestInvolvementsController extends InvolvementsController {
 		}
 		$this->_authorized[strtolower($action)] = $return;
 	}
-	
+
 	function isAuthorized($action = null) {
 		if (empty($action)) {
 			$action = $this->Auth->action();
@@ -35,7 +35,7 @@ class TestInvolvementsController extends InvolvementsController {
 		}
 		return $this->_authorized[strtolower($action)];
 	}
-	
+
 }
 Mock::generatePartial('TestInvolvementsController', 'MockTestInvolvementsController', array('disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 
@@ -62,10 +62,10 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		unset($this->Involvements);
 		ClassRegistry::flush();
 	}
-	
+
 	function testView() {
 		$this->loadSettings();
-		
+
 		$this->Involvements->Involvement->id = 1;
 		$this->Involvements->Involvement->saveField('roster_limit', 1);
 
@@ -79,7 +79,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$this->assertFalse($vars['inRoster']);
 		$this->assertFalse($vars['canSeeRoster']);
 		$this->assertTrue($vars['full']);
-		
+
 		// inactive, not registered
 		$this->su(array(
 			'User' => array('id' => 100),
@@ -89,7 +89,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$this->assertFalse($vars['inRoster']);
 		$this->assertFalse($vars['canSeeRoster']);
 		$this->assertFalse($vars['full']);
-		
+
 		// private, not registered, but admin
 		$this->Involvements->setAuthorized('/rosters/index', true);
 		$this->su(array(
@@ -100,7 +100,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$this->assertFalse($vars['inRoster']);
 		$this->assertTrue($vars['canSeeRoster']);
 		$this->assertTrue(isset($vars['full']));
-		
+
 		// private, not registered, but campus leader
 		$this->Involvements->setAuthorized('/rosters/index', false);
 		$this->su(array(
@@ -111,7 +111,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$this->assertFalse($vars['inRoster']);
 		$this->assertTrue($vars['canSeeRoster']);
 		$this->assertTrue(isset($vars['full']));
-		
+
 		// private, not registered, but ministry leader
 		$Leader = ClassRegistry::init('Leader');
 		$Leader->save(array(
@@ -127,7 +127,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$this->assertFalse($vars['inRoster']);
 		$this->assertTrue($vars['canSeeRoster']);
 		$this->assertTrue(isset($vars['full']));
-		
+
 		// private, not registered, but involvement leader
 		$Leader->save(array(
 			'user_id' => 100,
@@ -142,7 +142,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$this->assertFalse($vars['inRoster']);
 		$this->assertTrue($vars['canSeeRoster']);
 		$this->assertTrue(isset($vars['full']));
-		
+
 		// private, but registered, but not confirmed
 		$Roster = ClassRegistry::init('Roster');
 		$Roster->save(array(
@@ -159,7 +159,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$this->assertTrue($vars['inRoster']);
 		$this->assertFalse($vars['canSeeRoster']);
 		$this->assertTrue(isset($vars['full']));
-		
+
 		// private, but registered and confirmed
 		$Roster = ClassRegistry::init('Roster');
 		$Roster->save(array(
@@ -174,7 +174,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$this->assertTrue($vars['inRoster']);
 		$this->assertTrue($vars['canSeeRoster']);
 		$this->assertTrue(isset($vars['full']));
-		
+
 		// private, but registered and confirmed but roster invisible
 		$this->Involvements->expectAt(0, 'cakeError', array('privateItem', '*'));
 		$this->Involvements->Involvement->id = 3;
@@ -187,7 +187,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$this->assertTrue($vars['inRoster']);
 		$this->assertFalse($vars['canSeeRoster']);
 		$this->assertTrue(isset($vars['full']));
-		
+
 		// private, not registered
 		$this->Involvements->expectAt(1, 'cakeError', array('privateItem', '*'));
 		$this->su(array(
@@ -196,14 +196,14 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		));
 		$vars = $this->testAction('/involvements/view/Involvement:3');
 		$this->assertFalse(isset($vars['full']));
-		
+
 		$this->unloadSettings();
 	}
-	
+
 	function testIndex() {
 		$this->loadSettings();
 		$this->loadFixtures('InvolvementsMinistry', 'Date', 'InvolvementsMinistry');
-		
+
 		$vars = $this->testAction('/involvements/index/Ministry:1', array(
 			'data' => array(
 				'Involvement' => array(
@@ -217,7 +217,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		sort($results);
 		$expected = array(4, 5);
 		$this->assertEqual($results, $expected);
-		
+
 		$vars = $this->testAction('/involvements/index/Ministry:1', array(
 			'data' => array(
 				'Involvement' => array(
@@ -231,7 +231,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		sort($results);
 		$expected = array();
 		$this->assertEqual($results, $expected);
-		
+
 		$vars = $this->testAction('/involvements/index/Ministry:4', array(
 			'data' => array(
 				'Involvement' => array(
@@ -245,7 +245,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		sort($results);
 		$expected = array(1, 2, 3);
 		$this->assertEqual($results, $expected);
-		
+
 		$vars = $this->testAction('/involvements/index/Ministry:4', array(
 			'data' => array(
 				'Involvement' => array(
@@ -259,7 +259,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		sort($results);
 		$expected = array(1, 2);
 		$this->assertEqual($results, $expected);
-		
+
 		$vars = $this->testAction('/involvements/index/Ministry:1', array(
 			'data' => array(
 				'Involvement' => array(
@@ -273,7 +273,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		sort($results);
 		$expected = array(4, 5);
 		$this->assertEqual($results, $expected);
-		
+
 		$vars = $this->testAction('/involvements/index/Ministry:1', array(
 			'data' => array(
 				'Involvement' => array(
@@ -287,13 +287,13 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		sort($results);
 		$expected = array();
 		$this->assertEqual($results, $expected);
-		
+
 		$this->unloadSettings();
 	}
 
 	function testInviteRoster() {
 		$this->loadFixtures('PaymentOption');
-		
+
 		$this->Involvements->Session->write('MultiSelect.test', array(
 			'selected' => array(1),
 			'search' => array()
@@ -309,10 +309,10 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$notificationCountAfter = $this->Involvements->Involvement->Roster->User->Notification->find('count');
 		// one for each leader for each roster
 		$this->assertEqual($notificationCountAfter-$notificationCountBefore, 1);
-		
+
 		$newest = $this->Involvements->Involvement->Roster->read();
 		$this->assertEqual($newest['Roster']['payment_option_id'], 1);
-		
+
 		$this->Involvements->Session->write('MultiSelect.test', array(
 			'selected' => array(1, 3),
 			'search' => array()
@@ -326,7 +326,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 
 	function testInviteUser() {
 		$this->loadFixtures('PaymentOption', 'Leader');
-		
+
 		$this->Involvements->Session->write('MultiSelect.test', array(
 			'selected' => array(1, 2),
 			'search' => array()
@@ -342,10 +342,10 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$notificationCountAfter = $this->Involvements->Involvement->Roster->User->Notification->find('count');
 		// one for each leader for each user
 		$this->assertEqual($notificationCountAfter-$notificationCountBefore, 2);
-		
+
 		$newest = $this->Involvements->Involvement->Roster->read();
 		$this->assertEqual($newest['Roster']['payment_option_id'], 1);
-		
+
 		$this->Involvements->Session->write('MultiSelect.test', array(
 			'selected' => array(4, 5),
 			'search' => array()
@@ -424,7 +424,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 	function testEdit() {
 		$data = $this->Involvements->Involvement->read(null, 1);
 		$data['Involvement']['name'] = 'New name';
-		
+
 		$vars = $this->testAction('/involvements/edit/Involvement:1', array(
 			'data' => $data
 		));

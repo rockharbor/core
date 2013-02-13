@@ -34,7 +34,7 @@ if (isset($addresses)) {
 			$("#Address0AddressLine2").val(selected.address_line_2);
 			$("#Address0City").val(selected.city);
 			$("#Address0State").val(selected.state);
-			$("#Address0Zip").val(selected.zip); 
+			$("#Address0Zip").val(selected.zip);
 		}
 	});');
 

@@ -15,11 +15,11 @@ class ImageTestCase extends CoreTestCase {
 		unset($this->Image);
 		ClassRegistry::flush();
 	}
-	
+
 	function testTransferTo() {
 		$this->Image->model = 'User';
 		$uuidReg = "[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}";
-		
+
 		$file = array(
 			'file' => 'image.jpg',
 			'mimeType' => null
@@ -27,10 +27,10 @@ class ImageTestCase extends CoreTestCase {
 		$result = $this->Image->transferTo(array(), $file);
 		$pattern = '/img\\'.DS.'user\\'.DS.$uuidReg.'\.jpg/';
 		$this->assertPattern($pattern, $result);
-		
+
 		$this->Image->model = 'Involvement';
 		$uuidReg = "[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}";
-		
+
 		$file = array(
 			'file' => 'image.mpg',
 			'mimeType' => 'video/mpeg'

@@ -8,7 +8,7 @@ Mock::generatePartial('QueueEmailComponent', 'MockAddressesQueueEmailComponent',
 Mock::generatePartial('UserAddressesController', 'TestUserAddressesController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 
 class AddressesControllerTestCase extends CoreTestCase {
-	
+
 	function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Address');
@@ -103,7 +103,7 @@ class AddressesControllerTestCase extends CoreTestCase {
 		$data['Address']['primary'] = 0;
 		$vars = $this->testAction('/user_addresses/edit/1', array(
 			'data' => $data
-		));		
+		));
 		$this->Addresses->Address->id = 1;
 		$this->assertEqual($this->Addresses->Address->field('primary'), 0);
 		$this->Addresses->Address->id = 2;

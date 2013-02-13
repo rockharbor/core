@@ -22,10 +22,10 @@ class Role extends AppModel {
  * @var string
  */
 	var $name = 'Role';
-	
+
 /**
  * Default order
- * 
+ *
  * @var string
  */
 	var $order = ':ALIAS:.name ASC';
@@ -67,10 +67,10 @@ class Role extends AppModel {
 			'dependent' => true,
 		),
 	);
-	
+
 /**
  * Gets all roles for a ministry and the roles of its parent ministry
- * 
+ *
  * @param integer $ministryId The ministry id
  * @return array Array of role ids
  * @todo Make it get not just the immediate parent, but all parents

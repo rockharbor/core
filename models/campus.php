@@ -100,7 +100,7 @@ class Campus extends AppModel {
 			'conditions' => array('Image.model' => 'Campus')
 		)
 	);
-	
+
 /**
  * Checks if a user is a manager for a campus
  *
@@ -108,12 +108,12 @@ class Campus extends AppModel {
  * @param integer $campusId The campus id
  * @return boolean True if the user is a manager
  * @access public
- */ 
+ */
 	function isManager($userId = null, $campusId = null) {
 		if (!$userId || !$campusId) {
 			return false;
 		}
-		
+
 		return $this->Leader->hasAny(array(
 			'model' => 'Campus',
 			'model_id' => $campusId,
@@ -145,9 +145,9 @@ class Campus extends AppModel {
 
 /**
  * Gets the leaders for a Campus
- * 
+ *
  * @param mixed $modelId Integer for single id, or array for multiple
- * @return array Array of user ids 
+ * @return array Array of user ids
  */
 	function getLeaders($modelId) {
 		$leaders = $this->Leader->find('all', array(

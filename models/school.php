@@ -24,7 +24,7 @@ class School extends AppModel {
  * @var string
  */
 	var $name = 'School';
-	
+
 /**
  * Default order
  *
@@ -55,7 +55,7 @@ class School extends AppModel {
  * @return array The modified query data
  */
 	function beforeFind($queryData = array()) {
-		$types = array_map(array('Inflector', 'classify'), $this->types);		
+		$types = array_map(array('Inflector', 'classify'), $this->types);
 
 		if ($this->alias != $this->name && in_array($this->alias, $types)) {
 			$types = array_flip($types);

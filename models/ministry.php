@@ -22,10 +22,10 @@ class Ministry extends AppModel {
  * @var string
  */
 	var $name = 'Ministry';
-	
+
 /**
  * Default model order
- * 
+ *
  * @var string
  */
 	var $order = ':ALIAS:.name ASC';
@@ -65,11 +65,11 @@ class Ministry extends AppModel {
  * @var array
  */
 	var $validate = array(
-		'name' => array(	
+		'name' => array(
 			'rule' => 'notempty',
 			'message' => 'Please fill in the required field.'
 		),
-		'description' => array(	
+		'description' => array(
 			'rule' => 'notempty',
 			'message' => 'Please fill in the required field.'
 		)
@@ -167,7 +167,7 @@ class Ministry extends AppModel {
  * where related model data is needed.
  *
  * @var array
- */	
+ */
 	var $searchFilter = array(
 		'canBePromoted' => array(
 			'conditions' => array(
@@ -179,7 +179,7 @@ class Ministry extends AppModel {
 			)
 		)
 	);
-	
+
 /**
  * Checks if a user is a manager for a ministry. If they are not, it checks if
  * they manage the parent ministry, if any.
@@ -188,12 +188,12 @@ class Ministry extends AppModel {
  * @param integer $ministryId The ministry id
  * @return boolean True if the user is a manager
  * @access public
- */ 
+ */
 	function isManager($userId = null, $ministryId = null) {
 		if (!$userId || !$ministryId) {
 			return false;
 		}
-		
+
 		$managing = $this->Leader->hasAny(array(
 			'model' => 'Ministry',
 			'model_id' => $ministryId,
@@ -248,9 +248,9 @@ class Ministry extends AppModel {
 
 /**
  * Gets the leaders for a Ministry
- * 
+ *
  * @param mixed $modelId Integer for single id, or array for multiple
- * @return array Array of user ids 
+ * @return array Array of user ids
  */
 	function getLeaders($modelId) {
 		$leaders = $this->Leader->find('all', array(
@@ -268,7 +268,7 @@ class Ministry extends AppModel {
 
 /**
  * Gets all ministries a user is leading
- * 
+ *
  * @param mixed $userId Array of user ids or a single one
  * @param boolean $recursive Include subministries of items the user isn't directly leading?
  * @return array Array of ids
@@ -298,7 +298,7 @@ class Ministry extends AppModel {
 			));
 			$ids = Set::extract('/Ministry/id', $ministries);
 		}
-		
+
 		return $ids;
 	}
 }

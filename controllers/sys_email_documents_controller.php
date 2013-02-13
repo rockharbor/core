@@ -23,7 +23,7 @@ class SysEmailDocumentsController extends DocumentsController {
 
 /**
  * The name of the model to associate the Document with
- * 
+ *
  * @var string
  */
 	var $model = 'SysEmail';
@@ -34,10 +34,10 @@ class SysEmailDocumentsController extends DocumentsController {
  * Used to override Acl permissions for this controller.
  *
  * @access private
- */ 
+ */
 	function beforeFilter() {
 		parent::beforeFilter();
 		$this->modelId = isset($this->passedArgs[$this->model]) ? $this->passedArgs[$this->model] : null;
 	}
-	
+
 }

@@ -17,36 +17,36 @@ class RosterTestCase extends CoreTestCase {
 	}
 
 	function endTest() {
-		unset($this->Roster);		
+		unset($this->Roster);
 		ClassRegistry::flush();
 	}
-	
+
 	function testFindByRoles() {
 		$data = array(
 			'roles' => array(1)
 		);
 		$results = $this->Roster->findByRoles($data);
-		$expected = "SELECT `RolesRoster`.`roster_id` 
-			FROM `roles_rosters` AS `RolesRoster` 
-			LEFT JOIN `roles` AS `Role` ON (`RolesRoster`.`role_id` = `Role`.`id`) 
-			WHERE EXISTS 
+		$expected = "SELECT `RolesRoster`.`roster_id`
+			FROM `roles_rosters` AS `RolesRoster`
+			LEFT JOIN `roles` AS `Role` ON (`RolesRoster`.`role_id` = `Role`.`id`)
+			WHERE EXISTS
 			(SELECT 1 FROM roles_rosters WHERE role_id = 1 AND roster_id = `RolesRoster`.`roster_id`) ";
 		$this->assertEqual($this->singleLine($results), $this->singleLine($expected));
-		
+
 		$data = array(
 			'roles' => array(1, 2)
 		);
 		$results = $this->Roster->findByRoles($data);
-		$expected = "SELECT `RolesRoster`.`roster_id` 
-			FROM `roles_rosters` AS `RolesRoster` 
-			LEFT JOIN `roles` AS `Role` ON (`RolesRoster`.`role_id` = `Role`.`id`) 
-			WHERE 
-			EXISTS (SELECT 1 FROM roles_rosters WHERE role_id = 1 AND roster_id = `RolesRoster`.`roster_id`) 
-			AND 
+		$expected = "SELECT `RolesRoster`.`roster_id`
+			FROM `roles_rosters` AS `RolesRoster`
+			LEFT JOIN `roles` AS `Role` ON (`RolesRoster`.`role_id` = `Role`.`id`)
+			WHERE
+			EXISTS (SELECT 1 FROM roles_rosters WHERE role_id = 1 AND roster_id = `RolesRoster`.`roster_id`)
+			AND
 			EXISTS (SELECT 1 FROM roles_rosters WHERE role_id = 2 AND roster_id = `RolesRoster`.`roster_id`) ";
 		$this->assertEqual($this->singleLine($results), $this->singleLine($expected));
 	}
-	
+
 	function testPaginateCount() {
 		$conditions = array(
 			'Roster.involvement_id' => 1
@@ -59,7 +59,7 @@ class RosterTestCase extends CoreTestCase {
 		);
 		$results = $this->Roster->paginateCount($conditions, $recursive, $extra);
 		$this->assertEqual($results, 2);
-		
+
 		$conditions = array(
 			'Involvement.id' => 1
 		);
@@ -96,7 +96,7 @@ class RosterTestCase extends CoreTestCase {
 				'name' => 'Some guy'
 			)
 		);
-		
+
 		$results = $this->Roster->setDefaultData(array(
 			'roster' => array(
 				'Roster' => array(
@@ -109,13 +109,13 @@ class RosterTestCase extends CoreTestCase {
 			'payer' => $payer
 		));
 		$this->assertEqual($results['Roster']['roster_status_id'], 1);
-		
+
 		$rosterCountBefore = $this->Roster->find('count');
 		$paymentCountBefore = $this->Roster->Payment->find('count');
 		$this->assertTrue($this->Roster->saveAll($results));
 		$rosterCountAfter = $this->Roster->find('count');
 		$paymentCountAfter = $this->Roster->Payment->find('count');
-		
+
 		// assert that they were confirmed and a payment was made
 		$this->Roster->contain(array('Payment'));
 		$results = $this->Roster->read(null, 2);
@@ -123,7 +123,7 @@ class RosterTestCase extends CoreTestCase {
 		$this->assertEqual($rosterCountBefore, $rosterCountAfter);
 		$this->assertEqual($paymentCountAfter-$paymentCountBefore, 1);
 		$this->assertEqual($results['Payment'][0]['roster_id'], 2);
-		
+
 		$results = $this->Roster->setDefaultData(array(
 			'roster' => array(
 				'Roster' => array(
@@ -154,7 +154,7 @@ class RosterTestCase extends CoreTestCase {
 		$expected = array(2, 3);
 		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testSetDefaultDataEmptyPayment() {
 		$this->Roster->Involvement->PaymentOption->create();
 		$this->Roster->Involvement->PaymentOption->save(array(
@@ -197,7 +197,7 @@ class RosterTestCase extends CoreTestCase {
 			)
 		);
 		$this->assertEqual($result, $expected);
-		
+
 		$this->Roster->Involvement->PaymentOption->create();
 		$this->Roster->Involvement->PaymentOption->save(array(
 			'PaymentOption' => array(
@@ -265,7 +265,7 @@ class RosterTestCase extends CoreTestCase {
 		unset($result['Payment'][0]['comment']);
 		$this->assertEqual($result, $expected);
 	}
-	
+
 	function testSetDefaultChildcare() {
 		$involvement = $this->Roster->Involvement->read(null, 1);
 		$parent = 1;
@@ -312,8 +312,8 @@ class RosterTestCase extends CoreTestCase {
 			'payment_option_id' => 2
 		);
 		$this->assertEqual($result, $expected);
-		
-		$result = $newRoster['Roster'];		
+
+		$result = $newRoster['Roster'];
 		$expected = array(
 			'user_id' => 12,
 			'involvement_id' => 1,
@@ -438,7 +438,7 @@ class RosterTestCase extends CoreTestCase {
 			'payment_option_id' => 1
 		);
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $this->Roster->setDefaultData(array(
 			'roster' => $roster,
 			'defaults' => array(
@@ -470,7 +470,7 @@ class RosterTestCase extends CoreTestCase {
 
 		$result = $roster['Roster']['balance'];
 		$this->assertIdentical($result, '80.00');
-		
+
 		$roster = $this->Roster->read(null, 4);
 
 		$result = $roster['Roster']['amount_paid'];
@@ -482,5 +482,5 @@ class RosterTestCase extends CoreTestCase {
 		$result = $roster['Roster']['balance'];
 		$this->assertIdentical($result, '-25.00');
 	}
-	
+
 }

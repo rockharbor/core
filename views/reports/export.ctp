@@ -6,7 +6,7 @@ echo $this->Form->create('Report', array(
 ));
 ?>
 <fieldset class="grid_10">
-	<legend>Report options</legend>	
+	<legend>Report options</legend>
 <?php
 echo $this->Form->input('Export.type', array(
 	'type' => 'select',

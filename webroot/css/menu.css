@@ -273,7 +273,7 @@ Dropdown menu CSS
 	.main-nav-menu li{
 		list-style:none;
 		margin: 0;
-		float:left;		
+		float:left;
 		height:100%;
 		}
 	.main-nav-menu li a{
@@ -284,7 +284,7 @@ Dropdown menu CSS
 		}
 	.main-nav-menu li ul{
 		display:none;
-		height:auto;		
+		height:auto;
 		margin:0px;
 		border:0px;
 		position:absolute;
@@ -299,7 +299,7 @@ Dropdown menu CSS
 		position:relative;
 	}
 	.main-nav-menu li:hover ul{
-		display:block;		
+		display:block;
 	}
 	.main-nav-menu li li {
 		display:block;
@@ -309,7 +309,7 @@ Dropdown menu CSS
 		min-width:160px;
 		}
 	.main-nav-menu li:hover li a{
-		background:none;		
+		background:none;
 		}
 	.main-nav-menu li ul a{
 		display:block;
@@ -323,6 +323,5 @@ Dropdown menu CSS
 			}
 	.main-nav-menu p{
 		clear:left;
-		}	
+		}
 
-		

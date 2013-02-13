@@ -48,7 +48,7 @@ if (isset($addresses)) {
 			$("#CreditCardAddressLine2").val(selected.address_line_2);
 			$("#CreditCardCity").val(selected.city);
 			$("#CreditCardState").val(selected.state);
-			$("#CreditCardZip").val(selected.zip); 
+			$("#CreditCardZip").val(selected.zip);
 		}
 	});');
 

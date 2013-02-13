@@ -28,14 +28,14 @@ class ClassificationsController extends SimpleCrudsController {
  * @var string
  */
 	var $name = 'Classifications';
-	
+
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
  *
  * @access private
- */ 
+ */
 	function beforeFilter() {
 		parent::beforeFilter();
 	}

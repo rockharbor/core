@@ -44,14 +44,14 @@ class AuthorizeDotNetComponent extends Object {
  * Error message, if any
  *
  * @var string
- */ 
+ */
 	var $error = '';
 
 /**
  * Transaction id
  *
  * @var string
- */ 	
+ */
 	var $transactionId = '';
 
 /**
@@ -59,8 +59,8 @@ class AuthorizeDotNetComponent extends Object {
  *
  * @param string $str
  */
-	function setInvoice($str) { 
-		$this->_data['x_Invoice'] = $str; 
+	function setInvoice($str) {
+		$this->_data['x_Invoice'] = $str;
 	}
 
 /**
@@ -78,7 +78,7 @@ class AuthorizeDotNetComponent extends Object {
  *
  * @param array $customer
  * @access public
- */ 
+ */
 	function setCustomer($customer = array()) {
 		if (empty($customer)) {
 			return;
@@ -89,7 +89,7 @@ class AuthorizeDotNetComponent extends Object {
 		$this->_data['x_Card_Num'] = $customer['credit_card_number'];
 		$this->_data['x_card_code'] = $customer['cvv'];
 		$this->_data['x_Exp_Date'] = $customer['expiration_date']['month'] . $customer['expiration_date']['year'];
-		
+
 		$this->_data['x_Address'] = $customer['address_line_1'].' '.$customer['address_line_2'];
 		$this->_data['x_City'] = $customer['city'];
 		$this->_data['x_State'] = $customer['state'];
@@ -104,7 +104,7 @@ class AuthorizeDotNetComponent extends Object {
  */
 	function setInvoiceNumber($invoiceNumber) {
 		// according to the documentation, invoice number can only be 20 characters, no symbols
-		$this->_data['x_invoice_num'] = substr(preg_replace("/[^a-zA-Z0-9]/", '', $invoiceNumber), 0, 20); 
+		$this->_data['x_invoice_num'] = substr(preg_replace("/[^a-zA-Z0-9]/", '', $invoiceNumber), 0, 20);
 	}
 
 /**
@@ -121,7 +121,7 @@ class AuthorizeDotNetComponent extends Object {
 		$desc = preg_replace("/[^a-zA-Z0-9 ]/", '', $desc);
 		$this->_data['x_description'] = substr($desc, 0, 255);
 	}
-			
+
 /**
  * Makes a payment request
  *
@@ -137,7 +137,7 @@ class AuthorizeDotNetComponent extends Object {
 
 		$this->error = $details[3];
 		$this->transactionId = $details[6];
-					
+
 		/* authorize.net returns a 1 on success. */
 		$success = $details[0] == '1';
 
@@ -149,11 +149,11 @@ class AuthorizeDotNetComponent extends Object {
 
 /**
  * Makes a cURL request to the authorize.net gateway
- * 
+ *
  * @param array $fields Array of key/value fields to POST
  * @return string Data from authorize.net
  * @todo Update to use HTTPSocket class instead of manual curl
- */	
+ */
 	function _request($fields) {
 		/* Set up CURL to post the $fields string to authorize.net */
 		$ch=curl_init();
@@ -169,18 +169,18 @@ class AuthorizeDotNetComponent extends Object {
 		curl_setopt ($ch, CURLOPT_TIMEOUT, 120);
 		curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)');
 		curl_setopt($ch, CURLOPT_REFERER, $_SERVER['REQUEST_URI']);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);	
-					
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
 		/* we set CURL to return the response, so we capture it in $buffer */
 		$buffer = curl_exec($ch);
 		curl_close($ch);
-		
+
 		return $buffer;
 	}
 
 /**
  * Formats field data to be accepted by cURL
- * 
+ *
  * @param array $data Array of key/value fields
  * @return string
  */
@@ -190,7 +190,7 @@ class AuthorizeDotNetComponent extends Object {
 		foreach ($data as $key => $value) {
 			$fields[] = $key . '=' . urlencode(trim($value));
 		}
-		
+
 		return implode('&', $fields);
 	}
 

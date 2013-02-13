@@ -27,7 +27,7 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		ClassRegistry::addObject('CreditCard', $CreditCard);
 		ClassRegistry::init('CreditCard');
 		// necessary fixtures
-		$this->loadFixtures('Payment', 'User', 'Roster', 'PaymentType', 
+		$this->loadFixtures('Payment', 'User', 'Roster', 'PaymentType',
 		'PaymentOption', 'Involvement', 'InvolvementType', 'Profile',
 		'Address', 'Leader');
 		$this->testController = $this->Payments;
@@ -35,7 +35,7 @@ class PaymentsControllerTestCase extends CoreTestCase {
 
 	function endTest() {
 		$this->Payments->Session->destroy();
-		unset($this->Payments);		
+		unset($this->Payments);
 		ClassRegistry::flush();
 	}
 
@@ -67,12 +67,12 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		$results = Set::extract('/Payment/id', $vars['payments']);
 		$expected = array(2, 3);
 		$this->assertEqual($results, $expected);
-		
+
 		$results = $this->Payments->MultiSelect->getSelected();
 		$expected = 'all';
 		$this->assertEqual($results, $expected);
 	}
-	
+
 	function testFailedPayment() {
 		$this->su(array(
 			'User' => array('id' => 1),
@@ -111,11 +111,11 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		$this->assertTrue(array_key_exists('credit_card_number', $result));
 		$result = $this->Payments->Payment->validationErrors;
 		$this->assertTrue(empty($result));
-		
+
 		// valid card, invalid gateway response
 		$data['CreditCard']['credit_card_number'] = '4242424242424242';
 		ClassRegistry::getObject('CreditCard')->gateway->setReturnValueAt(0, '_request', '0|||some error|||123456');
-		
+
 		$result = $this->Payments->Payment->CreditCard->validationErrors;
 		$this->assertTrue(array_key_exists('credit_card_number', $result));
 		$this->assertTrue($result['credit_card_number'], 'some error');
@@ -123,7 +123,7 @@ class PaymentsControllerTestCase extends CoreTestCase {
 
 	function testAdd() {
 		ClassRegistry::getObject('CreditCard')->gateway->setReturnValue('_request', '1||||||123456');
-		
+
 		$this->su(array(
 			'User' => array('id' => 1),
 			'Group' => array('id' => 1),
@@ -235,10 +235,10 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		$total = Set::apply('/Payment/amount', $results, 'array_sum');
 		$this->assertIdentical($total, 5.00);
 	}
-	
+
 	function testEdit() {
 		$this->loadFixtures('Group');
-		
+
 		$data = array(
 			'Payment' => array(
 				'id' => 1,

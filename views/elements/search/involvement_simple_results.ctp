@@ -3,7 +3,7 @@ $this->MultiSelect->create();
 ?>
 <table cellpadding="0" cellspacing="0" class="datatable">
 	<thead>
-		<?php 
+		<?php
 		$colCount = 2;
 		echo $this->element('search'.DS.'actions'.DS.$element, compact('result', 'id', 'colCount'));
 		?>
@@ -28,6 +28,6 @@ $this->MultiSelect->create();
 		<?php endforeach; ?>
 	</tbody>
 </table>
-<?php 
+<?php
 echo $this->element('pagination');
 echo $this->MultiSelect->end();
