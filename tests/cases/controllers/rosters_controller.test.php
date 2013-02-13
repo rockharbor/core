@@ -1223,8 +1223,8 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($rostersAfter-$rostersBefore, -3);
 
 		$notificationsAfter = $this->Rosters->Roster->User->Notification->find('count');
-		// one for each user and one for each leader for each user
-		$this->assertEqual($notificationsAfter-$notificationsBefore, 4);
+		// one for each user (3) and one for each leader for each user (1x3)
+		$this->assertEqual($notificationsAfter-$notificationsBefore, 6);
 
 		$rostersBefore = $this->Rosters->Roster->find('count');
 		$vars = $this->testAction('/rosters/delete/0/mstoken:testDelete');

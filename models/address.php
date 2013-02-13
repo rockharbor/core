@@ -151,17 +151,23 @@ class Address extends AppModel {
  */
 	function setPrimary($id) {
 		$this->id = $id;
-		$address = $this->read();
-		$this->updateAll(
-			array(
-				'Address.primary' => 0
+		$primaryAddress = $this->read();
+		$otherAddresses = $this->find('all', array(
+			'fields' => array(
+				'id'
 			),
-			array(
-				'Address.foreign_key' => $address[$this->alias]['foreign_key'],
-				'Address.model' => $address[$this->alias]['model'],
+			'conditions' => array(
+				'Address.foreign_key' => $primaryAddress[$this->alias]['foreign_key'],
+				'Address.model' => $primaryAddress[$this->alias]['model'],
 				'Address.id <>' => $id
 			)
-		);
+		));
+		foreach ($otherAddresses as $otherAddress) {
+			$this->id = $otherAddress['Address']['id'];
+			$this->saveField('primary', false);
+		}
+
+		$this->id = $id;
 		$this->saveField('primary', true);
 	}
 }

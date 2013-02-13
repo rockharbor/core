@@ -904,15 +904,16 @@ class RostersController extends AppController {
  */
 	function status($id = null, $status = 1) {
 		if ($id) {
-			$selected = $id;
+			$selected = array($id);
 		} else {
 			$selected = $this->_extractIds($this->Roster, '/Roster/id');
 		}
 
-		$success = $this->Roster->updateAll(
-			array('Roster.roster_status_id' => $status),
-			array('Roster.id' => $selected)
-		);
+		foreach ($selected as $selectedId) {
+			$this->Roster->id = $selectedId;
+			$this->Roster->saveField('roster_status_id', $status);
+		}
+
 		$this->Session->setFlash('Roster members confirmed.', 'flash'.DS.'success');
 		if (isset($this->params['requested']) &&  $this->params['requested']) {
 			return $success;
@@ -939,37 +940,45 @@ class RostersController extends AppController {
 
 		foreach ($selected as $rosterId) {
 			$this->Roster->recursive = -1;
-			$roster = $this->Roster->read(null, $rosterId);
-			// delete any children too
-			if ($this->Roster->deleteAll(array(
-				'or' => array(
-					'Roster.user_id' => $roster['Roster']['user_id'],
-					'Roster.parent_id' => $roster['Roster']['user_id']
-				),
-				'Roster.involvement_id' => $roster['Roster']['involvement_id']
-			))) {
-				$this->Roster->Involvement->contain(array('InvolvementType'));
-				$this->Roster->Involvement->Leader->User->contain(array('Profile'));
-				$involvement = $this->Roster->Involvement->read(null, $roster['Roster']['involvement_id']);
-				$this->set('involvement', $involvement);
-				$leaver = $this->Roster->Involvement->Leader->User->read(null, $roster['Roster']['user_id']);
-				$this->set('leaver', $leaver);
-				$this->set('activeUser', $this->activeUser);
-				// notify the user that they left
-				$this->Notifier->notify(array(
-					'to' => $roster['Roster']['user_id'],
-					'template' => 'rosters_delete',
-					'subject' => 'You have been removed from '.$involvement['Involvement']['name']
-				));
+			$selectedRoster = $this->Roster->read(null, $rosterId);
 
-				// notify all the leaders
-				$leaders = $this->Roster->Involvement->getLeaders($roster['Roster']['involvement_id']);
-				foreach ($leaders as $leader) {
+			$this->Roster->Involvement->contain(array('InvolvementType'));
+			$involvement = $this->Roster->Involvement->read(null, $selectedRoster['Roster']['involvement_id']);
+
+			$rosters = $this->Roster->find('all', array(
+				'conditions' => array(
+					'or' => array(
+						'Roster.user_id' => $selectedRoster['Roster']['user_id'],
+						'Roster.parent_id' => $selectedRoster['Roster']['user_id']
+					),
+					'Roster.involvement_id' => $selectedRoster['Roster']['involvement_id']
+				)
+			));
+
+			foreach ($rosters as $roster) {
+				if ($this->Roster->delete($roster['Roster']['id'])) {
+					$this->Roster->Involvement->Leader->User->contain(array('Profile'));
+					$leaver = $this->Roster->Involvement->Leader->User->read(null, $roster['Roster']['user_id']);
+					$this->set('leaver', $leaver);
+					$this->set('activeUser', $this->activeUser);
+					$this->set('involvement', $involvement);
+
+					// notify the user that they left
 					$this->Notifier->notify(array(
-						'to' => $leader,
-						'template' => 'rosters_delete_leader',
-						'subject' => $leaver['Profile']['name'].' has been removed from '.$involvement['Involvement']['name']
+						'to' => $roster['Roster']['user_id'],
+						'template' => 'rosters_delete',
+						'subject' => 'You have been removed from '.$involvement['Involvement']['name']
 					));
+
+					// notify all the leaders
+					$leaders = $this->Roster->Involvement->getLeaders($roster['Roster']['involvement_id']);
+					foreach ($leaders as $leader) {
+						$this->Notifier->notify(array(
+							'to' => $leader,
+							'template' => 'rosters_delete_leader',
+							'subject' => $leaver['Profile']['name'].' has been removed from '.$involvement['Involvement']['name']
+						));
+					}
 				}
 			}
 		}

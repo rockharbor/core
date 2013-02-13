@@ -181,14 +181,12 @@ class AddressesController extends AppController {
 			$this->cakeError('error404');
 		}
 		$related = $this->Address->related($this->passedArgs['Address']);
-		$this->Address->updateAll(
-			array(
-				'Address.primary' => 0
-			),
-			array(
-				'Address.id' => $related
-			)
-		);
+
+		foreach ($related as $relatedId) {
+			$this->Address->id = $relatedId;
+			$this->Address->saveField('primary', 0);
+		}
+		
 		$this->Address->id = $this->passedArgs['Address'];
 		$this->Address->saveField('primary', true);
 		$this->Address->saveField('active', true);

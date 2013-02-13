@@ -329,10 +329,15 @@ class User extends AppModel {
 		}
 
 		// move other members to new household
-		$successes[] = $this->HouseholdMember->updateAll(
-			array('household_id' => $household),
-			array('household_id' => $oldHouseholdId)
-		);
+		$householdMembers = $this->HouseholdMember->find('all', array(
+			'conditions' => array(
+				'HouseholdMember.household_id' => $oldHouseholdId
+			)
+		));
+		foreach ($householdMembers as $householdMember) {
+			$this->HouseholdMember->id = $householdMember['HouseholdMember']['id'];
+			$successes[] = $this->HouseholdMember->saveField('household_id', $household);
+		}
 
 		$success = !in_array(false, $successes);
 		if ($success) {
