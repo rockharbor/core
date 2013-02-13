@@ -1,6 +1,29 @@
 <h1>Ministry Leader Dashboard</h1>
 <div class="content-box">
 	<p>Manage your ministries.</p>
+	<?php
+		echo $this->Form->create('Filter', array(
+			'class' => 'core-filter-form',
+			'url' => $this->here,
+		));
+		echo $this->Form->input('inactive', array(
+			'type' => 'checkbox',
+			'class' => 'toggle',
+			'div' => false
+		));
+		echo $this->Form->input('private', array(
+			'type' => 'checkbox',
+			'class' => 'toggle',
+			'div' => false
+		));
+		echo $this->Form->input('affiliated', array(
+			'type' => 'checkbox',
+			'class' => 'toggle',
+			'div' => false
+		));
+		echo $this->Js->submit('Filter');
+		echo $this->Form->end();
+	?>
 <?php
 	echo $this->MultiSelect->create();
 ?>

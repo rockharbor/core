@@ -25,12 +25,56 @@ class MinistryLeadersControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('ministry_leaders/dashboard/User:2');
 		$results = Set::extract('/Ministry/id', $vars['ministries']);
 		sort($results);
-		$this->assertEqual($results, array(4));
+		$this->assertEqual($results, array());
 
 		$this->loadFixtures('Role');
 		$vars = $this->testAction('ministry_leaders/dashboard/User:1');
 		$results = Set::extract('/Role/id', $vars['ministries']);
 		sort($results);
-		$this->assertEqual($results, array(1,2));
+		$expected = array();
+		$this->assertEqual($results, $expected);
+
+		$results = Set::extract('/Ministry/id', $vars['ministries']);
+		$expected = array();
+		$this->assertEqual($results, $expected);
+
+		$data = array(
+			'Filter' => array(
+				'inactive' => 1
+			)
+		);
+		$vars = $this->testAction('ministry_leaders/dashboard/User:1', array(
+			'data' => $data
+		));
+
+		$results = Set::extract('/Role/id', $vars['ministries']);
+		sort($results);
+		$expected = array(1, 2);
+		$this->assertEqual($results, $expected);
+
+		$results = Set::extract('/Ministry/id', $vars['ministries']);
+		$expected = array(4);
+		$this->assertEqual($results, $expected);
+
+		$data = array(
+			'Filter' => array(
+				'inactive' => 1,
+				'affiliated' => 1
+			)
+		);
+		$vars = $this->testAction('ministry_leaders/dashboard/User:1', array(
+			'data' => $data
+		));
+
+		$results = Set::extract('/Role/id', $vars['ministries']);
+		sort($results);
+		$expected = array(1, 2);
+		$this->assertEqual($results, $expected);
+
+		$results = Set::extract('/Ministry/id', $vars['ministries']);
+		sort($results);
+		$expected = array(4, 6);
+		$this->assertEqual($results, $expected);
+
 	}
 }
