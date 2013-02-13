@@ -518,10 +518,15 @@ class User extends AppModel {
 			// needed for creating household members
 			$data['User']['id'] = $this->id;
 
-			if (empty($creator)) {
-				$this->Profile->saveField('created_by', $this->id);
-				$this->Profile->saveField('created_by_type', $data['User']['group_id']);
+			$creatorId = $this->id;
+			$creatorGroup = $data['User']['group_id'];
+			if (!empty($creator)) {
+				$creatorId = $creator['User']['id'];
+				$creatorGroup = $creator['User']['group_id'];
 			}
+
+			$this->Profile->saveField('created_by', $creatorId);
+			$this->Profile->saveField('created_by_type', $creatorGroup);
 
 			// temporarily store userdata for the controller to access and notify them
 			$this->tmpAdded[] = array(
@@ -544,8 +549,8 @@ class User extends AppModel {
 					continue;
 				}
 				if (!isset($householdMember['User']['id'])) {
-					$householdMember['Profile']['created_by'] = $creator['User']['id'];
-					$householdMember['Profile']['created_by_type'] = $creator['User']['group_id'];
+					$householdMember['Profile']['created_by'] = $creatorId;
+					$householdMember['Profile']['created_by_type'] = $creatorGroup;
 
 					$this->create();
 					if ($this->saveAll($householdMember, array('validate' => false))) {

@@ -581,8 +581,25 @@ class UserTestCase extends CoreTestCase {
 		);
 		$this->assertTrue($this->User->createUser($user, null, $creator));
 		$this->assertEqual(count($this->User->tmpAdded), 1);
-		$user = $this->User->read('reset_password', $this->User->tmpAdded[0]['id']);
+
+		$user = $this->User->find('first', array(
+			'conditions' => array(
+				'User.id' => $this->User->tmpAdded[0]['id']
+			),
+			'contain' => array(
+				'Profile'
+			)
+		));
+
 		$this->assertTrue($user['User']['reset_password']);
+
+		$result = $user['Profile']['created_by'];
+		$expected = 10;
+		$this->assertEqual($result, $expected);
+
+		$result = $user['Profile']['created_by_type'];
+		$expected = 1;
+		$this->assertEqual($result, $expected);
 
 		$this->User->tmpAdded = $this->User->tmpInvited = array();
 		$user = array(
@@ -682,8 +699,25 @@ class UserTestCase extends CoreTestCase {
 		$this->assertEqual(count($this->User->tmpInvited), 1);
 		$user = $this->User->read('reset_password', $this->User->tmpAdded[0]['id']);
 		$this->assertTrue($user['User']['reset_password']);
-		$user = $this->User->read('reset_password', $this->User->tmpAdded[1]['id']);
+
+		$user = $this->User->find('first', array(
+			'conditions' => array(
+				'User.id' => $this->User->tmpAdded[1]['id']
+			),
+			'contain' => array(
+				'Profile'
+			)
+		));
 		$this->assertTrue($user['User']['reset_password']);
+
+		$result = $user['Profile']['created_by'];
+		$expected = 10;
+		$this->assertEqual($result, $expected);
+
+		$result = $user['Profile']['created_by_type'];
+		$expected = 1;
+		$this->assertEqual($result, $expected);
+
 		$addresses = $this->User->Address->find('all', array(
 			'conditions' => array(
 				'Address.foreign_key' => $this->User->tmpAdded[0]['id'],
