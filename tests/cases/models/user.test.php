@@ -419,6 +419,8 @@ class UserTestCase extends CoreTestCase {
 	}
 
 	function testHashPasswords() {
+		$md5Regexp = '/[a-f0-9]{32}/';
+
 		// as if sent by auth (login)
 		$this->User->data = array();
 		$data = array(
@@ -428,8 +430,7 @@ class UserTestCase extends CoreTestCase {
 		);
 		$data = $this->User->hashPasswords($data);
 		$result = $data['User']['password'];
-		$expected = '005b8f6046bb2039063d9dde0678f9f28ae38827';
-		$this->assertEqual($result, $expected);
+		$this->assertPattern($md5Regexp, $result);
 
 		// as if sent by edit but doesn't validate
 		$this->User->data = array();
@@ -453,8 +454,7 @@ class UserTestCase extends CoreTestCase {
 		);
 		$data = $this->User->hashPasswords(null, true);
 		$result = $data['User']['password'];
-		$expected = '005b8f6046bb2039063d9dde0678f9f28ae38827';
-		$this->assertEqual($result, $expected);
+		$this->assertPattern($md5Regexp, $result);
 	}
 
 	function testFindUser() {
