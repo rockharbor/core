@@ -31,7 +31,7 @@ class Core {
  * @var string
  * @access protected
  */
-	var $_version = '2.0.0';
+	public $_version = '2.0.0';
 
 /**
  * Loaded flag
@@ -40,21 +40,21 @@ class Core {
  *
  * @var boolean
  */
-	var $_loaded = false;
+	public $_loaded = false;
 
 /**
  * Stored settings
  *
  * @var array
  */
-	var $settings = array();
+	public $settings = array();
 
 /**
  * The Acl Component
  *
  * @var AclComponent
  */
-	var $Acl = null;
+	public $Acl = null;
 
 /**
  * Loads settings into config and stores them in cache
@@ -62,7 +62,7 @@ class Core {
  * @param boolean $force Force re-writing cache
  * @return void
  */
-	function loadSettings($force = false) {
+	public function loadSettings($force = false) {
 		$self =& Core::getInstance();
 
 		$settings = $self->_loadDbSettings($force);
@@ -78,7 +78,7 @@ class Core {
  *
  * @return Core class object
  */
-	function &getInstance() {
+	public function &getInstance() {
 		static $instance = array();
 		if (!$instance) {
 			$instance[0] =& new Core();
@@ -103,7 +103,7 @@ class Core {
  * @param string $var The key to read
  * @return mixed The setting value or all settings
  */
-	function read($var = '') {
+	public function read($var = '') {
 		$self =& Core::getInstance();
 		if ($var == 'version' || $var == '_version') {
 			return $self->_version;
@@ -135,7 +135,7 @@ class Core {
  * @return mixed The variable
  * @access protected
  */
-	function _write($key, $value) {
+	public function _write($key, $value) {
 		$self =& Core::getInstance();
 		$keys = explode('.', $key);
 		$keys = array_reverse($keys);
@@ -167,7 +167,7 @@ class Core {
  * @param boolean $force Force re-writing cache
  * @return array Array of app settings
  */
-	function _loadDbSettings($force = false) {
+	public function _loadDbSettings($force = false) {
 		App::import('Model', 'AppSetting');
 		$AppSetting = ClassRegistry::init('AppSetting');
 		if ($force) {
@@ -198,7 +198,7 @@ class Core {
 /**
  * Initializes the AclComponent
  */
-	function _initAcl() {
+	public function _initAcl() {
 		$self =& Core::getInstance();
 		if (!$self->Acl) {
 			App::import('Component', 'Acl');
@@ -213,7 +213,7 @@ class Core {
  * @param int $foreign_key The group id. Default is 8 (User)
  * @return boolean Success
  */
-	function addAco($action = null, $foreign_key = 8) {
+	public function addAco($action = null, $foreign_key = 8) {
 		if (!$action) {
 			return false;
 		}
@@ -251,7 +251,7 @@ class Core {
  * @param type $foreign_key The group id. Default is 8 (User)
  * @return boolean Success
  */
-	function removeAco($action = null, $foreign_key = 8) {
+	public function removeAco($action = null, $foreign_key = 8) {
 		$self =& Core::getInstance();
 		$model = 'Group';
 		if (stripos($action, 'controllers/') === false) {
@@ -277,7 +277,7 @@ class Core {
  *		the same action for main access vs conditional access will return proper
  *		results
  */
-	function acl($foreign_key = 8, $action = '/', $type = 'main') {
+	public function acl($foreign_key = 8, $action = '/', $type = 'main') {
 		$self =& Core::getInstance();
 		$model = 'Group';
 		if (stripos($action, 'controllers/') === false) {
@@ -315,7 +315,7 @@ class Core {
  * @param array $options Hook options
  * @return void
  */
-	function hook($url = array(), $area = null, $options = array()) {
+	public function hook($url = array(), $area = null, $options = array()) {
 		if (empty($url)) {
 			return;
 		}
@@ -350,7 +350,7 @@ class Core {
  * @param array $exclude Sub items to exclude
  * @return array The area's hooks
  */
-	function getHooks($area = null, $exclude = array()) {
+	public function getHooks($area = null, $exclude = array()) {
 		$area = trim($area, '.');
 		$self =& Core::getInstance();
 		$hooks = (array)$self->read('hooks.'.$area);
