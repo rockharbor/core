@@ -2,6 +2,7 @@
 
 App::import('Lib', 'CoreTestCase');
 App::import('Model', 'App');
+App::import('Component', 'ProxyFilterPagination');
 
 class CompletelyUnrelatedModel extends AppModel {
 	var $useTable = false;
@@ -86,7 +87,9 @@ class FilterPaginationTestCase extends CoreTestCase {
 		$this->Controller = new PaginateTestsController();
 		$this->Controller->__construct();
 		$this->Controller->constructClasses();
-		$this->Controller->Component->initialize($this->Controller);
+		$this->Controller->Component->init($this->Controller);
+		$this->Controller->FilterPagination = new ProxyFilterPaginationComponent($this->Controller);
+		$this->Controller->FilterPagination->Session = $this->Controller->Session;
 		$this->testController = $this->Controller;
 	}
 
@@ -140,7 +143,7 @@ class FilterPaginationTestCase extends CoreTestCase {
 
 	function testStartEmpty() {
 		// make it not start with an empty array
-		$this->Controller->FilterPagination->startEmpty = false;
+		$this->Controller->FilterPagination->startEmpty(false);
 		$vars = $this->testAction('/paginate_tests/');
 		$results = Set::extract('/PaginateTest/name', $vars['results']);
 		$expected = array(
@@ -151,7 +154,7 @@ class FilterPaginationTestCase extends CoreTestCase {
 
 		// simulate new page
 		$this->Controller->Session->delete('FilterPagination.PaginateTests_index');
-		$this->Controller->FilterPagination->startEmpty = false;
+		$this->Controller->FilterPagination->startEmpty(false);
 		$data = array('PaginateTest' => array('name' => 'CORE'));
 		$vars = $this->testAction('/paginate_tests/filter', array(
 			'data' => $data

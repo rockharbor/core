@@ -1,9 +1,9 @@
 <?php
 App::import('Lib', 'CoreTestCase');
 App::import('Model', array('Notification', 'Invitation'));
-App::import('Component', array('Notifier', 'QueueEmail.QueueEmail'));
+App::import('Component', array('ProxyNotifier', 'QueueEmail.QueueEmail'));
 
-Mock::generatePartial('NotifierComponent', 'MockNotifierNotifierComponent', array('_render'));
+Mock::generatePartial('ProxyNotifierComponent', 'MockNotifierNotifierComponent', array('_render'));
 Mock::generatePartial('QueueEmailComponent', 'MockQueueEmailComponent', array('__smtp', '__mail'));
 
 class TestNotifierController extends Controller {

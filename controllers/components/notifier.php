@@ -31,14 +31,14 @@ class NotifierComponent extends Object {
  *
  * @var array
  */
-	var $components = array('QueueEmail.QueueEmail');
+	public $components = array('QueueEmail.QueueEmail');
 
 /**
  * Whether or not the component is enabled
  *
  * @var boolean
  */
-	var $enabled = true;
+	public $enabled = true;
 
 /**
  * Initialize component
@@ -47,7 +47,7 @@ class NotifierComponent extends Object {
  * @param array $settings Default settings
  * @access public
  */
-	function initialize(&$controller, $settings = array()) {
+	public function initialize(&$controller, $settings = array()) {
 		$this->Config = new EmailConfig();
 		$this->Controller =& $controller;
 		$this->User = ClassRegistry::init('User');
@@ -70,7 +70,7 @@ class NotifierComponent extends Object {
  * @return boolean Success
  * @access public
  */
-	function notify($options = array(), $type = 'both') {
+	public function notify($options = array(), $type = 'both') {
 		if (!$this->enabled || !isset($options['to'])) {
 			return false;
 		}
@@ -112,7 +112,7 @@ class NotifierComponent extends Object {
  * @param array $options Array of options
  * @return boolean Success
  */
-	function invite($options = array()) {
+	public function invite($options = array()) {
 		$_defaults = array(
 			'to' => false,
 			'confirm' => false,
@@ -167,7 +167,7 @@ class NotifierComponent extends Object {
  * @return boolean Success
  * @access protected
  */
-	function _send($user, $options = array()) {
+	protected function _send($user, $options = array()) {
 		$_originalView = $this->QueueEmail->Controller->view;
 		$this->QueueEmail->Controller->view = 'Email';
 
@@ -268,7 +268,7 @@ class NotifierComponent extends Object {
  * @return boolean Success
  * @access private
  */
-	function _save($user, $options = array()) {
+	protected function _save($user, $options = array()) {
 		extract($options);
 
 		$content = $this->_render($template);
@@ -293,7 +293,7 @@ class NotifierComponent extends Object {
  * @return string Rendered content
  * @access private
  */
-	function _render($template) {
+	protected function _render($template) {
 		$View = new View($this->Controller, false);
 		$View->layout = 'notification';
 		list($plugin, $template) = pluginSplit($template);
@@ -309,7 +309,7 @@ class NotifierComponent extends Object {
  * the proper keys
  * @return array Array containing user 'name' and 'primary_email' values
  */
-	function _normalizeUser($user = null) {
+	protected function _normalizeUser($user = null) {
 		if ($user === null) {
 			$user = array(
 				'Profile' => array(

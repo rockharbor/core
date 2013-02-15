@@ -30,7 +30,7 @@ class FilterPaginationComponent extends Object {
  * @var object
  * @access public
  */
-	var $controller = null;
+	protected $controller = null;
 
 /**
  * Components the FilterPaginationComponent uses
@@ -38,7 +38,7 @@ class FilterPaginationComponent extends Object {
  * @var array
  * @access public
  */
-	var $components = array('Session');
+	public $components = array('Session');
 
 /**
  * If true, an empty array will be returned if no pagination data is present.
@@ -48,7 +48,14 @@ class FilterPaginationComponent extends Object {
  *
  * @var boolean
  */
-	var $startEmpty = true;
+	protected $startEmpty = true;
+
+/**
+ * Component enabled
+ *
+ * @var boolean
+ */
+	public $enabled = true;
 
 /**
  * Start FilterPaginationComponent for use in the controller
@@ -56,7 +63,7 @@ class FilterPaginationComponent extends Object {
  * @param object $controller A reference to the controller
  * @access public
  */
-	function initialize(&$controller, $settings = array()) {
+	public function initialize(&$controller, $settings = array()) {
 		$this->controller =& $controller;
 		$this->_set($settings);
 	}
@@ -67,7 +74,7 @@ class FilterPaginationComponent extends Object {
  *
  * @return void
  */
-	function startup() {
+	public function startup() {
 		// remove data if it's a new request
 		$key = $this->_key();
 		if (!isset($this->controller->params['named']['page'])) {
@@ -91,7 +98,7 @@ class FilterPaginationComponent extends Object {
  * @access public
  * @see Controller::paginate()
  */
-	function paginate($model = null) {
+	public function paginate($model = null) {
 		if (!$model) {
 			$model = $this->controller->modelClass;
 		}
@@ -124,7 +131,7 @@ class FilterPaginationComponent extends Object {
  * @param array $linked
  * @see LinkableBehavior
  */
-	function _attachLinkedModels(&$Model, $linked) {
+	protected function _attachLinkedModels(&$Model, $linked) {
 		$keys = ClassRegistry::keys();
 		$linked = Set::normalize($linked);
 		foreach ($linked as $_model => $attrs) {
@@ -144,7 +151,7 @@ class FilterPaginationComponent extends Object {
  *
  * @return string
  */
-	function _key() {
+	protected function _key() {
 		return 'FilterPagination.'.$this->controller->name.'_'.$this->controller->params['action'];
 	}
 

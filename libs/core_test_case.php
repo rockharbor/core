@@ -9,6 +9,13 @@
  */
 
 /**
+ * Add proxy class paths
+ */
+App::build(array(
+	'components' => array(TESTS . 'proxies' . DS . 'components' . DS)
+));
+
+/**
  * Includes
  */
 App::import('Component', 'Acl');
