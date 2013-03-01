@@ -25,9 +25,6 @@
 [submodule "plugins/asset_compress"]
 	path = plugins/asset_compress
 	url = https://github.com/jeremyharris/asset_compress.git
-[submodule "plugins/named_scope"]
-	path = plugins/named_scope
-	url = https://github.com/joelmoss/cakephp-namedscope.git
 [submodule "plugins/multi_select"]
 	path = plugins/multi_select
 	url = https://github.com/jeremyharris/multi_select.git

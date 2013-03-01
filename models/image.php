@@ -51,17 +51,6 @@ class Image extends AppModel {
 		'Media.Coupler' => array(
 			'baseDirectory' => MEDIA_TRANSFER
 		),
-		'NamedScope.NamedScope' => array(
-			'promoted' => array(
-				'conditions' => array(
-					'promoted' => true,
-					'approved' => true,
-					'group' => 'Image',
-					'model' => array('Involvement', 'Ministry')
-				),
-				'limit' => 2
-			)
-		),
 		'Logable'
 	);
 
