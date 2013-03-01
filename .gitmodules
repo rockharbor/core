@@ -7,9 +7,6 @@
 [submodule "plugins/media"]
 	path = plugins/media
 	url = https://github.com/davidpersson/media.git
-[submodule "plugins/api_generator"]
-	path = plugins/api_generator
-	url = https://github.com/cakephp/api_generator.git
 [submodule "plugins/search"]
 	path = plugins/search
 	url = https://github.com/CakeDC/search.git
