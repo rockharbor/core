@@ -28,7 +28,6 @@ class FilterPaginationComponent extends Object {
  * A stored reference to the calling controller
  *
  * @var object
- * @access public
  */
 	protected $controller = null;
 
@@ -36,7 +35,6 @@ class FilterPaginationComponent extends Object {
  * Components the FilterPaginationComponent uses
  *
  * @var array
- * @access public
  */
 	public $components = array('Session');
 
@@ -48,7 +46,7 @@ class FilterPaginationComponent extends Object {
  *
  * @var boolean
  */
-	protected $startEmpty = true;
+	public $startEmpty = true;
 
 /**
  * Component enabled
@@ -61,7 +59,6 @@ class FilterPaginationComponent extends Object {
  * Start FilterPaginationComponent for use in the controller
  *
  * @param object $controller A reference to the controller
- * @access public
  */
 	public function initialize(&$controller, $settings = array()) {
 		$this->controller =& $controller;
@@ -95,7 +92,6 @@ class FilterPaginationComponent extends Object {
  *
  * @param string $model Model to paginate
  * @return array Cake results
- * @access public
  * @see Controller::paginate()
  */
 	public function paginate($model = null) {

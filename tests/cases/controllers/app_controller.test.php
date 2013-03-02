@@ -1,6 +1,6 @@
 <?php
 App::import('Lib', 'CoreTestCase');
-App::import('Controller', 'App');
+App::import('Controller', 'ProxyApp');
 App::import('Component', 'MultiSelect.MultiSelect');
 
 class AppControllerTestCase extends CoreTestCase {
@@ -9,7 +9,7 @@ class AppControllerTestCase extends CoreTestCase {
 		parent::startTest($method);
 		$this->loadFixtures('User', 'Group', 'Notification', 'Alert', 'Household', 'HouseholdMember');
 		$this->loadFixtures('Leader', 'Campus', 'Ministry', 'Involvement');
-		$this->App =& new AppController();
+		$this->App =& new ProxyAppController();
 		$this->App->__construct();
 		$this->App->constructClasses();
 		$this->App->activeUser = array(
@@ -27,7 +27,7 @@ class AppControllerTestCase extends CoreTestCase {
 	function testExtractIds() {
 		$this->loadFixtures('Profile');
 
-		Mock::generatePartial('AppController', 'ExtractIdsAppController', array('isAuthorized', 'render', 'redirect', '_stop', 'header', 'cakeError'));
+		Mock::generatePartial('ProxyAppController', 'ExtractIdsAppController', array('isAuthorized', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 		$Controller = new ExtractIdsAppController();
 		$Controller->__construct();
 		$Controller->modelClass = 'User';

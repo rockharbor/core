@@ -21,14 +21,14 @@ class RolesController extends AppController {
  *
  * @var string
  */
-	var $name = 'Roles';
+	public $name = 'Roles';
 
 /**
  * Helpers
  *
  * @var array
  */
-	var $helpers = array(
+	public $helpers = array(
 		'Formatting'
 	);
 
@@ -36,10 +36,8 @@ class RolesController extends AppController {
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 	}
 
@@ -48,7 +46,7 @@ class RolesController extends AppController {
  *
  * Note: Only shows roles of this ministry
  */
-	function index() {
+	public function index() {
 		$this->Role->recursive = -1;
 
 		$this->paginate = array(
@@ -63,7 +61,7 @@ class RolesController extends AppController {
 /**
  * Adds a role to a ministry
  */
-	function add() {
+	public function add() {
 		if (!empty($this->data)) {
 			$this->Role->create();
 			if ($this->Role->save($this->data)) {
@@ -78,7 +76,7 @@ class RolesController extends AppController {
 /**
  * Edits a role
  */
-	function edit($id) {
+	public function edit($id) {
 		if (!$id && empty($this->data)) {
 			$this->cakeError('error404');
 		}
@@ -99,7 +97,7 @@ class RolesController extends AppController {
  *
  * @param integer $id The id of the model
  */
-	function delete($id = null) {
+	public function delete($id = null) {
 		if (!$id) {
 			$this->cakeError('error404');
 		}

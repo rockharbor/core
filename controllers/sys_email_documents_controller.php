@@ -26,16 +26,14 @@ class SysEmailDocumentsController extends DocumentsController {
  *
  * @var string
  */
-	var $model = 'SysEmail';
+	public $model = 'SysEmail';
 
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->modelId = isset($this->passedArgs[$this->model]) ? $this->passedArgs[$this->model] : null;
 	}

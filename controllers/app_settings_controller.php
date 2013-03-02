@@ -37,21 +37,21 @@ class AppSettingsController extends AppController {
  *
  * @var string
  */
-	var $name = 'AppSettings';
+	public $name = 'AppSettings';
 
 /**
  * Additional helpers for this controller
  *
  * @var array
  */
-	var $helpers = array('Formatting');
+	public $helpers = array('Formatting');
 
 /**
  * List of types that shouldn't be considered models
  *
  * @var array
  */
-	var $_reservedTypes = array(
+	protected $_reservedTypes = array(
 		'list', 'string', 'html', 'integer', 'image', 'plugin'
 	);
 
@@ -59,17 +59,15 @@ class AppSettingsController extends AppController {
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 	}
 
 /**
  * Shows a list of AppSettings
  */
-	function index() {
+	public function index() {
 		$this->paginate = array(
 			'order' => 'name ASC'
 		);
@@ -104,7 +102,7 @@ class AppSettingsController extends AppController {
  *
  * @param integer $id The id of the AppSetting
  */
-	function edit($id = null) {
+	public function edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->cakeError('error404');
 		}
@@ -150,7 +148,7 @@ class AppSettingsController extends AppController {
  *
  * @param string $model The model
  */
-	function search($model = null) {
+	public function search($model = null) {
 		if (!$model || empty($this->data)) {
 			return;
 		}

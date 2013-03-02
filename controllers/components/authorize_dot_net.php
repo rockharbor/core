@@ -36,7 +36,6 @@ class AuthorizeDotNetComponent extends Object {
  * Data to send to authorize.net
  *
  * @var array
- * @access protected
  */
 	protected $_data = array();
 
@@ -77,7 +76,6 @@ class AuthorizeDotNetComponent extends Object {
  * Sets customer data
  *
  * @param array $customer
- * @access public
  */
 	public function setCustomer($customer = array()) {
 		if (empty($customer)) {

@@ -28,16 +28,14 @@ class MinistryImagesController extends ImagesController {
  *
  * @var string
  */
-	var $model = 'Ministry';
+	public $model = 'Ministry';
 
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->modelId = isset($this->passedArgs[$this->model]) ? $this->passedArgs[$this->model] : null;
 	}

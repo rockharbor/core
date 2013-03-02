@@ -22,23 +22,21 @@ class CommentsController extends AppController {
  *
  * @var string
  */
-	var $name = 'Comments';
+	public $name = 'Comments';
 
 /**
  * Extra helpers for this controller
  *
  * @var array
  */
-	var $helpers = array('Formatting');
+	public $helpers = array('Formatting');
 
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 		// only creators of the comment can edit/delete (unless they have ACL permission)
 		if (in_array($this->action, array('edit', 'delete'))) {
@@ -54,7 +52,7 @@ class CommentsController extends AppController {
 /**
  * Shows a list of comments for a user
  */
-	function index() {
+	public function index() {
 		$viewUser = $this->passedArgs['User'];
 
 		$groups = $this->Comment->Group->findGroups($this->activeUser['Group']['id']);
@@ -86,7 +84,7 @@ class CommentsController extends AppController {
 /**
  * Adds a comment
  */
-	function add() {
+	public function add() {
 		$viewUser = $this->passedArgs['User'];
 
 		if (!empty($this->data)) {
@@ -110,7 +108,7 @@ class CommentsController extends AppController {
 /**
  * Edits a comment
  */
-	function edit() {
+	public function edit() {
 		$id = $this->passedArgs['Comment'];
 		$viewUser = $this->passedArgs['User'];
 
@@ -140,7 +138,7 @@ class CommentsController extends AppController {
 /**
  * Deletes a comment
  */
-	function delete() {
+	public function delete() {
 		$viewUser = $this->passedArgs['User'];
 		$id = $this->passedArgs['Comment'];
 

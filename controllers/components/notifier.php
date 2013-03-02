@@ -45,7 +45,6 @@ class NotifierComponent extends Object {
  *
  * @param object $controller Instantiating controller
  * @param array $settings Default settings
- * @access public
  */
 	public function initialize(&$controller, $settings = array()) {
 		$this->Config = new EmailConfig();
@@ -68,7 +67,6 @@ class NotifierComponent extends Object {
  * @param array $options Array of options
  * @param string $type The type of notification to send (notification, email, both)
  * @return boolean Success
- * @access public
  */
 	public function notify($options = array(), $type = 'both') {
 		if (!$this->enabled || !isset($options['to'])) {
@@ -165,7 +163,6 @@ class NotifierComponent extends Object {
  * @param array $user The user and profile information to send to
  * @param array $options Array of options
  * @return boolean Success
- * @access protected
  */
 	protected function _send($user, $options = array()) {
 		$_originalView = $this->QueueEmail->Controller->view;
@@ -266,7 +263,6 @@ class NotifierComponent extends Object {
  * @param array $user The user and profile information to notify
  * @param array $options Array of options
  * @return boolean Success
- * @access private
  */
 	protected function _save($user, $options = array()) {
 		extract($options);
@@ -291,7 +287,6 @@ class NotifierComponent extends Object {
  *
  * @param string $template The template to render
  * @return string Rendered content
- * @access private
  */
 	protected function _render($template) {
 		$View = new View($this->Controller, false);

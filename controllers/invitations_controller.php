@@ -21,16 +21,14 @@ class InvitationsController extends AppController {
  *
  * @var string
  */
-	var $name = 'Invitations';
+	public $name = 'Invitations';
 
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		$this->_editSelf('index', 'confirm');
 		parent::beforeFilter();
 	}
@@ -38,7 +36,7 @@ class InvitationsController extends AppController {
 /**
  * Views a list of invitations
  */
-	function index() {
+	public function index() {
 		$this->paginate = array(
 			'conditions' => array(
 				'Invitation.id' => $this->Invitation->getInvitations($this->activeUser['User']['id'])
@@ -56,7 +54,7 @@ class InvitationsController extends AppController {
  * @param int $id The invitation id
  * @param boolean $confirm Whether to confirm or deny
  */
-	function confirm($id = null, $confirm = 0) {
+	public function confirm($id = null, $confirm = 0) {
 		$action = $confirm ? 'confirm' : 'deny';
 
 		if (!$id) {

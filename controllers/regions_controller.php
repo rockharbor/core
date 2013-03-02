@@ -26,23 +26,21 @@ class RegionsController extends SimpleCrudsController {
  *
  * @var string
  */
-	var $name = 'Regions';
+	public $name = 'Regions';
 
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 	}
 
 /**
  * Shows a list of regions
  */
-	function index() {
+	public function index() {
 		$this->viewPath = 'regions';
 
 		$this->Region->recursive = 1;

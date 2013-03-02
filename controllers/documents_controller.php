@@ -26,30 +26,28 @@ class DocumentsController extends AttachmentsController {
  *
  * @var string
  */
-	var $name = 'Documents';
+	public $name = 'Documents';
 
 /**
  * The name of the model this Address belongs to. Used for Acl
  *
  * @var string
  */
-	var $model = null;
+	public $model = null;
 
 /**
  * The id of the model this Address belongs to. Used for Acl
  *
  * @var integer
  */
-	var $modelId = null;
+	public $modelId = null;
 
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 	}
 

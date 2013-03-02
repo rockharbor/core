@@ -21,30 +21,28 @@ class NotificationsController extends AppController {
  *
  * @var string
  */
-	var $name = 'Notifications';
+	public $name = 'Notifications';
 
 /**
  * Extra components for this controller
  *
  * @var array
  */
-	var $components = array('MultiSelect.MultiSelect');
+	public $components = array('MultiSelect.MultiSelect');
 
 /**
  * Extra helpers for this controller
  *
  * @var array
  */
-	var $helpers = array('MultiSelect.MultiSelect');
+	public $helpers = array('MultiSelect.MultiSelect');
 
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		$this->_editSelf('quick', 'index');
 		parent::beforeFilter();
 	}
@@ -52,7 +50,7 @@ class NotificationsController extends AppController {
 /**
  * Gets a list of notifications (specifically for the menu)
  */
-	function quick() {
+	public function quick() {
 		// get alerts
 		$Alert = ClassRegistry::init('Alert');
 		$unread = $Alert->getUnreadAlerts($this->activeUser['User']['id'], $this->activeUser['Group']['id'], false);
@@ -100,7 +98,7 @@ class NotificationsController extends AppController {
 /**
  * Views a list of notifications
  */
-	function index() {
+	public function index() {
 		$this->paginate = array(
 			'conditions' => array(
 				'Notification.user_id' => $this->activeUser['User']['id']
@@ -119,7 +117,7 @@ class NotificationsController extends AppController {
  * @param integer $id The notification id
  * @param boolean $read 1 for `read`, 0 for `unread`
  */
-	function read($id = null, $read = 1) {
+	public function read($id = null, $read = 1) {
 		if ($id) {
 			$ids = array($id);
 		} else {
@@ -147,7 +145,7 @@ class NotificationsController extends AppController {
  *
  * @param integer $id The notification id
  */
-	function delete($id = null) {
+	public function delete($id = null) {
 		// check to see if this is a MultiSelect
 		if ($id) {
 			$ids = array($id);

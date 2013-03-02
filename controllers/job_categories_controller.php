@@ -26,16 +26,14 @@ class JobCategoriesController extends SimpleCrudsController {
  *
  * @var string
  */
-	var $name = 'JobCategories';
+	public $name = 'JobCategories';
 
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 	}
 

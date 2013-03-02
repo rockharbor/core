@@ -2,25 +2,16 @@
 /* Payments Test cases generated on: 2010-07-16 08:07:32 : 1279295912 */
 App::import('Lib', 'CoreTestCase');
 App::import('Component', array('QueueEmail.QueueEmail'));
-App::import('Controller', 'UserImages');
+App::import('Controller', 'ProxyUserImages');
 
 Mock::generatePartial('QueueEmailComponent', 'MockAttachmentsQueueEmailComponent', array('_smtp', '_mail'));
-Mock::generatePartial('UserImagesController', 'MockUserImagesController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
-
-/**
- * Proxy class for accessing protected methods
- */
-class AttachmentsControllerTestAttachmentsController extends MockUserImagesController {
-	public function _getLimit($model = null, $modelClass = null) {
-		return parent::_getLimit($model, $modelClass);
-	}
-}
+Mock::generatePartial('ProxyUserImagesController', 'MockProxyUserImagesController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 
 class AttachmentsControllerTestCase extends CoreTestCase {
 
 	function startTest($method) {
 		parent::startTest($method);
-		$this->Attachments =& new MockUserImagesController();
+		$this->Attachments =& new MockProxyUserImagesController();
 		$this->Attachments->__construct();
 		$this->Attachments->constructClasses();
 		$this->Attachments->Notifier->QueueEmail = new MockAttachmentsQueueEmailComponent();
@@ -38,7 +29,9 @@ class AttachmentsControllerTestCase extends CoreTestCase {
 	}
 
 	function testGetLimit() {
-		$controller = new AttachmentsControllerTestAttachmentsController();
+		$this->loadSettings();
+
+		$controller = new MockProxyUserImagesController();
 
 		$result = $controller->_getLimit();
 		$expected = 1;
@@ -51,6 +44,8 @@ class AttachmentsControllerTestCase extends CoreTestCase {
 		$result = $controller->_getLimit('SysEmail', 'Document');
 		$expected = 2;
 		$this->assertEqual($result, $expected);
+
+		$this->unloadSettings();
 	}
 
 	function testBeforeFilter() {
