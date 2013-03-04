@@ -274,6 +274,8 @@ class UsersController extends AppController {
 			$this->Session->setFlash('Try searching on something more specific to you.', 'flash'.DS.'success');
 			$this->here = str_replace('skip_check', 'skipped', $this->here);
 		}
+
+		$this->set('title_for_layout', 'Trouble logging in?');
 	}
 
 /**
