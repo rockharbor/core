@@ -49,13 +49,6 @@ class Ministry extends AppModel {
 		),
 		'Search.Searchable',
 		'Linkable.AdvancedLinkable',
-		'NamedScope.NamedScope' => array(
-			'active' => array(
-				'conditions' => array(
-					'active' => true
-				)
-			)
-		),
 		'Logable'
 	);
 

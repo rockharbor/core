@@ -3,6 +3,7 @@
 if (!isset($password)) {
 ?>
 <p>Try entering your username (if you remember), or one of the emails you have entered into <?php echo Core::read('general.site_name'); ?>.
+If you have an existing account, <?php echo Core::read('general.site_name'); ?> will send you your password.</p>
 <?php
 	echo $this->Form->create('User', array(
 		'default' => false,
