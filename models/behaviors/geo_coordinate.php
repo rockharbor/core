@@ -78,7 +78,7 @@ class GeoCoordinateBehavior extends ModelBehavior {
  *
  * @param object $Model Model reference
  */
-	function setup(&$Model) {
+	public function setup(&$Model) {
 		$this->connection = new HttpSocket();
 	}
 
@@ -87,7 +87,7 @@ class GeoCoordinateBehavior extends ModelBehavior {
  *
  * @param object $Model Model reference
  */
-	function beforeSave(&$Model) {
+	public function beforeSave(&$Model) {
 		if (isset($Model->data[$Model->alias]['address_line_1']) && !empty($Model->data[$Model->alias]['address_line_1']) &&
 			isset($Model->data[$Model->alias]['city']) && !empty($Model->data[$Model->alias]['city']) &&
 			isset($Model->data[$Model->alias]['state']) && !empty($Model->data[$Model->alias]['state']) &&
@@ -115,7 +115,7 @@ class GeoCoordinateBehavior extends ModelBehavior {
  * @return array Lat and lng
  * @access public
  */
-	function geoCoordinates(&$Model, $q = '') {
+	public function geoCoordinates(&$Model, $q = '') {
 		// get geo coords
 		return $this->_geocoords($q, $this->settings);
 	}
