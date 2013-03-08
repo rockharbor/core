@@ -310,7 +310,8 @@ class CoreTestCase extends CakeTestCase {
 				'id' => 1,
 				'username' => 'testadmin',
 				'password' => Security::hash('password', null, true),
-				'reset_password' => false
+				'reset_password' => false,
+				'group_id' => 1
 			),
 			'Group' => array(
 				'id' => 1,

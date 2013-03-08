@@ -42,10 +42,6 @@ class InstallShell extends Shell {
 			$this->out('ERROR: Schema shell missing.');
 			$this->_stop();
 		}
-		if (App::import('Shell', 'ApiGenerator.ApiIndex') == false) {
-			$this->out('ERROR: Missing api_generator plugin.');
-			$this->_stop();
-		}
 
 		$this->SchemaShell = new SchemaShell($this->Dispatch);
 		$this->SchemaShell->startup();
@@ -166,11 +162,6 @@ class InstallShell extends Shell {
 		}
 
 		$this->update();
-
-		// create api indices
-		$ApiIndex = new ApiIndexShell($this->Dispatch);
-		$ApiIndex->startup();
-		$ApiIndex->update();
 
 		$this->out('Complete!');
 	}
@@ -404,7 +395,6 @@ class InstallShell extends Shell {
 			'controllers'
 		),
 		'Administrator' => array(
-			'controllers/ApiGenerator/ApiClasses/view_source',
 			'controllers/Campuses/delete',
 			'controllers/Involvements/delete',
 			'controllers/Logs',
@@ -529,10 +519,6 @@ class InstallShell extends Shell {
 			'controllers/Users/add'
 		),
 		'Developer' => array(
-			'controllers/ApiGenerator/ApiClasses/index',
-			'controllers/ApiGenerator/ApiClasses/classes',
-			'controllers/ApiGenerator/ApiClasses/view_class',
-			'controllers/ApiGenerator/ApiClasses/search',
 			'controllers/SysEmails/bug_compose'
 		),
 		'User' => array(

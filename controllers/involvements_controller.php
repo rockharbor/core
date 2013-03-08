@@ -401,8 +401,14 @@ class InvolvementsController extends AppController {
 			}
 		}
 
-		$this->set('ministries', $this->Involvement->Ministry->active('list'));
-		$this->set('displayMinistries', array($this->Involvement->Ministry->active('list')));
+		$options = array(
+			'conditions' => array(
+				'active' => true
+			)
+		);
+
+		$this->set('ministries', $this->Involvement->Ministry->find('list', $options));
+		$this->set('displayMinistries', array($this->Involvement->Ministry->find('list', $options)));
 		$this->set('involvementTypes', $this->Involvement->InvolvementType->find('list'));
 		$this->set('defaultStatuses', $this->Involvement->DefaultStatus->find('list'));
 	}
@@ -429,8 +435,14 @@ class InvolvementsController extends AppController {
 			$this->data = $this->Involvement->read(null, $id);
 		}
 
-		$this->set('ministries', $this->Involvement->Ministry->active('list'));
-		$this->set('displayMinistries', array($this->Involvement->Ministry->active('list')));
+		$options = array(
+			'conditions' => array(
+				'active' => true
+			)
+		);
+
+		$this->set('ministries', $this->Involvement->Ministry->find('list', $options));
+		$this->set('displayMinistries', array($this->Involvement->Ministry->find('list', $options)));
 		$this->set('involvementTypes', $this->Involvement->InvolvementType->find('list'));
 		$this->set('defaultStatuses', $this->Involvement->DefaultStatus->find('list'));
 	}
