@@ -91,7 +91,7 @@ class AuthPanel extends DebugPanel {
  */
 	function _logAccess($controller) {
 		$groupId = $controller->activeUser['Group']['id'];
-		$controller->_setConditionalGroups();
+		$controller->isAuthorized();
 		$authHistory = $controller->Session->read('CoreDebugPanels.authHistory');
 		$action = $controller->Auth->action();
 
