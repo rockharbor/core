@@ -4,17 +4,17 @@ App::import('Model', 'Role');
 
 class RoleTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->Role =& ClassRegistry::init('Role');
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->Role);
 		ClassRegistry::flush();
 	}
 
-	function testGetRoles() {
+	public function testGetRoles() {
 		$this->loadFixtures('Role', 'Ministry');
 
 		$results = $this->Role->findRoles();

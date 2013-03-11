@@ -1,9 +1,9 @@
 <?php
 /* Classification Fixture generated on: 2010-06-28 09:06:26 : 1277741126 */
 class ClassificationFixture extends CakeTestFixture {
-	var $name = 'Classification';
+	public $name = 'Classification';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 45),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
@@ -12,7 +12,7 @@ class ClassificationFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 1,
 			'name' => 'I\'m A Weekend Attender',

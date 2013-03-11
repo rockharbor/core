@@ -21,21 +21,21 @@ class LeadersController extends AppController {
  *
  * @var string
  */
-	var $name = 'Leaders';
+	public $name = 'Leaders';
 
 /**
  * Extra helpers for this controller
  *
  * @var array
  */
-	var $helpers = array('Formatting', 'MultiSelect.MultiSelect');
+	public $helpers = array('Formatting', 'MultiSelect.MultiSelect');
 
 /**
  * Extra components for this controller
  *
  * @var array
  */
-	var $components = array(
+	public $components = array(
 		'MultiSelect.MultiSelect',
 		'FilterPagination' => array(
 			'startEmpty' => false
@@ -46,10 +46,8 @@ class LeadersController extends AppController {
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->_editSelf('dashboard');
 	}
@@ -57,7 +55,7 @@ class LeadersController extends AppController {
 /**
  * A list of leaders
  */
-	function index() {
+	public function index() {
 		$this->paginate = array(
 			'conditions' => array(
 				'model' => $this->model,
@@ -77,7 +75,7 @@ class LeadersController extends AppController {
 /**
  * A list of Involvements, Ministries or Campuses a user is a leader for
  */
-	function dashboard() {
+	public function dashboard() {
 
 	}
 
@@ -86,7 +84,7 @@ class LeadersController extends AppController {
  *
  * @todo check if they already exists and if they're allowed to lead
  */
-	function add() {
+	public function add() {
 		$userIds = $this->_extractIds();
 
 		$model = $this->passedArgs['model'];
@@ -150,7 +148,7 @@ class LeadersController extends AppController {
  *
  * @todo check if leader exists
  */
-	function delete() {
+	public function delete() {
 		if (!$this->model || !$this->modelId || !isset($this->passedArgs['User'])) {
 			$this->Session->setFlash('Invalid id for leader', 'flash'.DS.'failure');
 			$this->redirect(array('action'=>'index'));

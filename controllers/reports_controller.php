@@ -21,21 +21,21 @@ class ReportsController extends AppController {
  *
  * @var string
  */
-	var $name = 'Reports';
+	public $name = 'Reports';
 
 /**
  * List of models this controller uses
  *
  * @var string
  */
-	var $uses = array('User', 'Roster', 'Ministry', 'Involvement', 'Campus', 'Payment');
+	public $uses = array('User', 'Roster', 'Ministry', 'Involvement', 'Campus', 'Payment');
 
 /**
  * Extra helpers for this controller
  *
  * @var array
  */
-	var $helpers = array(
+	public $helpers = array(
 		'GoogleMap',
 		'Media.Media',
 		'Report',
@@ -49,7 +49,7 @@ class ReportsController extends AppController {
  *
  * @var array
  */
-	var $components = array(
+	public $components = array(
 		'MultiSelect.MultiSelect',
 		'FilterPagination'
 	);
@@ -58,17 +58,15 @@ class ReportsController extends AppController {
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 	}
 
 /**
  * Reports home page
  */
-	function index() {
+	public function index() {
 		$campuses = $this->Campus->find('list');
 		$ministries = $this->Ministry->generatetreelist();
 
@@ -188,7 +186,7 @@ class ReportsController extends AppController {
 /**
  * Payments report
  */
-	function payments() {
+	public function payments() {
 		$campuses = $this->Campus->find('list');
 		$ministries = $this->Ministry->generatetreelist();
 		$paymentTypes = $this->Payment->PaymentType->find('all');
@@ -304,7 +302,7 @@ class ReportsController extends AppController {
  * @param string $uid The MultiSelect cache key to get results from
  * @see MultiSelectComponent::getSearch();
  */
-	function export($model) {
+	public function export($model) {
 		// persist selected items through POST requests
 		$this->here .= '/mspersist:1';
 
@@ -350,7 +348,7 @@ class ReportsController extends AppController {
  *
  * @param string $involvementId The name of the model to search
  */
-	function involvement_map() {
+	public function involvement_map() {
 		if (!isset($this->passedArgs['Involvement'])) {
 			$this->cakeError('error404');
 		}
@@ -380,7 +378,7 @@ class ReportsController extends AppController {
  * @param string $model The name of the model to search (User or related model)
  * @param string $uid The multi-select id
  */
-	function user_map($model = 'User', $uid = null) {
+	public function user_map($model = 'User', $uid = null) {
 		$search = $this->MultiSelect->getSearch($uid);
 		$selected = $this->MultiSelect->getSelected($uid);
 

@@ -1,9 +1,9 @@
 <?php
 App::import('Lib', 'CoreTestCase');
 App::import('Model', array('Notification', 'Invitation'));
-App::import('Component', array('Notifier', 'QueueEmail.QueueEmail'));
+App::import('Component', array('ProxyNotifier', 'QueueEmail.QueueEmail'));
 
-Mock::generatePartial('NotifierComponent', 'MockNotifierNotifierComponent', array('_render'));
+Mock::generatePartial('ProxyNotifierComponent', 'MockNotifierNotifierComponent', array('_render'));
 Mock::generatePartial('QueueEmailComponent', 'MockQueueEmailComponent', array('__smtp', '__mail'));
 
 class TestNotifierController extends Controller {
@@ -19,7 +19,7 @@ class TestNotifierController extends Controller {
 
 class NotifierTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Notification', 'User', 'Profile', 'SysEmail');
 		$this->loadSettings();
@@ -32,7 +32,7 @@ class NotifierTestCase extends CoreTestCase {
 		$this->Notifier->QueueEmail->initialize($this->Controller, array());
 	}
 
-	function endTest() {
+	public function endTest() {
 		$this->unloadSettings();
 		unset($this->Notifier);
 		unset($this->Notification);
@@ -40,7 +40,7 @@ class NotifierTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 
-	function testEmailConfigStandard() {
+	public function testEmailConfigStandard() {
 		$config = new EmailConfig();
 		$config->default = array(
 			'transport' => 'Mail'
@@ -73,7 +73,7 @@ class NotifierTestCase extends CoreTestCase {
 		$this->assertEqual($countAfter-$countBefore, 1);
 	}
 
-	function testEmailConfigSmtp() {
+	public function testEmailConfigSmtp() {
 		$config = new EmailConfig();
 		$config->debug = array(
 			'transport' => 'Smtp',
@@ -128,7 +128,7 @@ class NotifierTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testNoQueue() {
+	public function testNoQueue() {
 		$this->Notifier->QueueEmail->setReturnValue('__smtp', true);
 		$this->Notifier->QueueEmail->expectOnce('__smtp');
 
@@ -153,7 +153,7 @@ class NotifierTestCase extends CoreTestCase {
 		$this->assertEqual($countAfter-$countBefore, 1);
 	}
 
-	function testNormalizeUser() {
+	public function testNormalizeUser() {
 		$results = $this->Notifier->_normalizeUser('email@example.com');
 		$expected = array(
 			'User' => array(
@@ -236,7 +236,7 @@ class NotifierTestCase extends CoreTestCase {
 		$this->assertNull($results);
 	}
 
-	function testInvite() {
+	public function testInvite() {
 		$this->loadFixtures('Invitation', 'InvitationsUser');
 
 		$this->assertFalse($this->Notifier->invite(array(
@@ -291,7 +291,7 @@ class NotifierTestCase extends CoreTestCase {
 
 	}
 
-	function testNotify() {
+	public function testNotify() {
 		$this->Controller->set('ministry', 1);
 		$this->assertTrue($this->Notifier->notify(array(
 			'to' => 1,
@@ -307,7 +307,7 @@ class NotifierTestCase extends CoreTestCase {
 		)));
 	}
 
-	function testSend() {
+	public function testSend() {
 		$this->Notification->User->contain(array('Profile'));
 		$user = $this->Notification->User->read(null, 1);
 
@@ -358,7 +358,7 @@ class NotifierTestCase extends CoreTestCase {
 		$this->assertPattern('/style=\"color\s*:\s*green/', $result);
 	}
 
-	function testSave() {
+	public function testSave() {
 		$this->Notification->User->contain(array('Profile'));
 		$user = $this->Notification->User->read(null, 1);
 

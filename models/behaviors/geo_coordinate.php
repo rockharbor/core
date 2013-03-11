@@ -45,7 +45,6 @@ class GeoCoordinateBehavior extends ModelBehavior {
  * Provider details and settings to parse details
  *
  * @var array
- * @access public
 */
 	public $providers = array(
 		'google'    => array(
@@ -66,7 +65,6 @@ class GeoCoordinateBehavior extends ModelBehavior {
  * Settings
  *
  * @var string
- * @access public
 */
 	public $settings = array(
 		'provider' => 'google',
@@ -78,7 +76,7 @@ class GeoCoordinateBehavior extends ModelBehavior {
  *
  * @param object $Model Model reference
  */
-	function setup(&$Model) {
+	public function setup(&$Model) {
 		$this->connection = new HttpSocket();
 	}
 
@@ -87,7 +85,7 @@ class GeoCoordinateBehavior extends ModelBehavior {
  *
  * @param object $Model Model reference
  */
-	function beforeSave(&$Model) {
+	public function beforeSave(&$Model) {
 		if (isset($Model->data[$Model->alias]['address_line_1']) && !empty($Model->data[$Model->alias]['address_line_1']) &&
 			isset($Model->data[$Model->alias]['city']) && !empty($Model->data[$Model->alias]['city']) &&
 			isset($Model->data[$Model->alias]['state']) && !empty($Model->data[$Model->alias]['state']) &&
@@ -113,9 +111,8 @@ class GeoCoordinateBehavior extends ModelBehavior {
  * @param object $Model Model reference
  * @param mixed $q Query, an address array or string
  * @return array Lat and lng
- * @access public
  */
-	function geoCoordinates(&$Model, $q = '') {
+	public function geoCoordinates(&$Model, $q = '') {
 		// get geo coords
 		return $this->_geocoords($q, $this->settings);
 	}
@@ -125,7 +122,6 @@ class GeoCoordinateBehavior extends ModelBehavior {
 *
 * @param mixed $query Query
 * @param array $options Options
-* @access private
 * @return array
 */
 	private function _geocoords($query, $options = array()) {

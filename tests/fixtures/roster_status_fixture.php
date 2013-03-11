@@ -1,9 +1,9 @@
 <?php
 /* RosterStatus Fixture generated on: 2011-05-17 08:05:13 : 1305646273 */
 class RosterStatusFixture extends CakeTestFixture {
-	var $name = 'RosterStatus';
+	public $name = 'RosterStatus';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
@@ -12,7 +12,7 @@ class RosterStatusFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 1,
 			'name' => 'Confirmed',

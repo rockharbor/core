@@ -10,7 +10,7 @@ Mock::generatePartial('MergeRequestsController', 'TestMergeRequestsController', 
 
 class MergeRequestsControllerTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->MergeRequests =& new TestMergeRequestsController();
 		$this->MergeRequests->__construct();
@@ -26,12 +26,12 @@ class MergeRequestsControllerTestCase extends CoreTestCase {
 		$this->testController = $this->MergeRequests;;
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->MergeRequests);
 		ClassRegistry::flush();
 	}
 
-	function testIndex() {
+	public function testIndex() {
 		$vars = $this->testAction('/merge_requests/index/model:User', array(
 			'return' => 'vars'
 		));
@@ -54,7 +54,7 @@ class MergeRequestsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($vars['requests'][0]['OriginalModel']['id'], 2);
 	}
 
-	function testMerge() {
+	public function testMerge() {
 		$this->loadFixtures('HouseholdMember', 'Household');
 
 		$this->Profile =& ClassRegistry::init('Profile');
@@ -84,7 +84,7 @@ class MergeRequestsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($vars['user']['User']['id'], 2);
 	}
 
-	function testDelete() {
+	public function testDelete() {
 		$this->Profile =& ClassRegistry::init('Profile');
 		$this->User =& ClassRegistry::init('User');
 		$this->testAction('/merge_requests/delete/1');
@@ -104,7 +104,7 @@ class MergeRequestsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, 5);
 	}
 
-	function testIgnore() {
+	public function testIgnore() {
 		$Profile =& ClassRegistry::init('Profile');
 		$User =& ClassRegistry::init('User');
 		$vars = $this->testAction('/merge_requests/delete/1/1');

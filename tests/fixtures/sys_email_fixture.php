@@ -1,10 +1,10 @@
 <?php
 class SysEmailFixture extends CakeTestFixture {
-	var $name = 'SysEmail';
+	public $name = 'SysEmail';
 
-	var $table = 'queues';
+	public $table = 'queues';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
 		'to' => array('type' => 'text', 'null' => true, 'default' => NULL),
 		'cc' => array('type' => 'text', 'null' => true, 'default' => NULL),
@@ -25,7 +25,7 @@ class SysEmailFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 1,
 			'to' => 'test@test.com',

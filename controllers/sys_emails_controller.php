@@ -21,21 +21,21 @@ class SysEmailsController extends AppController {
  *
  * @var string
  */
-	var $name = 'SysEmails';
+	public $name = 'SysEmails';
 
 /**
  * Extra helpers for this controller
  *
  * @var array
  */
-	var $helpers = array('Formatting', 'MultiSelect.MultiSelect');
+	public $helpers = array('Formatting', 'MultiSelect.MultiSelect');
 
 /**
  * Extra components for this controller
  *
  * @var array
  */
-	var $components = array(
+	public $components = array(
 		'MultiSelect.MultiSelect',
 		'FilterPagination'
 	);
@@ -45,7 +45,7 @@ class SysEmailsController extends AppController {
  *
  * @var array
  */
-	var $uses = array('SysEmail', 'User', 'Involvement', 'Ministry');
+	public $uses = array('SysEmail', 'User', 'Involvement', 'Ministry');
 
 /**
  * Users to email
@@ -56,14 +56,14 @@ class SysEmailsController extends AppController {
  *
  * @var array
  */
-	var $users = array();
+	public $users = array();
 
 /**
  * List of human readable statuses
  *
  * @var array
  */
-	var $statuses = array(
+	public $statuses = array(
 		0 => 'Queued',
 		1 => 'Sent',
 		2 => 'Sending'
@@ -73,10 +73,8 @@ class SysEmailsController extends AppController {
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 
 		$this->_editSelf('index', 'view', 'html_email');
@@ -92,7 +90,7 @@ class SysEmailsController extends AppController {
 /**
  * Shows a list of emails to or from the user
  */
-	function index() {
+	public function index() {
 		$user = $this->passedArgs['User'];
 
 		if (empty($this->data)) {
@@ -153,7 +151,7 @@ class SysEmailsController extends AppController {
  *
  * @param integer $id The message id
  */
-	function view($id = null) {
+	public function view($id = null) {
 		if (!$id) {
 			$this->cakeError('error404');
 		}
@@ -189,7 +187,7 @@ class SysEmailsController extends AppController {
  *
  * @param integer $id The message id
  */
-	function html_email($id = null) {
+	public function html_email($id = null) {
 		$this->layout = false;
 		$this->view($id);
 	}
@@ -203,7 +201,7 @@ class SysEmailsController extends AppController {
  *
  * @param string $group 'leaders', 'users', or 'both'
  */
-	function ministry($group = 'users') {
+	public function ministry($group = 'users') {
 		if (empty($this->data['SysEmail']['to'])) {
 			if (isset($this->passedArgs['Ministry'])) {
 				$ministries = array($this->passedArgs['Ministry']);
@@ -225,7 +223,7 @@ class SysEmailsController extends AppController {
  *
  * @param string $group 'leaders', 'users', or 'both'
  */
-	function involvement($group = 'users') {
+	public function involvement($group = 'users') {
 		if (empty($this->data['SysEmail']['to'])) {
 			if (isset($this->passedArgs['Involvement'])) {
 				$involvements = array($this->passedArgs['Involvement']);
@@ -244,7 +242,7 @@ class SysEmailsController extends AppController {
  * Use multiselect to select a group of roster ids, from which the user ids will
  * be pulled.
  */
-	function roster() {
+	public function roster() {
 		if (empty($this->data['SysEmail']['to'])) {
 			$rosters = $this->_extractIds($this->Involvement->Roster, '/Roster/id');
 			$users = $this->Involvement->Roster->find('all', array(
@@ -266,7 +264,7 @@ class SysEmailsController extends AppController {
  * By passing an id to the named param `User` you can email a specific user.
  * Or, use multiselect to select a group of user ids
  */
-	function user() {
+	public function user() {
 		if (empty($this->data['SysEmail']['to'])) {
 			if (isset($this->passedArgs['User'])) {
 				$this->users = array($this->passedArgs['User']);
@@ -291,7 +289,7 @@ class SysEmailsController extends AppController {
  *
  * @param integer $leaderId The leader id
  */
-	function leader($leaderId) {
+	public function leader($leaderId) {
 		$user = $this->Involvement->Leader->findById($leaderId);
 		$this->users = array($user['Leader']['user_id']);
 		$this->setAction('compose');
@@ -303,7 +301,7 @@ class SysEmailsController extends AppController {
  * This action should not be used directly. It relies on `$this->users` to be
  * set by a preceding action.
  */
-	function compose() {
+	public function compose() {
 		// data was posted, so get the users
 		if (!empty($this->data['SysEmail']['to'])) {
 			$this->users = explode(',', $this->data['SysEmail']['to']);
@@ -412,7 +410,7 @@ class SysEmailsController extends AppController {
  * @param string $group 'leaders', 'users', or 'both'
  * @return array Array of user ids
  */
-	function _getUsers($model, $ids, $group = 'users') {
+	protected function _getUsers($model, $ids, $group = 'users') {
 		if (empty($ids)) {
 			return array();
 		}

@@ -1,8 +1,8 @@
 <?php
 class Zipcode extends AppModel {
-	var $name = 'Zipcode';
+	public $name = 'Zipcode';
 
-	var $validate = array(
+	public $validate = array(
 		'zip' => array(
 			'rule' => array('postal', null, 'us'),
 			'message' => 'Please enter a valid zipcode.',
@@ -10,7 +10,7 @@ class Zipcode extends AppModel {
 		)
 	);
 
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'Region'
 	);
 

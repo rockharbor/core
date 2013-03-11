@@ -21,14 +21,14 @@ class Alert extends AppModel {
  *
  * @var string
  */
-	var $name = 'Alert';
+	public $name = 'Alert';
 
 /**
  * Validation rules
  *
  * @var array
  */
-	var $validate = array(
+	public $validate = array(
 		'name' => array(
 			'notempty' => array(
 				'rule' => 'notempty',
@@ -59,7 +59,7 @@ class Alert extends AppModel {
  *
  * @var array
  */
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'Group'
 	);
 
@@ -68,7 +68,7 @@ class Alert extends AppModel {
  *
  * @var array
  */
-	var $hasAndBelongsToMany = array(
+	public $hasAndBelongsToMany = array(
 		'User' => array(
 			'className' => 'User',
 			'joinTable' => 'alerts_users',
@@ -84,7 +84,7 @@ class Alert extends AppModel {
  * @param integer $userId The user
  * @return array List of ids
  */
-	function getReadAlerts($userId = null) {
+	public function getReadAlerts($userId = null) {
 		if (!$userId) {
 			return false;
 		}
@@ -110,7 +110,7 @@ class Alert extends AppModel {
  * @param boolean $getExpired Whether or not to get expired alerts as well
  * @return array List of ids
  */
-	function getUnreadAlerts($userId = null, $groupId = null, $getExpired = true) {
+	public function getUnreadAlerts($userId = null, $groupId = null, $getExpired = true) {
 		if (!$userId) {
 			return false;
 		}
@@ -154,7 +154,7 @@ class Alert extends AppModel {
  * @param integer $alertId The alert
  * @return boolean Success
  */
-	function markAsRead($userId = null, $alertId = null) {
+	public function markAsRead($userId = null, $alertId = null) {
 		if (!$userId || !$alertId) {
 			return false;
 		}

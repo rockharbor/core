@@ -21,7 +21,7 @@ class Involvement extends AppModel {
  *
  * @var string
  */
-	var $name = 'Involvement';
+	public $name = 'Involvement';
 
 /**
  * Virtual field definitions
@@ -33,7 +33,7 @@ class Involvement extends AppModel {
  *
  * @var array
  */
-	var $virtualFields = array(
+	public $virtualFields = array(
 		'previous' => 'NOT EXISTS(
 			SELECT 1 FROM dates AS NotPassed
 				WHERE NotPassed.involvement_id = :ALIAS:.id
@@ -50,7 +50,7 @@ class Involvement extends AppModel {
  * @var array
  * @see Sanitizer.SanitizeBehavior
  */
-	var $sanitize = array(
+	public $sanitize = array(
 		'description' => 'stripScripts'
 	);
 
@@ -59,7 +59,7 @@ class Involvement extends AppModel {
  *
  * @var array
  */
-	var $validate = array(
+	public $validate = array(
 		'name' => array(
 			'rule' => 'notEmpty',
 			'required' => true,
@@ -77,7 +77,7 @@ class Involvement extends AppModel {
  *
  * @var array
  */
-	var $actsAs = array(
+	public $actsAs = array(
 		'Containable',
 		'Sanitizer.Sanitize',
 		'Search.Searchable',
@@ -90,7 +90,7 @@ class Involvement extends AppModel {
  *
  * @var array
  */
-	var $hasOne = array(
+	public $hasOne = array(
 		'Address' => array(
 			'className' => 'Address',
 			'foreignKey' => 'foreign_key',
@@ -104,7 +104,7 @@ class Involvement extends AppModel {
  *
  * @var array
  */
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'Ministry' => array(
 			'className' => 'Ministry',
 			'foreignKey' => 'ministry_id',
@@ -124,7 +124,7 @@ class Involvement extends AppModel {
  *
  * @var array
  */
-	var $hasMany = array(
+	public $hasMany = array(
 		'Date' => array(
 			'className' => 'Date',
 			'foreignKey' => 'involvement_id',
@@ -170,7 +170,7 @@ class Involvement extends AppModel {
  *
  * @var array
  */
-	var $hasAndBelongsToMany = array(
+	public $hasAndBelongsToMany = array(
 		'DisplayMinistry' => array(
 			'className' => 'Ministry',
 			'table' => 'involvements_ministries',
@@ -190,7 +190,7 @@ class Involvement extends AppModel {
  *
  * @var array
  */
-	var $searchFilter = array(
+	public $searchFilter = array(
 		'notInvolvementAndIsLeading' => array(
 			'conditions' => array(
 				'Involvement.id <>' => ':0:',
@@ -221,9 +221,8 @@ class Involvement extends AppModel {
  * @param integer $userId The user id
  * @param integer $involvementId The involvement id
  * @return boolean True if the user is a leader
- * @access public
  */
-	function isLeader($userId = null, $involvementId = null) {
+	public function isLeader($userId = null, $involvementId = null) {
 		if (!$userId || !$involvementId) {
 			return false;
 		}
@@ -241,7 +240,7 @@ class Involvement extends AppModel {
  * @param integer $involvementId The involvement id
  * @return array A list of users
  */
-	function getInvolved($involvementId) {
+	public function getInvolved($involvementId) {
 		$results = $this->Roster->find('all', array(
 			'fields' => array(
 				'user_id'
@@ -260,7 +259,7 @@ class Involvement extends AppModel {
  * @param mixed $modelId Integer for single id, or array for multiple
  * @return array Array of user ids
  */
-	function getLeaders($modelId) {
+	public function getLeaders($modelId) {
 		$leaders = $this->Leader->find('all', array(
 			'fields' => array(
 				'user_id'

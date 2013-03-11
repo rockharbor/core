@@ -6,7 +6,7 @@ App::import('Model', array('Roster', 'CreditCard'));
 Mock::generatePartial('CreditCard', 'MockRosterCreditCard', array('save'));
 
 class RosterTestCase extends CoreTestCase {
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Roster', 'Payment', 'PaymentOption', 'Involvement', 'PaymentType', 'Role', 'RolesRoster', 'RosterStatus');
 		$CreditCard = new MockRosterCreditCard();
@@ -16,12 +16,12 @@ class RosterTestCase extends CoreTestCase {
 		$this->Roster =& ClassRegistry::init('Roster');
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->Roster);
 		ClassRegistry::flush();
 	}
 
-	function testFindByRoles() {
+	public function testFindByRoles() {
 		$data = array(
 			'roles' => array(1)
 		);
@@ -47,7 +47,7 @@ class RosterTestCase extends CoreTestCase {
 		$this->assertEqual($this->singleLine($results), $this->singleLine($expected));
 	}
 
-	function testPaginateCount() {
+	public function testPaginateCount() {
 		$conditions = array(
 			'Roster.involvement_id' => 1
 		);
@@ -73,7 +73,7 @@ class RosterTestCase extends CoreTestCase {
 		$this->assertEqual($results, 2);
 	}
 
-	function testSetDefaultAlreadySignedUp() {
+	public function testSetDefaultAlreadySignedUp() {
 		$involvement = $this->Roster->Involvement->read(null, 1);
 		$defaults = array(
 			'payment_option_id' => 1,
@@ -138,7 +138,7 @@ class RosterTestCase extends CoreTestCase {
 		$this->assertEqual($results['Roster']['roster_status_id'], 4);
 	}
 
-	function testRoles() {
+	public function testRoles() {
 		$this->Roster->contain(array('Role', 'RosterStatus'));
 		$results = $this->Roster->read(null, 5);
 		$results = Set::extract('/Role/id', $results);
@@ -155,7 +155,7 @@ class RosterTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testSetDefaultDataEmptyPayment() {
+	public function testSetDefaultDataEmptyPayment() {
 		$this->Roster->Involvement->PaymentOption->create();
 		$this->Roster->Involvement->PaymentOption->save(array(
 			'PaymentOption' => array(
@@ -266,7 +266,7 @@ class RosterTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testSetDefaultChildcare() {
+	public function testSetDefaultChildcare() {
 		$involvement = $this->Roster->Involvement->read(null, 1);
 		$parent = 1;
 		$defaults = array(
@@ -324,7 +324,7 @@ class RosterTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testSetDefaultDataNoPayment() {
+	public function testSetDefaultDataNoPayment() {
 		$involvement = $this->Roster->Involvement->read(null, 5);
 		$roster = array(
 			'Roster' => array(
@@ -349,7 +349,7 @@ class RosterTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testSetDefaultData() {
+	public function testSetDefaultData() {
 		$involvement = $this->Roster->Involvement->read(null, 1);
 		$defaults = array(
 			'payment_option_id' => 1,
@@ -459,7 +459,7 @@ class RosterTestCase extends CoreTestCase {
 		$this->assertTrue($this->Roster->save($expected));
 	}
 
-	function testVirtualFields() {
+	public function testVirtualFields() {
 		$roster = $this->Roster->read(null, 6);
 
 		$result = $roster['Roster']['amount_paid'];

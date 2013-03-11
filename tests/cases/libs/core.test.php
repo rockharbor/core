@@ -8,19 +8,19 @@ Mock::generatePartial('AclComponent', 'CoreConfigureMockAclComponent', array('ch
 
 class CoreConfigureTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('AppSetting', 'Attachment');
 		$this->AppSetting =& ClassRegistry::init('AppSetting');
 		$this->loadSettings();
 	}
 
-	function endTest() {
+	public function endTest() {
 		$this->unloadSettings();
 		unset($this->AppSetting);
 	}
 
-	function _setupAcl() {
+	public function _setupAcl() {
 		$core = Core::getInstance();
 		$this->loadFixtures('Aco', 'Aro', 'ArosAco');
 		// for some reason, the Aro and Aco model's weren't being forced to use
@@ -32,7 +32,7 @@ class CoreConfigureTestCase extends CoreTestCase {
 		$core->Acl->Aco->setDataSource('test_suite');
 	}
 
-	function testAddAco() {
+	public function testAddAco() {
 		$this->_setupAcl();
 		$core = Core::getInstance();
 
@@ -59,7 +59,7 @@ class CoreConfigureTestCase extends CoreTestCase {
 		$this->assertEqual($count, 4);
 	}
 
-	function testRemoveAco() {
+	public function testRemoveAco() {
 		$this->_setupAcl();
 		$core = Core::getInstance();
 
@@ -84,7 +84,7 @@ class CoreConfigureTestCase extends CoreTestCase {
 		$this->assertEqual($count, 1);
 	}
 
-	function testAcl() {
+	public function testAcl() {
 		$_oldCache = Configure::read('Cache.disable');
 		Configure::write('Cache.disable', false);
 		Cache::clear(false, 'acl');
@@ -111,7 +111,7 @@ class CoreConfigureTestCase extends CoreTestCase {
 		Configure::write('Cache.disable', $_oldCache);
 	}
 
-	function testHook() {
+	public function testHook() {
 		// remove existing hooks
 		$core = Core::getInstance();
 		$oldHooks = isset($core->settings['hooks']) ? $core->settings['hooks'] : null;
@@ -200,7 +200,7 @@ class CoreConfigureTestCase extends CoreTestCase {
 		$core->settings['hooks'] = $oldHooks;
 	}
 
-	function testGetHooks() {
+	public function testGetHooks() {
 		// remove existing hooks
 		$core = Core::getInstance();
 		$oldHooks = isset($core->settings['hooks']) ? $core->settings['hooks'] : null;
@@ -256,7 +256,7 @@ class CoreConfigureTestCase extends CoreTestCase {
 		$core->settings['hooks'] = $oldHooks;
 	}
 
-	function testReadImageSetting() {
+	public function testReadImageSetting() {
 		$result = Core::read('users.default_image');
 		$expected = 'Default profile photo';
 		$this->assertEqual($result['alternative'], $expected);
@@ -264,7 +264,7 @@ class CoreConfigureTestCase extends CoreTestCase {
 		$this->assertNull(Core::read('users.default_icon'));
 	}
 
-	function testRead() {
+	public function testRead() {
 		$result = Core::read('version');
 		$this->assertTrue(is_string($result));
 
@@ -308,7 +308,7 @@ class CoreConfigureTestCase extends CoreTestCase {
 		));
 	}
 
-	function testWrite() {
+	public function testWrite() {
 		$result = Core::_write('test', 'success');
 		$expected = 'success';
 		$this->assertEqual($result, $expected);

@@ -4,18 +4,18 @@ App::import('Model', 'Comment');
 
 class CommentTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Comment', 'Group', 'User');
 		$this->Comment =& ClassRegistry::init('Comment');
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->Comment);
 		ClassRegistry::flush();
 	}
 
-	function testCanDelete() {
+	public function testCanDelete() {
 		$this->assertFalse($this->Comment->canDelete());
 		$this->assertFalse($this->Comment->canDelete(3));
 		$this->assertFalse($this->Comment->canDelete(3, 1));
@@ -25,7 +25,7 @@ class CommentTestCase extends CoreTestCase {
 		$this->assertFalse($this->Comment->canDelete(1, 2));
 	}
 
-	function testCanEdit() {
+	public function testCanEdit() {
 		$this->assertTrue($this->Comment->canEdit(1, 1));
 		$this->assertFalse($this->Comment->canEdit());
 	}

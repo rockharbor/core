@@ -21,14 +21,14 @@ class CampusesController extends AppController {
  *
  * @var string
  */
-	var $name = 'Campuses';
+	public $name = 'Campuses';
 
 /**
  * Extra helpers for this controller
  *
  * @var array
  */
-	var $helpers = array(
+	public $helpers = array(
 		'SelectOptions',
 		'Formatting'
 	);
@@ -37,10 +37,8 @@ class CampusesController extends AppController {
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		$this->Auth->allow('index');
 		parent::beforeFilter();
 	}
@@ -48,14 +46,14 @@ class CampusesController extends AppController {
 /**
  * List of campuses
  */
-	function index() {
+	public function index() {
 		// `$campusesMenu` var set in `AppController::beforeRender()`
 	}
 
 /**
  * Campus details
  */
-	function view() {
+	public function view() {
 		$id = $this->passedArgs['Campus'];
 
 		if (!$id) {
@@ -68,7 +66,7 @@ class CampusesController extends AppController {
 /**
  * Adds a campus
  */
-	function add() {
+	public function add() {
 		$this->Campus->Behaviors->disable('Confirm');
 
 		if (!empty($this->data)) {
@@ -85,7 +83,7 @@ class CampusesController extends AppController {
 /**
  * Edits a campus
  */
-	function edit() {
+	public function edit() {
 		$id = $this->passedArgs['Campus'];
 
 		if (!$id) {
@@ -140,7 +138,7 @@ class CampusesController extends AppController {
  * @param boolean $active Whether to make the model inactive or active
  * @param boolean $recursive Whether to iterate through the model's relationships and mark them as $active
  */
-	function toggle_activity($active = false, $recursive = false) {
+	public function toggle_activity($active = false, $recursive = false) {
 		$id = $this->passedArgs['Campus'];
 
 		if (!$id) {
@@ -184,7 +182,7 @@ class CampusesController extends AppController {
  *
  * @param integer $id The id of the campus
  */
-	function history() {
+	public function history() {
 		$id = $this->passedArgs['Campus'];
 
 		if (!$id) {
@@ -203,7 +201,7 @@ class CampusesController extends AppController {
  * @param integer $id The id of the campus
  * @param boolean $confirm Whether or not to approve the revision
  */
-	function revise($confirm = false) {
+	public function revise($confirm = false) {
 		$id = $this->passedArgs['Campus'];
 
 		if ($confirm) {
@@ -229,7 +227,7 @@ class CampusesController extends AppController {
  *
  * @param integer $id The id of the campus to delete
  */
-	function delete($id = null) {
+	public function delete($id = null) {
 		if (!$id) {
 			$this->cakeError('error404');
 		}

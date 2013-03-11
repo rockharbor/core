@@ -7,7 +7,7 @@ Mock::generatePartial('InvolvementLeadersController', 'MockInvolvementLeadersCon
 
 class InvolvementLeadersControllerTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Leader', 'User', 'Ministry', 'Role', 'Involvement', 'Date');
 		$this->Leaders =& new MockInvolvementLeadersController;
@@ -18,14 +18,14 @@ class InvolvementLeadersControllerTestCase extends CoreTestCase {
 		$this->Session->destroy();
 	}
 
-	function endTest() {
+	public function endTest() {
 		$this->Session->destroy();
 		unset($this->Leaders);
 		unset($this->Session);
 		ClassRegistry::flush();
 	}
 
-	function testDashboard() {
+	public function testDashboard() {
 		$vars = $this->testAction('involvement_leaders/dashboard/User:1');
 		$results = Set::extract('/Involvement/id', $vars['involvements']);
 		sort($results);

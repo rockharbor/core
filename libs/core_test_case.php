@@ -9,6 +9,15 @@
  */
 
 /**
+ * Add proxy class paths
+ */
+App::build(array(
+	'components' => array(TESTS . 'proxies' . DS . 'components' . DS),
+	'controllers' => array(TESTS . 'proxies' . DS . 'controllers' . DS),
+	'helpers' => array(TESTS . 'proxies' . DS . 'helpers' . DS)
+));
+
+/**
  * Includes
  */
 App::import('Component', 'Acl');
@@ -40,7 +49,7 @@ class CoreTestCase extends CakeTestCase {
  *
  * @var array
  */
-	var $fixtures = array(
+	public $fixtures = array(
 		'app.aco',
 		'app.address',
 		'app.alert',
@@ -94,7 +103,7 @@ class CoreTestCase extends CakeTestCase {
  *
  * @var boolean
  */
-	var $autoFixtures = false;
+	public $autoFixtures = false;
 
 /**
  * The controller we're testing. Set to null to use the original
@@ -102,14 +111,14 @@ class CoreTestCase extends CakeTestCase {
  *
  * @var object
  */
-	var $testController = null;
+	public $testController = null;
 
 /**
  * Methods to test
  *
  * @param Array of methods to test
  */
-	var $testMethods = null;
+	public $testMethods = null;
 
 /**
  * Runs prior to running the test method
@@ -117,7 +126,7 @@ class CoreTestCase extends CakeTestCase {
  * @param string $method The test method
  * @return void
  */
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		Router::reload();
 	}
@@ -128,7 +137,7 @@ class CoreTestCase extends CakeTestCase {
  *
  * @return array Array of tests to run
  */
-	function getTests() {
+	public function getTests() {
 		$tests = parent::getTests();
 		$testMethods = array_udiff($tests, $this->methods, 'strcasecmp');
 		if (!isset($this->testMethods) || empty($this->testMethods)) {
@@ -177,7 +186,7 @@ class CoreTestCase extends CakeTestCase {
  * @return array The view vars
  * @link http://mark-story.com/posts/view/testing-cakephp-controllers-the-hard-way
  */
-	function testAction($url = '', $options = array()) {
+	public function testAction($url = '', $options = array()) {
 		if (is_null($this->testController)) {
 			return parent::testAction($url, $options);
 		}
@@ -265,14 +274,21 @@ class CoreTestCase extends CakeTestCase {
 		return $Controller->viewVars;
 	}
 
-	function loadSettings() {
+/**
+ * Loads app settings into `Core` class, ignoring cache. Use to reload possibly
+ * altered settings.
+ */
+	public function loadSettings() {
 		$this->loadFixtures('AppSetting');
 		$this->_cacheDisable = Configure::read('Cache.disable');
 		Configure::write('Cache.disable', true);
 		Core::loadSettings(true);
 	}
 
-	function unloadSettings() {
+/**
+ * Clears app settings cache
+ */
+	public function unloadSettings() {
 		ClassRegistry::init('AppSetting')->clearCache();
 		Configure::write('Cache.disable', $this->_cacheDisable);
 	}
@@ -285,7 +301,7 @@ class CoreTestCase extends CakeTestCase {
  * @param boolean $wipe Set to `false` to merge existing session info
  * @return boolean
  */
-	function su($user = array(), $wipe = true) {
+	public function su($user = array(), $wipe = true) {
 		if (!$this->testController) {
 			return false;
 		}
@@ -331,7 +347,7 @@ class CoreTestCase extends CakeTestCase {
  * @param string $str
  * @return string
  */
-	function singleLine($str = '') {
+	public function singleLine($str = '') {
 		$str = str_replace(array("\t", "\r\n", "\n"), ' ', $str);
 		$str = preg_replace('/\s\s+/', ' ', $str);
 		return $str;

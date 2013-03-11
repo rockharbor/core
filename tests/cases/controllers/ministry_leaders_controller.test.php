@@ -7,7 +7,7 @@ Mock::generatePartial('MinistryLeadersController', 'MockMinistryLeadersControlle
 
 class MinistryLeadersControllerTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Leader', 'User', 'Ministry', 'Role');
 		$this->Leaders =& new MockMinistryLeadersController;
@@ -16,12 +16,12 @@ class MinistryLeadersControllerTestCase extends CoreTestCase {
 		$this->testController = $this->Leaders;
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->Leaders);
 		ClassRegistry::flush();
 	}
 
-	function testDashboard() {
+	public function testDashboard() {
 		$vars = $this->testAction('ministry_leaders/dashboard/User:2');
 		$results = Set::extract('/Ministry/id', $vars['ministries']);
 		sort($results);

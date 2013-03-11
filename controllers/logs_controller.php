@@ -21,23 +21,21 @@ class LogsController extends AppController {
  *
  * @var string
  */
-	var $name = 'Logs';
+	public $name = 'Logs';
 
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 	}
 
 /**
  * Shows a list of logs
  */
-	function index() {
+	public function index() {
 		$this->Log->recursive = 0;
 		$this->set('logs', $this->paginate());
 	}

@@ -1,9 +1,9 @@
 <?php
 /* User Fixture generated on: 2010-06-28 08:06:54 : 1277737794 */
 class UserFixture extends CakeTestFixture {
-	var $name = 'User';
+	public $name = 'User';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'username' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 32, 'key' => 'index'),
 		'password' => array('type' => 'string', 'null' => false, 'default' => NULL),
@@ -20,7 +20,7 @@ class UserFixture extends CakeTestFixture {
 
 	// passwords are 'password'
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 1,
 			'username' => 'jharris',

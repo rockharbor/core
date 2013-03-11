@@ -21,23 +21,21 @@ class DatesController extends AppController {
  *
  * @var string
  */
-	var $name = 'Dates';
+	public $name = 'Dates';
 
 /**
  * Extra helpers for this controller
  *
  * @var array
  */
-	var $helpers = array('SelectOptions', 'Formatting');
+	public $helpers = array('SelectOptions', 'Formatting');
 
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		$this->Auth->allow('calendar', 'readable');
 		parent::beforeFilter();
 	}
@@ -45,7 +43,7 @@ class DatesController extends AppController {
 /**
  * Model::beforeRender() callback
  */
-	function beforeRender() {
+	public function beforeRender() {
 		parent::beforeRender();
 
 		$this->set('recurranceTypes', $this->Date->recurranceTypes);
@@ -58,7 +56,7 @@ class DatesController extends AppController {
  * dates when a user is creating a date. Instead, an ajax request to this
  * method should be used
  */
-	function readable() {
+	public function readable() {
 		if (!empty($this->data['Date'])) {
 			// format the data as if it were pulled from the db
 			foreach ($this->data['Date'] as $field => $value) {
@@ -97,7 +95,7 @@ class DatesController extends AppController {
  * @param string $size A mini or full-size calendar
  * @todo Make all parameters act the same (may require special action for User calendar)
  */
-	function calendar($size = 'mini') {
+	public function calendar($size = 'mini') {
 		$this->set(compact('size'));
 
 		// if it's not the calendar calling, just leave. there's nothing
@@ -218,7 +216,7 @@ class DatesController extends AppController {
 /**
  * Displays a list of dates
  */
-	function index() {
+	public function index() {
 		$this->Date->recursive = 0;
 		$this->set('dates', $this->Date->find('all', array(
 			'conditions' => array(
@@ -231,7 +229,7 @@ class DatesController extends AppController {
 /**
  * Adds a date
  */
-	function add() {
+	public function add() {
 		if (!empty($this->data)) {
 			$this->Date->create();
 			if ($this->Date->save($this->data)) {
@@ -249,7 +247,7 @@ class DatesController extends AppController {
  *
  * @param integer $id The id of the date to edit
  */
-	function edit($id = null) {
+	public function edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->cakeError('error404');
 		}
@@ -270,7 +268,7 @@ class DatesController extends AppController {
  *
  * @param integer $id The id of the date to delete
  */
-	function delete($id = null) {
+	public function delete($id = null) {
 		if (!$id) {
 			$this->cakeError('error404');
 		}

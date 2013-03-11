@@ -1,15 +1,15 @@
 <?php
 App::import('Lib', 'CoreTestCase');
-App::import('Controller', 'App');
+App::import('Controller', 'ProxyApp');
 App::import('Component', 'MultiSelect.MultiSelect');
 
 class AppControllerTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('User', 'Group', 'Notification', 'Alert', 'Household', 'HouseholdMember');
 		$this->loadFixtures('Leader', 'Campus', 'Ministry', 'Involvement');
-		$this->App =& new AppController();
+		$this->App =& new ProxyAppController();
 		$this->App->__construct();
 		$this->App->constructClasses();
 		$this->App->activeUser = array(
@@ -18,16 +18,16 @@ class AppControllerTestCase extends CoreTestCase {
 		);
 	}
 
-	function endTest() {
+	public function endTest() {
 		$this->App->Session->destroy();
 		unset($this->App);
 		ClassRegistry::flush();
 	}
 
-	function testExtractIds() {
+	public function testExtractIds() {
 		$this->loadFixtures('Profile');
 
-		Mock::generatePartial('AppController', 'ExtractIdsAppController', array('isAuthorized', 'render', 'redirect', '_stop', 'header', 'cakeError'));
+		Mock::generatePartial('ProxyAppController', 'ExtractIdsAppController', array('isAuthorized', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 		$Controller = new ExtractIdsAppController();
 		$Controller->__construct();
 		$Controller->modelClass = 'User';
@@ -88,7 +88,7 @@ class AppControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testSetConditionalGroups() {
+	public function testSetConditionalGroups() {
 		$this->App->passedArgs = array('User' => 1);
 		$results = $this->App->_setConditionalGroups($this->App->passedArgs, $this->App->activeUser);
 		$results = Set::extract('/Group/name', $results);
@@ -159,7 +159,7 @@ class AppControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testIsAuthorized() {
+	public function testIsAuthorized() {
 		$core =& Core::getInstance();
 		$core->Acl = new MockAclComponent();
 
@@ -204,7 +204,7 @@ class AppControllerTestCase extends CoreTestCase {
 		$this->assertTrue($result);
 	}
 
-	function test_editSelf() {
+	public function test_editSelf() {
 		$this->App->action = 'edit';
 		$this->App->_editSelf('edit');
 		$results = $this->App->_setConditionalGroups($this->App->passedArgs, $this->App->activeUser);

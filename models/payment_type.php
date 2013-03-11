@@ -21,21 +21,21 @@ class PaymentType extends AppModel {
  *
  * @var string
  */
-	var $name = 'PaymentType';
+	public $name = 'PaymentType';
 
 /**
  * Default order
  *
  * @var string
  */
-	var $order = ':ALIAS:.name ASC';
+	public $order = ':ALIAS:.name ASC';
 
 /**
  * HasMany association link
  *
  * @var array
  */
-	var $hasMany = array(
+	public $hasMany = array(
 		'Payment'
 	);
 
@@ -45,7 +45,7 @@ class PaymentType extends AppModel {
  *
  * @var array
  */
-	var $types = array(
+	public $types = array(
 		0 => 'Credit Card',
 		1 => 'Cash',
 		2 => 'Check'
@@ -56,7 +56,7 @@ class PaymentType extends AppModel {
  *
  * @var array
  */
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'Group'
 	);
 

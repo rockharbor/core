@@ -4,18 +4,18 @@ App::import('Model', 'Invitation');
 
 class InvitationTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Invitation', 'InvitationsUser');
 		$this->Invitation =& ClassRegistry::init('Invitation');
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->Invitation);
 		ClassRegistry::flush();
 	}
 
-	function testGetInvitations() {
+	public function testGetInvitations() {
 		$results = $this->Invitation->getInvitations(1);
 		$expected = array(1, 2);
 		$this->assertEqual($results, $expected);

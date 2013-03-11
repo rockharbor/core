@@ -21,37 +21,35 @@ class AlertsController extends AppController {
  *
  * @var string
  */
-	var $name = 'Alerts';
+	public $name = 'Alerts';
 
 /**
  * Extra components for this controller
  *
  * @var array
  */
-	var $components = array('MultiSelect.MultiSelect');
+	public $components = array('MultiSelect.MultiSelect');
 
 /**
  * Extra helpers for this controller
  *
  * @var array
  */
-	var $helpers = array('MultiSelect.MultiSelect', 'Formatting');
+	public $helpers = array('MultiSelect.MultiSelect', 'Formatting');
 
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 	}
 
 /**
  * List of all Alerts
  */
-	function index() {
+	public function index() {
 		$this->Alert->recursive = 0;
 		$alerts = $this->paginate();
 		foreach ($alerts as &$alert) {
@@ -70,7 +68,7 @@ class AlertsController extends AppController {
  *
  * @param integer $id The id of the alert to read
  */
-	function view($id = null) {
+	public function view($id = null) {
 		$groups = $this->Alert->Group->findGroups($this->activeUser['Group']['id']);
 		$alert = $this->Alert->find('first', array(
 			'conditions' => array(
@@ -91,7 +89,7 @@ class AlertsController extends AppController {
  *
  * @param string $unread Search filter (`read`, `unread`, empty for all)
  */
-	function history($unread = '') {
+	public function history($unread = '') {
 		$userId = $this->activeUser['User']['id'];
 		$groups = $this->Alert->Group->findGroups($this->activeUser['Group']['id']);
 
@@ -132,7 +130,7 @@ class AlertsController extends AppController {
  *
  * @param integer $id The alert id
  */
-	function read($id = null) {
+	public function read($id = null) {
 		$userId = $this->activeUser['User']['id'];
 
 		if ($id) {
@@ -151,7 +149,7 @@ class AlertsController extends AppController {
 /**
  * Adds an Alert
  */
-	function add() {
+	public function add() {
 		if (!empty($this->data)) {
 			$this->Alert->create();
 			if ($this->Alert->save($this->data)) {
@@ -174,7 +172,7 @@ class AlertsController extends AppController {
 /**
  * Edits an Alert
  */
-	function edit($id = null) {
+	public function edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->cakeError('error404');
 		}
@@ -201,7 +199,7 @@ class AlertsController extends AppController {
 /**
  * Deletes an Alert
  */
-	function delete($id = null) {
+	public function delete($id = null) {
 		if (!$id) {
 			$this->cakeError('error404');
 		}

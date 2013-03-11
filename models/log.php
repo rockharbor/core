@@ -21,28 +21,28 @@ class Log extends AppModel {
  *
  * @var string
  */
-	var $name = 'Log';
+	public $name = 'Log';
 
 /**
  * The field to use when generating list
  *
  * @var string
  */
-	var $displayField = 'title';
+	public $displayField = 'title';
 
 /**
  * Default order
  *
  * @var string
  */
-	var $order = ':ALIAS:.created DESC';
+	public $order = ':ALIAS:.created DESC';
 
 /**
  * BelongsTo association link
  *
  * @var array
  */
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'User' => array(
 			'className' => 'User',
 			'foreignKey' => 'user_id'

@@ -9,7 +9,7 @@ Mock::generatePartial('CommentsController', 'TestCommentsController', array('ren
 
 class CommentsControllerTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Comment', 'Group');
 		$this->Comments =& new TestCommentsController();
@@ -23,13 +23,13 @@ class CommentsControllerTestCase extends CoreTestCase {
 		$this->testController = $this->Comments;
 	}
 
-	function endTest() {
+	public function endTest() {
 		$this->Comments->Session->destroy();
 		unset($this->Comments);
 		ClassRegistry::flush();
 	}
 
-	function testIndex() {
+	public function testIndex() {
 		$vars = $this->testAction('/comments/index/User:1', array(
 			'return' => 'vars'
 		));
@@ -51,7 +51,7 @@ class CommentsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, array());
 	}
 
-	function testAdd() {
+	public function testAdd() {
 		$data = array(
 			'Comment' => array(
 				'user_id' => 1,
@@ -69,7 +69,7 @@ class CommentsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results['Comment']['comment'], 'This is a new comment');
 	}
 
-	function testEdit() {
+	public function testEdit() {
 		$data = array(
 			'Comment' => array(
 				'id' => 3,
@@ -97,7 +97,7 @@ class CommentsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testDelete() {
+	public function testDelete() {
 		$this->testAction('/comments/delete/Comment:1/User:1');
 		$result = $this->Comments->Comment->read(null, 1);
 		$this->assertFalse($result);

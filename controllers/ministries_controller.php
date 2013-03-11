@@ -21,21 +21,21 @@ class MinistriesController extends AppController {
  *
  * @var string
  */
-	var $name = 'Ministries';
+	public $name = 'Ministries';
 
 /**
  * Extra helpers for this controller
  *
  * @var array
  */
-	var $helpers = array('Formatting', 'Tree');
+	public $helpers = array('Formatting', 'Tree');
 
 /**
  * Extra components for this controller
  *
  * @var array
  */
-	var $components = array(
+	public $components = array(
 		'MultiSelect.MultiSelect',
 		'FilterPagination' => array(
 			'startEmpty' => false
@@ -46,10 +46,8 @@ class MinistriesController extends AppController {
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		$this->Auth->allow('index');
 
 		parent::beforeFilter();
@@ -63,7 +61,7 @@ class MinistriesController extends AppController {
 /**
  * Shows a list of ministries under a ministry or campus
  */
-	function index() {
+	public function index() {
 		if (!isset($this->passedArgs['Campus']) && !isset($this->passedArgs['Ministry'])) {
 			$this->cakeError('error404');
 		}
@@ -115,7 +113,7 @@ class MinistriesController extends AppController {
 /**
  * Ministry details
  */
-	function view() {
+	public function view() {
 		$id = $this->passedArgs['Ministry'];
 
 		if (!$id) {
@@ -149,7 +147,7 @@ class MinistriesController extends AppController {
 /**
  * Adds a ministry
  */
-	function add() {
+	public function add() {
 		$this->Ministry->Behaviors->disable('Confirm');
 
 		if (isset($this->passedArgs['Ministry'])) {
@@ -178,7 +176,7 @@ class MinistriesController extends AppController {
 /**
  * Bulk edits ministries
  */
-	function bulk_edit() {
+	public function bulk_edit() {
 		// persist mstoken through POST requests
 		$this->here .= '/mspersist:1';
 
@@ -224,7 +222,7 @@ class MinistriesController extends AppController {
 /**
  * Edits a ministry
  */
-	function edit() {
+	public function edit() {
 		$id = $this->passedArgs['Ministry'];
 
 		if (!$id) {
@@ -290,7 +288,7 @@ class MinistriesController extends AppController {
  * @param boolean $active Whether to make the model inactive or active
  * @param boolean $recursive Whether to iterate through the model's relationships and mark them as $active
  */
-	function toggle_activity($active = false, $recursive = false) {
+	public function toggle_activity($active = false, $recursive = false) {
 		$id = $this->passedArgs['Ministry'];
 
 		if (!$id) {
@@ -332,7 +330,7 @@ class MinistriesController extends AppController {
  *
  * @param integer $id The id of the ministry
  */
-	function history() {
+	public function history() {
 		$id = $this->passedArgs['Ministry'];
 
 		if (!$id) {
@@ -353,7 +351,7 @@ class MinistriesController extends AppController {
  * @param integer $id The id of the ministry
  * @param boolean $confirm Whether or not to approve the revision
  */
-	function revise($confirm = false) {
+	public function revise($confirm = false) {
 		$id = $this->passedArgs['Ministry'];
 
 		if ($confirm) {
@@ -378,7 +376,7 @@ class MinistriesController extends AppController {
 /**
  * Deletes a ministry
  */
-	function delete() {
+	public function delete() {
 		$id = $this->passedArgs['Ministry'];
 		if (!$id) {
 			$this->cakeError('error404');

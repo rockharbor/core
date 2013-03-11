@@ -23,14 +23,14 @@ class AttachmentsController extends AppController {
  *
  * @var string viewPath
  */
-	var $viewPath = 'attachments';
+	public $viewPath = 'attachments';
 
 /**
  * Extra helpers for this controller
  *
  * @var array
  */
-	var $helpers = array(
+	public $helpers = array(
 		'Media.Media',
 		'Number',
 		'Formatting'
@@ -41,7 +41,7 @@ class AttachmentsController extends AppController {
  *
  * @var array
  */
-	var $components = array(
+	public $components = array(
 		'MultiSelect.MultiSelect'
 	);
 
@@ -50,23 +50,21 @@ class AttachmentsController extends AppController {
  *
  * @var string
  */
-	var $model = null;
+	public $model = null;
 
 /**
  * The id of the model this Attachment belongs to. Used for Acl
  *
  * @var integer
  */
-	var $modelId = null;
+	public $modelId = null;
 
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->modelClass = Inflector::singularize($this->name);
 		$this->{$this->modelClass}->model = $this->model;
@@ -74,10 +72,8 @@ class AttachmentsController extends AppController {
 
 /**
  * Model::beforeRender() callback.
- *
- * @access private
  */
-	function beforeRender() {
+	public function beforeRender() {
 		parent::beforeRender();
 
 		$this->set('attachmentModel', $this->modelClass);
@@ -88,7 +84,7 @@ class AttachmentsController extends AppController {
 /**
  * Shows a list of attachments, along with an upload form.
  */
-	function index() {
+	public function index() {
 		$this->{$this->modelClass}->recursive = 0;
 
 		$this->set('attachments', $this->{$this->modelClass}->find('all', array(
@@ -106,7 +102,7 @@ class AttachmentsController extends AppController {
  *
  * @param integer $id The id of the attachment
  */
-	function download($id) {
+	public function download($id) {
 		$this->view = 'Media';
 
 		$this->{$this->modelClass}->recursive = -1;
@@ -132,7 +128,7 @@ class AttachmentsController extends AppController {
  * To be sent via a file upload form. The named parameters 'model' and $model
  * should be sent so the file can be attached to the user, involvement, or whatever.
  */
-	function upload() {
+	public function upload() {
 		$limit = $this->_getLimit();
 		$attachments = $this->{$this->modelClass}->find('all', array(
 			'conditions' => array(
@@ -167,7 +163,7 @@ class AttachmentsController extends AppController {
  * @param integer $id The attachment id
  * @param boolean $approve Whether or not to approve
  */
-	function approve($id = null, $approve = false) {
+	public function approve($id = null, $approve = false) {
 		$this->{$this->modelClass}->Behaviors->detach('Media.Coupler'); // don't require 'file' key
 		if (!$id) {
 			$this->cakeError('error404');
@@ -196,7 +192,7 @@ class AttachmentsController extends AppController {
  * @param mixed $id The model's id
  * @param int $level The promotion level
  */
-	function promote($id = null, $level = 0) {
+	public function promote($id = null, $level = 0) {
 		$this->{$this->modelClass}->Behaviors->detach('Media.Coupler'); // don't require 'file' key
 		if ($id) {
 			$ids = array($id);
@@ -237,7 +233,7 @@ class AttachmentsController extends AppController {
  *
  * @param integer $id The id of the attachment
  */
-	function delete($id = null) {
+	public function delete($id = null) {
 		if (!$id) {
 			$this->cakeError('error404');
 		} else {

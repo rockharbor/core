@@ -4,18 +4,18 @@ App::import('Lib', 'CoreTestCase');
 App::import('Model', 'Campus');
 
 class CampusTestCase extends CoreTestCase {
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->Campus =& ClassRegistry::init('Campus');
 		$this->loadFixtures('Campus', 'Leader');
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->Campus);
 		ClassRegistry::flush();
 	}
 
-	function testIsManager() {
+	public function testIsManager() {
 		$this->assertTrue($this->Campus->isManager(1,1));
 		$this->assertFalse($this->Campus->isManager(1,2));
 		$this->assertFalse($this->Campus->isManager());
@@ -23,7 +23,7 @@ class CampusTestCase extends CoreTestCase {
 		$this->assertFalse($this->Campus->isManager(2,1));
 	}
 
-	function testGetInvolved() {
+	public function testGetInvolved() {
 		$this->loadFixtures('Ministry', 'Involvement', 'Roster');
 
 		$results = $this->Campus->getInvolved(2);
@@ -38,7 +38,7 @@ class CampusTestCase extends CoreTestCase {
 		$this->assertEqual($results, array(1, 2, 3, 5, 6));
 	}
 
-	function testGetLeaders() {
+	public function testGetLeaders() {
 		$this->loadFixtures('Leader');
 
 		$results = $this->Campus->getLeaders(1);

@@ -1,9 +1,9 @@
 <?php
 /* Question Fixture generated on: 2010-06-28 09:06:19 : 1277741419 */
 class QuestionFixture extends CakeTestFixture {
-	var $name = 'Question';
+	public $name = 'Question';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'involvement_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
 		'order' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 2),
@@ -14,7 +14,7 @@ class QuestionFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 1,
 			'involvement_id' => 1,

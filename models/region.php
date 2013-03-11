@@ -21,21 +21,21 @@ class Region extends AppModel {
  *
  * @var string
  */
-	var $name = 'Region';
+	public $name = 'Region';
 
 /**
  * Default order
  *
  * @var string
  */
-	var $order = ':ALIAS:.name ASC';
+	public $order = ':ALIAS:.name ASC';
 
 /**
  * Validation rules
  *
  * @var array
  */
-	var $validate = array(
+	public $validate = array(
 		'name' => array(
 			'rule' => 'notempty',
 			'message' => 'Please fill in the required field.'
@@ -47,7 +47,7 @@ class Region extends AppModel {
  *
  * @var array
  */
-	var $hasMany = array(
+	public $hasMany = array(
 		'Zipcode' => array(
 			'dependent' => true
 		)

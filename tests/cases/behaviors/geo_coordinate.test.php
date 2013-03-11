@@ -5,18 +5,18 @@ App::import('Behavior', 'GeoCoordinate');
 
 class GeoCoordinateBehaviorTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Address');
 		$this->Address =& ClassRegistry::init('Address');
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->Address);
 		ClassRegistry::flush();
 	}
 
-	function testGeoCoordinates() {
+	public function testGeoCoordinates() {
 		$address = array(
 			'address_line_1' => '3080 Airway',
 			'address_line_2' => 'Ste. 100',
@@ -30,7 +30,7 @@ class GeoCoordinateBehaviorTestCase extends CoreTestCase {
 		$this->assertPattern($floatReg, $result['lng']);
 	}
 
-	function testGeoCoordinateBehavior() {
+	public function testGeoCoordinateBehavior() {
 		$floatReg = '/^[+-]?(([0-9]+)|([0-9]*\.[0-9]+|[0-9]+\.[0-9]*)|(([0-9]+|([0-9]*\.[0-9]+|[0-9]+\.[0-9]*))[eE][+-]?[0-9]+))$/';
 
 		$data = array(

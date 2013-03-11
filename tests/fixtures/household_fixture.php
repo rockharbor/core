@@ -1,9 +1,9 @@
 <?php
 /* Household Fixture generated on: 2010-06-28 09:06:11 : 1277741291 */
 class HouseholdFixture extends CakeTestFixture {
-	var $name = 'Household';
+	public $name = 'Household';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'contact_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
@@ -12,7 +12,7 @@ class HouseholdFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 1,
 			'contact_id' => 1,

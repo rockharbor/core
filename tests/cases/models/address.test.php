@@ -4,18 +4,18 @@ App::import('Model', 'Address');
 
 class AddressTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Address');
 		$this->Address =& ClassRegistry::init('Address');
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->Comment);
 		ClassRegistry::flush();
 	}
 
-	function testBeforeSave() {
+	public function testBeforeSave() {
 		$this->Address->save(array(
 			'Address' => array(
 				'city' => 'Placentia',
@@ -43,21 +43,21 @@ class AddressTestCase extends CoreTestCase {
 		$this->assertEqual($result['Address']['name'], 'Placentia Address');
 	}
 
-	function testDistance() {
+	public function testDistance() {
 		$this->assertNull($this->Address->distance());
 		$this->assertNull($this->Address->distance('123'));
 		$result = $this->Address->distance('1', '2');
 		$this->assertIsA($result, 'string');
 	}
 
-	function testRelated() {
+	public function testRelated() {
 		$results = $this->Address->related(1);
 		$this->assertEqual($results, array(2));
 		$results = $this->Address->related(100);
 		$this->assertFalse($results);
 	}
 
-	function testToggleActivity() {
+	public function testToggleActivity() {
 		$result = $this->Address->toggleActivity(3, false);
 		$this->assertTrue($result);
 		$result = $this->Address->toggleActivity(1, false);
@@ -70,7 +70,7 @@ class AddressTestCase extends CoreTestCase {
 		$this->assertTrue($result);
 	}
 
-	function testSetPrimary() {
+	public function testSetPrimary() {
 		$this->Address->setPrimary(1);
 		$this->Address->id = 1;
 		$this->assertEqual($this->Address->field('primary'), 1);

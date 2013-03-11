@@ -21,14 +21,14 @@ class Notification extends AppModel {
  *
  * @var string
  */
-	var $name = 'Notification';
+	public $name = 'Notification';
 
 /**
  * BelongsTo association link
  *
  * @var array
  */
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'User' => array(
 			'className' => 'User',
 			'foreignKey' => 'user_id',
@@ -44,7 +44,7 @@ class Notification extends AppModel {
  * @var array
  * @see Sanitizer.SanitizeBehavior
  */
-	var $sanitize = array(
+	public $sanitize = array(
 		'body' => 'stripScripts'
 	);
 }
