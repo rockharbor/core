@@ -22,7 +22,7 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		$this->Payments->Notifier->QueueEmail->setReturnValue('_smtp', true);
 		$this->Payments->Notifier->QueueEmail->setReturnValue('_mail', true);
 		$CreditCard = new CreditCard();
-		$CreditCard->gateway = new TestPaymentsControllerAuthorizeDotNetComponent();
+		$CreditCard->setGateway(new TestPaymentsControllerAuthorizeDotNetComponent());
 		ClassRegistry::removeObject('CreditCard');
 		ClassRegistry::addObject('CreditCard', $CreditCard);
 		ClassRegistry::init('CreditCard');
@@ -114,7 +114,7 @@ class PaymentsControllerTestCase extends CoreTestCase {
 
 		// valid card, invalid gateway response
 		$data['CreditCard']['credit_card_number'] = '4242424242424242';
-		ClassRegistry::getObject('CreditCard')->gateway->setReturnValueAt(0, '_request', '0|||some error|||123456');
+		ClassRegistry::getObject('CreditCard')->getGateway()->setReturnValueAt(0, '_request', '0|||some error|||123456');
 
 		$result = $this->Payments->Payment->CreditCard->validationErrors;
 		$this->assertTrue(array_key_exists('credit_card_number', $result));
@@ -122,7 +122,7 @@ class PaymentsControllerTestCase extends CoreTestCase {
 	}
 
 	public function testAdd() {
-		ClassRegistry::getObject('CreditCard')->gateway->setReturnValue('_request', '1||||||123456');
+		ClassRegistry::getObject('CreditCard')->getGateway()->setReturnValue('_request', '1||||||123456');
 
 		$this->su(array(
 			'User' => array('id' => 1),

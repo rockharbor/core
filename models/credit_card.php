@@ -237,4 +237,13 @@ class CreditCard extends AppModel {
 		}
 		return $this->gateway;
 	}
+
+/**
+ * Sets the gateway component
+ */
+	public function setGateway($gateway = null) {
+		if ($gateway) {
+			$this->gateway = $gateway;
+		}
+	}
 }
