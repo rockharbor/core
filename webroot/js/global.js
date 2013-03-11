@@ -92,6 +92,20 @@ CORE.ajaxPagination = function() {
 			});
 			return false;
 		});
+	$('.pagination select[name="data[jump]"]')
+		.off('change')
+		.on('change', function() {
+			// update update url
+			var container = $(this).closest('[data-core-update-url]');
+			var url = container.data('core-update-url');
+			if (!url.match(/page:/)) {
+				url = url.split('/');
+				url.push('page:1');
+				url = url.join('/');
+			}
+			url = url.replace(/page:\d+/, 'page:'+$(this).val());
+			CORE.request($(this), {url: url, update: true});
+		});
 }
 
 /**
