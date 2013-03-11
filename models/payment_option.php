@@ -21,14 +21,14 @@ class PaymentOption extends AppModel {
  *
  * @var string
  */
-	var $name = 'PaymentOption';
+	public $name = 'PaymentOption';
 
 /**
  * BelongsTo association link
  *
  * @var array
  */
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'Involvement' => array(
 			'className' => 'Involvement',
 			'foreignKey' => 'involvement_id',
@@ -43,7 +43,7 @@ class PaymentOption extends AppModel {
  *
  * @var array
  */
-	var $validate = array(
+	public $validate = array(
 		'total' => array(
 			'money' => array(
 				'rule' => 'money',

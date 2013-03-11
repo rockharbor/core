@@ -23,14 +23,14 @@ class Address extends AppModel {
  *
  * @var string
  */
-	var $name = 'Address';
+	public $name = 'Address';
 
 /**
  * Extra behaviors for this model
  *
  * @var array
  */
-	var $actsAs = array(
+	public $actsAs = array(
 		'GeoCoordinate'
 	);
 
@@ -39,7 +39,7 @@ class Address extends AppModel {
  *
  * @var array
  */
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'Zipcode' => array(
 			'foreignKey' => false,
 			'conditions' => array('Zipcode.zip = Address.zip')
@@ -51,7 +51,7 @@ class Address extends AppModel {
  *
  * @var array
  */
-	var $validate = array(
+	public $validate = array(
 		'name' => array(
 			'rule' => array('custom', '/^[a-z0-9 ]*$/i'),
 			'required' => false,
@@ -72,7 +72,7 @@ class Address extends AppModel {
  *
  * @return true Continue with the save
  */
-	function beforeSave() {
+	public function beforeSave() {
 		if (empty($this->data[$this->alias]['name'])) {
 			if (!empty($this->data[$this->alias]['city'])) {
 				$this->data[$this->alias]['name'] = $this->data[$this->alias]['city'].' Address';
@@ -90,9 +90,8 @@ class Address extends AppModel {
  * @param float $lat Latitude
  * @param float $lng Longitude
  * @return string SQL string
- * @access public
  */
-	function distance($lat = null, $lng = null) {
+	public function distance($lat = null, $lng = null) {
 		if (!$lat || !$lng) {
 			return null;
 		}
@@ -113,7 +112,7 @@ class Address extends AppModel {
  * @param integer $id The id of the Address
  * @return array List of ids
  */
-	function related($id = null) {
+	public function related($id = null) {
 		$address = $this->read(null, $id);
 		if (!$address) {
 			return false;
@@ -136,7 +135,7 @@ class Address extends AppModel {
  * @param boolean $active Whether to activate or deactivate
  * @return boolean Success
  */
-	function toggleActivity($id = null, $active = false) {
+	public function toggleActivity($id = null, $active = false) {
 		$address = $this->read(null, $id);
 		if ($address && !(!$active && $address['Address']['primary']) || $address['Address']['model'] != 'User') {
 			return parent::toggleActivity($id, $active, false);
@@ -149,7 +148,7 @@ class Address extends AppModel {
  *
  * @param integer $id
  */
-	function setPrimary($id) {
+	public function setPrimary($id) {
 		$this->id = $id;
 		$primaryAddress = $this->read();
 		$otherAddresses = $this->find('all', array(

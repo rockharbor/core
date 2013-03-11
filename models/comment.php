@@ -21,14 +21,14 @@ class Comment extends AppModel {
  *
  * @var string
  */
-	var $name = 'Comment';
+	public $name = 'Comment';
 
 /**
  * Behaviors for this model
  *
  * @var array
  */
-	var $actsAs = array(
+	public $actsAs = array(
 		'Containable',
 		'Linkable.AdvancedLinkable'
 	);
@@ -38,7 +38,7 @@ class Comment extends AppModel {
  *
  * @var array
  */
-	var $validate = array(
+	public $validate = array(
 		'comment' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
@@ -52,7 +52,7 @@ class Comment extends AppModel {
  *
  * @var array
  */
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'User' => array(
 			'className' => 'User',
 			'foreignKey' => 'user_id',
@@ -83,7 +83,7 @@ class Comment extends AppModel {
  * @param integer $id The id of the comment
  * @return boolean
  */
-	function canDelete($userId = null, $id = null) {
+	public function canDelete($userId = null, $id = null) {
 		if (!$userId || !$id) {
 			return false;
 		}
@@ -130,7 +130,7 @@ class Comment extends AppModel {
  * @return boolean
  * @see Comment::canDelete()
  */
-	function canEdit($userId = null, $id = null) {
+	public function canEdit($userId = null, $id = null) {
 		return $this->canDelete($userId, $id);
 	}
 }

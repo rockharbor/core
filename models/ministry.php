@@ -21,21 +21,21 @@ class Ministry extends AppModel {
  *
  * @var string
  */
-	var $name = 'Ministry';
+	public $name = 'Ministry';
 
 /**
  * Default model order
  *
  * @var string
  */
-	var $order = ':ALIAS:.name ASC';
+	public $order = ':ALIAS:.name ASC';
 
 /**
  * Extra behaviors for this model
  *
  * @var array
  */
-	var $actsAs = array(
+	public $actsAs = array(
 		'Containable',
 		'Tree',
 		'Confirm' => array(
@@ -57,7 +57,7 @@ class Ministry extends AppModel {
  *
  * @var array
  */
-	var $validate = array(
+	public $validate = array(
 		'name' => array(
 			'rule' => 'notempty',
 			'message' => 'Please fill in the required field.'
@@ -74,7 +74,7 @@ class Ministry extends AppModel {
  * @var array
  * @see Sanitizer.SanitizeBehavior
  */
-	var $sanitize = array(
+	public $sanitize = array(
 		'description' => 'stripScripts'
 	);
 
@@ -83,7 +83,7 @@ class Ministry extends AppModel {
  *
  * @var array
  */
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'ParentMinistry' => array(
 			'className' => 'Ministry',
 			'foreignKey' => 'parent_id',
@@ -105,7 +105,7 @@ class Ministry extends AppModel {
  *
  * @var array
  */
-	var $hasMany = array(
+	public $hasMany = array(
 		'Involvement' => array(
 			'className' => 'Involvement',
 			'foreignKey' => 'ministry_id',
@@ -141,7 +141,7 @@ class Ministry extends AppModel {
  *
  * @var array
  */
-	var $hasAndBelongsToMany = array(
+	public $hasAndBelongsToMany = array(
 		'DisplayInvolvement' => array(
 			'className' => 'Involvement',
 			'table' => 'involvements_ministries',
@@ -161,7 +161,7 @@ class Ministry extends AppModel {
  *
  * @var array
  */
-	var $searchFilter = array(
+	public $searchFilter = array(
 		'canBePromoted' => array(
 			'conditions' => array(
 				'Image.approved' => true,
@@ -180,9 +180,8 @@ class Ministry extends AppModel {
  * @param integer $userId The user id
  * @param integer $ministryId The ministry id
  * @return boolean True if the user is a manager
- * @access public
  */
-	function isManager($userId = null, $ministryId = null) {
+	public function isManager($userId = null, $ministryId = null) {
 		if (!$userId || !$ministryId) {
 			return false;
 		}
@@ -206,7 +205,7 @@ class Ministry extends AppModel {
  * @param boolean $recursive Whether to pull for subministries as well
  * @return array The user ids
  */
-	function getInvolved($ministryId, $recursive = false) {
+	public function getInvolved($ministryId, $recursive = false) {
 		if ($recursive) {
 			$conditions['or']['Ministry.id'] = $ministryId;
 			$conditions['or']['Ministry.parent_id'] = $ministryId;
@@ -245,7 +244,7 @@ class Ministry extends AppModel {
  * @param mixed $modelId Integer for single id, or array for multiple
  * @return array Array of user ids
  */
-	function getLeaders($modelId) {
+	public function getLeaders($modelId) {
 		$leaders = $this->Leader->find('all', array(
 			'fields' => array(
 				'user_id'
@@ -266,7 +265,7 @@ class Ministry extends AppModel {
  * @param boolean $recursive Include subministries of items the user isn't directly leading?
  * @return array Array of ids
  */
-	function getLeading($userId, $recursive = false) {
+	public function getLeading($userId, $recursive = false) {
 		$leaders = $this->Leader->find('all', array(
 			'fields' => array(
 				'model_id'

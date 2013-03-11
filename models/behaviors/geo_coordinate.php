@@ -45,7 +45,6 @@ class GeoCoordinateBehavior extends ModelBehavior {
  * Provider details and settings to parse details
  *
  * @var array
- * @access public
 */
 	public $providers = array(
 		'google'    => array(
@@ -66,7 +65,6 @@ class GeoCoordinateBehavior extends ModelBehavior {
  * Settings
  *
  * @var string
- * @access public
 */
 	public $settings = array(
 		'provider' => 'google',
@@ -113,7 +111,6 @@ class GeoCoordinateBehavior extends ModelBehavior {
  * @param object $Model Model reference
  * @param mixed $q Query, an address array or string
  * @return array Lat and lng
- * @access public
  */
 	public function geoCoordinates(&$Model, $q = '') {
 		// get geo coords
@@ -125,7 +122,6 @@ class GeoCoordinateBehavior extends ModelBehavior {
 *
 * @param mixed $query Query
 * @param array $options Options
-* @access private
 * @return array
 */
 	private function _geocoords($query, $options = array()) {

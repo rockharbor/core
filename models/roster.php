@@ -21,14 +21,14 @@ class Roster extends AppModel {
  *
  * @var string
  */
-	var $name = 'Roster';
+	public $name = 'Roster';
 
 /**
  * Extra behaviors for this model
  *
  * @var array
  */
-	var $actsAs = array(
+	public $actsAs = array(
 		'Containable',
 		'Search.Searchable',
 		'Cacher.Cache',
@@ -41,7 +41,7 @@ class Roster extends AppModel {
  *
  * @var array
  */
-	var $virtualFields = array(
+	public $virtualFields = array(
 		'amount_due' => '@vad:=CAST((SELECT (IF (:ALIAS:.parent_id IS NOT NULL, ad.childcare, ad.total)) FROM payment_options as ad WHERE ad.id = :ALIAS:.payment_option_id) AS DECIMAL(10,2))',
 		'amount_paid' => '@vap:=CAST((COALESCE((SELECT SUM(ap.amount) FROM payments as ap WHERE ap.roster_id = :ALIAS:.id), 0)) AS DECIMAL(10,2))',
 		'balance' => 'CAST(@vad-@vap AS DECIMAL(10,2))'
@@ -52,7 +52,7 @@ class Roster extends AppModel {
  *
  * @var array
  */
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'User' => array(
 			'className' => 'User',
 			'foreignKey' => 'user_id'
@@ -77,7 +77,7 @@ class Roster extends AppModel {
  *
  * @var array
  */
-	var $hasMany = array(
+	public $hasMany = array(
 		'Answer' => array(
 			'className' => 'Answer',
 			'foreignKey' => 'roster_id',
@@ -95,7 +95,7 @@ class Roster extends AppModel {
  *
  * @var array
  */
-	var $hasAndBelongsToMany = array(
+	public $hasAndBelongsToMany = array(
 		'Role' => array(
 			'className' => 'Role',
 			'foreignKey' => 'roster_id',
@@ -110,7 +110,7 @@ class Roster extends AppModel {
  * @var array
  * @see Search.Searchable::parseCriteria()
  */
-	var $filterArgs = array(
+	public $filterArgs = array(
 		array(
 			'name' => 'roles',
 			'type' => 'subquery',
@@ -127,7 +127,7 @@ class Roster extends AppModel {
  * @param array $extra Extra find options
  * @return integer Record count
  */
-	function paginateCount($conditions = null, $recursive = 0, $extra = array()) {
+	public function paginateCount($conditions = null, $recursive = 0, $extra = array()) {
 		if (isset($extra['link'])) {
 			$link = $extra['link'];
 		}
@@ -140,7 +140,7 @@ class Roster extends AppModel {
  * @param array $data Search data
  * @return array Query
  */
-	function findByRoles($data = array()) {
+	public function findByRoles($data = array()) {
 		$this->RolesRoster->bindModel(array('belongsTo' => array('Role', 'Roster')));
 		$this->RolesRoster->Behaviors->attach('Containable', array('autoFields' => false));
 		$this->RolesRoster->Behaviors->attach('Search.Searchable');
@@ -179,7 +179,7 @@ class Roster extends AppModel {
  * @return array New roster record
  *
  */
-	function setDefaultData($options) {
+	public function setDefaultData($options) {
 		$_options = array(
 			'creditCard' => array(),
 			'defaults' => array(),

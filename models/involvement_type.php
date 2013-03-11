@@ -22,21 +22,21 @@ class InvolvementType extends AppModel {
  *
  * @var string
  */
-	var $name = 'InvolvementType';
+	public $name = 'InvolvementType';
 
 /**
  * Default order
  *
  * @var string
  */
-	var $order = ':ALIAS:.name ASC';
+	public $order = ':ALIAS:.name ASC';
 
 /**
  * HasMany association link
  *
  * @var array
  */
-	var $hasMany = array(
+	public $hasMany = array(
 		'Involvement' => array(
 			'className' => 'Involvement',
 			'foreignKey' => 'involvement_type_id',

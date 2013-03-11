@@ -21,14 +21,14 @@ class Question extends AppModel {
  *
  * @var string
  */
-	var $name = 'Question';
+	public $name = 'Question';
 
 /**
  * BelongsTo association link
  *
  * @var array
  */
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'Involvement' => array(
 			'className' => 'Involvement',
 			'foreignKey' => 'involvement_id',
@@ -43,7 +43,7 @@ class Question extends AppModel {
  *
  * @var array
  */
-	var $validate = array(
+	public $validate = array(
 		'description' => array(
 			'rule' => 'notEmpty',
 			'required' => true,
@@ -56,7 +56,7 @@ class Question extends AppModel {
  *
  * @var array
  */
-	var $actsAs = array(
+	public $actsAs = array(
 		'Ordered' => array(
 			'field' => 'order',
 			'foreign_key' => 'involvement_id'
@@ -69,7 +69,7 @@ class Question extends AppModel {
  * @var array
  * @see Sanitizer.SanitizeBehavior
  */
-	var $sanitize = array(
+	public $sanitize = array(
 		'description' => 'stripScripts'
 	);
 
