@@ -14,6 +14,43 @@ class DateTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 
+	function testDateCleanup() {
+		$date = array(
+			'Date' => array(
+				'start_date' => '2010-04-05',
+				'end_date' => '2012-04-05',
+				'start_time' => '08:00:00',
+				'end_time' => '11:00:00',
+				'all_day' => 1,
+				'permanent' => 1,
+				'recurring' => 0,
+				'recurrance_type' => 'y',
+				'frequency' => 0,
+				'weekday' => 1,
+				'day' => 1,
+				'exemption' => 0,
+				'offset' => 1
+			)
+		);
+		$date = $this->Date->save($date);
+
+		$result = $date['Date']['start_time'];
+		$expected = '00:00:00';
+		$this->assertEqual($result, $expected);
+
+		$result = $date['Date']['end_time'];
+		$expected = '23:59:00';
+		$this->assertEqual($result, $expected);
+
+		$result = $date['Date']['frequency'];
+		$expected = '1';
+		$this->assertEqual($result, $expected);
+
+		$result = $date['Date']['permanent'];
+		$expected = '0';
+		$this->assertEqual($result, $expected);
+	}
+
 	function testVirtualFields() {
 		$this->loadFixtures('Date');
 

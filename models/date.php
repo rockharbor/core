@@ -116,6 +116,12 @@ class Date extends AppModel {
 			$this->data['Date']['frequency'] = 1;
 		}
 
+		if (isset($this->data['Date']['permanent']) && isset($this->data['Date']['recurring'])) {
+			if (!$this->data['Date']['recurring']) {
+				$this->data['Date']['permanent'] = false;
+			}
+		}
+
 		return parent::beforeSave();
 	}
 
