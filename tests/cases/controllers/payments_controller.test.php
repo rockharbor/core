@@ -234,6 +234,31 @@ class PaymentsControllerTestCase extends CoreTestCase {
 
 		$total = Set::apply('/Payment/amount', $results, 'array_sum');
 		$this->assertIdentical($total, 5.00);
+
+		// check money sanitization
+		$data = array(
+			'Payment' => array(
+				'amount' => '$5.00',
+				'payment_type_id' => 2
+			)
+		);
+		$vars = $this->testAction('/payments/add/1/Involvement:1', array(
+			'return' => 'vars',
+			'data' => $data
+		));
+
+		$result = $this->Payments->Payment->validationErrors;
+		$expected = array();
+		$this->assertEqual($result, $expected);
+
+		$results = $this->Payments->Payment->find('all', array(
+			'conditions' => array(
+				'Payment.roster_id' => 1
+			)
+		));
+
+		$total = Set::apply('/Payment/amount', $results, 'array_sum');
+		$this->assertIdentical($total, 10.00);
 	}
 
 	function testEdit() {
