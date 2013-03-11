@@ -11,7 +11,7 @@ Mock::generatePartial('QueueEmailComponent', 'MockPaymentsQueueEmailComponent', 
 
 class PaymentsControllerTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->Payments =& new TestPaymentsController();
 		$this->Payments->__construct();
@@ -33,13 +33,13 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		$this->testController = $this->Payments;
 	}
 
-	function endTest() {
+	public function endTest() {
 		$this->Payments->Session->destroy();
 		unset($this->Payments);
 		ClassRegistry::flush();
 	}
 
-	function testIndex() {
+	public function testIndex() {
 		$vars = $this->testAction('/payments/index/User:1', array(
 			'return' => 'vars'
 		));
@@ -73,7 +73,7 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testFailedPayment() {
+	public function testFailedPayment() {
 		$this->su(array(
 			'User' => array('id' => 1),
 			'Group' => array('id' => 1),
@@ -121,7 +121,7 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		$this->assertTrue($result['credit_card_number'], 'some error');
 	}
 
-	function testAdd() {
+	public function testAdd() {
 		ClassRegistry::getObject('CreditCard')->gateway->setReturnValue('_request', '1||||||123456');
 
 		$this->su(array(
@@ -236,7 +236,7 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		$this->assertIdentical($total, 5.00);
 	}
 
-	function testEdit() {
+	public function testEdit() {
 		$this->loadFixtures('Group');
 
 		$data = array(
@@ -257,7 +257,7 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		$this->assertTrue(!empty($vars['paymentTypes']));
 	}
 
-	function testDelete() {
+	public function testDelete() {
 		$this->testAction('/payments/delete/1');
 		$this->assertFalse($this->Payments->Payment->read(null, 1));
 	}

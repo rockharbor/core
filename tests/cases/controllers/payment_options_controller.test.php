@@ -7,7 +7,7 @@ Mock::generatePartial('PaymentOptionsController', 'TestPaymentOptionsController'
 
 class PaymentOptionsControllerTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->PaymentOptions =& new TestPaymentOptionsController();
 		$this->PaymentOptions->__construct();
@@ -17,13 +17,13 @@ class PaymentOptionsControllerTestCase extends CoreTestCase {
 		$this->testController = $this->PaymentOptions;
 	}
 
-	function endTest() {
+	public function endTest() {
 		$this->PaymentOptions->Session->destroy();
 		unset($this->PaymentOptions);
 		ClassRegistry::flush();
 	}
 
-	function testIndex() {
+	public function testIndex() {
 		$vars = $this->testAction('/payment_options/index/Involvement:1', array(
 			'return' => 'vars'
 		));
@@ -61,7 +61,7 @@ class PaymentOptionsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testAdd() {
+	public function testAdd() {
 		$data = array(
 			'PaymentOption' => array(
 				'involvement_id' => 3,
@@ -83,7 +83,7 @@ class PaymentOptionsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, 'Team CORE signups that cost more');
 	}
 
-	function testEdit() {
+	public function testEdit() {
 		$data = $this->PaymentOptions->PaymentOption->read(null, 1);
 		$data['PaymentOption']['name'] = 'New name';
 
@@ -96,7 +96,7 @@ class PaymentOptionsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, 'New name');
 	}
 
-	function testDelete() {
+	public function testDelete() {
 		$this->testAction('/payment_options/delete/1');
 		$this->assertFalse($this->PaymentOptions->PaymentOption->read(null, 1));
 	}

@@ -13,7 +13,7 @@ Mock::generatePartial('ProxyAuthorizeDotNetComponent', 'MockAuthorizeDotNetCompo
 
 class AuthorizeDotNetTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('User', 'Profile');
 		$this->loadSettings();
@@ -21,14 +21,14 @@ class AuthorizeDotNetTestCase extends CoreTestCase {
 		$this->Controller = new TestAuthorizeController();
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->AuthorizeDotNet);
 		unset($this->Controller);
 		$this->unloadSettings();
 		ClassRegistry::flush();
 	}
 
-	function testSetInvoiceNumber() {
+	public function testSetInvoiceNumber() {
 		$this->AuthorizeDotNet->setInvoiceNumber('invoice. 12345&#$');
 		$result = $this->AuthorizeDotNet->getData('x_invoice_num');
 		$expected = 'invoice12345';
@@ -40,14 +40,14 @@ class AuthorizeDotNetTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testSetDescription() {
+	public function testSetDescription() {
 		$this->AuthorizeDotNet->setDescription(' string &*@!#$& with <b>symbols</b>');
 		$result = $this->AuthorizeDotNet->getData('x_description');
 		$expected = 'string  with symbols';
 		$this->assertEqual($result, $expected);
 	}
 
-	function testSetAmount() {
+	public function testSetAmount() {
 		$this->AuthorizeDotNet->setAmount(2000);
 		$result = $this->AuthorizeDotNet->getData('x_Amount');
 		$expected = '2000.00';
@@ -59,7 +59,7 @@ class AuthorizeDotNetTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testSetCustomer() {
+	public function testSetCustomer() {
 		$this->AuthorizeDotNet->setCustomer();
 		$results = $this->AuthorizeDotNet->getData();
 		$this->assertFalse(isset($results['x_First_Name']));
@@ -93,14 +93,14 @@ class AuthorizeDotNetTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testSetInvoice() {
+	public function testSetInvoice() {
 		$this->AuthorizeDotNet->setInvoice('test');
 		$result = $this->AuthorizeDotNet->getData('x_Invoice');
 		$expected = 'test';
 		$this->assertEqual($result, $expected);
 	}
 
-	function testFormatFields() {
+	public function testFormatFields() {
 		$data = array(
 			'Key' => 'Value',
 			'Something' => 'Nothing',
@@ -111,7 +111,7 @@ class AuthorizeDotNetTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testInit() {
+	public function testInit() {
 		$User = ClassRegistry::init('User');
 		$User->contain(array('Profile'));
 		$AppSetting = ClassRegistry::init('AppSetting');
@@ -135,7 +135,7 @@ class AuthorizeDotNetTestCase extends CoreTestCase {
 		Configure::write('debug', 2);
 	}
 
-	function testRequest() {
+	public function testRequest() {
 		$this->AuthorizeDotNet->setReturnValue('_request', '1||||||123456');
 		$this->AuthorizeDotNet->setData(array(
 			'x_First_Name' => 'Jeremy',

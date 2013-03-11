@@ -9,7 +9,7 @@ Mock::generatePartial('ProxyUserImagesController', 'MockProxyUserImagesControlle
 
 class AttachmentsControllerTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->Attachments =& new MockProxyUserImagesController();
 		$this->Attachments->__construct();
@@ -22,13 +22,13 @@ class AttachmentsControllerTestCase extends CoreTestCase {
 		$this->testController = $this->Attachments;
 	}
 
-	function endTest() {
+	public function endTest() {
 		$this->Attachments->Session->destroy();
 		unset($this->Attachments);
 		ClassRegistry::flush();
 	}
 
-	function testGetLimit() {
+	public function testGetLimit() {
 		$this->loadSettings();
 
 		$controller = new MockProxyUserImagesController();
@@ -48,14 +48,14 @@ class AttachmentsControllerTestCase extends CoreTestCase {
 		$this->unloadSettings();
 	}
 
-	function testBeforeFilter() {
+	public function testBeforeFilter() {
 		$vars = $this->testAction('/user_images/index/User:1');
 		$this->assertEqual($vars['attachmentModel'], 'Image');
 		$this->assertEqual($vars['model'], 'User');
 		$this->assertEqual($vars['modelId'], '1');
 	}
 
-	function testDownload() {
+	public function testDownload() {
 		$this->loadFixtures('Attachment');
 
 		$vars = $this->testAction('/user_images/download/4');
@@ -83,7 +83,7 @@ class AttachmentsControllerTestCase extends CoreTestCase {
 		$this->assertPattern($expected, $result);
 	}
 
-	function testUpload() {
+	public function testUpload() {
 		$this->loadFixtures('Attachment');
 
 		$vars = $this->testAction('/user_images/upload/User:1');
@@ -98,7 +98,7 @@ class AttachmentsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testApprove() {
+	public function testApprove() {
 		$this->testAction('/user_images/approve/4/1');
 		$result = $this->Attachments->Session->read('Message.flash.element', 'flash'.DS.'success');
 
@@ -107,7 +107,7 @@ class AttachmentsControllerTestCase extends CoreTestCase {
 		$result = $this->Attachments->Session->read('Message.flash.element', 'flash'.DS.'success');
 	}
 
-	function testPromote() {
+	public function testPromote() {
 		$this->loadFixtures('Attachment');
 		$this->Attachments->model = 'Involvement';
 

@@ -4,19 +4,19 @@ App::import('Helper', array('ProxyReport'));
 
 class ReportHelperTestCase extends CoreTestCase {
 
-	var $skipSetup = true;
+	public $skipSetup = true;
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->Report = new ProxyReportHelper();
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->Report);
 		ClassRegistry::flush();
 	}
 
-	function testSquash() {
+	public function testSquash() {
 		$fields = array('Address.address_line_1', 'Address.city', 'Address.state', 'Address.zip');
 		$format = '%s %s, %s %d';
 		$alias = 'Address';
@@ -32,7 +32,7 @@ class ReportHelperTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testGetResultsWithSquashed() {
+	public function testGetResultsWithSquashed() {
 		$headers = array(
 			'User' => array(
 				'username' => null,
@@ -91,14 +91,14 @@ class ReportHelperTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testSquashFields() {
+	public function testSquashFields() {
 		$fields = array(array('Address.address_line_1', 'Address.city', 'Address.state', 'Address.zip'), '%s/n%s, %s %d', 'Address');
 		$this->Report->squashFields(serialize($fields));
 		$result = unserialize($this->Report->squashFields());
 		$this->assertEqual($result, $fields);
 	}
 
-	function testAlias() {
+	public function testAlias() {
 		$this->Report->alias(array('Some.Field.value' => 'Readable Title'));
 		$expected = array(
 			'Some.Field.value' => 'Readable Title'
@@ -118,7 +118,7 @@ class ReportHelperTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testHeaderAliases() {
+	public function testHeaderAliases() {
 		$this->Report->alias(array('Some.Field.value' => 'Readable Title'));
 
 		$result = unserialize($this->Report->headerAliases());
@@ -131,7 +131,7 @@ class ReportHelperTestCase extends CoreTestCase {
 		$this->assertEqual($this->Report->alias(), array('Some.Field.value' => 'Readable Title'));
 	}
 
-	function testCreateHeadersWithAliases() {
+	public function testCreateHeadersWithAliases() {
 		$data = array(
 			'User' => array(
 				'username' => null,
@@ -149,7 +149,7 @@ class ReportHelperTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testNormalize() {
+	public function testNormalize() {
 		$data = array(
 			'User' => array(
 				'username' => null,
@@ -172,7 +172,7 @@ class ReportHelperTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testCreateHeaders() {
+	public function testCreateHeaders() {
 		$data = array(
 			'User' => array(
 				'username' => null,
@@ -199,7 +199,7 @@ class ReportHelperTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testCreateHeadersWithMultipleRecords() {
+	public function testCreateHeadersWithMultipleRecords() {
 		$headers = array(
 			'HouseholdMember' => array(
 				'Household' => array(
@@ -336,7 +336,7 @@ class ReportHelperTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testGetResults() {
+	public function testGetResults() {
 		$headers = array(
 			'User' => array(
 				'username' => null,
@@ -393,7 +393,7 @@ class ReportHelperTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testGetResultsWithMultipleRecords() {
+	public function testGetResultsWithMultipleRecords() {
 		$headers = array(
 			'HouseholdMember' => array(
 				'Household' => array(
@@ -508,7 +508,7 @@ class ReportHelperTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testSet() {
+	public function testSet() {
 		$data = array(
 			array(
 				'User' => array(

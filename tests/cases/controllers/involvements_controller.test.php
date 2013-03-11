@@ -12,7 +12,7 @@ class TestInvolvementsController extends InvolvementsController {
 
 	private $_defaultAuth = false;
 
-	function setAuthorized($action, $return) {
+	public function setAuthorized($action, $return) {
 		if ($action === null) {
 			$this->_defaultAuth = $return;
 			return;
@@ -23,7 +23,7 @@ class TestInvolvementsController extends InvolvementsController {
 		$this->_authorized[strtolower($action)] = $return;
 	}
 
-	function isAuthorized($action = null) {
+	public function isAuthorized($action = null) {
 		if (empty($action)) {
 			$action = $this->Auth->action();
 		}
@@ -41,7 +41,7 @@ Mock::generatePartial('TestInvolvementsController', 'MockTestInvolvementsControl
 
 class InvolvementsControllerTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Involvement', 'Roster', 'User', 'InvolvementType', 'Group', 'Ministry');
 		$this->loadFixtures('MinistriesRev', 'Leader');
@@ -57,13 +57,13 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$this->Involvements->setAuthorized(null, true);
 	}
 
-	function endTest() {
+	public function endTest() {
 		$this->Involvements->Session->destroy();
 		unset($this->Involvements);
 		ClassRegistry::flush();
 	}
 
-	function testView() {
+	public function testView() {
 		$this->loadSettings();
 
 		$this->Involvements->Involvement->id = 1;
@@ -200,7 +200,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$this->unloadSettings();
 	}
 
-	function testIndex() {
+	public function testIndex() {
 		$this->loadSettings();
 		$this->loadFixtures('InvolvementsMinistry', 'Date', 'InvolvementsMinistry');
 
@@ -291,7 +291,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$this->unloadSettings();
 	}
 
-	function testInviteRoster() {
+	public function testInviteRoster() {
 		$this->loadFixtures('PaymentOption');
 
 		$this->Involvements->Session->write('MultiSelect.test', array(
@@ -324,7 +324,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($notificationCountAfter-$notificationCountBefore, 2);
 	}
 
-	function testInviteUser() {
+	public function testInviteUser() {
 		$this->loadFixtures('PaymentOption', 'Leader');
 
 		$this->Involvements->Session->write('MultiSelect.test', array(
@@ -360,7 +360,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($notificationCountAfter-$notificationCountBefore, 3);
 	}
 
-	function testAdd() {
+	public function testAdd() {
 		$data = array(
 			'Involvement' => array(
 				'ministry_id' => 4,
@@ -421,7 +421,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testEdit() {
+	public function testEdit() {
 		$data = $this->Involvements->Involvement->read(null, 1);
 		$data['Involvement']['name'] = 'New name';
 
@@ -432,7 +432,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($this->Involvements->Involvement->field('name'), 'New name');
 	}
 
-	function testToggleActivityWithoutLeader() {
+	public function testToggleActivityWithoutLeader() {
 		$this->testAction('/involvements/toggle_activity/1/Involvement:2');
 		$this->Involvements->Involvement->id = 2;
 		$this->assertEqual($this->Involvements->Involvement->field('active'), 0);
@@ -452,7 +452,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($this->Involvements->Session->read('Message.flash.element'), 'flash'.DS.'success');
 	}
 
-	function testToggleActivity() {
+	public function testToggleActivity() {
 		$this->testAction('/involvements/toggle_activity/1/Involvement:3');
 		$this->Involvements->Involvement->id = 3;
 		$this->assertEqual($this->Involvements->Session->read('Message.flash.element'), 'flash'.DS.'failure');
@@ -475,7 +475,7 @@ class InvolvementsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($this->Involvements->Session->read('Message.flash.element'), 'flash'.DS.'success');
 	}
 
-	function testDelete() {
+	public function testDelete() {
 		$this->testAction('/involvements/delete/Involvement:1');
 		$this->assertFalse($this->Involvements->Involvement->read(null, 1));
 	}

@@ -9,7 +9,7 @@ Mock::generatePartial('SearchesController', 'MockSearchesController', array('isA
 
 class SearchesControllerTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('User', 'Ministry', 'Involvement', 'Profile', 'InvolvementType', 'Group', 'Campus');
 		$this->Searches =& new MockSearchesController();
@@ -26,14 +26,14 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$this->loadSettings();
 	}
 
-	function endTest() {
+	public function endTest() {
 		$this->unloadSettings();
 		$this->Searches->Session->destroy();
 		unset($this->Searches);
 		ClassRegistry::flush();
 	}
 
-	function testIndex() {
+	public function testIndex() {
 		$this->loadFixtures('Roster');
 
 		$vars = $this->testAction('/searches/index?q=rick');
@@ -145,7 +145,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, array());
 	}
 
-	function testInvolvement() {
+	public function testInvolvement() {
 		$this->loadFixtures('Address');
 
 		$vars = $this->testAction('/searches/involvement?q=core');
@@ -288,7 +288,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testMinistry() {
+	public function testMinistry() {
 		$vars = $this->testAction('/searches/ministry?q=web');
 		$results = Set::extract('/Ministry/name', $vars['results']);
 		sort($results);
@@ -345,7 +345,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testUser() {
+	public function testUser() {
 		$search = array(
 			'Profile' => array(
 				'email' => 'rockharbor'
@@ -368,7 +368,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 		));
 	}
 
-	function testSimpleSearch() {
+	public function testSimpleSearch() {
 		$data = array(
 			'User' => array(
 				'username' => 'a'
@@ -486,7 +486,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$this->Searches->Session->delete('FilterPagination');
 	}
 
-	function testNotInHouseholdSearchFilter() {
+	public function testNotInHouseholdSearchFilter() {
 		$this->loadFixtures('Household', 'HouseholdMember');
 
 		$data = array(
@@ -516,7 +516,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$this->Searches->Session->delete('FilterPagination');
 	}
 
-	function testNotLeaderOfSearchFilter() {
+	public function testNotLeaderOfSearchFilter() {
 		$this->loadFixtures('Leader');
 
 		$data = array(
@@ -547,7 +547,7 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$this->Searches->Session->delete('FilterPagination');
 	}
 
-	function testNotInvolvementAndIsLeading() {
+	public function testNotInvolvementAndIsLeading() {
 		$this->loadFixtures('Leader');
 
 		$data = array(

@@ -1,9 +1,9 @@
 <?php
 /* Group Fixture generated on: 2010-07-07 11:07:47 : 1278526667 */
 class GroupFixture extends CakeTestFixture {
-	var $name = 'Group';
+	public $name = 'Group';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 45, 'key' => 'unique'),
 		'conditional' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 1),
@@ -16,7 +16,7 @@ class GroupFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 1,
 			'name' => 'Super Administrator',

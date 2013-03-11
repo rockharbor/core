@@ -4,18 +4,18 @@ App::import('Lib', 'CoreTestCase');
 App::import('Model', 'Ministry');
 
 class MinistryTestCase extends CoreTestCase {
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Ministry', 'Leader');
 		$this->Ministry =& ClassRegistry::init('Ministry');
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->Ministry);
 		ClassRegistry::flush();
 	}
 
-	function testIsManager() {
+	public function testIsManager() {
 		$this->assertTrue($this->Ministry->isManager(1, 4));
 		$this->assertTrue($this->Ministry->isManager(2, 4));
 		$this->assertFalse($this->Ministry->isManager(2, 5));
@@ -26,7 +26,7 @@ class MinistryTestCase extends CoreTestCase {
 		$this->assertTrue($this->Ministry->isManager(2, 6));
 	}
 
-	function testGetInvolved() {
+	public function testGetInvolved() {
 		$this->loadFixtures('Roster', 'Involvement');
 
 		$results = $this->Ministry->getInvolved(1);
@@ -40,7 +40,7 @@ class MinistryTestCase extends CoreTestCase {
 		$this->assertEqual($results, array());
 	}
 
-	function testGetLeaders() {
+	public function testGetLeaders() {
 		$this->loadFixtures('Involvement');
 
 		$results = $this->Ministry->getLeaders(1);
@@ -50,7 +50,7 @@ class MinistryTestCase extends CoreTestCase {
 		$this->assertEqual($results, array(1, 2));
 	}
 
-	function testGetLeading() {
+	public function testGetLeading() {
 		$results = $this->Ministry->getLeading(1);
 		sort($results);
 		$expected = array(4);

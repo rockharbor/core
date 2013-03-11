@@ -9,7 +9,7 @@ Mock::generatePartial('MinistriesController', 'TestMinistriesController', array(
 
 class MinistriesControllerTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		// necessary fixtures
 		$this->loadSettings();
@@ -26,14 +26,14 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$this->testController = $this->Ministries;
 	}
 
-	function endTest() {
+	public function endTest() {
 		$this->Ministries->Session->destroy();
 		unset($this->Ministries);
 		$this->unloadSettings();
 		ClassRegistry::flush();
 	}
 
-	function testIndex() {
+	public function testIndex() {
 		$this->loadFixtures('Group');
 
 		$vars = $this->testAction('/ministries/index/Campus:2');
@@ -130,7 +130,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, array(1, 2));
 	}
 
-	function testView() {
+	public function testView() {
 		$this->loadFixtures('Group');
 
 		$vars = $this->testAction('/ministries/view/Ministry:3');
@@ -146,7 +146,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$this->assertTrue(empty($vars['ministry']['ChildMinistry']));
 	}
 
-	function testBulkEdit() {
+	public function testBulkEdit() {
 		$this->Ministries->Session->write('MultiSelect.test', array(
 			'selected' => array(1,4,5),
 			'search' => array()
@@ -289,7 +289,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testAdd() {
+	public function testAdd() {
 		$countBefore = $this->Ministries->Ministry->find('count');
 		$vars = $this->testAction('/ministries/add/Campus:1');
 		$this->assertNull($this->Ministries->Session->read('Message'));
@@ -320,7 +320,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($this->testController->data['Ministry']['campus_id'], 1);
 	}
 
-	function testEdit() {
+	public function testEdit() {
 		$this->loadFixtures('User');
 
 		$data = $this->Ministries->Ministry->read(null, 1);
@@ -374,7 +374,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testToggleActivity() {
+	public function testToggleActivity() {
 		$this->testAction('/ministries/toggle_activity/1/Ministry:3');
 		$this->Ministries->Ministry->id = 3;
 		$this->assertEqual($this->Ministries->Session->read('Message.flash.element'), 'flash'.DS.'failure');
@@ -393,7 +393,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($this->Ministries->Session->read('Message.flash.element'), 'flash'.DS.'success');
 	}
 
-	function testHistory() {
+	public function testHistory() {
 		$data = $this->Ministries->Ministry->read(null, 1);
 		$data['Ministry']['name'] = 'New name';
 
@@ -410,7 +410,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, 'New name');
 	}
 
-	function testRevise() {
+	public function testRevise() {
 		$data = $this->Ministries->Ministry->read(null, 1);
 		$data['Ministry']['name'] = 'New name';
 		$data = array(
@@ -434,7 +434,7 @@ class MinistriesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, 'New name');
 	}
 
-	function testDelete() {
+	public function testDelete() {
 		$this->testAction('/ministries/delete/Ministry:1');
 		$this->assertFalse($this->Ministries->Ministry->read(null, 1));
 	}

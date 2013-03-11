@@ -5,39 +5,39 @@ App::import('Model', 'App');
 App::import('Component', 'ProxyFilterPagination');
 
 class CompletelyUnrelatedModel extends AppModel {
-	var $useTable = false;
+	public $useTable = false;
 }
 
 class UnrelatedModel extends AppModel {
-	var $useTable = false;
+	public $useTable = false;
 }
 
 class EmptyModel extends AppModel {
-	var $useTable = false;
+	public $useTable = false;
 }
 
 class PaginateTest extends AppModel {
-	var $hasOne = array(
+	public $hasOne = array(
 		'EmptyModel'
 	);
 
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'EmptyModel'
 	);
 }
 
 class PaginateTests2Controller extends Controller {
 
-	var $uses = array('PaginateTest');
+	public $uses = array('PaginateTest');
 
-	var $components = array(
+	public $components = array(
 		'FilterPagination' => array(
 			'startEmpty' => false
 		),
 		'Session'
 	);
 
-	function filter() {
+	public function filter() {
 		$conditions = $this->postConditions($this->data, 'LIKE', 'OR');
 		$limit = 3;
 		$this->paginate = compact('conditions', 'limit');
@@ -49,13 +49,13 @@ class PaginateTests2Controller extends Controller {
 
 class PaginateTestsController extends Controller {
 
-	var $name = 'PaginateTests';
+	public $name = 'PaginateTests';
 
-	var $uses = array('PaginateTest', 'UnrelatedModel');
+	public $uses = array('PaginateTest', 'UnrelatedModel');
 
-	var $components = array('FilterPagination', 'Session');
+	public $components = array('FilterPagination', 'Session');
 
-	function index() {
+	public function index() {
 		$this->paginate = array(
 			'limit' => 1
 		);
@@ -63,7 +63,7 @@ class PaginateTestsController extends Controller {
 		$this->set(compact('results'));
 	}
 
-	function filter() {
+	public function filter() {
 		$conditions = $this->postConditions($this->data, 'LIKE', 'OR');
 		$limit = 2;
 		$this->paginate = compact('conditions', 'limit');
@@ -71,7 +71,7 @@ class PaginateTestsController extends Controller {
 		$this->set(compact('results'));
 	}
 
-	function paginate_other_model($model = 'EmptyModel') {
+	public function paginate_other_model($model = 'EmptyModel') {
 		$results = $this->FilterPagination->paginate($model);
 		$this->set(compact('results'));
 	}
@@ -81,7 +81,7 @@ Mock::generatePartial('PaginateTestsController', 'MockPaginateTestsController', 
 
 class FilterPaginationTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('PaginateTest');
 		$this->Controller = new PaginateTestsController();
@@ -93,13 +93,13 @@ class FilterPaginationTestCase extends CoreTestCase {
 		$this->testController = $this->Controller;
 	}
 
-	function endTest() {
+	public function endTest() {
 		$this->Controller->Session->destroy();
 		unset($this->Controller);
 		ClassRegistry::flush();
 	}
 
-	function testAttachLinkedModel() {
+	public function testAttachLinkedModel() {
 		ClassRegistry::addObject('CompletelyUnrelatedModel', new CompletelyUnrelatedModel());
 		ClassRegistry::addObject('EmptyModel', new EmptyModel());
 		ClassRegistry::addObject('UnrelatedModel', new UnrelatedModel());
@@ -124,7 +124,7 @@ class FilterPaginationTestCase extends CoreTestCase {
 		$this->assertIsA($this->Controller->PaginateTest->UnrelatedModel, 'UnrelatedModel');
 	}
 
-	function testIndirectlyAssociatedModel() {
+	public function testIndirectlyAssociatedModel() {
 		$this->assertNoErrors();
 		$vars = $this->testAction('/paginate_tests/paginate_other_model');
 		$results = $vars['results'];
@@ -141,7 +141,7 @@ class FilterPaginationTestCase extends CoreTestCase {
 		$this->assertEqual($results, array());
 	}
 
-	function testStartEmpty() {
+	public function testStartEmpty() {
 		// make it not start with an empty array
 		$this->Controller->FilterPagination->startEmpty(false);
 		$vars = $this->testAction('/paginate_tests/');
@@ -215,7 +215,7 @@ class FilterPaginationTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testFilterPaginate() {
+	public function testFilterPaginate() {
 		$vars = $this->testAction('/paginate_tests/');
 		$this->assertEqual($vars['results'], array());
 
@@ -237,7 +237,7 @@ class FilterPaginationTestCase extends CoreTestCase {
 		$this->assertEqual($this->Controller->data, array());
 	}
 
-	function testDataPersist() {
+	public function testDataPersist() {
 		$data = array(
 			'PaginateTest' => array(
 				'name' => 'a'
@@ -273,7 +273,7 @@ class FilterPaginationTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testNoDataLeak() {
+	public function testNoDataLeak() {
 		$data = array(
 			'PaginateTest' => array(
 				'name' => 'a'

@@ -9,7 +9,7 @@ Mock::generatePartial('AlertsController', 'TestAlertsController', array('render'
 
 class AlertsControllerTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Alert', 'Group', 'AlertsUser', 'User');
 		$this->Alerts =& new TestAlertsController();
@@ -23,19 +23,19 @@ class AlertsControllerTestCase extends CoreTestCase {
 		$this->testController = $this->Alerts;
 	}
 
-	function endTest() {
+	public function endTest() {
 		$this->Alerts->Session->destroy();
 		unset($this->Alerts);
 		ClassRegistry::flush();
 	}
 
-	function testIndex() {
+	public function testIndex() {
 		$vars = $this->testAction('/alerts/index');
 		$results = Set::extract('/Alert/read_by_users', $vars['alerts']);
 		$this->assertEqual($results, array(1, 0, 0, 0));
 	}
 
-	function testView() {
+	public function testView() {
 		$this->su(array(
 			'Group' => array('id' => 8)
 		));
@@ -59,7 +59,7 @@ class AlertsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testHistory() {
+	public function testHistory() {
 		$this->su(array(
 			'Group' => array('id' => 8)
 		));
@@ -105,7 +105,7 @@ class AlertsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($vars['read'], array(1));
 	}
 
-	function testRead() {
+	public function testRead() {
 		$vars = $this->testAction('/alerts/read/2');
 		$read = $this->Alerts->Alert->AlertsUser->find('all', array(
 			'conditions' => array(
@@ -116,7 +116,7 @@ class AlertsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($read, array(1,2));
 	}
 
-	function testReadMultiSelect() {
+	public function testReadMultiSelect() {
 		$this->Alerts->Session->write('MultiSelect.test', array(
 			'selected' => array(2,3)
 		));
@@ -130,7 +130,7 @@ class AlertsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($read, array(1,2,3));
 	}
 
-	function testAdd() {
+	public function testAdd() {
 		$data = array(
 			'name' => 'Super Admin alert',
 			'description' => 'Average Joes can\'t read it',
@@ -144,7 +144,7 @@ class AlertsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($this->Alerts->Alert->field('name'), 'Super Admin alert');
 	}
 
-	function testEdit() {
+	public function testEdit() {
 		$data = array(
 			'id' => 1,
 			'group_id' => 4,
@@ -157,7 +157,7 @@ class AlertsControllerTestCase extends CoreTestCase {
 		$this->assertNotEqual($alert['Alert']['modified'], '2010-06-02 12:27:38');
 	}
 
-	function testDelete() {
+	public function testDelete() {
 		$this->testAction('/alerts/delete/1');
 		$this->assertFalse($this->Alerts->Alert->read(null, 1));
 	}

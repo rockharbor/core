@@ -9,19 +9,19 @@ Mock::generatePartial('SysEmailsController', 'MockPermissionHelperTestSysEmailsC
 
 class PermissionHelperTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->Permission =& new ProxyPermissionHelper();
 		$this->Permission->Html = new MockHtmlHelper();
 		$this->Permission->Js = new MockJsHelper();
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->Permission);
 		ClassRegistry::flush();
 	}
 
-	function testLink() {
+	public function testLink() {
 		$controller = new MockPermissionHelperTestSysEmailsController();
 		$controller->__construct();
 		$controller->constructClasses();
@@ -46,12 +46,12 @@ class PermissionHelperTestCase extends CoreTestCase {
 		$result = $this->Permission->link('Allowed', array('controller' => 'mock_permission_helper_test_sys_emails', 'action' => 'delete'), array('complete' => 'CORE.update()'));
 	}
 
-	function testNoView() {
+	public function testNoView() {
 		$this->assertNoErrors();
 		$this->Permission->beforeRender();
 	}
 
-	function testCheck() {
+	public function testCheck() {
 		$controller = new MockPermissionHelperTestSysEmailsController();
 		$controller->__construct();
 
@@ -78,7 +78,7 @@ class PermissionHelperTestCase extends CoreTestCase {
 		$this->assertTrue($this->Permission->check(array('controller' => 'mock_permission_helper_test_sys_emails', 'action' => 'bug_compose')));
 	}
 
-	function testCanSeePrivate() {
+	public function testCanSeePrivate() {
 		$this->loadFixtures('Group');
 
 		$controller = new MockPermissionHelperTestSysEmailsController();
