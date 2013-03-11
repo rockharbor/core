@@ -1,6 +1,6 @@
 <?php
 App::import('Lib', 'CoreTestCase');
-App::import('Helper', array('Permission', 'Js', 'Html'));
+App::import('Helper', array('ProxyPermission', 'Js', 'Html'));
 App::import('Controller', array('SysEmails'));
 
 Mock::generate('HtmlHelper');
@@ -11,7 +11,7 @@ class PermissionHelperTestCase extends CoreTestCase {
 
 	function startTest($method) {
 		parent::startTest($method);
-		$this->Permission =& new PermissionHelper();
+		$this->Permission =& new ProxyPermissionHelper();
 		$this->Permission->Html = new MockHtmlHelper();
 		$this->Permission->Js = new MockJsHelper();
 	}
@@ -100,9 +100,10 @@ class PermissionHelperTestCase extends CoreTestCase {
 			)
 		);
 
-		// cached
+		// cached, so what would usually fail succeeds
 		$this->assertTrue($this->Permission->canSeePrivate());
-		$this->Permission->_canSeePrivate = null;
+		// force checking again
+		$this->Permission->_canSeePrivate(null);
 		// not allowed
 		$this->assertFalse($this->Permission->canSeePrivate());
 	}

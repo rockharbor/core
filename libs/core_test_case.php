@@ -13,7 +13,8 @@
  */
 App::build(array(
 	'components' => array(TESTS . 'proxies' . DS . 'components' . DS),
-	'controllers' => array(TESTS . 'proxies' . DS . 'controllers' . DS)
+	'controllers' => array(TESTS . 'proxies' . DS . 'controllers' . DS),
+	'helpers' => array(TESTS . 'proxies' . DS . 'helpers' . DS)
 ));
 
 /**

@@ -23,24 +23,22 @@ class ReportHelper extends AppHelper {
  *
  * @var array
  */
-	var $data = array();
+	public $data = array();
 
 /**
  * List of field name aliases so printed headers are the same as field labels
  *
  * @var array
- * @access protected
  */
-	var $_aliases = array();
+	protected $_aliases = array();
 
 /**
  * Array of normalized fields to use to create headers and to determine what
  * data to pull from results
  *
  * @var array
- * @access protected
  */
-	var $_fields = array();
+	protected $_fields = array();
 
 /**
  * Array of squashed fields
@@ -56,9 +54,8 @@ class ReportHelper extends AppHelper {
  * }}}
  *
  * @var array
- * @access protected
  */
-	var $_squashed = array();
+	protected $_squashed = array();
 
 /**
  * Array of fields that can contain multiple records
@@ -79,21 +76,21 @@ class ReportHelper extends AppHelper {
  * @var array
  * @see ReportHelper::multiple()
  */
-	var $_multiples = array();
+	protected $_multiples = array();
 
 /**
  * Extra helpers needed for this helper
  *
  * @var array
  */
-	var $helpers = array(
+	public $helpers = array(
 		'Form'
 	);
 
 /**
  * Resets the ReportHelper so it can used again
  */
-	function reset() {
+	public function reset() {
 		$this->_fields = array();
 		$this->_aliases = array();
 		$this->_squashed = array();
@@ -105,7 +102,7 @@ class ReportHelper extends AppHelper {
  *
  * @param array $data Cake find results
  */
-	function set($data = array()) {
+	public function set($data = array()) {
 		$this->data = $data;
 	}
 
@@ -121,7 +118,7 @@ class ReportHelper extends AppHelper {
  * @param string $alias Alias string
  * @return array
  */
-	function alias($field = array(), $alias = '') {
+	public function alias($field = array(), $alias = '') {
 		if (empty($field)) {
 			return $this->_aliases;
 		}
@@ -137,7 +134,7 @@ class ReportHelper extends AppHelper {
  *
  * @param string $str Serialized array. Blank to get
  */
-	function headerAliases($str = '') {
+	public function headerAliases($str = '') {
 		if (!empty($str)) {
 			$this->_aliases = unserialize($str);
 		} else {
@@ -151,7 +148,7 @@ class ReportHelper extends AppHelper {
  * @param array $data Cake formated POST data
  * @return array
  */
-	function normalize($data) {
+	public function normalize($data) {
 		foreach ($data as $model => &$fields) {
 			if (is_array($fields)) {
 				$fields = $this->normalize($fields);
@@ -170,7 +167,7 @@ class ReportHelper extends AppHelper {
  * @param array $data The models-field keys
  * @return array Headers
  */
-	function createHeaders($data) {
+	public function createHeaders($data) {
 		if (empty($this->_fields)) {
 			$this->_fields = $this->normalize($data);
 		}
@@ -250,7 +247,7 @@ class ReportHelper extends AppHelper {
  *
  * @return array An array of the data based on the headers
  */
-	function getResults() {
+	public function getResults() {
 		if (empty($this->_fields) || empty($this->data)) {
 			return array();
 		}
@@ -323,7 +320,7 @@ class ReportHelper extends AppHelper {
  * @param string $path Field dot-path
  * @param boolean $expand Column expansion type (see options above)
  */
-	function multiple($path = null, $expand = 'none') {
+	public function multiple($path = null, $expand = 'none') {
 		$this->_multiples[$path] = array(
 			'expand' => $expand,
 			'max' => null
@@ -336,7 +333,7 @@ class ReportHelper extends AppHelper {
  *
  * @param string $str The models that can have multiple records
  */
-	function multipleRecords($str = '') {
+	public function multipleRecords($str = '') {
 		if (!empty($str)) {
 			$this->_multiples = unserialize($str);
 		} else {
@@ -357,7 +354,7 @@ class ReportHelper extends AppHelper {
  * @param string $format How to format the fields (when they are data values)
  * @param string $alias The header alias
  */
-	function squash($squashee = '', $fields = array(), $format = null, $alias = '') {
+	public function squash($squashee = '', $fields = array(), $format = null, $alias = '') {
 		$this->_squashed[$squashee] = compact('fields', 'format', 'alias');
 	}
 
@@ -367,7 +364,7 @@ class ReportHelper extends AppHelper {
  *
  * @param string $str The fields to sqhash
  */
-	function squashFields($str = '') {
+	public function squashFields($str = '') {
 		if (!empty($str)) {
 			$this->_squashed = unserialize($str);
 		} else {
@@ -381,7 +378,7 @@ class ReportHelper extends AppHelper {
  * @param string $model The data model
  * @return string
  */
-	function end($model = 'Export') {
+	public function end($model = 'Export') {
 		$out = '';
 		$out .= $this->Form->hidden("$model.header_aliases", array('value' => $this->headerAliases()));
 		$out .= $this->Form->hidden("$model.squashed_fields", array('value' => $this->squashFields()));

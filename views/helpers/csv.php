@@ -2,47 +2,47 @@
 
 class CsvHelper extends AppHelper {
 
-	var $delimiter = ',';
-	var $enclosure = '"';
-	var $filename = 'Export.csv';
-	var $line = array();
-	var $buffer;
+	public $delimiter = ',';
+	public $enclosure = '"';
+	public $filename = 'Export.csv';
+	public $line = array();
+	public $buffer;
 
-	function CsvHelper() {
+	public function CsvHelper() {
 		$this->clear();
 	}
 
-	function clear() {
+	public function clear() {
 		$this->line = array();
 		$this->buffer = fopen('php://temp/maxmemory:'. (5*1024*1024), 'r+');
 	}
 
-	function addField($value) {
+	public function addField($value) {
 		$this->line[] = $value;
 	}
 
-	function endRow() {
+	public function endRow() {
 		$this->addRow($this->line);
 		$this->line = array();
 	}
 
-	function addRow($row) {
+	public function addRow($row) {
 		fputcsv($this->buffer, $row, $this->delimiter, $this->enclosure);
 	}
 
-	function renderHeaders() {
+	public function renderHeaders() {
 		header("Content-type:application/vnd.ms-excel");
 		header("Content-disposition:attachment;filename=".$this->filename);
 	}
 
-	function setFilename($filename) {
+	public function setFilename($filename) {
 		$this->filename = $filename;
 		if (strtolower(substr($this->filename, -4)) != '.csv') {
 			$this->filename .= '.csv';
 		}
 	}
 
-	function render($outputHeaders = true, $to_encoding = null, $from_encoding = "auto") {
+	public function render($outputHeaders = true, $to_encoding = null, $from_encoding = "auto") {
 		if ($outputHeaders) {
 			if (is_string($outputHeaders)) {
 				$this->setFilename($outputHeaders);

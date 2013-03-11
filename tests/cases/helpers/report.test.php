@@ -1,6 +1,6 @@
 <?php
 App::import('Lib', 'CoreTestCase');
-App::import('Helper', array('Report'));
+App::import('Helper', array('ProxyReport'));
 
 class ReportHelperTestCase extends CoreTestCase {
 
@@ -8,7 +8,7 @@ class ReportHelperTestCase extends CoreTestCase {
 
 	function startTest($method) {
 		parent::startTest($method);
-		$this->Report = new ReportHelper();
+		$this->Report = new ProxyReportHelper();
 	}
 
 	function endTest() {
@@ -28,7 +28,8 @@ class ReportHelperTestCase extends CoreTestCase {
 				'alias' => $alias
 			)
 		);
-		$this->assertEqual($this->Report->_squashed, $expected);
+		$result = unserialize($this->Report->squashFields());
+		$this->assertEqual($result, $expected);
 	}
 
 	function testGetResultsWithSquashed() {
@@ -93,7 +94,8 @@ class ReportHelperTestCase extends CoreTestCase {
 	function testSquashFields() {
 		$fields = array(array('Address.address_line_1', 'Address.city', 'Address.state', 'Address.zip'), '%s/n%s, %s %d', 'Address');
 		$this->Report->squashFields(serialize($fields));
-		$this->assertEqual($this->Report->_squashed, $fields);
+		$result = unserialize($this->Report->squashFields());
+		$this->assertEqual($result, $fields);
 	}
 
 	function testAlias() {
@@ -101,7 +103,8 @@ class ReportHelperTestCase extends CoreTestCase {
 		$expected = array(
 			'Some.Field.value' => 'Readable Title'
 		);
-		$this->assertEqual($this->Report->_aliases, $expected);
+		$result = unserialize($this->Report->headerAliases());
+		$this->assertEqual($result, $expected);
 
 		$result = $this->Report->alias();
 		$this->assertEqual($result, $expected);
@@ -118,10 +121,13 @@ class ReportHelperTestCase extends CoreTestCase {
 	function testHeaderAliases() {
 		$this->Report->alias(array('Some.Field.value' => 'Readable Title'));
 
-		$result = $this->Report->headerAliases();
-		$this->assertEqual($result, serialize($this->Report->_aliases));
+		$result = unserialize($this->Report->headerAliases());
+		$expected = array(
+			'Some.Field.value' => 'Readable Title'
+		);
+		$this->assertEqual($result, $expected);
 
-		$this->Report->headerAliases($result);
+		$this->Report->headerAliases(serialize($result));
 		$this->assertEqual($this->Report->alias(), array('Some.Field.value' => 'Readable Title'));
 	}
 
@@ -189,7 +195,8 @@ class ReportHelperTestCase extends CoreTestCase {
 				)
 			)
 		);
-		$this->assertEqual($this->Report->_fields, $expected);
+		$result = $this->Report->_fields();
+		$this->assertEqual($result, $expected);
 	}
 
 	function testCreateHeadersWithMultipleRecords() {
