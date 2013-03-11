@@ -29,7 +29,6 @@ class Core {
  * Core version
  *
  * @var string
- * @access protected
  */
 	public $_version = '2.0.0';
 
@@ -133,7 +132,6 @@ class Core {
  * @param mixed $key The key to write
  * @param mixed $value The value to write
  * @return mixed The variable
- * @access protected
  */
 	public function _write($key, $value) {
 		$self =& Core::getInstance();

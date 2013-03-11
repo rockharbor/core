@@ -26,7 +26,6 @@ class AppHelper extends Helper {
  * @param mixed $data
  * @param string $key
  * @return array
- * @access private
  */
 	public function __selectedArray($data, $key = 'id') {
 		if (!is_array($data)) {

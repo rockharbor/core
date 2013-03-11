@@ -202,7 +202,6 @@ class AppModel extends Model {
  * @param Model $Model The model
  * @param string $foreignKey A foreign key for the association to include
  * @return array The options array
- * @access public
  */
 	public function postOptions($data, $Model = null, $foreignKey = null) {
 		// get associated models
@@ -266,7 +265,6 @@ class AppModel extends Model {
  * @param integer $userId The user's id
  * @param integer $modelId The model id. By default it uses Model::id.
  * @return boolean
- * @access public
  */
 	public function ownedBy($userId = null, $modelId = null) {
 		if (!$this->id || $modelId) {
