@@ -28,7 +28,7 @@ class MinistriesController extends AppController {
  *
  * @var array
  */
-	var $helpers = array('Formatting', 'Tree');
+	var $helpers = array('Formatting');
 
 /**
  * Extra components for this controller

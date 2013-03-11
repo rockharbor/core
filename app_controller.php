@@ -72,7 +72,6 @@ class AppController extends Controller {
 		'Session',
 		'Text',
 		'Media.Media',
-		'Tree',
 		'Permission',
 		'AssetCompress.AssetCompress'
 	);
