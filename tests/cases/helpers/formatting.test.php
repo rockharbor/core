@@ -159,7 +159,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 			)
 		);
 		$result = $this->Formatting->readableDate($date);
-		$expected = 'Every month on the 3rd Wednesday starting March 16, 2010 all day';
+		$expected = 'Every month on the 3rd Wednesday starting March 16, 2010 all day, continuing forever';
 		$this->assertEqual($result, $expected);
 
 		$date = array(
@@ -359,7 +359,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 			)
 		);
 		$result = $this->Formatting->readableDate($date);
-		$expected = 'Every month on the 3rd Wednesday starting March 16, 2010 all day';
+		$expected = 'Every month on the 3rd Wednesday starting March 16, 2010 all day, continuing forever';
 		$this->assertEqual($result, $expected);
 
 		$date = array(
@@ -379,7 +379,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 			)
 		);
 		$result = $this->Formatting->readableDate($date);
-		$expected = 'March 16, 2012 @ 12:00am';
+		$expected = 'March 16, 2012 @ 12:00am to March 18, 2012 @ 12:00am';
 		$this->assertEqual($result, $expected);
 
 		$date = array(
@@ -399,7 +399,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 			)
 		);
 		$result = $this->Formatting->readableDate($date);
-		$expected = 'March 16, 2012 all day';
+		$expected = 'March 16, 2012 to March 18, 2012 all day';
 		$this->assertEqual($result, $expected);
 
 		$date = array(
@@ -419,7 +419,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 			)
 		);
 		$result = $this->Formatting->readableDate($date);
-		$expected = 'Every week on Monday starting March 16, 2012 all day';
+		$expected = 'Every week on Monday starting March 16, 2012 all day, continuing forever';
 		$this->assertEqual($result, $expected);
 
 		$date = array(
@@ -439,7 +439,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 			)
 		);
 		$result = $this->Formatting->readableDate($date);
-		$expected = 'Every week on Monday from 6:00am to 8:00am starting March 16, 2012';
+		$expected = 'Every week on Monday from 6:00am to 8:00am starting March 16, 2012, continuing forever';
 		$this->assertEqual($result, $expected);
 	}
 
