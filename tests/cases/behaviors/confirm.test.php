@@ -11,7 +11,6 @@ class ConfirmBehaviorTestCase extends CoreTestCase {
 		$this->Ministry =& ClassRegistry::init('Ministry');
 		$this->Ministry->Behaviors->Confirm->settings['Ministry']['fields'] = array();
 		$this->Ministry->RevisionModel->useDbConfig = 'test_suite';
-		$this->Ministry->Involvement->RevisionModel->useDbConfig = 'test_suite';
 	}
 
 	function endTest() {

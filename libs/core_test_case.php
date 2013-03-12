@@ -226,11 +226,8 @@ class CoreTestCase extends CakeTestCase {
 		$Controller->url = $urlParams;
 		$Controller->action = $urlParams['plugin'].'/'.$urlParams['controller'].'/'.$urlParams['action'];
 
-		// disable components that mess with testing
-		$Controller->Whistler->enabled = false;
-		$Controller->Toolbar->enabled = false;
-
 		$Controller->Component->initialize($Controller);
+		$Controller->Toolbar->enabled = false;
 
 		// configure auth
 		if (isset($Controller->Auth)) {
