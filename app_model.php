@@ -23,14 +23,14 @@ class AppModel extends Model {
  *
  * @var integer
  */
-	var $recursive = -1;
+	public $recursive = -1;
 
 /**
  * Behaviors to attach
  *
  * @var array
  */
-	var $actsAs = array(
+	public $actsAs = array(
 		'Sanitizer.Sanitize',
 		'Cacher.Cache'
 	);
@@ -47,7 +47,7 @@ class AppModel extends Model {
  * @param string $ds The datasource connection name
  * @see Model::__construct()
  */
-	function __construct($id = false, $table = null, $ds = null) {
+	public function __construct($id = false, $table = null, $ds = null) {
 		parent::__construct($id, $table, $ds);
 		foreach ($this->virtualFields as &$virtualField) {
 			$virtualField = String::insert(
@@ -85,7 +85,7 @@ class AppModel extends Model {
  *
  * @param array $conditions Generic conditions
  */
-	function scopeConditions($conditions = array()) {
+	public function scopeConditions($conditions = array()) {
 		$scoped = array();
 		foreach ($conditions as $field => $value) {
 			$exp = explode('.', $field);
@@ -119,7 +119,7 @@ class AppModel extends Model {
  * @param array $results The results of a find
  * @return array (Perhaps) modified results
  */
-	function defaultImage($results) {
+	public function defaultImage($results) {
 		$offset = false;
 		if (isset($results['Image'])) {
 			$offset =& $results;
@@ -163,7 +163,7 @@ class AppModel extends Model {
  * @param array $data The key value pair for the filterArg's name to the query
  * @return string
  */
-	function makeLikeConditions($data = array()) {
+	public function makeLikeConditions($data = array()) {
 		$filterName = key($data);
 		$filter = Set::extract('/.[name='.$filterName.']', $this->filterArgs);
 		if (!isset($filter[0]['field'])) {
@@ -202,9 +202,8 @@ class AppModel extends Model {
  * @param Model $Model The model
  * @param string $foreignKey A foreign key for the association to include
  * @return array The options array
- * @access public
  */
-	function postOptions($data, $Model = null, $foreignKey = null) {
+	public function postOptions($data, $Model = null, $foreignKey = null) {
 		// get associated models
 		$first = false;
 		if (!$Model) {
@@ -266,9 +265,8 @@ class AppModel extends Model {
  * @param integer $userId The user's id
  * @param integer $modelId The model id. By default it uses Model::id.
  * @return boolean
- * @access public
  */
-	function ownedBy($userId = null, $modelId = null) {
+	public function ownedBy($userId = null, $modelId = null) {
 		if (!$this->id || $modelId) {
 			$this->id = $modelId;
 		}
@@ -315,7 +313,7 @@ class AppModel extends Model {
  * @param boolean $recursive Whether to iterate through the model's relationships and mark them as $active
  * @return boolean Success
  */
-	function toggleActivity($id = null, $active = false, $recursive = false) {
+	public function toggleActivity($id = null, $active = false, $recursive = false) {
 		if (!$id) {
 			return false;
 		}
@@ -360,7 +358,7 @@ class AppModel extends Model {
  * @param string $compareField Field to compare it to
  * @return boolean True if it passes validation
  */
-	function identicalFieldValues(&$data, $compareField) {
+	public function identicalFieldValues(&$data, $compareField) {
 		// $data array is passed using the form field name as the key
 		// have to extract the value to make the function generic
 		$value = array_values($data);
@@ -393,7 +391,7 @@ class AppModel extends Model {
  * @param array $orFields Array of field=>values to allow this field to pass
  * @return boolean Always true, because this function only revalidates fields
  */
-	function eitherOr(&$data, $orFields = array()) {
+	public function eitherOr(&$data, $orFields = array()) {
 		foreach ($orFields as $orField => $orValue) {
 			if ($this->data[$this->alias][$orField] == $orValue) {
 				unset($this->validationErrors[key($data)]);
@@ -417,7 +415,7 @@ class AppModel extends Model {
  * @see Model::deconstruct()
  * @see FormHelper::dateTime()
  */
-	function deconstruct($field, $value) {
+	public function deconstruct($field, $value) {
 		if ($this->getColumnType($field) == 'string' && is_array($value)) {
 			if (isset($value['month']) && empty($value['month'])) {
 				$value['month'] = '00';
@@ -438,4 +436,3 @@ class AppModel extends Model {
 	}
 
 }
-?>

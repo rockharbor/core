@@ -1,9 +1,9 @@
 <?php
 /* ArosAco Fixture generated on: 2010-07-13 13:07:29 : 1279053209 */
 class ArosAcoFixture extends CakeTestFixture {
-	var $name = 'ArosAco';
+	public $name = 'ArosAco';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
 		'aro_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'index'),
 		'aco_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10),
@@ -15,7 +15,7 @@ class ArosAcoFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
-	var $records = array(
+	public $records = array(
 	);
 
 }

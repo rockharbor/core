@@ -9,7 +9,7 @@ Mock::generatePartial('NotificationsController', 'TestNotificationsController', 
 
 class NotificationsControllerTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Notification');
 		$this->Notifications =& new TestNotificationsController();
@@ -24,13 +24,13 @@ class NotificationsControllerTestCase extends CoreTestCase {
 		$this->testController = $this->Notifications;
 	}
 
-	function endTest() {
+	public function endTest() {
 		$this->Notifications->Session->destroy();
 		unset($this->Notifications);
 		ClassRegistry::flush();
 	}
 
-	function testQuick() {
+	public function testQuick() {
 		$this->loadFixtures('Alert', 'AlertsUser', 'Invitation', 'InvitationsUser', 'Group');
 		$vars = $this->testAction('/notifications/quick/User:1', array(
 			'return' => 'vars'
@@ -41,7 +41,7 @@ class NotificationsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($vars['new'], 7);
 	}
 
-	function testIndex() {
+	public function testIndex() {
 		$vars = $this->testAction('/notifications/index/User:1', array(
 			'return' => 'vars'
 		));
@@ -70,7 +70,7 @@ class NotificationsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($vars['notifications'], $expected);
 	}
 
-	function testRead() {
+	public function testRead() {
 		$vars = $this->testAction('/notifications/read/3');
 		$this->Notifications->Notification->id = 3;
 		$this->assertFalse($this->Notifications->Notification->field('read'));
@@ -87,7 +87,7 @@ class NotificationsControllerTestCase extends CoreTestCase {
 		$this->assertFalse($this->Notifications->Notification->field('read'));
 	}
 
-	function testMultiSelectRead() {
+	public function testMultiSelectRead() {
 		$this->Notifications->Session->write('MultiSelect.test', array(
 			'selected' => array(1,2)
 		));
@@ -102,7 +102,7 @@ class NotificationsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testDelete() {
+	public function testDelete() {
 		$vars = $this->testAction('/notifications/delete/3');
 		$this->assertNotNull($this->Notifications->Notification->read(null, 3));
 
@@ -114,7 +114,7 @@ class NotificationsControllerTestCase extends CoreTestCase {
 		$this->assertFalse($this->Notifications->Notification->read(null, 3));
 	}
 
-	function testMultiSelectDelete() {
+	public function testMultiSelectDelete() {
 		$this->Notifications->Session->write('MultiSelect.test', array(
 			'selected' => array(1,2,3)
 		));

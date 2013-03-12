@@ -22,7 +22,7 @@ class AppError extends ErrorHandler {
  *
  * @param string $template Template to render
  */
-	function _outputMessage($template) {
+	public function _outputMessage($template) {
 		$this->controller->layout = 'ajax';
 		parent::_outputMessage($template);
 	}
@@ -32,7 +32,7 @@ class AppError extends ErrorHandler {
  *
  * @param array $params
  */
-	function privateItem($params = array()) {
+	public function privateItem($params = array()) {
 		$this->controller->set('type', $params['type']);
 		$this->_outputMessage('private_item');
 	}
@@ -43,7 +43,7 @@ class AppError extends ErrorHandler {
  *
  * @param array $params
  */
-	function invalidMultiSelectSelection($params = array()) {
+	public function invalidMultiSelectSelection($params = array()) {
 		$this->_outputMessage('invalid_multiselect_selection');
 	}
 

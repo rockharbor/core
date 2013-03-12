@@ -1,9 +1,9 @@
 <?php
 /* Leader Fixture generated on: 2010-06-28 09:06:51 : 1277741331 */
 class LeaderFixture extends CakeTestFixture {
-	var $name = 'Leader';
+	public $name = 'Leader';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'user_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
 		'model' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 32),
@@ -14,7 +14,7 @@ class LeaderFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 1,
 			'user_id' => 1,

@@ -18,7 +18,7 @@
  */
 class AppController extends Controller {
 
-	var $components = array(
+	public $components = array(
 		'Session',
 		'Email',
 		'DebugKit.Toolbar' => array(
@@ -67,7 +67,7 @@ class AppController extends Controller {
  *
  * @var array
  */
-	var $helpers = array(
+	public $helpers = array(
 		'Js' => array('Jquery'),
 		'Session',
 		'Text',
@@ -80,9 +80,8 @@ class AppController extends Controller {
  * Default callbacks for ajax submit buttons
  *
  * @var array
- * @access public
  */
-	var $defaultSubmitOptions = array(
+	public $defaultSubmitOptions = array(
 		'before' => 'CORE.beforeForm(event, XMLHttpRequest);',
 		'complete' => 'CORE.completeForm(event, XMLHttpRequest, textStatus);',
 		'success' => 'CORE.successForm(event, data, textStatus);',
@@ -93,9 +92,8 @@ class AppController extends Controller {
  * Empty page as Cake url
  *
  * @var array
- * @access public
  */
-	var $emptyPage = array(
+	public $emptyPage = array(
 		'controller' => 'pages',
 		'action' => 'display',
 		'empty'
@@ -105,9 +103,8 @@ class AppController extends Controller {
  * Failed authorization page as Cake url
  *
  * @var array
- * @access public
  */
-	var $authPage = array(
+	public $authPage = array(
 		'controller' => 'pages',
 		'action' => 'display',
 		'auth_fail'
@@ -117,9 +114,8 @@ class AppController extends Controller {
  * Active user data
  *
  * @var array
- * @access public
  */
-	var $activeUser = null;
+	public $activeUser = null;
 
 /**
  * Controller::beforeFilter() callback
@@ -128,7 +124,7 @@ class AppController extends Controller {
  *
  * @see Controller::beforeFilter()
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		if (isset($this->params['renderAs'])) {
 			$this->autoLayout = true;
 			$this->RequestHandler->renderAs($this, $this->params['renderAs']);
@@ -167,7 +163,7 @@ class AppController extends Controller {
  * @param array $user The user to test. Default is the active user
 	 * @return boolean True if user can continue.
  */
-	function isAuthorized($action = '', $params = array(), &$user = array()) {
+	public function isAuthorized($action = '', $params = array(), &$user = array()) {
 		if (!$this->activeUser && empty($user)) {
 			return false;
 		}
@@ -213,7 +209,7 @@ class AppController extends Controller {
  *
  * @see Controller::beforeRender()
  */
-	function beforeRender() {
+	public function beforeRender() {
 		$this->defaultSubmitOptions['url'] = $this->here;
 
 		$this->set('activeUser', $this->activeUser);
@@ -281,10 +277,9 @@ class AppController extends Controller {
  * @param boolean $exclusive If true, and $op is an array, fields not included in $op will not be
  *        included in the returned conditions
  * @return array An array of model conditions
- * @access public
  * @link http://book.cakephp.org/view/989/postConditions
  */
-	function postConditions($data = array(), $op = null, $bool = 'AND', $exclusive = false) {
+	public function postConditions($data = array(), $op = null, $bool = 'AND', $exclusive = false) {
 		unset($data['_Token']);
 		$registered = ClassRegistry::keys();
 		$bools = array('and', 'or', 'not', 'and not', 'or not', 'xor', '||', '&&');
@@ -371,9 +366,8 @@ class AppController extends Controller {
  * @param array $params The parameters to use in the check (default is passedArgs)
  * @param array $user The user to check
  * @return array Conditional groups
- * @access protected
  */
-	function _setConditionalGroups($params = array(), $user = array()) {
+	protected function _setConditionalGroups($params = array(), $user = array()) {
 		$groups = array();
 		$Group = ClassRegistry::init('Group');
 		$Group->recursive = -1;
@@ -427,9 +421,8 @@ class AppController extends Controller {
  * Auto-sets User named parameter for specific actions (passed as argument list)
  *
  * @return void
- * @access protected
  */
-	function _editSelf() {
+	protected function _editSelf() {
 		$actions = func_get_args();
 
 		if (in_array($this->action, $actions)) {
@@ -461,7 +454,7 @@ class AppController extends Controller {
  * @return array Array of ids
  * @see MultiSelect.MultiSelect
  */
-	function _extractIds($model = null, $path = '/User/id') {
+	protected function _extractIds($model = null, $path = '/User/id') {
 		if (!isset($this->MultiSelect)) {
 			trigger_error('MultiSelect component not loaded.', E_USER_NOTICE);
 		}
@@ -486,4 +479,3 @@ class AppController extends Controller {
 	}
 
 }
-?>

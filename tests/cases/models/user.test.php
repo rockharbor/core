@@ -10,18 +10,18 @@ class UsersTestController extends AppController {
 
 class UserTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('User', 'Group');
 		$this->User =& ClassRegistry::init('User');
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->User);
 		ClassRegistry::flush();
 	}
 
-	function testUsernameValidation() {
+	public function testUsernameValidation() {
 		$this->User->set(array(
 			'User' => array(
 				'username' => 'invalid@username$.com'
@@ -37,7 +37,7 @@ class UserTestCase extends CoreTestCase {
 		$this->assertTrue($this->User->validates(array('fieldList' => array('username'))));
 	}
 
-	function testCleanMerge() {
+	public function testCleanMerge() {
 		$this->loadFixtures('Address');
 
 		$data = array(
@@ -155,7 +155,7 @@ class UserTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testMergeWithLimitedUserData() {
+	public function testMergeWithLimitedUserData() {
 		$this->loadFixtures('Profile');
 
 		$user = array(
@@ -230,7 +230,7 @@ class UserTestCase extends CoreTestCase {
 		$this->assertEqual($results['Profile']['primary_email'], 'newuser@example.com');
 	}
 
-	function testMerge() {
+	public function testMerge() {
 		$this->loadFixtures('Profile', 'Address', 'Roster', 'Household', 'HouseholdMember');
 
 		$this->assertFalse($this->User->merge(1));
@@ -418,7 +418,7 @@ class UserTestCase extends CoreTestCase {
 		$this->assertEqual(count($this->User->HouseholdMember->Household->getHouseholdIds($results['User']['id'])), 1);
 	}
 
-	function testHashPasswords() {
+	public function testHashPasswords() {
 		$md5Regexp = '/[a-f0-9]{32}/';
 
 		// as if sent by auth (login)
@@ -457,7 +457,7 @@ class UserTestCase extends CoreTestCase {
 		$this->assertPattern($md5Regexp, $result);
 	}
 
-	function testFindUser() {
+	public function testFindUser() {
 		$this->loadFixtures('Profile');
 
 		$data = array(
@@ -551,7 +551,7 @@ class UserTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testCreateUser() {
+	public function testCreateUser() {
 		$this->loadFixtures('Address', 'Profile', 'Household', 'HouseholdMember');
 
 		$creator = array(
@@ -865,7 +865,7 @@ class UserTestCase extends CoreTestCase {
 		$this->assertTrue(empty($addresses));
 	}
 
-	function testPrepareSearch() {
+	public function testPrepareSearch() {
 		$this->loadFixtures('Address', 'Profile', 'Leader', 'Involvement');
 
 		$this->Controller = new UsersTestController();
@@ -1236,7 +1236,7 @@ class UserTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testSearchBackgroundDateRange() {
+	public function testSearchBackgroundDateRange() {
 		$controller =  new UsersTestController();
 
 		$search = array(
@@ -1274,7 +1274,7 @@ class UserTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testGenerateUsername() {
+	public function testGenerateUsername() {
 		$result = $this->User->generateUsername();
 		$expected = '';
 		$this->assertEqual($result, $expected);
@@ -1302,7 +1302,7 @@ class UserTestCase extends CoreTestCase {
 
 	}
 
-	function testGeneratePassword() {
+	public function testGeneratePassword() {
 		$result = $this->User->generatePassword();
 		$this->assertTrue(is_string($result));
 	}

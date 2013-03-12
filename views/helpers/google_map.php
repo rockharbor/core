@@ -23,42 +23,37 @@ class GoogleMapHelper extends AppHelper {
  * List of options, added on GoogleMapHelper::create()
  *
  * @var array
- * @access public
  */
-	var $options = array();
+	public $options = array();
 
 /**
  * The JavaScript to output for this map
  *
  * @var array
- * @access protected
  */
-	var $_buffer = array();
+	protected $_buffer = array();
 
 /**
  * Whether or not to create a div for the map or use a user-created div
  *
  * @var boolean
- * @access protected
  */
-	var $_createDiv = true;
+	protected $_createDiv = true;
 
 /**
  * The name of the map to be used for the div id and JavaScript variable name
  *
  * @var array
- * @access protected
  */
-	var $_mapName = null;
+	protected $_mapName = null;
 
 /**
  * Google map types mapping
  *
  * @var array
- * @access protected
  * @todo Add the rest of the map types
  */
-	var $_mapTypesMap = array(
+	protected $_mapTypesMap = array(
 		'road' => 'google.maps.MapTypeId.ROADMAP'
 	);
 
@@ -66,57 +61,50 @@ class GoogleMapHelper extends AppHelper {
  * Initial map zoom level
  *
  * @var integer
- * @access public
  */
-	var $zoom = 4;
+	public $zoom = 4;
 
 /**
  * Initial map center. Defaults to the average of all points.
  *
  * @var array
- * @access public
  */
-	var $center = null;
+	public $center = null;
 
 /**
  * The initial map type to use. Supported types: road
  *
  * @var string
- * @access public
  */
-	var $mapType = 'road';
+	public $mapType = 'road';
 
 /**
  * The element to use to create info windows
  *
  * @var string
- * @access public
  */
-	var $infoWindowElement = 'google_map_info';
+	public $infoWindowElement = 'google_map_info';
 
 /**
  * Internal marker count
  *
  * @var integer
- * @access protected
  */
-	var $_markerCount = 0;
+	protected $_markerCount = 0;
 
 /**
  * Internal list of addresses
  *
  * @var array
- * @access protected
  */
-	var $_addresses = array();
+	protected $_addresses = array();
 
 /**
  * Extra helpers to load
  *
  * @var array
- * @access public
  */
-	var $helpers = array('Js', 'Html');
+	public $helpers = array('Js', 'Html');
 
 /**
  * Adds the JavaScript to load Google Maps
@@ -131,10 +119,9 @@ class GoogleMapHelper extends AppHelper {
  *
  * @param string $mapName The name of the div to load the map into.
  * @param array $options Additional options
- * @access public
  * @return void Buffers scripts
  */
-	function create($mapName = null, $options = array()) {
+	public function create($mapName = null, $options = array()) {
 		$default = array(
 			'inline' => false,
 			'sensor' => false
@@ -170,9 +157,8 @@ document.body.appendChild(script);
  *
  * @param array $addresses A list of addresses, including a `lat` and `lng`
  * @return void
- * @access public
  */
-	function addAddresses($addresses = array()) {
+	public function addAddresses($addresses = array()) {
 		if (!array_key_exists(0, $addresses)) {
 			$addresses = array($addresses);
 		}
@@ -188,9 +174,8 @@ document.body.appendChild(script);
  * Finishes map creation, including outputting the buffered scripts
  *
  * @return mixed A div tag a mapName was not specified in GoogleMapHelper::create(), or null
- * @access public
  */
-	function end() {
+	public function end() {
 		if (empty($this->_addresses)) {
 			return null;
 		}
@@ -240,7 +225,7 @@ document.body.appendChild(script);
  * @return string Html image code
  * @link http://code.google.com/apis/maps/documentation/staticmaps/
  */
-	function image($width = 200, $height = 200) {
+	public function image($width = 200, $height = 200) {
 		$center = $this->_center();
 
 		$markers = array();
@@ -264,7 +249,7 @@ document.body.appendChild(script);
 /**
  * Resets the GoogleMapHelper back to its original state
  */
-	function reset() {
+	public function reset() {
 		$this->center = null;
 		$this->_addresses = array();
 		$this->_buffer = array();
@@ -281,9 +266,8 @@ document.body.appendChild(script);
  *
  * @param array $data The address data
  * @return string The JavaScript to buffer
- * @access protected
  */
-	function _createMarker($data = array()) {
+	protected function _createMarker($data = array()) {
 		if (empty($data)) {
 			return false;
 		}
@@ -340,7 +324,7 @@ document.body.appendChild(script);
  *
  * @return array
  */
-	function _center() {
+	protected function _center() {
 		if (!$this->center) {
 			// set center to average points
 			$this->center = array(

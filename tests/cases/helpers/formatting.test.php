@@ -6,14 +6,14 @@ Mock::generatePartial('PermissionHelper', 'MockPermissionHelper', array('check')
 
 class FormattingHelperTestCase extends CoreTestCase {
 
-	function _prepareAction($action = '') {
+	public function _prepareAction($action = '') {
 		$this->Formatting->params = Router::parse($action);
 		$this->Formatting->passedArgs = array_merge($this->Formatting->params['named'], $this->Formatting->params['pass']);
 		$this->Formatting->params['url'] = $this->Formatting->params;
 		$this->Formatting->beforeFilter();
 	}
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->Formatting = new FormattingHelper();
 		$this->Formatting->Html = new HtmlHelper();
@@ -23,12 +23,12 @@ class FormattingHelperTestCase extends CoreTestCase {
 		$this->Formatting->Permission = new MockPermissionHelper();
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->Formatting);
 		ClassRegistry::flush();
 	}
 
-	function testEmail() {
+	public function testEmail() {
 		$result = $this->Formatting->email(null);
 		$this->assertNull($result);
 
@@ -62,7 +62,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 		));
 	}
 
-	function testAddress() {
+	public function testAddress() {
 		$address = array(
 			'address_line_1' => '123 Main',
 			'address_line_2' => '',
@@ -133,7 +133,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 		));
 	}
 
-	function testReadableDate() {
+	public function testReadableDate() {
 		$result = $this->Formatting->readableDate();
 		$expected = null;
 		$this->assertEqual($result, $expected);
@@ -443,7 +443,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testAge() {
+	public function testAge() {
 		$this->assertEqual('26 yrs.', $this->Formatting->age(26));
 		$this->assertEqual('26 yrs.', $this->Formatting->age(26.02));
 		$this->assertEqual('26 yrs.', $this->Formatting->age(26.02, true));
@@ -453,13 +453,13 @@ class FormattingHelperTestCase extends CoreTestCase {
 		$this->assertEqual('0 mos.', $this->Formatting->age(.02, true));
 	}
 
-	function testFlags() {
+	public function testFlags() {
 		$this->assertNull($this->Formatting->flags());
 		$this->assertNull($this->Formatting->flags('NoModel', array('NoModel' => 'nothing')));
 		$this->assertError('FormattingHelper::flags - Missing flagging function FormattingHelper::_flagNoModel.');
 	}
 
-	function testFlagUser() {
+	public function testFlagUser() {
 		$this->loadFixtures('Group');
 		$view = new View(new Controller());
 		$view->viewVars['activeUser'] = array(
@@ -522,7 +522,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 		));
 	}
 
-	function testFlagInvolvement() {
+	public function testFlagInvolvement() {
 		$involvement = array(
 			'Involvement' => array(
 				'previous' => 0,
@@ -573,7 +573,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 		));
 	}
 
-	function testFlagMinistry() {
+	public function testFlagMinistry() {
 		$ministry = array(
 			'Ministry' => array(
 				'private' => 1,
@@ -601,7 +601,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 		));
 	}
 
-	function testPhone() {
+	public function testPhone() {
 		$this->assertEqual('(714) 384-0914', $this->Formatting->phone(7143840914));
 		$this->assertEqual('(714) 384-0914', $this->Formatting->phone('7143840914'));
 		$this->assertEqual('(714) 384-0914', $this->Formatting->phone('714d)_384091-4'));
@@ -614,13 +614,13 @@ class FormattingHelperTestCase extends CoreTestCase {
 		$this->assertEqual('(714) 384-0914', $this->Formatting->phone('7143840914', ''));
 	}
 
-	function testDatetime() {
+	public function testDatetime() {
 		$this->assertEqual('2/24/2010 @ 9:55am', $this->Formatting->datetime('2010-02-24 09:55:30'));
 		$this->assertEqual('3/1/1900 @ 9:55am', $this->Formatting->datetime('1900-03-01 09:55:30'));
 		$this->assertNull($this->Formatting->datetime());
 	}
 
-	function testDate() {
+	public function testDate() {
 		$result = $this->Formatting->date('2010-02-24 09:55:30');
 		$expected = '2/24/2010';
 		$this->assertEqual($result, $expected);
@@ -650,7 +650,7 @@ class FormattingHelperTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testTime() {
+	public function testTime() {
 		$this->assertEqual('9:55am', $this->Formatting->time('2010-02-24 09:55:30'));
 		$this->assertNull($this->Formatting->time());
 

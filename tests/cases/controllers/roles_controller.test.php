@@ -7,7 +7,7 @@ Mock::generatePartial('RolesController', 'MockRolesController', array('isAuthori
 
 class RolesControllerTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Role');
 		$this->Roles =& new MockRolesController();
@@ -17,20 +17,20 @@ class RolesControllerTestCase extends CoreTestCase {
 		$this->testController = $this->Roles;
 	}
 
-	function endTest() {
+	public function endTest() {
 		$this->Roles->Session->destroy();
 		unset($this->Roles);
 		ClassRegistry::flush();
 	}
 
-	function testIndex() {
+	public function testIndex() {
 		$vars = $this->testAction('/roles/index/Ministry:4');
 		$results = Set::extract('/Role/id', $vars['roles']);
 		$expected = array(1, 2);
 		$this->assertEqual($results, $expected);
 	}
 
-	function testAdd() {
+	public function testAdd() {
 		$this->loadFixtures('Ministry');
 
 		$countBefore = $this->Roles->Role->find('count');
@@ -46,7 +46,7 @@ class RolesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($countBefore, $countAfter-1);
 	}
 
-	function testEdit() {
+	public function testEdit() {
 		$this->testAction('/roles/edit/1', array(
 			'data' => array(
 				'Role' => array(
@@ -60,7 +60,7 @@ class RolesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results['Role']['ministry_id'], 3);
 	}
 
-	function testDelete() {
+	public function testDelete() {
 		$this->testAction('/roles/delete/1');
 		$this->assertFalse($this->Roles->Role->read(null, 1));
 	}

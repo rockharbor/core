@@ -6,24 +6,24 @@ App::import('Helper', array('App'));
  * Proxy class to allow access to protected methods
  */
 class ProxyAppHelper extends AppHelper {
-	function selectedArray($data, $key = 'id') {
+	public function selectedArray($data, $key = 'id') {
 		$this->__selectedArray($data, $key);
 	}
 }
 
 class AppHelperTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->App = new ProxyAppHelper();
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->App);
 		ClassRegistry::flush();
 	}
 
-	function testSelectedArray() {
+	public function testSelectedArray() {
 		$data = array(
 			'Some' => array(
 				'Embedded' => array(

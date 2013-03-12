@@ -5,24 +5,24 @@ App::import('Model', 'User');
 class UserProxy extends User {
 	public $name = 'User';
 	public $alias = 'User';
-	function afterFind($results, $primary) {
+	public function afterFind($results, $primary) {
 		return $results;
 	}
 }
 
 class VirtualFieldModel extends AppModel {
 
-	var $useTable = false;
+	public $useTable = false;
 
-	var $name = 'VirtualField';
+	public $name = 'VirtualField';
 
-	var $order = ':ALIAS:.name';
+	public $order = ':ALIAS:.name';
 
-	var $virtualFields = array(
+	public $virtualFields = array(
 		'name' => 'CONCAT(:ALIAS:.first_name, " ", :ALIAS:.last_name)',
 	);
 
-	var $_schema = array(
+	public $_schema = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'first_name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 32),
 		'last_name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 32),
@@ -34,18 +34,18 @@ class VirtualFieldModel extends AppModel {
 
 class AppModelTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('User', 'Group', 'Profile');
 		$this->User =& ClassRegistry::init('UserProxy');
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->User);
 		ClassRegistry::flush();
 	}
 
-	function testAliasInOrder() {
+	public function testAliasInOrder() {
 		$VirtualField = new VirtualFieldModel();
 		$result = $VirtualField->order;
 		$expected = 'VirtualField.name';
@@ -57,7 +57,7 @@ class AppModelTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testScopeConditions() {
+	public function testScopeConditions() {
 		$data = array(
 			'active' => false,
 			'private' => true
@@ -96,7 +96,7 @@ class AppModelTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testDefaultImage() {
+	public function testDefaultImage() {
 		$this->loadFixtures('Attachment');
 		$this->loadSettings();
 		$this->User->Image->Behaviors->detach('Media.Coupler');
@@ -146,7 +146,7 @@ class AppModelTestCase extends CoreTestCase {
 		$this->unloadSettings();
 	}
 
-	function testAliasInVirtualFields() {
+	public function testAliasInVirtualFields() {
 		$VirtualField = new VirtualFieldModel();
 		$result = $VirtualField->getVirtualField('name');
 		$expected = 'CONCAT(VirtualField.first_name, " ", VirtualField.last_name)';
@@ -158,7 +158,7 @@ class AppModelTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testPostOptions() {
+	public function testPostOptions() {
 		$data = array(
 			'User' => array(
 				'username' => 'jharris'
@@ -374,7 +374,7 @@ class AppModelTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testOwnedBy() {
+	public function testOwnedBy() {
 		$this->loadFixtures('Address', 'Roster');
 		$this->assertFalse($this->User->ownedBy());
 		$this->assertTrue($this->User->ownedBy(1, 1));
@@ -386,7 +386,7 @@ class AppModelTestCase extends CoreTestCase {
 		$this->assertTrue($this->User->Roster->ownedBy(2));
 	}
 
-	function testToggleActivity() {
+	public function testToggleActivity() {
 		$this->assertFalse($this->User->toggleActivity());
 		$this->assertTrue($this->User->toggleActivity(1));
 		$this->assertEqual($this->User->field('active'), 0);
@@ -407,7 +407,7 @@ class AppModelTestCase extends CoreTestCase {
 		$this->assertEqual($this->Ministry->Involvement->field('active'), 0);
 	}
 
-	function testDeconstruct() {
+	public function testDeconstruct() {
 		$data = array(
 			'month' => 4,
 			'day' => 14,
@@ -441,7 +441,7 @@ class AppModelTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testEitherOr() {
+	public function testEitherOr() {
 		$this->User->Profile->validate = array(
 			'first_name' => array(
 				array(

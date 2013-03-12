@@ -24,9 +24,8 @@ class SelectOptionsHelper extends AppHelper {
  * List of age groups
  *
  * @var array
- * @access public
  */
-	var $ageGroups = array(
+	public $ageGroups = array(
 		'0-2.99'=>'0-2',
 		'3-5.99'=>'3-5',
 		'6-11.99'=>'6-11',
@@ -44,9 +43,8 @@ class SelectOptionsHelper extends AppHelper {
  * List of states
  *
  * @var array
- * @access public
  */
-	var $states = array(
+	public $states = array(
 		'AL'=>"Alabama",
 		'AK'=>"Alaska",
 		'AZ'=>"Arizona",
@@ -104,9 +102,8 @@ class SelectOptionsHelper extends AppHelper {
  * Map for genders
  *
  * @var array
- * @access public
  */
-	var $genders = array(
+	public $genders = array(
 		null => 'Unknown',
 		'm' => 'Male',
 		'f' => 'Female'
@@ -116,9 +113,8 @@ class SelectOptionsHelper extends AppHelper {
  * Map for marital statuses
  *
  * @var array
- * @access public
  */
-	var $maritalStatuses = array(
+	public $maritalStatuses = array(
 		null => 'Unknown',
 		's' => 'Single',
 		'm' => 'Married',
@@ -130,9 +126,8 @@ class SelectOptionsHelper extends AppHelper {
  * Map for grades
  *
  * @var array
- * @access public
  */
-	var $grades = array(
+	public $grades = array(
 		null => 'Unknown',
 		-1 => 'Pre-kinder',
 		0 => 'Kindergarten',
@@ -154,9 +149,8 @@ class SelectOptionsHelper extends AppHelper {
  * Map for boolean answers
  *
  * @var array
- * @access public
  */
-	var $booleans = array(
+	public $booleans = array(
 		null => 'Unknown',
 		0 => 'No',
 		1 => 'Yes'
@@ -170,7 +164,7 @@ class SelectOptionsHelper extends AppHelper {
  * @param array $arguments Should only have 1 value, the string to map
  * @return string Mapped string
  */
-	function __call($name, $arguments) {
+	public function __call($name, $arguments) {
 		if (isset($this->{Inflector::pluralize($name)})) {
 			return $this->{Inflector::pluralize($name)}[$arguments[0]];
 		}
@@ -193,7 +187,7 @@ class SelectOptionsHelper extends AppHelper {
  * @param mixed $return What to return on missing/empty values
  * @return string
  */
-	function value($modelField, $data = array(), $return = '&nbsp;') {
+	public function value($modelField, $data = array(), $return = '&nbsp;') {
 		list($model, $field) = explode('.', $modelField);
 		if (isset($data[$model]) && isset($data[$model][$field])) {
 			$View = ClassRegistry::getObject('view');
@@ -218,9 +212,8 @@ class SelectOptionsHelper extends AppHelper {
  * @param string $name Type of list to generate
  * @param array $options Options specific to name
  * @return array The key=>value pairs
- * @access public
  */
-	function generateOptions($name, $options = array()) {
+	public function generateOptions($name, $options = array()) {
 		$_defaultOptions = array(
 			'order' => '',
 			'monthNames' => true

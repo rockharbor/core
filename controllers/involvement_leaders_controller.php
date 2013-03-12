@@ -26,16 +26,14 @@ class InvolvementLeadersController extends LeadersController {
  *
  * @var string
  */
-	var $model = 'Involvement';
+	public $model = 'Involvement';
 
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->modelId = isset($this->passedArgs[$this->model]) ? $this->passedArgs[$this->model] : null;
 	}
@@ -45,7 +43,7 @@ class InvolvementLeadersController extends LeadersController {
  *
  * @see LeadersController::dashboard()
  */
-	function dashboard() {
+	public function dashboard() {
 		if ($this->Session->check('FilterPagination.data') && empty($this->data)) {
 			$this->data = $this->Session->read('FilterPagination.data');
 		}

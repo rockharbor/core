@@ -26,14 +26,14 @@ class Invitation extends AppModel {
  *
  * @var string
  */
-	var $name = 'Invitation';
+	public $name = 'Invitation';
 
 /**
  * BelongsTo association link
  *
  * @var array
  */
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'User' => array(
 			'className' => 'User',
 			'foreignKey' => 'user_id',
@@ -43,7 +43,7 @@ class Invitation extends AppModel {
 /**
  * HasAndBelongsToMany association link
  */
-	var $hasAndBelongsToMany = array(
+	public $hasAndBelongsToMany = array(
 		'CC' => array(
 			'className' => 'User',
 			'dependent' => true
@@ -56,7 +56,7 @@ class Invitation extends AppModel {
  * @var array
  * @see Sanitizer.SanitizeBehavior
  */
-	var $sanitize = array(
+	public $sanitize = array(
 		'body' => 'stripScripts',
 		'confirm_action' => false,
 		'deny_action' => false
@@ -68,7 +68,7 @@ class Invitation extends AppModel {
  * @param int $userId The user id
  * @return array Array of invitation ids
  */
-	function getInvitations($userId = null) {
+	public function getInvitations($userId = null) {
 		if (!$userId) {
 			return array();
 		}

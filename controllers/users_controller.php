@@ -22,21 +22,21 @@ class UsersController extends AppController {
  *
  * @var string
  */
-	var $name = 'Users';
+	public $name = 'Users';
 
 /**
  * Extra helpers for this controller
  *
  * @var array
  */
-	var $helpers = array('Formatting', 'SelectOptions', 'MultiSelect.MultiSelect');
+	public $helpers = array('Formatting', 'SelectOptions', 'MultiSelect.MultiSelect');
 
 /**
  * Extra components for this controller
  *
  * @var array
  */
-	var $components = array(
+	public $components = array(
 		'FilterPagination',
 		'MultiSelect.MultiSelect',
 		'Cookie',
@@ -51,10 +51,8 @@ class UsersController extends AppController {
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 
 		// public actions
@@ -69,7 +67,7 @@ class UsersController extends AppController {
  * @param string $username Used to auto-fill the username field
  * @todo Restrict login to users older than 12 (use Auth.userScope?)
  */
-	function login($username = null) {
+	public function login($username = null) {
 		// don't cache login page so _Tokens don't expire and blackhole
 		$this->disableCache();
 
@@ -118,7 +116,7 @@ class UsersController extends AppController {
 /**
  * Logs a user out of CORE
  */
-	function logout() {
+	public function logout() {
 		$redirect = $this->Auth->logout();
 		$this->Cookie->delete('Auth');
 		$this->Session->destroy();
@@ -133,7 +131,7 @@ class UsersController extends AppController {
  *
  * @todo Remove this altogether?
  */
-	function index() {
+	public function index() {
 		$this->User->recursive = 0;
 		$this->set('users', $this->paginate());
 	}
@@ -141,7 +139,7 @@ class UsersController extends AppController {
 /**
  * Creates a new password and sends it to the user, or offers them to reset
  */
-	function edit() {
+	public function edit() {
 		$needCurrentPassword = $this->activeUser['User']['id'] == $this->passedArgs['User'];
 
 		if (!empty($this->data)) {
@@ -218,7 +216,7 @@ class UsersController extends AppController {
 /**
  * Sends a user a new password
  */
-	function forgot_password($id = null) {
+	public function forgot_password($id = null) {
 		if ((!empty($this->data) || !is_null($id)) && !isset($this->passedArgs['skip_check'])) {
 			if (!$id) {
 				$searchData = array(
@@ -296,7 +294,7 @@ class UsersController extends AppController {
  * @param mixed $redirect The redirect string or Cake url array
  * @param string $return The url to return to if the user decides there aren't any matches
  */
-	function choose_user($users = array(), $redirect = '/users/request_activation/:ID:/1', $return = null) {
+	public function choose_user($users = array(), $redirect = '/users/request_activation/:ID:/1', $return = null) {
 		if (empty($users) || !$return) {
 			$this->redirect($this->referer());
 		}
@@ -328,7 +326,7 @@ class UsersController extends AppController {
  * @param integer $foundId The id of the user to merge with
  * @param boolean $initialRedirect True if came directly from UsersController::add()
  */
-	function request_activation($foundId, $initialRedirect = false) {
+	public function request_activation($foundId, $initialRedirect = false) {
 		if (!empty($this->data) && !$initialRedirect && $foundId) {
 			$this->data['User']['active'] = false;
 			$this->data['Address'][0]['model'] = 'User';
@@ -360,7 +358,7 @@ class UsersController extends AppController {
 /**
  * Adds a user
  */
-	function add() {
+	public function add() {
 		if (!empty($this->data)) {
 			$foundUser = array();
 			if (!isset($this->passedArgs['skip_check'])) {
@@ -425,7 +423,7 @@ class UsersController extends AppController {
 /**
  * Creates a user account and adds it to a household
  */
-	function household_add() {
+	public function household_add() {
 		// require birthday
 		$this->User->Profile->validate['birth_date']['required'] = true;
 		$this->User->Profile->validate['birth_date']['allowEmpty'] = false;
@@ -499,7 +497,7 @@ class UsersController extends AppController {
 /**
  * Registers a user
  */
-	function register() {
+	public function register() {
 		// require birthday
 		$this->User->Profile->validate['birth_date']['required'] = true;
 		$this->User->Profile->validate['birth_date']['allowEmpty'] = false;
@@ -577,7 +575,7 @@ class UsersController extends AppController {
 /**
  * Common code used in `Users::household_add()`, `Users::add()` and `Users::register()`
  */
-	function _prepareAdd() {
+	protected function _prepareAdd() {
 		$this->set('elementarySchools', $this->User->Profile->ElementarySchool->find('list'));
 		$this->set('middleSchools', $this->User->Profile->MiddleSchool->find('list'));
 		$this->set('highSchools', $this->User->Profile->HighSchool->find('list'));
@@ -590,7 +588,7 @@ class UsersController extends AppController {
 /**
  * Admin dashboard
  */
-	function dashboard() {
+	public function dashboard() {
 		$controllers = array('job_categories', 'schools', 'regions', 'classifications', 'payment_types', 'involvement_types', 'roster_statuses');
 		$this->set(compact('controllers'));
 	}
@@ -600,7 +598,7 @@ class UsersController extends AppController {
  *
  * @param string $id The user id
  */
-	function delete($id = null) {
+	public function delete($id = null) {
 		if ($id) {
 			$selected = array($id);
 		} else {

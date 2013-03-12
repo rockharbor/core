@@ -26,9 +26,8 @@ class AppHelper extends Helper {
  * @param mixed $data
  * @param string $key
  * @return array
- * @access private
  */
-	function __selectedArray($data, $key = 'id') {
+	public function __selectedArray($data, $key = 'id') {
 		if (!is_array($data)) {
 			$model = $data;
 			if (!empty($this->data[$model][$model])) {

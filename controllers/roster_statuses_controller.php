@@ -26,6 +26,6 @@ class RosterStatusesController extends SimpleCrudsController {
  *
  * @var string
  */
-	var $name = 'RosterStatuses';
+	public $name = 'RosterStatuses';
 
 }

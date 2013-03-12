@@ -14,7 +14,7 @@ if (!defined('FULL_BASE_URL')) {
 
 class UsersControllerTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('User', 'Profile', 'Group');
 		$this->loadSettings();
@@ -35,14 +35,14 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->testController = $this->Users;
 	}
 
-	function endTest() {
+	public function endTest() {
 		$this->Users->Session->destroy();
 		unset($this->Users);
 		$this->unloadSettings();
 		ClassRegistry::flush();
 	}
 
-	function testDelete() {
+	public function testDelete() {
 		$this->loadFixtures('Roster', 'Payment');
 
 		$this->Users->expectAt(0, 'cakeError', array('invalidMultiSelectSelection'));
@@ -80,7 +80,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testRedirectOnResetPassword() {
+	public function testRedirectOnResetPassword() {
 		// trick CoreTestCase into not setting up a user
 		$this->Users->Session->write('User', array());
 
@@ -101,7 +101,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->assertPattern('/reset/', $this->Users->Session->read('Message.flash.message'));
 	}
 
-	function testBoth() {
+	public function testBoth() {
 		$data = array(
 			'User' => array(
 				'id' => 1,
@@ -133,7 +133,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, 'flash'.DS.'success');
 	}
 
-	function testEditUsername() {
+	public function testEditUsername() {
 		$data = array(
 			'User' => array(
 				'id' => 1,
@@ -152,7 +152,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, 'flash'.DS.'success');
 	}
 
-	function testEditPassword() {
+	public function testEditPassword() {
 		$data = array(
 			'User' => array(
 				'id' => 1,
@@ -233,7 +233,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, 'flash'.DS.'success');
 	}
 
-	function testRestrictLogin() {
+	public function testRestrictLogin() {
 		// trick CoreTestCase into not setting up a user
 		$this->Users->Session->write('User', array());
 		$this->Users->Cookie->setReturnValue('read', null);
@@ -267,7 +267,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->Users->Session->destroy();
 	}
 
-	function testLogin() {
+	public function testLogin() {
 		$lastLoggedIn = $this->Users->User->read('last_logged_in', 1);
 
 		// trick CoreTestCase into not setting up a user
@@ -325,7 +325,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->Users->Session->destroy();
 	}
 
-	function testForgotPassword() {
+	public function testForgotPassword() {
 		$oldPassword = $this->Users->User->read('password', 1);
 		$data = array(
 			'User' => array(
@@ -351,7 +351,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($this->Users->Session->read('Message.flash.element'), 'flash'.DS.'success');
 	}
 
-	function testRequestActivation() {
+	public function testRequestActivation() {
 		$this->loadFixtures('MergeRequest', 'Address', 'Household', 'HouseholdMember');
 		$MergeRequest = ClassRegistry::init('MergeRequest');
 
@@ -390,7 +390,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($request['MergeRequest']['model_id'], $result);
 	}
 
-	function testAdd() {
+	public function testAdd() {
 		$this->loadFixtures('MergeRequest', 'Address', 'Household', 'HouseholdMember', 'Notification', 'Invitation');
 		$notificationsBefore = $this->Users->User->Notification->find('count');
 		$invitesBefore = $this->Users->User->Invitation->find('count');
@@ -443,7 +443,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, 'Test User');
 	}
 
-	function testRegister() {
+	public function testRegister() {
 		$this->loadFixtures('MergeRequest', 'Address', 'Household', 'HouseholdMember', 'Notification', 'Invitation');
 		$notificationsBefore = $this->Users->User->Notification->find('count');
 		$invitesBefore = $this->Users->User->Invitation->find('count');
@@ -601,7 +601,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testChooseUser() {
+	public function testChooseUser() {
 		$this->Users->choose_user(array(1, 2), '/users/request_activation/:ID:/1', '/original/action');
 		$vars = $this->Users->viewVars;
 		$this->assertEqual(count($vars['users']), 2);
@@ -617,7 +617,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($vars['redirect'], FULL_BASE_URL.'/some_controller/action/:ID:');
 	}
 
-	function testHouseholdAdd() {
+	public function testHouseholdAdd() {
 		$this->loadFixtures('MergeRequest', 'Address', 'Household', 'HouseholdMember', 'Notification', 'Invitation');
 		$notificationsBefore = $this->Users->User->Notification->find('count');
 
@@ -707,7 +707,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testSpecialBirthdateValidation() {
+	public function testSpecialBirthdateValidation() {
 		$origValidation = $this->Users->User->Profile->validate;
 
 		$data = array(

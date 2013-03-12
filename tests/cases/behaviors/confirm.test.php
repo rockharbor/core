@@ -5,7 +5,7 @@ App::import('Model', 'Ministry');
 
 class ConfirmBehaviorTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Ministry', 'Involvement', 'MinistriesRev');
 		$this->Ministry =& ClassRegistry::init('Ministry');
@@ -13,18 +13,18 @@ class ConfirmBehaviorTestCase extends CoreTestCase {
 		$this->Ministry->RevisionModel->useDbConfig = 'test_suite';
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->Ministry);
 		ClassRegistry::flush();
 	}
 
-	function testSetup() {
+	public function testSetup() {
 		$this->assertIsA($this->Ministry->RevisionModel, 'Model');
 		$this->assertIsA($this->Ministry->Behaviors->Confirm->settings['Ministry'], 'array');
 		$this->assertIsA($this->Ministry->Behaviors->Confirm->settings['Ministry']['fields'], 'array');
 	}
 
-	function testFieldsSetting() {
+	public function testFieldsSetting() {
 		$this->Ministry->Behaviors->attach('Confirm', array(
 			'fields' => array(
 				'description'
@@ -44,7 +44,7 @@ class ConfirmBehaviorTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testNoChange() {
+	public function testNoChange() {
 		$this->Ministry->id = 1;
 		$this->Ministry->saveField('name', 'Communications');
 		$results = $this->Ministry->field('name');
@@ -61,7 +61,7 @@ class ConfirmBehaviorTestCase extends CoreTestCase {
 		$this->assertFalse($this->Ministry->changed());
 	}
 
-	function testConfirm() {
+	public function testConfirm() {
 		$this->Ministry->id = 1;
 		$this->Ministry->saveField('name', 'Revised Name');
 		$results = $this->Ministry->field('name');
@@ -96,7 +96,7 @@ class ConfirmBehaviorTestCase extends CoreTestCase {
 		$this->assertEqual($rev['Revision']['name'], 'Another change');
 	}
 
-	function testConfirmDisabled() {
+	public function testConfirmDisabled() {
 		$this->Ministry->Behaviors->disable('Confirm');
 		$this->Ministry->id = 1;
 		$this->Ministry->saveField('description', 'Revised Description');
@@ -112,7 +112,7 @@ class ConfirmBehaviorTestCase extends CoreTestCase {
 		$this->assertFalse($rev);
 	}
 
-	function testRevision() {
+	public function testRevision() {
 		$this->Ministry->id = 1;
 		$this->Ministry->read();
 		$success = $this->Ministry->save(array(
@@ -139,7 +139,7 @@ class ConfirmBehaviorTestCase extends CoreTestCase {
 		$this->assertFalse($this->Ministry->revision());
 	}
 
-	function testConfirmRevision() {
+	public function testConfirmRevision() {
 		$this->Ministry->id = 1;
 		$this->Ministry->save(array(
 			'name' => 'Revised Name',
@@ -152,7 +152,7 @@ class ConfirmBehaviorTestCase extends CoreTestCase {
 		$this->assertFalse($this->Ministry->RevisionModel->find('all'));
 	}
 
-	function testDenyRevision() {
+	public function testDenyRevision() {
 		$this->Ministry->id = 1;
 		$this->Ministry->save(array(
 			'name' => 'Revised Name',

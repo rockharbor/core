@@ -1,9 +1,9 @@
 <?php
 /* Alert Fixture generated on: 2010-06-28 09:06:29 : 1277741189 */
 class AlertFixture extends CakeTestFixture {
-	var $name = 'Alert';
+	public $name = 'Alert';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 45),
 		'description' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 2500),
@@ -15,7 +15,7 @@ class AlertFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 1,
 			'name' => 'A User-level alert',

@@ -1,9 +1,9 @@
 <?php
 /* Payment Fixture generated on: 2010-06-28 09:06:44 : 1277741384 */
 class PaymentFixture extends CakeTestFixture {
-	var $name = 'Payment';
+	public $name = 'Payment';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'user_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
 		'roster_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8),
@@ -20,7 +20,7 @@ class PaymentFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 1,
 			'user_id' => 1,
@@ -79,7 +79,7 @@ class PaymentFixture extends CakeTestFixture {
 		),
 	);
 
-	function create(&$db) {
+	public function create(&$db) {
 		$db->columns['decimal'] = array(
 			'name' => 'decimal',
 			'formatter' => 'floatval'

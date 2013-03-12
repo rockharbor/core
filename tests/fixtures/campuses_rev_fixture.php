@@ -1,8 +1,8 @@
 <?php
 class CampusesRevFixture extends CakeTestFixture {
-	var $name = 'CampusesRev';
+	public $name = 'CampusesRev';
 
-	var $fields = array(
+	public $fields = array(
 		'version_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'version_created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),
@@ -13,6 +13,6 @@ class CampusesRevFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
-	var $records = array(
+	public $records = array(
 	);
 }

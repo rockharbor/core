@@ -23,7 +23,7 @@ class FormattingHelper extends AppHelper {
  *
  * @var array
  */
-	var $helpers = array(
+	public $helpers = array(
 		'Html',
 		'Time',
 		'Number',
@@ -36,7 +36,7 @@ class FormattingHelper extends AppHelper {
  * @param string $email The email address
  * @param integer $id The user's id, if any
  */
-	function email($email, $id = null) {
+	public function email($email, $id = null) {
 		if (empty($email)) {
 			return null;
 		}
@@ -54,7 +54,7 @@ class FormattingHelper extends AppHelper {
  * @param array $address The address model data
  * @param integer $link Whether or not to make a link
  */
-	function address($data, $link = true) {
+	public function address($data, $link = true) {
 		$address = array();
 		if (!empty($data['name'])) {
 			$address[] = $data['name'];
@@ -91,7 +91,7 @@ class FormattingHelper extends AppHelper {
  * @param object $date The Date model
  * @return string Human readable recurring date
  */
-	function readableDate($date = array()) {
+	public function readableDate($date = array()) {
 		if (empty($date) || empty($date['Date'])) {
 			return null;
 		}
@@ -228,7 +228,7 @@ class FormattingHelper extends AppHelper {
  * @param boolean $extended Include months in ages greater than 1
  * @return string
  */
-	function age($age = 0, $extended = false) {
+	public function age($age = 0, $extended = false) {
 		$out = '';
 		$years = $months = 0;
 		if ($age < 1) {
@@ -253,7 +253,7 @@ class FormattingHelper extends AppHelper {
  * @param $amount The amount
  * @return string
  */
-	function money($amount = 0) {
+	public function money($amount = 0) {
 		return $this->Number->currency($amount);
 	}
 
@@ -275,9 +275,8 @@ class FormattingHelper extends AppHelper {
  * @param string $model The model to create flags for
  * @param array $data The data to use to create them.
  * @return string Flag HTML
- * @access public
  */
-	function flags($model = null, $data = array()) {
+	public function flags($model = null, $data = array()) {
 		if (!$model || empty($data)) {
 			return null;
 		}
@@ -298,9 +297,8 @@ class FormattingHelper extends AppHelper {
  * @param string $var 10-digit number to format
  * @param string $ext Extension, if any
  * @return string
- * @access public
  */
-	function phone($var = '', $ext = '') {
+	public function phone($var = '', $ext = '') {
 		$var = preg_replace('/[^\d]/', '', $var);
 		$ext = preg_replace('/[^\d]/', '', $ext);
 		if (strlen($var) >= 10) {
@@ -321,9 +319,8 @@ class FormattingHelper extends AppHelper {
  *
  * @param string $datetime MySQL date or datetime to format
  * @return string
- * @access public
  */
-	function datetime($datetime = '') {
+	public function datetime($datetime = '') {
 		$out = $this->date($datetime);
 		$time = $this->time($datetime);
 		if ($time) {
@@ -339,9 +336,8 @@ class FormattingHelper extends AppHelper {
  *
  * @param string $datetime MySQL date or datetime to format
  * @return string
- * @access public
  */
-	function date($datetime = '') {
+	public function date($datetime = '') {
 		// we don't want 12/31/1969
 		if ($datetime == '') {
 			return null;
@@ -386,9 +382,8 @@ class FormattingHelper extends AppHelper {
  *
  * @param string $datetime MySQL date or datetime to format
  * @return string
- * @access public
  */
-	function time($datetime = '') {
+	public function time($datetime = '') {
 		if ($datetime == '') {
 			return null;
 		}
@@ -401,9 +396,8 @@ class FormattingHelper extends AppHelper {
  *
  * @param array $user The user
  * @return string Flags
- * @access private
  */
-	function _flagUser($user) {
+	protected function _flagUser($user) {
 		// default associated data that is needed
 		$_defaults = array(
 			'User' => array(
@@ -459,9 +453,8 @@ class FormattingHelper extends AppHelper {
  *
  * @param array $involvement The involvement
  * @return string Flags
- * @access private
  */
-	function _flagInvolvement($involvement) {
+	protected function _flagInvolvement($involvement) {
 		// default associated data that is needed
 		$_defaults = array(
 			'Involvement' => array(
@@ -515,9 +508,8 @@ class FormattingHelper extends AppHelper {
  *
  * @param array $ministry The Ministry
  * @return string Flags
- * @access private
  */
-	function _flagMinistry($ministry) {
+	protected function _flagMinistry($ministry) {
 		// if used as containable, it could be formatted differently
 		if (isset($ministry['Ministry']['Group'])) {
 			$ministry['Group'] = $ministry['Ministry']['Group'];

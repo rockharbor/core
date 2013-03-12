@@ -23,21 +23,21 @@ class School extends AppModel {
  *
  * @var string
  */
-	var $name = 'School';
+	public $name = 'School';
 
 /**
  * Default order
  *
  * @var string
  */
-	var $order = ':ALIAS:.name ASC';
+	public $order = ':ALIAS:.name ASC';
 
 /**
  * Types of schools
  *
  * @var array
  */
-	var $types = array(
+	public $types = array(
 		'e' => 'Elementary School',
 		'm' => 'Middle School',
 		'h' => 'High School',
@@ -54,7 +54,7 @@ class School extends AppModel {
  * @param array $queryData The query data
  * @return array The modified query data
  */
-	function beforeFind($queryData = array()) {
+	public function beforeFind($queryData = array()) {
 		$types = array_map(array('Inflector', 'classify'), $this->types);
 
 		if ($this->alias != $this->name && in_array($this->alias, $types)) {

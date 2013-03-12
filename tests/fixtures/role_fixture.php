@@ -1,9 +1,9 @@
 <?php
 /* Role Fixture generated on: 2010-06-28 09:06:43 : 1277741443 */
 class RoleFixture extends CakeTestFixture {
-	var $name = 'Role';
+	public $name = 'Role';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'ministry_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
 		'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 45),
@@ -14,7 +14,7 @@ class RoleFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 1,
 			'ministry_id' => 4,

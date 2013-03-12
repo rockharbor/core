@@ -4,14 +4,14 @@ App::import('Lib', 'CoreTestCase');
 
 class BootstrapTestCase extends CoreTestCase {
 
-	function testBr2nl() {
+	public function testBr2nl() {
 		$text = 'This<br />is some<br>text.';
 		$result = br2nl($text);
 		$expected = 'This'.PHP_EOL.'is some'.PHP_EOL.'text.';
 		$this->assertEqual($result, $expected);
 	}
 
-	function testArrayFilterRecursive() {
+	public function testArrayFilterRecursive() {
 		$array = array(
 			'User' => array(
 				'Profile' => array(

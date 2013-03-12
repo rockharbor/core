@@ -21,14 +21,14 @@ class Household extends AppModel {
  *
  * @var string
  */
-	var $name = 'Household';
+	public $name = 'Household';
 
 /**
  * Extra behaviors for this model
  *
  * @var array
  */
-	var $actsAs = array(
+	public $actsAs = array(
 		'Containable',
 		'Linkable.AdvancedLinkable'
 	);
@@ -38,7 +38,7 @@ class Household extends AppModel {
  *
  * @var array
  */
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'HouseholdContact' => array(
 			'className' => 'User',
 			'foreignKey' => 'contact_id'
@@ -50,7 +50,7 @@ class Household extends AppModel {
  *
  * @var array
  */
-	var $hasMany = array(
+	public $hasMany = array(
 		'HouseholdMember'
 	);
 
@@ -62,7 +62,7 @@ class Household extends AppModel {
  * @param boolean $mustBeConfirmed Only get confirmed members?
  * @return array Array of ids
  */
-	function getMemberIds($userId, $mustBeContact = false, $mustBeConfirmed = false) {
+	public function getMemberIds($userId, $mustBeContact = false, $mustBeConfirmed = false) {
 		$conditions = array(
 			'HouseholdMember.user_id' => $userId
 		);
@@ -103,7 +103,7 @@ class Household extends AppModel {
  * @param boolean $mustBeContact Only get households where user is contact?
  * @return array List of household ids
  */
-	function getHouseholdIds($userId, $mustBeContact = false) {
+	public function getHouseholdIds($userId, $mustBeContact = false) {
 		$options = array(
 			'fields' => array(
 				'household_id'
@@ -129,9 +129,8 @@ class Household extends AppModel {
  * @param integer $userId The user id
  * @param integer $householdId The household id
  * @return boolean
- * @access public
  */
-	function isMember($userId, $householdId) {
+	public function isMember($userId, $householdId) {
 		return $this->HouseholdMember->hasAny(array(
 			'household_id' => $householdId,
 			'user_id' => $userId
@@ -148,9 +147,8 @@ class Household extends AppModel {
  * @param integer $memberId The user to check $userId's association with
  * @param mixed $household The household id(s) to restrict the search to. Can be an array
  * @return boolean
- * @access public
  */
-	function isMemberWith($userId, $memberId, $household = null) {
+	public function isMemberWith($userId, $memberId, $household = null) {
 		$households = $this->getHouseholdIds($userId);
 
 		if (!$household) {
@@ -177,9 +175,8 @@ class Household extends AppModel {
  * @param integer $userId The user id
  * @param integer $householdId The household id
  * @return boolean
- * @access public
  */
-	function isContact($userId, $householdId) {
+	public function isContact($userId, $householdId) {
 		$this->id = $householdId;
 		return $this->field('id') == $userId;
 	}
@@ -190,9 +187,8 @@ class Household extends AppModel {
  * @param integer $contactId The Household Contact
  * @param integer $userId The user id
  * @return boolean
- * @access public
  */
-	function isContactFor($contactId, $userId) {
+	public function isContactFor($contactId, $userId) {
 		// get households for the user
 		$households = $this->HouseholdMember->find('count', array(
 			'conditions' => array(
@@ -216,9 +212,8 @@ class Household extends AppModel {
  *
  * @param integer $user User id
  * @return boolean True on success, false on failure
- * @access public
  */
-	function createHousehold($user) {
+	public function createHousehold($user) {
 		if (!$this->HouseholdMember->hasAny(array(
 			'user_id' => $user,
 			'confirmed' => true
@@ -250,10 +245,9 @@ class Household extends AppModel {
  * @param integer $user User id
  * @param integer $household Household id
  * @return boolean True on success, false on failure
- * @access public
  * @todo Should check and fail if they're a child, inactive, exist, confirmed etc.
  */
-	function makeHouseholdContact($user, $household) {
+	public function makeHouseholdContact($user, $household) {
 		$this->id = $household;
 		if ($this->isMember($user, $household)) {
 			return $this->saveField('contact_id', $user);
@@ -269,9 +263,8 @@ class Household extends AppModel {
  * @param integer $user User id
  * @param boolean $confirm True to add, false to invite
  * @return boolean True on success, false on failure
- * @access public
  */
-	function join($household, $user, $confirm = false) {
+	public function join($household, $user, $confirm = false) {
 		$this->HouseholdMember->User->id = $user;
 		$this->id = $household;
 		// find the user

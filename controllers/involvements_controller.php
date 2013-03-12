@@ -21,21 +21,21 @@ class InvolvementsController extends AppController {
  *
  * @var string
  */
-	var $name = 'Involvements';
+	public $name = 'Involvements';
 
 /**
  * Extra helpers for this controller
  *
  * @var array
  */
-	var $helpers = array('Formatting');
+	public $helpers = array('Formatting');
 
 /**
  * Extra components for this controller
  *
  * @var array
  */
-	var $components = array(
+	public $components = array(
 		'FilterPagination' => array(
 			'startEmpty' => false
 		),
@@ -46,10 +46,8 @@ class InvolvementsController extends AppController {
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		$this->_editSelf('index');
 		parent::beforeFilter();
 	}
@@ -57,7 +55,7 @@ class InvolvementsController extends AppController {
 /**
  * Shows a list of involvement opportunities
  */
-	function index($viewStyle = 'column') {
+	public function index($viewStyle = 'column') {
 		$private = $this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id']);
 
 		$conditions['or']['Involvement.ministry_id'] = $this->passedArgs['Ministry'];
@@ -139,7 +137,7 @@ class InvolvementsController extends AppController {
 /**
  * Views an involvement opportunity
  */
-	function view() {
+	public function view() {
 		$id = $this->passedArgs['Involvement'];
 
 		if (!$id) {
@@ -242,7 +240,7 @@ class InvolvementsController extends AppController {
  * @param boolean $add Whether to add or invite
  * @todo Don't invite users who are already on the roster! (move to model?)
  */
-	function invite_roster($status = 3) {
+	public function invite_roster($status = 3) {
 		// get users from roster
 		$roster = $this->Involvement->Roster->find('all', array(
 			'fields' => array(
@@ -327,7 +325,7 @@ class InvolvementsController extends AppController {
  * @param boolean $add Whether to add or invite
  * @todo Don't invite users who are already on the roster! (move to model?)
  */
-	function invite($status = 3) {
+	public function invite($status = 3) {
 		$this->Involvement->Roster->User->contain(array('Profile'));
 		$this->Involvement->contain(array('InvolvementType'));
 
@@ -392,7 +390,7 @@ class InvolvementsController extends AppController {
  * By default, Involvement is inactive until Involvement::toggleActivity() is called. Additional
  * validation is performed then.
  */
-	function add() {
+	public function add() {
 		if (!empty($this->data)) {
 			$this->Involvement->create();
 			if ($this->Involvement->save($this->data)) {
@@ -418,7 +416,7 @@ class InvolvementsController extends AppController {
 /**
  * Edits an involvement opportunity
  */
-	function edit() {
+	public function edit() {
 		$id = $this->passedArgs['Involvement'];
 
 		if (!$id && empty($this->data)) {
@@ -459,7 +457,7 @@ class InvolvementsController extends AppController {
  * @param boolean $active Whether to make the model inactive or active
  * @param boolean $recursive Whether to iterate through the model's relationships and mark them as $active
  */
-	function toggle_activity($active = false, $recursive = false) {
+	public function toggle_activity($active = false, $recursive = false) {
 		$id = $this->passedArgs['Involvement'];
 
 		if (!$id) {
@@ -504,7 +502,7 @@ class InvolvementsController extends AppController {
 /**
  * Deletes an involvement opportunity
  */
-	function delete() {
+	public function delete() {
 		$id = $this->passedArgs['Involvement'];
 		if (!$id) {
 			$this->cakeError('error404');

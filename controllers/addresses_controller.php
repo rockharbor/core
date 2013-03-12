@@ -21,37 +21,35 @@ class AddressesController extends AppController {
  *
  * @var string
  */
-	var $name = 'Addresses';
+	public $name = 'Addresses';
 
 /**
  * Extra helpers for this controller
  *
  * @var array
  */
-	var $helpers = array('SelectOptions', 'GoogleMap');
+	public $helpers = array('SelectOptions', 'GoogleMap');
 
 /**
  * The name of the model this Address belongs to. Used for Acl
  *
  * @var string
  */
-	var $model = null;
+	public $model = null;
 
 /**
  * The id of the model this Address belongs to. Used for Acl
  *
  * @var integer
  */
-	var $modelId = null;
+	public $modelId = null;
 
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->_editSelf('index', 'add', 'edit', 'toggle_activity', 'primary');
 	}
@@ -59,7 +57,7 @@ class AddressesController extends AppController {
 /**
  * Model::beforeRender() callback
  */
-	function beforeRender() {
+	public function beforeRender() {
 		parent::beforeRender();
 
 		$this->set('model', $this->model);
@@ -69,7 +67,7 @@ class AddressesController extends AppController {
 /**
  * Shows a list of addresses
  */
-	function index() {
+	public function index() {
 		$this->paginate = array(
 			'conditions' => array(
 				'foreign_key' => $this->modelId,
@@ -91,7 +89,7 @@ class AddressesController extends AppController {
  * By default, the newly created address is set as the new primary address. All other addresses
  * belonging to this model are marked as not being primary
  */
-	function add() {
+	public function add() {
 		if (!empty($this->data)) {
 			// check to see if they chose an existing address.
 			// if so, duplicate the selected address
@@ -148,7 +146,7 @@ class AddressesController extends AppController {
  *
  * @param integer $id The address id
  */
-	function edit($id = null) {
+	public function edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->cakeError('error404');
 		}
@@ -176,7 +174,7 @@ class AddressesController extends AppController {
  *
  * @param integer $id The address id
  */
-	function primary() {
+	public function primary() {
 		if (!$this->passedArgs['Address']) {
 			$this->cakeError('error404');
 		}
@@ -186,7 +184,7 @@ class AddressesController extends AppController {
 			$this->Address->id = $relatedId;
 			$this->Address->saveField('primary', 0);
 		}
-		
+
 		$this->Address->id = $this->passedArgs['Address'];
 		$this->Address->saveField('primary', true);
 		$this->Address->saveField('active', true);
@@ -200,7 +198,7 @@ class AddressesController extends AppController {
  *
  * @param boolean $active What to mark the `active` field
  */
-	function toggle_activity($active = true) {
+	public function toggle_activity($active = true) {
 		if (!$this->passedArgs['Address']) {
 			$this->cakeError('error404');
 		}
@@ -218,7 +216,7 @@ class AddressesController extends AppController {
  *
  * @param integer $id The address id
  */
-	function delete($id = null) {
+	public function delete($id = null) {
 		if (!$id) {
 			$this->cakeError('error404');
 		}

@@ -4,7 +4,7 @@ App::import('Controller', 'Questions');
 
 class TestQuestionsController extends QuestionsController {
 
-	function redirect($url, $status = null, $exit = true) {
+	public function redirect($url, $status = null, $exit = true) {
 		if (is_array($url)) {
 			$url += array('controller' => 'questions');
 		}
@@ -17,7 +17,7 @@ Mock::generatePartial('TestQuestionsController', 'MockTestQuestionsController', 
 
 class QuestionsControllerTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		// necessary fixtures
 		$this->loadFixtures('Question');
@@ -28,20 +28,20 @@ class QuestionsControllerTestCase extends CoreTestCase {
 		$this->testController = $this->Questions;
 	}
 
-	function endTest() {
+	public function endTest() {
 		$this->Questions->Session->destroy();
 		unset($this->Questions);
 		ClassRegistry::flush();
 	}
 
-	function testIndex() {
+	public function testIndex() {
 		$vars = $this->testAction('/questions/index/Involvement:1');
 		$results = Set::extract('/Question/id', $vars['questions']);
 		$expected = array(1, 2);
 		$this->assertEqual($results, $expected);
 	}
 
-	function testAdd() {
+	public function testAdd() {
 		$data = array(
 			'Question' => array(
 				'description' => 'I\'m Ron Burgundy?',
@@ -59,7 +59,7 @@ class QuestionsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testEdit() {
+	public function testEdit() {
 		$data = array(
 			'Question' => array(
 				'id' => 1,
@@ -79,7 +79,7 @@ class QuestionsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testMove() {
+	public function testMove() {
 		$this->testAction('/question/move/1/down');
 		$results = $this->testController->redirectUrl;
 		$expected = '/questions/index/Involvement:1';
@@ -107,7 +107,7 @@ class QuestionsControllerTestCase extends CoreTestCase {
 		$expected = 'flash'.DS.'failure';
 	}
 
-	function testDelete() {
+	public function testDelete() {
 		$this->testAction('/question/delete/1');
 		$results = $this->Questions->Session->read('Message.flash.element');
 		$expected = 'flash'.DS.'success';

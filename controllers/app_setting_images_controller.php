@@ -26,16 +26,14 @@ class AppSettingImagesController extends ImagesController {
  *
  * @var string
  */
-	var $model = 'AppSetting';
+	public $model = 'AppSetting';
 
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->modelId = isset($this->passedArgs[$this->model]) ? $this->passedArgs[$this->model] : null;
 	}

@@ -4,7 +4,7 @@ App::import('Lib', 'CoreTestCase');
 App::import('Model', array('SysEmail', 'Document'));
 
 class SysEmailTestCase extends CoreTestCase {
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Attachment');
 		$this->SysEmail =& ClassRegistry::init('SysEmail');
@@ -17,13 +17,13 @@ class SysEmailTestCase extends CoreTestCase {
 		ClassRegistry::addObject('Document', $this->Document);
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->SysEmail);
 		unset($this->Document);
 		ClassRegistry::flush();
 	}
 
-	function testGcAttachment() {
+	public function testGcAttachment() {
 		$this->SysEmail->gcAttachments('anotherTest');
 		$results = $this->Document->find('all', array(
 			'fields' => array('id'),
@@ -46,7 +46,7 @@ class SysEmailTestCase extends CoreTestCase {
 		$this->assertEqual(count($results), 1);
 	}
 
-	function testGcAttachmentsAll() {
+	public function testGcAttachmentsAll() {
 		$this->SysEmail->gcAttachments();
 		$results = $this->Document->find('all', array(
 			'fields' => array('id'),

@@ -25,16 +25,14 @@ class SimpleCrudsController extends AppController {
  *
  * @var string viewPath
  */
-	var $viewPath = 'simple_cruds';
+	public $viewPath = 'simple_cruds';
 
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 
 		// for accessing the model
@@ -65,7 +63,7 @@ class SimpleCrudsController extends AppController {
 /**
  * Shows a list of records for this model
  */
-	function index() {
+	public function index() {
 		$this->{$this->modelClass}->recursive = 0;
 		$this->set('results', $this->paginate());
 	}
@@ -85,7 +83,7 @@ class SimpleCrudsController extends AppController {
 /**
  * Adds a record for this model
  */
-	function add() {
+	public function add() {
 		if (!empty($this->data)) {
 			$this->{$this->modelClass}->create();
 			if ($this->{$this->modelClass}->save($this->data)) {
@@ -102,7 +100,7 @@ class SimpleCrudsController extends AppController {
  *
  * @param integer $id The id of the model
  */
-	function edit($id = null) {
+	public function edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->cakeError('error404');
 		}
@@ -123,7 +121,7 @@ class SimpleCrudsController extends AppController {
  *
  * @param integer $id The id of the model
  */
-	function delete($id = null) {
+	public function delete($id = null) {
 		if (!$id) {
 			$this->cakeError('error404');
 		}

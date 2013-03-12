@@ -21,23 +21,21 @@ class ZipcodesController extends AppController {
  *
  * @var string
  */
-	var $name = 'Zipcodes';
+	public $name = 'Zipcodes';
 
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 	}
 
 /**
  * Adds a Zipcode to a Region
  */
-	function add() {
+	public function add() {
 		if (!isset($this->passedArgs['Region'])) {
 			$this->cakeError('error404');
 		}
@@ -59,7 +57,7 @@ class ZipcodesController extends AppController {
  *
  * @param integer $id The id of the Zipcode to delete
  */
-	function delete($id = null) {
+	public function delete($id = null) {
 		if (!$id) {
 			$this->cakeError('error404');
 		}

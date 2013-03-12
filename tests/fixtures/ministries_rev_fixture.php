@@ -1,9 +1,9 @@
 <?php
 /* MinistriesRev Fixture generated on: 2010-06-28 09:06:21 : 1277741361 */
 class MinistriesRevFixture extends CakeTestFixture {
-	var $name = 'MinistriesRev';
+	public $name = 'MinistriesRev';
 
-	var $fields = array(
+	public $fields = array(
 		'version_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'version_created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'id' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),
@@ -17,6 +17,6 @@ class MinistriesRevFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
-	var $records = array(
+	public $records = array(
 	);
 }

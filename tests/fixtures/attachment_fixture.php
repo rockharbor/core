@@ -1,9 +1,9 @@
 <?php
 /* Attachment Fixture generated on: 2010-08-05 09:08:10 : 1281025930 */
 class AttachmentFixture extends CakeTestFixture {
-	var $name = 'Attachment';
+	public $name = 'Attachment';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'model' => array('type' => 'string', 'null' => false, 'default' => NULL, 'key' => 'index'),
 		'foreign_key' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 45),
@@ -20,7 +20,7 @@ class AttachmentFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 1,
 			'model' => 'SysEmail',

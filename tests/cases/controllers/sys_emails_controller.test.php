@@ -9,7 +9,7 @@ Mock::generatePartial('SysEmailsController', 'MockSysEmailsController', array('i
 
 class SysEmailsControllerTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('User', 'Group', 'Involvement', 'Roster', 'Profile');
 		$this->SysEmails =& new MockSysEmailsController();
@@ -25,19 +25,19 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$this->testController = $this->SysEmails;
 	}
 
-	function endTest() {
+	public function endTest() {
 		$this->unloadSettings();
 		$this->SysEmails->Session->destroy();
 		unset($this->SysEmails);
 		ClassRegistry::flush();
 	}
 
-	function testAction($url, $options = array()) {
+	public function testAction($url, $options = array()) {
 		$this->SysEmails->users = array();
 		return parent::testAction($url, $options);
 	}
 
-	function testView() {
+	public function testView() {
 		$this->loadFixtures('SysEmail', 'User', 'Profile');
 
 		// not user 2's email
@@ -69,7 +69,7 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testHtmlEmail() {
+	public function testHtmlEmail() {
 		$this->loadFixtures('SysEmail');
 
 		$vars = $this->testAction('/sys_emails/html_email/3/User:2');
@@ -80,7 +80,7 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$this->assertFalse($this->testController->layout);
 	}
 
-	function testIndex() {
+	public function testIndex() {
 		$this->loadFixtures('SysEmail');
 
 		$vars = $this->testAction('/sys_emails/index/User:2');
@@ -137,7 +137,7 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testComposeValidation() {
+	public function testComposeValidation() {
 		$vars = $this->testAction('/sys_emails/user/User:1');
 		$results = $this->SysEmails->SysEmail->validationErrors;
 		$this->assertTrue(empty($results));
@@ -184,7 +184,7 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testLeader() {
+	public function testLeader() {
 		$this->loadFixtures('Leader');
 
 		$vars = $this->testAction('/sys_emails/leader/4');
@@ -193,7 +193,7 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, array(2));
 	}
 
-	function testInvolvement() {
+	public function testInvolvement() {
 		$this->loadFixtures('Leader');
 
 		$vars = $this->testAction('/sys_emails/involvement/both/Involvement:1');
@@ -226,7 +226,7 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$this->assertFalse(isset($vars['toUsers']));
 	}
 
-	function testMinistry() {
+	public function testMinistry() {
 		$this->loadFixtures('Ministry');
 
 		$this->SysEmails->Session->write('MultiSelect.test', array(
@@ -254,7 +254,7 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$this->assertFalse(isset($vars['toUsers']));
 	}
 
-	function testRoster() {
+	public function testRoster() {
 		$this->SysEmails->Session->write('MultiSelect.test', array(
 			'selected' => array(3,4,5),
 			'search' => array()
@@ -295,7 +295,7 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$this->assertFalse(isset($vars['toUsers']));
 	}
 
-	function testUser() {
+	public function testUser() {
 		$vars = $this->testAction('/sys_emails/user/User:1');
 		$this->assertEqual($vars['toUsers'][0]['User']['username'], 'jharris');
 
@@ -353,7 +353,7 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testEmailHouseholdContact() {
+	public function testEmailHouseholdContact() {
 		$this->loadFixtures('HouseholdMember', 'Household');
 
 		$vars = $this->testAction('/sys_emails/user/User:1', array(

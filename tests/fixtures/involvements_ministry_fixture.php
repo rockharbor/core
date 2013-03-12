@@ -1,9 +1,9 @@
 <?php
 /* InvolvementsMinistry Fixture generated on: 2010-08-16 08:08:48 : 1281974328 */
 class InvolvementsMinistryFixture extends CakeTestFixture {
-	var $name = 'InvolvementsMinistry';
+	public $name = 'InvolvementsMinistry';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'involvement_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
 		'ministry_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8),
@@ -11,7 +11,7 @@ class InvolvementsMinistryFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 1,
 			'involvement_id' => 2,
