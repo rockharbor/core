@@ -38,6 +38,8 @@ class AttachmentsControllerTestCase extends CoreTestCase {
 	}
 
 	function testGetLimit() {
+		$this->loadSettings();
+
 		$controller = new AttachmentsControllerTestAttachmentsController();
 
 		$result = $controller->_getLimit();
@@ -51,6 +53,8 @@ class AttachmentsControllerTestCase extends CoreTestCase {
 		$result = $controller->_getLimit('SysEmail', 'Document');
 		$expected = 2;
 		$this->assertEqual($result, $expected);
+
+		$this->unloadSettings();
 	}
 
 	function testBeforeFilter() {
