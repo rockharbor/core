@@ -9,7 +9,7 @@ Mock::generatePartial('UserAddressesController', 'TestUserAddressesController', 
 
 class AddressesControllerTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Address');
 		$this->Addresses =& new TestUserAddressesController();
@@ -24,13 +24,13 @@ class AddressesControllerTestCase extends CoreTestCase {
 		$this->testController = $this->Addresses;
 	}
 
-	function endTest() {
+	public function endTest() {
 		$this->Addresses->Session->destroy();
 		unset($this->Addresses);
 		ClassRegistry::flush();
 	}
 
-	function testToggleActivity() {
+	public function testToggleActivity() {
 		$this->testAction('/user_addresses/toggle_activity/0/Address:3');
 		$this->assertEqual($this->Addresses->Session->read('Message.flash.element'), 'flash'.DS.'success');
 
@@ -44,7 +44,7 @@ class AddressesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($this->Addresses->Session->read('Message.flash.element'), 'flash'.DS.'success');
 	}
 
-	function testPrimary() {
+	public function testPrimary() {
 		$this->testAction('/user_addresses/primary/Address:1');
 		$address = $this->Addresses->Address->read(null, 1);
 		$this->assertEqual($address['Address']['primary'], 1);
@@ -62,7 +62,7 @@ class AddressesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($address['Address']['primary'], 1);
 	}
 
-	function testIndex() {
+	public function testIndex() {
 		$vars = $this->testAction('/user_addresses/index/User:1');
 		$results = Set::extract('/Address/id', $vars['addresses']);
 		sort($results);
@@ -73,7 +73,7 @@ class AddressesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, array());
 	}
 
-	function testAdd() {
+	public function testAdd() {
 		$data = array(
 			'Address' => array(
 				'name' => 'Work 2',
@@ -98,7 +98,7 @@ class AddressesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($this->Addresses->Address->field('primary'), 0);
 	}
 
-	function testEdit() {
+	public function testEdit() {
 		$data = $this->Addresses->Address->read(null, 1);
 		$data['Address']['primary'] = 0;
 		$vars = $this->testAction('/user_addresses/edit/1', array(
@@ -119,7 +119,7 @@ class AddressesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($this->Addresses->Address->field('primary'), 0);
 	}
 
-	function testDelete() {
+	public function testDelete() {
 		$vars = $this->testAction('/user_addresses/delete/1');
 		$this->assertFalse($this->Addresses->Address->read(null, 1));
 	}

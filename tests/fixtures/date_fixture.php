@@ -1,9 +1,9 @@
 <?php
 /* Date Fixture generated on: 2010-06-28 09:06:48 : 1277741268 */
 class DateFixture extends CakeTestFixture {
-	var $name = 'Date';
+	public $name = 'Date';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'start_date' => array('type' => 'date', 'null' => true, 'default' => NULL),
 		'end_date' => array('type' => 'date', 'null' => true, 'default' => NULL, 'key' => 'index'),
@@ -25,7 +25,7 @@ class DateFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 1,
 			'start_date' => '2010-03-16',

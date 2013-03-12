@@ -29,14 +29,14 @@ class ConfirmBehavior extends ModelBehavior {
  *
  * @var boolean
  */
-	var $_changed = false;
+	protected $_changed = false;
 
 /**
  * Setup function
  *
  * @param object $Model The calling model
  */
-	function setup(&$Model, $settings = array()) {
+	public function setup(&$Model, $settings = array()) {
 		$Model->RevisionModel = new Model(array(
 			'table' => Inflector::tableize($Model->name).'_revs',
 			'name' => 'Revision',
@@ -60,7 +60,7 @@ class ConfirmBehavior extends ModelBehavior {
  * @param object $Model The calling model
  * @return boolean Success
  */
-	function beforeSave(&$Model) {
+	public function beforeSave(&$Model) {
 		if (isset($Model->data[$Model->alias])) {
 			$data = $Model->data[$Model->alias];
 		} else {
@@ -109,7 +109,7 @@ class ConfirmBehavior extends ModelBehavior {
  * @param type $Model
  * @return type
  */
-	function changed(&$Model) {
+	public function changed(&$Model) {
 		return $this->_changed;
 	}
 
@@ -120,7 +120,7 @@ class ConfirmBehavior extends ModelBehavior {
  * @param integer $Model The id of the model to check for revisions of
  * @return array The revision
  */
-	function revision(&$Model, $id = null) {
+	public function revision(&$Model, $id = null) {
 		if (!$id) {
 			return false;
 		}
@@ -139,7 +139,7 @@ class ConfirmBehavior extends ModelBehavior {
  * @param integer $Model The id of the model to check for revisions of
  * @return boolean Success
  */
-	function confirmRevision(&$Model, $id = null) {
+	public function confirmRevision(&$Model, $id = null) {
 		// get revision changes
 		$rev = $Model->RevisionModel->find('first', array(
 			'conditions' => array(
@@ -180,7 +180,7 @@ class ConfirmBehavior extends ModelBehavior {
  * @param integer $Model The id of the model to check for revisions of
  * @return boolean Success
  */
-	function denyRevision(&$Model, $id = null) {
+	public function denyRevision(&$Model, $id = null) {
 		// remove revision
 		return $Model->RevisionModel->deleteAll(array(
 			'Revision.id' => $id

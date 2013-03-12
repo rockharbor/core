@@ -1,9 +1,9 @@
 <?php
 /* Error Fixture generated on: 2010-07-07 08:07:03 : 1278518043 */
 class ErrorFixture extends CakeTestFixture {
-	var $name = 'Error';
+	public $name = 'Error';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
 		'level' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 15),
 		'file' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 200),
@@ -14,7 +14,7 @@ class ErrorFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => '4c34a31b-0330-49e5-91fb-093cb36fd16a',
 			'level' => 'Lorem ipsum d',

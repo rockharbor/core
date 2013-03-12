@@ -21,14 +21,14 @@ class Profile extends AppModel {
  *
  * @var string
  */
-	var $name = 'Profile';
+	public $name = 'Profile';
 
 /**
  * Extra behaviors for this model
  *
  * @var array
  */
-	var $actsAs = array(
+	public $actsAs = array(
 		'Containable',
 		'Search.Searchable',
 		'Logable'
@@ -39,7 +39,7 @@ class Profile extends AppModel {
  *
  * @var array
  */
-	var $virtualFields = array(
+	public $virtualFields = array(
 		'name' => 'CONCAT(:ALIAS:.first_name, " ", :ALIAS:.last_name)',
 		'age' => 'DATEDIFF(CURDATE(), :ALIAS:.birth_date)/365.25',
 		'child' => 'IF (:ALIAS:.adult = 1, 0, IF (:ALIAS:.birth_date IS NULL, 1, ((DATE_FORMAT(NOW(),"%Y") - DATE_FORMAT(:ALIAS:.birth_date,"%Y")) < 18)))',
@@ -55,7 +55,7 @@ class Profile extends AppModel {
  *
  * @var array
  */
-	var $validate = array(
+	public $validate = array(
 		'first_name' => array(
 			'rule' => 'notempty',
 			'message' => 'Please fill in the required field.'
@@ -129,7 +129,7 @@ class Profile extends AppModel {
  *
  * @var array
  */
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'User' => array(
 			'className' => 'User',
 			'foreignKey' => 'user_id',
@@ -182,7 +182,7 @@ class Profile extends AppModel {
  *
  * @return true Continue with save
  */
-	function beforeValidate() {
+	public function beforeValidate() {
 		// clear out extra characters in phone numbers
 		if (isset($this->data['Profile']['cell_phone'])) {
 			$this->data['Profile']['cell_phone'] = preg_replace('/[^0-9]+/', '', $this->data['Profile']['cell_phone']);

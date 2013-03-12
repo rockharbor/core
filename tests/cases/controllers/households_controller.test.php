@@ -9,7 +9,7 @@ Mock::generatePartial('HouseholdsController', 'TestHouseholdsController', array(
 
 class HouseholdsControllerTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Household', 'HouseholdMember', 'User', 'Profile', 'Group');
 		$this->Households =& new TestHouseholdsController();
@@ -24,19 +24,19 @@ class HouseholdsControllerTestCase extends CoreTestCase {
 		$this->testController = $this->Households;
 	}
 
-	function endTest() {
+	public function endTest() {
 		$this->Households->Session->destroy();
 		unset($this->Households);
 		ClassRegistry::flush();
 	}
 
-	function testConfirm() {
+	public function testConfirm() {
 		$this->testAction('/households/confirm/1/3/User:1');
 		$results = $this->Households->Household->HouseholdMember->read();
 		$this->assertTrue($results['HouseholdMember']['confirmed']);
 	}
 
-	function testInvite() {
+	public function testInvite() {
 		$this->assertTrue($this->Households->Household->isMember(1, 1));
 		$this->testAction('/households/invite/1/1/User:1');
 		$this->assertTrue($this->Households->Household->isMember(1, 1));
@@ -54,7 +54,7 @@ class HouseholdsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testDelete() {
+	public function testDelete() {
 		$this->testAction('/households/delete/3/1');
 		$this->assertFalse($this->Households->Household->isMember(3, 1));
 
@@ -72,7 +72,7 @@ class HouseholdsControllerTestCase extends CoreTestCase {
 		$this->assertTrue($this->Households->Household->isMember(97, $this->Households->Household->id));
 	}
 
-	function testMakeHouseholdContact() {
+	public function testMakeHouseholdContact() {
 		// have to make them a member first
 		$this->Households->Household->HouseholdMember->save(array(
 			'user_id' => 1,
@@ -112,7 +112,7 @@ class HouseholdsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testIndex() {
+	public function testIndex() {
 		$vars = $this->testAction('/households/index/User:1', array(
 			'return' => 'vars'
 		));

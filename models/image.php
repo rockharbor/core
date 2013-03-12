@@ -21,21 +21,21 @@ class Image extends AppModel {
  *
  * @var string
  */
-	var $name = 'Image';
+	public $name = 'Image';
 
 /**
  * The table to use, or false for none
  *
  * @var boolean
  */
-	var $useTable = 'attachments';
+	public $useTable = 'attachments';
 
 /**
  * Extra behaviors for this model
  *
  * @var array
  */
-	var $actsAs = array(
+	public $actsAs = array(
 		'Media.Transfer' => array(
 			'trustClient' => false,
 			'transferDirectory' => MEDIA_TRANSFER,
@@ -60,7 +60,7 @@ class Image extends AppModel {
  * @var array
  * @see Sanitizer.Sanitize
  */
-	var $sanitize = array(
+	public $sanitize = array(
 		'file' => false
 	);
 
@@ -80,9 +80,8 @@ class Image extends AppModel {
  * specify the `'tmp'` extension in case you are using a whitelist.
  *
  * @var array
- * @access public
  */
-	var $validate = array(
+	public $validate = array(
 		'file' => array(
 			'resource' => array(
 				'rule' => 'checkResource',
@@ -122,7 +121,7 @@ class Image extends AppModel {
  *
  * @return boolean True to continue saving
  */
-	function beforeSave() {
+	public function beforeSave() {
 		if (isset($this->data[$this->alias])) {
 			$data = $this->data[$this->alias];
 		} else {
@@ -143,7 +142,7 @@ class Image extends AppModel {
  * @param array $from Information about the source file
  * @return string The path to the destination file or false
  */
-	function transferTo($via, $from) {
+	public function transferTo($via, $from) {
 		extract($from);
 
 		$irregular = array(

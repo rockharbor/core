@@ -1,9 +1,9 @@
 <?php
 /* Region Fixture generated on: 2010-06-28 09:06:35 : 1277741435 */
 class RegionFixture extends CakeTestFixture {
-	var $name = 'Region';
+	public $name = 'Region';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 45),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
@@ -12,7 +12,7 @@ class RegionFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 1,
 			'name' => 'Orange County',

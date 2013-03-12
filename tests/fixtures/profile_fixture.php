@@ -1,9 +1,9 @@
 <?php
 /* Profile Fixture generated on: 2010-06-28 08:06:25 : 1277740765 */
 class ProfileFixture extends CakeTestFixture {
-	var $name = 'Profile';
+	public $name = 'Profile';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'user_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
 		'first_name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),
@@ -53,7 +53,7 @@ class ProfileFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 1,
 			'user_id' => 1,

@@ -21,14 +21,14 @@ class Campus extends AppModel {
  *
  * @var string
  */
-	var $name = 'Campus';
+	public $name = 'Campus';
 
 /**
  * Extra behaviors for this model
  *
  * @var array
  */
-	var $actsAs = array(
+	public $actsAs = array(
 		'Confirm' => array(
 			'fields' => array(
 				'name',
@@ -47,7 +47,7 @@ class Campus extends AppModel {
  *
  * @var array
  */
-	var $validate = array(
+	public $validate = array(
 		'name' => array(
 			'rule' => 'notempty',
 			'message' => 'Please fill in the required field.'
@@ -64,7 +64,7 @@ class Campus extends AppModel {
  * @var array
  * @see Sanitizer.SanitizeBehavior
  */
-	var $sanitize = array(
+	public $sanitize = array(
 		'description' => 'stripScripts'
 	);
 
@@ -73,7 +73,7 @@ class Campus extends AppModel {
  *
  * @var array
  */
-	var $hasMany = array(
+	public $hasMany = array(
 		'Ministry' => array(
 			'className' => 'Ministry',
 			'foreignKey' => 'campus_id',
@@ -92,7 +92,7 @@ class Campus extends AppModel {
  *
  * @var array
  */
-	var $hasOne = array(
+	public $hasOne = array(
 		'Image' => array(
 			'className' => 'Attachment',
 			'foreignKey' => 'foreign_key',
@@ -107,9 +107,8 @@ class Campus extends AppModel {
  * @param integer $userId The user id
  * @param integer $campusId The campus id
  * @return boolean True if the user is a manager
- * @access public
  */
-	function isManager($userId = null, $campusId = null) {
+	public function isManager($userId = null, $campusId = null) {
 		if (!$userId || !$campusId) {
 			return false;
 		}
@@ -128,7 +127,7 @@ class Campus extends AppModel {
  * @param boolean $recursive Whether to pull for subministries as well
  * @return array The user ids
  */
-	function getInvolved($campusId, $recursive = false) {
+	public function getInvolved($campusId, $recursive = false) {
 		$ministries = $this->Ministry->find('list', array(
 			'conditions' => array(
 				'Ministry.campus_id' => $campusId,
@@ -149,7 +148,7 @@ class Campus extends AppModel {
  * @param mixed $modelId Integer for single id, or array for multiple
  * @return array Array of user ids
  */
-	function getLeaders($modelId) {
+	public function getLeaders($modelId) {
 		$leaders = $this->Leader->find('all', array(
 			'fields' => array(
 				'user_id'

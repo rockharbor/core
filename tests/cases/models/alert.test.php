@@ -4,23 +4,23 @@ App::import('Lib', 'CoreTestCase');
 App::import('Model', 'Alert');
 
 class AlertTestCase extends CoreTestCase {
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Alert', 'Group', 'User', 'AlertsUser');
 		$this->Alert =& ClassRegistry::init('Alert');
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->Alert);
 		ClassRegistry::flush();
 	}
 
-	function testGetReadAlerts() {
+	public function testGetReadAlerts() {
 		$this->assertEqual($this->Alert->getReadAlerts(1), array(1));
 		$this->assertEqual($this->Alert->getReadAlerts(2), array());
 	}
 
-	function testGetUnreadAlerts() {
+	public function testGetUnreadAlerts() {
 		$this->assertFalse($this->Alert->getUnreadAlerts());
 		$this->assertEqual($this->Alert->getUnreadAlerts(1), array(2,3));
 		$this->assertEqual($this->Alert->getUnreadAlerts(1, 1), array(2, 3, 4));
@@ -33,7 +33,7 @@ class AlertTestCase extends CoreTestCase {
 		$this->assertEqual($this->Alert->getUnreadAlerts(1, 1, false), array(3, 4));
 	}
 
-	function testMarkAsRead() {
+	public function testMarkAsRead() {
 		$this->assertFalse($this->Alert->markAsRead());
 		$this->assertFalse($this->Alert->markAsRead(1));
 		$this->assertFalse($this->Alert->markAsRead(1, 57));

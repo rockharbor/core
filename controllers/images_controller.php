@@ -26,30 +26,28 @@ class ImagesController extends AttachmentsController {
  *
  * @var string
  */
-	var $name = 'Images';
+	public $name = 'Images';
 
 /**
  * The name of the model this Address belongs to. Used for Acl
  *
  * @var string
  */
-	var $model = null;
+	public $model = null;
 
 /**
  * The id of the model this Address belongs to. Used for Acl
  *
  * @var integer
  */
-	var $modelId = null;
+	public $modelId = null;
 
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 	}
 
@@ -61,7 +59,7 @@ class ImagesController extends AttachmentsController {
  * @param integer $id The id of the image to view
  * @param string $size The size of the filtered image to display
  */
-	function view($id = 0, $size = 's') {
+	public function view($id = 0, $size = 's') {
 		// use this view path now, instead of attachments
 		$this->viewPath = 'images';
 
@@ -85,7 +83,7 @@ class ImagesController extends AttachmentsController {
 /**
  * All un-approved images
  */
-	function approval() {
+	public function approval() {
 		$this->viewPath = 'images';
 		$this->set('images', $this->paginate(array(
 				'group' => 'Image',

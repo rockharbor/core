@@ -3,17 +3,17 @@ App::import('Helper', array('SelectOptions'));
 
 class SelectOptionsHelperTestCase extends CakeTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->SelectOptions = new SelectOptionsHelper();
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->SelectOptions);
 		ClassRegistry::flush();
 	}
 
-	function testGenerateOptions() {
+	public function testGenerateOptions() {
 		$results = $this->SelectOptions->generateOptions('minute', array('interval' => 15));
 		$expected = array(
 			'00' => '00',
@@ -133,7 +133,7 @@ class SelectOptionsHelperTestCase extends CakeTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testValue() {
+	public function testValue() {
 		$View = new View(new Controller());
 		$View->set('jobCategories', array(1 => 'Web Development'));
 
@@ -160,7 +160,7 @@ class SelectOptionsHelperTestCase extends CakeTestCase {
 		$this->assertEqual($results, '&nbsp;');
 	}
 
-	function testMagicCall() {
+	public function testMagicCall() {
 		$this->assertFalse(method_exists($this->SelectOptions, 'gender'));
 		$this->assertEqual($this->SelectOptions->gender('m'), 'Male');
 

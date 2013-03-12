@@ -5,18 +5,18 @@ App::import('Model', 'Involvement');
 
 class InvolvementTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Involvement', 'Leader', 'Date');
 		$this->Involvement =& ClassRegistry::init('Involvement');
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->Involvement);
 		ClassRegistry::flush();
 	}
 
-	function testVirtualFields() {
+	public function testVirtualFields() {
 		$involvement = $this->Involvement->read(null, 1);
 		$this->assertTrue($involvement['Involvement']['previous']);
 
@@ -36,7 +36,7 @@ class InvolvementTestCase extends CoreTestCase {
 		$this->assertFalse($involvement['Involvement']['has_dates']);
 	}
 
-	function testIsLeader() {
+	public function testIsLeader() {
 		$this->assertTrue($this->Involvement->isLeader(1, 1));
 		$this->assertFalse($this->Involvement->isLeader(1, 4));
 		$this->assertFalse($this->Involvement->isLeader());
@@ -44,7 +44,7 @@ class InvolvementTestCase extends CoreTestCase {
 		$this->assertFalse($this->Involvement->isLeader(1, 90));
 	}
 
-	function testGetInvolved() {
+	public function testGetInvolved() {
 		$this->loadFixtures('Roster');
 
 		$results = $this->Involvement->getInvolved(1);
@@ -58,7 +58,7 @@ class InvolvementTestCase extends CoreTestCase {
 		$this->assertEqual($results, array(5));
 	}
 
-	function testGetLeaders() {
+	public function testGetLeaders() {
 		$this->loadFixtures('Leader');
 
 		$results = $this->Involvement->getLeaders(1);

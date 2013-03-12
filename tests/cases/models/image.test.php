@@ -4,19 +4,19 @@ App::import('Model', 'Image');
 
 class ImageTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Attachment');
 		$this->Image = ClassRegistry::init('Image');
 		$this->Image->Behaviors->detach('Media.Coupler'); // requires 'file' key, which we don't want to test
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->Image);
 		ClassRegistry::flush();
 	}
 
-	function testTransferTo() {
+	public function testTransferTo() {
 		$this->Image->model = 'User';
 		$uuidReg = "[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}";
 
@@ -40,7 +40,7 @@ class ImageTestCase extends CoreTestCase {
 		$this->assertPattern($pattern, $result);
 	}
 
-	function testCustomImageSizes() {
+	public function testCustomImageSizes() {
 		$default = Configure::read('Core.mediafilters.default');
 
 		$custom = Configure::read('Core.mediafilters.user');

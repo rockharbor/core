@@ -1,8 +1,8 @@
 <?php
 class InvitationFixture extends CakeTestFixture {
-	var $name = 'Invitation';
+	public $name = 'Invitation';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'user_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8),
 		'body' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 500),
@@ -14,7 +14,7 @@ class InvitationFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 1,
 			'user_id' => 1,

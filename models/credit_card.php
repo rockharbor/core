@@ -25,21 +25,21 @@ class CreditCard extends AppModel {
  *
  * @var string
  */
-	var $name = 'CreditCard';
+	public $name = 'CreditCard';
 
 /**
  * The table to use, or false for none
  *
  * @var boolean
  */
-	var $useTable = false;
+	public $useTable = false;
 
 /**
  * Manually defined schema for validation
  *
  * @var array
  */
-	var $_schema = array(
+	public $_schema = array(
 		'credit_card_number' => array(
 			'type' => 'integer',
 			'length' => 16
@@ -66,7 +66,7 @@ class CreditCard extends AppModel {
  *
  * @var array
  */
-	var $validate = array(
+	public $validate = array(
 		'first_name' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
@@ -148,20 +148,20 @@ class CreditCard extends AppModel {
  * @var string
  * @todo Use id instead to maintain conventions
  */
-	var $transactionId = null;
+	public $transactionId = null;
 
 /**
  * The payment gateway component
  *
  * @var AuthorizeDotNetComponent
  */
-	var $gateway = null;
+	protected $gateway = null;
 
 /**
  * Overwrite Model::exists() due to Cake looking for a table
  * when validating.
  */
-	function exists() {
+	public function exists() {
 		return true;
 	}
 
@@ -172,7 +172,7 @@ class CreditCard extends AppModel {
  * @param array $options Save options (currently only supports `validate`)
  * @return boolean Success
  */
-	function saveAll($data, $options = array()) {
+	public function saveAll($data, $options = array()) {
 		$continue = true;
 		foreach ($data[$this->alias] as $creditCard) {
 			if ($continue) {
@@ -189,7 +189,7 @@ class CreditCard extends AppModel {
  * @param array $options Save options (currently only supports `validate`)
  * @return boolean Success
  */
-	function save($data, $options = array()) {
+	public function save($data, $options = array()) {
 		// move to root of $data instead
 		if (isset($data[$this->alias])) {
 			$data = $data[$this->alias];
@@ -230,11 +230,20 @@ class CreditCard extends AppModel {
  *
  * @return AuthorizeDotNetComponent
  */
-	function getGateway() {
+	public function getGateway() {
 		if ($this->gateway === null) {
 			App::import('Component', 'AuthorizeDotNet');
 			$this->gateway = new AuthorizeDotNetComponent();
 		}
 		return $this->gateway;
+	}
+
+/**
+ * Sets the gateway component
+ */
+	public function setGateway($gateway = null) {
+		if ($gateway) {
+			$this->gateway = $gateway;
+		}
 	}
 }

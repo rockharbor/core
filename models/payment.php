@@ -21,14 +21,14 @@ class Payment extends AppModel {
  *
  * @var string
  */
-	var $name = 'Payment';
+	public $name = 'Payment';
 
 /**
  * Extra behaviors for this model
  *
  * @var array
  */
-	var $actsAs = array(
+	public $actsAs = array(
 		'Containable'
 	);
 
@@ -37,7 +37,7 @@ class Payment extends AppModel {
  *
  * @var array
  */
-	var $validate = array(
+	public $validate = array(
 		'amount' => array(
 			'rule' => 'notEmpty',
 			'required' => false,
@@ -50,7 +50,7 @@ class Payment extends AppModel {
  *
  * @var array
  */
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'User' => array(
 			'className' => 'User',
 			'foreignKey' => 'user_id'

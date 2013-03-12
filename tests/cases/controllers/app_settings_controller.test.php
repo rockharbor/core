@@ -7,7 +7,7 @@ Mock::generatePartial('AppSettingsController', 'TestAppSettingsController', arra
 
 class AppSettingsControllerTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		Router::parseExtensions('json');
 
@@ -19,13 +19,13 @@ class AppSettingsControllerTestCase extends CoreTestCase {
 		$this->testController = $this->AppSettings;
 	}
 
-	function endTest() {
+	public function endTest() {
 		$this->AppSettings->AppSetting->clearCache();
 		unset($this->AppSettings);
 		ClassRegistry::flush();
 	}
 
-	function testSearch() {
+	public function testSearch() {
 		$vars = $this->testAction('/app_settings/search/User.json', array(
 			'data' => array(
 				'AppSetting' => array(
@@ -42,12 +42,12 @@ class AppSettingsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($vars['model'], 'User');
 	}
 
-	function testIndex() {
+	public function testIndex() {
 		$vars = $this->testAction('/app_settings/index');
 		$this->assertIsA($vars, 'array');
 	}
 
-	function testEdit() {
+	public function testEdit() {
 		$data = $this->AppSettings->AppSetting->read(null, 1);
 		$data['AppSetting']['value'] = 'Other Church';
 		$this->testAction('/app_settings/edit/1', array(
@@ -57,7 +57,7 @@ class AppSettingsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($this->AppSettings->AppSetting->field('value'), 'Other Church');
 	}
 
-	function testHtml() {
+	public function testHtml() {
 		$data = $this->AppSettings->AppSetting->read(null, 1);
 		$data['AppSetting']['value'] = '<span>Other Church</span>';
 		$this->testAction('/app_settings/edit/1', array(
@@ -67,7 +67,7 @@ class AppSettingsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($this->AppSettings->AppSetting->field('value'), '<span>Other Church</span>');
 	}
 
-	function testSanitizeString() {
+	public function testSanitizeString() {
 		$data = $this->AppSettings->AppSetting->read(null, 3);
 		$data['AppSetting']['value'] = '<span>http://urlwithhtml.com</span>';
 		$this->testAction('/app_settings/edit/3', array(
@@ -77,7 +77,7 @@ class AppSettingsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($this->AppSettings->AppSetting->field('value'), 'http://urlwithhtml.com');
 	}
 
-	function testSanitizeList() {
+	public function testSanitizeList() {
 		$data = $this->AppSettings->AppSetting->read(null, 21);
 		$data['AppSetting']['value'] = '<p>Money</p>,For-nothing,<b>Chicks for free</b>';
 		$this->testAction('/app_settings/edit/21', array(
@@ -87,7 +87,7 @@ class AppSettingsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($this->AppSettings->AppSetting->field('value'), 'Money,For-nothing,Chicks for free');
 	}
 
-	function testSanitizeInteger() {
+	public function testSanitizeInteger() {
 		$data = $this->AppSettings->AppSetting->read(null, 14);
 		$data['AppSetting']['value'] = 'This1sn\'tAn!Integer<br/>';
 		$this->testAction('/app_settings/edit/14', array(

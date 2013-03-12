@@ -36,30 +36,29 @@ class AuthorizeDotNetComponent extends Object {
  * Data to send to authorize.net
  *
  * @var array
- * @access protected
  */
-	var $_data = array();
+	protected $_data = array();
 
 /**
  * Error message, if any
  *
  * @var string
  */
-	var $error = '';
+	public $error = '';
 
 /**
  * Transaction id
  *
  * @var string
  */
-	var $transactionId = '';
+	public $transactionId = '';
 
 /**
  * Sets the invoice title
  *
  * @param string $str
  */
-	function setInvoice($str) {
+	public function setInvoice($str) {
 		$this->_data['x_Invoice'] = $str;
 	}
 
@@ -68,7 +67,7 @@ class AuthorizeDotNetComponent extends Object {
  *
  * @param float $amount
  */
-	function setAmount($amount) {
+	public function setAmount($amount) {
 		$amount = number_format($amount,2,".","");
 		$this->_data['x_Amount'] = $amount;
 	}
@@ -77,9 +76,8 @@ class AuthorizeDotNetComponent extends Object {
  * Sets customer data
  *
  * @param array $customer
- * @access public
  */
-	function setCustomer($customer = array()) {
+	public function setCustomer($customer = array()) {
 		if (empty($customer)) {
 			return;
 		}
@@ -102,7 +100,7 @@ class AuthorizeDotNetComponent extends Object {
  *
  * @param integer $invoiceNumber
  */
-	function setInvoiceNumber($invoiceNumber) {
+	public function setInvoiceNumber($invoiceNumber) {
 		// according to the documentation, invoice number can only be 20 characters, no symbols
 		$this->_data['x_invoice_num'] = substr(preg_replace("/[^a-zA-Z0-9]/", '', $invoiceNumber), 0, 20);
 	}
@@ -112,7 +110,7 @@ class AuthorizeDotNetComponent extends Object {
  *
  * @param string $desc
  */
-	function setDescription($desc) {
+	public function setDescription($desc) {
 		// according to the documentation, invoice number can only be
 		// 255 characters, no symbols. helpfully, they don't tell us what
 		// they define to be a "symbol".
@@ -127,7 +125,7 @@ class AuthorizeDotNetComponent extends Object {
  *
  * @return boolean Success
  */
-	function request() {
+	public function request() {
 		$this->_init();
 
 		$buffer = $this->_request($this->_data);
@@ -154,7 +152,7 @@ class AuthorizeDotNetComponent extends Object {
  * @return string Data from authorize.net
  * @todo Update to use HTTPSocket class instead of manual curl
  */
-	function _request($fields) {
+	protected function _request($fields) {
 		/* Set up CURL to post the $fields string to authorize.net */
 		$ch=curl_init();
 		curl_setopt($ch, CURLOPT_URL, "https://secure.authorize.net/gateway/transact.dll");
@@ -184,7 +182,7 @@ class AuthorizeDotNetComponent extends Object {
  * @param array $data Array of key/value fields
  * @return string
  */
-	function _formatFields($data = array()) {
+	protected function _formatFields($data = array()) {
 		$fields = array();
 		// Build the data string that we're posting
 		foreach ($data as $key => $value) {
@@ -197,7 +195,7 @@ class AuthorizeDotNetComponent extends Object {
 /**
  * Initializes necessary data
  */
-	function _init() {
+	protected function _init() {
 		$this->error = '';
 		$this->transactionId = '';
 

@@ -177,7 +177,6 @@ class OrderedBehavior extends ModelBehavior {
 	 * @param mixed $id The ID of the record to move
 	 * @param mixed $number how many places to move the node or true to move to last position
 	 * @return boolean true on success, false on failure
-	 * @access public
 	 */
 	public function movedown(&$Model, $id = null, $number = 1) {
 		if (!$id) {
@@ -335,7 +334,6 @@ class OrderedBehavior extends ModelBehavior {
 	 * @param mixed $id The ID of the record to move
 	 * @param mixed $number how many places to move the node or true to move to last position
 	 * @return boolean true on success, false on failure
-	 * @access public
 	 */
 	public function moveup(&$Model, $id = null, $number = 1) {
 		if (!$id) {

@@ -25,14 +25,14 @@ class PermissionHelper extends AppHelper {
  *
  * @var Controller
  */
-	var $controllers = array();
+	public $controllers = array();
 
 /**
  * Additional helpers needed by this helper
  *
  * @var array
  */
-	var $helpers = array(
+	public $helpers = array(
 		'Html',
 		'Js'
 	);
@@ -42,13 +42,13 @@ class PermissionHelper extends AppHelper {
  *
  * @var boolean
  */
-	var $_canSeePrivate = null;
+	protected $_canSeePrivate = null;
 
 /**
  * Takes all vars named _can{DoSomething} set on the view and saves them as a
  * permission and removes them from the view vars
  */
-	function beforeRender() {
+	public function beforeRender() {
 		$view =& ClassRegistry::getObject('view');
 		if ($view === false) {
 			return;
@@ -71,7 +71,7 @@ class PermissionHelper extends AppHelper {
  * @param string $confirmMessage A javascript confirm message
  * @return string The link
  */
-	function link($title, $url = null, $options = array(), $confirmMessage = false) {
+	public function link($title, $url = null, $options = array(), $confirmMessage = false) {
 		if (is_string($url)) {
 			$url = Router::parse($url);
 		}
@@ -94,7 +94,7 @@ class PermissionHelper extends AppHelper {
  * @return boolean
  * @see AppController::isAuthorized()
  */
-	function check($path = array()) {
+	public function check($path = array()) {
 		if (empty($path)) {
 			return false;
 		}
@@ -134,7 +134,7 @@ class PermissionHelper extends AppHelper {
  *
  * @return boolean
  */
-	function canSeePrivate() {
+	public function canSeePrivate() {
 		if ($this->_canSeePrivate === null) {
 			$view =& ClassRegistry::getObject('view');
 			$currentUserGroup = $view->viewVars['activeUser']['Group']['id'];

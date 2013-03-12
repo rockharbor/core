@@ -21,23 +21,21 @@ class QuestionsController extends AppController {
  *
  * @var string
  */
-	var $name = 'Questions';
+	public $name = 'Questions';
 
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 	}
 
 /**
  * Shows a list of questions
  */
-	function index() {
+	public function index() {
 		$this->Question->recursive = 0;
 		$this->set('questions', $this->Question->find('all', array(
 			'conditions' => array(
@@ -51,7 +49,7 @@ class QuestionsController extends AppController {
 /**
  * Adds a question
  */
-	function add() {
+	public function add() {
 		if (!empty($this->data)) {
 			$this->Question->create();
 			if ($this->Question->save($this->data)) {
@@ -71,7 +69,7 @@ class QuestionsController extends AppController {
  * @param integer $id The id of the question to edit
  * @todo Add involvement named arg to restrict to leaders, etc.
  */
-	function edit($id = null) {
+	public function edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->cakeError('error404');
 		}
@@ -98,7 +96,7 @@ class QuestionsController extends AppController {
  * @param string $direction The direction to move the question
  * @todo Add involvement named arg to restrict to leaders, etc.
  */
-	function move($id = null, $direction = null) {
+	public function move($id = null, $direction = null) {
 		if (!$id || !$direction) {
 			$this->cakeError('error404');
 		}
@@ -121,7 +119,7 @@ class QuestionsController extends AppController {
  * @param integer $id The id of the question to delete
  * @todo Add involvement named arg to restrict to leaders, etc.
  */
-	function delete($id = null) {
+	public function delete($id = null) {
 		if (!$id) {
 			$this->cakeError('error404');
 		}

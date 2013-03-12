@@ -21,14 +21,14 @@ class Group extends AppModel {
  *
  * @var string
  */
-	var $name = 'Group';
+	public $name = 'Group';
 
 /**
  * HasMany association link
  *
  * @var array
  */
-	var $hasMany = array(
+	public $hasMany = array(
 		'User'
 	);
 
@@ -37,14 +37,14 @@ class Group extends AppModel {
  *
  * @var string
  */
-	var $order = ':ALIAS:.parent_id ASC';
+	public $order = ':ALIAS:.parent_id ASC';
 
 /**
  * Extra behaviors for this model
  *
  * @var array
  */
-	var $actsAs = array(
+	public $actsAs = array(
 		'Acl' => 'requester',
 		'Tree'
 	);
@@ -56,9 +56,8 @@ class Group extends AppModel {
  * throws an error when it doesn't exist.
  *
  * @return mixed The parent, or null if none
- * @access public
  */
-	function parentNode() {
+	public function parentNode() {
 
 	}
 
@@ -70,7 +69,7 @@ class Group extends AppModel {
  *		than equal, etc. Where '>' means 'of higher permission'
  * @return array Array of ids
  */
-	function findGroups($groupId = null, $operator = '<=') {
+	public function findGroups($groupId = null, $operator = '<=') {
 		if (!$groupId) {
 			return false;
 		}
@@ -101,7 +100,7 @@ class Group extends AppModel {
  * @param integer $groupId
  * @return boolean
  */
-	function canSeePrivate($groupId = null) {
+	public function canSeePrivate($groupId = null) {
 		if (!$groupId) {
 			return false;
 		}

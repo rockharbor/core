@@ -11,7 +11,7 @@ Mock::generatePartial('ReportsController', 'TestReportsController', array('isAut
 
 class ReportsControllerTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		Router::parseExtensions('csv', 'print');
 
@@ -30,12 +30,12 @@ class ReportsControllerTestCase extends CoreTestCase {
 		$this->testController = $this->Reports;
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->Reports);
 		ClassRegistry::flush();
 	}
 
-	function testIndex() {
+	public function testIndex() {
 		$this->loadFixtures('Date');
 
 		$vars = $this->testAction('/reports/index');
@@ -96,7 +96,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, 1);
 	}
 
-	function testPayments() {
+	public function testPayments() {
 		$this->loadFixtures('Payment', 'PaymentOption', 'PaymentType');
 
 		$vars = $this->testAction('/reports/payments');
@@ -205,7 +205,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testInvolvementMap() {
+	public function testInvolvementMap() {
 		$this->loadFixtures('Address');
 
 		$vars = $this->testAction('/reports/involvement_map/Involvement:1');
@@ -217,7 +217,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testUserMap() {
+	public function testUserMap() {
 		$this->loadFixtures('Profile', 'Address');
 
 		$this->Reports->Session->write('MultiSelect.testMap', array(
@@ -249,7 +249,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testUserMapMissingCoords() {
+	public function testUserMapMissingCoords() {
 		$this->loadFixtures('Address');
 		$floatReg = '/^[+-]?(([0-9]+)|([0-9]*\.[0-9]+|[0-9]+\.[0-9]*)|(([0-9]+|([0-9]*\.[0-9]+|[0-9]+\.[0-9]*))[eE][+-]?[0-9]+))$/';
 
@@ -288,7 +288,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 		$this->assertPattern($floatReg, $address['Address']['lng']);
 	}
 
-	function testExportCsvWithSearch() {
+	public function testExportCsvWithSearch() {
 		$this->Reports->RequestHandler = new MockReportsRequestHandlerComponent();
 
 		$this->Reports->Session->write('MultiSelect.testExportCsvWithSearch', array(
@@ -322,7 +322,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testExportPrint() {
+	public function testExportPrint() {
 		$this->Reports->Session->write('MultiSelect.testExportPrint', array(
 			'selected' => array(2,3),
 			'search' => array(
@@ -359,7 +359,7 @@ class ReportsControllerTestCase extends CoreTestCase {
 /**
  * Tests exporting extra fields that weren't in the original conditions
  */
-	function testExportExtraFields() {
+	public function testExportExtraFields() {
 		$this->loadFixtures('Profile');
 		$this->Reports->Session->write('MultiSelect.testExportExtraFields', array(
 			'selected' => array(1, 2),

@@ -9,7 +9,7 @@ Mock::generatePartial('CampusesController', 'TestCampusesController', array('isA
 
 class CampusesControllerTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadSettings();
 		$this->loadFixtures('Campus', 'Ministry', 'Involvement', 'CampusesRev');
@@ -24,18 +24,18 @@ class CampusesControllerTestCase extends CoreTestCase {
 		$this->testController = $this->Campuses;
 	}
 
-	function endTest() {
+	public function endTest() {
 		$this->unloadSettings();
 		unset($this->Campuses);
 		ClassRegistry::flush();
 	}
 
-	function testIndex() {
+	public function testIndex() {
 		$vars = $this->testAction('/campuses/index');
 		$this->assertIsA($vars['campusesMenu'], 'Array');
 	}
 
-	function testView() {
+	public function testView() {
 		$vars = $this->testAction('/campuses/view/Campus:1', array(
 			'return' => 'vars'
 		));
@@ -55,7 +55,7 @@ class CampusesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testAdd() {
+	public function testAdd() {
 		$data = array(
 			'name' => 'New Campus',
 			'description' => 'A slightly newer campus',
@@ -68,7 +68,7 @@ class CampusesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($count, 3);
 	}
 
-	function testEdit() {
+	public function testEdit() {
 		$this->loadFixtures('User');
 
 		$this->Campuses->Campus->Behaviors->enable('Confirm');
@@ -110,7 +110,7 @@ class CampusesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testToggleActivity() {
+	public function testToggleActivity() {
 		$this->testAction('/campuses/toggle_activity/1/Campus:2');
 		$this->Campuses->Campus->id = 2;
 		$this->assertEqual($this->Campuses->Session->read('Message.flash.element'), 'flash'.DS.'failure');
@@ -129,7 +129,7 @@ class CampusesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($this->Campuses->Session->read('Message.flash.element'), 'flash'.DS.'success');
 	}
 
-	function testHistory() {
+	public function testHistory() {
 		$data = $this->Campuses->Campus->read(null, 1);
 		$data['Campus']['name'] = 'New name';
 
@@ -146,7 +146,7 @@ class CampusesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, 'New name');
 	}
 
-	function testRevise() {
+	public function testRevise() {
 		$data = $this->Campuses->Campus->read(null, 1);
 		$data['Campus']['name'] = 'New name';
 		$data = array(
@@ -170,7 +170,7 @@ class CampusesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, 'New name');
 	}
 
-	function testDelete() {
+	public function testDelete() {
 		$this->testAction('/campuses/delete/1');
 		$this->assertFalse($this->Campuses->Campus->read(null, 1));
 		$this->assertFalse($this->Campuses->Campus->Ministry->read(null, 1));

@@ -4,20 +4,20 @@ App::import('Lib', 'CoreTestCase');
 App::import('Model', 'School');
 
 class SchoolTestCase extends CoreTestCase {
-	var $fixtures = array('app.school');
+	public $fixtures = array('app.school');
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->School =& ClassRegistry::init('School');
 		$this->loadFixtures('School');
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->School);
 		ClassRegistry::flush();
 	}
 
-	function testMagicAliases() {
+	public function testMagicAliases() {
 		$this->ElementarySchool =& ClassRegistry::init(array(
 			'class' => 'School',
 			'alias' => 'ElementarySchool'
