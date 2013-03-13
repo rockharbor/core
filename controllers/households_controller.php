@@ -21,14 +21,14 @@ class HouseholdsController extends AppController {
  *
  * @var string
  */
-	var $name = 'Households';
+	public $name = 'Households';
 
 /**
  * Extra helpers for this controller
  *
  * @var array
  */
-	var $helpers = array(
+	public $helpers = array(
 		'SelectOptions',
 		'Formatting'
 	);
@@ -38,7 +38,7 @@ class HouseholdsController extends AppController {
  *
  * @var array
  */
-	var $components = array(
+	public $components = array(
 		'MultiSelect.MultiSelect'
 	);
 
@@ -46,10 +46,8 @@ class HouseholdsController extends AppController {
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->_editSelf('index', 'delete', 'confirm');
 	}
@@ -60,7 +58,7 @@ class HouseholdsController extends AppController {
  * @param integer $user The user id
  * @param integer $household The household id
  */
-	function confirm($user, $household) {
+	public function confirm($user, $household) {
 		$viewUser = $this->passedArgs['User'];
 
 		if ($this->Household->join($household, $user, true)) {
@@ -96,7 +94,7 @@ class HouseholdsController extends AppController {
  * @param integer $userId The user id
  * @param integer $household The id of the household
  */
-	function invite($userId, $household) {
+	public function invite($userId, $household) {
 		$this->Household->contain(array('HouseholdContact' => array('Profile')));
 		$contact = $this->Household->read(null, $household);
 		$this->set('contact', $contact['HouseholdContact']);
@@ -168,7 +166,7 @@ class HouseholdsController extends AppController {
  * @param integer $userId The user id
  * @param integer $household The id of the household
  */
-	function delete($userId, $household) {
+	public function delete($userId, $household) {
 		$householdMember = $this->Household->HouseholdMember->find('first', array(
 			'conditions' => array(
 				'household_id' => $household,
@@ -218,7 +216,7 @@ class HouseholdsController extends AppController {
  * @param integer $user The id of the user who is becoming the contact
  * @param integer $household The id of the household to be the contact for
  */
-	function make_household_contact($user, $household) {
+	public function make_household_contact($user, $household) {
 		$viewUser = $this->passedArgs['User'];
 
 		if ($this->Household->makeHouseholdContact($user, $household)) {
@@ -236,7 +234,7 @@ class HouseholdsController extends AppController {
 /**
  * Shows a list of households for a user
  */
-	function index() {
+	public function index() {
 		$user = $this->passedArgs['User'];
 
 		// get all households this user belongs to

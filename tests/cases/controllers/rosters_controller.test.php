@@ -11,7 +11,7 @@ Mock::generatePartial('CreditCard', 'MockRostersCreditCard', array('save', 'save
 
 class RostersControllerTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Roster', 'User', 'Involvement', 'Group', 'Date',
 			'Payment', 'Notification', 'PaymentOption', 'PaymentType',
@@ -36,14 +36,14 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->testController = $this->Rosters;
 	}
 
-	function endTest() {
+	public function endTest() {
 		$this->unloadSettings();
 		$this->Rosters->Session->destroy();
 		unset($this->Rosters);
 		ClassRegistry::flush();
 	}
 
-	function testRoles() {
+	public function testRoles() {
 		$vars = $this->testAction('/rosters/roles/5/Involvement:3');
 		$results = array_keys($vars['roles']);
 		sort($results);
@@ -74,7 +74,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testFilterIndex() {
+	public function testFilterIndex() {
 		$this->loadFixtures('Profile');
 
 		$vars = $this->testAction('/rosters/index/Involvement:3');
@@ -205,7 +205,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testIndex() {
+	public function testIndex() {
 		$vars = $this->testAction('/rosters/index/Involvement:1');
 
 		$results = Set::extract('/Roster/id', $vars['rosters']);
@@ -258,7 +258,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($vars['counts']['total'], 3);
 	}
 
-	function testInvolvementWithHousehold() {
+	public function testInvolvementWithHousehold() {
 		$this->loadFixtures('Household', 'HouseholdMember', 'Profile', 'RosterStatus');
 
 		$vars = $this->testAction('/rosters/involvement/User:1', array(
@@ -373,7 +373,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testInvolvement() {
+	public function testInvolvement() {
 		$this->loadFixtures('RosterStatus');
 
 		$vars = $this->testAction('/rosters/involvement/User:1');
@@ -548,7 +548,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testFreePaymentOption() {
+	public function testFreePaymentOption() {
 		$this->Rosters->Roster->Involvement->PaymentOption->save(array(
 			'PaymentOption' => array(
 				'involvement_id' => 1,
@@ -594,7 +594,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($paymentsBefore, $paymentsAfter);
 	}
 
-	function testRosterLimit() {
+	public function testRosterLimit() {
 		$this->Rosters->Roster->Involvement->id = 1;
 		$this->Rosters->Roster->Involvement->saveField('roster_limit', 1);
 
@@ -645,7 +645,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($this->Rosters->Session->read('Message.flash.element'), 'flash'.DS.'success');
 	}
 
-	function testAddChildcare() {
+	public function testAddChildcare() {
 		$this->loadFixtures('Household', 'HouseholdMember', 'Profile');
 
 		$data = array(
@@ -832,7 +832,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testAdd() {
+	public function testAdd() {
 		$vars = $this->testAction('/rosters/add/User:1/Involvement:1', array(
 			'data' => array(
 				'Default' => array(
@@ -941,7 +941,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($roster['Roster']['roster_status_id'], 1);
 	}
 
-	function testAddMultiple() {
+	public function testAddMultiple() {
 		$this->su(array(
 			'User' => array(
 				'id' => 1
@@ -1023,7 +1023,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testAddWithAnswers() {
+	public function testAddWithAnswers() {
 		$this->loadFixtures('Profile', 'Question');
 
 		$data = array(
@@ -1093,7 +1093,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testEdit() {
+	public function testEdit() {
 		$this->loadFixtures('Household', 'HouseholdMember', 'Profile');
 
 		$this->Rosters->Roster->contain(array('Role'));
@@ -1163,7 +1163,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testEditAnswerValidation() {
+	public function testEditAnswerValidation() {
 		$data = array(
 			'Roster' => array(
 				'id' => 6
@@ -1204,7 +1204,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertTrue(empty($result));
 	}
 
-	function testDelete() {
+	public function testDelete() {
 		$this->loadFixtures('Leader');
 
 		$this->Rosters->Session->write('MultiSelect.testDelete', array(
@@ -1237,7 +1237,7 @@ class RostersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($rostersAfter-$rostersBefore, 0);
 	}
 
-	function testStatus() {
+	public function testStatus() {
 		$this->Rosters->Session->write('MultiSelect.testConfirm', array(
 			'selected' => array(2, 4)
 		));

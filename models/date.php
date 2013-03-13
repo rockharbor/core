@@ -41,14 +41,14 @@ class Date extends AppModel {
  *
  * @var string
  */
-	var $name = 'Date';
+	public $name = 'Date';
 
 /**
  * Types of recurrance
  *
  * @var array
  */
-	var $recurranceTypes = array(
+	public $recurranceTypes = array(
 		'h' => 'Hourly',
 		'd' => 'Daily',
 		'w' => 'Weekly',
@@ -62,7 +62,7 @@ class Date extends AppModel {
  *
  * @var array
  */
-	var $virtualFields = array(
+	public $virtualFields = array(
 		'previous' => 'IF (:ALIAS:.permanent, 0, CAST(CONCAT(:ALIAS:.end_date, " ", :ALIAS:.end_time) AS DATETIME) < NOW())'
 	);
 
@@ -71,7 +71,7 @@ class Date extends AppModel {
  *
  * @var array
  */
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'Involvement' => array(
 			'className' => 'Involvement',
 			'foreignKey' => 'involvement_id',
@@ -87,7 +87,7 @@ class Date extends AppModel {
  *
  * @var array
  */
-	var $_frequency = array(
+	public $_frequency = array(
 		'h' => 'hour',
 		'd' => 'day',
 		'w' => 'week',
@@ -105,7 +105,7 @@ class Date extends AppModel {
  * @return boolean True, to save
  * @see Cake docs
  */
-	function beforeSave() {
+	public function beforeSave() {
 		// '0' out all unnecessary data
 		if (isset($this->data['Date']['all_day']) && $this->data['Date']['all_day']) {
 			$this->data['Date']['start_time'] = '00:00:00';
@@ -114,6 +114,12 @@ class Date extends AppModel {
 
 		if (isset($this->data['Date']['frequency']) && !$this->data['Date']['frequency']) {
 			$this->data['Date']['frequency'] = 1;
+		}
+
+		if (isset($this->data['Date']['permanent']) && isset($this->data['Date']['recurring'])) {
+			if (!$this->data['Date']['recurring']) {
+				$this->data['Date']['permanent'] = false;
+			}
 		}
 
 		return parent::beforeSave();
@@ -136,9 +142,8 @@ class Date extends AppModel {
  * @param integer $involvement_id Involvement id to pull dates for
  * @param array $options Options
  * @return array Array of dates falling into that range
- * @access public
  */
-	function generateDates($involvement_id = null, $options = array()) {
+	public function generateDates($involvement_id = null, $options = array()) {
 		if (!$involvement_id) {
 			return false;
 		}
@@ -214,9 +219,8 @@ class Date extends AppModel {
  * @param integer $limit The number of dates to pull. Maximum if a range end is defined
  * @param array $exemptions Array of Date exemptions
  * @return array Array of dates falling into that range
- * @access protected
  */
-	function _generateRecurringDates($masterDate, $range, $limit = 20, $exemptions = array()) {
+	public function _generateRecurringDates($masterDate, $range, $limit = 20, $exemptions = array()) {
 		$dates = array();
 
 		if (isset($range['start']) && !is_numeric($range['start'])) {

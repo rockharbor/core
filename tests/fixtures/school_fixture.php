@@ -1,9 +1,9 @@
 <?php
 /* School Fixture generated on: 2010-06-28 09:06:11 : 1277741471 */
 class SchoolFixture extends CakeTestFixture {
-	var $name = 'School';
+	public $name = 'School';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 64),
 		'type' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 10),
@@ -13,7 +13,7 @@ class SchoolFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 1,
 			'name' => 'El Dorado',

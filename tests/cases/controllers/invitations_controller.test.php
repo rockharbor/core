@@ -7,7 +7,7 @@ Mock::generatePartial('InvitationsController', 'TestInvitationsController', arra
 
 class InvitationsControllerTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Invitation', 'InvitationsUser');
 		$this->Invitations =& new TestInvitationsController();
@@ -17,13 +17,13 @@ class InvitationsControllerTestCase extends CoreTestCase {
 		$this->testController = $this->Invitations;
 	}
 
-	function endTest() {
+	public function endTest() {
 		$this->Invitations->Session->destroy();
 		unset($this->Invitations);
 		ClassRegistry::flush();
 	}
 
-	function testIndex() {
+	public function testIndex() {
 		$vars = $this->testAction('/Invitations/index');
 		$results = Set::extract('/Invitation/id', $vars['invitations']);
 		$expected = array(1, 2);
@@ -38,7 +38,7 @@ class InvitationsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testConfirm() {
+	public function testConfirm() {
 		$this->testAction('/invitations/confirm');
 		$results = $this->Invitations->Session->read('Message.flash.element');
 		$this->assertEqual($results, 'flash'.DS.'failure');

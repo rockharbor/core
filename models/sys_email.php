@@ -21,21 +21,21 @@ class SysEmail extends AppModel {
  *
  * @var string
  */
-	var $name = 'SysEmail';
+	public $name = 'SysEmail';
 
 /**
  * The table to use, or false for none
  *
  * @var boolean
  */
-	var $useTable = 'queues';
+	public $useTable = 'queues';
 
 /**
  * Validation rules
  *
  * @var array
  */
-	var $validate = array(
+	public $validate = array(
 		'subject' => array(
 			'rule' => 'notempty',
 			'required' => true,
@@ -54,7 +54,7 @@ class SysEmail extends AppModel {
  * @var array
  * @see Sanitizer.SanitizeBehavior
  */
-	var $sanitize = array(
+	public $sanitize = array(
 		'body' => 'stripScripts'
 	);
 
@@ -63,7 +63,7 @@ class SysEmail extends AppModel {
  *
  * @var array
  */
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'ToUser' => array(
 			'className' => 'User',
 			'foreignKey' => 'to_id'
@@ -79,7 +79,7 @@ class SysEmail extends AppModel {
  *
  * @var array
  */
-	var $actsAs = array(
+	public $actsAs = array(
 		'Containable'
 	);
 
@@ -91,7 +91,7 @@ class SysEmail extends AppModel {
  * @param array $options
  * @return integer
  */
-	function paginateCount($conditions, $recursive, $options) {
+	public function paginateCount($conditions, $recursive, $options) {
 		$options += array(
 			'fields' => array(
 				'COUNT(*) as count, SysEmail.from_id'
@@ -110,7 +110,7 @@ class SysEmail extends AppModel {
  *
  * @param string $uid A foreign_key to look for
  */
-	function gcAttachments($uid = null) {
+	public function gcAttachments($uid = null) {
 		// load documents
 		$Document = ClassRegistry::init('Document');
 		$Document->recursive = -1;

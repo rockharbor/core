@@ -27,14 +27,14 @@ class MergeRequest extends AppModel {
  *
  * @var string
  */
-	var $name = 'MergeRequest';
+	public $name = 'MergeRequest';
 
 /**
  * Extra behaviors for this model
  *
  * @var array
  */
-	var $actsAs = array(
+	public $actsAs = array(
 		'Containable',
 		'Logable'
 	);
@@ -46,7 +46,7 @@ class MergeRequest extends AppModel {
  *
  * @var array
  */
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'Requester' => array(
 			'className' => 'User',
 			'foreignKey' => 'requester_id',

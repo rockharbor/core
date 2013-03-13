@@ -21,23 +21,21 @@ class ProfilesController extends AppController {
  *
  * @var string
  */
-	var $name = 'Profiles';
+	public $name = 'Profiles';
 
 /**
  * Extra helpers for this controller
  *
  * @var array
  */
-	var $helpers = array('Formatting', 'SelectOptions', 'Media.Media');
+	public $helpers = array('Formatting', 'SelectOptions', 'Media.Media');
 
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->_editSelf('view', 'edit');
 	}
@@ -45,7 +43,7 @@ class ProfilesController extends AppController {
 /**
  * Views a profile
  */
-	function view() {
+	public function view() {
 		// get user id
 		if (isset($this->passedArgs['User'])) {
 			$id = $this->passedArgs['User'];
@@ -71,7 +69,7 @@ class ProfilesController extends AppController {
 /**
  * Edits a profile
  */
-	function edit() {
+	public function edit() {
 		if (!$this->passedArgs['User'] && empty($this->data)) {
 			$this->cakeError('error404');
 		}
@@ -101,7 +99,7 @@ class ProfilesController extends AppController {
 /**
  * Administrates a user
  */
-	function admin() {
+	public function admin() {
 		if (!$this->passedArgs['User'] && empty($this->data)) {
 			$this->cakeError('error404');
 		}

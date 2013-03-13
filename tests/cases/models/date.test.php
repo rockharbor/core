@@ -4,17 +4,54 @@ App::import('Lib', 'CoreTestCase');
 App::import('Model', 'Date');
 
 class DateTestCase extends CoreTestCase {
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->Date =& ClassRegistry::init('Date');
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->Date);
 		ClassRegistry::flush();
 	}
 
-	function testVirtualFields() {
+	public function testDateCleanup() {
+		$date = array(
+			'Date' => array(
+				'start_date' => '2010-04-05',
+				'end_date' => '2012-04-05',
+				'start_time' => '08:00:00',
+				'end_time' => '11:00:00',
+				'all_day' => 1,
+				'permanent' => 1,
+				'recurring' => 0,
+				'recurrance_type' => 'y',
+				'frequency' => 0,
+				'weekday' => 1,
+				'day' => 1,
+				'exemption' => 0,
+				'offset' => 1
+			)
+		);
+		$date = $this->Date->save($date);
+
+		$result = $date['Date']['start_time'];
+		$expected = '00:00:00';
+		$this->assertEqual($result, $expected);
+
+		$result = $date['Date']['end_time'];
+		$expected = '23:59:00';
+		$this->assertEqual($result, $expected);
+
+		$result = $date['Date']['frequency'];
+		$expected = '1';
+		$this->assertEqual($result, $expected);
+
+		$result = $date['Date']['permanent'];
+		$expected = '0';
+		$this->assertEqual($result, $expected);
+	}
+
+	public function testVirtualFields() {
 		$this->loadFixtures('Date');
 
 		$date = $this->Date->read(null, 1);
@@ -33,7 +70,7 @@ class DateTestCase extends CoreTestCase {
 		$this->assertFalse($result);
 	}
 
-	function testGenerateDates() {
+	public function testGenerateDates() {
 		$this->loadFixtures('Date');
 
 		$this->assertFalse($this->Date->generateDates());
@@ -61,7 +98,7 @@ class DateTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testLimit() {
+	public function testLimit() {
 		$this->loadFixtures('Date');
 
 		$results = $this->Date->generateDates(5, array(
@@ -108,7 +145,7 @@ class DateTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testLimitWithRecurringExemption() {
+	public function testLimitWithRecurringExemption() {
 		$this->loadFixtures('Date');
 
 		$results = $this->Date->generateDates(5, array(
@@ -152,7 +189,7 @@ class DateTestCase extends CoreTestCase {
 		$this->assertEqual(count($results), 1);
 	}
 
-	function testMonthlyWithExemption() {
+	public function testMonthlyWithExemption() {
 		$this->loadFixtures('Date');
 
 		$range = array(
@@ -168,7 +205,7 @@ class DateTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testYearlyRecurringDates() {
+	public function testYearlyRecurringDates() {
 		$date = array(
 			'Date' => array(
 				'start_date' => '2010-04-05',
@@ -224,7 +261,7 @@ class DateTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testWeeklyRecurringDates() {
+	public function testWeeklyRecurringDates() {
 		$date = array(
 			'Date' => array(
 				'start_date' => '2010-04-05',
@@ -279,7 +316,7 @@ class DateTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testMonthWeekdayRecurringDates() {
+	public function testMonthWeekdayRecurringDates() {
 		$date = array(
 			'Date' => array(
 				'start_date' => '2010-04-05',
@@ -343,7 +380,7 @@ class DateTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testMonthDateRecurringDates() {
+	public function testMonthDateRecurringDates() {
 		$date = array(
 			'Date' => array(
 				'start_date' => '2010-04-05',
@@ -394,7 +431,7 @@ class DateTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testNonRecurringDates() {
+	public function testNonRecurringDates() {
 		$date = array(
 			'Date' => array(
 				'start_date' => '2010-04-05',
@@ -429,7 +466,7 @@ class DateTestCase extends CoreTestCase {
 		$this->assertEqual($results, array());
 	}
 
-	function testDailyRecurringDate() {
+	public function testDailyRecurringDate() {
 		$date = array(
 			'Date' => array(
 				'start_date' => '2010-04-05',
@@ -470,7 +507,7 @@ class DateTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testHourlyRecurringDate() {
+	public function testHourlyRecurringDate() {
 		$date = array(
 			'Date' => array(
 				'start_date' => '2010-04-05',
@@ -516,7 +553,7 @@ class DateTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testOutOfRangeDate() {
+	public function testOutOfRangeDate() {
 		$date = array(
 			'Date' => array(
 				'start_date' => '2010-04-05',
@@ -558,7 +595,7 @@ class DateTestCase extends CoreTestCase {
 		$this->assertEqual($results, array());
 	}
 
-	function testRangeAsTime() {
+	public function testRangeAsTime() {
 		$date = array(
 			'Date' => array(
 				'start_date' => '2010-04-05',
@@ -600,7 +637,7 @@ class DateTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testRangeAsString() {
+	public function testRangeAsString() {
 		$date = array(
 			'Date' => array(
 				'start_date' => '2010-04-05',

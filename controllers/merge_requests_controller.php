@@ -21,30 +21,28 @@ class MergeRequestsController extends AppController {
  *
  * @var string
  */
-	var $name = 'MergeRequests';
+	public $name = 'MergeRequests';
 
 /**
  * Extra helpers for this controller
  *
  * @var array
  */
-	var $helpers = array('Formatting');
+	public $helpers = array('Formatting');
 
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 	}
 
 /**
  * Shows a list of merge requests
  */
-	function index() {
+	public function index() {
 		if (!isset($this->passedArgs['model'])) {
 			$this->cakeError('error404');
 		}
@@ -91,7 +89,7 @@ class MergeRequestsController extends AppController {
  *
  * @param integer $id The id of the request to merge
  */
-	function merge($id = null) {
+	public function merge($id = null) {
 		if (!$id) {
 			$this->cakeError('error404');
 		}
@@ -128,7 +126,7 @@ class MergeRequestsController extends AppController {
  * @param integer $id The id of the request to delete
  * @param boolean $ignore Whether or not to just ignore it
  */
-	function delete($id = null, $ignore = 0) {
+	public function delete($id = null, $ignore = 0) {
 		if (!$id) {
 			$this->cakeError('error404');
 		}

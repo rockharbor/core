@@ -21,14 +21,14 @@ class AppSetting extends AppModel {
  *
  * @var string
  */
-	var $name = 'AppSetting';
+	public $name = 'AppSetting';
 
 /**
  * Extra behaviors for this model
  *
  * @var array
  */
-	var $actsAs = array(
+	public $actsAs = array(
 		'Cacher.Cache' => array(
 			'duration' => '+1 year',
 			'clearOnSave' => true,
@@ -43,14 +43,14 @@ class AppSetting extends AppModel {
  *
  * @var integer
  */
-	var $recursive = 0;
+	public $recursive = 0;
 
 /**
  * HasOne association link
  *
  * @var array
  */
-	var $hasOne = array(
+	public $hasOne = array(
 		'Image' => array(
 			'className' => 'Image',
 			'foreignKey' => 'foreign_key',
@@ -64,5 +64,5 @@ class AppSetting extends AppModel {
  *
  * @var mixed
  */
-	var $sanitize = false;
+	public $sanitize = false;
 }

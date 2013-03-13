@@ -5,19 +5,19 @@ App::import('Model', 'Profile');
 
 class ProfileTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Profile');
 		$this->loadFixtures('Involvement', 'Leader', 'Ministry', 'Campus');
 		$this->Profile =& ClassRegistry::init('Profile');
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->Profile);
 		ClassRegistry::flush();
 	}
 
-	function testVirtualFields() {
+	public function testVirtualFields() {
 		$profile = $this->Profile->read(null, 1);
 		$profile['Profile']['birth_date'] = date('Y-m-d', strtotime('-20 years'));
 		$this->Profile->save($profile);

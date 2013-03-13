@@ -9,7 +9,7 @@ Mock::generatePartial('DatesController', 'TestDatesController', array('isAuthori
 
 class DatesControllerTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		Router::parseExtensions('json');
 
@@ -26,13 +26,13 @@ class DatesControllerTestCase extends CoreTestCase {
 		$this->testController = $this->Dates;
 	}
 
-	function endTest() {
+	public function endTest() {
 		$this->Dates->Session->destroy();
 		unset($this->Dates);
 		ClassRegistry::flush();
 	}
 
-	function testReadable() {
+	public function testReadable() {
 		$vars = $this->testAction('/dates/readable');
 		$results = $vars['date'];
 		$expected = array();
@@ -115,7 +115,7 @@ class DatesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testCalendar() {
+	public function testCalendar() {
 		$this->loadSettings();
 		$this->loadFixtures('Roster', 'Leader', 'Ministry');
 
@@ -357,7 +357,7 @@ class DatesControllerTestCase extends CoreTestCase {
 		$this->unloadSettings();
 	}
 
-	function testIndex() {
+	public function testIndex() {
 		$vars = $this->testAction('/dates/index/Involvement:2', array(
 			'return' => 'vars'
 		));
@@ -366,7 +366,7 @@ class DatesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testAdd() {
+	public function testAdd() {
 		$data = array(
 			'Date' => array(
 				'start_date' => '2010-03-16',
@@ -393,7 +393,7 @@ class DatesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($date['Date']['end_time'], '23:59:00');
 	}
 
-	function testEdit() {
+	public function testEdit() {
 		$data = array(
 			'Date' => array(
 				'id' => 1,
@@ -409,7 +409,7 @@ class DatesControllerTestCase extends CoreTestCase {
 		$this->assertNotEqual($date['Date']['modified'], '2010-03-16 13:32:48');
 	}
 
-	function testDelete() {
+	public function testDelete() {
 		$this->testAction('/dates/delete/1');
 		$result = $this->Dates->Date->read(null, 1);
 		$this->assertFalse($result);

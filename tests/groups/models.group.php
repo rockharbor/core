@@ -2,9 +2,9 @@
 
 class ModelsGroupTest extends TestSuite {
 
-	var $label = 'Model tests';
+	public $label = 'Model tests';
 
-	function ModelsGroupTest() {
+	public function ModelsGroupTest() {
 		TestManager::addTestFile($this, APP . 'tests' . DS . 'cases' . DS . 'models' . DS . 'address');
 		TestManager::addTestFile($this, APP . 'tests' . DS . 'cases' . DS . 'models' . DS . 'alert');
 		TestManager::addTestFile($this, APP . 'tests' . DS . 'cases' . DS . 'models' . DS . 'app_model');

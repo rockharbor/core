@@ -21,14 +21,14 @@ class RostersController extends AppController {
  *
  * @var string
  */
-	var $name = 'Rosters';
+	public $name = 'Rosters';
 
 /**
  * Extra components for this controller
  *
  * @var array
  */
-	var $components = array(
+	public $components = array(
 		'FilterPagination' => array(
 			'startEmpty' => false
 		),
@@ -41,7 +41,7 @@ class RostersController extends AppController {
  *
  * @var array
  */
-	var $helpers = array(
+	public $helpers = array(
 		'Formatting',
 		'MultiSelect.MultiSelect'
 	);
@@ -50,10 +50,8 @@ class RostersController extends AppController {
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		// index is special, in that its limitations are checked within the action
 		// there is also an ACL for it for checking if admin should have permission
 		$this->Auth->allow('index');
@@ -72,7 +70,7 @@ class RostersController extends AppController {
  *
  * @todo place user list limit into involvement()
  */
-	function index() {
+	public function index() {
 		$conditions = array();
 		$userConditions = array();
 		$involvementId = $this->passedArgs['Involvement'];
@@ -240,7 +238,7 @@ class RostersController extends AppController {
  * ### Passed args:
  * - integer $User The id of the user
  */
-	function involvement() {
+	public function involvement() {
 		$userId = $this->passedArgs['User'];
 
 		if (!$userId) {
@@ -373,7 +371,7 @@ class RostersController extends AppController {
  * - integer `User` The (main) user id to sign up
  * - integer `Involvement` The involvement opportunity
  */
-	function add() {
+	public function add() {
 		$userId = $this->passedArgs['User'];
 		$involvementId = $this->passedArgs['Involvement'];
 
@@ -740,7 +738,7 @@ class RostersController extends AppController {
  * @param integer $id The id of the roster to edit
  * @todo Restrict to proper permissions
  */
-	function edit($id = null) {
+	public function edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->cakeError('error404');
 		}
@@ -875,7 +873,7 @@ class RostersController extends AppController {
  * ### Passed Args:
  * - `Involvement` the involvement id
  */
-	function roles($roster_id) {
+	public function roles($roster_id) {
 		if (!empty($this->data)) {
 			$this->Roster->saveAll($this->data);
 			$this->Roster->clearCache();
@@ -902,7 +900,7 @@ class RostersController extends AppController {
  * @param integer $id The roster id
  * @param integer $status The RosterStatus id
  */
-	function status($id = null, $status = 1) {
+	public function status($id = null, $status = 1) {
 		if ($id) {
 			$selected = array($id);
 		} else {
@@ -926,7 +924,7 @@ class RostersController extends AppController {
  *
  * @param integer $id The roster id
  */
-	function delete($id = null) {
+	public function delete($id = null) {
 		if ($id) {
 			$selected = array($id);
 			$roster = $this->Roster->read(null, $id);

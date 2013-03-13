@@ -23,27 +23,24 @@ class PagesController extends AppController {
  * Controller name
  *
  * @var string
- * @access public
  */
-	var $name = 'Pages';
+	public $name = 'Pages';
 
 /**
  * Default helper
  *
  * @var array
- * @access public
  */
-	var $helpers = array('Html');
+	public $helpers = array('Html');
 
 /**
  * This controller does not use a model
  *
  * @var array
- * @access public
  */
-	var $uses = array();
+	public $uses = array();
 
-	function beforeFilter() {
+	public function beforeFilter() {
 		$this->Auth->allow('display', 'phrase', 'message');
 		parent::beforeFilter();
 	}
@@ -53,7 +50,7 @@ class PagesController extends AppController {
  * the typical flash elements. This is useful for when an action needs to
  * redirect to a generic page but still notify the user of something
  */
-	function message() {
+	public function message() {
 		$this->set('title_for_layout', 'Message');
 
 		$auth = $this->Session->read('Message.auth');
@@ -69,9 +66,8 @@ class PagesController extends AppController {
  * Displays a view
  *
  * @param mixed What page to display
- * @access public
  */
-	function display() {
+	public function display() {
 		$path = func_get_args();
 
 		$count = count($path);
@@ -99,7 +95,7 @@ class PagesController extends AppController {
  * @param string $model Name of the model to use. If empty, a generic
  *		phrase will be used instead
  */
-	function phrase($model = null) {
+	public function phrase($model = null) {
 		$result = null;
 
 		if (!empty($model)) {

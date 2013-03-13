@@ -2,9 +2,9 @@
 
 class ControllersGroupTest extends TestSuite {
 
-	var $label = 'Controller tests';
+	public $label = 'Controller tests';
 
-	function ControllersGroupTest() {
+	public function ControllersGroupTest() {
 		TestManager::addTestFile($this, APP . 'tests' . DS . 'cases' . DS . 'controllers' . DS . 'addresses_controller');
 		TestManager::addTestFile($this, APP . 'tests' . DS . 'cases' . DS . 'controllers' . DS . 'alerts_controller');
 		TestManager::addTestFile($this, APP . 'tests' . DS . 'cases' . DS . 'controllers' . DS . 'app_controller');

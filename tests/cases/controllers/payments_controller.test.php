@@ -11,7 +11,7 @@ Mock::generatePartial('QueueEmailComponent', 'MockPaymentsQueueEmailComponent', 
 
 class PaymentsControllerTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->Payments =& new TestPaymentsController();
 		$this->Payments->__construct();
@@ -22,7 +22,7 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		$this->Payments->Notifier->QueueEmail->setReturnValue('_smtp', true);
 		$this->Payments->Notifier->QueueEmail->setReturnValue('_mail', true);
 		$CreditCard = new CreditCard();
-		$CreditCard->gateway = new TestPaymentsControllerAuthorizeDotNetComponent();
+		$CreditCard->setGateway(new TestPaymentsControllerAuthorizeDotNetComponent());
 		ClassRegistry::removeObject('CreditCard');
 		ClassRegistry::addObject('CreditCard', $CreditCard);
 		ClassRegistry::init('CreditCard');
@@ -33,13 +33,13 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		$this->testController = $this->Payments;
 	}
 
-	function endTest() {
+	public function endTest() {
 		$this->Payments->Session->destroy();
 		unset($this->Payments);
 		ClassRegistry::flush();
 	}
 
-	function testIndex() {
+	public function testIndex() {
 		$vars = $this->testAction('/payments/index/User:1', array(
 			'return' => 'vars'
 		));
@@ -73,7 +73,7 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testFailedPayment() {
+	public function testFailedPayment() {
 		$this->su(array(
 			'User' => array('id' => 1),
 			'Group' => array('id' => 1),
@@ -114,15 +114,15 @@ class PaymentsControllerTestCase extends CoreTestCase {
 
 		// valid card, invalid gateway response
 		$data['CreditCard']['credit_card_number'] = '4242424242424242';
-		ClassRegistry::getObject('CreditCard')->gateway->setReturnValueAt(0, '_request', '0|||some error|||123456');
+		ClassRegistry::getObject('CreditCard')->getGateway()->setReturnValueAt(0, '_request', '0|||some error|||123456');
 
 		$result = $this->Payments->Payment->CreditCard->validationErrors;
 		$this->assertTrue(array_key_exists('credit_card_number', $result));
 		$this->assertTrue($result['credit_card_number'], 'some error');
 	}
 
-	function testAdd() {
-		ClassRegistry::getObject('CreditCard')->gateway->setReturnValue('_request', '1||||||123456');
+	public function testAdd() {
+		ClassRegistry::getObject('CreditCard')->getGateway()->setReturnValue('_request', '1||||||123456');
 
 		$this->su(array(
 			'User' => array('id' => 1),
@@ -234,9 +234,34 @@ class PaymentsControllerTestCase extends CoreTestCase {
 
 		$total = Set::apply('/Payment/amount', $results, 'array_sum');
 		$this->assertIdentical($total, 5.00);
+
+		// check money sanitization
+		$data = array(
+			'Payment' => array(
+				'amount' => '$5.00',
+				'payment_type_id' => 2
+			)
+		);
+		$vars = $this->testAction('/payments/add/1/Involvement:1', array(
+			'return' => 'vars',
+			'data' => $data
+		));
+
+		$result = $this->Payments->Payment->validationErrors;
+		$expected = array();
+		$this->assertEqual($result, $expected);
+
+		$results = $this->Payments->Payment->find('all', array(
+			'conditions' => array(
+				'Payment.roster_id' => 1
+			)
+		));
+
+		$total = Set::apply('/Payment/amount', $results, 'array_sum');
+		$this->assertIdentical($total, 10.00);
 	}
 
-	function testEdit() {
+	public function testEdit() {
 		$this->loadFixtures('Group');
 
 		$data = array(
@@ -257,7 +282,7 @@ class PaymentsControllerTestCase extends CoreTestCase {
 		$this->assertTrue(!empty($vars['paymentTypes']));
 	}
 
-	function testDelete() {
+	public function testDelete() {
 		$this->testAction('/payments/delete/1');
 		$this->assertFalse($this->Payments->Payment->read(null, 1));
 	}

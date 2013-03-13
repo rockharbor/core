@@ -5,20 +5,20 @@ App::import('Model', 'Group');
 
 class GroupTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Group');
 		$this->Group =& ClassRegistry::init('Group');
 		$this->loadSettings();
 	}
 
-	function endTest() {
+	public function endTest() {
 		$this->unloadSettings();
 		unset($this->Group);
 		ClassRegistry::flush();
 	}
 
-	function testFindGroups() {
+	public function testFindGroups() {
 		$results = $this->Group->findGroups(7);
 		$expected = array(7, 8);
 		$this->assertEqual($results, $expected);
@@ -38,7 +38,7 @@ class GroupTestCase extends CoreTestCase {
 		$this->assertFalse($this->Group->findGroups());
 	}
 
-	function testCanSeePrivate() {
+	public function testCanSeePrivate() {
 		$result = $this->Group->canSeePrivate(8);
 		$this->assertFalse($result);
 

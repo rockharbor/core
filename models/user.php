@@ -21,21 +21,21 @@ class User extends AppModel {
  *
  * @var string
  */
-	var $name = 'User';
+	public $name = 'User';
 
 /**
  * The field to use when generating lists
  *
  * @var string
  */
-	var $displayField = 'username';
+	public $displayField = 'username';
 
 /**
  * Extra behaviors for this model
  *
  * @var array
  */
-	var $actsAs = array(
+	public $actsAs = array(
 		'Containable',
 		'Linkable.AdvancedLinkable',
 		'Search.Searchable',
@@ -47,7 +47,7 @@ class User extends AppModel {
  *
  * @var array
  */
-	var $validate = array(
+	public $validate = array(
 		'username' => array(
 			'isUnique' => array(
 				'rule' => 'isUnique',
@@ -86,7 +86,7 @@ class User extends AppModel {
  *
  * @var array
  */
-	var $hasMany = array(
+	public $hasMany = array(
 		'Comment' => array(
 			'className' => 'Comment',
 			'foreignKey' => 'user_id',
@@ -140,7 +140,7 @@ class User extends AppModel {
  *
  * @var array
  */
-	var $hasOne = array(
+	public $hasOne = array(
 		'Profile' => array(
 			'className' => 'Profile',
 			'foreignKey' => 'user_id',
@@ -159,7 +159,7 @@ class User extends AppModel {
  *
  * @var array
  */
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'Group'
 	);
 
@@ -174,7 +174,7 @@ class User extends AppModel {
  *
  * @var array
  */
-	var $searchFilter = array(
+	public $searchFilter = array(
 		'notInHousehold' => array(
 			'conditions' => array(
 				'NOT EXISTS (SELECT 1 FROM household_members WHERE household_members.household_id = :0:
@@ -225,7 +225,7 @@ class User extends AppModel {
  * @param boolean $primary Association query?
  * @return array The modified results
  */
-	function afterFind($results, $primary) {
+	public function afterFind($results, $primary) {
 		if ($primary) {
 			foreach ($results as &$result) {
 				$result = $this->defaultImage($result);
@@ -241,7 +241,7 @@ class User extends AppModel {
  * @param integer $modelId The new information to use to update
  * @return boolean Success
  */
-	function merge($mergeId = null, $modelId = null) {
+	public function merge($mergeId = null, $modelId = null) {
 		if (empty($mergeId) || empty($modelId)) {
 			return false;
 		}
@@ -357,7 +357,7 @@ class User extends AppModel {
  * @return array The matching ids or an empty array
  * @see User::prepareSearch()
  */
-	function findUser($data = array(), $operator = 'AND') {
+	public function findUser($data = array(), $operator = 'AND') {
 		if (!is_array($data)) {
 			$data = array($data);
 		}
@@ -437,7 +437,7 @@ class User extends AppModel {
  * @param array $creator The person creating the user. Empty for self.
  * @return boolean Success
  */
-	function createUser(&$data = array(), $householdId = null, $creator = array()) {
+	public function createUser(&$data = array(), $householdId = null, $creator = array()) {
 		if (!isset($this->tmpAdded)) {
 			$this->tmpAdded = array();
 		}
@@ -596,7 +596,7 @@ class User extends AppModel {
  * @param array $data The partial user data
  * @return array
  */
-	function _createUserData($data = array()) {
+	protected function _createUserData($data = array()) {
 		$userGroup = $this->Group->findByName('User');
 
 		$default = array(
@@ -646,9 +646,8 @@ class User extends AppModel {
  * @param object $Controller The calling controller
  * @param array $data Post data to use for conditions
  * @return array Search option array
- * @access public
  */
-	function prepareSearch(&$Controller, $data) {
+	public function prepareSearch(&$Controller, $data) {
 		$_search = array(
 			'Search' => array(
 				'operator' => 'AND'
@@ -837,7 +836,7 @@ class User extends AppModel {
  * @return string Generated username
  * @todo Use a while loop instead so it works more than 8 digits
  */
-	function generateUsername($first_name = '', $last_name = '') {
+	public function generateUsername($first_name = '', $last_name = '') {
 		$this->recursive = -1;
 
 		if (empty($first_name) && empty($last_name)) {
@@ -872,7 +871,7 @@ class User extends AppModel {
  * @return string Generated password
  * @todo Add more nouns and verbs
  */
-	function generatePassword() {
+	public function generatePassword() {
 		$nouns = array('jesus', 'core', 'church', 'php', 'cake', 'pie');
 		// 'is' is added in the middle
 		$verbs = array('awesome', 'swell', 'hilarious', 'thebest', 'socool');
@@ -931,7 +930,7 @@ class User extends AppModel {
  * @return boolean True, to save
  * @see Cake docs
  */
-	function beforeSave() {
+	public function beforeSave() {
 		$this->hashPasswords(null, true);
 
 		return parent::beforeSave();
@@ -951,7 +950,7 @@ class User extends AppModel {
  * @return array Data with hashed passwords
  * @see User::beforeSave()
  */
-	function hashPasswords($data, $enforce = false) {
+	public function hashPasswords($data, $enforce = false) {
 		App::import('Component', 'Auth');
 		$Auth = new AuthComponent();
 
@@ -979,7 +978,7 @@ class User extends AppModel {
  * @param string $str String to encrypt
  * @return string Encrypted string
  */
-	function encrypt($str) {
+	public function encrypt($str) {
 		if (empty($str)) {
 			return '';
 		}
@@ -1000,7 +999,7 @@ class User extends AppModel {
  * @param string $str String to decrypt
  * @return string Decrypted string
  */
-	function decrypt($str) {
+	public function decrypt($str) {
 		if (empty($str)) {
 			return '';
 		}

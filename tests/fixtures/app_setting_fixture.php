@@ -1,9 +1,9 @@
 <?php
 /* AppSetting Fixture generated on: 2010-09-10 09:09:37 : 1284136897 */
 class AppSettingFixture extends CakeTestFixture {
-	var $name = 'AppSetting';
+	public $name = 'AppSetting';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 45),
 		'description' => array('type' => 'string', 'null' => false, 'default' => NULL),
@@ -15,7 +15,7 @@ class AppSettingFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 1,
 			'name' => 'general.church_name',

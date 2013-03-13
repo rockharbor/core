@@ -1,9 +1,9 @@
 <?php
 /* PaymentType Fixture generated on: 2010-06-28 09:06:38 : 1277741378 */
 class PaymentTypeFixture extends CakeTestFixture {
-	var $name = 'PaymentType';
+	public $name = 'PaymentType';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 45),
 		'type' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 2),
@@ -14,7 +14,7 @@ class PaymentTypeFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 1,
 			'name' => 'Visa',

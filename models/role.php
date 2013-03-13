@@ -21,21 +21,21 @@ class Role extends AppModel {
  *
  * @var string
  */
-	var $name = 'Role';
+	public $name = 'Role';
 
 /**
  * Default order
  *
  * @var string
  */
-	var $order = ':ALIAS:.name ASC';
+	public $order = ':ALIAS:.name ASC';
 
 /**
  * Validation rules
  *
  * @var array
  */
-	var $validate = array(
+	public $validate = array(
 		'name' => array(
 			'rule' => 'notEmpty',
 			'message' => 'Please fill in the required field.'
@@ -47,7 +47,7 @@ class Role extends AppModel {
  *
  * @var array
  */
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'Ministry' => array(
 			'className' => 'Ministry',
 			'foreignKey' => 'ministry_id'
@@ -59,7 +59,7 @@ class Role extends AppModel {
  *
  * @var array
  */
-	var $hasAndBelongsToMany = array(
+	public $hasAndBelongsToMany = array(
 		'Roster' => array(
 			'className' => 'Roster',
 			'foreignKey' => 'role_id',
@@ -75,7 +75,7 @@ class Role extends AppModel {
  * @return array Array of role ids
  * @todo Make it get not just the immediate parent, but all parents
  */
-	function findRoles($ministryId = null) {
+	public function findRoles($ministryId = null) {
 		if ($ministryId === null) {
 			return array();
 		}

@@ -1,9 +1,9 @@
 <?php
 /* Address Fixture generated on: 2010-06-28 09:06:17 : 1277741177 */
 class AddressFixture extends CakeTestFixture {
-	var $name = 'Address';
+	public $name = 'Address';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),
 		'address_line_1' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),
@@ -23,7 +23,7 @@ class AddressFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 1,
 			'name' => 'Work',

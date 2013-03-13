@@ -21,14 +21,14 @@ class HouseholdMember extends AppModel {
  *
  * @var string
  */
-	var $name = 'HouseholdMember';
+	public $name = 'HouseholdMember';
 
 /**
  * BelongsTo association link
  *
  * @var array
  */
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'Household',
 		'User'
 	);
@@ -38,7 +38,7 @@ class HouseholdMember extends AppModel {
  *
  * @var array
  */
-	var $actsAs = array(
+	public $actsAs = array(
 		'Linkable.AdvancedLinkable',
 		'Containable'
 	);

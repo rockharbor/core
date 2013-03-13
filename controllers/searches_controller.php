@@ -21,21 +21,21 @@ class SearchesController extends AppController {
  *
  * @var array
  */
-	var $uses = array('User','Ministry','Involvement');
+	public $uses = array('User','Ministry','Involvement');
 
 /**
  * Extra helpers for this controller
  *
  * @var array
  */
-	var $helpers = array('Formatting', 'Text', 'MultiSelect.MultiSelect', 'SelectOptions', 'Media.Media');
+	public $helpers = array('Formatting', 'Text', 'MultiSelect.MultiSelect', 'SelectOptions', 'Media.Media');
 
 /**
  * Extra components for this controller
  *
  * @var array
  */
-	var $components = array(
+	public $components = array(
 		'FilterPagination',
 		'MultiSelect.MultiSelect',
 		'Security' => array(
@@ -47,10 +47,8 @@ class SearchesController extends AppController {
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 	}
 
@@ -60,7 +58,7 @@ class SearchesController extends AppController {
  * ### Passed args:
  * - string $model The model to search. If none, searches all
  */
-	function index() {
+	public function index() {
 		$private = $this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id']);
 		$inactive = $private;
 		$campuses = $this->Ministry->Campus->find('list');
@@ -245,7 +243,7 @@ class SearchesController extends AppController {
  * @return array
  * @see Search.Searchable
  */
-	function simple($model = null, $element = null, $filter = '') {
+	public function simple($model = null, $element = null, $filter = '') {
 		$results = array();
 		$searchRan = false;
 
@@ -296,7 +294,7 @@ class SearchesController extends AppController {
 /**
  * Performs an advanced search on Involvements
  */
-	function involvement() {
+	public function involvement() {
 		if (isset($this->params['url']['q'])) {
 			$this->data['Involvement']['name'] = $this->params['url']['q'];
 			unset($this->params['url']['q']);
@@ -384,7 +382,7 @@ class SearchesController extends AppController {
 /**
  * Performs an advanced search on Ministries
  */
-	function ministry() {
+	public function ministry() {
 		if (isset($this->params['url']['q'])) {
 			$this->data['Ministry']['name'] = $this->params['url']['q'];
 			unset($this->params['url']['q']);
@@ -432,7 +430,7 @@ class SearchesController extends AppController {
 /**
  * Performs an advanced search on Users
  */
-	function user() {
+	public function user() {
 		$results = array();
 
 		// at the very least, we want:

@@ -21,30 +21,28 @@ class PaymentsController extends AppController {
  *
  * @var string
  */
-	var $name = 'Payments';
+	public $name = 'Payments';
 
 /**
  * Extra components for this controller
  *
  * @var array
  */
-	var $components = array('MultiSelect.MultiSelect', 'AuthorizeDotNet');
+	public $components = array('MultiSelect.MultiSelect', 'AuthorizeDotNet');
 
 /**
  * Extra helpers for this controller
  *
  * @var array
  */
-	var $helpers = array('MultiSelect.MultiSelect', 'Text', 'Formatting');
+	public $helpers = array('MultiSelect.MultiSelect', 'Text', 'Formatting');
 
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		$this->_editSelf('index', 'view');
 		parent::beforeFilter();
 	}
@@ -54,7 +52,7 @@ class PaymentsController extends AppController {
  *
  * @param integer $id The id of the payment
  */
-	function view($id) {
+	public function view($id) {
 		$payment = $this->Payment->find('first', array(
 			'conditions' => array(
 				'Payment.id' => $id
@@ -84,7 +82,7 @@ class PaymentsController extends AppController {
 /**
  * Shows a list of payments made by a User
  */
-	function index() {
+	public function index() {
 		if (!isset($this->passedArgs['User'])) {
 			$this->cakeError('error404');
 		}
@@ -133,7 +131,7 @@ class PaymentsController extends AppController {
  *
  * @param string $id The roster id to attach the payment to
  */
-	function add($id) {
+	public function add($id) {
 		// persist selected items through POST requests
 		$this->here .= '/mspersist:1';
 
@@ -185,7 +183,7 @@ class PaymentsController extends AppController {
 			// get balance
 			$balance = Set::apply('/Roster/balance', $payForUsers, 'array_sum');
 
-			$amount = $this->data['Payment']['amount'];
+			$amount = preg_replace('/[^\d\.\-]/', '', $this->data['Payment']['amount']);
 
 			// set `amount` validation rule to reflect balance range and validate as it's
 			// own field because we'll be splitting the payments up
@@ -318,7 +316,7 @@ class PaymentsController extends AppController {
  *
  * @param integer $id The id of the payment to edit
  */
-	function edit($id = null) {
+	public function edit($id = null) {
 		if (!$id) {
 			$this->cakeError('error404');
 		}
@@ -346,7 +344,7 @@ class PaymentsController extends AppController {
  *
  * @param integer $id The id of the payment to delete
  */
-	function delete($id = null) {
+	public function delete($id = null) {
 		if (!$id) {
 			$this->cakeError('error404');
 		}

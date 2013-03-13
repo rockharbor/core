@@ -11,7 +11,7 @@ Mock::generatePartial('CampusLeadersController', 'MockLeadersCampusLeadersContro
 
 class LeadersControllerTestCase extends CoreTestCase {
 
-	function _setLeaderController($name = 'Involvement') {
+	public function _setLeaderController($name = 'Involvement') {
 		if (class_exists('MockLeaders'.$name.'LeadersController')) {
 			$className = 'MockLeaders'.$name.'LeadersController';
 			$this->Leaders =& new $className;
@@ -26,18 +26,18 @@ class LeadersControllerTestCase extends CoreTestCase {
 		}
 	}
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('Leader', 'User', 'Profile', 'Involvement', 'Notification', 'Group', 'Ministry', 'Campus');
 		$this->_setLeaderController();
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->Leaders);
 		ClassRegistry::flush();
 	}
 
-	function testIndex() {
+	public function testIndex() {
 		$vars = $this->testAction('involvement_leaders/index/Involvement:1', array(
 			'return' => 'vars'
 		));
@@ -57,7 +57,7 @@ class LeadersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, $expected);
 	}
 
-	function testAdd() {
+	public function testAdd() {
 		$this->Leaders->Session->write('MultiSelect.test', array(
 			'selected' => array(1, 2),
 			'search' => array()
@@ -84,7 +84,7 @@ class LeadersControllerTestCase extends CoreTestCase {
 		)));
 	}
 
-	function testDelete() {
+	public function testDelete() {
 		$notificationsBefore =  $this->Leaders->Leader->User->Notification->find('count');
 		$vars = $this->testAction('/involvement_leaders/delete/Involvement:1/User:1');
 		$notificationsAfter = $this->Leaders->Leader->User->Notification->find('count');

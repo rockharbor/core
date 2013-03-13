@@ -21,14 +21,14 @@ class Answer extends AppModel {
  *
  * @var string
  */
-	var $name = 'Answer';
+	public $name = 'Answer';
 
 /**
  * Validation rules
  *
  * @var array
  */
-	var $validate = array(
+	public $validate = array(
 		'description' => array(
 			'rule' => 'notEmpty',
 			'required' => true,
@@ -41,7 +41,7 @@ class Answer extends AppModel {
  *
  * @var array
  */
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'Roster' => array(
 			'className' => 'Roster',
 			'foreignKey' => 'roster_id',

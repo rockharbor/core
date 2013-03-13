@@ -6,7 +6,7 @@ Mock::generatePartial('PagesController', 'TestPagesController', array('isAuthori
 
 class PagesControllerTestCase extends CoreTestCase {
 
-	function startTest($method) {
+	public function startTest($method) {
 		parent::startTest($method);
 		Router::parseExtensions('json');
 
@@ -16,12 +16,12 @@ class PagesControllerTestCase extends CoreTestCase {
 		$this->testController = $this->Pages;
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->Pages);
 		ClassRegistry::flush();
 	}
 
-	function testDisplay() {
+	public function testDisplay() {
 		$vars = $this->testAction('/pages/display/test');
 
 		$result = $vars['page'];
@@ -33,7 +33,7 @@ class PagesControllerTestCase extends CoreTestCase {
 		$this->assertEqual($result, $expected);
 	}
 
-	function testPhrase() {
+	public function testPhrase() {
 		$this->loadFixtures('Ministry', 'Involvement');
 
 		$vars = $this->testAction('/pages/phrase/Involvement.json', array(
@@ -61,7 +61,7 @@ class PagesControllerTestCase extends CoreTestCase {
 		));
 	}
 
-	function testPhraseNoRecords() {
+	public function testPhraseNoRecords() {
 		$this->assertNoErrors();
 		$vars = $this->testAction('/pages/phrase/Involvement.json', array(
 			'return' => 'vars'

@@ -38,7 +38,13 @@ CORE_date.setup = function() {
 	});
 
 	$('#DateRecurring').on('change', function() {
-		this.checked ? $('#pattern').show() : $('#pattern').hide();
+		if (this.checked) {
+			$('#pattern').show()
+			$('#DatePermanent').closest('div.input').show();
+		} else {
+			$('#pattern').hide();
+			$('#DatePermanent').closest('div.input').hide();
+		}
 	});
 
 	$('#DatePermanent').on('change', function() {

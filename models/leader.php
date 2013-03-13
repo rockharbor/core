@@ -23,14 +23,14 @@ class Leader extends AppModel {
  *
  * @var string
  */
-	var $name = 'Leader';
+	public $name = 'Leader';
 
 /**
  * Extra behaviors for this model
  *
  * @var array
  */
-	var $actsAs = array(
+	public $actsAs = array(
 		'Containable'
 	);
 
@@ -39,7 +39,7 @@ class Leader extends AppModel {
  *
  * @var array
  */
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'User',
 		'Campus' => array(
 			'foreignKey' => 'model_id'

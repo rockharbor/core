@@ -21,30 +21,28 @@ class PaymentOptionsController extends AppController {
  *
  * @var string
  */
-	var $name = 'PaymentOptions';
+	public $name = 'PaymentOptions';
 
 /**
  * Extra helpers for this controller
  *
  * @var array
  */
-	var $helpers = array('SelectOptions', 'Formatting');
+	public $helpers = array('SelectOptions', 'Formatting');
 
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 	}
 
 /**
  * Displays a list of payment options for the chosen involvement
  */
-	function index() {
+	public function index() {
 		$this->PaymentOption->recursive = 0;
 		$this->set('paymentOptions', $this->paginate(array(
 			'involvement_id' => $this->passedArgs['Involvement']
@@ -56,7 +54,7 @@ class PaymentOptionsController extends AppController {
 /**
  * Adds a payment option
  */
-	function add() {
+	public function add() {
 		if (!empty($this->data)) {
 			$this->PaymentOption->create();
 			if ($this->PaymentOption->save($this->data)) {
@@ -74,7 +72,7 @@ class PaymentOptionsController extends AppController {
  *
  * @param integer $id The id of the payment option to edit
  */
-	function edit($id = null) {
+	public function edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->cakeError('error404');
 		}
@@ -95,7 +93,7 @@ class PaymentOptionsController extends AppController {
  *
  * @param integer $id The id of the payment option to delete
  */
-	function delete($id = null) {
+	public function delete($id = null) {
 		if (!$id) {
 			$this->cakeError('error404');
 		}

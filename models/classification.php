@@ -21,21 +21,21 @@ class Classification extends AppModel {
  *
  * @var string
  */
-	var $name = 'Classification';
+	public $name = 'Classification';
 
 /**
  * Default order
  *
  * @var string
  */
-	var $order = ':ALIAS:.name ASC';
+	public $order = ':ALIAS:.name ASC';
 
 /**
  * Validation rules
  *
  * @var array
  */
-	var $validate = array(
+	public $validate = array(
 		'name' => array(
 			'rule' => 'notempty',
 			'message' => 'Please fill in the required field.'

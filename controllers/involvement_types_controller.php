@@ -26,16 +26,14 @@ class InvolvementTypesController extends SimpleCrudsController {
  *
  * @var string
  */
-	var $name = 'InvolvementTypes';
+	public $name = 'InvolvementTypes';
 
 /**
  * Model::beforeFilter() callback
  *
  * Used to override Acl permissions for this controller.
- *
- * @access private
  */
-	function beforeFilter() {
+	public function beforeFilter() {
 		parent::beforeFilter();
 	}
 
