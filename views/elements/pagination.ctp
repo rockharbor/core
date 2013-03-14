@@ -17,7 +17,7 @@
 		?></span>
 		<span style="float:right;line-height:30px">
 			<?php
-			$select = '%count%';
+			$select = '%page%';
 			if ($pages > 3) {
 				$range = range(1, $pages);
 				$select = $this->Form->select('jump', array_combine($range, $range), $params['page'], array(
