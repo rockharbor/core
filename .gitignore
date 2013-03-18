@@ -1,6 +1,6 @@
-/config/database.php
-/config/email.php
-/config/core.php
+/Config/database.php
+/Config/email.php
+/Config/core.php
 /webroot/media
 /webroot/css_cache
 /webroot/js_cache
