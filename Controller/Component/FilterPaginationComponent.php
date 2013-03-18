@@ -22,7 +22,7 @@
  * @package       core
  * @subpackage    core.app.controllers.components
  */
-class FilterPaginationComponent extends Object {
+class FilterPaginationComponent extends Component {
 
 /**
  * A stored reference to the calling controller

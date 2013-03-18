@@ -30,7 +30,7 @@ App::import('Model', 'User');
  * @link http://www.authorize.net/support/AIM_guide.pdf
  * @todo Move into a behavior? Or a vendor?
  */
-class AuthorizeDotNetComponent extends Object {
+class AuthorizeDotNetComponent extends Component {
 
 /**
  * Data to send to authorize.net

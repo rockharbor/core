@@ -24,7 +24,7 @@ require_once CONFIGS . 'email.php';
  * @package       core
  * @subpackage    core.app.controllers.components
  */
-class NotifierComponent extends Object {
+class NotifierComponent extends Component {
 
 /**
  * Additional components needed by this component
