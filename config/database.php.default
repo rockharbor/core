@@ -2,22 +2,24 @@
 class DATABASE_CONFIG {
 
 	public $default = array(
-		'driver' => 'mysql',
+		'datasource' => 'Database/Mysql',
 		'persistent' => false,
 		'host' => 'localhost',
 		'login' => 'username',
 		'password' => 'password',
 		'database' => 'database',
+		'prefix' => '',
 		'encoding' => 'utf8'
 	);
 
 	public $test_suite = array(
-		'driver' => 'mysql',
+		'datasource' => 'Database/Mysql',
 		'persistent' => false,
 		'host' => 'localhost',
 		'login' => 'username',
 		'password' => 'password',
 		'database' => 'database_test',
+		'prefix' => '',
 		'encoding' => 'utf8'
 	);
 }
