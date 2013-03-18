@@ -28,6 +28,6 @@
 [submodule "Plugin/MultiSelect"]
 	path = Plugin/MultiSelect
 	url = https://github.com/jeremyharris/multi_select.git
-[submodule "vendors/CssToInlineStyles"]
-	path = vendors/CssToInlineStyles
+[submodule "Vendor/CssToInlineStyles"]
+	path = Vendor/CssToInlineStyles
 	url = https://github.com/tijsverkoyen/CssToInlineStyles.git
