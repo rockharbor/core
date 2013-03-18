@@ -86,17 +86,6 @@ Configure::write('Core.mediafilters.default', array(
 Configure::write('QueueEmail.deleteAfter', false);
 
 /**
- * Load CORE plugin bootstraps
- */
-$plugins = Core::read('plugin');
-if (!empty($plugins)) {
-	$plugins = array_keys($plugins);
-	foreach ($plugins as $plugin) {
-		App::import('Plugin', Inflector::camelize($plugin). 'Bootstrap');
-	}
-}
-
-/**
  * Converts `<br />`'s to newlines
  *
  * @param string $input
