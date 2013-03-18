@@ -1,32 +1,32 @@
-[submodule "plugins/acl_extras"]
-	path = plugins/acl_extras
+[submodule "Plugin/AclExtras"]
+	path = Plugin/AclExtras
 	url = https://github.com/markstory/acl_extras.git
-[submodule "plugins/debug_kit"]
-	path = plugins/debug_kit
+[submodule "Plugin/DebugKit"]
+	path = Plugin/DebugKit
 	url = https://github.com/cakephp/debug_kit.git
-[submodule "plugins/media"]
-	path = plugins/media
+[submodule "Plugin/Media"]
+	path = Plugin/Media
 	url = https://github.com/davidpersson/media.git
-[submodule "plugins/search"]
-	path = plugins/search
+[submodule "Plugin/Search"]
+	path = Plugin/Search
 	url = https://github.com/CakeDC/search.git
-[submodule "plugins/cacher"]
-	path = plugins/cacher
+[submodule "Plugin/Cacher"]
+	path = Plugin/Cacher
 	url = https://github.com/jeremyharris/cacher.git
-[submodule "plugins/sanitizer"]
-	path = plugins/sanitizer
+[submodule "Plugin/Sanitizer"]
+	path = Plugin/Sanitizer
 	url = https://github.com/jeremyharris/sanitizer.git
-[submodule "plugins/slugger"]
-	path = plugins/slugger
+[submodule "Plugin/Slugger"]
+	path = Plugin/Slugger
 	url = https://github.com/jeremyharris/slugger.git
-[submodule "plugins/queue_email"]
-	path = plugins/queue_email
+[submodule "Plugin/QueueEmail"]
+	path = Plugin/QueueEmail
 	url = https://github.com/jeremyharris/queue_email.git
-[submodule "plugins/asset_compress"]
-	path = plugins/asset_compress
+[submodule "Plugin/AssetCompress"]
+	path = Plugin/AssetCompress
 	url = https://github.com/jeremyharris/asset_compress.git
-[submodule "plugins/multi_select"]
-	path = plugins/multi_select
+[submodule "Plugin/MultiSelect"]
+	path = Plugin/MultiSelect
 	url = https://github.com/jeremyharris/multi_select.git
 [submodule "vendors/CssToInlineStyles"]
 	path = vendors/CssToInlineStyles
