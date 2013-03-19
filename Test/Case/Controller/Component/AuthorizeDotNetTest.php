@@ -9,16 +9,17 @@ if (!isset($_SERVER['REQUEST_URI'])) {
 
 class TestAuthorizeController extends AppController {}
 
-Mock::generatePartial('ProxyAuthorizeDotNetComponent', 'MockAuthorizeDotNetComponent', array('_request'));
-
 class AuthorizeDotNetTestCase extends CoreTestCase {
 
 	public function startTest($method) {
 		parent::startTest($method);
 		$this->loadFixtures('User', 'Profile');
 		$this->loadSettings();
-		$this->AuthorizeDotNet = new MockAuthorizeDotNetComponent();
 		$this->Controller = new TestAuthorizeController();
+		$this->AuthorizeDotNet = $this->getMock('ProxyAuthorizeDotNetComponent',
+			array('_request'),
+			array(new ComponentCollection($this->Controller))
+		);
 	}
 
 	public function endTest() {
@@ -136,7 +137,11 @@ class AuthorizeDotNetTestCase extends CoreTestCase {
 	}
 
 	public function testRequest() {
-		$this->AuthorizeDotNet->setReturnValue('_request', '1||||||123456');
+		$this->AuthorizeDotNet
+			->expects($this->once())
+			->method('_request')
+			->will($this->returnValue('1||||||123456'));
+		
 		$this->AuthorizeDotNet->setData(array(
 			'x_First_Name' => 'Jeremy',
 			'x_Last_Name' => 'Harris',

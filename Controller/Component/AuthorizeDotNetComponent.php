@@ -200,7 +200,7 @@ class AuthorizeDotNetComponent extends Component {
 		$this->transactionId = '';
 
 		// check debug
-		if (Configure::read() > 0) {
+		if (Configure::read('debug') > 0) {
 			$this->_data['x_Test_Request'] = 'TRUE';
 			$email = Core::read('development.debug_email');
 		} else {
