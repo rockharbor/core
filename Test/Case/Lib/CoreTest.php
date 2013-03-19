@@ -30,6 +30,18 @@ class CoreConfigureTestCase extends CoreTestCase {
 		$core->Acl->Aco->setDataSource('test');
 	}
 
+	public function testLoadSettings() {
+		$this->loadFixtures('AppSetting');
+
+		$core = Core::getInstance();
+		$core->settings = array();
+		$core->loadSettings();
+
+		$result = $core->settings['general']['church_site_url'];
+		$expected = 'http://www.rockharbor.org';
+		$this->assertEqual($result, $expected);
+	}
+
 	public function testAddAco() {
 		$this->_setupAcl();
 		$core = Core::getInstance();
