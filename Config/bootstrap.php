@@ -17,7 +17,7 @@ Cache::config('acl', array(
 /**
  * Bring in Core configuration class
  */
-require_once APP.'libs'.DS.'core.php';
+App::uses('Core', 'Lib');
 
 /**
  * Bring in and overwrite (specific) Media plugin settings
