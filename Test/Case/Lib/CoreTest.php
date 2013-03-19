@@ -4,8 +4,6 @@ App::uses('CoreTestCase', 'Lib');
 App::uses('AppSetting', 'Model');
 App::uses('AclComponent', 'Controller/Component');
 
-Mock::generatePartial('AclComponent', 'CoreConfigureMockAclComponent', array('check'));
-
 class CoreConfigureTestCase extends CoreTestCase {
 
 	public function startTest($method) {
@@ -26,10 +24,10 @@ class CoreConfigureTestCase extends CoreTestCase {
 		// for some reason, the Aro and Aco model's weren't being forced to use
 		// the test database, so force them here
 		$core->Acl->Aro = ClassRegistry::init('Aro');
-		$core->Acl->Aro->setDataSource('test_suite');
-		$core->Acl->Aro->Permission->setDataSource('test_suite');
+		$core->Acl->Aro->setDataSource('test');
+		$core->Acl->Aro->Permission->setDataSource('test');
 		$core->Acl->Aco = ClassRegistry::init('Aco');
-		$core->Acl->Aco->setDataSource('test_suite');
+		$core->Acl->Aco->setDataSource('test');
 	}
 
 	public function testAddAco() {
@@ -90,12 +88,16 @@ class CoreConfigureTestCase extends CoreTestCase {
 		Cache::clear(false, 'acl');
 
 		$core = Core::getInstance();
-		$core->Acl = new CoreConfigureMockAclComponent();
+		$core->Acl = $this->getMock('DbAcl', array(
+			'check'
+		));
+		$core->Acl
+			->expects($this->any())
+			->method('check')
+			->will($this->onConsecutiveCalls(true, false, true));
 
-		$core->Acl->setReturnValueAt(0, 'check', true);
 		$this->assertIdentical(Core::acl(8, '/some/path'), true);
 
-		$core->Acl->setReturnValueAt(1, 'check', false);
 		// cached ('check' call not made here)
 		$this->assertIdentical(Core::acl(8, '/some/path'), true);
 
@@ -103,7 +105,6 @@ class CoreConfigureTestCase extends CoreTestCase {
 
 		Configure::write('Cache.disable', true);
 
-		$core->Acl->setReturnValueAt(2, 'check', true);
 		$this->assertIdentical(Core::acl(1, '/some/path'), true);
 
 		Configure::write('Cache.disable', false);
@@ -118,7 +119,7 @@ class CoreConfigureTestCase extends CoreTestCase {
 		unset($core->settings['hooks']);
 
 		Core::hook();
-		$this->assertEqual(Core::read('hooks'), array());
+		$this->assertEqual(Core::read('hooks'), null);
 
 		$link1 = array('plugin' => 'plugin', 'controller' => 'controller', 'action' => 'action');
 		Core::hook($link1, 'root.new-nav', array(

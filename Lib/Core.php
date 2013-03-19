@@ -199,8 +199,8 @@ class Core {
 	public function _initAcl() {
 		$self =& Core::getInstance();
 		if (!$self->Acl) {
-			App::uses('AclComponent', 'Controller/Component');
-			$self->Acl = new AclComponent();
+			App::import('Controller/Component', 'AclComponent');
+			$self->Acl = new DbAcl();
 		}
 	}
 
