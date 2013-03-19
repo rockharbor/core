@@ -12,9 +12,9 @@
  * Add proxy class paths
  */
 App::build(array(
-	'components' => array(TESTS . 'proxies' . DS . 'components' . DS),
-	'controllers' => array(TESTS . 'proxies' . DS . 'controllers' . DS),
-	'helpers' => array(TESTS . 'proxies' . DS . 'helpers' . DS)
+	'Controller/Component' => array(TESTS . 'proxies' . DS . 'components' . DS),
+	'Controller' => array(TESTS . 'proxies' . DS . 'controllers' . DS),
+	'View/Helper' => array(TESTS . 'proxies' . DS . 'helpers' . DS)
 ));
 
 /**
