@@ -1,6 +1,13 @@
 <?php
 
 /**
+ * Load plugins
+ */
+CakePlugin::loadAll(array(
+	'Media' => array('bootstrap' => true)
+));
+
+/**
  * Cache configuration
  */
 Cache::config('default', array(
@@ -18,11 +25,6 @@ Cache::config('acl', array(
  * Bring in Core configuration class
  */
 App::uses('Core', 'Lib');
-
-/**
- * Bring in and overwrite (specific) Media plugin settings
- */
-require_once APP.'plugins'.DS.'media'.DS.'config'.DS.'core.php';
 
 /**
  * Custom filters based on model
