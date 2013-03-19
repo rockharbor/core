@@ -8,6 +8,8 @@
  * @subpackage    core.app
  */
 
+App::uses('Helper', 'View');
+
 /**
  * App Helper
  *

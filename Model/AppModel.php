@@ -8,6 +8,8 @@
  * @subpackage    core.app
  */
 
+App::uses('Model', 'Model');
+
 /**
  * App model
  *
