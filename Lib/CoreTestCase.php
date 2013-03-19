@@ -96,9 +96,10 @@ class CoreTestCase extends CakeTestCase {
  * altered settings.
  */
 	public function loadSettings() {
-		$this->loadFixtures('AppSetting');
+		$this->loadFixtures('AppSetting', 'Attachment');
 		$this->_cacheDisable = Configure::read('Cache.disable');
 		Configure::write('Cache.disable', true);
+		Core::getInstance()->settings = array();
 		Core::loadSettings(true);
 	}
 
@@ -107,6 +108,7 @@ class CoreTestCase extends CakeTestCase {
  */
 	public function unloadSettings() {
 		ClassRegistry::init('AppSetting')->clearCache();
+		Core::getInstance()->settings = array();
 		Configure::write('Cache.disable', $this->_cacheDisable);
 	}
 

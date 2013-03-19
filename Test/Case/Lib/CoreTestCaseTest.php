@@ -31,6 +31,20 @@ class CoreTestCaseTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 
+	public function testLoadAndUnloadSettings() {
+		$this->loadSettings();
+
+		$result = Core::read('general.church_site_url');
+		$expected = 'http://www.rockharbor.org';
+		$this->assertEqual($result, $expected);
+
+		$this->unloadSettings();
+
+		$result = Core::read('general.church_site_url');
+		$expected = null;
+		$this->assertEqual($result, $expected);
+	}
+
 	public function testSingleLine() {
 		$text = "Something \r\n\twith\t\ttabs \nand   extra spacing";
 		$result = $this->singleLine($text);
