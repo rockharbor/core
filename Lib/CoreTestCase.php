@@ -17,6 +17,7 @@ App::build(array(
 	'View/Helper' => array(TESTS . 'proxies' . DS . 'helpers' . DS)
 ));
 
+App::uses('ControllerTestCase', 'TestSuite');
 App::uses('Security', 'Utility');
 App::uses('CakeSession', 'Model/Datasource');
 
@@ -28,7 +29,7 @@ App::uses('CakeSession', 'Model/Datasource');
  * @package       core
  * @subpackage    core.lib
  */
-class CoreTestCase extends CakeTestCase {
+class CoreTestCase extends ControllerTestCase {
 
 /**
  * Fixtures needed for test. Overwrite if you don't need them all.
