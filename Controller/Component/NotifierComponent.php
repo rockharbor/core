@@ -12,7 +12,7 @@
  * Includes
  */
 App::uses('View', 'View');
-require_once CONFIGS . 'email.php';
+config('email');
 
 /**
  * Notifier Component
