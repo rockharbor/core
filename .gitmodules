@@ -6,7 +6,7 @@
 	url = https://github.com/cakephp/debug_kit.git
 [submodule "Plugin/Media"]
 	path = Plugin/Media
-	url = https://github.com/davidpersson/media.git
+	url = https://github.com/bmcclure/CakePHP-Media-Plugin.git
 [submodule "Plugin/Search"]
 	path = Plugin/Search
 	url = https://github.com/CakeDC/search.git
@@ -24,7 +24,7 @@
 	url = https://github.com/jeremyharris/queue_email.git
 [submodule "Plugin/AssetCompress"]
 	path = Plugin/AssetCompress
-	url = https://github.com/jeremyharris/asset_compress.git
+	url = https://github.com/markstory/asset_compress.git
 [submodule "Plugin/MultiSelect"]
 	path = Plugin/MultiSelect
 	url = https://github.com/jeremyharris/multi_select.git
