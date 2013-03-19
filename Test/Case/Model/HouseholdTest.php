@@ -1,7 +1,7 @@
 <?php
 /* Household Test cases generated on: 2010-06-29 11:06:11 : 1277837891 */
-App::import('Lib', 'CoreTestCase');
-App::import('Model', 'Household');
+App::uses('CoreTestCase', 'Lib');
+App::uses('Household', 'Model');
 
 class HouseholdTestCase extends CoreTestCase {
 

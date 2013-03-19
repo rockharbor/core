@@ -1,8 +1,9 @@
 <?php
 /* Reports Test cases generated on: 2010-07-19 12:07:49 : 1279566109 */
-App::import('Lib', 'CoreTestCase');
-App::import('Component', array('QueueEmail.QueueEmail', 'RequestHandler'));
-App::import('Controller', 'Reports');
+App::uses('CoreTestCase', 'Lib');
+App::uses('QueueEmailComponent', 'QueueEmail.Controller/Component');
+App::uses('RequestHandlerComponent', 'Controller/Component');
+App::uses('ReportsController', 'Controller');
 
 Mock::generatePartial('QueueEmailComponent', 'MockReportsQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('RequestHandlerComponent', 'MockReportsRequestHandlerComponent', array('_header'));

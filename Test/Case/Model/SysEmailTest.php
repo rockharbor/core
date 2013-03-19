@@ -1,7 +1,8 @@
 <?php
 /* SysEmail Test cases generated on: 2010-08-05 09:08:32 : 1281025892 */
-App::import('Lib', 'CoreTestCase');
-App::import('Model', array('SysEmail', 'Document'));
+App::uses('CoreTestCase', 'Lib');
+App::uses('SysEmail', 'Model');
+App::uses('Document', 'Model');
 
 class SysEmailTestCase extends CoreTestCase {
 	public function startTest($method) {

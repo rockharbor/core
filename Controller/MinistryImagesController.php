@@ -11,7 +11,7 @@
 /**
  * Includes
  */
-App::import('Controller', 'Images');
+App::uses('ImagesController', 'Controller');
 
 /**
  * MinistryImages Controller

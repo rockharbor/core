@@ -11,7 +11,7 @@
 /**
  * Includes
  */
-App::import('Core', 'HttpSocket');
+App::uses('HttpSocket', 'Network/Http');
 
 /**
  * Confirm Behavior

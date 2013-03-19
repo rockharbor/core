@@ -1,8 +1,8 @@
 <?php
 /* Ministries Test cases generated on: 2010-07-16 08:07:10 : 1279292770 */
-App::import('Lib', 'CoreTestCase');
-App::import('Component', array('QueueEmail.QueueEmail'));
-App::import('Controller', 'Ministries');
+App::uses('CoreTestCase', 'Lib');
+App::uses('QueueEmailComponent', 'QueueEmail.Controller/Component');
+App::uses('MinistriesController', 'Controller');
 
 Mock::generatePartial('QueueEmailComponent', 'MockMinistriesQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('MinistriesController', 'TestMinistriesController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));

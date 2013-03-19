@@ -1,6 +1,6 @@
 <?php
 
-App::import('Component', 'FilterPagination');
+App::uses('FilterPaginationComponent', 'Controller/Component');
 
 class ProxyFilterPaginationComponent extends FilterPaginationComponent {
 

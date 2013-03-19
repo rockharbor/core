@@ -1,8 +1,8 @@
 <?php
 /* Comments Test cases generated on: 2010-07-12 08:07:14 : 1278946994 */
-App::import('Lib', 'CoreTestCase');
-App::import('Component', array('QueueEmail.QueueEmail'));
-App::import('Controller', 'Comments');
+App::uses('CoreTestCase', 'Lib');
+App::uses('QueueEmailComponent', 'QueueEmail.Controller/Component');
+App::uses('CommentsController', 'Controller');
 
 Mock::generatePartial('QueueEmailComponent', 'MockCommentsQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('CommentsController', 'TestCommentsController', array('render', 'redirect', '_stop', 'header', 'disableCache', 'cakeError'));

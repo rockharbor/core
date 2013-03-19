@@ -1,7 +1,7 @@
 <?php
 /* Group Test cases generated on: 2010-07-13 09:07:53 : 1279039973 */
-App::import('Lib', 'CoreTestCase');
-App::import('Model', 'Group');
+App::uses('CoreTestCase', 'Lib');
+App::uses('Group', 'Model');
 
 class GroupTestCase extends CoreTestCase {
 

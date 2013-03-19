@@ -1,7 +1,7 @@
 <?php
 /* PaymentOptions Test cases generated on: 2010-07-16 11:07:27 : 1279303767 */
-App::import('Lib', 'CoreTestCase');
-App::import('Controller', 'PaymentOptions');
+App::uses('CoreTestCase', 'Lib');
+App::uses('PaymentOptionsController', 'Controller');
 
 Mock::generatePartial('PaymentOptionsController', 'TestPaymentOptionsController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 

@@ -1,8 +1,9 @@
 <?php
 /* Users Test cases generated on: 2010-08-11 07:08:43 : 1281537883 */
-App::import('Lib', 'CoreTestCase');
-App::import('Component', array('QueueEmail.QueueEmail', 'Cookie'));
-App::import('Controller', 'Users');
+App::uses('CoreTestCase', 'Lib');
+App::uses('QueueEmailComponent', 'QueueEmail.Controller/Component');
+App::uses('CookieComponent', 'Controller/Component');
+App::uses('UsersController', 'Controller');
 
 Mock::generatePartial('QueueEmailComponent', 'MockUsersQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('CookieComponent', 'MockUsersCookieComponent', array('read', 'write', 'delete'));

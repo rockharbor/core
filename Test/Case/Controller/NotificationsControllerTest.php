@@ -1,8 +1,8 @@
 <?php
 /* Notifications Test cases generated on: 2010-07-09 10:07:32 : 1278696092 */
-App::import('Lib', 'CoreTestCase');
-App::import('Component', array('QueueEmail.QueueEmail'));
-App::import('Controller', 'Notifications');
+App::uses('CoreTestCase', 'Lib');
+App::uses('QueueEmailComponent', 'QueueEmail.Controller/Component');
+App::uses('NotificationsController', 'Controller');
 
 Mock::generatePartial('QueueEmailComponent', 'MockNotificationsQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('NotificationsController', 'TestNotificationsController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));

@@ -1,6 +1,6 @@
 <?php
 
-App::import('Lib', 'CoreTestCase');
+App::uses('CoreTestCase', 'Lib');
 
 class BootstrapTestCase extends CoreTestCase {
 

@@ -1,7 +1,7 @@
 <?php
 /* Roster Test cases generated on: 2010-07-26 14:07:11 : 1280180951 */
-App::import('Lib', 'CoreTestCase');
-App::import('Model', 'Profile');
+App::uses('CoreTestCase', 'Lib');
+App::uses('Profile', 'Model');
 
 class ProfileTestCase extends CoreTestCase {
 

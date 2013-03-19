@@ -1,6 +1,6 @@
 <?php
-App::import('Lib', 'CoreTestCase');
-App::import('Model', 'Comment');
+App::uses('CoreTestCase', 'Lib');
+App::uses('Comment', 'Model');
 
 class CommentTestCase extends CoreTestCase {
 

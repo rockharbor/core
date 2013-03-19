@@ -1,6 +1,6 @@
 <?php
-App::import('Lib', 'CoreTestCase');
-App::import('Model', 'User');
+App::uses('CoreTestCase', 'Lib');
+App::uses('User', 'Model');
 
 class UserProxy extends User {
 	public $name = 'User';

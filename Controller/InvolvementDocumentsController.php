@@ -11,7 +11,7 @@
 /**
  * Includes
  */
-App::import('Controller', 'Documents');
+App::uses('DocumentsController', 'Controller');
 
 /**
  * InvolvementDocuments Controller

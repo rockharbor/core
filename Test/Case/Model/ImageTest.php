@@ -1,6 +1,6 @@
 <?php
-App::import('Lib', 'CoreTestCase');
-App::import('Model', 'Image');
+App::uses('CoreTestCase', 'Lib');
+App::uses('Image', 'Model');
 
 class ImageTestCase extends CoreTestCase {
 

@@ -15,9 +15,9 @@ if ($mock && strtolower($type) == 'controller'):
 		$this->testController = $this->'.$className.';
 ';
 ?>
-App::import('Lib', 'CoreTestCase');
-App::import('Component', array('QueueEmail'));
-App::import('<?php echo $type; ?>', '<?php echo $plugin . $className;?>');
+App::uses('Lib', 'CoreTestCase');
+App::uses('Component', array('QueueEmail'));
+App::uses('<?php echo $type; ?>', '<?php echo $plugin . $className;?>');
 
 Mock::generate('QueueEmailComponent');
 Mock::generatePartial('<?php echo $plugin . $className;?>Controller', 'Mock<?php echo $plugin . $className;?>Controller', array('isAuthorized', 'render', 'redirect', '_stop', 'header'));
@@ -25,7 +25,7 @@ Mock::generatePartial('<?php echo $plugin . $className;?>Controller', 'Mock<?php
 else:
 	$caseClass = 'CakeTestCase';
 ?>
-App::import('<?php echo $type; ?>', '<?php echo $plugin . $className;?>');
+App::uses('<?php echo $type; ?>', '<?php echo $plugin . $className;?>');
 <?php
 endif;
 ?>

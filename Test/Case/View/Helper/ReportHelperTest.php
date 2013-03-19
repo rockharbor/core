@@ -1,6 +1,6 @@
 <?php
-App::import('Lib', 'CoreTestCase');
-App::import('Helper', array('ProxyReport'));
+App::uses('CoreTestCase', 'Lib');
+App::uses('ProxyReportHelper', 'View/Helper');
 
 class ReportHelperTestCase extends CoreTestCase {
 

@@ -1,6 +1,6 @@
 <?php
-App::import('Lib', 'CoreTestCase');
-App::import('Controller', 'Questions');
+App::uses('CoreTestCase', 'Lib');
+App::uses('QuestionsController', 'Controller');
 
 class TestQuestionsController extends QuestionsController {
 

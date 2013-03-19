@@ -1,8 +1,8 @@
 <?php
 
-App::import('Lib', 'CoreTestCase');
-App::import('Model', 'App');
-App::import('Component', 'ProxyFilterPagination');
+App::uses('CoreTestCase', 'Lib');
+App::uses('AppModel', 'Model');
+App::uses('ProxyFilterPaginationComponent', 'Controller/Component');
 
 class CompletelyUnrelatedModel extends AppModel {
 	public $useTable = false;

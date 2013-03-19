@@ -1,6 +1,11 @@
 <?php
-App::import('Lib', 'CoreTestCase');
-App::import('Helper', array('Formatting', 'Html', 'Text', 'Time', 'Number', 'Permission'));
+App::uses('CoreTestCase', 'Lib');
+App::uses('FormattingHelper', 'View/Helper');
+App::uses('HtmlHelper', 'View/Helper');
+App::uses('TextHelper', 'View/Helper');
+App::uses('TimeHelper', 'View/Helper');
+App::uses('NumberHelper', 'View/Helper');
+App::uses('PermissionHelper', 'View/Helper');
 
 Mock::generatePartial('PermissionHelper', 'MockPermissionHelper', array('check'));
 

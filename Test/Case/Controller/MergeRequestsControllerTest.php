@@ -1,9 +1,10 @@
 <?php
 /* MergeRequests Test cases generated on: 2010-07-14 13:07:43 : 1279138963 */
-App::import('Controller', 'MergeRequests');
-App::import('Model', array('User', 'Profile'));
-App::import('Lib', 'CoreTestCase');
-App::import('Component', array('QueueEmail.QueueEmail'));
+App::uses('MergeRequestsController', 'Controller');
+App::uses('User', 'Model');
+App::uses('Profile', 'Model');
+App::uses('CoreTestCase', 'Lib');
+App::uses('QueueEmailComponent', 'QueueEmail.Controller/Component');
 
 Mock::generatePartial('QueueEmailComponent', 'MockMergeRequestsQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('MergeRequestsController', 'TestMergeRequestsController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));

@@ -1,7 +1,7 @@
 <?php
-App::import('Lib', 'CoreTestCase');
-App::import('Controller', 'App');
-App::import('Component', array('ProxyAuthorizeDotNet'));
+App::uses('CoreTestCase', 'Lib');
+App::uses('AppController', 'Controller');
+App::uses('ProxyAuthorizeDotNetComponent', 'Controller/Component');
 
 if (!isset($_SERVER['REQUEST_URI'])) {
 	$_SERVER['REQUEST_URI'] = 'http://www.example.com';

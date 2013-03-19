@@ -1,7 +1,7 @@
 <?php
 /* School Test cases generated on: 2010-08-04 13:08:21 : 1280952021 */
-App::import('Lib', 'CoreTestCase');
-App::import('Model', 'School');
+App::uses('CoreTestCase', 'Lib');
+App::uses('School', 'Model');
 
 class SchoolTestCase extends CoreTestCase {
 	public $fixtures = array('app.school');

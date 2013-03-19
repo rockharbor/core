@@ -1,6 +1,6 @@
 <?php
 
-App::import('Controller', 'UserImages');
+App::uses('UserImagesController', 'Controller');
 
 class ProxyUserImagesController extends UserImagesController {
 

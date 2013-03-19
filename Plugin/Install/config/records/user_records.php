@@ -1,6 +1,6 @@
 <?php
 
-App::import('Component', 'Security');
+App::import('Security', 'Utility');
 
 class UserRecords extends Records {
 

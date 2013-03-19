@@ -1,7 +1,8 @@
 <?php
 /* Roster Test cases generated on: 2010-07-26 14:07:11 : 1280180951 */
-App::import('Lib', 'CoreTestCase');
-App::import('Model', array('Roster', 'CreditCard'));
+App::uses('CoreTestCase', 'Lib');
+App::uses('Roster', 'Model');
+App::uses('CreditCard', 'Model');
 
 Mock::generatePartial('CreditCard', 'MockRosterCreditCard', array('save'));
 

@@ -1,7 +1,7 @@
 <?php
 /* GeoCoordinate Test cases generated on: 2010-07-07 07:07:30 : 1278513210 */
-App::import('Lib', 'CoreTestCase');
-App::import('Behavior', 'GeoCoordinate');
+App::uses('CoreTestCase', 'Lib');
+App::uses('GeoCoordinateBehavior', 'Model/Behavior');
 
 class GeoCoordinateBehaviorTestCase extends CoreTestCase {
 

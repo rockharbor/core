@@ -951,7 +951,7 @@ class User extends AppModel {
  * @see User::beforeSave()
  */
 	public function hashPasswords($data, $enforce = false) {
-		App::import('Component', 'Auth');
+		App::uses('AuthComponent', 'Controller/Component');
 		$Auth = new AuthComponent();
 
 		if (!isset($data[$this->alias]['confirm_password'])) {

@@ -1,6 +1,6 @@
 <?php
-App::import('Lib', 'CoreTestCase');
-App::import('Controller', 'Pages');
+App::uses('CoreTestCase', 'Lib');
+App::uses('PagesController', 'Controller');
 
 Mock::generatePartial('PagesController', 'TestPagesController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 

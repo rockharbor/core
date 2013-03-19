@@ -1,7 +1,7 @@
 <?php
 /* Involvement Test cases generated on: 2010-07-02 10:07:50 : 1278092570 */
-App::import('Lib', 'CoreTestCase');
-App::import('Model', 'Involvement');
+App::uses('CoreTestCase', 'Lib');
+App::uses('Involvement', 'Model');
 
 class InvolvementTestCase extends CoreTestCase {
 

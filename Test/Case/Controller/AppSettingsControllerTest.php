@@ -1,7 +1,7 @@
 <?php
 /* AppSettings Test cases generated on: 2010-07-09 14:07:19 : 1278709879 */
-App::import('Lib', 'CoreTestCase');
-App::import('Controller', 'AppSettings');
+App::uses('CoreTestCase', 'Lib');
+App::uses('AppSettingsController', 'Controller');
 
 Mock::generatePartial('AppSettingsController', 'TestAppSettingsController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 

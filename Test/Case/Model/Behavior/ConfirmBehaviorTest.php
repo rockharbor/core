@@ -1,7 +1,7 @@
 <?php
 /* Confirm Test cases generated on: 2010-07-06 11:07:24 : 1278439644 */
-App::import('Lib', 'CoreTestCase');
-App::import('Model', 'Ministry');
+App::uses('CoreTestCase', 'Lib');
+App::uses('Ministry', 'Model');
 
 class ConfirmBehaviorTestCase extends CoreTestCase {
 

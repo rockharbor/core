@@ -11,7 +11,7 @@
 /**
  * Includes
  */
-App::import('Controller', 'Addresses');
+App::uses('AddressesController', 'Controller');
 
 /**
  * InvolvementAddresses Controller

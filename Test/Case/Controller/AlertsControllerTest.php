@@ -1,8 +1,8 @@
 <?php
 /* Alerts Test cases generated on: 2010-07-09 11:07:53 : 1278699053 */
-App::import('Lib', 'CoreTestCase');
-App::import('Component', array('QueueEmail.QueueEmail'));
-App::import('Controller', 'Alerts');
+App::uses('CoreTestCase', 'Lib');
+App::uses('QueueEmailComponent', 'QueueEmail.Controller/Component');
+App::uses('AlertsController', 'Controller');
 
 Mock::generatePartial('QueueEmailComponent', 'MockAlertsQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('AlertsController', 'TestAlertsController', array('render', 'redirect', '_stop', 'header', 'disableCache', 'cakeError'));

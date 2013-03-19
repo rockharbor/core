@@ -11,7 +11,7 @@
 /**
  * Includes
  */
-App::import('Model', 'Media.MediaApp');
+App::uses('MediaAppModel', 'Media.Model');
 
 /**
  * Document model

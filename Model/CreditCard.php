@@ -232,7 +232,7 @@ class CreditCard extends AppModel {
  */
 	public function getGateway() {
 		if ($this->gateway === null) {
-			App::import('Component', 'AuthorizeDotNet');
+			App::uses('AuthorizeDotNetComponent', 'Controller/Component');
 			$this->gateway = new AuthorizeDotNetComponent();
 		}
 		return $this->gateway;

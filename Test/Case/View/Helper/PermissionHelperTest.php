@@ -1,7 +1,9 @@
 <?php
-App::import('Lib', 'CoreTestCase');
-App::import('Helper', array('ProxyPermission', 'Js', 'Html'));
-App::import('Controller', array('SysEmails'));
+App::uses('CoreTestCase', 'Lib');
+App::uses('ProxyPermissionHelper', 'View/Helper');
+App::uses('JsHelper', 'View/Helper');
+App::uses('HtmlHelper', 'View/Helper');
+App::uses('SysEmailsController', 'Controller');
 
 Mock::generate('HtmlHelper');
 Mock::generate('JsHelper');

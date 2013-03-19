@@ -1,6 +1,6 @@
 <?php
 
-App::import('Helper', 'Report');
+App::uses('ReportHelper', 'View/Helper');
 
 class ProxyReportHelper extends ReportHelper {
 

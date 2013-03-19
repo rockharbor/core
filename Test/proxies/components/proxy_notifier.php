@@ -1,6 +1,6 @@
 <?php
 
-App::import('Component', 'Notifier');
+App::uses('NotifierComponent', 'Controller/Component');
 
 class ProxyNotifierComponent extends NotifierComponent {
 

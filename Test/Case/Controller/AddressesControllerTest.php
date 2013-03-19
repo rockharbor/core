@@ -1,8 +1,8 @@
 <?php
 /* Addresses Test cases generated on: 2010-07-02 11:07:49 : 1278096229 */
-App::import('Lib', 'CoreTestCase');
-App::import('Component', array('QueueEmail.QueueEmail'));
-App::import('Controller', 'UserAddresses');
+App::uses('CoreTestCase', 'Lib');
+App::uses('QueueEmailComponent', 'QueueEmail.Controller/Component');
+App::uses('UserAddressesController', 'Controller');
 
 Mock::generatePartial('QueueEmailComponent', 'MockAddressesQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('UserAddressesController', 'TestUserAddressesController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));

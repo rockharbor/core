@@ -1,8 +1,10 @@
 <?php
 /* Leaders Test cases generated on: 2010-07-14 12:07:47 : 1279136267 */
-App::import('Lib', 'CoreTestCase');
-App::import('Component', array('QueueEmail.QueueEmail'));
-App::import('Controller', array('InvolvementLeaders', 'MinistryLeaders', 'CampusLeaders'));
+App::uses('CoreTestCase', 'Lib');
+App::uses('QueueEmailComponent', 'QueueEmail.Controller/Component');
+App::uses('InvolvementLeadersController', 'Controller');
+App::uses('MinistryLeadersController', 'Controller');
+App::uses('CampusLeadersController', 'Controller');
 
 Mock::generatePartial('QueueEmailComponent', 'MockLeadersQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('InvolvementLeadersController', 'MockLeadersInvolvementLeadersController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));

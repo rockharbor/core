@@ -11,7 +11,7 @@
 /**
  * Includes
  */
-App::import('Controller', 'SimpleCruds');
+App::uses('SimpleCrudsController', 'Controller');
 
 /**
  * Classifications Controller

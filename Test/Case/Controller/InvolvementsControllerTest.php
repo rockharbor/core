@@ -1,8 +1,8 @@
 <?php
 /* Involvements Test cases generated on: 2010-07-12 11:07:51 : 1278959751 */
-App::import('Lib', 'CoreTestCase');
-App::import('Component', array('QueueEmail.QueueEmail'));
-App::import('Controller', 'Involvements');
+App::uses('CoreTestCase', 'Lib');
+App::uses('QueueEmailComponent', 'QueueEmail.Controller/Component');
+App::uses('InvolvementsController', 'Controller');
 
 Mock::generatePartial('QueueEmailComponent', 'MockInvolvementsQueueEmailComponent', array('_smtp', '_mail'));
 

@@ -1,6 +1,6 @@
 <?php
-App::import('Lib', 'CoreTestCase');
-App::import('Model', 'Invitation');
+App::uses('CoreTestCase', 'Lib');
+App::uses('Invitation', 'Model');
 
 class InvitationTestCase extends CoreTestCase {
 

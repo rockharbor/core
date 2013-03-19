@@ -11,11 +11,11 @@
 /**
  * Includes
  */
-App::import('Lib', 'CoreTestCase');
-App::import('Component', 'RequestHandler');
-App::import('Model', 'App');
-App::import('Controller', 'App');
-App::import('View', 'View');
+App::uses('CoreTestCase', 'Lib');
+App::uses('RequestHandlerComponent', 'Controller/Component');
+App::uses('AppModel', 'Model');
+App::uses('AppController', 'Controller');
+App::uses('View', 'View');
 
 /**
  * Dummy app model

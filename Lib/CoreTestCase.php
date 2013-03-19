@@ -20,7 +20,7 @@ App::build(array(
 /**
  * Includes
  */
-App::import('Component', 'Acl');
+App::uses('AclComponent', 'Controller/Component');
 require_once APP.'config'.DS.'routes.php';
 
 /**

@@ -1,8 +1,8 @@
 <?php
 
-App::import('Lib', array('CoreTestCase'));
-App::import('Model', 'AppSetting');
-App::import('Component', 'Acl');
+App::uses('CoreTestCase', 'Lib');
+App::uses('AppSetting', 'Model');
+App::uses('AclComponent', 'Controller/Component');
 
 Mock::generatePartial('AclComponent', 'CoreConfigureMockAclComponent', array('check'));
 

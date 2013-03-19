@@ -11,7 +11,7 @@
 /**
  * Includes
  */
-App::import('View', 'view');
+App::uses('View', 'View');
 require_once CONFIGS . 'email.php';
 
 /**

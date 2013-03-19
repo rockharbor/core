@@ -1,7 +1,7 @@
 <?php
 /* Alert Test cases generated on: 2010-06-30 07:06:18 : 1277908338 */
-App::import('Lib', 'CoreTestCase');
-App::import('Model', 'Alert');
+App::uses('CoreTestCase', 'Lib');
+App::uses('Alert', 'Model');
 
 class AlertTestCase extends CoreTestCase {
 	public function startTest($method) {

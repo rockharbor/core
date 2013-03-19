@@ -1,6 +1,6 @@
 <?php
 
-App::import('Component', 'AuthorizeDotNet');
+App::uses('AuthorizeDotNetComponent', 'Controller/Component');
 
 class ProxyAuthorizeDotNetComponent extends AuthorizeDotNetComponent {
 

@@ -1,7 +1,7 @@
 <?php
 /* Invitations Test cases generated on: 2010-07-09 10:07:32 : 1278696092 */
-App::import('Lib', 'CoreTestCase');
-App::import('Controller', 'Invitations');
+App::uses('CoreTestCase', 'Lib');
+App::uses('InvitationsController', 'Controller');
 
 Mock::generatePartial('InvitationsController', 'TestInvitationsController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'requestAction', 'cakeError'));
 

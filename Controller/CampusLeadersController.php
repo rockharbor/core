@@ -11,7 +11,7 @@
 /**
  * Includes
  */
-App::import('Controller', 'Leaders');
+App::uses('LeadersController', 'Controller');
 
 /**
  * CampusLeaders Controller

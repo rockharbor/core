@@ -1,6 +1,6 @@
 <?php
 
-App::import('Helper', 'Permission');
+App::uses('PermissionHelper', 'View/Helper');
 
 class ProxyPermissionHelper extends PermissionHelper {
 

@@ -1,8 +1,8 @@
 <?php
 /* User Test cases generated on: 2010-06-28 09:06:40 : 1277741500*/
-App::import('Lib', 'CoreTestCase');
-App::import('Model', 'User');
-App::import('Controller', 'App');
+App::uses('CoreTestCase', 'Lib');
+App::uses('User', 'Model');
+App::uses('AppController', 'Controller');
 
 class UsersTestController extends AppController {
 

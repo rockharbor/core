@@ -1,6 +1,6 @@
 <?php
-App::import('Lib', 'CoreTestCase');
-App::import('Helper', array('App'));
+App::uses('CoreTestCase', 'Lib');
+App::uses('AppHelper', 'View/Helper');
 
 /**
  * Proxy class to allow access to protected methods

@@ -1,7 +1,7 @@
 <?php
 /* Ministry Test cases generated on: 2010-07-02 11:07:10 : 1278095350 */
-App::import('Lib', 'CoreTestCase');
-App::import('Model', 'Ministry');
+App::uses('CoreTestCase', 'Lib');
+App::uses('Ministry', 'Model');
 
 class MinistryTestCase extends CoreTestCase {
 	public function startTest($method) {

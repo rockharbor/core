@@ -1,7 +1,7 @@
 <?php
-App::import('Lib', 'CoreTestCase');
-App::import('Controller', 'ProxyApp');
-App::import('Component', 'MultiSelect.MultiSelect');
+App::uses('CoreTestCase', 'Lib');
+App::uses('ProxyAppController', 'Controller');
+App::uses('MultiSelectComponent', 'MultiSelect.Controller/Component');
 
 class AppControllerTestCase extends CoreTestCase {
 

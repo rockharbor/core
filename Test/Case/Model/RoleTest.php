@@ -1,6 +1,6 @@
 <?php
-App::import('Lib', 'CoreTestCase');
-App::import('Model', 'Role');
+App::uses('CoreTestCase', 'Lib');
+App::uses('Role', 'Model');
 
 class RoleTestCase extends CoreTestCase {
 

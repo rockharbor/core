@@ -13,7 +13,7 @@
 /**
  * Includes
  */
-App::import('Model', 'User');
+App::uses('User', 'Model');
 
 /**
  * AuthorizeDotNet Component

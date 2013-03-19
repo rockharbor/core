@@ -11,8 +11,8 @@
 /**
  * Includes
  */
-App::import('View', 'View');
-App::import('Vendor', 'CssToInlineStyles', array(
+App::uses('View', 'View');
+App::uses('CssToInlineStylesVendor', 'Vendor', array(
 	'file' => 'CssToInlineStyles' . DS . 'css_to_inline_styles.php'
 ));
 

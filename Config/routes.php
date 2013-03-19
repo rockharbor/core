@@ -16,7 +16,7 @@
 /**
  * Bring in custom routing libraries
  */
-	App::import('Lib', array('Slugger.routes/SluggableRoute'));
+	App::uses('SluggableRoute', 'Slugger.Lib');
 
 /**
  * Static routes

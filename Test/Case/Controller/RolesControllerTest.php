@@ -1,7 +1,7 @@
 <?php
 /* Rosters Test cases generated on: 2010-08-05 12:08:42 : 1281037602 */
-App::import('Lib', 'CoreTestCase');
-App::import('Controller', 'Roles');
+App::uses('CoreTestCase', 'Lib');
+App::uses('RolesController', 'Controller');
 
 Mock::generatePartial('RolesController', 'MockRolesController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 

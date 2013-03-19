@@ -1,8 +1,8 @@
 <?php
 /* Payments Test cases generated on: 2010-07-16 08:07:32 : 1279295912 */
-App::import('Lib', 'CoreTestCase');
-App::import('Component', array('QueueEmail.QueueEmail'));
-App::import('Controller', 'ProxyUserImages');
+App::uses('CoreTestCase', 'Lib');
+App::uses('QueueEmailComponent', 'QueueEmail.Controller/Component');
+App::uses('ProxyUserImagesController', 'Controller');
 
 Mock::generatePartial('QueueEmailComponent', 'MockAttachmentsQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('ProxyUserImagesController', 'MockProxyUserImagesController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));

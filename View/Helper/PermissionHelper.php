@@ -117,7 +117,7 @@ class PermissionHelper extends AppHelper {
 			if ($path['plugin']) {
 				$import = Inflector::camelize($path['plugin']).'.'.$import;
 			}
-			App::import('Controller', $import);
+			App::uses($import, 'Controller');
 			$this->controllers[$controller] = new $classname();
 			$this->controllers[$controller]->__construct();
 			$this->controllers[$controller]->constructClasses();

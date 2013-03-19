@@ -1,7 +1,7 @@
 <?php
 /* Leaders Test cases generated on: 2010-07-14 12:07:47 : 1279136267 */
-App::import('Lib', 'CoreTestCase');
-App::import('Controller', array('InvolvementLeaders'));
+App::uses('CoreTestCase', 'Lib');
+App::uses('InvolvementLeadersController', 'Controller');
 
 Mock::generatePartial('InvolvementLeadersController', 'MockInvolvementLeadersController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));
 

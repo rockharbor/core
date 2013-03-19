@@ -1,7 +1,7 @@
 <?php
 /* Campus Test cases generated on: 2010-06-30 10:06:12 : 1277919132 */
-App::import('Lib', 'CoreTestCase');
-App::import('Model', 'Campus');
+App::uses('CoreTestCase', 'Lib');
+App::uses('Campus', 'Model');
 
 class CampusTestCase extends CoreTestCase {
 	public function startTest($method) {

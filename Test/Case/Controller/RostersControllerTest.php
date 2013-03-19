@@ -1,9 +1,9 @@
 <?php
 /* Rosters Test cases generated on: 2010-08-05 12:08:42 : 1281037602 */
-App::import('Lib', 'CoreTestCase');
-App::import('Component', array('QueueEmail.QueueEmail'));
-App::import('Controller', 'Rosters');
-App::import('Model', 'CreditCard');
+App::uses('CoreTestCase', 'Lib');
+App::uses('QueueEmailComponent', 'QueueEmail.Controller/Component');
+App::uses('RostersController', 'Controller');
+App::uses('CreditCard', 'Model');
 
 Mock::generatePartial('QueueEmailComponent', 'MockRostersQueueEmailComponent', array('_smtp', '_mail'));
 Mock::generatePartial('RostersController', 'MockRostersController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));

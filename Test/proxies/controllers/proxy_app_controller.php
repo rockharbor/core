@@ -1,6 +1,6 @@
 <?php
 
-App::import('Controller', 'App');
+App::uses('AppController', 'Controller');
 
 class ProxyAppController extends AppController {
 

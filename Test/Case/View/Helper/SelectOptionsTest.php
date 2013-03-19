@@ -1,5 +1,5 @@
 <?php
-App::import('Helper', array('SelectOptions'));
+App::uses('SelectOptionsHelper', 'View/Helper');
 
 class SelectOptionsHelperTestCase extends CakeTestCase {
 

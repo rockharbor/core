@@ -11,7 +11,7 @@
 /**
  * Imports
  */
-App::import('Core', 'Router');
+App::uses('Router', 'Routing');
 
 /**
  * Core class
@@ -83,7 +83,7 @@ class Core {
 			$instance[0] =& new Core();
 		}
 		if (!$instance[0]->_loaded) {
-			App::import('Model', 'ConnectionManager');
+			App::uses('ConnectionManager', 'Model');
 			$db =& ConnectionManager::getDataSource('default');
 			$sources = $db->listSources();
 			if (!empty($sources)) {
@@ -166,7 +166,7 @@ class Core {
  * @return array Array of app settings
  */
 	public function _loadDbSettings($force = false) {
-		App::import('Model', 'AppSetting');
+		App::uses('AppSetting', 'Model');
 		$AppSetting = ClassRegistry::init('AppSetting');
 		if ($force) {
 			$AppSetting->clearCache();
@@ -199,7 +199,7 @@ class Core {
 	public function _initAcl() {
 		$self =& Core::getInstance();
 		if (!$self->Acl) {
-			App::import('Component', 'Acl');
+			App::uses('AclComponent', 'Controller/Component');
 			$self->Acl = new AclComponent();
 		}
 	}

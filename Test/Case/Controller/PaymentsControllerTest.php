@@ -1,9 +1,10 @@
 <?php
 /* Payments Test cases generated on: 2010-07-16 08:07:32 : 1279295912 */
-App::import('Lib', 'CoreTestCase');
-App::import('Controller', 'Payments');
-App::import('Model', 'CreditCard');
-App::import('Component', array('QueueEmail.QueueEmail', 'AuthorizeDotNet'));
+App::uses('CoreTestCase', 'Lib');
+App::uses('PaymentsController', 'Controller');
+App::uses('CreditCard', 'Model');
+App::uses('QueueEmailComponent', 'QueueEmail.Controller/Component');
+App::uses('AuthorizeDotNetComponent', 'Controller/Component');
 
 Mock::generatePartial('AuthorizeDotNetComponent', 'TestPaymentsControllerAuthorizeDotNetComponent', array('_request'));
 Mock::generatePartial('PaymentsController', 'TestPaymentsController', array('isAuthorized', 'disableCache', 'render', 'redirect', '_stop', 'header', 'cakeError'));

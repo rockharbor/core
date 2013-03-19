@@ -1,7 +1,7 @@
 <?php
 /* Date Test cases generated on: 2010-06-30 10:06:30 : 1277920170 */
-App::import('Lib', 'CoreTestCase');
-App::import('Model', 'Date');
+App::uses('CoreTestCase', 'Lib');
+App::uses('Date', 'Model');
 
 class DateTestCase extends CoreTestCase {
 	public function startTest($method) {
