@@ -92,7 +92,7 @@ class DummiesController extends AppController {
 	}
 
 	public function get_me() {
-		$this->set('query', $this->params['url']['query']);
+		$this->set('query', $this->request->query['query']);
 	}
 
 	public function disableCache() {

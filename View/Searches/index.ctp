@@ -1,6 +1,6 @@
 <?php
 if (!empty($this->data['Search']['query'])) {
-	echo $this->Html->tag('span', 'Results for "'.$this->params['url']['q'].'"', array('class' => 'breadcrumb'));
+	echo $this->Html->tag('span', 'Results for "'.$this->request->query['q'].'"', array('class' => 'breadcrumb'));
 }
 ?>
 <h1>Search</h1>
@@ -10,7 +10,6 @@ if (!empty($this->data['Search']['query'])) {
 	<?php
 		echo $this->Form->create('Search', array(
 			'class' => 'core-filter-form',
-			'url' => $this->here.'?q='.$this->params['url']['q'],
 			'id' => 'SearchFilterForm'
 		));
 
@@ -146,11 +145,11 @@ echo $this->element('search');
 		if ($link) {
 			echo $this->Html->tag('li', $link);
 		}
-		$link = $this->Permission->link('Ministry Search', array('action' => 'ministry', '?' => array('q' => $this->params['url']['q'])), array('class' => 'button'));
+		$link = $this->Permission->link('Ministry Search', array('action' => 'ministry', '?' => array('q' => $this->request->query['q'])), array('class' => 'button'));
 		if ($link) {
 			echo $this->Html->tag('li', $link);
 		}
-		$link = $this->Permission->link('Involvement Search', array('action' => 'involvement', '?' => array('q' => $this->params['url']['q'])), array('class' => 'button'));
+		$link = $this->Permission->link('Involvement Search', array('action' => 'involvement', '?' => array('q' => $this->request->query['q'])), array('class' => 'button'));
 		if ($link) {
 			echo $this->Html->tag('li', $link);
 		}

@@ -100,7 +100,7 @@ class DatesController extends AppController {
 
 		// if it's not the calendar calling, just leave. there's nothing
 		// special to pass to the calendar view
-		if (!isset($this->params['url']['ext']) || $this->params['url']['ext'] != 'json') {
+		if (!isset($this->request->params['ext']) || $this->request->params['ext'] != 'json') {
 			return;
 		}
 
@@ -175,11 +175,11 @@ class DatesController extends AppController {
 		}
 
 		$options = array();
-		if (isset($this->params['url']['start'])) {
-			$options['start'] = $this->params['url']['start'];
+		if (isset($this->request->query['start'])) {
+			$options['start'] = $this->request->query['start'];
 		}
-		if (isset($this->params['url']['end'])) {
-			$options['end'] = $this->params['url']['end'];
+		if (isset($this->request->query['end'])) {
+			$options['end'] = $this->request->query['end'];
 		}
 
 		if (!empty($involvementIds)) {

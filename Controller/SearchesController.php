@@ -72,13 +72,13 @@ class SearchesController extends AppController {
 		}
 
 		if (isset($this->data['Search']['q'])) {
-			$this->params['url']['q'] = $this->data['Search']['q'];
+			$this->request->query['q'] = $this->data['Search']['q'];
 			unset($this->data['Search']['q']);
 		}
 
 		$_default = array(
 			'Search' => array(
-				'query' => $this->params['url']['q'],
+				'query' => $this->request->query['q'],
 				'private' => $private,
 				'active' => !$inactive,
 				'previous' => 0
@@ -295,9 +295,9 @@ class SearchesController extends AppController {
  * Performs an advanced search on Involvements
  */
 	public function involvement() {
-		if (isset($this->params['url']['q'])) {
-			$this->data['Involvement']['name'] = $this->params['url']['q'];
-			unset($this->params['url']['q']);
+		if (isset($this->request->query['q'])) {
+			$this->data['Involvement']['name'] = $this->request->query['q'];
+			unset($this->request->query['q']);
 		}
 
 		$private = $this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id']);
@@ -383,9 +383,9 @@ class SearchesController extends AppController {
  * Performs an advanced search on Ministries
  */
 	public function ministry() {
-		if (isset($this->params['url']['q'])) {
-			$this->data['Ministry']['name'] = $this->params['url']['q'];
-			unset($this->params['url']['q']);
+		if (isset($this->request->query['q'])) {
+			$this->data['Ministry']['name'] = $this->request->query['q'];
+			unset($this->request->query['q']);
 		}
 
 		$private = $this->Involvement->Roster->User->Group->canSeePrivate($this->activeUser['Group']['id']);
