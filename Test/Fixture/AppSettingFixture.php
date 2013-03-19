@@ -191,6 +191,8 @@ class AppSettingFixture extends CakeTestFixture {
 			'id' => 27,
 			'name' => 'sys_emails.system_subject_prefix',
 			'description' => 'A prefix to put in front of the subject of each user email sent through the app.',
+			'created' => '2010-03-11 10:44:40',
+			'modified' => '2010-08-17 14:38:33',
 			'value' => '[core] ',
 			'type' => 'string'
 		),
@@ -198,6 +200,8 @@ class AppSettingFixture extends CakeTestFixture {
 			'id' => 28,
 			'name' => 'sys_emails.subject_prefix',
 			'description' => 'A prefix to put in front of the subject of each user email sent through the app.',
+			'created' => '2010-03-11 10:44:40',
+			'modified' => '2010-08-17 14:38:33',
 			'value' => '[core user] ',
 			'type' => 'string'
 		),
