@@ -300,7 +300,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->Users->Session->write('User', array());
 		$this->Users->Cookie->setReturnValueAt(1, 'read', array(
 			'username' => 'jharris',
-			'password' => '005b8f6046bb2039063d9dde0678f9f28ae38827'
+			'password' => '7c098cddbe690582a71b955b8acf7ddac90d4c25'
 		));
 		$vars = $this->testAction('/users/login');
 		$result = $this->Users->Session->read('Auth.User.id');
