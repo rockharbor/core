@@ -64,7 +64,7 @@ class Profile extends AppModel {
 			'rule' => 'notempty',
 			'message' => 'Please fill in the required field.'
 		),
-		'gender_name' => array(
+		'gender' => array(
 			'rule' => array('inList', array('m','f')),
 			'allowEmpty' => true
 		),

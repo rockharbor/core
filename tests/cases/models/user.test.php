@@ -622,7 +622,8 @@ class UserTestCase extends CoreTestCase {
 				0 => array(
 					'Profile' => array(
 						'first_name' => 'child',
-						'last_name' => ''
+						'last_name' => '',
+						'gender' => 'invalid'
 					)
 				)
 			)
@@ -630,7 +631,7 @@ class UserTestCase extends CoreTestCase {
 		$this->assertFalse($this->User->createUser($user, null, $creator));
 		$this->assertEqual(count($this->User->tmpAdded), 0);
 
-		$expected = array('last_name');
+		$expected = array('last_name', 'gender');
 		$this->assertEqual(array_keys($this->User->HouseholdMember->validationErrors[0]['Profile']), $expected);
 
 		$this->User->tmpAdded = $this->User->tmpInvited = array();
