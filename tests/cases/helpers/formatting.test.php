@@ -28,6 +28,20 @@ class FormattingHelperTestCase extends CoreTestCase {
 		ClassRegistry::flush();
 	}
 
+	public function testSecretEmail() {
+		$result = $this->Formatting->secretEmail('invalid');
+		$expected = 'invalid';
+		$this->assertEqual($result, $expected);
+
+		$result = $this->Formatting->secretEmail('test@example.com');
+		$expected = 't.....t@example.com';
+		$this->assertEqual($result, $expected);
+
+		$result = $this->Formatting->secretEmail('someotherlongemail@example.com');
+		$expected = 's.....l@example.com';
+		$this->assertEqual($result, $expected);
+	}
+
 	public function testEmail() {
 		$result = $this->Formatting->email(null);
 		$this->assertNull($result);

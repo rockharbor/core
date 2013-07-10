@@ -1,5 +1,8 @@
 <h1>Found Multiple Matches</h1>
-<p>Multiple matches for that user were found in <?php echo Core::read('general.site_name'); ?>! Please select one below.</p>
+<p>
+	Multiple matches with that information were found in <?php echo Core::read('general.site_name'); ?>!
+	Please select a user below if there is a match.
+</p>
 <?php
 $data = Set::flatten($this->data);
 $posteddata = '';
@@ -18,6 +21,7 @@ $secureFields = $this->Form->fields;
 	<thead>
 		<tr>
 			<th>Name</th>
+			<th>Email</th>
 			<th>City</th>
 			<th>&nbsp;</th>
 		</tr>
@@ -33,6 +37,7 @@ $secureFields = $this->Form->fields;
 		?>
 			<tr<?php echo $class;?>>
 				<td><?php echo $user['Profile']['name']. $this->Formatting->flags('User', $user); ?></td>
+				<td><?php echo $this->Formatting->secretEmail($user['Profile']['primary_email']); ?></td>
 				<td><?php echo $user['ActiveAddress']['city']; ?></td>
 				<td><?php
 				$url = String::insert(

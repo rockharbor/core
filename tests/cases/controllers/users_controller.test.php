@@ -300,7 +300,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->Users->Session->write('User', array());
 		$this->Users->Cookie->setReturnValueAt(1, 'read', array(
 			'username' => 'jharris',
-			'password' => '005b8f6046bb2039063d9dde0678f9f28ae38827'
+			'password' => '7c098cddbe690582a71b955b8acf7ddac90d4c25'
 		));
 		$vars = $this->testAction('/users/login');
 		$result = $this->Users->Session->read('Auth.User.id');
@@ -323,6 +323,28 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->assertNotNull($this->Users->Session->read('Message.auth'));
 
 		$this->Users->Session->destroy();
+	}
+
+	public function testLoginTooYoung() {
+		// trick CoreTestCase into not setting up a user
+		$this->Users->Session->write('User', array());
+
+		$this->Users->Cookie->setReturnValueAt(0, 'read', null);
+		$vars = $this->testAction('/users/login', array(
+			'data' => array(
+				'User' => array(
+					'username' => 'bob',
+					'password' => 'password',
+					'remember_me' => true
+				)
+			)
+		));
+
+		$result = $this->Users->Session->read('Auth.User.id');
+		$this->assertNull($result);
+
+		$result = $this->Users->Session->read('Message.flash.message');
+		$this->assertPattern('/old enough/', $result);
 	}
 
 	public function testForgotPassword() {
@@ -359,7 +381,9 @@ class UsersControllerTestCase extends CoreTestCase {
 
 		$data = array(
 			'User' => array(
-				'username' => 'newusername'
+				'username' => 'newusername',
+				'password' => 'something',
+				'password_confirm' => 'something'
 			),
 			'Address' => array(
 				0 => array(
@@ -370,7 +394,12 @@ class UsersControllerTestCase extends CoreTestCase {
 				)
 			),
 			'Profile' => array(
-				'primary_email' => 'test@test.com'
+				'primary_email' => 'test@test.com',
+				'birth_date' => array(
+					'month' => 12,
+					'day' => 12,
+					'year' => 12
+				)
 			)
 		);
 		$vars = $this->testAction('/users/request_activation/1', array(
@@ -388,6 +417,37 @@ class UsersControllerTestCase extends CoreTestCase {
 		$newUser = $this->Users->User->findByUsername('newusername');
 		$result = $newUser['User']['id'];
 		$this->assertEqual($request['MergeRequest']['model_id'], $result);
+
+		$data = array(
+			'User' => array(
+				'username' => 'jharris',
+				'password' => ''
+			),
+			'Profile' => array(
+				'birth_date' => array(),
+				'primary_email' => ''
+			),
+			'Address' => array(
+				0 => array(
+					'address_line_1' => ''
+				)
+			)
+		);
+		$vars = $this->testAction('/users/request_activation/1', array(
+			'data' => $data
+		));
+
+		$result = array_keys($this->Users->User->validationErrors);
+		$expected = array('username', 'password');
+		$this->assertEqual($result, $expected);
+
+		$result = array_keys($this->Users->User->Profile->validationErrors);
+		$expected = array('birth_date', 'primary_email');
+		$this->assertEqual($result, $expected);
+
+		$result = array_keys($this->Users->User->Address->validationErrors);
+		$expected = array('address_line_1');
+		$this->assertEqual($result, $expected);
 	}
 
 	public function testAdd() {
@@ -450,15 +510,8 @@ class UsersControllerTestCase extends CoreTestCase {
 
 		$data = array(
 			'User' => array(
-				'username' => 'jharris'
-			),
-			'Address' => array(
-				0 => array(
-					'address_line_1' => '123 Main',
-					'city' => 'Anytown',
-					'state' => 'CA',
-					'zip' => '12345'
-				)
+				'username' => 'someusername',
+				'password' => ''
 			),
 			'Profile' => array(
 				'first_name' => 'Test',
@@ -469,76 +522,29 @@ class UsersControllerTestCase extends CoreTestCase {
 					'day' => 14,
 					'year' => 1984
 				)
-			),
-			'HouseholdMember' => array(
-				0 => array(
-					'Profile' => array(
-						'first_name' => 'child',
-						'last_name' => 'user',
-						'primary_email' => 'child@example.com',
-						'birth_date' => array(
-							'month' => 1,
-							'day' => 2,
-							'year' => date('Y')
-						)
-					)
-				),
-				1 => array(
-					'Profile' => array(
-						'first_name' => 'jeremy',
-						'last_name' => 'harris'
-					)
-				)
 			)
 		);
 		$vars = $this->testAction('/users/register/1', array(
 			'data' => $data
 		));
 
-		$data['User']['username'] = 'newusername';
-		$vars = $this->testAction('/users/register/1', array(
-			'data' => $data
-		));
-		$notificationsAfter = $this->Users->User->Notification->find('count');
-		$invitesAfter = $this->Users->User->Invitation->find('count');
-		$this->assertEqual($notificationsAfter-$notificationsBefore, 2);
-		$this->assertEqual($invitesAfter-$invitesBefore, 1);
-
-		$this->Users->User->contain(array('Profile'));
-		$user = $this->Users->User->findByUsername('newusername');
-		$result = $user['Profile']['name'];
-		$this->assertEqual($result, 'Test User');
-
-		// get last invitation and make sure it has the right actions
-		$this->Users->User->contain(array('Profile', 'HouseholdMember' => array('Household')));
-		$user = $this->Users->User->read(null, 1);
-		$invitations = $this->Users->User->Invitation->getInvitations(1);
-		$invitation = $this->Users->User->Invitation->read(null, $invitations[count($invitations)-1]);
-		$lastHousehold = $user['HouseholdMember'][count($user['HouseholdMember'])-1]['Household'];
-		$results = $invitation['Invitation']['confirm_action'];
-		$expected = '/households/confirm/1/'.$lastHousehold['id'];
-		$this->assertEqual($results, $expected);
-		$results = $invitation['Invitation']['deny_action'];
-		$expected = '/households/delete/1/'.$lastHousehold['id'];
+		$results = array_keys($this->Users->User->Profile->validationErrors);
+		$expected = array();
 		$this->assertEqual($results, $expected);
 
-		// test for no fuzzy username search
+		$results = array_keys($this->Users->User->validationErrors);
+		$expected = array('password');
+		$this->assertEqual($results, $expected);
+
 		$data = array(
 			'User' => array(
-				'username' => 'newuserna'
-			),
-			'Address' => array(
-				0 => array(
-					'address_line_1' => '123 Main',
-					'city' => 'Anytown',
-					'state' => 'CA',
-					'zip' => '12345'
-				)
+				'username' => 'someusername',
+				'password' => 'somepassword'
 			),
 			'Profile' => array(
-				'first_name' => 'Another',
+				'first_name' => 'Test',
 				'last_name' => 'User',
-				'primary_email' => 'test2@test.com',
+				'primary_email' => 'test@test.com',
 				'birth_date' => array(
 					'month' => 4,
 					'day' => 14,
@@ -546,13 +552,30 @@ class UsersControllerTestCase extends CoreTestCase {
 				)
 			)
 		);
-		$vars = $this->testAction('/users/register', array(
+		$vars = $this->testAction('/users/register/1', array(
 			'data' => $data
 		));
+
 		$this->Users->User->contain(array('Profile'));
-		$user = $this->Users->User->findByUsername('newuserna');
-		$result = $user['Profile']['name'];
-		$this->assertEqual($result, 'Another User');
+		$newUser = $this->Users->User->read();
+
+		$result = $newUser['User']['username'];
+		$expected = 'someusername';
+		$this->assertEqual($result, $expected);
+
+		$result = $newUser['Profile']['first_name'];
+		$expected = 'Test';
+		$this->assertEqual($result, $expected);
+
+		// make sure they got their welcome email
+		$notifications = $this->Users->User->Notification->findByUserId($this->Users->User->id);
+		$this->assertEqual(count($notifications), 1);
+
+		// make sure they've been logged in
+		$loggedInUser = $this->Users->Session->read('User');
+		$result = $loggedInUser['User']['username'];
+		$expected = 'someusername';
+		$this->assertEqual($result, $expected);
 
 		/**
 		 * Test redirections (setAction) based on various `findUser` responses

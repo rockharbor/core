@@ -28,7 +28,7 @@ $this->Js->buffer('CORE.initLogin()');
 			'label' => 'Forget me not'
 		));
 		echo ' | ';
-		echo $this->Html->link('Trouble logging in?', array('action' => 'forgot_password'), array('data-core-modal' => '{"update":false}'));
+		echo $this->Html->link('Trouble logging in?', array('action' => 'forgot_password'), array('data-core-modal' => '{"update":false, "width": 500}'));
 		echo ' | ';
 		if (Core::read('notifications.support_email')) {
 			echo $this->Html->link('Support', 'mailto:'.Core::read('notifications.support_email'));

@@ -102,7 +102,19 @@ class UsersController extends AppController {
 			} else {
 				// trick into not redirecting and to highlighting fields
 				$this->Cookie->delete('Auth');
-				$this->Session->setFlash('Invalid username or password. Please try again.', 'flash'.DS.'failure');
+
+				$msg = 'Invalid username or password. Please try again.';
+				// check to see if they're just too young
+				$this->User->contain(array('Profile'));
+				$user = $this->User->findByUsername($this->data['User']['username']);
+				if (!empty($user)) {
+					if (!$user['Profile']['adult']) {
+						$msg = 'Oops, you\'re not quite old enough to log into '.Core::read('general.site_name').'.';
+						$msg .= ' Have one of your parents log in and they can make sure you get signed up for stuff!';
+					}
+				}
+
+				$this->Session->setFlash($msg, 'flash'.DS.'failure');
 				$this->User->invalidate('username', 'Invalid');
 				$this->User->invalidate('password', 'Invalid');
 			}
@@ -310,7 +322,7 @@ class UsersController extends AppController {
 			),
 			'contain' => array(
 				'Profile' => array(
-					'fields' => array('first_name', 'last_name', 'name')
+					'fields' => array('first_name', 'last_name', 'name', 'primary_email')
 				),
 				'ActiveAddress' => array(
 					'fields' => array('city')
@@ -327,12 +339,32 @@ class UsersController extends AppController {
  * @param boolean $initialRedirect True if came directly from UsersController::add()
  */
 	public function request_activation($foundId, $initialRedirect = false) {
+		// require birthday, email, and address
+		$this->User->Profile->validate['birth_date']['required'] = true;
+		$this->User->Profile->validate['birth_date']['allowEmpty'] = false;
+		$this->User->Profile->validate['primary_email']['email']['required'] = true;
+		$this->User->Profile->validate['primary_email']['email']['allowEmpty'] = false;
+		$this->User->Address->validate['address_line_1'] = array(
+			'rule' => 'notempty',
+			'message' => 'Please enter a valid address.'
+		);
+		$this->User->Address->validate['state'] = array(
+			'rule' => 'notempty',
+			'message' => 'Please enter a valid state.'
+		);
+		$this->User->Address->validate['city'] = array(
+			'rule' => 'notempty',
+			'message' => 'Please enter a valid city.'
+		);
+
 		if (!empty($this->data) && !$initialRedirect && $foundId) {
 			$this->data['User']['active'] = false;
 			$this->data['Address'][0]['model'] = 'User';
 
+			$validates = $this->User->saveAll($this->data, array('validate' => 'only'));
+
 			// create near-empty user for now (for merging)
-			if ($this->User->createUser($this->data, null, $this->activeUser, false)) {
+			if ($validates && $this->User->createUser($this->data, null, $this->activeUser, false)) {
 				// save merge request
 				$MergeRequest = ClassRegistry::init('MergeRequest');
 				$MergeRequest->save(array(
@@ -498,9 +530,13 @@ class UsersController extends AppController {
  * Registers a user
  */
 	public function register() {
-		// require birthday
+		$this->set('title_for_layout', 'Register for '.Core::read('general.site_name_tagless'));
+
+		// require birthday and email
 		$this->User->Profile->validate['birth_date']['required'] = true;
 		$this->User->Profile->validate['birth_date']['allowEmpty'] = false;
+		$this->User->Profile->validate['primary_email']['email']['required'] = true;
+		$this->User->Profile->validate['primary_email']['email']['allowEmpty'] = false;
 
 		if (!empty($this->data)) {
 			$foundUser = array();
@@ -533,37 +569,27 @@ class UsersController extends AppController {
 				}
 			}
 
-			if ($this->User->createUser($this->data)) {
+			if ($this->User->saveAll($this->data)) {
 				$this->Session->setFlash('You have successfully registered.', 'flash'.DS.'success');
 
-				foreach ($this->User->tmpAdded as $notifyUser) {
-					$this->set('username', $notifyUser['username']);
-					$this->set('password', $notifyUser['password']);
-					$this->Notifier->notify(array(
-						'to' => $notifyUser['id'],
-						'template' => 'users_register',
-						'subject' => 'Welcome to '.Core::read('general.site_name_tagless').'!'
-					));
-				}
-
-				foreach ($this->User->tmpInvited as $notifyUser) {
-					$this->User->contain(array('Profile'));
-					$this->set('contact', $this->User->read(null, $this->User->id));
-					$this->Notifier->invite(
-						array(
-							'to' => $notifyUser['id'],
-							'template' => 'households_invite',
-							'confirm' => '/households/confirm/'.$notifyUser['id'].'/'.$this->User->HouseholdMember->Household->id,
-							'deny' => '/households/delete/'.$notifyUser['id'].'/'.$this->User->HouseholdMember->Household->id
-						)
-					);
-				}
-
-				$this->redirect(array(
-					'controller' => 'users',
-					'action' => 'login',
-					$this->data['User']['username']
+				$this->set('username', $this->data['User']['username']);
+				$this->set('password', $this->data['User']['password']);
+				$this->Notifier->notify(array(
+					'to' => $this->User->id,
+					'template' => 'users_register',
+					'subject' => 'Welcome to '.Core::read('general.site_name_tagless').'!'
 				));
+
+				$this->User->data = array();
+				$this->data = $this->User->hashPasswords(array(
+					'User' => array(
+						'username' => $this->data['User']['username'],
+						'password' => $this->data['User']['password'],
+						'remember_me' => false
+					)
+				), true);
+
+				$this->login();
 			} else {
 				$this->Session->setFlash('Unable to register. Please try again.', 'flash'.DS.'failure');
 			}

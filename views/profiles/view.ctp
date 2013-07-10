@@ -1,12 +1,17 @@
+<?php
+$firstLogin = false;
+if ($activeUser['User']['id'] == $profile['User']['id'] && empty($activeUser['User']['last_logged_in'])) {
+	$firstLogin = true;
+}
+?>
 <h1><?php echo $profile['Profile']['name'].$this->Formatting->flags('User', $profile); ?></h1>
-
 <div class="profiles core-tabs">
 	<?php
 	$prefix = $activeUser['User']['id'] == $profile['User']['id'] ? 'My ' : null;
 	?>
 	<ul>
 		<li><a href="#my-involvement"><?php echo $prefix; ?>Involvement</a></li>
-		<li><a href="#my-profile"><?php echo $prefix; ?>Profile</a></li>
+		<li <?php echo $firstLogin ? 'class="selected-tab"' : null; ?>><a href="#my-profile"><?php echo $prefix; ?>Profile</a></li>
 		<li><?php echo $this->Html->link($prefix.'Household', array('controller' => 'households', 'User' => $profile['User']['id']), array('title' => 'household')); ?></li>
 		<li><?php echo $this->Html->link($prefix.'Payments', array('controller' => 'payments', 'User' => $profile['User']['id']), array('title' => 'payments')); ?></li>
 		<?php
@@ -143,6 +148,15 @@
 			</div>
 		</div>
 		<div id="my-profile">
+			<?php if ($firstLogin): ?>
+			<div class="box highlight" style="margin-bottom: 20px">
+				<p style="margin-bottom: 0">Looks like this is the first time you&apos;ve logged into <?php echo Core::read('general.site_name'); ?>. Welcome! Please
+				take a moment to fill out your profile by clicking the <strong><?php
+				echo $this->Html->link('Edit', array('controller' => 'profiles', 'action' => 'edit', 'User' => $profile['User']['id']));
+				?></strong> button in the bottom right hand corner
+				of this screen.</p>
+			</div>
+			<?php endif; ?>
 			<div class="grid_10 alpha omega clearfix">
 				<div class="grid_2 alpha">
 				<?php

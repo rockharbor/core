@@ -1,5 +1,10 @@
 <h1>Found you!</h1>
-<p>I think you're already in <?php echo Core::read('general.site_name'); ?>! Use this form to send an activation request. When it's approved, you'll get an email with your new username.</p>
+<p>
+	It looks like you may already be in <?php echo Core::read('general.site_name'); ?>.
+	Because of this, we need a little more information to confirm your identity.
+	When <?php echo Core::read('general.site_name'); ?> Support approves your request,
+	you&apos;ll get an email indicating that your account is ready to login.
+</p>
 <?php
 echo $this->Form->create('User', array(
 	'url' => array($foundId),
@@ -17,7 +22,23 @@ echo $this->Form->create('User', array(
 		<li><a href="#contact">Contact Information</a></li>
 	</ul>
 	<div id="personal">
-	<?php echo $this->element('register'.DS.'personal'); ?>
+		<fieldset class="grid_5 alpha">
+			<legend>Name</legend>
+		<?php
+		echo $this->Form->input('Profile.first_name');
+		echo $this->Form->input('Profile.last_name');
+		?>
+		</fieldset>
+		<fieldset class="grid_5 omega">
+			<legend>User Info</legend>
+		<?php
+		echo $this->Form->input('User.username');
+		echo $this->Form->input('User.password');
+		echo $this->Form->input('User.confirm_password', array(
+			'type' => 'password'
+		));
+		?>
+		</fieldset>
 	</div>
 	<div id="contact" class="clearfix">
 	<?php

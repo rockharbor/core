@@ -9,6 +9,11 @@
  */
 
 /**
+ * Configuration for tests
+ */
+Configure::write('Security.salt', 'salty');
+
+/**
  * Add proxy class paths
  */
 App::build(array(
