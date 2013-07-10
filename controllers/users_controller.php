@@ -498,9 +498,13 @@ class UsersController extends AppController {
  * Registers a user
  */
 	public function register() {
-		// require birthday
+		$this->set('title_for_layout', 'Register for '.Core::read('general.site_name_tagless'));
+
+		// require birthday and email
 		$this->User->Profile->validate['birth_date']['required'] = true;
 		$this->User->Profile->validate['birth_date']['allowEmpty'] = false;
+		$this->User->Profile->validate['primary_email']['email']['required'] = true;
+		$this->User->Profile->validate['primary_email']['email']['allowEmpty'] = false;
 
 		if (!empty($this->data)) {
 			$foundUser = array();
@@ -533,37 +537,27 @@ class UsersController extends AppController {
 				}
 			}
 
-			if ($this->User->createUser($this->data)) {
+			if ($this->User->saveAll($this->data)) {
 				$this->Session->setFlash('You have successfully registered.', 'flash'.DS.'success');
 
-				foreach ($this->User->tmpAdded as $notifyUser) {
-					$this->set('username', $notifyUser['username']);
-					$this->set('password', $notifyUser['password']);
-					$this->Notifier->notify(array(
-						'to' => $notifyUser['id'],
-						'template' => 'users_register',
-						'subject' => 'Welcome to '.Core::read('general.site_name_tagless').'!'
-					));
-				}
-
-				foreach ($this->User->tmpInvited as $notifyUser) {
-					$this->User->contain(array('Profile'));
-					$this->set('contact', $this->User->read(null, $this->User->id));
-					$this->Notifier->invite(
-						array(
-							'to' => $notifyUser['id'],
-							'template' => 'households_invite',
-							'confirm' => '/households/confirm/'.$notifyUser['id'].'/'.$this->User->HouseholdMember->Household->id,
-							'deny' => '/households/delete/'.$notifyUser['id'].'/'.$this->User->HouseholdMember->Household->id
-						)
-					);
-				}
-
-				$this->redirect(array(
-					'controller' => 'users',
-					'action' => 'login',
-					$this->data['User']['username']
+				$this->set('username', $this->data['User']['username']);
+				$this->set('password', $this->data['User']['password']);
+				$this->Notifier->notify(array(
+					'to' => $this->User->id,
+					'template' => 'users_register',
+					'subject' => 'Welcome to '.Core::read('general.site_name_tagless').'!'
 				));
+
+				$this->User->data = array();
+				$this->data = $this->User->hashPasswords(array(
+					'User' => array(
+						'username' => $this->data['User']['username'],
+						'password' => $this->data['User']['password'],
+						'remember_me' => false
+					)
+				), true);
+
+				$this->login();
 			} else {
 				$this->Session->setFlash('Unable to register. Please try again.', 'flash'.DS.'failure');
 			}
