@@ -325,6 +325,28 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->Users->Session->destroy();
 	}
 
+	public function testLoginTooYoung() {
+		// trick CoreTestCase into not setting up a user
+		$this->Users->Session->write('User', array());
+
+		$this->Users->Cookie->setReturnValueAt(0, 'read', null);
+		$vars = $this->testAction('/users/login', array(
+			'data' => array(
+				'User' => array(
+					'username' => 'bob',
+					'password' => 'password',
+					'remember_me' => true
+				)
+			)
+		));
+
+		$result = $this->Users->Session->read('Auth.User.id');
+		$this->assertNull($result);
+
+		$result = $this->Users->Session->read('Message.flash.message');
+		$this->assertPattern('/old enough/', $result);
+	}
+
 	public function testForgotPassword() {
 		$oldPassword = $this->Users->User->read('password', 1);
 		$data = array(
