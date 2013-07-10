@@ -49,6 +49,21 @@ class FormattingHelper extends AppHelper {
 	}
 
 /**
+ * Takes an email and hides the identity. If the string is not an email address
+ * it will be returned as-is
+ *
+ * @param string $email
+ */
+	public function secretEmail($email = '') {
+		if (Validation::email($email)) {
+			$emailSplit = explode('@', $email);
+			$identity = $emailSplit[0][0].'.....'.$emailSplit[0][strlen($emailSplit[0])-1];
+			return $identity.'@'.$emailSplit[1];
+		}
+		return $email;
+	}
+
+/**
  * Formats an address
  *
  * @param array $address The address model data
