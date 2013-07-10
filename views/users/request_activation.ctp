@@ -17,7 +17,23 @@ echo $this->Form->create('User', array(
 		<li><a href="#contact">Contact Information</a></li>
 	</ul>
 	<div id="personal">
-	<?php echo $this->element('register'.DS.'personal'); ?>
+		<fieldset class="grid_5 alpha">
+			<legend>Name</legend>
+		<?php
+		echo $this->Form->input('Profile.first_name');
+		echo $this->Form->input('Profile.last_name');
+		?>
+		</fieldset>
+		<fieldset class="grid_5 omega">
+			<legend>User Info</legend>
+		<?php
+		echo $this->Form->input('User.username');
+		echo $this->Form->input('User.password');
+		echo $this->Form->input('User.confirm_password', array(
+			'type' => 'password'
+		));
+		?>
+		</fieldset>
 	</div>
 	<div id="contact" class="clearfix">
 	<?php

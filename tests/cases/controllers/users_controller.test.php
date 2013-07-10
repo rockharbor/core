@@ -359,7 +359,9 @@ class UsersControllerTestCase extends CoreTestCase {
 
 		$data = array(
 			'User' => array(
-				'username' => 'newusername'
+				'username' => 'newusername',
+				'password' => 'something',
+				'password_confirm' => 'something'
 			),
 			'Address' => array(
 				0 => array(
@@ -370,7 +372,12 @@ class UsersControllerTestCase extends CoreTestCase {
 				)
 			),
 			'Profile' => array(
-				'primary_email' => 'test@test.com'
+				'primary_email' => 'test@test.com',
+				'birth_date' => array(
+					'month' => 12,
+					'day' => 12,
+					'year' => 12
+				)
 			)
 		);
 		$vars = $this->testAction('/users/request_activation/1', array(
@@ -388,6 +395,37 @@ class UsersControllerTestCase extends CoreTestCase {
 		$newUser = $this->Users->User->findByUsername('newusername');
 		$result = $newUser['User']['id'];
 		$this->assertEqual($request['MergeRequest']['model_id'], $result);
+
+		$data = array(
+			'User' => array(
+				'username' => 'jharris',
+				'password' => ''
+			),
+			'Profile' => array(
+				'birth_date' => array(),
+				'primary_email' => ''
+			),
+			'Address' => array(
+				0 => array(
+					'address_line_1' => ''
+				)
+			)
+		);
+		$vars = $this->testAction('/users/request_activation/1', array(
+			'data' => $data
+		));
+
+		$result = array_keys($this->Users->User->validationErrors);
+		$expected = array('username', 'password');
+		$this->assertEqual($result, $expected);
+
+		$result = array_keys($this->Users->User->Profile->validationErrors);
+		$expected = array('birth_date', 'primary_email');
+		$this->assertEqual($result, $expected);
+
+		$result = array_keys($this->Users->User->Address->validationErrors);
+		$expected = array('address_line_1');
+		$this->assertEqual($result, $expected);
 	}
 
 	public function testAdd() {

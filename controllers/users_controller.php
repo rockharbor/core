@@ -327,12 +327,32 @@ class UsersController extends AppController {
  * @param boolean $initialRedirect True if came directly from UsersController::add()
  */
 	public function request_activation($foundId, $initialRedirect = false) {
+		// require birthday, email, and address
+		$this->User->Profile->validate['birth_date']['required'] = true;
+		$this->User->Profile->validate['birth_date']['allowEmpty'] = false;
+		$this->User->Profile->validate['primary_email']['email']['required'] = true;
+		$this->User->Profile->validate['primary_email']['email']['allowEmpty'] = false;
+		$this->User->Address->validate['address_line_1'] = array(
+			'rule' => 'notempty',
+			'message' => 'Please enter a valid address.'
+		);
+		$this->User->Address->validate['state'] = array(
+			'rule' => 'notempty',
+			'message' => 'Please enter a valid state.'
+		);
+		$this->User->Address->validate['city'] = array(
+			'rule' => 'notempty',
+			'message' => 'Please enter a valid city.'
+		);
+
 		if (!empty($this->data) && !$initialRedirect && $foundId) {
 			$this->data['User']['active'] = false;
 			$this->data['Address'][0]['model'] = 'User';
 
+			$validates = $this->User->saveAll($this->data, array('validate' => 'only'));
+
 			// create near-empty user for now (for merging)
-			if ($this->User->createUser($this->data, null, $this->activeUser, false)) {
+			if ($validates && $this->User->createUser($this->data, null, $this->activeUser, false)) {
 				// save merge request
 				$MergeRequest = ClassRegistry::init('MergeRequest');
 				$MergeRequest->save(array(
