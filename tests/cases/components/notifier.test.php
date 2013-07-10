@@ -129,6 +129,12 @@ class NotifierTestCase extends CoreTestCase {
 	}
 
 	public function testNoQueue() {
+		$config = new EmailConfig();
+		$config->debug = array(
+			'transport' => 'Smtp'
+		);
+		$this->Notifier->Config = $config;
+
 		$this->Notifier->QueueEmail->setReturnValue('__smtp', true);
 		$this->Notifier->QueueEmail->expectOnce('__smtp');
 
