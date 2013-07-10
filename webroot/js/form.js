@@ -16,7 +16,9 @@ CORE.showValidationErrors = function(form) {
 	if (form == undefined) {
 		form = 'content';
 	}
-	var form = $('#'+form);
+	if (typeof form === 'string') {
+		form = $('#'+form);
+	}
 	form.find('.ui-tabs')
 		.children()
 		.each(function() {
@@ -106,10 +108,7 @@ CORE.successForm = function(event, data, textStatus, options) {
 	options = $.extend(_defaultOptions, options);
 
 	// check to see if it validates if content depends on it
-	$('#wrapper').append('<div id="temp"></div>');
-	$('#temp').hide().html(data);
-	var validates = CORE.showValidationErrors('temp');
-	$('#temp').remove();
+	var validates = CORE.showValidationErrors($(data));
 
 	if (!$(event.currentTarget).closest('form').prop('id')) {
 		$(event.currentTarget).closest('form').prop('id', unique('form-'));
@@ -139,7 +138,7 @@ CORE.successForm = function(event, data, textStatus, options) {
 
 	if (validates) {
 		if (options.success != false) {
-			options.success();
+			options.success(event, data);
 		}
 		if (options.closeModals) {
 			CORE.closeModals();
@@ -149,7 +148,7 @@ CORE.successForm = function(event, data, textStatus, options) {
 		}
 	} else {
 		if (options.failure != false) {
-			options.failure();
+			options.failure(event, data);
 		}
 	}
 }

@@ -1,43 +1,65 @@
-<?php
-echo $this->Html->script('misc/user');
-$this->Js->buffer('CORE_user.init("profile_tabs");');
-?>
 <h1>Register</h1>
 <?php
 echo $this->Form->create('User', array(
-	'default'=> true,
-	'inputDefaults' => array(
-		'maxYear' => date('Y'),
-		'minYear' => 1900,
-		'empty' => true
-	)
+	'default' => false
 ));
 ?>
-<div id="profile_tabs" class="core-tabs-wizard">
-	<ul>
-		<li><a href="#personal">Personal Information</a></li>
-		<li><a href="#about">About Me</a></li>
-		<li><a href="#contact">Contact Information</a></li>
-		<li><a href="#household">Household</a></li>
-	</ul>
-
-	<div id="personal" class="clearfix">
-		<?php echo $this->element('register'.DS.'personal'); ?>
+<div class="content-box clearfix">
+	<p>Ready to get involved? Great! We need a little bit of information to get started.</p>
+	<div class="grid_6 alpha">
+	<?php
+	echo $this->Form->hidden('User.group_id', array('value' => 8));
+	echo $this->Form->hidden('User.active', array('value' => 1));
+	echo $this->Form->input('User.username', array(
+		'label' => 'Pick a username'
+	));
+	echo $this->Form->input('User.password', array(
+		'label' => 'Pick a password'
+	));
+	echo $this->Form->input('User.confirm_password', array(
+		'type' => 'password',
+		'label' => 'Confirm your password'
+	));
+	echo $this->Form->input('Profile.primary_email', array(
+		'label' => 'Email'
+	));
+	?>
 	</div>
-	<div id="about" class="clearfix">
-		<?php echo $this->element('register'.DS.'about'); ?>
-	</div>
-	<div id="contact" class="clearfix">
-		<?php echo $this->element('register'.DS.'address'); ?>
-		<?php echo $this->element('register'.DS.'phone_email', array('short' => true)); ?>
-	</div>
-	<div id="household" class="clearfix">
-		<?php echo $this->element('register'.DS.'household'); ?>
+	<div class="grid_6 omega">
+	<?php
+	echo $this->Form->input('Profile.first_name');
+	echo $this->Form->input('Profile.last_name');
+	$whyInfo = 'A birth date is required so '.Core::read('general.site_name').' knows you&apos;re old enough to login.';
+	$why = $this->Html->link('[why?]', '#', array(
+		'class' => 'tooltip',
+		'id' => 'why-birthdate'
+	));
+	$this->Js->buffer('CORE.tooltip($("#why-birthdate"), "'.$whyInfo.'");');
+	echo $this->Form->input('Profile.birth_date', array(
+		'empty' => true,
+		'maxYear' => date('Y'),
+		'minYear' => 1900,
+		'label' => 'Birth Date '.$why
+	));
+	?>
 	</div>
 </div>
+<div style="text-align:right">
 <?php
 $defaultSubmitOptions['id'] = uniqid('submit_button');
-echo $this->Form->button('Previous', array('id' => 'previous_button', 'class' => 'button', 'type' => 'button'));
-echo $this->Form->button('Next', array('id' => 'next_button', 'class' => 'button', 'type' => 'button'));
+$defaultSubmitOptions['success'] = "CORE.successForm(event, data, textStatus, {
+	autoUpdate: 'failure',
+	success: function(event, data) {
+		// TODO: this is a massive hack and I hate it but for the life of me
+		// I can't think of a workaround
+		if (/You have successfully registered/.test(data)) {
+			redirect('/');
+		} else {
+			CORE.update(event.currentTarget, data);
+		}
+	}
+});";
 echo $this->Js->submit('Sign up', $defaultSubmitOptions);
 echo $this->Form->end();
+?>
+</div>

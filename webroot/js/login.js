@@ -31,6 +31,9 @@ CORE.loadSillyPhrase = function() {
  * @param text string The phrase
  */
 CORE.showSillyPhrase = function(text) {
+	if ($('#modal').not(':empty').length > 0) {
+		return;
+	}
 	CORE.tooltip($('#logo img'), text, {
 		autoShow:true
 	});
@@ -40,8 +43,8 @@ CORE.showSillyPhrase = function(text) {
  * Hides the currently displayed phrase
  */
 CORE.hideSillyPhrase = function() {
-	var api = $('#logo img').qtip('api');
 	$('.qtip').fadeOut(function() {
+		var api = $('#logo img').qtip('api');
 		api.destroy();
 	});
 	setTimeout('CORE.loadSillyPhrase()', 3000);
