@@ -14,8 +14,9 @@ if (CORE == undefined) {
 CORE.showValidationErrors = function(form) {
 	// get tabs
 	if (form == undefined) {
-		form = $('#content');
+		form = 'content';
 	}
+	var form = $('#'+form);
 	form.find('.ui-tabs')
 		.children()
 		.each(function() {
@@ -104,31 +105,35 @@ CORE.successForm = function(event, data, textStatus, options) {
 
 	options = $.extend(_defaultOptions, options);
 
-	// check to see if it validates before updating the content
-	var validates = CORE.showValidationErrors($(data));
+	// check to see if it validates if content depends on it
+	$('#wrapper').append('<div id="temp"></div>');
+	$('#temp').hide().html(data);
+	var validates = CORE.showValidationErrors('temp');
+	$('#temp').remove();
 
-	var validateElement = $(event.currentTarget).closest('form');
+	if (!$(event.currentTarget).closest('form').prop('id')) {
+		$(event.currentTarget).closest('form').prop('id', unique('form-'));
+	}
+
+	var id = $(event.currentTarget).closest('form').prop('id');
 
 	// update the content
 	switch (options.autoUpdate) {
-		// only automaticall update the content if there are validation errors
 		case 'failure':
 			if (!validates) {
 				CORE.update(event.currentTarget, data);
-				CORE.showValidationErrors(validateElement);
+				CORE.showValidationErrors(id);
 			}
 		break;
-		// only update the content if there are no validation errors
 		case 'success':
 			if (validates) {
 				CORE.update(event.currentTarget, data);
-				CORE.showValidationErrors(validateElement);
+				CORE.showValidationErrors(id);
 			}
 		break;
-		// update the content regardless of errors
 		default:
 			CORE.update(event.currentTarget, data);
-			CORE.showValidationErrors(validateElement);
+			CORE.showValidationErrors(id);
 		break;
 	}
 
