@@ -10,10 +10,15 @@ echo $this->Form->create('User', array(
 	<?php
 	echo $this->Form->hidden('User.group_id', array('value' => 8));
 	echo $this->Form->hidden('User.active', array('value' => 1));
-	echo $this->Form->input('User.username');
-	echo $this->Form->input('User.password');
+	echo $this->Form->input('User.username', array(
+		'label' => 'Pick a username'
+	));
+	echo $this->Form->input('User.password', array(
+		'label' => 'Pick a password'
+	));
 	echo $this->Form->input('User.confirm_password', array(
-		'type' => 'password'
+		'type' => 'password',
+		'label' => 'Confirm your password'
 	));
 	echo $this->Form->input('Profile.primary_email', array(
 		'label' => 'Email'
