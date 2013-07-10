@@ -310,7 +310,7 @@ class UsersController extends AppController {
 			),
 			'contain' => array(
 				'Profile' => array(
-					'fields' => array('first_name', 'last_name', 'name')
+					'fields' => array('first_name', 'last_name', 'name', 'primary_email')
 				),
 				'ActiveAddress' => array(
 					'fields' => array('city')
