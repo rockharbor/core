@@ -42,6 +42,18 @@ echo $this->Form->create('User', array(
 <div style="text-align:right">
 <?php
 $defaultSubmitOptions['id'] = uniqid('submit_button');
+$defaultSubmitOptions['success'] = "CORE.successForm(event, data, textStatus, {
+	autoUpdate: 'failure',
+	success: function(event, data) {
+		// TODO: this is a massive hack and I hate it but for the life of me
+		// I can't think of a workaround
+		if (/You have successfully registered/.test(data)) {
+			redirect('/');
+		} else {
+			CORE.update(event.currentTarget, data);
+		}
+	}
+});";
 echo $this->Js->submit('Sign up', $defaultSubmitOptions);
 echo $this->Form->end();
 ?>

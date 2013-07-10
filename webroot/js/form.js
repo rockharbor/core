@@ -134,7 +134,7 @@ CORE.successForm = function(event, data, textStatus, options) {
 
 	if (validates) {
 		if (options.success != false) {
-			options.success();
+			options.success(event, data);
 		}
 		if (options.closeModals) {
 			CORE.closeModals();
@@ -144,7 +144,7 @@ CORE.successForm = function(event, data, textStatus, options) {
 		}
 	} else {
 		if (options.failure != false) {
-			options.failure();
+			options.failure(event, data);
 		}
 	}
 }
