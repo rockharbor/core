@@ -349,13 +349,11 @@ class User extends AppModel {
 /**
  * Gets a list of users that match the data provided, using distinguishable
  * fields (username, email fields, name, etc.). Returns a list of matching user
- * ids. Uses `User::prepareSearch()` to generate the search options from the
- * data.
+ * ids.
  *
  * @param array $data Data to search
  * @param string $operator The search operator
  * @return array The matching ids or an empty array
- * @see User::prepareSearch()
  */
 	public function findUser($data = array(), $operator = 'AND') {
 		if (!is_array($data)) {
@@ -379,48 +377,62 @@ class User extends AppModel {
 			'Profile' => array(
 				'first_name' => null,
 				'last_name' => null,
-				'email' => null,
 				'primary_email' => null
 			)
 		);
 		$data = Set::merge($_default, $data);
 
-		if (!empty($data['Profile']['email'])) {
-			$data['Profile']['primary_email'] = $data['Profile']['email'];
+		$conditions = array();
+
+		if (!empty($data['User']['username'])) {
+			$conditions['User.username'] = $data['User']['username'];
 		}
 
-		$data = array(
-			'Search' => array(
-				'operator' => $operator
-			),
-			'User' => array(
-				'username' => $data['User']['username']
-			),
-			'Profile' => array(
-				'email' => $data['Profile']['primary_email'],
-				'first_name' => $data['Profile']['first_name'],
-				'last_name' => $data['Profile']['last_name']
-			)
-		);
+		if (!empty($data['Profile']['email'])) {
+			$conditions[] = array(
+				'or' => array(
+					'Profile.primary_email' => $data['Profile']['email'],
+					'Profile.alternate_email_1' => $data['Profile']['email'],
+					'Profile.alternate_email_2' => $data['Profile']['email']
+				)
+			);
+		}
 
-		$options = $this->prepareSearch(new AppController(), $data);
-		$options['fields'] = 'User.id';
+		if (!empty($data['Profile']['first_name'])) {
+			$conditions['Profile.first_name'] = $data['Profile']['first_name'];
+		}
 
-		if (empty($options['conditions'])) {
+		if (!empty($data['Profile']['last_name'])) {
+			$conditions['Profile.last_name'] = $data['Profile']['last_name'];
+		}
+
+		if (empty($conditions)) {
 			// don't return all the users
 			return array();
 		}
 
+		$options = array(
+			'fields' => array('id'),
+			'contain' => array(
+				'Profile' => array(
+					'fields' => array('id')
+				)
+			),
+			'conditions' => array(
+				$operator => $conditions
+			)
+		);
+
 		// special condition: since we don't want to search for "first_name" OR
 		// "last_name", make them an AND condition
 		if (strtolower($operator) == 'or') {
-			if (isset($options['conditions'][$operator]['Profile.first_name LIKE'])) {
-				$options['conditions'][$operator]['and']['Profile.first_name LIKE'] = $options['conditions'][$operator]['Profile.first_name LIKE'];
-				unset($options['conditions'][$operator]['Profile.first_name LIKE']);
+			if (isset($options['conditions'][$operator]['Profile.first_name'])) {
+				$options['conditions'][$operator]['and']['Profile.first_name'] = $options['conditions'][$operator]['Profile.first_name'];
+				unset($options['conditions'][$operator]['Profile.first_name']);
 			}
-			if (isset($options['conditions'][$operator]['Profile.last_name LIKE'])) {
-				$options['conditions'][$operator]['and']['Profile.last_name LIKE'] = $options['conditions'][$operator]['Profile.last_name LIKE'];
-				unset($options['conditions'][$operator]['Profile.last_name LIKE']);
+			if (isset($options['conditions'][$operator]['Profile.last_name'])) {
+				$options['conditions'][$operator]['and']['Profile.last_name'] = $options['conditions'][$operator]['Profile.last_name'];
+				unset($options['conditions'][$operator]['Profile.last_name']);
 			}
 		}
 

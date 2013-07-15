@@ -540,23 +540,31 @@ class UsersController extends AppController {
 
 		if (!empty($this->data)) {
 			$foundUser = array();
+			$exactFinds = array();
 			if (!isset($this->passedArgs['skip_check'])) {
-				// check if user exists (only use profile info to search)
-				$searchData = array('Profile' => $this->data['Profile']);
-				$searchData['Profile']['email'] = $searchData['Profile']['primary_email'];
-				// don't compare usernames
-				unset($searchData['User']['username']);
+				// check if user exists (only use name to search)
+				$searchData = array(
+					'Profile' => array(
+						'first_name' => $this->data['Profile']['first_name'],
+						'last_name' => $this->data['Profile']['last_name']
+					)
+				);
 				$foundUser = $this->User->findUser($searchData);
+
+				// check for an exact match
+				if (!empty($this->data['Profile']['primary_email'])) {
+					$searchData['Profile']['email'] = $this->data['Profile']['primary_email'];
+					$exactFinds = $this->User->findUser($searchData);
+				}
 			}
 
 			if (!empty($foundUser)) {
+				if (!empty($exactFinds)) {
+					// same name and email? we can assume this is them, just reset their password
+					return $this->setAction('forgot_password', $exactFinds[0]);
+				}
+
 				if (count($foundUser) == 1) {
-					$enteredName = !empty($this->data['Profile']['first_name']) && !empty($this->data['Profile']['first_name']);
-					$enteredEmail = !empty($this->data['Profile']['primary_email']);
-					if ($enteredName && $enteredEmail) {
-						// same name and email? we can assume this is them, just reset their password
-						return $this->setAction('forgot_password', $foundUser[0]);
-					}
 					// otherwise take to activation request (preserve data)
 					return $this->setAction('request_activation', $foundUser[0], true);
 				} else {
