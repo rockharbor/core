@@ -726,7 +726,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		$this->assertEqual($vars['redirect'], FULL_BASE_URL.'/households/invite/:ID:/2');
 
 		$results = Set::extract('/User/id', $vars['users']);
-		$expected = array(2, 3);
+		$expected = array(2);
 		$this->assertEqual($results, $expected);
 	}
 

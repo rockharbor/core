@@ -385,25 +385,25 @@ class User extends AppModel {
 		$conditions = array();
 
 		if (!empty($data['User']['username'])) {
-			$conditions['User.username LIKE'] = '%'.$data['User']['username'].'%';
+			$conditions['User.username'] = $data['User']['username'];
 		}
 
 		if (!empty($data['Profile']['email'])) {
 			$conditions[] = array(
 				'or' => array(
-					'Profile.primary_email LIKE' => $data['Profile']['email'],
-					'Profile.alternate_email_1 LIKE' => $data['Profile']['email'],
-					'Profile.alternate_email_2 LIKE' => $data['Profile']['email']
+					'Profile.primary_email' => $data['Profile']['email'],
+					'Profile.alternate_email_1' => $data['Profile']['email'],
+					'Profile.alternate_email_2' => $data['Profile']['email']
 				)
 			);
 		}
 
 		if (!empty($data['Profile']['first_name'])) {
-			$conditions['Profile.first_name LIKE'] = '%'.$data['Profile']['first_name'].'%';
+			$conditions['Profile.first_name'] = $data['Profile']['first_name'];
 		}
 
 		if (!empty($data['Profile']['last_name'])) {
-			$conditions['Profile.last_name LIKE'] = '%'.$data['Profile']['last_name'].'%';
+			$conditions['Profile.last_name'] = $data['Profile']['last_name'];
 		}
 
 		if (empty($conditions)) {
@@ -426,13 +426,13 @@ class User extends AppModel {
 		// special condition: since we don't want to search for "first_name" OR
 		// "last_name", make them an AND condition
 		if (strtolower($operator) == 'or') {
-			if (isset($options['conditions'][$operator]['Profile.first_name LIKE'])) {
-				$options['conditions'][$operator]['and']['Profile.first_name LIKE'] = $options['conditions'][$operator]['Profile.first_name LIKE'];
-				unset($options['conditions'][$operator]['Profile.first_name LIKE']);
+			if (isset($options['conditions'][$operator]['Profile.first_name'])) {
+				$options['conditions'][$operator]['and']['Profile.first_name'] = $options['conditions'][$operator]['Profile.first_name'];
+				unset($options['conditions'][$operator]['Profile.first_name']);
 			}
-			if (isset($options['conditions'][$operator]['Profile.last_name LIKE'])) {
-				$options['conditions'][$operator]['and']['Profile.last_name LIKE'] = $options['conditions'][$operator]['Profile.last_name LIKE'];
-				unset($options['conditions'][$operator]['Profile.last_name LIKE']);
+			if (isset($options['conditions'][$operator]['Profile.last_name'])) {
+				$options['conditions'][$operator]['and']['Profile.last_name'] = $options['conditions'][$operator]['Profile.last_name'];
+				unset($options['conditions'][$operator]['Profile.last_name']);
 			}
 		}
 

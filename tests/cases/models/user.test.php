@@ -525,7 +525,7 @@ class UserTestCase extends CoreTestCase {
 			)
 		);
 		$result = $this->User->findUser($data, 'OR');
-		$expected = array(1, 2, 3);
+		$expected = array(1, 2);
 		$this->assertEqual($result, $expected);
 
 		$data = array(
