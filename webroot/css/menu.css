@@ -292,8 +292,7 @@ Dropdown menu CSS
 		max-width:550px;
 		padding-bottom: 0px;
 		background: transparent;
-		/*top:1em;
-		/*left:0;*/
+		overflow: hidden;
 		}
 	.main-nav-menu ul>li>ul>li>ul{
 		position:relative;
