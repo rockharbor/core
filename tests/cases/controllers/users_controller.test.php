@@ -581,6 +581,7 @@ class UsersControllerTestCase extends CoreTestCase {
 		 * Test redirections (setAction) based on various `findUser` responses
 		 */
 
+		// no matches
 		$data = array(
 			'Profile' => array(
 				'first_name' => 'ricky',
@@ -592,13 +593,59 @@ class UsersControllerTestCase extends CoreTestCase {
 			'data' => $data
 		));
 		$results = $this->testController->action;
-		$expected = 'choose_user';
-		$this->assertEqual($results, $expected);
+		$expected = '/register/';
+		$this->assertPattern($expected, $results);
 
+		// single match, but not quite exact
 		$data = array(
 			'Profile' => array(
 				'first_name' => 'ricky',
-				'last_name' => 'rock',
+				'last_name' => 'rockharbor',
+				'primary_email' => ''
+			)
+		);
+		$vars = $this->testAction('/users/register', array(
+			'data' => $data
+		));
+		$results = $this->testController->action;
+		$expected = '/request_activation/';
+		$this->assertPattern($expected, $results);
+
+		// multiple matches
+		$data = array(
+			'Profile' => array(
+				'first_name' => 'joe',
+				'last_name' => 'schmoe',
+				'primary_email' => 'new@example.com'
+			)
+		);
+		$vars = $this->testAction('/users/register', array(
+			'data' => $data
+		));
+		$results = $this->testController->action;
+		$expected = '/choose_user/';
+		$this->assertPattern($expected, $results);
+
+		// multiple matches, but one exact
+		$data = array(
+			'Profile' => array(
+				'first_name' => 'joe',
+				'last_name' => 'schmoe',
+				'primary_email' => 'joe@example.com'
+			)
+		);
+		$vars = $this->testAction('/users/register', array(
+			'data' => $data
+		));
+		$results = $this->testController->action;
+		$expected = '/forgot_password/';
+		$this->assertPattern($expected, $results);
+
+		// no matches
+		$data = array(
+			'Profile' => array(
+				'first_name' => '',
+				'last_name' => '',
 				'primary_email' => 'jharris@rockharbor.org'
 			)
 		);
@@ -606,9 +653,10 @@ class UsersControllerTestCase extends CoreTestCase {
 			'data' => $data
 		));
 		$results = $this->testController->action;
-		$expected = '/users/register';
-		$this->assertEqual($results, $expected);
+		$expected = '/register/';
+		$this->assertPattern($expected, $results);
 
+		// single match, exact
 		$data = array(
 			'Profile' => array(
 				'first_name' => 'jeremy',
@@ -620,8 +668,8 @@ class UsersControllerTestCase extends CoreTestCase {
 			'data' => $data
 		));
 		$results = $this->testController->action;
-		$expected = 'forgot_password';
-		$this->assertEqual($results, $expected);
+		$expected = '/forgot_password/';
+		$this->assertPattern($expected, $results);
 	}
 
 	public function testChooseUser() {
