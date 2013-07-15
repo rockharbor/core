@@ -1187,7 +1187,7 @@ class UserTestCase extends CoreTestCase {
 		$search = $this->User->prepareSearch($this->Controller, $search);
 		$users = $this->User->find('all', $search);
 		$results = Set::extract('/User/id', $users);
-		$expected = array(1, 2, 3, 4, 5, 6);
+		$expected = array(1, 2, 3, 4, 5, 6, 7);
 		$this->assertEqual($results, $expected);
 
 		$search = array(

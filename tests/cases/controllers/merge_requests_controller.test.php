@@ -65,10 +65,10 @@ class MergeRequestsControllerTestCase extends CoreTestCase {
 		$this->assertEqual($results, array());
 
 		$results = $this->User->find('count');
-		$this->assertEqual($results, 5);
+		$this->assertEqual($results, 6);
 
 		$results = $this->Profile->find('count');
-		$this->assertEqual($results, 5);
+		$this->assertEqual($results, 6);
 
 		$this->User->contain(array('Profile'));
 		$user = $this->User->read(null, 2);
@@ -98,10 +98,10 @@ class MergeRequestsControllerTestCase extends CoreTestCase {
 		$this->assertTrue(!empty($results));
 
 		$result = $this->Profile->find('count');
-		$this->assertEqual($result, 5);
+		$this->assertEqual($result, 6);
 
 		$result = $this->User->find('count');
-		$this->assertEqual($result, 5);
+		$this->assertEqual($result, 6);
 	}
 
 	public function testIgnore() {
