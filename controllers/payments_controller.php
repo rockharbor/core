@@ -183,7 +183,7 @@ class PaymentsController extends AppController {
 			// get balance
 			$balance = Set::apply('/Roster/balance', $payForUsers, 'array_sum');
 
-			$amount = preg_replace('/[^\d\.\-]/', '', $this->data['Payment']['amount']);
+			$amount = $this->data['Payment']['amount'] = preg_replace('/[^\d\.\-]/', '', $this->data['Payment']['amount']);
 
 			// set `amount` validation rule to reflect balance range and validate as it's
 			// own field because we'll be splitting the payments up
