@@ -37,7 +37,8 @@ foreach ($types as $id => $name):
 		)
 	));
 	echo $this->Form->input('amount', array(
-		'label' => 'I\'m going to pay:'
+		'label' => 'I\'m going to pay:',
+		'between' => '$'
 	));
 	$ptypes = Set::combine(Set::extract('/PaymentType[type='.$id.']', $paymentTypes), '{n}.PaymentType.id', '{n}.PaymentType.name');
 	if (count($ptypes) > 1) {
