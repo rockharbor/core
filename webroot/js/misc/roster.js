@@ -105,6 +105,11 @@ CORE_roster.updateAmount = function() {
 		$('#billing, #billing-tab').show();
 	}
 
+	// trigger wizard button update
+	var selectedTab = $('#roster_tabs').tabs('option', 'selected');
+	$('#roster_tabs').find('li').eq(selectedTab).removeClass('ui-tabs-selected');
+	$('#roster_tabs').tabs('select', selectedTab);
+
 	$('#total-total').html(numberChildcareSignedUp*childcareAmount + peopleAmount*numberSignedUp);
 	$('#balance').html($('#total-total').html() - totalDue);
 	$('#amount').html(totalDue);
