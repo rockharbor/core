@@ -23,10 +23,11 @@ echo $this->Form->create('User', array(
 	</ul>
 	<div id="personal">
 		<fieldset class="grid_5 alpha">
-			<legend>Name</legend>
+                       <legend>About Me</legend>
 		<?php
 		echo $this->Form->input('Profile.first_name');
 		echo $this->Form->input('Profile.last_name');
+               echo $this->Form->input('Profile.birth_date');
 		?>
 		</fieldset>
 		<fieldset class="grid_5 omega">
