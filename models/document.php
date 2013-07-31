@@ -89,12 +89,6 @@ class Document extends MediaAppModel {
 				'rule' => 'checkAccess',
 				'message' => 'Upload failed. Please try again.'
 			),
-			'location' => array(
-				'rule' => array('checkLocation', array(
-					MEDIA_TRANSFER, '/tmp/', 'http://', 'C:\\'
-				)),
-				'message' => 'Upload failed. Please try again.'
-			),
 			'permission' => array(
 				'rule' => array('checkPermission', '*'),
 				'message' => 'Upload failed. Please try again.'
