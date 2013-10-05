@@ -37,7 +37,7 @@ class Involvement extends AppModel {
 		'previous' => 'NOT EXISTS(
 			SELECT 1 FROM dates AS NotPassed
 				WHERE NotPassed.involvement_id = :ALIAS:.id
-				AND (CAST(CONCAT(NotPassed.end_date, " ", NotPassed.end_time) AS DATETIME) > NOW()
+				AND (CAST(CONCAT(NotPassed.end_date, " ", NotPassed.end_time) AS DATETIME) > CONVERT_TZ(NOW(), "GMT", "America/Los_Angeles")
 				OR NotPassed.permanent = 1)
 				AND NotPassed.exemption = 0
 		) AND EXISTS (SELECT 1 FROM dates as ExistingDates WHERE ExistingDates.involvement_id = :ALIAS:.id)',
