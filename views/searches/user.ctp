@@ -75,6 +75,7 @@
 			));
 			echo $this->Form->input('Profile.signed_covenant_2011');
 			echo $this->Form->input('Profile.signed_covenant_2012');
+			echo $this->Form->input('Profile.signed_covenant_2013');
 		?>
 			</fieldset>
 		</div>

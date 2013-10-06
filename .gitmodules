@@ -22,12 +22,12 @@
 [submodule "plugins/queue_email"]
 	path = plugins/queue_email
 	url = https://github.com/jeremyharris/queue_email.git
-[submodule "plugins/asset_compress"]
-	path = plugins/asset_compress
-	url = https://github.com/jeremyharris/asset_compress.git
 [submodule "plugins/multi_select"]
 	path = plugins/multi_select
 	url = https://github.com/jeremyharris/multi_select.git
 [submodule "vendors/CssToInlineStyles"]
 	path = vendors/CssToInlineStyles
 	url = https://github.com/tijsverkoyen/CssToInlineStyles.git
+[submodule "plugins/asset_compress"]
+	path = plugins/asset_compress
+	url = https://github.com/markstory/asset_compress.git

@@ -309,6 +309,8 @@ if ($activeUser['User']['id'] == $profile['User']['id'] && empty($activeUser['Us
 							echo $this->Html->tag('dd', $this->SelectOptions->boolean($profile['Profile']['signed_covenant_2011']));
 							echo $this->Html->tag('dt', 'Signed Covenant 2012:');
 							echo $this->Html->tag('dd', $this->SelectOptions->boolean($profile['Profile']['signed_covenant_2012']));
+							echo $this->Html->tag('dt', 'Signed Covenant 2013:');
+							echo $this->Html->tag('dd', $this->SelectOptions->boolean($profile['Profile']['signed_covenant_2013']));
 						?>
 						</dl>
 					</div>
