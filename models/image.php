@@ -91,12 +91,6 @@ class Image extends AppModel {
 				'rule' => 'checkAccess',
 				'message' => 'Upload failed. Please try again.'
 			),
-			'location' => array(
-				'rule' => array('checkLocation', array(
-					MEDIA_TRANSFER, '/tmp/', 'http://', 'C:\\'
-				)),
-				'message' => 'Upload failed. Please try again.'
-			),
 			'permission' => array('rule' => array('checkPermission', '*')),
 			'size'       => array(
 				'rule' => array('checkSize', '5M'),
