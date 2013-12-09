@@ -366,6 +366,30 @@ class SearchesControllerTestCase extends CoreTestCase {
 		$vars = $this->testAction('/searches/user/page:2', array(
 			'data' => $search
 		));
+
+		$search = array(
+			'Profile' => array(
+				'phone' => '8005551212'
+			)
+		);
+		$vars = $this->testAction('/searches/user', array(
+			'data' => $search
+		));
+		$results = Set::extract('/User/username', $vars['results']);
+		$expected = array();
+		$this->assertEqual($results, $expected);
+
+		$search = array(
+			'Profile' => array(
+				'phone' => '4178729564'
+			)
+		);
+		$vars = $this->testAction('/searches/user', array(
+			'data' => $search
+		));
+		$results = Set::extract('/User/username', $vars['results']);
+		$expected = array('jharris');
+		$this->assertEqual($results, $expected);
 	}
 
 	public function testSimpleSearch() {

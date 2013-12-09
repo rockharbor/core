@@ -45,6 +45,7 @@
 			echo $this->Form->input('Profile.first_name');
 			echo $this->Form->input('Profile.last_name');
 			echo $this->Form->input('Profile.email');
+			echo $this->Form->input('Profile.phone');
 			echo $this->Form->input('Profile.gender', array(
 				'type' => 'select',
 				'options' => $this->SelectOptions->genders
