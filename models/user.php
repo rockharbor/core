@@ -668,6 +668,7 @@ class User extends AppModel {
 				'Birthday' => array(),
 				'BackgroundCheck' => array(),
 				'email' => array(),
+				'phone' => array(),
 				'birth_date' => null
 			),
 			'Distance' => array()
@@ -690,6 +691,8 @@ class User extends AppModel {
 		unset($data['Profile']['BackgroundCheck']);
 		$email = $data['Profile']['email'];
 		unset($data['Profile']['email']);
+		$phone = $data['Profile']['phone'];
+		unset($data['Profile']['phone']);
 		unset($data['User']['password']);
 		unset($data['User']['confirm_password']);
 
@@ -784,6 +787,20 @@ class User extends AppModel {
 					'Profile.primary_email LIKE' => '%'.$email.'%',
 					'Profile.alternate_email_1 LIKE' => '%'.$email.'%',
 					'Profile.alternate_email_2 LIKE' => '%'.$email.'%'
+				)
+			);
+			$link['Profile'] = array();
+		}
+
+		// check for phone
+		// remember phone is stored as just numbers
+		if (!empty($phone)) {
+			$phone = preg_replace('/[^0-9]+/', '', $phone);
+			$conditions[$operator][] = array(
+				'or' => array(
+					'Profile.cell_phone LIKE' => '%'.$phone,
+					'Profile.home_phone LIKE' => '%'.$phone,
+					'Profile.work_phone LIKE' => '%'.$phone
 				)
 			);
 			$link['Profile'] = array();

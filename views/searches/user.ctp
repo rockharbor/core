@@ -45,7 +45,7 @@
 			echo $this->Form->input('Profile.first_name');
 			echo $this->Form->input('Profile.last_name');
 			echo $this->Form->input('Profile.email');
-			echo $this->Form->input('Profile.classification_id');
+			echo $this->Form->input('Profile.phone');
 			echo $this->Form->input('Profile.gender', array(
 				'type' => 'select',
 				'options' => $this->SelectOptions->genders
@@ -53,14 +53,6 @@
 			echo $this->Form->input('Profile.marital_status', array(
 				'type' => 'select',
 				'options' => $this->SelectOptions->maritalStatuses
-			));
-			echo $this->Form->input('Profile.qualified_leader', array(
-				'type' => 'select',
-				'options' => $this->SelectOptions->booleans
-			));
-			echo $this->Form->input('Profile.currently_leading', array(
-				'type' => 'checkbox',
-				'label' => 'Currently Leading'
 			));
 			echo $this->Form->input('Profile.background_check_complete');
 			echo $this->Form->input('Profile.BackgroundCheck.start', array(
@@ -73,9 +65,6 @@
 				'label' => false,
 				'minYear' => 1900
 			));
-			echo $this->Form->input('Profile.signed_covenant_2011');
-			echo $this->Form->input('Profile.signed_covenant_2012');
-			echo $this->Form->input('Profile.signed_covenant_2013');
 		?>
 			</fieldset>
 		</div>
@@ -120,6 +109,18 @@
 				'multiple' => 'checkbox',
 				'empty' => false
 			));
+			echo $this->Form->input('Profile.classification_id');
+			echo $this->Form->input('Profile.qualified_leader', array(
+				'type' => 'select',
+				'options' => $this->SelectOptions->booleans
+			));
+			echo $this->Form->input('Profile.currently_leading', array(
+				'type' => 'checkbox',
+				'label' => 'Currently Leading'
+			));
+			echo $this->Form->input('Profile.signed_covenant_2011');
+			echo $this->Form->input('Profile.signed_covenant_2012');
+			echo $this->Form->input('Profile.signed_covenant_2013');
 			?>
 			</fieldset>
 		</div>

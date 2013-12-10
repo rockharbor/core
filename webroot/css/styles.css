@@ -855,6 +855,10 @@ input:disabled {
 	border: 1px solid #f1f1f1;
 }
 
+form.core-filter-form label {
+	float: left;
+}
+
 /*
 Definition lists
 */
