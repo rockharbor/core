@@ -5,6 +5,11 @@ var CORE_roster = {};
 
 /*
  * Initializes the roster sign up page
+ *
+ * @TODO selecting the questions tab for the first checked
+ * member is not really using classes correctly. Should probably
+ * be in a data attribute. As soon as jQuery supports quick easy
+ * selecting/filtering by data attributes.
  */
 CORE_roster.init = function() {
 	CORE.noDuplicateCheckboxes('members');
@@ -14,7 +19,7 @@ CORE_roster.init = function() {
 	$('#RosterAddressId').change();
 	// by default, click the first available tab under answers
 	$('#questions_tab a').on('click', function() {
-		$('#question_tabs > ul:not(.admin) li:visible:first a').click()
+		$('#question_tabs > ul:not(.admin) li.member-checked:first a').click()
 	});
 	$('input[id^=Child]').on('change', CORE_roster.updateAmount);
 	$('#DefaultPayLater').on('change', function() {
@@ -40,9 +45,9 @@ CORE_roster.init = function() {
 	$('#members input[id^=Adult]:checkbox').on('change', function() {
 		// only show the answer tabs for members that are checked
 		if (this.checked) {
-			$('a[href=#answers_'+$(this).val()+']').parent().show();
+			$('a[href=#answers_'+$(this).val()+']').parent().show().addClass("member-checked");
 		} else {
-			$('a[href=#answers_'+$(this).val()+']').parent().hide();
+			$('a[href=#answers_'+$(this).val()+']').parent().hide().removeClass("member-checked");
 		}
 		$('#members input[id^=Adult]:checked').length > 0 ? $('#questions_tab').show() : $('#questions_tab').hide();
 		CORE_roster.updateAmount();
