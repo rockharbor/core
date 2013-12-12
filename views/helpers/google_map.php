@@ -2,10 +2,10 @@
 /**
  * Google map helper class.
  *
- * @copyright     Copyright 2010, *ROCK*HARBOR
- * @link          http://rockharbor.org *ROCK*HARBOR
- * @package       core
- * @subpackage    core.app.views.helpers
+ * @copyright     Copyright 2014, ROCKHARBOR Church
+ * @link          http://github.com/rockharbor
+ * @package       google_maps
+ * @subpackage    google_maps.views.helpers
  */
 
 /**
@@ -13,9 +13,9 @@
  *
  * Allows easy creation of Google Maps
  *
- * @package       core
- * @subpackage    core.app.views.helpers
- * @todo Support static maps
+ * @package       google_maps
+ * @subpackage    google_maps.views.helpers
+ * @todo Support static maps, add API key
  */
 class GoogleMapHelper extends AppHelper {
 
