@@ -36,7 +36,7 @@ class ReportsController extends AppController {
  * @var array
  */
 	public $helpers = array(
-		'GoogleMap',
+		'GoogleMaps.GoogleMap',
 		'Media.Media',
 		'Report',
 		'Charts.Charts' => array('Charts.GoogleStatic'),

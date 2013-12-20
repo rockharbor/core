@@ -31,7 +31,7 @@ class Address extends AppModel {
  * @var array
  */
 	public $actsAs = array(
-		'GeoCoordinate'
+		'GoogleMaps.GeoCoordinate'
 	);
 
 /**

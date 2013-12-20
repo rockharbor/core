@@ -2,7 +2,7 @@
 
 /**
  * Geocordinate behavior class
- *
+ * 
  * @copyright	Copyright 2014, ROCKHARBOR Church
  * @link		http://github.com/rockharbor
  * @package		google_maps
@@ -131,7 +131,7 @@ class GeoCoordinateBehavior extends ModelBehavior {
 		//Extract variables to use
 		extract($this->settings['settings']);
 		extract($this->settings['providers'][$provider]);
-
+		
 		if (!in_array($format, $formats)) {
 			//provider doesn't support format
 			return $data;
@@ -148,6 +148,7 @@ class GeoCoordinateBehavior extends ModelBehavior {
 				$data['lat'] = $result->geometry->location->lat;
 				$data['lng'] = $result->geometry->location->lng;
 				$data['address1'] = $result->formatted_address;
+				
 			}
 		}
 
