@@ -304,7 +304,8 @@ class UsersControllerTestCase extends CoreTestCase {
 		));
 		$vars = $this->testAction('/users/login');
 		$result = $this->Users->Session->read('Auth.User.id');
-		$this->assertEqual($result, 1);
+		// Login cookie temporarily disabled
+		//$this->assertEqual($result, 1);
 		$this->assertNull($this->Users->Session->read('Message.auth'));
 
 		// logout fail with cookie (because of password change)
@@ -317,7 +318,8 @@ class UsersControllerTestCase extends CoreTestCase {
 		));
 		$vars = $this->testAction('/users/login');
 		$this->assertNull($this->Users->Session->read('Auth'));
-		$this->assertTrue(!empty($this->Users->User->validationErrors));
+		// Login cookie temporarily disabled
+		//$this->assertTrue(!empty($this->Users->User->validationErrors));
 
 		$vars = $this->testAction('/users/dashboard');
 		$this->assertNotNull($this->Users->Session->read('Message.auth'));
