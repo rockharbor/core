@@ -52,7 +52,9 @@ echo $this->Html->link($icon, array('action' => 'view', 'Involvement' => $this->
 				<?php
 					echo $this->Form->input('id');
 					echo $this->Form->input('ministry_id');
-					echo $this->Form->input('DisplayMinistry');
+					echo $this->Form->input('DisplayMinistry', array(
+						'label' => 'Also display in ministry'
+					));
 					echo $this->Form->input('involvement_type_id');
 					echo $this->Form->input('name');
 					echo $this->Form->input('description', array(

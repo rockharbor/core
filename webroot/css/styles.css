@@ -419,6 +419,9 @@ div#involvement-dates .date {
 div#involvement-dates .date:first-child {
 	display: block;
 }
+div#roster-involvement div.content-box p {
+	clear: left;
+}
 .ministry-description img {
 	margin-left: 10px;
 	float: right;

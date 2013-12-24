@@ -28,7 +28,7 @@ class AddressesController extends AppController {
  *
  * @var array
  */
-	public $helpers = array('SelectOptions', 'GoogleMap');
+	public $helpers = array('SelectOptions', 'GoogleMaps.GoogleMap');
 
 /**
  * The name of the model this Address belongs to. Used for Acl

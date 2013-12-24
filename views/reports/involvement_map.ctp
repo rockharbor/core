@@ -23,7 +23,7 @@ foreach ($results as $result) {
 }
 
 echo $this->GoogleMap->create();
-$this->GoogleMap->zoom = 8;
+$this->GoogleMap->zoom = 10;
 $this->GoogleMap->addAddresses($addresses);
 echo $this->GoogleMap->end();
 

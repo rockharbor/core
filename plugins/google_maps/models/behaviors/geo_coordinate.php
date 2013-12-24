@@ -1,11 +1,12 @@
 <?php
+
 /**
- * Confirm behavior class.
- *
- * @copyright     Copyright 2010, *ROCK*HARBOR
- * @link          http://rockharbor.org *ROCK*HARBOR
- * @package       core
- * @subpackage    core.app.models.behaviors
+ * Geocordinate behavior class
+ * 
+ * @copyright	Copyright 2014, ROCKHARBOR Church
+ * @link		http://github.com/rockharbor
+ * @package		google_maps
+ * @subpackage	google_maps.models.behavior
  */
 
 /**
@@ -14,7 +15,7 @@
 App::import('Core', 'HttpSocket');
 
 /**
- * Confirm Behavior
+ * Geocoordinate Behavior
  *
  * Automatically geocodes address data and saves data when an
  * address is created/updated
@@ -32,43 +33,34 @@ App::import('Core', 'HttpSocket');
  *
  * Model needs `lat` and `lng` fields.
  *
- * @package       core
- * @subpackage    core.app.models.behaviors
- * @todo Allow more flexibility in fields, don't be so strict when saving,
- *		wrap into plugin and include the helper
+ * @package       google_maps
+ * @subpackage    google_maps.models.behaviors
+ * @todo Allow more flexibility in fields, don't be so strict when saving
  */
 class GeoCoordinateBehavior extends ModelBehavior {
 
 /**
- * Providers
+ * Settings
  *
- * Provider details and settings to parse details
+ * Service details and settings
  *
  * @var array
 */
-	public $providers = array(
-		'google'    => array(
-			'enabled'   => true,
-			'api'       => 'ABQIAAAA09mnl0ou-zdXazrIvNToJBQrdm0PJNmhoodn2MySO_Nz62fdfBSTZCuUWPHpElUVD7Mt5etMpfke-Q',
-			'url'       => 'http://maps.google.com/maps/geo?q=:q&output=xml&key=:api',
-			'fields'    => array(
-				'lng'       => '/<coordinates>(.*?),/',
-				'lat'       => '/,(.*?),[^,\s]+<\/coordinates>/',
-				'address1'  => '/<address>(.*?)<\/address>/',
-				'postcode'  =>  '/<PostalCodeNumber>(.*?)<\/PostalCodeNumber>/',
-				'country'   =>  '/<CountryNameCode>(.*?)<\/CountryNameCode>/'
-			)
-		)
-	);
-
-/**
- * Settings
- *
- * @var string
-*/
 	public $settings = array(
-		'provider' => 'google',
-		'countryCode' => 'US'
+		'providers' => array(
+			'google'	=> array(
+				'name'		=> 'Google Maps',
+				'version'	=> 3,
+				'api_key'	=> '',
+				'url'		=> 'https://maps.googleapis.com/maps/api/geocode/:format?address=:q&sensor=false&region=:region',
+				'formats'	=> array('json', 'xml')
+			)
+		),
+		'settings'	=> array(
+			'provider'		=> 'google',
+			'region'	=> 'US',
+			'format'		=> 'json'
+		)
 	);
 
 /**
@@ -92,7 +84,7 @@ class GeoCoordinateBehavior extends ModelBehavior {
 			isset($Model->data[$Model->alias]['zip']) && !empty($Model->data[$Model->alias]['zip'])
 		) {
 			// get geo coords
-			$coords = $this->_geocoords($Model->data[$Model->alias], $this->settings);
+			$coords = $this->_geocoords($Model->data[$Model->alias]);
 
 			// add to data
 			if (isset($coords['lat']) && isset($coords['lng'])) {
@@ -114,17 +106,16 @@ class GeoCoordinateBehavior extends ModelBehavior {
  */
 	public function geoCoordinates(&$Model, $q = '') {
 		// get geo coords
-		return $this->_geocoords($q, $this->settings);
+		return $this->_geocoords($q);
 	}
 
 /**
 * Get Lng/Lat from provider
 *
 * @param mixed $query Query
-* @param array $options Options
 * @return array
 */
-	private function _geocoords($query, $options = array()) {
+	private function _geocoords($query) {
 		if (is_array($query)) {
 			$q = $query['address_line_1'];
 			if (isset($query['address_line_2'])) {
@@ -138,22 +129,26 @@ class GeoCoordinateBehavior extends ModelBehavior {
 		$data = array();
 
 		//Extract variables to use
-		extract($options);
-		extract($this->providers[$provider]);
-
-		//Add country code to query
-		$q .= ', '.$countryCode;
+		extract($this->settings['settings']);
+		extract($this->settings['providers'][$provider]);
+		
+		if (!in_array($format, $formats)) {
+			//provider doesn't support format
+			return $data;
+		}
 
 		//Build url
-		$url = String::insert($url,compact('api','q','countryCode'));
+		$url = String::insert($url,compact('format','q','region'));
 
 		//Get data and parse
-		if($result = $this->connection->get($url)) {
-			foreach($fields as $field => $regex) {
-				if(preg_match($regex,$result,$match)) {
-					if(!empty($match[1]))
-						$data[$field] = $match[1];
-				}
+		if($response = $this->connection->get($url)) {
+			$json = json_decode($response);
+			if ($json->status == 'OK' && isset($json->results[0])) {
+				$result = $json->results[0];
+				$data['lat'] = $result->geometry->location->lat;
+				$data['lng'] = $result->geometry->location->lng;
+				$data['address1'] = $result->formatted_address;
+				
 			}
 		}
 

@@ -431,7 +431,7 @@ class InvolvementsController extends AppController {
 			}
 		}
 		if (empty($this->data)) {
-			$this->Involvement->contain(array('Ministry'));
+			$this->Involvement->contain(array('Ministry', 'DisplayMinistry'));
 			$this->data = $this->Involvement->read(null, $id);
 		}
 
