@@ -386,6 +386,12 @@ class ReportsController extends AppController {
 			$this->cakeError('error404');
 		}
 
+		if ($model == 'Roster' && isset($this->passedArgs['mstoken']) && empty($selected)) {
+			$errorMessage = 'Please select at least one user in order to view a map';
+			$this->set(compact('errorMessage'));
+			return;
+		}
+
 		if (isset($this->passedArgs[$model])) {
 			$search = array();
 			$selected = $this->passedArgs[$model];

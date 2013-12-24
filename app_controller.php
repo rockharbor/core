@@ -466,14 +466,14 @@ class AppController extends Controller {
 			$search = $this->MultiSelect->getSearch();
 			if (empty($search)) {
 				$this->Session->setFlash('Please select some items before performing an action.', 'flash'.DS.'failure');
-				$this->cakeError('invalidMultiSelectSelection');
+				$this->redirect($this->referer());
 			}
 			$results = $model->find('all', $search);
 			$ids = Set::extract($path, $results);
 		}
 		if (empty($ids)) {
 			$this->Session->setFlash('Please select some items before performing an action.', 'flash'.DS.'failure');
-			$this->cakeError('invalidMultiSelectSelection');
+			$this->redirect($this->referer());
 		}
 		return $ids;
 	}
