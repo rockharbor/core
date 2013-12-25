@@ -525,7 +525,8 @@ div#payment-totals {
 	padding: 3px 0;
 	line-height: 14px;
 }
-#payment-details .big {
+#payment-details .big,
+#confirm-payment-totals .big {
 	font-family: LeagueGothicRegular,'Lucida Sans',Helvetica,Arial,sans-serif;
 	font-weight:normal;
 	font-size: 30px;
@@ -534,13 +535,15 @@ div#payment-totals {
 #payment-info, #pay-deposit, #remaining-balance {
 	padding: 5px;
 }
-#payment-details .info-left {
+#payment-details .info-left,
+#confirm-payment-totals .info-left {
 	float:left;
 	width: 45%;
 	text-align: right;
 	margin: 5px 0;
 }
-#payment-details .info-right {
+#payment-details .info-right,
+#confirm-payment-totals .info-right {
 	float:right;
 	width: 45%;
 	text-align:left;
@@ -551,6 +554,22 @@ div#payment-totals {
 	text-align: center;
 }
 div#pay-later {
+	padding: 5px;
+}
+div#confirm-payment-totals {
+	border: 1px solid #444445;
+	display: inline-block;
+	margin-bottom: 10px;
+}
+div#confirm-payment-totals .today {
+	padding: 3px 0px;
+	color: #fff;
+	background-color: #444445;
+	line-height: 14px;
+}
+div#confirm-payment-totals .remaining {
+	background-color: #fff;
+	text-align: center;
 	padding: 5px;
 }
 div.reports .chart {

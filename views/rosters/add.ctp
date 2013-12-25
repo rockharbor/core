@@ -221,6 +221,15 @@ echo $this->Form->create('Roster', array(
 		</div>
 	</div>
 	<div id="billing" class="clearfix">
+		<div id="confirm-payment-totals">
+			<div class="today clearfix">
+				<div class="info-left">Today's<br />Payment</div>
+				<div class="info-right big">$<span id="confirm-amount"></span></div>
+			</div>
+			<div class="remaining clearfix">
+				Remaining Balance <span class="balance">$<span id="confirm-balance"></span></span>
+			</div>
+		</div>
 		<?php
 		$ptypes = Set::combine(Set::extract('/PaymentType[type=0]', $paymentTypes), '{n}.PaymentType.id', '{n}.PaymentType.name');
 		if (count($ptypes) > 1) {
