@@ -594,6 +594,11 @@ div#report-form div.input, div#report-form div.submit {
 	margin-bottom: 10px;
 }
 
+#bitly-link {
+	border: 1px solid #838383;
+	padding: 3px;
+}
+
 /*
 Small Tabs
 */
