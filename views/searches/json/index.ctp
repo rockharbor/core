@@ -27,5 +27,10 @@ foreach ($involvements as $involvement) {
 		'value' => $involvement['Involvement']['name']
 	);
 }
+$acResults[] = array(
+	'action' => Router::url(array('controller' => 'searches', 'action' => 'index', '?' => array('q' => $this->data['Search']['query']))),
+	'label' => $this->element('search'.DS.'autocomplete'.DS.'full_search'),
+	'value' => $this->data['Search']['query']
+);
 echo json_encode($acResults);
 
