@@ -4,7 +4,7 @@
 		<thead>
 			<tr>
 				<th><?php echo $this->Paginator->sort('name');?></th>
-				<th><?php echo $this->Paginator->sort('total');?></th>
+				<th><?php echo $this->Paginator->sort('price per person','total');?></th>
 				<th><?php echo $this->Paginator->sort('deposit');?></th>
 				<th><?php echo $this->Paginator->sort('childcare');?></th>
 				<th><?php echo $this->Paginator->sort('account_code');?></th>
