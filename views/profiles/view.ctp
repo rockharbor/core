@@ -299,7 +299,7 @@ if ($activeUser['User']['id'] == $profile['User']['id'] && empty($activeUser['Us
 							echo $this->Html->tag('dd', $ac);
 							echo $this->Html->tag('dt', 'Baptized:');
 							$bt = '';
-							if (!empty($profile['Profile']['baptism_date'])) {
+							if ($profile['Profile']['baptism_date'] != '0000-00-00') {
 								$bt .= 'Yes, '.$this->Formatting->date($profile['Profile']['baptism_date']);
 							} else {
 								$bt = 'No';

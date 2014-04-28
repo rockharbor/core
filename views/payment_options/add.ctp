@@ -16,6 +16,7 @@
 		<legend>Amounts</legend>
 		<?php
 		echo $this->Form->input('total', array(
+			'label'   => 'Price per person',
 			'between' => '$ '
 		));
 		echo $this->Form->input('deposit', array(

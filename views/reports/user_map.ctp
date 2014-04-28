@@ -42,8 +42,12 @@ foreach ($results as $result) {
 	}
 }
 
-echo $this->GoogleMap->create();
-$this->GoogleMap->zoom = 8;
-$this->GoogleMap->addAddresses($addresses);
-echo $this->GoogleMap->end();
+if (isset($errorMessage)) {
+	echo $errorMessage;
+} else {
+	echo $this->GoogleMap->create();
+	$this->GoogleMap->zoom = 8;
+	$this->GoogleMap->addAddresses($addresses);
+	echo $this->GoogleMap->end();
+}
 

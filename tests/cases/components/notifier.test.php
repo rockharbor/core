@@ -330,12 +330,15 @@ class NotifierTestCase extends CoreTestCase {
 		$this->assertPattern('/\[core\]/', $queue['Queue']['subject']);
 
 		$this->assertTrue($this->Notifier->_send($user, array('from' => 2)));
-		$expected = 'ricky rockharbor <ricky@rockharbor.org>';
+		$expected = 'ricky rockharbor via CORE <core@rockharbor.org>';
 		$this->assertEqual($this->Notifier->QueueEmail->from, $expected);
+		$expected = 'ricky rockharbor <ricky@rockharbor.org>';
+		$this->assertEqual($this->Notifier->QueueEmail->replyTo, $expected);
 
 		$queue = $this->Notifier->QueueEmail->Model->read();
 		$this->assertEqual($queue['Queue']['to_id'], 1);
 		$this->assertEqual($queue['Queue']['from_id'], 2);
+		$expected = 'ricky rockharbor via CORE <core@rockharbor.org>';
 		$this->assertEqual($queue['Queue']['from'], $expected);
 		$this->assertPattern('/\[core user\]/', $queue['Queue']['subject']);
 

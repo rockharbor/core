@@ -113,6 +113,11 @@ echo $this->Html->link($icon, array('action' => 'view', 'Involvement' => $this->
 
 					?>
 				</fieldset>
+				<fieldset class="grid_5 omega">
+					<legend>Bit.ly</legend>
+					<button id="generate-bitly" data-bitly-long-url="<?php echo Router::url($this->here, true)?>">Create</button>
+					<span id="bitly-link">Click create to generate short link</span>
+				</fieldset>
 			</div>
 			<?php echo $this->Form->end(__('Submit', true));?>
 			<ul class="core-admin-tabs">
@@ -269,5 +274,22 @@ $this->Js->buffer('$("#InvolvementSignup").on("change", function() {
 });');
 $this->Js->buffer('$("#InvolvementTakePayment").change();');
 $this->Js->buffer('$("#InvolvementSignup").change();');
-
-
+// Note that cross-site requests do not trigger the .fail callback in jQuery < 2.0
+$this->Js->buffer('$("#generate-bitly").on("click", function(e) {
+	var self = $(this);
+	$.ajax({
+		url: "https://api-ssl.bitly.cm/v3/shorten?login=rockharbor&apiKey=R_b77c4d42ad3a43c7b47cf62d1cd0464f&longUrl=" + self.data("bitly-long-url"),
+		type: "get",
+		dataType: "json"
+	}).done(function(response, textStatus, jqXHR) {
+		if (response.length === 0 || response.status_code !== 200) {
+			self.returnValue = "Sorry, CORE couldn\'t contact Bit.ly";
+			return;
+		}
+		self.returnValue = response.data.url;
+		$("#bitly-link").html(self.returnValue);
+	}).fail(function() {
+		$("bitly-link").html("Sorry, CORE couldn\'t contact Bit.ly");
+	});
+	return false;
+});');

@@ -212,7 +212,19 @@ class NotifierComponent extends Object {
 		$this->QueueEmail->template = $template;
 		$this->QueueEmail->attachments = $attachments;
 		$this->QueueEmail->queue = $queue;
-		$this->QueueEmail->from = $from['Profile']['name'].' <'.$from['Profile']['primary_email'].'>';
+		/*
+		 * Due to Yahoo! and AOL's new, stricter DMARC policy, From addresses
+		 * must now be strictly SPF or DKIM compliant. We'll set From to be the system email
+		 * and Reply-To and Return-Path to the sender's email
+		 * See also: http://yahoomail.tumblr.com/post/82426900353/yahoo-dmarc-policy-change-what-should-senders-do
+		 */
+		$siteNameTagless = Core::read('general.site_name_tagless');
+		$siteEmail = Core::read('notifications.site_email');
+		$this->QueueEmail->from = (($from['Profile']['name'] == $siteNameTagless) ?
+				$siteNameTagless : $from['Profile']['name'] . ' via ' . $siteNameTagless) .
+				' <' . $siteEmail . '>';
+		$this->QueueEmail->replyTo = $this->QueueEmail->return =
+				$from['Profile']['name'].' <'.$from['Profile']['primary_email'].'>';
 
 		$prefixKey = ($from['User']['id'] === 0) ? 'system_subject_prefix' : 'subject_prefix';
 		$this->QueueEmail->subject = Core::read("sys_emails.$prefixKey").$subject;

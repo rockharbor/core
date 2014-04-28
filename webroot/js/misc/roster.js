@@ -117,6 +117,8 @@ CORE_roster.updateAmount = function() {
 
 	$('#total-total').html(numberChildcareSignedUp*childcareAmount + peopleAmount*numberSignedUp);
 	$('#balance').html($('#total-total').html() - totalDue);
+	$('#confirm-balance').html($('#total-total').html() - totalDue);
 	$('#amount').html(totalDue);
+	$('#confirm-amount').html(totalDue);
 }
 
