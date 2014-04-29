@@ -275,10 +275,11 @@ $this->Js->buffer('$("#InvolvementSignup").on("change", function() {
 $this->Js->buffer('$("#InvolvementTakePayment").change();');
 $this->Js->buffer('$("#InvolvementSignup").change();');
 // Note that cross-site requests do not trigger the .fail callback in jQuery < 2.0
+// @todo Remove hard-coded api key
 $this->Js->buffer('$("#generate-bitly").on("click", function(e) {
 	var self = $(this);
 	$.ajax({
-		url: "https://api-ssl.bitly.cm/v3/shorten?login=rockharbor&apiKey=R_b77c4d42ad3a43c7b47cf62d1cd0464f&longUrl=" + self.data("bitly-long-url"),
+		url: "https://api-ssl.bitly.com/v3/shorten?login=rockharbor&apiKey=R_b77c4d42ad3a43c7b47cf62d1cd0464f&longUrl=" + self.data("bitly-long-url"),
 		type: "get",
 		dataType: "json"
 	}).done(function(response, textStatus, jqXHR) {
