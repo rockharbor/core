@@ -3,6 +3,7 @@
 <?php
 echo $this->Form->input('Profile.grade', array(
 	'type' => 'select',
+	'label' => 'Current Grade',
 	'options' => $this->SelectOptions->grades
 ));
 echo $this->Form->input('Profile.graduation_year', array(
