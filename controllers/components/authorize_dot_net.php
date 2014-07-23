@@ -154,8 +154,14 @@ class AuthorizeDotNetComponent extends Object {
  */
 	protected function _request($fields) {
 		/* Set up CURL to post the $fields string to authorize.net */
+		$debug = Configure::read('debug');
+		if ($debug) {
+			$url = "https://test.authorize.net/gateway/transact.dll";
+		} else {
+			$url = "https://secure.authorize.net/gateway/transact.dll";
+		}
 		$ch=curl_init();
-		curl_setopt($ch, CURLOPT_URL, "https://secure.authorize.net/gateway/transact.dll");
+		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 		curl_setopt($ch, CURLOPT_NOPROGRESS, 1);
 		curl_setopt($ch, CURLOPT_VERBOSE, 1);
