@@ -41,7 +41,7 @@
 
 		// google cdn scripts
 		$min = Configure::read('debug') == 0 ? '.min' : null;
-		echo $this->Html->script('//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery'.$min.'.js');
+		echo $this->Html->script('//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery'.$min.'.js');
 		echo $this->Html->script('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui'.$min.'.js');
 
 		// vendor scripts
