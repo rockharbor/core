@@ -115,7 +115,7 @@ echo $this->Html->link($icon, array('action' => 'view', 'Involvement' => $this->
 				</fieldset>
 				<fieldset class="grid_5 omega">
 					<legend>Bit.ly</legend>
-					<button id="generate-bitly" data-bitly-long-url="<?php echo Router::url($this->here, true)?>">Create</button>
+					<button id="generate-bitly" data-bitly-long-url="<?php echo $bitlyUrl; ?>">Create</button>
 					<span id="bitly-link">Click create to generate short link</span>
 				</fieldset>
 			</div>
