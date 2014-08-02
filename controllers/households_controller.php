@@ -136,6 +136,7 @@ class HouseholdsController extends AppController {
 							'template' => 'households_invite',
 							'confirm' => '/households/confirm/'.$userId.'/'.$household,
 							'deny' => '/households/delete/'.$userId.'/'.$household,
+							'subject' => 'You\'ve been invited to join a household'
 						)
 					);
 					$success = true;

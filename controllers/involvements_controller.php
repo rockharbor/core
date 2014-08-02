@@ -366,7 +366,8 @@ class InvolvementsController extends AppController {
 						'to' => $userId,
 						'template' => 'involvements_invite_'.$status,
 						'confirm' => '/rosters/status/'.$this->Involvement->Roster->id.'/1',
-						'deny' => '/rosters/status/'.$this->Involvement->Roster->id.'/4' //status 4 = declined
+						'deny' => '/rosters/status/'.$this->Involvement->Roster->id.'/4', //status 4 = declined
+						'subject' => 'You\'ve been invited to '.$involvement['Involvement']['name']
 					));
 				}
 

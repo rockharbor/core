@@ -115,7 +115,8 @@ class NotifierComponent extends Object {
 			'to' => false,
 			'confirm' => false,
 			'deny' => false,
-			'template' => false
+			'template' => false,
+			'subject' => false
 		);
 		$options = array_merge($_defaults, $options);
 		if (!$this->enabled || !$options['to'] || !$options['confirm'] || !$options['deny']) {
@@ -143,7 +144,9 @@ class NotifierComponent extends Object {
 			}
 		}
 		$this->Invitation->create();
-		return $this->Invitation->saveAll($data);
+		$success = $this->Invitation->saveAll($data);
+
+		return $success && $this->notify($options, 'email');
 	}
 
 /**
