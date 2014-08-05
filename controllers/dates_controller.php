@@ -274,9 +274,9 @@ class DatesController extends AppController {
 		}
 		if ($this->Date->delete($id)) {
 			$this->Session->setFlash(__('This date has been deleted.', true), 'flash'.DS.'success');
-			$this->redirect(array('action'=>'index'));
+			$this->redirect(array('action'=>'index', 'Involvement' => $this->passedArgs['Involvement']));
 		}
 		$this->Session->setFlash(__('Unable to delete date. Please try again.', true), 'flash'.DS.'failure');
-		$this->redirect(array('action' => 'index'));
+		$this->redirect(array('action' => 'index', 'Involvement' => $this->passedArgs['Involvement']));
 	}
 }
