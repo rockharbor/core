@@ -269,14 +269,15 @@ class DatesController extends AppController {
  * @param integer $id The id of the date to delete
  */
 	public function delete($id = null) {
+		$involvement = isset($this->passedArgs['Involvement']) ? $this->passedArgs['Involvement'] : null;
 		if (!$id) {
 			$this->cakeError('error404');
 		}
 		if ($this->Date->delete($id)) {
 			$this->Session->setFlash(__('This date has been deleted.', true), 'flash'.DS.'success');
-			$this->redirect(array('action'=>'index', 'Involvement' => $this->passedArgs['Involvement']));
+			$this->redirect(array('action'=>'index', 'Involvement' => $involvement));
 		}
 		$this->Session->setFlash(__('Unable to delete date. Please try again.', true), 'flash'.DS.'failure');
-		$this->redirect(array('action' => 'index', 'Involvement' => $this->passedArgs['Involvement']));
+		$this->redirect(array('action' => 'index', 'Involvement' => $involvement));
 	}
 }
