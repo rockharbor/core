@@ -907,9 +907,10 @@ class RostersController extends AppController {
 			$selected = $this->_extractIds($this->Roster, '/Roster/id');
 		}
 
+		$success = true;
 		foreach ($selected as $selectedId) {
 			$this->Roster->id = $selectedId;
-			$this->Roster->saveField('roster_status_id', $status);
+			$success = $success && $this->Roster->saveField('roster_status_id', $status);
 		}
 
 		$this->Session->setFlash('Roster members confirmed.', 'flash'.DS.'success');

@@ -366,7 +366,8 @@ class InvolvementsController extends AppController {
 						'to' => $userId,
 						'template' => 'involvements_invite_'.$status,
 						'confirm' => '/rosters/status/'.$this->Involvement->Roster->id.'/1',
-						'deny' => '/rosters/status/'.$this->Involvement->Roster->id.'/4' //status 4 = declined
+						'deny' => '/rosters/status/'.$this->Involvement->Roster->id.'/4', //status 4 = declined
+						'subject' => 'You\'ve been invited to '.$involvement['Involvement']['name']
 					));
 				}
 
@@ -445,6 +446,9 @@ class InvolvementsController extends AppController {
 		$this->set('displayMinistries', array($this->Involvement->Ministry->find('list', $options)));
 		$this->set('involvementTypes', $this->Involvement->InvolvementType->find('list'));
 		$this->set('defaultStatuses', $this->Involvement->DefaultStatus->find('list'));
+
+		//Bit.ly
+		$this->set('bitlyUrl', Router::url('/involvements/view/Involvement:'.$id, true));
 	}
 
 /**

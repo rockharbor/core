@@ -195,7 +195,7 @@ echo $this->Html->link($involvement['Ministry']['name'], array('controller' => '
 				}
 				$link = $this->Permission->link('Delete', array('action' => 'delete', 'Involvement' => $involvement['Involvement']['id']), array('id' => 'delete_btn'));
 				if ($link) {
-					$this->Js->buffer('CORE.confirmation("delete_btn", "Are you sure you want to delete this '.$involvement['InvolvementType']['name'].' and all it\'s related content?", {update:true});');
+					$this->Js->buffer('CORE.confirmation("delete_btn", "Are you sure you want to delete this '.$involvement['InvolvementType']['name'].' and all its related content?", {update:true});');
 					echo $this->Html->tag('li', $link);
 				}
 				?>

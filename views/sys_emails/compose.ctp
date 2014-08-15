@@ -4,6 +4,10 @@ if (!isset($this->passedArgs['mstoken'])) {
 	$this->passedArgs['mstoken'] = $this->MultiSelect->token;
 }
 ?>
+<div id="logout-warning" class="notice" style="display: none;">
+<h2>Logout Warning</h2>
+<p>It looks like you've been working on this email for a long time. You might get logged out before you finish it. You should send it soon, or copy the email to a program like Word or Pages and finish writing it there. If you do nothing, your email may be lost when you click send.</p>
+</div>
 <h1>Compose Email</h1>
 <div class="email">
 	<?php
@@ -142,5 +146,6 @@ echo $this->Js->submit('Send', $defaultSubmitOptions);
 echo $this->Form->end();
 
 $this->Js->buffer('CORE.wysiwyg("SysEmailBody");');
+$this->Js->buffer('window.setTimeout(function() { $("#logout-warning").fadeIn(1000); }, 1680000);');
 ?>
 </div>

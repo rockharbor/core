@@ -51,6 +51,9 @@
 #nav-calendar .fc-content {
 	border:none;
 }
+#nav-calendar>ul {
+	overflow: visible;
+}
 .fc-content th {
 	font-family: Lucida Sans,Helvetica,Arial,sans-serif;
 	color:#cccccc;
