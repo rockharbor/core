@@ -47,29 +47,10 @@
 	font-size:18px;
 	border: none;
 	color:#FFF;
-	background: rgb(48,48,48);
-	background: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0.25, rgb(48,48,48)),
-		color-stop(0.61, rgb(68,68,69))
-	);
-	background: -moz-linear-gradient(
-		center bottom,
-		rgb(48,48,48) 25%,
-		rgb(68,68,69) 61%
-	);
-	background: -ms-linear-gradient(
-		center,
-		rgb(48,48,48) 25%,
-		rgb(68,68,69) 61%
-	);
-	-pie-background: linear-gradient(
-		center bottom,
-		rgb(48,48,48) 25%,
-		rgb(68,68,69) 61%
-	);
+	background: rgb(48, 48, 48); /* solid color fallback */
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.25, rgb(48, 48, 48)), color-stop(0.61, rgb(68, 68, 69))); /* safari/chrome */
+	background: linear-gradient(to top, rgb(48, 48, 48) 25%, rgb(68, 68, 69) 61%); /* standard */
+	-pie-background: linear-gradient(center bottom, rgb(48, 48, 48) 25%, rgb(68, 68, 69) 61%); /* ie6-9 */
 	zoom: 1;
 	font-weight: normal;
 }
@@ -79,29 +60,10 @@
 ----------------------------------*/
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-widget-content .ui-state-focus {
 	border:none;
-	background: rgb(48,48,48);
-	background: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0.25, rgb(48,48,48)),
-		color-stop(0.61, rgb(68,68,69))
-	);
-	background: -moz-linear-gradient(
-		center bottom,
-		rgb(48,48,48) 25%,
-		rgb(68,68,69) 61%
-	);
-	background: -ms-linear-gradient(
-		center bottom,
-		rgb(48,48,48) 25%,
-		rgb(68,68,69) 61%
-	);
-	-pie-background: linear-gradient(
-		center bottom,
-		rgb(48,48,48) 25%,
-		rgb(68,68,69) 61%
-	);
+	background: rgb(48, 48, 48); /* solid color fallback */
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.25, rgb(48, 48, 48)), color-stop(0.61, rgb(68, 68, 69))); /* safari/chrome */
+	background: linear-gradient(to top, rgb(48, 48, 48) 25%, rgb(68, 68, 69) 61%); /* standard */
+	-pie-background: linear-gradient(center bottom, rgb(48, 48, 48) 25%, rgb(68, 68, 69) 61%); /* ie6-9 */
 	zoom: 1;
 	font-weight: normal;
 	color: #ffffff;
@@ -109,29 +71,10 @@
 }
 .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited { color: #ffffff; text-decoration: none; }
 .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-header .ui-state-focus {
-	background: rgb(55,174,107);
-	background: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0, rgb(55,174,107)),
-		color-stop(0.61, rgb(69,218,136))
-	);
-	background: -moz-linear-gradient(
-		center bottom,
-		rgb(55,174,107) 0%,
-		rgb(69,218,136) 61%
-	);
-	background: -ms-linear-gradient(
-		center bottom,
-		rgb(55,174,107) 0%,
-		rgb(69,218,136) 61%
-	);
-	-pie-background: linear-gradient(
-		center bottom,
-		rgb(55,174,107) 0%,
-		rgb(69,218,136) 61%
-	);
+	background: rgb(55, 174, 107); /* solid color fallback */
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgb(55, 174, 107)), color-stop(0.61, rgb(69, 218, 136))); /* safari/chrome */
+	background: linear-gradient(to top, rgb(55, 174, 107) 0%, rgb(69, 218, 136) 61%); /* standard */
+	-pie-background: linear-gradient(center bottom, rgb(55, 174, 107) 0%, rgb(69, 218, 136) 61%); /* ie6-9 */
 	zoom: 1;
 	font-weight: normal;
 	color: #454545;
@@ -140,30 +83,10 @@
 .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
 	color:#ffffff;
 	font-weight:normal;
-	background: rgb(55,174,107);
-	background: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0, rgb(55,174,107)),
-		color-stop(0.61, rgb(69,218,136))
-	);
-	background: -moz-linear-gradient(
-		center bottom,
-		rgb(55,174,107) 0%,
-		rgb(69,218,136) 61%
-	);
-	background: -ms-linear-gradient(
-		center bottom,
-		rgb(55,174,107) 0%,
-		rgb(69,218,136) 61%
-	);
-	zoom: 1;
-	-pie-background: linear-gradient(
-		center bottom,
-		rgb(55,174,107) 0%,
-		rgb(69,218,136) 61%
-	);
+	background: rgb(55, 174, 107); /* solid color fallback */
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgb(55, 174, 107)), color-stop(0.61, rgb(69, 218, 136))); /* safari/chrome */
+	background: linear-gradient(to top, rgb(55, 174, 107) 0%, rgb(69, 218, 136) 61%); /* standard */
+	-pie-background: linear-gradient(center bottom, rgb(55, 174, 107) 0%, rgb(69, 218, 136) 61%); /* ie6-9 */
 }
 .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited { color: #212121; text-decoration: none; }
 .ui-widget :active { outline: none; }
@@ -182,7 +105,7 @@
 
 /* Overlays */
 .ui-widget-overlay { background: #ffffff; opacity: .70; }
-.ui-widget-shadow { margin: -8px 0 0 -8px; padding: 8px; background: #aaaaaa 50% 50% repeat-x; opacity: .30; -moz-border-radius: 8px; -webkit-border-radius: 8px; border-radius: 8px; }/*
+.ui-widget-shadow { margin: -8px 0 0 -8px; padding: 8px; background: #aaaaaa 50% 50% repeat-x; opacity: .30; border-radius: 8px; }/*
  * jQuery UI Resizable @VERSION
  *
  * Copyright 2010, AUTHORS.txt (http://jqueryui.com/about)
@@ -426,58 +349,20 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 .ui-tabs-nav .ui-state-default, .ui-tabs-nav .ui-widget-content .ui-state-default, .ui-tabs-nav .ui-widget-header .ui-state-default, .ui-tabs-nav .ui-widget-content .ui-state-focus {
 	text-transform:uppercase;
 	color:#FFF;
-	background: rgb(48,48,48);
-	background: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0.25, rgb(48,48,48)),
-		color-stop(0.61, rgb(68,68,69))
-	);
-	background: -moz-linear-gradient(
-		center bottom,
-		rgb(48,48,48) 25%,
-		rgb(68,68,69) 61%
-	);
-	background: -ms-linear-gradient(
-		center bottom,
-		rgb(48,48,48) 25%,
-		rgb(68,68,69) 61%
-	);
+	background: rgb(48, 48, 48); /* solid color fallback */
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.25, rgb(48, 48, 48)), color-stop(0.61, rgb(68, 68, 69))); /* safari/chrome */
+	background: linear-gradient(to top, rgb(48, 48, 48) 25%, rgb(68, 68, 69) 61%); /* standard */
+	-pie-background: linear-gradient(center bottom, rgb(48, 48, 48) 25%, rgb(68, 68, 69) 61%); /* ie6-9 */
 	zoom: 1;
-	-pie-background: linear-gradient(
-		center bottom,
-		rgb(48,48,48) 25%,
-		rgb(68,68,69) 61%
-	);
 	font-weight:normal;
 }
 .ui-tabs-nav .ui-state-default a, .ui-tabs-nav .ui-state-default a:link, .ui-tabs-nav .ui-state-default a:visited { color: #ffffff; text-decoration: none; }
 .ui-tabs-nav .ui-state-hover, .ui-tabs-nav .ui-widget-content .ui-state-hover, .ui-tabs-nav .ui-widget-header .ui-state-hover, .ui-tabs-nav .ui-state-focus, .ui-widget-header .ui-state-focus {
-	border:none;
-	background: rgb(55,174,107);
-	background: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0, rgb(55,174,107)),
-		color-stop(0.61, rgb(69,218,136))
-	);
-	background: -moz-linear-gradient(
-		center bottom,
-		rgb(55,174,107) 0%,
-		rgb(69,218,136) 61%
-	);
-	background: -ms-linear-gradient(
-		center bottom,
-		rgb(55,174,107) 0%,
-		rgb(69,218,136) 61%
-	);
-	-pie-background: linear-gradient(
-		center bottom,
-		rgb(55,174,107) 0%,
-		rgb(69,218,136) 61%
-	);
+	border: none;
+	background: rgb(55, 174, 107); /* solid color fallback */
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgb(55, 174, 107)), color-stop(0.61, rgb(69, 218, 136))); /* safari/chrome */
+	background: linear-gradient(to top, rgb(55, 174, 107) 0%, rgb(69, 218, 136) 61%); /* standard */
+	-pie-background: linear-gradient(center bottom, rgb(55, 174, 107) 0%, rgb(69, 218, 136) 61%); /* ie6-9 */
 	zoom: 1;
 	font-weight: normal;
 	color: #ffffff;
@@ -485,29 +370,10 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 .ui-tabs-nav .ui-state-hover a, .ui-tabs-nav .ui-state-hover a:hover { color: #454545; text-decoration: none; }
 .ui-tabs-nav .ui-state-active, .ui-tabs-nav .ui-widget-content .ui-state-active, .ui-tabs-nav .ui-widget-header .ui-state-active {
 	border:none;
-	background: rgb(55,174,107);
-	background: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0, rgb(55,174,107)),
-		color-stop(0.61, rgb(69,218,136))
-	);
-	background: -moz-linear-gradient(
-		center bottom,
-		rgb(55,174,107) 0%,
-		rgb(69,218,136) 61%
-	);
-	background: -ms-linear-gradient(
-		center bottom,
-		rgb(55,174,107) 0%,
-		rgb(69,218,136) 61%
-	);
-	-pie-background: linear-gradient(
-		center bottom,
-		rgb(55,174,107) 0%,
-		rgb(69,218,136) 61%
-	);
+	background: rgb(55, 174, 107); /* solid color fallback */
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgb(55, 174, 107)), color-stop(0.61, rgb(69, 218, 136))); /* safari/chrome */
+	background: linear-gradient(to top, rgb(55, 174, 107) 0%, rgb(69, 218, 136) 61%); /* standard */
+	-pie-background: linear-gradient(center bottom, rgb(55, 174, 107) 0%, rgb(69, 218, 136) 61%); /* ie6-9 */
 	zoom: 1;
 	font-weight: normal;
 	color: #ffffff;

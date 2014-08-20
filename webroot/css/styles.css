@@ -52,9 +52,8 @@ div.message {
 	position: fixed;
 	text-align: center;
 	width: 500px;
-	box-shadow:0 0 15px #999999;
-	-moz-box-shadow:0 0 15px #999999;
 	-webkit-box-shadow:0 0 15px #999999;
+	box-shadow:0 0 15px #999999;
 	z-index: 99999;
 }
 #authMessage,
@@ -92,9 +91,8 @@ Global Classes
 */
 div.content-box,
 .shadow {
-	box-shadow:0 0 15px #999999;
-	-moz-box-shadow:0 0 15px #999999;
 	-webkit-box-shadow:0 0 15px #999999;
+	box-shadow:0 0 15px #999999;
 }
 p {
 	margin-bottom: 10px;
@@ -270,9 +268,8 @@ div.content-box .content-box, .ui-dialog .content-box {
 	margin: 0;
 	border:none;
 	background:transparent;
-	box-shadow:none;
-	-moz-box-shadow:none;
 	-webkit-box-shadow:none;
+	box-shadow:none;
 }
 .core-iconable {
 	position:relative;
@@ -427,24 +424,10 @@ div#roster-involvement div.content-box p {
 	float: right;
 }
 div.subministry {
-	background: rgb(48,48,48);
-	background: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0.25, rgb(48,48,48)),
-		color-stop(0.61, rgb(68,68,69))
-	);
-	background: -moz-linear-gradient(
-		center bottom,
-		rgb(48,48,48) 25%,
-		rgb(68,68,69) 61%
-	);
-	-pie-background: linear-gradient(
-		center bottom,
-		rgb(48,48,48) 25%,
-		rgb(68,68,69) 61%
-	);
+	background: rgb(48, 48, 48); /* solid color fallback */
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.25, rgb(48, 48, 48)), color-stop(0.61, rgb(68, 68, 69))); /* webkit/chrome */
+	background: linear-gradient(to top, rgb(48, 48, 48) 25%, rgb(68, 68, 69) 61%); /* standard */
+	-pie-background: linear-gradient(center bottom, rgb(48, 48, 48) 25%, rgb(68, 68, 69) 61%); /* ie6-9 */
 	height: 110px;
 	width: 30.667%;
 	color:#acacac;
@@ -611,24 +594,10 @@ ul.core-admin-tabs {
 ul.core-admin-tabs li {
 	list-style: none;
 	margin: 0;
-	background: rgb(48,48,48);
-	background: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0.25, rgb(48,48,48)),
-		color-stop(0.61, rgb(68,68,69))
-	);
-	background: -moz-linear-gradient(
-		center bottom,
-		rgb(48,48,48) 25%,
-		rgb(68,68,69) 61%
-	);
-	-pie-background: linear-gradient(
-		center bottom,
-		rgb(48,48,48) 25%,
-		rgb(68,68,69) 61%
-	);
+	background: rgb(48, 48, 48); /* solid color fallback */
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.25, rgb(48, 48, 48)), color-stop(0.61, rgb(68, 68, 69))); /* webkit/chrome */
+	background: linear-gradient(to top, rgb(48, 48, 48) 25%, rgb(68, 68, 69) 61%); /* standard */
+	-pie-background: linear-gradient(center bottom, rgb(48, 48, 48) 25%, rgb(68, 68, 69) 61%); /* ie6-9 */
 	float:left;
 	font-size:10px;
 	height:20px;
@@ -637,24 +606,10 @@ ul.core-admin-tabs li {
 	position: relative;
 }
 ul.core-admin-tabs li:hover {
-	background: rgb(55,174,107);
-	background: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0, rgb(55,174,107)),
-		color-stop(0.61, rgb(69,218,136))
-	);
-	background: -moz-linear-gradient(
-		center bottom,
-		rgb(55,174,107) 0%,
-		rgb(69,218,136) 61%
-	);
-	-pie-background: linear-gradient(
-		center bottom,
-		rgb(55,174,107) 0%,
-		rgb(69,218,136) 61%
-	);
+	background: rgb(55, 174, 107); /* solid color fallback */
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgb(55, 174, 107)), color-stop(0.61, rgb(69, 218, 136))); /* webkit/chrome */
+	background: linear-gradient(to top, rgb(55, 174, 107) 0%, rgb(69, 218, 136) 61%); /* standard */
+	-pie-background: linear-gradient(center bottom, rgb(55, 174, 107) 0%, rgb(69, 218, 136) 61%); /* ie6-9 */
 }
 ul.core-admin-tabs a {
 	color:#ffffff;
@@ -719,24 +674,10 @@ Tooltip
 }
 .ui-tooltip a:hover {
 	color: #343434;
-	background: rgb(55,174,107);
-	background: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0, rgb(55,174,107)),
-		color-stop(0.61, rgb(69,218,136))
-	) !important;
-	background: -moz-linear-gradient(
-		center bottom,
-		rgb(55,174,107) 0%,
-		rgb(69,218,136) 61%
-	) !important;
-	-pie-background: linear-gradient(
-		center bottom,
-		rgb(55,174,107) 0%,
-		rgb(69,218,136) 61%
-	) !important;
+	background: rgb(55, 174, 107); /* solid color fallback */
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgb(55, 174, 107)), color-stop(0.61, rgb(69, 218, 136))); /* webkit/chrome */
+	background: linear-gradient(to top, rgb(55, 174, 107) 0%, rgb(69, 218, 136) 61%); /* standard */
+	-pie-background: linear-gradient(center bottom, rgb(55, 174, 107) 0%, rgb(69, 218, 136) 61%); /* ie6-9 */
 }
 
 /*
@@ -829,8 +770,6 @@ div.select .checkbox {
 	top: -2px;
 }
 .core-radio {
-	-moz-border-radius: 6px;
-	-webkit-border-radius: 6px;
 	border-radius: 6px;
 }
 .core-checkbox-hidden, .core-radio-hidden {
