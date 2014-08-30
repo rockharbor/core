@@ -514,6 +514,7 @@ class InstallShell extends Shell {
 			'controllers/Profiles/view',
 			'controllers/Profiles/edit',
 			'controllers/Profiles/admin',
+			'controllers/Covenants',
 			'controllers/Payments/view',
 			'controllers/Users/dashboard',
 			'controllers/Users/add'

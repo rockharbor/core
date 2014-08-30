@@ -438,6 +438,7 @@ class SearchesController extends AppController {
 			'Group',
 			'ActiveAddress',
 			'Profile',
+			'Covenant',
 			'HouseholdMember' => array(
 				'Household' => array(
 					'HouseholdContact' => array(

@@ -325,19 +325,19 @@ class SelectOptionsHelper extends AppHelper {
 			break;
 			case 'ministryYear':
 				$current = intval(date('Y'));
-				
+
 				if (!isset($options['min'])) {
 					$min = $current - 20;
 				} else {
 					$min = $options['min'];
 				}
-				
+
 				if (!isset($options['max'])) {
 					$max = $current + 20;
 				} else {
 					$max = $options['max'];
 				}
-				
+
 				if ($min > $max) {
 					list($min, $max) = array($max, $min);
 				}

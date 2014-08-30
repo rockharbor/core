@@ -87,6 +87,11 @@ class User extends AppModel {
  * @var array
  */
 	public $hasMany = array(
+		'Covenant' => array(
+			'className' => 'Covenant',
+			'foreignKey' => 'user_id',
+			'dependent' => true
+		),
 		'Comment' => array(
 			'className' => 'Comment',
 			'foreignKey' => 'user_id',
