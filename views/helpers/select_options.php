@@ -2,7 +2,7 @@
 /**
  * Select options helper class.
  *
- * @copyright     Copyright 2010, *ROCK*HARBOR
+ * @copyright     Copyright 2014, *ROCK*HARBOR
  * @link          http://rockharbor.org *ROCK*HARBOR
  * @package       core
  * @subpackage    core.app.views.helpers
@@ -318,6 +318,32 @@ class SelectOptionsHelper extends AppHelper {
 				}
 				for ($i = $min; $i <= $max; $i++) {
 					$data[$i] = $i;
+				}
+				if ($options['order'] != 'asc') {
+					$data = array_reverse($data, true);
+				}
+			break;
+			case 'ministryYear':
+				$current = intval(date('Y'));
+				
+				if (!isset($options['min'])) {
+					$min = $current - 20;
+				} else {
+					$min = $options['min'];
+				}
+				
+				if (!isset($options['max'])) {
+					$max = $current + 20;
+				} else {
+					$max = $options['max'];
+				}
+				
+				if ($min > $max) {
+					list($min, $max) = array($max, $min);
+				}
+				for ($i = $min; $i <= $max; $i++) {
+					$ministryYear = $i . '/' . ($i + 1);
+					$data[$ministryYear] = $ministryYear;
 				}
 				if ($options['order'] != 'asc') {
 					$data = array_reverse($data, true);
