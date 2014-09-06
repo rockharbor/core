@@ -131,6 +131,17 @@ class SelectOptionsHelperTestCase extends CakeTestCase {
 			'2010' => '2010',
 		);
 		$this->assertEqual($results, $expected);
+		
+		$results = $this->SelectOptions->generateOptions('ministryYear', array('min' => 2000, 'max' => 2005));
+		$expected = array(
+			'2000/2001' => '2000/2001',
+			'2001/2002' => '2001/2002',
+			'2002/2003' => '2002/2003',
+			'2003/2004' => '2003/2004',
+			'2004/2005' => '2004/2005',
+			'2005/2006' => '2005/2006'
+		);
+		$this->assertEqual($results, $expected);
 	}
 
 	public function testValue() {
