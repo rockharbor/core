@@ -68,6 +68,7 @@ class CoreTestCase extends CakeTestCase {
 		'app.campuses_rev',
 		'app.classification',
 		'app.comment',
+		'app.covenant',
 		'app.date',
 		'app.error',
 		'app.group',
