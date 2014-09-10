@@ -6,9 +6,11 @@ $this->Report->multiple('Payment.amount', 'expand');
 $this->Report->multiple('Payment.PaymentType.name', 'expand');
 $this->Report->multiple('Payment.number', 'expand');
 $this->Report->multiple('Payment.transaction_id', 'expand');
+$this->Report->multiple('Role.name', 'expand');
 $this->Report->alias(array('RosterStatus.name' => 'Roster Status'));
 $this->Report->alias(array('Answer.description' => 'Answer'));
 $this->Report->alias(array('Payment.PaymentType.name' => 'Payment Type'));
+$this->Report->alias(array('Role.name' => 'Role Name'));
 ?>
 <div class="clearfix">
 	<fieldset class="grid_6">
@@ -87,6 +89,10 @@ $this->Report->alias(array('Payment.PaymentType.name' => 'Payment Type'));
 			echo $this->Form->input('Export.Roster.balance', array(
 				'type' => 'checkbox',
 				'label' => 'Balance'
+			));
+			echo $this->Form->input('Export.Role.name', array(
+				'type' => 'checkbox',
+				'label' => 'Roles'
 			));
 			?>
 		</div>
