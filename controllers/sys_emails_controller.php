@@ -104,7 +104,7 @@ class SysEmailsController extends AppController {
 
 		$this->paginate = array(
 			'fields' => array(
-				'COUNT(*) as message_count, SysEmail.*'
+				'SysEmail.*'
 			),
 			'contain' => array(
 				'ToUser' => array(
@@ -118,17 +118,16 @@ class SysEmailsController extends AppController {
 					)
 				)
 			),
-			'group' => 'SysEmail.subject',
 			'order' => 'modified DESC'
 		);
-
+		
 		if ($this->data['Filter']['hide_system']) {
-			$this->paginate['group'] .= ' HAVING SysEmail.from_id > 0';
+			$this->paginate['conditions']['and'][] = 'SysEmail.from_id > 0';
 		}
 
 		switch ($this->data['Filter']['show']) {
 			case 'from':
-				$this->paginate['conditions']['SysEmail.from_id'] = $user;
+				$this->paginate['conditions']['and']['SysEmail.from_id'] = $user;
 				break;
 			case 'both':
 				$this->paginate['conditions']['or'] = array(
@@ -137,15 +136,14 @@ class SysEmailsController extends AppController {
 				);
 				break;
 			default:
-				$this->paginate['conditions']['SysEmail.to_id'] = $user;
+				$this->paginate['conditions']['and']['SysEmail.to_id'] = $user;
 		}
 
 		$emails = $this->FilterPagination->paginate();
-		$statuses = $this->statuses;
 
-		$this->set(compact('emails', 'statuses'));
+		$this->set(compact('emails'));
 	}
-
+	
 /**
  * Shows a sent email
  *
@@ -163,7 +161,8 @@ class SysEmailsController extends AppController {
 				'id',
 				'subject',
 				'message',
-				'from_id'
+				'from_id',
+				'to_id'
 			),
 			'conditions' => array(
 				'or' => array(
@@ -174,6 +173,9 @@ class SysEmailsController extends AppController {
 			),
 			'contain' => array(
 				'FromUser' => array(
+					'Profile' => array('name')
+				),
+				'ToUser' => array(
 					'Profile' => array('name')
 				)
 			)

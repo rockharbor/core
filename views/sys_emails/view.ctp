@@ -7,6 +7,8 @@
 		<?php else: ?>
 		<dd><?php echo Core::read('general.site_name'); ?></dd>
 		<?php endif; ?>
+		<dt>To:</dt>
+		<dd><?php echo $this->Html->link($email['ToUser']['Profile']['name'], array('controller' => 'profiles', 'action' => 'view', 'User' => $user)); ?></dd>
 		<dt>Subject:</dt>
 		<dd><?php echo $email['SysEmail']['subject']; ?></dd>
 	</dl>
