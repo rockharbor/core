@@ -85,15 +85,7 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 
 		$vars = $this->testAction('/sys_emails/index/User:2');
 		$result = count($vars['emails']);
-		$expected = 2;
-		$this->assertEqual($result, $expected);
-
-		$result = $vars['emails'][0][0]['message_count'];
-		$expected = 2;
-		$this->assertEqual($result, $expected);
-
-		$result = $vars['emails'][1][0]['message_count'];
-		$expected = 1;
+		$expected = 3;
 		$this->assertEqual($result, $expected);
 
 		$vars = $this->testAction('/sys_emails/index/User:2', array(
@@ -105,11 +97,11 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 			)
 		));
 		$result = count($vars['emails']);
-		$expected = 4;
+		$expected = 5;
 		$this->assertEqual($result, $expected);
 
 		$result = $this->testController->params['paging']['SysEmail']['count'];
-		$expected = 4;
+		$expected = 5;
 		$this->assertEqual($result, $expected);
 
 		$vars = $this->testAction('/sys_emails/index/User:2', array(
@@ -133,7 +125,7 @@ class SysEmailsControllerTestCase extends CoreTestCase {
 			)
 		));
 		$result = count($vars['emails']);
-		$expected = 3;
+		$expected = 4;
 		$this->assertEqual($result, $expected);
 	}
 
