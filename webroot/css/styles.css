@@ -279,7 +279,6 @@ div.content-box .content-box, .ui-dialog .content-box {
 	position: absolute;
 	top: 0;
 	right:0;
-	visibility:hidden;
 }
 tr.core-iconable .core-icon-container {
 	position: relative;
@@ -287,9 +286,6 @@ tr.core-iconable .core-icon-container {
 }
 .core-iconable .core-icon-container .core-icon {
 	top: 0px;
-}
-.core-iconable:hover .core-icon-container {
-	visibility:visible;
 }
 
 /** special containers, perhaps place somewhere else **/
