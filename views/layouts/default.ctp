@@ -24,7 +24,7 @@
 		$this->AssetCompress->css('fullcalendar');
 		$this->AssetCompress->css('calendar');
 
-		echo '<!--[if lt IE 9]>'.$this->Html->css('ie').'<![endif]-->';
+		echo '<!--[if lt IE 10]>'.$this->Html->css('ie').'<![endif]-->';
 
 		// google cdn scripts
 		$min = Configure::read('debug') == 0 ? '.min' : null;

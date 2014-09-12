@@ -169,6 +169,15 @@ class InstallSchema extends CakeSchema {
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'user_key' => array('column' => 'user_id', 'unique' => 0), 'group_key' => array('column' => 'group_id', 'unique' => 0), 'creator_key' => array('column' => 'created_by', 'unique' => 0)),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
+	var $covenants = array(
+		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
+		'user_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'index'),
+		'year' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 9, 'key' => 'index'),
+		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
+		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
+		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'user_key' => array('column' => 'user_id', 'unique' => 0), 'year_key' => array('column' => 'year', 'unique' => 0)),
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
+	);
 	var $dates = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 8, 'key' => 'primary'),
 		'start_date' => array('type' => 'date', 'null' => true, 'default' => NULL),
@@ -428,9 +437,6 @@ class InstallSchema extends CakeSchema {
 		'background_check_complete' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
 		'background_check_by' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 32),
 		'background_check_date' => array('type' => 'date', 'null' => true, 'default' => NULL),
-		'signed_covenant_2011' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
-		'signed_covenant_2012' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
-		'signed_covenant_2013' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'grade' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 2),
 		'graduation_year' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 4),
 		'created_by' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 8),

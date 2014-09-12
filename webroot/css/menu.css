@@ -12,24 +12,10 @@ div#header {
 	z-index: 100;
 }
 div#header div#primary {
-	background: rgb(48,48,48);
-	background: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0.25, rgb(48,48,48)),
-		color-stop(0.61, rgb(68,68,69))
-	);
-	background: -moz-linear-gradient(
-		center bottom,
-		rgb(48,48,48) 25%,
-		rgb(68,68,69) 61%
-	);
-	-pie-background: linear-gradient(
-		center bottom,
-		rgb(48,48,48) 25%,
-		rgb(68,68,69) 61%
-	);
+	background: rgb(48, 48, 48); /* solid color fallback */
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.25, rgb(48, 48, 48)), color-stop(0.61, rgb(68, 68, 69))); /* webkit/chrome */
+	background: linear-gradient(to top, rgb(48, 48, 48) 25%, rgb(68, 68, 69) 61%); /* standard */
+	-pie-background: linear-gradient(center bottom, rgb(48, 48, 48) 25%, rgb(68, 68, 69) 61%); /* ie6-9 */
 	height:100%;
 	margin:0;
 }
@@ -38,24 +24,10 @@ div#header div#primary>ul>li {
 	height:100%;
 }
 div#header div#primary>ul>li>a:hover {
-	background: rgb(55,174,107);
-	background: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0, rgb(55,174,107)),
-		color-stop(0.61, rgb(69,218,136))
-	);
-	background: -moz-linear-gradient(
-		center bottom,
-		rgb(55,174,107) 0%,
-		rgb(69,218,136) 61%
-	);
-	-pie-background: linear-gradient(
-		center bottom,
-		rgb(55,174,107) 0%,
-		rgb(69,218,136) 61%
-	);
+	background: rgb(55, 174, 107); /* solid color fallback */
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgb(55, 174, 107)), color-stop(0.61, rgb(69, 218, 136))); /* webkit/chrome */
+	background: linear-gradient(to top, rgb(55, 174, 107) 0%, rgb(69, 218, 136) 61%); /* standard */
+	-pie-background: linear-gradient(center bottom, rgb(55, 174, 107) 0%, rgb(69, 218, 136) 61%); /* ie6-9 */
 	color: #343434;
 	text-decoration: none;
 }
@@ -195,31 +167,15 @@ Search
 }
 #nav-search button {
 	height: 19px;
-	-moz-border-radius: 0 4px 4px 0;
-	-webkit-border-radius: 0 4px 4px 0;
 	border-radius: 0 4px 4px 0;
-	background: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0, rgb(55,174,107)),
-		color-stop(0.61, rgb(69,218,136))
-	);
-	background: -moz-linear-gradient(
-		center bottom,
-		rgb(55,174,107) 0%,
-		rgb(69,218,136) 61%
-	);
-	-pie-background: linear-gradient(
-		center bottom,
-		rgb(55,174,107) 0%,
-		rgb(69,218,136) 61%
-	);
+	background: rgb(55, 174, 107); /* solid color fallback */
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgb(55, 174, 107)), color-stop(0.61, rgb(69, 218, 136))); /* webkit/chrome */
+	background: linear-gradient(to top, rgb(55, 174, 107) 0%, rgb(69, 218, 136) 61%); /* standard */
+	-pie-background: linear-gradient(center bottom, rgb(55, 174, 107) 0%, rgb(69, 218, 136) 61%); /* ie6-9 */
 }
 #nav-search input[type=text] {
 	border: none;
-	-moz-border-radius: 4px 0 0 4px;
-	-webkit-border-radius: 4px 0 0 4px;
+	border-radius: 0 4px 4px 0;
 }
 
 /*

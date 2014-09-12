@@ -57,7 +57,7 @@
 	</li>
 	<li id="nav-campuses">
 		<?php
-		echo $this->Html->link('Campuses', array('plugin' => false, 'controller' => 'campuses', 'action' => 'index'));
+		echo $this->Html->link('Get Involved', array('plugin' => false, 'controller' => 'campuses', 'action' => 'index'));
 		echo $this->element('menu'.DS.'campus', array(
 			'campuses' => $campusesMenu,
 			'cache' => '+1 day'

@@ -27,6 +27,10 @@ if ($activeUser['User']['id'] == $profile['User']['id'] && empty($activeUser['Us
 		if ($link) {
 			echo $this->Html->tag('li', $link);
 		}
+		$link = $this->Permission->link('Covenants', array('controller' => 'covenants', 'User' => $profile['User']['id']), array('title' => 'covenant'));
+		if ($link) {
+			echo $this->Html->tag('li', $link);
+		}
 		?>
 	</ul>
 
@@ -305,12 +309,6 @@ if ($activeUser['User']['id'] == $profile['User']['id'] && empty($activeUser['Us
 								$bt = 'No';
 							}
 							echo $this->Html->tag('dd', $bt);
-							echo $this->Html->tag('dt', 'Signed Covenant 2011:');
-							echo $this->Html->tag('dd', $this->SelectOptions->boolean($profile['Profile']['signed_covenant_2011']));
-							echo $this->Html->tag('dt', 'Signed Covenant 2012:');
-							echo $this->Html->tag('dd', $this->SelectOptions->boolean($profile['Profile']['signed_covenant_2012']));
-							echo $this->Html->tag('dt', 'Signed Covenant 2013:');
-							echo $this->Html->tag('dd', $this->SelectOptions->boolean($profile['Profile']['signed_covenant_2013']));
 						?>
 						</dl>
 					</div>
@@ -341,7 +339,6 @@ if ($activeUser['User']['id'] == $profile['User']['id'] && empty($activeUser['Us
 			</ul>
 
 		</div>
-
 		<div id="household">
 			<?php
 			echo $this->requestAction('/households/index', array(
@@ -409,6 +406,22 @@ if ($activeUser['User']['id'] == $profile['User']['id'] && empty($activeUser['Us
 		<div id="email">
 			<?php
 			echo $this->requestAction('/sys_emails/index', array(
+				'renderAs' => 'ajax',
+				'bare' => false,
+				'return',
+				'named' => array(
+					'User' => $profile['User']['id']
+				),
+				'data' => null,
+				'form' => array('data' => null)
+			));
+			?>
+		</div>
+		<?php endif; ?>
+		<?php if ($this->Permission->check(array('controller' => 'covenants', 'User' => $profile['User']['id']))): ?>
+		<div id="covenant">
+			<?php
+			echo $this->requestAction('/covenants/index', array(
 				'renderAs' => 'ajax',
 				'bare' => false,
 				'return',

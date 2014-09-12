@@ -27,9 +27,10 @@
 				<?php if ($this->data['Filter']['show'] !== 'from'): ?>
 				<th><?php echo $this->Paginator->sort('From', 'FromUser.Profile.name'); ?></th>
 				<?php endif; ?>
+				<?php if ($this->data['Filter']['show'] !== 'to'): ?>
+				<th><?php echo $this->Paginator->sort('To', 'ToUser.Profile.name'); ?></th>
+				<?php endif; ?>
 				<th><?php echo $this->Paginator->sort('subject'); ?></th>
-				<th>Count</th>
-				<th><?php echo $this->Paginator->sort('Status', 'status'); ?></th>
 				<th><?php echo $this->Paginator->sort('Created', 'created'); ?></th>
 				<th><?php echo $this->Paginator->sort('Sent', 'modified'); ?></th>
 			</tr>
@@ -40,9 +41,10 @@
 				<?php if ($this->data['Filter']['show'] !== 'from'): ?>
 				<td><?php echo $email['SysEmail']['from']; ?>&nbsp;</td>
 				<?php endif; ?>
+				<?php if ($this->data['Filter']['show'] !== 'to'): ?>
+				<td><?php echo $email['ToUser']['Profile']['name']; ?>&nbsp;</td>
+				<?php endif; ?>
 				<td><?php echo $this->Html->link($email['SysEmail']['subject'], array('controller' => 'sys_emails', 'action' => 'view', $email['SysEmail']['id'], 'User' => $this->passedArgs['User']), array('data-core-modal' => '{"update":"false"}')); ?>&nbsp;</td>
-				<td><?php echo $email[0]['message_count']; ?></td>
-				<td><?php echo $statuses[$email['SysEmail']['status']]; ?></td>
 				<td><?php echo $this->Formatting->datetime($email['SysEmail']['created']); ?>&nbsp;</td>
 				<td><?php echo $this->Formatting->datetime($email['SysEmail']['modified']); ?>&nbsp;</td>
 			</tr>

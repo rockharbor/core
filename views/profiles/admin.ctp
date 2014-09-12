@@ -22,9 +22,6 @@ echo $this->Form->create(array(
 			echo $this->Form->input('background_check_date', array(
 				'empty' => true
 			));
-			echo $this->Form->input('signed_covenant_2011');
-			echo $this->Form->input('signed_covenant_2012');
-			echo $this->Form->input('signed_covenant_2013');
 			?>
 		</fieldset>
 		<fieldset class="grid_5 omega">

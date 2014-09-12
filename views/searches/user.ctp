@@ -118,9 +118,13 @@
 				'type' => 'checkbox',
 				'label' => 'Currently Leading'
 			));
-			echo $this->Form->input('Profile.signed_covenant_2011');
-			echo $this->Form->input('Profile.signed_covenant_2012');
-			echo $this->Form->input('Profile.signed_covenant_2013');
+			echo $this->Form->input('Covenant.year', array(
+				'type' => 'select',
+				'label' => 'Select covenant ministry years',
+				'options' => $this->SelectOptions->generateOptions('ministryYear', array('min' => '2011', 'order' => 'asc')),
+				'multiple' => true,
+				'empty' => false
+			));
 			?>
 			</fieldset>
 		</div>
