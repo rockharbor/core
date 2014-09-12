@@ -53,10 +53,29 @@ echo $this->Form->create('Roster', array(
 </ul>
 
 	<div id="members" class="clearfix">
+		<?php if ($involvement['Involvement']['offer_childcare'] && !empty($children)): ?>
 		<div class="grid_6 alpha">
+			<p>This <?php echo $involvement['InvolvementType']['name']; ?> offers childcare. <b>Select children below to sign up for childcare</b>.</p>
+			<div>
+				<?php
+				$c = 0;
+				foreach ($children as $child) {
+					echo $this->Form->input('Child.'.$c.'.Roster.user_id', array(
+						'type' => 'checkbox',
+						'value' => $child['Profile']['user_id'],
+						'label' => $child['Profile']['name']
+					));
+
+					$c++;
+				}
+				?>
+			</div>
+		</div>
+		<?php endif; ?>
+		<div class="grid_6">
 			<p>Check everyone who is coming<?php
 				if ($involvement['Involvement']['offer_childcare'] && !empty($children)) {
-					echo ', not including those you want in childcare';
+					echo ', <b>not including those you want in childcare</b>';
 				}
 				?>.
 			</p>
@@ -82,25 +101,6 @@ echo $this->Form->create('Roster', array(
 			?>
 			</div>
 		</div>
-		<?php if ($involvement['Involvement']['offer_childcare'] && !empty($children)): ?>
-		<div class="grid_6 omega">
-			<p>This <?php echo $involvement['InvolvementType']['name']; ?> offers childcare. Select children below to sign up for childcare.</p>
-			<div>
-				<?php
-				$c = 0;
-				foreach ($children as $child) {
-					echo $this->Form->input('Child.'.$c.'.Roster.user_id', array(
-						'type' => 'checkbox',
-						'value' => $child['Profile']['user_id'],
-						'label' => $child['Profile']['name']
-					));
-
-					$c++;
-				}
-				?>
-			</div>
-		</div>
-		<?php endif; ?>
 	</div>
 	<?php if (!empty($involvement['Question'])) {
 	?>
