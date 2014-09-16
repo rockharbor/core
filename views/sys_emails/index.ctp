@@ -5,6 +5,7 @@
 		'class' => 'core-filter-form',
 		'url' => $this->here
 	));
+	?><h4>Shows only the first 500 messages</h4><?php
 	echo $this->Form->input('show', array(
 		'label' => 'Show messages',
 		'options' => array(

@@ -96,7 +96,8 @@ class SysEmail extends AppModel {
 			'fields' => array(
 				'SysEmail.from_id'
 			),
-			'conditions' => $conditions
+			'conditions' => $conditions,
+			'limit' => 500
 		);
 		$count = $this->find('all', $options);
 		return count($count);
