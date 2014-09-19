@@ -253,31 +253,41 @@ CORE.initFormUI = function() {
 		$('.core-radio input[name="'+$(this).prop('name')+'"]').each(function() { $(this).parent().removeClass('selected') });
 		this.checked ?	$(this).parent().addClass('selected') : $(this).parent().removeClass('selected');
 	});
-
-	// show/hide default text (like type=search in html5)
-	var showhide = function(event) {
-		if (event.type == 'focus') { $(this).siblings('label').hide();	return; }
-		$(this).val() == '' ? $(this).siblings('label').show() : $(this).siblings('label').hide();
-	};
-	$('.input.text.showhide label, .input.textarea.showhide label, .input.password.showhide label')
-		.css({
-			position: 'absolute',
-			cursor: 'text'
-		})
-		.siblings('input,textarea')
-			.focus(showhide)
-			.blur(showhide)
-			.change(showhide)
-			.blur()
-		.siblings('label').each(function() {
-			var offsetPx = $(this).siblings('input, textarea').outerHeight() - $(this).outerHeight();
-			offsetPx /= 2;
-			$(this).css({
-				top: offsetPx,
-				left: offsetPx
-			});
+	
+	if ('placeholder' in document.createElement('input')) {
+		// The browser supports HTML5 input[placeholder] so we can remove the labels and use native placeholders
+		$('.input.text.showhide label, .input.textarea.showhide label, .input.password.showhide label')
+		.each(function() {
+			var placeholder = $(this).text();
+			$(this).siblings('input, textarea').attr('placeholder', placeholder);
+			$(this).remove(); // no longer need the labels
 		});
-
+	} else {
+		// The browser does not support native placeholders so implement our own
+		// show/hide default text (like type=search in html5)
+		var showhide = function(event) {
+			if (event.type == 'focus') { $(this).siblings('label').hide();	return; }
+			$(this).val() == '' ? $(this).siblings('label').show() : $(this).siblings('label').hide();
+		};
+		$('.input.text.showhide label, .input.textarea.showhide label, .input.password.showhide label')
+			.css({
+				position: 'absolute',
+				cursor: 'text'
+			})
+			.siblings('input,textarea')
+				.focus(showhide)
+				.blur(showhide)
+				.change(showhide)
+				.blur()
+			.siblings('label').each(function() {
+				var offsetPx = $(this).siblings('input, textarea').outerHeight() - $(this).outerHeight();
+				offsetPx /= 2;
+				$(this).css({
+					top: offsetPx,
+					left: offsetPx
+				});
+			});
+	}
 
 	// set up filter forms
 	$('.core-filter-form').each(function() {
