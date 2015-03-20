@@ -5,7 +5,6 @@
 		'class' => 'core-filter-form',
 		'url' => $this->here
 	));
-	?><h4>Shows only the first 500 messages</h4><?php
 	echo $this->Form->input('show', array(
 		'label' => 'Show messages',
 		'options' => array(
@@ -16,12 +15,25 @@
 	));
 	echo $this->Form->input('hide_system', array(
 		'label' => 'Hide system emails',
-		'type' => 'checkbox'
+		'type' => 'checkbox',
+		'div' => array(
+			'class' => 'input checkbox clearfix'
+		)
 	));
+	?> <div id="advancedOptions" style="display: none;"> <?php
+	echo $this->Form->input('show_all', array(
+		'label' => 'Show all emails<br/>Warning: This will take a LONG time and you might need to refresh the page',
+		'type' => 'checkbox',
+		'div' => array(
+			'class' => 'input checkbox clearfix'
+		)
+	));
+	?> </div> <?php
 	echo $this->Js->submit('Filter', $defaultSubmitOptions);
 	echo $this->Form->end();
-
+	$this->Js->buffer('$("#toggleAdvanced").click(function(){$("#advancedOptions").toggle();});');
 	?>
+	<button id="toggleAdvanced">Advanced options</button>
 	<table class="datatable">
 		<thead>
 			<tr>
