@@ -104,12 +104,12 @@ class UsersController extends AppController {
 				// trick into not redirecting and to highlighting fields
 				$this->Cookie->delete('Auth');
 
-				$msg = 'Invalid username or password. Please try again.';
+				$msg = 'Couldn\'t find username, wrong password, or account is inactive. Please try again.';
 				// check to see if they're just too young
 				$this->User->contain(array('Profile'));
 				$user = $this->User->findByUsername($this->data['User']['username']);
 				if (!empty($user)) {
-					if (!$user['Profile']['adult']) {
+					if ($user['Profile']['child']) {
 						$msg = 'Oops, you\'re not quite old enough to log into '.Core::read('general.site_name').'.';
 						$msg .= ' Have one of your parents log in and they can make sure you get signed up for stuff!';
 					}
