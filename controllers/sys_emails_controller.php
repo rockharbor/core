@@ -97,7 +97,8 @@ class SysEmailsController extends AppController {
 			$this->data = array(
 				'Filter' => array(
 					'show' => 'from',
-					'hide_system' => 1
+					'hide_system' => 1,
+					'show_all' => 0
 				)
 			);
 		}
@@ -120,9 +121,13 @@ class SysEmailsController extends AppController {
 			),
 			'order' => 'modified DESC'
 		);
-		
+
 		if ($this->data['Filter']['hide_system']) {
 			$this->paginate['conditions']['and'][] = 'SysEmail.from_id > 0';
+		}
+
+		if (!$this->data['Filter']['show_all']) {
+			$this->paginate['maxRecords'] = 500;
 		}
 
 		switch ($this->data['Filter']['show']) {
@@ -143,7 +148,7 @@ class SysEmailsController extends AppController {
 
 		$this->set(compact('emails'));
 	}
-	
+
 /**
  * Shows a sent email
  *

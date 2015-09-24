@@ -96,10 +96,12 @@ class SysEmail extends AppModel {
 			'fields' => array(
 				'SysEmail.from_id'
 			),
-			'conditions' => $conditions,
-			'limit' => 500
+			'conditions' => $conditions
 		);
 		$count = $this->find('all', $options);
+		if (isset($options['maxRecords'])) {
+			return min(count($count), $options['maxRecords']);
+		}
 		return count($count);
 	}
 
