@@ -91,7 +91,17 @@ class UsersController extends AppController {
 			if ($this->Auth->login($this->data)) {
 				$this->User->id = $this->Auth->user('id');
 				$this->User->contain(array('Profile', 'Group', 'Image', 'ActiveAddress'));
-				$this->Session->write('User', $this->User->read());
+				$loginUser = $this->User->read();
+				if ($loginUser['User']['group_id'] > 7) {
+					$redirect = $this->Auth->logout();
+					$this->Cookie->delete('Auth');
+					$this->Session->destroy();
+					$msg = "Couldn't log you in, CORE is disabled for non-administrators";
+					$this->Session->setFlash($msg, 'flash'.DS.'failure');
+					$this->redirect($redirect);
+					return;
+				}
+				$this->Session->write('User', $loginUser);
 				$this->User->saveField('last_logged_in', date('Y-m-d H:i:s'));
 
 				// force redirect if they need to reset their password
